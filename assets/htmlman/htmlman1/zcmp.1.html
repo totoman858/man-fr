@@ -1,0 +1,104 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ZDIFF</TITLE>
+</HEAD><BODY>
+<H1>ZDIFF</H1>
+Section: User Commands  (1)<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+zcmp, zdiff - Comparer des fichiers compactés.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>zcmp</B>
+
+[ options_cmp ] fichier1
+[ fichier2 ]
+<BR>
+
+<B>zdiff</B>
+
+[ options_diff ] fichier1
+[ fichier2 ]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>Zcmp</I>
+
+et
+<I>zdiff</I>
+
+sont utilisés pour invoquer le programme
+<I>cmp</I>
+
+ou 
+<I>diff</I>
+
+sur des fichiers compactés. Toutes les options spécifiées sont passées directement à
+<I>cmp</I>
+
+ou à
+<I>diff</I>.
+
+Si un seul fichier est mentionné, alors les fichiers comparés sont
+<I>fichier1</I>
+
+et un
+<I>fichier1</I>.gz
+
+décompacté. Si deux fichiers sont spécifiés, alors ils sont décompactés si nécessaire et envoyés à
+<I>cmp</I>
+
+ou à
+<I>diff</I>.
+
+La valeur de retour de
+<I>cmp</I>
+
+ou de
+<I>diff</I>
+
+est préservée.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+cmp">cmp</A>(1), <A HREF="/cgi-bin/man/man2html?1+diff">diff</A>(1), <A HREF="/cgi-bin/man/man2html?1+zmore">zmore</A>(1), <A HREF="/cgi-bin/man/man2html?1+zgrep">zgrep</A>(1), <A HREF="/cgi-bin/man/man2html?1+znew">znew</A>(1), <A HREF="/cgi-bin/man/man2html?1+zforce">zforce</A>(1), <A HREF="/cgi-bin/man/man2html?1+gzip">gzip</A>(1), <A HREF="/cgi-bin/man/man2html?1+gzexe">gzexe</A>(1)
+<A NAME="lbAF">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Les messages des programmes
+<I>cmp</I>
+
+ou
+<I>diff</I>
+
+se réfèrent aux noms de fichiers temporaires au lieu de ceux spécifiés.
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Frédéric Delanoy, 2001.
+<P>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">BOGUES</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:41 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,108 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of WCSNRTOMBS</TITLE>
+</HEAD><BODY>
+<H1>WCSNRTOMBS</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+wcsnrtombs - Convertir une chaîne de caractères larges en séquence multi-octets.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/wchar.h">wchar.h</A>&gt;</B>
+
+<B>size_t wcsnrtombs (char *</B><I>dest</I><B>, const wchar_t **</B><I>src</I><B>, size_t </B><I>nwc</I><B>,</B>
+<B>                   size_t </B><I>len</I><B>, mbstate_t *</B><I>ps</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>wcsnrtombs</B> est l'équivalent de <B>wcsrtombs</B>, sauf que le nombre
+de caractères larges à convertir est limité (à <I>nwc</I>), en commençant en <I>*src</I>.
+<P>
+
+Si <I>dest</I> n'est pas un pointeur NULL, la fonction <B>wcsnrtombs</B> convertit au maximum <I>nwc</I> caractères larges
+depuis la chaîne <I>*src</I> vers la séquence multi-octets située en <I>dest</I>.
+Au plus <I>len</I> octets seront écrits dans <I>dest</I>. 
+L'état de conversion <I>*ps</I> est mis à jour. La conversion est réalisée en fait en invoquant à répétition
+wcrtomb(<I>dest</I>,<I>*src</I>,<I>ps</I>), aussi longtemps que cet appel réussit, en augmentant à chaque fois <I>dest</I>
+du nombre d'octets écrits, et en incrémentant <I>*src</I>. La conversion peut se terminer pour trois raisons :
+<P>
+
+1. Un caractère large que l'on ne peut pas représenter par une séquence multi-octets (dans la localisation en cours)
+a été rencontré. Dans ce cas <I>*src</I> pointera sur le caractère invalide, et la fonction renverra (size_t)(-1) après
+avoir placé <B>EILSEQ</B> dans <B>errno</B>.
+<P>
+
+2. On a converti <I>nwc</I> caractères larges sans rencontrer L'\0', ou la limite <I>len</I> est atteinte. Dans ce
+cas <I>*src</I> pointera sur le caractère suivant à convertir, et la fonction renvoie le nombre d'octets écrits dans <I>dest</I>.
+<P>
+
+3. La chaîne de caractères larges a été complètement convertie, y compris le L'\0' final (ramenant <I>*ps</I> à l'état initial).
+Dans ce cas, <I>*src</I> devient NULL, et la fonction renvoie le nombre d'octets écrits dans <I>dest</I>, sans compter l'octet '\0'.
+<P>
+
+Si <I>dest</I> est NULL, la longueur <I>len</I> est ignorée, et la conversion se déroule comme précédemment, sauf que les
+octets convertis ne sont pas écrits en mémoire, et qu'il n'y a pas de limite de longueur en destination.
+<P>
+
+Dans tous les cas, si <I>ps</I> est un pointeur NULL, un état statique anonyme propre à la fonction est utilisé à la place.
+<P>
+
+Le programmeur doit s'assurer qu'il y a assez de place pour <I>len</I> octets au minimum dans <I>dest</I>.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>wcsnrtombs</B> renvoie le nombre d'octets constituant la partie convertie de la séquence multi-octets,
+sans compter l'octet nul final. Si elle rencontre un caractère large qu'elle ne peut convertir, elle renvoie (size_t)(-1) et
+place <B>EILSEQ</B> dans <B>errno</B>.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Cette fonction est une extension GNU.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+wcsrtombs">wcsrtombs</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+iconv">iconv</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le comportement de <B>wcsnrtombs</B> dépend de la catégorie LC_CTYPE de la localisation.
+<P>
+
+L'utilisation d'un pointeur NULL pour <I>ps</I> n'est pas sûre dans un contexte multithreads.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:25 GMT, February 11, 2014
+</BODY>
+</HTML>

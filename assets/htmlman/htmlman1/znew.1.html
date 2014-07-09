@@ -1,0 +1,100 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ZNEW</TITLE>
+</HEAD><BODY>
+<H1>ZNEW</H1>
+Section: User Commands  (1)<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+znew - recompacter des fichiers .Z en des fichiers .gz.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>znew</B>
+
+[ -ftv9PK] [ nom.Z ...  ]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>znew</I>
+
+recompacte des fichiers au format .Z (compress) dans le format .gz (gzip).
+Si vous voulez recompacter un fichier qui est déjà au format gzip,
+renommez-le pour imposer une extension .Z et appliquez ensuite znew.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-f</B>
+
+<DD>
+Forcer le recompactage du format .Z au format .gz même si un fichier .gz de
+même nom existe déjà.
+<DT><B>-t</B>
+
+<DD>
+Tester les nouveaux fichiers avant de supprimer les originaux.
+<DT><B>-v</B>
+
+<DD>
+Verbeux. Afficher le nom et le pourcentage de réduction pour chaque fichier
+compacté.
+<DT><B>-9</B>
+
+<DD>
+Utiliser la méthode de compression la plus lente (compression optimale).
+<DT><B>-P</B>
+
+<DD>
+Utiliser des tubes lors de la conversion pour réduire l'utilisation
+d'espace disque.
+<DT><B>-K</B>
+
+<DD>
+Conserver un fichier .Z quand il est plus petit que le fichier .gz
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+gzip">gzip</A>(1), <A HREF="/cgi-bin/man/man2html?1+zmore">zmore</A>(1), <A HREF="/cgi-bin/man/man2html?1+zdiff">zdiff</A>(1), <A HREF="/cgi-bin/man/man2html?1+zgrep">zgrep</A>(1), <A HREF="/cgi-bin/man/man2html?1+zforce">zforce</A>(1), <A HREF="/cgi-bin/man/man2html?1+gzexe">gzexe</A>(1), <A HREF="/cgi-bin/man/man2html?1+compress">compress</A>(1)
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<I>znew</I>
+
+ne préserve pas l'horodate avec l'option -P si
+<I><A HREF="/cgi-bin/man/man2html?1+cpmod">cpmod</A>(1)</I>
+
+n'est pas disponible, ou si
+<I><A HREF="/cgi-bin/man/man2html?1+touch">touch</A>(1)</I>
+
+ne supporte pas l'option -r.
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Frédéric Delanoy, 2001.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:50 GMT, February 11, 2014
+</BODY>
+</HTML>

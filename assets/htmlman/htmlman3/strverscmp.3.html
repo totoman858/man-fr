@@ -1,0 +1,124 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STRVERSCMP</TITLE>
+</HEAD><BODY>
+<H1>STRVERSCMP</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+strverscmp - Comparaison de chaînes de version.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#define _GNU_SOURCE</B>
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/string.h">string.h</A>&gt;</B>
+
+<B>int strverscmp(const char *</B><I>s1</I><B>, const char *</B><I>s2</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+On a souvent des fichiers
+<I>jan1</I>, <I>jan2</I>, ..., <I>jan9</I>, <I>jan10</I>, ...
+
+et il est malvenu que
+<B>ls</B>
+
+les classe dans l'ordre 
+<I>jan1</I>, <I>jan10</I>, ..., <I>jan2</I>, ..., <I>jan9</I>.
+
+
+Afin de remédier à ceci, GNU a introduit l'option 
+<B>-v</B>
+
+à
+<B><A HREF="/cgi-bin/man/man2html?1+ls">ls</A></B>(1),
+
+option implémentée en utilisant
+<B><A HREF="/cgi-bin/man/man2html?3+versionsort">versionsort</A></B>(3),
+
+qui utilise lui même
+<B>strverscmp</B>.
+
+<P>
+Ainsi, la tâche de 
+<B>strverscmp</B>
+
+consiste à comparer deux chaînes et à déterminer le &quot;bon&quot; ordre, alors que
+<B>strcmp</B>
+
+détermine seulement l'ordre lexicographique. Cette fonction n'utilise pas 
+la catégorie de localisation LC_COLLATE, elle vise donc principalement 
+les situations dans lesquelles les chaînes sont supposées être en ASCII.
+<P>
+Cette fonction travaille comme détaillé ci dessous.
+Si les deux chaînes sont égales, elle renvoie 0. Sinon, elle recherche
+une position entre deux octets ayant la propriété suivante : avant cette position, 
+les deux chaînes sont égales, alors qu'immédiatement après, elles diffèrent.
+Elle détermine alors les plus longues chaînes de chiffres consécutifs contenant
+(ou commençant à, ou se finissant à) cette position. Si l'une des chaînes ou bien 
+les deux chaînes sont vides, alors elles renvoie ce que 
+<B>strcmp</B>
+
+aurait renvoyé (Classement numérique des valeurs d'octets).
+Sinon, elle compare numériquement les deux chaînes de chiffres, où les
+chaînes de chiffres commençant par un ou plusieurs zéro sont 
+interprétées comme si elles avaient une virgule en en-tête (de telle 
+sorte que les chaînes de chiffres particulières commençant par davantage de
+zéro viennent avant les chaînes de chiffres avec moins de zéro en en-tête).
+Ainsi, le classement est 
+<I>000</I>, <I>00</I>, <I>01</I>, <I>010</I>, <I>09</I>, <I>0</I>, <I>1</I>, <I>9</I>, <I>10</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>strverscmp()</B> renvoie un entier
+plus petit que, égal à, ou plus grand que zéro si <I>s1</I>
+est déterminée comme étant respectivement plus récente que, 
+égale à, ou postérieure à <I>s2</I>.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Cette fonction est une extension GNU.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+rename">rename</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strcasecmp">strcasecmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strcmp">strcmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strcoll">strcoll</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Stéphan Rafin, 2002.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:36 GMT, February 11, 2014
+</BODY>
+</HTML>

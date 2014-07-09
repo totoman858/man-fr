@@ -1,0 +1,161 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ACCT</TITLE>
+</HEAD><BODY>
+<H1>ACCT</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+acct - Activer/désactiver la comptabilité des processus.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<B>int acct(const char *</B><I>filename</I><B>);</B>
+</PRE>
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Quand la fonction est appelée avec un nom de fichier existant comme
+argument, la comptabilité est mise en marche, un enregistrement
+étant ajouté à <I>filename</I> à la fin de chaque processus.
+Un argument <B>NULL</B> arrête la comptabilité.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+L'appel renvoie 0 quand il réussit, ou -1 s'il échoue, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EACCESS</B>
+
+<DD>
+Interdiction d'écrire dans le fichier indiqué.
+<DT><B>EACCESS</B>
+
+<DD>
+L'argument
+<I>filename</I>
+
+n'est pas un fichier régulier.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>filename</I>
+
+pointe en dehors de l'espace d'adressage autorisé.
+<DT><B>EIO</B>
+
+<DD>
+Impossible d'écrire dans le fichier
+<I>filename</I>.
+
+<DT><B>EISDIR</B>
+
+<DD>
+<I>filename</I>
+
+est un répertoire.
+<DT><B>ELOOP</B>
+
+<DD>
+Références symboliques circulaires dans le chemin d'accès à
+<I>filename</I>.
+
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+<I>filename</I>
+
+est trop long.
+<DT><B>ENOENT</B>
+
+<DD>
+Le nom de fichier indiqué n'existe pas.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire.
+<DT><B>ENOSYS</B>
+
+<DD>
+Le système de comptabilité BSD n'a pas été activé lors de la compilation
+du noyau.
+Le paramètre de configuration du noyau contrôlant cette option
+est CONFIG_BSD_PROCESS_ACCT.
+<DT><B>ENOTDIR</B>
+
+<DD>
+Un composant du chemin d'accès à
+<I>filename</I>
+
+n'est pas un répertoire.
+<DT><B>EPERM</B>
+
+<DD>
+L'appelant n'a pas la permission d'activer la comptabilité.
+<DT><B>EROFS</B>
+
+<DD>
+<I>filename</I>
+
+se trouve sur un système de fichiers en lecture seule.
+<DT><B>EUSERS</B>
+
+<DD>
+Il n'y a plus de structures de fichiers libres, ou pas assez de mémoire.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4 (mais pas POSIX). SVr4 indique une condition d'erreur EBUSY, mais ni
+EISDIR ni ENOSYS. De même AIX et HP-UX documentent EBUSY (essai d'activation
+alors que la comptabilité est déjà en fonctionnement), comme Solaris (essai
+d'activation de la comptabilité avec le même fichier que celui déjà en cours
+d'utilisation).
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Aucune comptabilisation n'est effectuée pour les programmes en cours 
+d'exécution si un plantage système survient. En particulier les
+processus qui ne se terminent jamais ne sont pas
+comptabilisés.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:51 GMT, February 11, 2014
+</BODY>
+</HTML>

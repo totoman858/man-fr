@@ -1,0 +1,89 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETUSERSHELL</TITLE>
+</HEAD><BODY>
+<H1>GETUSERSHELL</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getusershell, setusershell, endusershell - Obtenir la liste des shells.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<B>char *getusershell (void);</B>
+
+<B>void setusershell (void);</B>
+
+<B>void endusershell (void);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>getusershell()</B> renvoie la ligne suivante de
+<I>/etc/shells</I>, en ouvrant le fichier si besoin est.
+Cette ligne doit contenir le chemin d'accès à un shell utilisateur valide.
+Si <I>/etc/shells</I> n'existe pas, ou n'est pas lisible,
+<B>getusershell()</B> se comporte comme si <I>/bin/sh</I> et
+<I>/bin/csh</I> étaient indiqués dans le fichier.
+<P>
+
+La fonction <B>setusershell()</B> ramène le pointeur au début du
+fichier <I>/etc/shells</I>.
+<P>
+
+La fonction <B>endusershell()</B> ferme le fichier <I>/etc/shells</I>.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La <B>getusershell()</B> renvoie un pointeur NULL si la fin du fichier est
+atteinte.
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<PRE>
+/etc/shells
+</PRE>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.3
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+shells">shells</A></B>(5)
+
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:13 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,213 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CTLUSER</TITLE>
+</HEAD><BODY>
+<H1>CTLUSER</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ctluser - Contrôle des utilisateurs.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>ctluser</B>
+
+[
+<B>-h</B>
+
+]
+[
+<B>-m</B>
+
+]
+<I>commande</I>
+
+[
+<I>argument...</I>
+
+]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>Ctluser</I>
+
+envoie un message sur le canal de contrôle d'un utilisateur (<I><A HREF="/cgi-bin/man/man2html?8+luser">luser</A></I>(8))
+donné.
+Cette commande ne peut être invoquée que par l'administrateur (<I><A HREF="/cgi-bin/man/man2html?1+sysadmin">sysadmin</A></I>(1)).
+<P>
+
+Dans le mode de comportement normal, le message est envoyé au cerveau de
+l'utilisateur, qui effectue alors l'action demandée et renvoie une réponse
+avec un message de texte et un code de retour pour
+<I>ctluser</I>.
+
+Si le cerveau de l'utilisateur exécute correctement la commande, 
+<I>ctluser</I>
+
+renverra un code de retour nul et affichera la réponse sur la sortie
+standard.
+<P>
+
+L'option ``-m'' sert à afficher un fichier MPEG du résultat de la commande
+indiquée sur la console du
+<I><A HREF="/cgi-bin/man/man2html?1+sysadmin">sysadmin</A></I>(1).
+
+Remarquez que cela nécessite que l'administrateur
+<I><A HREF="/cgi-bin/man/man2html?1+sysadmin">sysadmin</A></I>(1)
+
+utilise un serveur X.
+<P>
+
+Pour obtenir un résumé des commandes utilisez l'option ``-h''.
+Si une commande est incluse lorsque
+<I>ctluser</I>
+
+est invoqué avec l'option ``-h'', seule l'explication de cette commande
+sera affichée.
+<P>
+
+La liste complète des commandes est fournie ci-dessous. Notez que toutes
+les commandes ont un nombre fixé d'arguments. Si un paramètre est une
+chaîne vide, il est nécessaire de le fournir explicitement avec deux guillemets
+adjacents comme dans &quot;&quot;.
+<DL COMPACT>
+<DT><B>addhist</B><I> &lt;entrée&gt;</I>
+
+<DD>
+Ajouter une entrée dans le fichier des emplois de l'utilisateur.
+<DT><B>allow</B><I> raison</I>
+
+<DD>
+Ré-autoriser un utilisateur à se servir du système. La 
+<I>raison</I>
+
+doit être indiquée avec le même texte que celui fourni avec la commande
+``reject'' préalable.
+Remarquez que cette commande n'est pas encore implémentée.
+<DT><B>begin</B><I> nom</I>
+
+<DD>
+Initialiser un nouvel utilisateur
+avec le fichier
+<I>nom</I>
+
+indiqué.
+Remarquez que cette commande n'est pas encore implémentée.
+<DT><B>cancel</B><I> pid</I>
+
+<DD>
+Éliminer un processus d'un utilisateur.
+<DT><B>changegroup</B><I> groupe</I>
+
+<DD>
+Changer le groupe de l'utilisateur pour celui indiqué.
+<DT><B>checkfile</B>
+
+<DD>
+Obliger l'utilisateur à revenir à un système de travail à base de papier et crayons.
+<DT><B>drop</B>
+
+<DD>
+Déclencher la chute d'une lourde masse sur l'utilisateur.
+<DT><B>flushlogs</B>
+
+<DD>
+Détruire tous les enregistrements des actions entreprises par le
+<I><A HREF="/cgi-bin/man/man2html?1+sysadmin">sysadmin</A></I>(1)
+
+à l'encontre de l'utilisateur.
+<DT><B>go</B><I> raison</I>
+
+<DD>
+L'utilisateur est viré pour la raison indiquée.
+<DT><B>hangup</B>
+
+<DD>
+Oblige l'utilisateur à se pendre.
+<DT><B>mode</B>
+
+<DD>
+Affiche le mode de fonctionnement de l'utilisateur.
+<DT><B>newgroup</B><I> groupe</I>
+
+<DD>
+Oblige l'utilisateur à faire un groupe à lui tout seul.
+<DT><B>pause</B><I> pensée</I>
+
+<DD>
+Oblige l'utilisateur à s'interrompre pour méditer sur le sujet indiqué.
+Remarquez que cela peut planter certains utilisateurs.
+<DT><B>shutdown</B><I> raison</I>
+
+<DD>
+Éteindre l'utilisateur. L'effet est sensiblement le même que de le tuer.
+<DT><B>signal</B><I> sig</I>
+
+<DD>
+Envoyer le signal mentionné à l'utilisateur.
+<DT><B>throttle</B><I> raison</I>
+
+<DD>
+Oblige l'utilisateur à s'étrangler lui-même.
+<DT><B>trace</B><I> item flag</I>
+
+<DD>
+Fournit au
+<I><A HREF="/cgi-bin/man/man2html?1+sysadmin">sysadmin</A></I>(1)
+
+toutes les informations sur l'activité courante de l'utilisateur.
+</DL>
+<P>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<I>Ctluser</I>
+
+peut parfois pousser des utilisateurs à se plaindre à la hiérarchie. Le
+recours à
+<I><A HREF="/cgi-bin/man/man2html?8+bosskill">bosskill</A></I>(8)
+
+peut alors être nécessaire.
+<A NAME="lbAF">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Écrit par Simon Burr &lt;<A HREF="mailto:simes@tcp.co.uk">simes@tcp.co.uk</A>&gt;. Basé sur la page de manuel de
+<I><A HREF="/cgi-bin/man/man2html?8+ctlinnd">ctlinnd</A></I>(8),
+
+du système InterNetNews.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+luser">luser</A>(1),
+<A HREF="/cgi-bin/man/man2html?1+sysadmin">sysadmin</A>(1),
+<A HREF="/cgi-bin/man/man2html?8+bosskill">bosskill</A>(8)
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1999.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">BOGUES</A><DD>
+<DT><A HREF="#lbAF">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

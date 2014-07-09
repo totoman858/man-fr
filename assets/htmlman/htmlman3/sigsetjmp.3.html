@@ -1,0 +1,95 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SETJMP</TITLE>
+</HEAD><BODY>
+<H1>SETJMP</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+setjmp, sigsetjmp - Sauver le contexte de pile pour un saut non-local.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+
+#include &lt;<A HREF="file:///usr/include/setjmp.h">setjmp.h</A>&gt;
+<P>
+<PRE>
+<B>int setjmp (jmp_buf </B><I>env</I><B>);</B>
+<B>int sigsetjmp (sigjmp_buf </B><I>env</I><B>, int </B><I>savesigs</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les fonctions <B>setjmp()</B> et <B>longjmp</B>() sont utiles pour gérer les
+erreurs et les interruptions rencontrées dans des routines bas-niveau.
+<B>setjmp()</B> sauvegarde le contexte de pile et d'environnement dans <I>env</I>
+afin de l'utiliser ultérieurement avec <B>longjmp()</B>.
+Le contexte de pile sera invalide si la fonction qui appelle <B>setjmp()</B>
+se termine.
+<P>
+
+<B>sigsetjmp()</B> est semblable à <B>setjmp()</B>. Si <I>savesigs</I> est
+non-nul, l'ensemble des signaux bloqués est sauvegardé dans <I>env</I>, et
+sera retabli lorsque <B>siglongjmp()</B> sera invoqué avec ce contexte
+<I>env</I>.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>setjmp()</B> et <B>sigsetjmp()</B> renvoient 0 lorsqu'elles reviennent
+directement, et une valeur non-nulle si elle reviennent à travers un appel
+à <B>longjmp()</B> ou <B>siglongjmp()</B> utilisant le contexte sauvegardé.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX, ISO 9899 (C99)
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+POSIX ne précise pas <B>setjmp</B> sauve ou non le contexte de signaux.
+(Dans SysV ce n'est pas le cas, dans BSD si mais il existe une fonction
+<B>_setjmp</B> qui ne le fait pas).
+Si vous voulez sauver le masque de signaux, utilisez <B>sigsetjmp</B>.
+<P>
+
+<B>setjmp()</B> et <B>sigsetjmp()</B> rendent les programmes difficiles
+à comprendre et à maintenir.
+Si possible, essayez d'utiliser une autre méthode.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+longjmp">longjmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+siglongjmp">siglongjmp</A></B>(3).
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:09 GMT, February 11, 2014
+</BODY>
+</HTML>

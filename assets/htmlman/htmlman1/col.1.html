@@ -1,0 +1,137 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of COL</TITLE>
+</HEAD><BODY>
+<H1>COL</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+col - Eliminer les sauts de ligne arrière.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>col</B> [<B>-bfpx</B>] [<B>-l</B> <I>num</I>]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>Col</B>
+élimine les sauts (et demi-sauts) de ligne arrière
+de son entrée de sorte que les lignes de la sortie soient dans
+le bon ordre avec seulement des sauts et demi-sauts de ligne avant,
+et remplace les espaces par des tabulations partout où c'est possible.
+Ceci peut être utile pour traiter la sortie de <A HREF="/cgi-bin/man/man2html?1+nroff">nroff</A>(1) et <A HREF="/cgi-bin/man/man2html?1+tbl">tbl</A>(1).
+<P>
+<B>Col</B> lit sur son entrée standard et écrit sur sa sortie standard.
+<P>
+Les options sont les suivantes&nbsp;:
+<A NAME="lbAE">&nbsp;</A>
+<H3><DT><B>-b</B><DD>
+</H3>
+
+Ne pas émettre de backspaces et imprimer uniquement le dernier
+caractère écrit pour chaque colonne.
+<DT><B>-f</B><DD>
+Les demi-sauts de ligne avant sont autorisés (mode ``fine'').
+Normalement, les caractères positionnés entre deux lignes sont
+imprimés sur la ligne suivante.
+<DT><B>-p</B><DD>
+Laisser inchangées les séquences de contrôle non reconnues.
+<DT><B>-x</B><DD>
+Émet des espaces multiples au lieu de tabulations.
+<DT><B>-l</B> <I>num</I><DD>
+Stocke au moins <I>num</I> lignes en mémoire.
+Par défaut, 128 lignes sont stockées.
+</DL>
+<P>
+
+Les séquences de contrôle que <B>col</B> comprend
+et leurs équivalents en décimal sont décrits dans la table suivante :
+<P>
+
+<TABLE>
+<TR VALIGN=top><TD>ESC-7</TD><TD>saut de ligne arrière (escape puis 7)<BR></TD></TR>
+<TR VALIGN=top><TD>ESC-8</TD><TD>demi-saut de ligne arrière (escape puis 8)<BR></TD></TR>
+<TR VALIGN=top><TD>ESC-9</TD><TD>demi-saut de ligne avant (escape puis 9)<BR></TD></TR>
+<TR VALIGN=top><TD>backspace</TD><TD>recule d'une colonne (8); ignoré en première colonne<BR></TD></TR>
+<TR VALIGN=top><TD>retour-chariot</TD><TD>(13)<BR></TD></TR>
+<TR VALIGN=top><TD>newline</TD><TD>avance d'une ligne (10)<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD>effectue aussi un retour-chariot<BR></TD></TR>
+<TR VALIGN=top><TD>shift in</TD><TD>passe au jeu de caractères normal (15)<BR></TD></TR>
+<TR VALIGN=top><TD>shift out</TD><TD>passe au jeu de caractères auxiliaire (14)<BR></TD></TR>
+<TR VALIGN=top><TD>espace</TD><TD>avance d'une colonne (32)<BR></TD></TR>
+<TR VALIGN=top><TD>tabulation</TD><TD>avance au prochain taquet de tabulation (9)<BR></TD></TR>
+<TR VALIGN=top><TD>vertical tab</TD><TD>saut de ligne arrière (11)<BR></TD></TR>
+</TABLE>
+
+<P>
+
+Tous les caractères de contrôle et séquences d'échappement non
+reconnus sont éliminés.
+<P>
+
+<B>Col</B>
+tient à jour le jeu de caractères au fur et à mesure de la lecture
+de son entrée et fait en sorte que le jeu de caractères soit correct
+dans la sortie.
+<P>
+
+Si l'entrée tente de revenir en arrière sur la dernière ligne émise,
+<B>col</B> affiche un message d'avertissement.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+expand">expand</A>(1) ,
+<A HREF="/cgi-bin/man/man2html?1+nroff">nroff</A>(1) ,
+<A HREF="/cgi-bin/man/man2html?1+tbl">tbl</A>(1)
+<A NAME="lbAG">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+La commande
+<B>col</B>
+
+est conforme aux spécifications Single Unix v2. L'option
+<I>l</I>
+
+est une extension.
+<P>
+
+Une commande
+<B>col</B>
+
+est apparue dans la version 6 de AT&amp;T UNIX.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Michel Quercia, 1997.
+<BR>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE"><DL COMPACT>
+<DT><B>-b</B><DD>
+</A><DD>
+</DL>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:47 GMT, February 11, 2014
+</BODY>
+</HTML>

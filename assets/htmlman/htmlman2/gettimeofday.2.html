@@ -1,0 +1,293 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETTIMEOFDAY</TITLE>
+</HEAD><BODY>
+<H1>GETTIMEOFDAY</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+gettimeofday, settimeofday - Lire / écrire l'heure actuelle.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/time.h">sys/time.h</A>&gt;</B>
+
+<P>
+<B>int gettimeofday(struct timeval *</B><I>tv</I><B>, struct timezone *</B><I>tz</I><B>);</B>
+
+<BR>
+
+<B>int settimeofday(const struct timeval *</B><I>tv</I>
+
+<B>, const struct timezone *</B><I>tz</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les fonctions
+<B>gettimeofday</B>
+
+et
+<B>settimeofday</B>
+
+servent à lire ou programmer l'heure ainsi que le fuseau horaire (timezone).
+L'argument
+<I>tv</I>
+
+est une structure
+<B>timeval </B>
+
+décrite dans /usr/include/sys/time.h :
+<P>
+<PRE>
+struct timeval {
+int  tv_sec;  /* secondes */
+int  tv_usec; /* microsecondes */
+};
+</PRE>
+
+<P>
+et donne le nombre de secondes et microsecondes écoulées depuis le 1er janvier 1970 (voir 
+<B><A HREF="/cgi-bin/man/man2html?2+time">time</A></B>(2)).
+
+L'argument
+<I>tz</I>
+
+est une structure 
+<B>timezone</B>
+
+composée ainsi&nbsp;:
+<P>
+<PRE>
+struct timezone {
+int tz_minuteswest; /* minutes à l'ouest de Greenwich  */
+int tz_dsttime;     /* type de changement horaire      */
+};
+</PRE>
+
+<P>
+
+L'utilisation de la structure timezone est obsolète, le champ
+<I>tz_dsttime</I>
+
+n'a jamais été utilisé sous Linux, il n'a jamais été géré, et
+ne le sera jamais par la libc ou glibc.
+Toute occurrence de ce champ dans les sources du noyau (sauf
+pour les déclarations) est un bug. Ainsi le paragraphe suivant
+n'a qu'un intérêt historique.
+<P>
+Le champ
+<I>tz_dsttime</I>
+
+contient une constante symbolique (dont les valeurs sont fournies
+ci-dessous) qui indique quelle partie du changement horaire annuel
+est en cours.
+(Remarque : Cette valeur est constante tout au long de l'année, elle
+n'indique pas réellement la valeur horaire en cours, elle sélectionne
+un algorithme).
+Les changements horaires (Daylight saving - DST) sont
+définis comme suit :
+<P>
+
+
+
+<B>DST_NONE</B>    /* Aucun */
+<BR>
+
+<B>DST_USA</B>     /* USA */
+<BR>
+
+<B>DST_AUST</B>    /* Australie */
+<BR>
+
+<B>DST_WET</B>     /* Europe occidentale */
+<BR>
+
+<B>DST_MET</B>     /* Europe centrale */
+<BR>
+
+<B>DST_EET</B>     /* Europe Orientale */
+<BR>
+
+<B>DST_CAN</B>     /* Canada */
+<BR>
+
+<B>DST_GB</B>      /* Grande-Bretagne et Irlande */
+<BR>
+
+<B>DST_RUM</B>     /* Roumanie */
+<BR>
+
+<B>DST_TUR</B>     /* Turquie */
+<BR>
+
+<B>DST_AUSTALT</B> /* Australie avec décalage en 1986 */
+<P>
+
+Il est évident que le décalage horaire en cours ne peut pas
+être uniquement fourni par un algorithme par pays. Ce décalage
+dépend de décisions politiques imprévisibles. Ainsi cette méthode
+des fuseaux horaires a été abandonnée.
+Sous Linux, durant un appel à
+<B>settimeofday</B>
+
+le champ
+<I>tz_dsttime</I>
+
+doit être nul.
+<P>
+
+Sous Linux, il existe une sémantique particulière associée à l'appel
+système
+<B>settimeofday</B>
+
+si, durant la première invocation (après le boot), il a un argument
+<I>tz</I>
+
+non-NULL, un argument
+<I>tv</I>
+
+NULL et un champ
+<I>tz_minuteswest</I>
+
+différent de zéro. Dans ce cas, on suppose que l'horloge CMOS de la
+machine est configurée sur le temps local, et que l'on doit l'augmenter
+de cette valeur pour obtenir le temps UTC.
+Bien entendu, il faut éviter autant que possible d'utiliser cette particularité.
+<P>
+
+Les macros suivantes permettent de manipuler les structures timeval :
+<BR>
+
+<PRE>
+#define       timerisset(tvp)\
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((tvp)-&gt;tv_sec || (tvp)-&gt;tv_usec)
+#define       timercmp(tvp, uvp, cmp)\
+((tvp)-&gt;tv_sec cmp (uvp)-&gt;tv_sec ||\
+(tvp)-&gt;tv_sec == (uvp)-&gt;tv_sec &amp;&amp;\
+(tvp)-&gt;tv_usec cmp (uvp)-&gt;tv_usec)
+#define timerclear(tvp)\
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((tvp)-&gt;tv_sec = (tvp)-&gt;tv_usec = 0)
+</PRE>
+
+<P>
+
+Si
+<I>tv</I>
+
+ou 
+<I>tz</I>
+
+est nulle, la structure correspondante n'est ni programmée ni renvoyée.
+<P>
+
+Seul le Super-User peut appeler
+<B>settimeofday</B>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>gettimeofday</B>
+
+et
+<B>settimeofday</B>
+
+renvoient 0 s'ils réussissent, ou -1 s'ils échouent, auquel
+cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EPERM </B>
+
+<DD>
+<B>settimeofday</B>
+
+est appelé par quelqu'un d'autre que le Super-User
+<DT><B>EINVAL</B>
+
+<DD>
+le fuseau horaire (ou autre chose) est invalide.
+<B>EFAULT</B>
+
+<I>tv</I>
+
+ou
+<I>tz</I>
+
+pointent en dehors de l'espace d'adressage autorisé.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTE</H2>
+
+Le prototype de
+<B>settimeofday</B>
+
+et les définitions de
+<B>timercmp</B>,
+
+<B>timerisset</B>,
+
+<B>timerclear</B>,
+
+<B>timeradd</B>,
+
+<B>timersub</B>
+
+sont (depuis GlibC 2.2.2) disponibles uniquement si
+<B>_BSD_SOURCE</B>
+
+est défini (explicitement ou implicitement en ne définissant pas
+_POSIX_SOURCE ou en utilisant l'option de compilation -ansi).
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, BSD 4.3
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+date">date</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+adjtimex">adjtimex</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+time">time</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+ctime">ctime</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+ftime">ftime</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTE</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:59 GMT, February 11, 2014
+</BODY>
+</HTML>

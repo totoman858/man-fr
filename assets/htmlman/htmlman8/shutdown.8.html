@@ -1,0 +1,272 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SHUTDOWN</TITLE>
+</HEAD><BODY>
+<H1>SHUTDOWN</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 25 juillet 2002<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM </H2>
+
+shutdown - arrêter le système.
+
+
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>/sbin/shutdown</B>
+
+[<B>-t</B>
+
+<I>sec</I>]
+
+[<B>-arkhncfF</B>]
+
+<I>heure</I>
+
+[<I>message-avertissement</I>]
+
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>shutdown</B> arrête le système d'une façon sécurisée. Tous les
+utilisateurs connectés sont informés que le système va s'arrêter, et
+<B><A HREF="/cgi-bin/man/man2html?1+login">login</A></B>(1) est bloqué. Il est possible d'arrêter le système
+immédiatement ou après un certain délai. En premier lieu, tous les
+processus sont informés que le système est en train de s'arrêter par le
+signal <FONT SIZE="-2">SIGTERM</FONT>. Ceci donne le temps à des programmes comme
+<B><A HREF="/cgi-bin/man/man2html?1+vi">vi</A></B>(1) de sauvegarder le fichier en cours d'édition, la chance à des
+programmes de traitement de mails et de News de se terminer proprement,
+etc. <B>shutdown</B> fait son travail en envoyant un signal au processus
+<B>init</B>, lui demandant de modifier le niveau d'exécution. Le niveau
+d'exécution <B>0</B> est utilisé pour arrêter le système, le niveau <B>6</B>
+pour le redémarrer, et le niveau <B>1</B> pour le mettre dans un état où des
+tâches administratives peuvent être effectuées&nbsp;; c'est le comportement par
+défaut si aucune des options <I>-h</I> et <I>-r</I> n'est donnée à
+<B>shutdown</B>. Pour voir quelles actions sont entreprises durant l'arrêt
+ou le redémarrage, voyez les entrées appropriées pour ces niveaux
+d'exécution dans le fichier <I>/etc/inittab</I>.
+
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+
+<DL COMPACT>
+<DT><B>-a</B><DD>
+Utiliser <B>/etc/shutdown.allow</B>.
+
+
+<DT><B>-t</B> <I>sec</I><DD>
+Indiquer à <B><A HREF="/cgi-bin/man/man2html?8+init">init</A></B>(8) d'attendre <I>sec</I> secondes entre le moment de
+l'émission du signal d'avertissement et celui du signal de fin (kill) aux
+processus, avant d'effectuer un changement de niveau d'exécution.
+<DT><B>-k</B><DD>
+Ne pas réellement s'arrêter&nbsp;; uniquement envoyer les messages
+d'avertissement à tous les processus.
+
+
+<DT><B>-r</B><DD>
+Redémarrer la machine après l'arrêt du système.
+
+
+<DT><B>-h</B><DD>
+Arrêter la machine après l'arrêt du système.
+
+
+<DT><B>-n</B><DD>
+[DÉPRÉCIÉ] Ne pas appeler <B><A HREF="/cgi-bin/man/man2html?8+init">init</A></B>(8) mais le faire
+soi-même. L'utilisation de cette option est découragée, et ses résultats
+ne sont pas toujours ceux espérés.
+
+
+<DT><B>-f</B><DD>
+Ne pas effectuer de fsck en cas de redémarrage.
+
+
+<DT><B>-F</B><DD>
+Forcer l'utilisation de fsck en cas de redémarrage.
+
+
+<DT><B>-c</B><DD>
+Annuler un <B>shutdown</B> en cours. Avec cette option, il n'est évidemment
+pas possible de donner d'argument <B>heure</B>, mais vous pouvez entrer un
+message d'explication sur la ligne de commandes qui sera envoyé à tous les
+utilisateurs.
+
+
+<DT><I>heure</I><DD>
+Quand effectuer le <B>shutdown</B>.
+
+
+<DT><I>message-avertissement</I><DD>
+Message à envoyer à tous les utilisateurs.
+
+</DL>
+<P>
+
+L'argument <I>heure</I> peut avoir différents formats. Primo, il peut être
+dans le format absolu <I>hh:mm</I>, dans lequel <I>hh</I> est l'heure (1 ou 2
+chiffres) et <I>mm</I> la minute de l'heure (sur deux chiffres). Secundo, il
+peut être au format <B>+</B><I>m</I>, dans lequel <I>m</I> est le nombre de
+minutes à attendre. Le mot <B>now</B> est un synonyme pour <B>+0</B>.
+<P>
+
+Si <B>shutdown</B> est appelé avec un délai, il crée le fichier de
+recommandation
+<I>/etc/nologin</I>
+
+qui indique à des programmes comme <I><A HREF="/cgi-bin/man/man2html?1+login">login</A>(1)</I> de refuser les nouvelles
+connexions d'utilisateurs. <B>Shutdown</B> supprime ce fichier s'il a
+été stoppé avant qu'il ait pu envoyer un signal à init (c.-à-d. s'il a été
+annulé ou si quelque chose s'est mal passé). Il le supprime également avant
+d'appeler init pour modifier le niveau d'exécution.
+<P>
+
+L'option <B>-f</B> signifie «&nbsp;redémarrage rapide&nbsp;». Ceci crée uniquement
+un fichier de recommandation <I>/fastboot</I> qui peut être testé par le
+système quand il revient à la vie. Le fichier de démarrage rc peut tester
+si ce fichier existe, et décider de ne pas lancer <B><A HREF="/cgi-bin/man/man2html?1+fsck">fsck</A></B>(1) puisque le
+système a été arrêté d'une manière propre. Après cela, le processus de
+démarrage devrait supprimer <I>/fastboot</I>.
+<P>
+
+L'option <B>-F</B> signifie «&nbsp;forcer le fsck&nbsp;». Ceci crée uniquement un
+fichier de recommandation <I>/forcefsck</I> qui peut être testé par le
+système quand il revient à la vie. Le fichier de démarrage rc peut tester
+si ce fichier existe, et décider de lancer <B><A HREF="/cgi-bin/man/man2html?1+fsck">fsck</A></B>(1) avec un drapeau
+spécial d'«&nbsp;obligation&nbsp;» afin que même les systèmes de fichiers
+correctement démontés soient vérifiés. Après cela, le processus de 
+démarrage devrait supprimer <I>/forcefsck</I>.
+<P>
+
+L'option <B>-n</B> empêche <B>shutdown</B> d'appeler <B>init</B>, mais lui
+fait tuer les processus en cours d'exécution lui-même. <B>shutdown</B>
+désactive ensuite les quotas, les comptes et le swap, et démonte tous les
+systèmes de fichiers.
+
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONTRÔLE D'ACCÈS</H2>
+
+<B>shutdown</B> peut être appelé à partir de <B><A HREF="/cgi-bin/man/man2html?8+init">init</A></B>(8) quand les touches
+magiques <B>CTRL-ALT-DEL</B> sont pressées, en créant une entrée appropriée
+dans <I>/etc/inittab</I>. Cela signifie que tous ceux qui ont un accès
+physique au clavier de la console peuvent arrêter le système. Pour empêcher
+cela, <B>shutdown</B> peut vérifier si un utilisateur autorisé est connecté
+sur une des consoles virtuelles. Si <B>shutdown</B> est appelé avec
+l'argument <B>-a</B> (ajoutez cela à l'invocation de shutdown dans
+/etc/inittab), il vérifie si le fichier <I>/etc/shutdown.allow</I> est
+présent. Il compare ensuite les noms de connexion de ce fichier avec la
+liste des personnes qui sont connectées sur une console virtuelle (à partir
+de <I>/var/run/utmp</I>). Il ne poursuivra son exécution que si l'un des
+utilisateurs autorisés <B>ou root</B> est connecté. Sinon, il affichera le
+message
+<P>
+<PRE>
+<B>shutdown&nbsp;: no authorized users logged in</B>
+</PRE>
+
+<P>
+(aucun utilisateur autorisé connecté) sur la console (physique) du
+système. Le format de <I>/etc/shutdown.allow</I> est formé d'un nom
+d'utilisateur par ligne. Les lignes vides et les lignes de commentaires
+(commençant par un <B>#</B>) sont autorisées. Actuellement, il y a une
+limite de 32 utilisateurs dans ce fichier.
+<P>
+Notez que si <I>/etc/shutdown.allow</I> n'existe pas, l'argument <B>-a</B>
+est ignoré.
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<PRE>
+/fastboot
+/etc/inittab
+/etc/init.d/halt
+/etc/init.d/reboot
+/etc/shutdown.allow
+</PRE>
+
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Beaucoup d'utilisateurs oublient de donner l'argument <I>heure</I> et sont
+ensuite intrigués par le message d'erreur produit par
+<B>shutdown</B>. L'argument <I>heure</I> est obligatoire&nbsp;; dans 90&nbsp;% des
+cas, ce sera le mot <B>now</B>.
+<P>
+
+Init ne peut capturer CTRL-ALT-DEL et exécuter shutdown qu'en mode
+console. Si le système exécute le système X Window, le serveur X gère
+toutes les frappes au clavier. Certains environnements X11 permettent de
+capturer CTRL-ALT-DEL, mais ce qui est fait exactement dépend de
+l'environnement.
+<P>
+
+Shutdown n'a pas été conçu pour être exécuté dans le mode
+setuid. /etc/shutdown.allow n'est pas utilisé pour découvrir qui exécute
+shutdown, il ne fait QUE vérifier qui est actuellement connecté sur la (une
+des) console(s).
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Miquel van Smoorenburg, <A HREF="mailto:miquels@cistron.nl">miquels@cistron.nl</A>
+
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+fsck">fsck</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+init">init</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+halt">halt</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+poweroff">poweroff</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+reboot">reboot</A></B>(8)
+
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Frédéric Delanoy &lt;<I>delanoy_f at yahoo.com</I>&gt;, 2002.
+<A NAME="lbAL">&nbsp;</A>
+<H2>AVERTISSEMENT SUR LA TRADUCTION</H2>
+
+Il est possible que cette traduction soit imparfaite ou périmée. En cas de
+doute, veuillez vous reporter au document original en langue anglaise fourni
+avec le programme.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM </A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">CONTRÔLE D'ACCÈS</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">AUTEUR</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+<DT><A HREF="#lbAL">AVERTISSEMENT SUR LA TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:02 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,332 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PTRACE</TITLE>
+</HEAD><BODY>
+<H1>PTRACE</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ptrace - Suivre un processus.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/ptrace.h">sys/ptrace.h</A>&gt;</B>
+
+<P>
+<B>long ptrace(enum __ptrace_request </B><I>requête</I><B>, int </B><I>pid</I><B>, void * </B><I>addr</I><B>, int </B><I>data</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+L'appel-système
+<B>ptrace</B>
+
+fournit au processus parent un moyen de contrôler l'exécution d'un 
+autre processus et d'éditer son image mémoire.
+L'utilisation primordiale de cette fonction est l'implémentation de points
+d'arrêt pour le débugging.
+<P>
+
+Le père peut démarrer un suivi en appelant
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2)
+
+et que le fils créé face un PTRACE_TRACEME, suivi (en général) par un
+<B><A HREF="/cgi-bin/man/man2html?3+exec">exec</A></B>(3).
+
+Autrement, le père peut commencer un suivi sur un processus existant en utilisant
+PTRACE_ATTACH.
+<P>
+
+Le processus fils suivi s'arrêtera à chaque fois qu'un signal lui sera délivré,
+même si le signal est ignoré (à l'exception de SIGKILL qui a les effets habituels).
+Le père sera prévenu à son prochain
+<B><A HREF="/cgi-bin/man/man2html?2+wait">wait</A></B>(2)
+
+et pourra inspecter et modifier le processus fils pendant son arrêt.
+Le parent peut également faire continuer l'exécution de son fils, éventuellement
+en ignorant le signal ayant déclenché l'arrêt, ou envoyant un autre signal.
+<P>
+
+Quand le père a fini le suivi, il peut terminer le fils avec PTRACE_KILL ou
+le faire continuer normalement, non suivi, avec PTRACE_DETACH.
+<P>
+
+La valeur de l'argument <I>requête</I> indique précisément l'action à entreprendre.
+<DL COMPACT>
+<DT>PTRACE_TRACEME<DD>
+Le processus en cours va être suivi par son père. Le parent doit être en attente
+de suivi du fils. Tout signal (sauf SIGKILL) reçu par le processus l'arrêtera,
+et le père sera notifié grâce à
+<B>wait</B>.
+
+De plus, les appels-ultérieurs à
+<B>exec</B>
+
+par ce processus lui enverront SIGTRAP, ce qui donne au père la possibilité
+de reprendre le contrôle avant que le nouveau programme continue son exécution?
+Un processus ne doit pas envoyer cette requête si son père n'est pas prêt
+à le suivre. Dans cette requête (<I>pid</I>, <I>addr</I>, et <I>data</I> sont ignorés.)
+</DL>
+<P>
+
+La requête ci-dessus ne sert que dans le processus fils. Les autres ne servent
+que dans le père. Par la suite, <I>pid</I> précise le fils sur lequel agir. Pour
+les requêtes autres que PTRACE_KILL, le fils doit être
+arrêté.
+<DL COMPACT>
+<DT>PTRACE_PEEKTEXT, PTRACE_PEEKDATA<DD>
+Lire un mot à l'adresse
+<I>addr</I>
+
+dans l'espace mémoire du fils et renvoyer la valeur en résultat de
+<B>ptrace</B>.
+
+Linux ne sépare pas les espaces d'adressage de code et de données, ainsi
+ces deux requêtes sont équivalentes. (<I>data</I> est ignoré).
+<DT>PTRACE_PEEKUSR<DD>
+Lire un mot à l'adresse
+<I>addr</I>
+
+dans l'espace
+<B>USER</B>
+
+du fils, qui contient les registres et diverses informations sur le processus
+(voir &lt;<A HREF="file:///usr/include/linux/user.h">linux/user.h</A>&gt; et &lt;<A HREF="file:///usr/include/sys/user.h">sys/user.h</A>&gt;). La valeur est renvoyé en résultat de
+<B>ptrace</B>.
+
+En principe, l'adresse doit être alignée sur une frontière de mots, bien que
+cela varie selon les architectures (<I>data</I> est ignoré).
+<DT>PTRACE_POKETEXT, PTRACE_POKEDATA<DD>
+Copier un mot depuis l'adresse
+<I>data</I>
+
+de la mémoire du père vers l'adresse
+<I>addr</I>
+
+de la mémoire du fils. Comme précédemment, les deux requêtes sont équivalentes.
+<DT>PTRACE_POKEUSR<DD>
+Copier un mot depuis l'emplacement
+<I>data</I>
+
+de la mémoire du père vers l'emplacement
+<I>addr</I>
+
+dans l'espace
+<B>USER</B>
+
+du processus fils. Comme plus haut, les emplacements doivent être alignés sur une
+frontière de mot. Pour maintenir l'intégrité du noyau, certaines modifications
+de la zone
+<B>USER</B>
+
+sont interdites.
+<DT>PTRACE_GETREGS, PTRACE_GETFPREGS<DD>
+Copier les registres généraux ou du processeur en virgule flottante, vers
+l'adresse <I>data</I> du père. Voir &lt;<A HREF="file:///usr/include/linux/user.h">linux/user.h</A>&gt; pour les détails sur le
+format des données (<I>addr</I> est ignoré).
+<DT>PTRACE_SETREGS, PTRACE_SETFPREGS<DD>
+Remplir les registres généraux ou du processeur en virgule flottante, depuis
+le contenu de l'adresse <I>data</I> du père. Comme pour PTRACE_POKEUSR certaines
+modifications sont interdites. (<I>addr</I> est ignoré).
+<DT>PTRACE_CONT<DD>
+Redémarrer le processus fils arrêté. Si <I>data</I> est non-nul et autre que
+SIGSTOP, il est interprété comme un numéro de signal à délivrer au fils&nbsp;; sinon
+aucun signal n'est délivré. On peut ainsi contrôler si un signal envoyé au fils
+doit lui être délivré ou non (<I>addr</I> est ignoré).
+<DT>PTRACE_SYSCALL, PTRACE_SINGLESTEP<DD>
+Redémarrer le processus fils arrêté comme pour PTRACE_CONT, mais en s'arrangeant
+pour qu'il soit arrêté à la prochaine entrée ou sortie d'un appel-système, ou
+après la prochaine instruction, respectivement. (Le fils sera aussi arrêté
+par l'arrivée d'un signal). Du point de vue du père, le fils semblera être
+arrêté par SIGTRAP. Ainsi, pour PTRACE_SYSCALL l'idée est d'inspecter les
+arguments de l'appel-système au premier arrêt puis de faire un autre PTRACE_SYSCALL
+et d'inspecter la valeur de retour au second arrêt. (<I>add</I> est ignoré).
+<DT>PTRACE_KILL<DD>
+Envoyer au fils un signal
+<B>SIGKILL</B>
+
+pour le terminer. (<I>addr</I> et <I>data</I> sont ignorés).
+<DT>PTRACE_ATTACH<DD>
+Attacher le processus numéro
+<I>pid</I>,
+
+pour le suivre. Le comportement du fils est le même que s'il avait fait un
+PTRACE_TRACEME. Le processus appelant devient alors le père pour de nombreuses
+choses (il recevra les notifications d'évènements, et sera indiqué comme le père dans un
+<B><A HREF="/cgi-bin/man/man2html?1+ps">ps</A></B>(1)).
+
+Mais
+<B><A HREF="/cgi-bin/man/man2html?2+getppid">getppid</A></B>(2)
+
+renverra dans le fils le PID du vrai père. Le processus fils va recevoir un
+SIGSTOP, mais il ne sera peut-être pas stoppé tout de suite, utilisez
+<B>wait</B>
+
+pour attendre son arrêt  (<I>addr</I> et <I>data</I> sont ignorés).
+<DT>PTRACE_DETACH<DD>
+Relancer un processus fils comme avec PTRACE_CONT, en commençant pas le détacher,
+ce qui rétablit sa parenté originale. Le processus ne sera plus suivi.
+Bien que cela soit involontaire, sous Linux un processus suivi peut être
+être détaché ainsi quelque soit la méthode employée pour démarrer le suivi.
+(<I>addr</I> est ignoré).
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+Bien que les arguments de
+<B>ptrace</B>
+
+soient interprétés comme dans le prototype plus haut, la bibliothèque GlibC
+déclare
+<B>ptrace</B>
+
+comme une fonction variadique où seul l'argument <I>request</I> est fixé.
+Ceci signifie que que les arguments finaux inutiles peuvent être omis, bien
+que cela utilise un comportement non documenté de
+<B><A HREF="/cgi-bin/man/man2html?1+gcc">gcc</A></B>(1).
+
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?8+init">init</A></B>(8),
+
+le processus numéro 1, ne peut pas être suivi.
+<P>
+
+La disposition du contenu de la mémoire et de la zone USER dépendent du
+système d'exploitation et de l'architecture.
+<P>
+
+La taille d'un mot, &quot;word&quot; est déterminée par la version du système d'exploitation
+(par exemple 32 bits pour Linux-32-bits, etc.)
+<P>
+
+Le suivi peut engendrer des modifications subtiles dans le fonctionnement du processus. Par exemple si
+un processus est attaché avec PTRACE_ATTACH, son père original ne peut plus recevoir les
+notifications avec
+<B>wait</B>
+
+lorsqu'il s'arrête, et il n'y a pas de moyen de simuler cette notification.
+<P>
+
+Cette page documente le fonctionnement actuel de
+<B>ptrace</B>
+
+sous Linux. Celui-ci peut varier sensiblement sur d'autres types d'Unix.
+De toute façon, l'utilisation de
+<B>ptrace</B>
+
+dépend fortement de l'architecture et du système d'exploitation.
+<P>
+
+La page de manuel de SunOS décrit 
+<B>ptrace</B>
+
+comme un appel-système &quot;unique and arcane&quot;, ce qu'il est.
+Le mécanisme de débogage basé sur le système proc, présent dans Solaris 2
+implémente un sur-ensemble des fonctionnalités de
+<B>ptrace</B>
+
+de manière plus puissante et plus uniforme.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Pour les requêtes PTRACE_PEEK*, 
+<B>ptrace</B>
+
+renvoie la valeur réclamée et zéro pour les autres requêtes,
+ou -1 en cas d'échec en remplissant
+<I>errno</I>
+
+avec le code d'erreur.
+Comme la valeur renvoyée par une requête PTRACE_PEEK* peut légitimement être
+-1, il faut vérifier
+<I>errno</I>
+
+après un tel appel pour vérifier si une erreur s'est produite.
+<A NAME="lbAG">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+Le processus indiqué ne peut pas être suivi. Cela peut être dû à un manque de privilège du
+parent. Les processus non-root ne peuvent pas suivre les processus auxquels ils
+ne peuvent envoyer de signal, ou ceux qui s'exécutent Set-UID/Set-GID.
+En outre, le processus visé peut être déjà suivi, ou être
+<B>init</B>
+
+(pid 1).
+<DT><B>ESRCH</B>
+
+<DD>
+Le processus indiqué n'existe pas, ou n'est pas suivi par l'appelant,
+ou n'est pas arrêté (pour les requêtes qui en ont besoin).
+<DT><B>EIO</B>
+
+<DD>
+La
+<I>requête</I>
+
+n'est pas valide ou une tentative de lecture ou d'écriture dans une zone
+invalide de mémoire a eu lieu. Il peut également y avoir un problème
+d'alignement sur une frontière de mot, ou une tentative de redémarrage
+en envoyant un signal invalide.
+<DT><B>EFAULT</B>
+
+<DD>
+Tentative de lire ou écrire dans une zone mémoire invalide du processus ou
+du père. Malheureusement sous Linux, certaines variantes de cette erreur
+déclencheront EIO ou EFAULT plus ou moins arbitrairement.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID EXT, AT&amp;T, X/OPEN, BSD 4.3
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+gdb">gdb</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+strace">strace</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+execve">execve</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+signal">signal</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+wait">wait</A></B>(2)
+
+<B><A HREF="/cgi-bin/man/man2html?3+exec">exec</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAG">ERREURS</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:52 GMT, February 11, 2014
+</BODY>
+</HTML>

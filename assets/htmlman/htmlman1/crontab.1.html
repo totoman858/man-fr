@@ -1,0 +1,157 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CRONTAB</TITLE>
+</HEAD><BODY>
+<H1>CRONTAB</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+crontab - Éditer son fichier crontab personnel.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+crontab [ -u utilisateur ] fichier
+<BR>
+
+crontab [ -u utilisateur ] { -l | -r | -e }
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>Crontab</I>
+
+est le programme utilisé pour installer, désinstaller, ou afficher le
+contenu des tables permettant de piloter le fonctionnement du démon
+<I><A HREF="/cgi-bin/man/man2html?8+cron">cron</A></I>(8)
+
+de Vixie Cron.
+Chaque utilisateur dispose de sa propre table crontab, et bien que celles-ci
+se trouvent dans /var, elles ne sont pas conçues pour être éditées
+directement.
+<P>
+
+Si le fichier
+<I>allow</I>
+
+existe, alors vous devez être mentionnés dans celui-ci pour pouvoir utiliser
+cette commande. Si le fichier
+<I>allow</I>
+
+n'existe pas, mais que le fichier
+<I>deny</I>
+
+existe, alors vous ne devez <B>pas</B> être mentionnés dans celui-ci, si vous
+désirez utiliser cette commande.
+Si aucun de ces deux fichiers n'existe alors, selon la configuration du site,
+soit le Super-utilisateur uniquement à le droit d'utiliser
+<B>crontab</B>,
+
+soit tous les utilisateurs le peuvent.
+<P>
+
+Si l'option
+<I>-u</I>
+
+est indiquée, elle permet de préciser le nom de l'utilisateur dont la crontab
+doit être manipulée. Si cette option n'est pas indiquée, 
+<I>crontab</I>
+
+examinera &quot;votre&quot; table, c'est à dire la table de la personne invoquant la commande. Notez qu'un appel à
+<I><A HREF="/cgi-bin/man/man2html?8+su">su</A></I>(8)
+
+peut induire
+<I>crontab</I>
+
+en erreur. Ainsi si vous avez effectué un
+<I><A HREF="/cgi-bin/man/man2html?8+su">su</A></I>(8)
+
+vous devez toujours utiliser l'option
+<I>-u</I>
+
+par précaution.
+<P>
+
+La première forme de cette commande sert à installer une nouvelle table
+crontab, en utilisant le fichier indiqué, ou l'entrée standard
+si le nom de fichier est ``-''.
+<P>
+
+L'option
+<I>-l</I>
+
+permet d'imprimer la table crontab en cours sur la sortie standard.
+<P>
+
+L'option
+<I>-r</I>
+
+supprime la table crontab en cours.
+<P>
+
+L'option
+<I>-e</I>
+
+permet d'éditer la table en cours, en utilisant l'éditeur indiqué par
+les variables d'environnement <FONT SIZE="-1">VISUAL</FONT> ou <FONT SIZE="-1">EDITOR</FONT>. Une fois
+que vous sortez de l'éditeur, la table modifiée sera installée automatiquement.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?5+crontab">crontab</A>(5), <A HREF="/cgi-bin/man/man2html?8+cron">cron</A>(8)
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<PRE>
+/etc/cron.allow
+/etc/cron.deny
+</PRE>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>STANDARDS</H2>
+
+La commande
+<I>crontab</I>
+
+est conforme au standard IEEE Std1003.2-1992 (``POSIX''). Cette nouvelle
+syntaxe diffère des versions précédentes de Vixie Cron, tout autant que
+de la syntaxe SVR3 classique.
+<A NAME="lbAH">&nbsp;</A>
+<H2>DIAGNOSTIQUE</H2>
+
+Un gentil message d'aide est affiché si vous invoquez <B>crontab</B> avec
+des arguments erronés.
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+<PRE>
+Paul Vixie &lt;<A HREF="mailto:paul@vix.com">paul@vix.com</A>&gt;
+
+</PRE><A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">STANDARDS</A><DD>
+<DT><A HREF="#lbAH">DIAGNOSTIQUE</A><DD>
+<DT><A HREF="#lbAI">AUTEURS</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:48 GMT, February 11, 2014
+</BODY>
+</HTML>

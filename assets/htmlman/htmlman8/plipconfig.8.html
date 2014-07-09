@@ -1,0 +1,121 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PLIPCONFIG</TITLE>
+</HEAD><BODY>
+<H1>PLIPCONFIG</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 17 février 1995<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+plipconfig - Régler finement les paramètres du périphérique PLIP.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>plipconfig interface</B>
+
+<BR>
+
+<B>plipconfig interface [nibble NN] [trigger NN] [unit NN]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>plipconfig</B>
+
+est utilisé pour améliorer (espérons-le) les performances PLIP
+en modifiant les minuteries par défaut utilisées par le protocole PLIP.
+Les résultats dépendent du port parallèle
+utilisé, du câble et de la vitesse du CPU des machines
+à chaque extrémité de la liaison PLIP.
+<P>
+
+Si
+<B>interface</B>
+
+est le seul argument fourni,
+<B>plipconfig</B>
+
+affiche seulement l'état de cette interface. Autrement, il essaie de
+positionner les options données.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>nibble NN</B>
+
+<DD>
+Définir le temps d'attente des quartets en microsecondes.
+La valeur par défaut est 3000.
+<DT><B>trigger NN</B>
+
+<DD>
+Définir le temps d'attente de déclenchement en microsecondes.
+La valeur par défaut est 500.
+</DL>
+<P>
+
+La vitesse de PLIP peut, dans certains cas, être améliorée en
+diminuant les valeurs par défaut.
+Des valeurs trop faibles peuvent engendrer une surcharge de travail du processeur,
+et un mauvais temps de réponse aux interruptions, pouvant conduire à
+perdre des caractères sur le port ou des paquets PLIP.
+La modification du MTU de PLIP peut aussi affecter la vitesse de PLIP.
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTE</H2>
+
+Si vous n'obtenez aucune réponse, il est fort probable que l'IRQ configurée
+soit erronée, et qu'elle nécessite une configuration avec
+<B><A HREF="/cgi-bin/man/man2html?8+ifconfig">ifconfig</A></B>(8).
+
+Les quelques cas pour lesquels les minuteries par défaut sont trop courtes,
+arrivent lorsque l'on utilise de longs câbles. C'est une chose à éviter
+puisque le port parallèle n'est pas conçu pour supporter de longs câbles.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+ifconfig">ifconfig</A></B>(8)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+John Paul Morrison, &lt;<A HREF="mailto:jmorriso@bogomips.ee.ubc.ca">jmorriso@bogomips.ee.ubc.ca</A>&gt;, &lt;<A HREF="mailto:ve7jpm@ve7jpm.ampr.org">ve7jpm@ve7jpm.ampr.org</A>&gt;
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Jean Michel Vansteene
+&lt;vanstee&nbsp;AT&nbsp;worldnet&nbsp;DOT&nbsp;fr&gt; le 15&nbsp;mars&nbsp;1999,
+mise à jour par Guillaume Audirac en août 2004
+et révisée le 17&nbsp;août&nbsp;2006.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;8&nbsp;plipconfig</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">NOTE</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">AUTEURS</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:03 GMT, February 11, 2014
+</BODY>
+</HTML>

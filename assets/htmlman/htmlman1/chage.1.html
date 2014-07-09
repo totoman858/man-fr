@@ -1,0 +1,135 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CHAGE</TITLE>
+</HEAD><BODY>
+<H1>CHAGE</H1>
+Section: User Commands  (1)<BR>Updated: 1 Novembre 2001<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+chage - Changer les informations d'expiration du mot de passe d'un
+utilisateur.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<DL COMPACT>
+<DT><B>chage</B><DD>
+[<B>-m </B><I>min</I>] [<B>-M </B><I>max</I>]
+[<B>-d </B><I>dernier</I>] [<B>-I </B><I>inactive</I>]
+<BR>
+
+[<B>-E </B><I>expire</I>] [<B>-W </B><I>alerte</I>] <I>utilisateur</I>
+<DT><B>chage</B><DD>
+<B>-l</B> <I>utilisateur</I>
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>chage</B> modifie le nombre de jours entre les changements de mot de passe
+ainsi que la date du dernier changement.
+Cette information est utilisée par le système pour déterminer quand un
+utilisateur doit changer son mot de passe.
+La commande <B>chage</B> est réservée au Super-utilisateur, sauf pour l'option
+<B>-l</B>, qui peut être utilisée par un utilisateur non privilégié pour savoir
+quand son mot de passe ou sont compte doit expirer.
+<P>
+
+Avec l'option <B>-m</B>, la valeur de <I>min</I> représente le nombre minimum
+de jours entre chaque changement de mot de passe.
+Une valeur de zéro pour ce champ indique que l'utilisateur peut changer
+son mot de passe n'importe quand.
+<P>
+
+Avec l'option <B>-M</B>, la valeur de <I>max</I> représente le nombre maximum
+de jours pendant lesquels un mot de passe est valide.
+Quand <I>max</I> plus <I>dernier</I> est inférieur à la date courante,
+l'utilisateur est obligé de changer son mot de passe avant de pouvoir
+utiliser son compte.
+Cet évènement peut être déclenché plus tôt grâce à l'option <B>-W</B>
+qui prévient l'utilisateur à l'avance avec un message d'alerte.
+<P>
+
+Avec l'option <B>-d</B>, la valeur <I>dernier</I> est le numéro du
+jour depuis le 1er Janvier 1970, où le mot de passe a été changé la
+dernière fois.
+La date peut aussi être exprimée dans le format YYYY-MM-DD (ou le format
+utilisé plus communément dans votre région).
+<P>
+
+L'option <B>-E</B> est utilisée pour définir une date à partir de laquelle
+le compte de l'utilisateur ne sera plus accessible.
+La valeur <I>expire</I> est le numéro du jour depuis le 1er Janvier 1970
+après lequel le compte sera bloqué.
+La date peut aussi être exprimée dans un format YYYY-MM-DD (ou le format
+plus communément utilisé dans votre région).
+Un utilisateur dont le compte est bloqué doit contacter l'administrateur
+système pour pouvoir utiliser le système à nouveau.
+<P>
+
+L'option <B>-I</B> est utilisée pour définir le nombre de jours d'inactivité,
+après qu'un mot de passe a expiré, avant que le compte ne soit bloqué.
+Un utilisateur dont le compte est bloqué doit contacter l'administrateur
+système avant de pouvoir utiliser le système à nouveau.
+La valeur <I>inactive</I> est le nombre de jours d'inactivité. Une valeur
+de 0 désactive cette fonction.
+<P>
+
+L'option <B>-W</B> est utilisée pour définir le nombre de jours d'alerte
+avant que le changement de mot de passe ne soit obligatoire.
+La valeur <I>alerte</I> est le nombre de jours précédent l'expiration
+pendant lesquels un utilisateur sera prévenu que son mot de passe est
+sur le point d'expirer.
+<P>
+
+Toutes les valeurs ci-dessus sont stockées au jour près quand le fichier
+«~shadow password~» est utilisé, mais sont converties en semaines
+quand le fichier de mots de passe standard est utilisé.
+À cause de cette conversion, des erreurs d'arrondis peuvent apparaître.
+<P>
+
+Si aucune de ces options n'est donnée, <B>chage</B> utilise un mode
+interactif, demandant confirmation à l'utilisateur pour les valeurs de tous
+les champs. Entrez la nouvelle valeur pour changer la valeur du champ, ou
+laissez la ligne vide pour utiliser la valeur courante.
+La valeur courante est affichée entre crochets.
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/etc/passwd - informations des comptes utilisateurs.
+<BR>
+
+/etc/shadow - fichier «~shadow password~».
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+passwd">passwd</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?5+shadow">shadow</A></B>(5)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Olivier Marin, 2001.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:43 GMT, February 11, 2014
+</BODY>
+</HTML>

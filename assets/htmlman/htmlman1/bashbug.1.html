@@ -1,0 +1,94 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of BASHBUG</TITLE>
+</HEAD><BODY>
+<H1>BASHBUG</H1>
+Section: User Commands  (1)<BR>Updated: 30 juillet 1998<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+bashbug - rapporte un bug de bash
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>bashbug</B> [<I>adresse</I>]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>bashbug</B>
+
+est un script shell destiné à aider l'utilisateur à composer et envoyer
+un rapport de bug concernant bash, dans un format standard.
+<B>bashbug</B>
+
+invoque l'éditeur spécifié dans la variable d'environnement
+<FONT SIZE="-1"><B>EDITOR</B>
+
+</FONT>
+sur une copie temporaire d'un rapport de bug préformaté.  L'utilisateur
+doit remplir correctement les champs et quitter l'éditeur.
+<B>bashbug</B>
+
+envoie alors le rapport complété à <I><A HREF="mailto:bug-bash@gnu.org">bug-bash@gnu.org</A></I>, ou
+à <I>adresse</I>. Si le rapport ne peut être envoyé pour une raison
+quelconque, il est sauvé dans le fichier <I>dead.bashbug</I> dans le répertoire
+personnel de l'utilisateur.
+<P>
+
+Le rapport de bug préformaté est divisé en plusieurs sections.  La première 
+section fournit des informations concernant la machine, le système d'exploitation
+la version de bash et l'environnement de compilation.  La seconde section doit être
+remplie avec la description du bug.  La troisième section doit expliquer comment
+reproduire le bug.  La quatrième section, optionnelle, est destinée à un éventuel 
+correctif. Vous êtes encouragé à l'utiliser.
+<A NAME="lbAE">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+<B>bashbug</B>
+
+utilisera les variables d'environnement suivantes, si elles existent&nbsp;:
+<DL COMPACT>
+<DT><B>EDITOR</B>
+
+<DD>
+Spécifie l'éditeur préféré.  Si
+<FONT SIZE="-1"><B>EDITOR</B>
+
+</FONT>
+n'existe pas,
+<B>bashbug</B>
+
+utilisera
+<B>emacs</B>
+
+par défaut.
+<DT><B>HOME</B>
+
+<DD>
+Répertoire dans lequel le fichier doit être sauvé si l'envoie par mail a échoué.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Amand Tihon &lt;<A HREF="mailto:amand@alrj.org">amand@alrj.org</A>&gt;, 2001
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:40 GMT, February 11, 2014
+</BODY>
+</HTML>

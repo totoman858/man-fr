@@ -1,0 +1,183 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETRPCENT</TITLE>
+</HEAD><BODY>
+<H1>GETRPCENT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getrpcent, getrpcbyname, getrpcbynumber, setrpcent, endrpcent - Lire une entrée RPC.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/netdb.h">netdb.h</A>&gt;
+
+struct rpcent *getrpcent()
+
+struct rpcent *getrpcbyname(nom)
+char *nom;
+
+struct rpcent *getrpcbynumber(nombre)
+int nombre;
+
+setrpcent (stayopen)
+int stayopen;
+
+endrpcent ()
+</B></PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+<B>getrpcent()</B>,
+
+<B>getrpcbyname()</B>,
+
+et
+<B>getrpcbynumber()</B>
+
+renvoient chacune un pointeur sur un objet ayant la structure suivante et
+contenant les champs d'une entrée de la base de données des programmes RPC
+<B>/etc/rpc</B>.
+
+<DL COMPACT><DT><DD>
+<P>
+
+<PRE>
+<B>struct  rpcent {
+        char    *r_nom; /* nom du serveur pour ce programme RPC */
+        char    **r_aliases;    /* liste d'alias */
+        long    r_nombre;       /* numéro de programme RPC */
+};
+</B></PRE>
+
+</DL>
+
+<P>
+
+Les membres de cette structure sont:
+<DL COMPACT><DT><DD>
+
+<DL COMPACT>
+<DT><B>r_nom</B>
+
+<DD>
+Le nom du serveur pour ce programme RPC.
+<DT><B>r_aliases</B>
+
+<DD>
+Une liste d'alias (alias pour le programme RPC) terminée par un zéro.
+<DT><B>r_nombre</B>
+
+<DD>
+Le numéro de programme RPC pour ce service.
+
+</DL>
+</DL>
+
+<P>
+
+<B>getrpcent()</B>
+
+lit la ligne suivante du fichier, l'ouvrant si nécessaire.
+<P>
+
+<B>getrpcent()</B>
+
+ouvre le fichier. Si le drapeau
+<I>stayopen</I>
+
+est non-nul, la base de données restera ouverte entre les appels
+<B>getrpcent()</B>
+
+(directs, ou indirects par l'un des autres appels
+``getrpc'').
+<P>
+
+<B>endrpcent</B>
+
+ferme le fichier.
+<P>
+
+<B>getrpcbyname()</B>
+
+et
+<B>getrpcbynumber()</B>
+
+recherchent séquentiellement depuis le début du fichier jusqu'à ce qu'un
+nom ou un numéro de programme RPC faisant l'affaire soit trouvé ou jusqu'à la
+fin du fichier.
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+
+<DL COMPACT>
+<DT><B>/etc/rpc</B>
+
+<DD>
+
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+rpc">rpc</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8C+rpcinfo">rpcinfo</A></B>(8C),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ypserv">ypserv</A></B>(8)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>DIAGNOSTICS</H2>
+
+<P>
+
+Un pointeur
+<FONT SIZE="-1">NULL</FONT>
+est renvoyé à la fin du fichier
+<FONT SIZE="-1">(EOF)</FONT>
+ou en cas d'erreur.
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<P>
+
+Toutes les informations sont stockées dans une zone statique et doivent donc
+être copiées si on désire les conserver.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 1999
+
+<BR>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">DIAGNOSTICS</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:48 GMT, February 11, 2014
+</BODY>
+</HTML>

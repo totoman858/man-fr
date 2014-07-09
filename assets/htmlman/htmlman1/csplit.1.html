@@ -1,0 +1,199 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CSPLIT</TITLE>
+</HEAD><BODY>
+<H1>CSPLIT</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+csplit - Découper un fichier en sections déterminées par des lignes de contexte.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>csplit</B>
+
+[-sqkz] [-f préfixe] [-b suffixe] [-n longueur] [--prefix=préfixe]
+[--suffix-format=suffixe] [--digits=longueur] [--quiet] [--silent]
+[--keep-files] [--elide-empty-files] [--help] [--version]
+fichier motif...
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>csplit</B>.
+
+<P>
+<B>csplit</B>
+
+crée plusieurs fichiers de sortie contenant différentes sections du <I>fichier</I>
+d'entrée indiqué, ou de l'entrée standard si le nom `-' est fourni.
+<P>
+Par défaut,
+<B>csplit</B>
+
+affiche le nombre d'octets écrits dans chaque fichier de sortie après
+l'avoir créé.
+<P>
+
+<P>
+Le contenu des fichiers de sortie est déterminé par les arguments
+<I>motif</I>.
+
+Une erreur est déclenchée si un motif ne correspond à aucune ligne
+du fichier d'entrée, par exemple si aucune ligne restante ne
+se rapporte à une expression rationnelle donnée.
+<P>
+Après avoir trouvé des lignes correspondantes pour chaque motif donné,
+le reste du fichier est copié dans un dernier fichier de sortie.
+<P>
+Les types d'argument <I>motif</I> sont :
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><I>nombre</I>
+
+<DD>
+<BR>
+
+Crée un fichier de sortie contenant la ligne en cours, et les suivantes
+jusqu'à la ligne <I>nombre</I> (un entier positif) non-incluse.
+Si cet argument est suivi d'un nombre de répétitions, un autre fichier
+de sortie contenant <I>nombre</I> lignes est créé pour chaque itération.
+<DT>/<I>regexp</I>/[<I>décalage</I>]<DD>
+<BR>
+
+Créer un fichier de sortie commençant à la ligne en cours, jusqu'à 
+la prochaine ligne du fichier d'entrée correspondant à l'expression
+rationnelle <I>regexp</I>. Cette ligne n'est pas incluse. Le <I>décalage</I>
+éventuel est un nombre entier positif ou négatif. S'il est mentionné,
+le fichier de sortie ira jusqu'à la ligne précédant ou suivant de la
+valeur <I>décalage</I> celle correspondant à l'expression rationnelle.
+La ligne suivante débutera alors la prochaine section.
+<DT>%<I>regexp</I>%[<I>offset</I>]<DD>
+<BR>
+
+Comme le type précédent, à la différence que le résultat n'est pas
+écrit dans un fichier de sortie, la section est ainsi ignorée.
+<DT>{<I>nombre</I>}<DD>
+<BR>
+
+Répéter <I>nombre</I> fois supplémentaires le motif précédent. <I>nombre</I>
+doit être un entier positif. Un astérisque à la place de <I>nombre</I>
+indique une répétition indéfinie, jusqu'à la fin du fichier d'entrée.
+</DL>
+</DL>
+
+<P>
+
+Les noms des fichiers de sortie consistent en un <I>préfixe</I> suivi
+d'un <I>suffixe</I>. Par défaut, le suffixe est un nombre de deux chiffres,
+dans l'intervalle croissant 00 à 99. Néanmoins ceci peut être modifié
+par les options
+<I>--digits</I>
+
+ou
+<I>--suffix-format</I>.
+
+(Voir plus bas.) 
+<P>
+Dans tous les cas, la concaténation des fichiers
+résultats dans l'ordre croissant des noms de fichiers redonne le
+fichier original.
+Le préfixe par défaut des fichiers de sortie est `xx'.
+<P>
+
+Par défaut, lorsque
+<B>csplit</B>
+
+rencontre une erreur, ou reçoit un signal Hangup, Interrupt, Quit ou Terminate,
+il efface tous les fichiers résultats qu'il avait créés.
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><I>-b, --suffix-format=suffixe</I>
+
+<DD>
+Utiliser le
+<I>suffixe</I>
+
+pour créer les noms de fichiers de sortie. Quand cette option est
+mentionnée, la chaîne <I>suffixe</I> doit contenir exactement une
+spécification de format compatible avec <B><A HREF="/cgi-bin/man/man2html?3+printf">printf</A></B>(3) 
+(comme %d, avec éventuellement des attributs de largeur, de précision, ou
+tout autre modificateur). La spécification doit permettre la conversion
+d'un argument entier binaire en forme lisible. Ainsi seuls les
+indicateurs de format `d', 'i', `u', `o', `x', et `X' sont autorisés.
+La chaîne <I>suffixe</I> complète (avec le numéro de fichier de sortie)
+est transmise à <B><A HREF="/cgi-bin/man/man2html?3+sprintf">sprintf</A></B>(3) pour créer le suffixe du nom de
+chaque fichier individuellement.
+Quand cette option est utilisée, l'argument
+<I>--digits</I>
+
+est ignoré.
+<DT><I>-f, --prefix=préfixe</I>
+
+<DD>
+Utiliser le
+<I>préfixe</I>
+
+indiqué pour créer les noms de fichiers de sortie.
+<DT><I>-k, --keep-files</I>
+
+<DD>
+Ne pas effacer les fichiers résultats lorsque des erreurs se produisent.
+<DT><I>-n, --digits=longueur</I>
+
+<DD>
+Utiliser des noms de fichiers contenant des nombres de la <I>longueur</I>
+indiquée. (Par défaut 2).
+<DT><I>-s, -q, --silent, --quiet</I>
+
+<DD>
+Ne pas afficher les tailles des fichiers de sortie.
+<DT><I>-z, --elide-empty-files</I>
+
+<DD>
+Éviter la création de fichiers de sortie vides (Dans le cas où un
+identificateur indique la première ligne de chaque section, le premier
+fichier résultat sera généralement vide si l'on n'utilise pas cette
+option). Remarquez que la séquence des numéros de fichiers de sortie
+sera toujours continue, commençant à 0, même si des sections vides
+sont éliminées.
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et terminer normalement.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et terminer normalement.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:50 GMT, February 11, 2014
+</BODY>
+</HTML>

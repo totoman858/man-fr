@@ -1,0 +1,194 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of EXPR</TITLE>
+</HEAD><BODY>
+<H1>EXPR</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+expr - Évaluer des expressions.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>expr</B>
+
+expression...
+<BR>
+
+<B>expr</B>
+
+{--help,--version}
+<BR>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel décrit la version GNU de
+<B>expr</B>.
+
+<P>
+<B>expr</B>
+
+évalue une expression, et imprime le résultat sur la sortie standard.
+<P>
+Chaque élément minimal de l'expression doit être fourni comme argument
+indépendant. Les opérandes peuvent être des nombres ou des chaînes de
+caractères. Les chaînes n'ont pas besoin d'être encadrées pour <B>expr</B>,
+mais il est généralement nécessaire de le faire pour les protéger du shell.
+<P>
+<B>expr</B>
+
+transforme tout argument apparaissant en position d'opérande en un entier,
+ou en une chaîne suivant le type d'opération à appliquer.
+<P>
+
+Les opérateurs sont (par ordre décroissant de priorité)&nbsp;:
+<DL COMPACT>
+<DT><I>|</I><DD>
+Renvoie son premier argument s'il n'est pas nul, et si sa valeur n'est pas
+zéro, sinon il renvoie son second argument. Il s'agit de l'opération 'OU'
+habituelle.
+<DT><I>&amp;</I><DD>
+Si aucun des deux arguments n'est nul, et si aucune valeur n'est 0, renvoie
+son premier argument. Sinon il renvoie 0.
+<DT><I>&lt;</I>&nbsp; <I>&lt;=</I>&nbsp; <I>=</I>&nbsp; <I>==</I>&nbsp; <I>!=</I>&nbsp; <I>&gt;=</I>&nbsp; <I>&gt;</I><DD>
+Compare les arguments et renvoie 1 si la relation est vraie, 0 sinon.
+(<I>==</I> est un synonyme de <I>=</I>.)
+<B>expr</B> transforme les deux arguments en nombres. La comparaison est
+numérique. Si la transformation en nombre échoue, une comparaison de type
+lexicographique est choisie.
+<DT><I>+</I>&nbsp; <I>-</I><DD>
+Effectuent une opération arithmétique. Les deux arguments sont transformés
+en nombres et une erreur se produit si c'est impossible.
+<DT><I>*</I>&nbsp; <I>/</I>&nbsp; <I>%</I><DD>
+Effectuent une opération arithmétique (le `%' est l'opération `modulo' comme
+en C). Les deux arguments sont transformés en nombres et une erreur se produit
+si c'est impossible.
+<DT><I>:</I><DD>
+Effectue une recherche de sous-chaîne. Les arguments sont considérés comme
+des chaînes. Le second est une expression rationnelle avec un `^' ajouté
+implicitement au début. Le premier argument est comparé à ce motif.
+Si la correspondance réussit, et si une partie de la chaîne est
+encadrée par `\(' et `\)', cette partie sera renvoyée comme valeur
+de l'expression <I>:</I>. Sinon l'opération renvoie un entier représentant
+le nombre de caractères mis en correspondance. Si la comparaison échoue,
+l'opérateur <I>:</I> renvoie une chaîne nulle si l'encadrement `\(' et `\)'
+est utilisé, et renvoie 0 sinon. On ne peut utiliser qu'un seul encadrement
+`\(' et `\)'.
+<DT>De plus, les mots-clés suivants sont valides :<DD>
+<DT><B>match</B><I> chaîne exp_rationnelle</I>
+
+<DD>
+Une autre manière de faire une mise en correspondance. Le résultat est
+le même que ``<I>chaîne</I>&nbsp;<B>:</B> <I>exp_rationnelle</I>''.
+<DT><B>substr</B><I> chaîne pos lg</I>
+
+<DD>
+Renvoie la partie de <I>chaîne</I> commençant à la position <I>pos</I> et
+de longueur maximale <I>lg</I>.  Si <I>pos</I> ou <I>lg</I> est négatif, ou
+non-numérique, <I>substr</I> renvoie une chaîne nulle.
+<DT><B>index</B><I> chaîne classe_caractères</I>
+
+<DD>
+Renvoie la position de la première occurrence du premier caractère appartenant
+à <I>classe_caractères</I> dans la <I>chaîne</I>. Si aucun caractère de la
+<I>classe_caractères</I> n'est trouvé dans <I>chaîne</I>, 0 est renvoyé.
+<DT><B>length</B><I> chaîne</I>
+
+<DD>
+Renvoie la longueur de la <I>chaîne</I>.
+</DL>
+<P>
+
+Les parenthèses servent à grouper les opérations comme d'habitude. Les mots-clés
+ne peuvent pas être utilisés comme chaînes.
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+Quand la version GNU de
+<B>expr</B>
+
+est invoquée avec un unique argument, les options suivantes sont reconnues :
+<DL COMPACT>
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard, et se terminer normalement.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard, et se terminer normalement.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+<P>
+
+Pour ajouter 1 à la variable shell
+<I>a</I> :
+
+<DL COMPACT>
+<DT><DD>
+a=`expr $a + 1`
+</DL>
+<P>
+
+On peut utiliser l'expression suivante pour imprimer la partie sans répertoire d'un nom
+de fichier situé dans la variable
+<I>a</I>
+
+(La valeur de
+<I>a</I>
+
+n'a pas besoin de contenir de `/'):
+<DL COMPACT>
+<DT><DD>
+expr $a : '.*/\(.*\)' '|' $a
+</DL>
+<P>
+
+Remarquez la protection des méta-caractères du shell.
+<P>
+
+<B>expr</B>
+
+renvoie les codes de retour suivants :
+<P>
+
+0 si l'expression n'est ni nulle ni 0,
+<BR>
+
+1 si l'expression est nulle ou 0,
+<BR>
+
+2 si l'expression est invalide.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">EXEMPLES</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:44 GMT, February 11, 2014
+</BODY>
+</HTML>

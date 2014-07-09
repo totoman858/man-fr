@@ -1,0 +1,198 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MODCONF</TITLE>
+</HEAD><BODY>
+<H1>MODCONF</H1>
+Section: Debian Module Support (8)<BR>Updated: 10 Mars 1998<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+modconf - un utilitaire de configuration de module
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>modconf</B>
+
+[--source [floppy|mounted]]
+[--target destination]
+[--libdir chemin]
+[--restrict-section section]*
+[--exclude-section section]*
+[--load-before module]*
+[--load-only module]*
+[--load-after module]*
+<BR>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>modconf</I>
+
+est un script pour installer des modules du noyau Linux. Il peut être utilisé
+interactivement (mode graphique) ou à partir de la ligne de commande (mode
+batch).
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+Les options  référencées avec un &quot;*&quot; ci-dessous sont appliquées seulement à un
+module. Si vous
+voulez les appliquer à plus d'un module, répétez alors l'option dans la ligne
+de commande. 
+<DL COMPACT>
+<DT><I>--source floppy|mounted</I>
+
+<DD>
+Indique d'où les modules doivent être obtenus. 
+<B>floppy</B> est utilisé lors de l'installation de GNU/Linux.
+<B>mounted</B> est utilisé sur les systèmes GNU/Linux déjà installés. 
+C'est l'option par défaut.
+<DT><I>--target répertoire </I>
+
+<DD>
+Spécifie le répertoire sous lequel 
+<I>etc/modules</I>
+
+et
+<I>etc/modules.conf</I>
+
+<BR>&nbsp;sont&nbsp;localisés&nbsp;(par&nbsp;défaut&nbsp;:&nbsp;/).&nbsp;N'incluez&nbsp;pas&nbsp;de&nbsp;
+«&nbsp;/&nbsp;» final après le nom du répertoire.
+<DT><I>--libdir chemin</I>
+
+<DD>
+Indique où les fichiers
+<I>eval</I>
+
+et
+<I>descr.gz</I>
+
+sont localisés sur le système (par défaut&nbsp;: /usr/lib/module_help). 
+N'incluez pas de 
+«&nbsp;/&nbsp;» final après le nom du répertoire.
+<DT><I>--restrict-section section*</I>
+
+<DD>
+Restreint <B>modconf</B> pour qu'il travaille simplement avec la section
+spécifiée de 
+<I>/lib/modules</I>
+
+<DT><I>--exclude-section section*</I>
+
+<DD>
+Force <B>modconf</B> à ne pas travailler avec la section spécifiée de  
+<I>/lib/modules</I>
+
+<BR>
+
+<P>
+Sections disponibles à l'écriture de cette page de manuel&nbsp;:
+<B>block</B>
+
+<B>cdrom</B>
+
+<B>fs</B>
+
+<B>ipv4</B>
+
+<B>ipv6</B>
+
+<B>misc</B>
+
+<B>net</B>
+
+<B>scsi</B>
+
+(Il peut y en avoir d'autres si vous avez installé des paquets avec modules
+spéciaux, comme pcmcia-modules).
+<DT><I>--load-before module*</I>
+
+<DD>
+indique un module qui sera
+inséré <B>avant</B> tous les autres.
+<DT><I>--load-only module*</I>
+
+<DD>
+spécifie un <B>module</B> qui doit être inséré après
+tous ceux indiqués avec l'option <B>--load-before</B> . 
+Rend le mode interactif inopérant.
+<DT><I>--load-after module*</I>
+
+<DD>
+spécifie un <B>module</B> qui doit être inséré après
+tous ceux indiqués avec l'option <B>--load-before</B> .
+<BR>
+
+Cette option est
+<B>écrasée</B>
+
+par la précédente.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+<P>
+
+Les exemples ci-dessous <B> n'ont pas</B> été testés.
+<DL COMPACT>
+<DT>modconf --load-only plip --load-before ip_masq_ftp --load-only appletalk<DD>
+<DT>Insère les modules «&nbsp;ip_masq_ftp&nbsp;», «&nbsp;plip&nbsp;» et «&nbsp;appletalk&nbsp;», dans cet<DD>
+ordre, et et ne lance pas le programme interactif.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+<B>modconf</B>
+
+a été originellement écrit par Bruce Perens &lt;<A HREF="mailto:bruce@pixar.com">bruce@pixar.com</A>&gt;.
+<BR>
+
+Des changements majeurs ont été faits par Sven Rudolph &lt;<A HREF="mailto:sr1@inf.tu-dresden.de">sr1@inf.tu-dresden.de</A>&gt;.
+<BR>
+
+Plus de changements faits par Enrique Zanardi &lt;<A HREF="mailto:ezanardi@ull.es">ezanardi@ull.es</A>&gt;.
+<BR>
+
+Et plus par Randolph Chung &lt;<A HREF="mailto:tausq@debian.org">tausq@debian.org</A>&gt;
+<BR>
+
+Cette page de manuel a été écrite par Antonio Vieiro Varela
+&lt;<A HREF="mailto:antonio@faraday.usc.es">antonio@faraday.usc.es</A>&gt;.
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Aucun connu.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+insmod">insmod</A></B>(1), <B><A HREF="/cgi-bin/man/man2html?1+modprobe">modprobe</A></B>(1), <B><A HREF="/cgi-bin/man/man2html?1+depmod">depmod</A></B>(1), <B><A HREF="/cgi-bin/man/man2html?1+lsmod">lsmod</A></B>(1),
+<B><A HREF="/cgi-bin/man/man2html?1+rmmod">rmmod</A></B>(1), <B><A HREF="/cgi-bin/man/man2html?2+modules">modules</A></B>(2), <B><A HREF="/cgi-bin/man/man2html?8+kerneld">kerneld</A></B>(8).
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Richard Bonichon &lt;<A HREF="mailto:richard.bonichon@free.fr">richard.bonichon@free.fr</A>&gt;
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">EXEMPLES</A><DD>
+<DT><A HREF="#lbAG">AUTEURS</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:00 GMT, February 11, 2014
+</BODY>
+</HTML>

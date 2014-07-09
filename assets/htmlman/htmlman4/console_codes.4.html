@@ -1,0 +1,671 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CONSOLE_CODES</TITLE>
+</HEAD><BODY>
+<H1>CONSOLE_CODES</H1>
+Section: Manuel du programmeur Linux (4)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+console_codes - Séquence de contrôle des consoles.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Sous Linux, le gestionnaire de console implémente un sous-ensemble important
+des séquences de contrôle des terminaux VT102 et ECMA-48/ISO 6429/ANSI X3.64,
+ainsi que quelques séquences spécifiques pour le changement de palette de
+couleurs, de fonte de caractères, etc...
+Dans la description ci-dessous, la seconde colonne de la table contient
+les mnémoniques ECMA-48 ou DEC (ces derniers ayant le préfixe DEC) pour chaque
+fonction indiquée.
+Les séquences sans mnémoniques ne correspondent ni à l'ECMA-48 ni au VT102.
+<P>
+
+Lorsque tout le prétraitement nécessaire à une sortie est terminé, et
+qu'un flux de caractères arrive au gestionnaire de console pour être
+effectivement affiché, se produit tout d'abord une traduction des
+codes utilisés pour le prétraitement en code utilisés pour l'affichage.
+<P>
+
+Si la console est en mode UTF-8, les octets arrivants sont tout d'abord
+assemblés en codes sur 16 bits au standard Unicode. Sinon chaque octet
+est transformé en fonction de la table de correspondance en cours
+(qui convertit chaque octet en une valeur Unicode).
+Voir le paragraphe JEUX DE CARACTÈRES plus bas pour plus de détails.
+<P>
+
+Normalement, la valeur Unicode est convertie en un index dans la table
+de caractères, qui est alors stocké dans la mémoire vidéo, afin que
+le symbole graphique correspondant (comme ceux qui se trouvent dans
+la mémoire morte vidéo), apparaisse sur l'écran.
+Notez que l'utilisation de l'Unicode, et la conception des PC,
+permettent de disposer simultanément de 512 symboles différents.
+<P>
+
+Si la valeur Unicode rencontrée est un caractère de contrôle, ou
+si l'on est déjà dans le traitement d'une séquence d'échappement,
+la valeur sera traitée de manière particulière.
+Plutôt que d'être convertie en un index dans la table des caractères
+et affichée comme un symbole, elle peut provoquer un déplacement du
+curseur, ou toute autre fonction de contrôle.
+Voir le paragraphe CONTRÔLE DE LA CONSOLE LINUX plus bas pour plus
+de détails.
+<P>
+
+Il vaut mieux éviter en général de coder en dur les contrôles de
+terminaux dans les programmes. Linux propose l'utilisation de
+la base de données
+<I><A HREF="/cgi-bin/man/man2html?5+terminfo">terminfo</A></I>(5)
+
+concernant les possibilités des terminaux.
+Plutôt que d'émettre des séquences d'échappement à la main, vous
+pourrez presque toujours utiliser des bibliothèques de gestion
+de terminaux utilisant terminfo, ou des utilitaires comme
+<B><A HREF="/cgi-bin/man/man2html?3+ncurses">ncurses</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?1+tput">tput</A></B>(1),
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?1+reset">reset</A></B>(1).
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>COMMANDES DE LA CONSOLE LINUX</H2>
+
+<P>
+Ce paragraphe décrit tous les caractères de commande et les séquences
+d'échappement qui déclenchent certaines fonctions spéciales (c'est à
+dire n'affichant pas un symbole graphique à la position du curseur)
+sur la console Linux.
+<A NAME="lbAE">&nbsp;</A>
+<H3>Caractères de contrôle</H3>
+
+Un caractère est dit &quot;de contrôle&quot; s'il correspond à l'un des
+14 codes suivants (avant traduction par la table de correspondance
+en cours) :
+00 (NUL), 07 (BEL), 08 (BS), 09 (HT), 0A (LF), 0B (VT),
+0C (FF), 0D (CR), 0E (SO), 0F (SI), 18 (CAN), 1A (SUB),
+1B (ESC), 7F (DEL).
+On peut demander un mode d'affichage des caractères de contrôle (voir
+plus bas), dans lequel les codes 07, 09, 0B, 18, 1A, et 7F seront
+quand même affichés sous forme graphique.
+Inversement, en mode UTF-8 tous les codes de l'intervalle 00-1F sont
+considérés comme des caractères de contrôle quelque soit le mode
+d'affichage de ces codes.
+<P>
+Lorsqu'un caractère de contrôle est rencontré, il agit immédiatement,
+puis est oublié (même au milieu d'une séquence d'échappement, laquelle
+continue avec le caractère suivant).
+Toutefois, ESC indique le début d'une nouvelle séquence d'échappement,
+annulant alors une éventuelle séquence déjà commencée. De même CAN et
+SUB annulent toute séquence d'échappement entamée.
+Les caractères de contrôle reconnus sont BEL, BS, HT, LF, VT, FF,
+CR, SO, SI, CAN, SUB, ESC, DEL, CSI. Ils effectuent les actions suivantes :
+<DL COMPACT>
+<DT>
+<DD>BEL (0x07, ^G) émet un bip,
+<DT>
+<DD>BS (0x08, ^H) revient en arrière d'une colonne
+(mais ne remonte pas à la ligne précédente quand il est invoqué en début
+de ligne),
+<DT>
+<DD>HT (0x09, ^I) saute à la prochaine tabulation, ou à la fin de ligne s'il
+n'y a pas de tabulation d'ici là,
+<DT>
+<DD>LF (0x0A, ^J), VT (0x0B, ^K) et FF (0x0C, ^L) effectuent tous les trois un
+saut de ligne,
+<DT>
+<DD>CR (0x0D, ^M) déclenche un retour-chariot,
+<DT>
+<DD>SO (0x0E, ^N) active le jeu de caractères G1,
+et si LF/NL (mode new-line) est actif, effectue un retour-chariot,
+<DT>
+<DD>SI (0x0F, ^O) active le jeu de caractères G0,
+<DT>
+<DD>CAN (0x18, ^X) et SUB (0x1A, ^Z) interrompent les séquences d'échappement,
+<DT>
+<DD>ESC (0x1B, ^[) débute une séquence d'échappement,
+<DT>
+<DD>DEL (0x7F) est ignoré,
+<DT>
+<DD>CSI (0x9B) est équivalent à ESC [.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H3>Séquences d'échappement ESC, non CSI</H3>
+
+<TABLE>
+<TR VALIGN=top><TD>ESC c</TD><TD>RIS</TD><TD>Réinitialisation.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC D</TD><TD>IND</TD><TD>Saut de ligne.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC E</TD><TD>NEL</TD><TD>Nouvelle ligne.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC H</TD><TD>HTS</TD><TD>Positionner une tabulation à la colonne en cours<BR></TD></TR>
+<TR VALIGN=top><TD>ESC M</TD><TD>RI</TD><TD>Saut de ligne inversé.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC Z</TD><TD>DECID</TD><TD>Identification privée DEC. Le noyau renvoie la<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>chaîne  ESC [ ? 6 c, simulant un VT102.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC 7</TD><TD>DECSC</TD><TD>Sauvegarde de l'état en cours (coordonnées curseur,<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>attributs, jeux de caractères pointés par G0, G1).<BR></TD></TR>
+<TR VALIGN=top><TD>ESC 8</TD><TD>DECRC</TD><TD>Restaure l'état sauvegardé le plus récemment par ESC 7.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC [</TD><TD>CSI</TD><TD>Début de séquence de contrôle.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC %</TD><TD></TD><TD>Début de séquence de sélection de jeu de caractère.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC % @</TD><TD></TD><TD>&nbsp;&nbsp;&nbsp;Jeu par défaut (ISO 646/ISO 8859-1)<BR></TD></TR>
+<TR VALIGN=top><TD>ESC % G</TD><TD></TD><TD>&nbsp;&nbsp;&nbsp;Jeu UTF-8<BR></TD></TR>
+<TR VALIGN=top><TD>ESC % 8</TD><TD></TD><TD>&nbsp;&nbsp;&nbsp;Jeu UTF-8 (obsolète)<BR></TD></TR>
+<TR VALIGN=top><TD>ESC # 8</TD><TD>DECALN</TD><TD>Test d'alignement d'écran DEC, remplit l'écran avec<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>des E.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC (</TD><TD></TD><TD>Début de séquence de définition du jeu G0<BR></TD></TR>
+<TR VALIGN=top><TD>ESC ( B</TD><TD></TD><TD>&nbsp;&nbsp;&nbsp;Correspondance par défaut (ISO 8859-1)<BR></TD></TR>
+<TR VALIGN=top><TD>ESC ( 0</TD><TD></TD><TD>&nbsp;&nbsp;&nbsp;Correspondance VT100 graphique<BR></TD></TR>
+<TR VALIGN=top><TD>ESC ( U</TD><TD></TD><TD>&nbsp;&nbsp;&nbsp;Pas de correspondance - caractères en ROM<BR></TD></TR>
+<TR VALIGN=top><TD>ESC ( K</TD><TD></TD><TD>&nbsp;&nbsp;&nbsp;Correspondance définie par l'utilisateur<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>&nbsp;&nbsp;&nbsp;avec l'utilitaire <B><A HREF="/cgi-bin/man/man2html?8+mapscrn">mapscrn</A></B>(8).<BR></TD></TR>
+<TR VALIGN=top><TD>ESC )</TD><TD></TD><TD>Début de séquence de définition du jeu G1<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>(suivi de B, 0, U, K, comme ci-dessus).<BR></TD></TR>
+<TR VALIGN=top><TD>ESC &gt;</TD><TD>DECPNM</TD><TD>Mode de pavé numérique.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC =</TD><TD>DECPAM</TD><TD>Mode de pavé alphabétique.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC ]</TD><TD>OSC</TD><TD>(Operating system command)<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>ESC ] P <I>nrrvvbb</I>: fixe la palette, le paramètre est<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>fourni avec 7 chiffres hexadécimaux après le P final.<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD><I>n</I> est la couleur (0-15), et <I>rrvvbb</I> indique<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>les valeurs rouge/verte/bleue (0-255). <BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>ESC ] R: réinitialise la palette.<BR></TD></TR>
+</TABLE>
+
+<A NAME="lbAG">&nbsp;</A>
+<H3>Séquences d'échappement ECMA-48 CSI</H3>
+
+<P>
+CSI (ou ESC [) est suivi d'une série de paramètres, au plus
+NPAR (16), représentés par des nombres décimaux séparés par des
+points virgules.
+Un paramètre vide ou absent est considéré comme nul.
+La série de paramètre peut être précédée par un point d'interrogation.
+<P>
+Toutefois, après  CSI [ (ou ESC [ [) un seul caractère est lu, et le
+reste de la séquence est ignoré. L'idée est d'éliminer les touches
+de fonctions doublées.
+<P>
+L'action déclenchée par une séquence CSI est indiquée par le dernier
+caractère.
+<P>
+<TABLE>
+<TR VALIGN=top><TD>@</TD><TD>ICH</TD><TD>Insère le nombre indiqué de caractères blancs.<BR></TD></TR>
+<TR VALIGN=top><TD>A</TD><TD>CUU</TD><TD>Remonter le curseur du nombre de lignes indiqué.<BR></TD></TR>
+<TR VALIGN=top><TD>B</TD><TD>CUD</TD><TD>Descendre le curseur du nombre de lignes indiqué.<BR></TD></TR>
+<TR VALIGN=top><TD>C</TD><TD>CUF</TD><TD>Avancer le curseur du nombre de colonnes indiqué.<BR></TD></TR>
+<TR VALIGN=top><TD>D</TD><TD>CUB</TD><TD>Reculer le curseur du nombre de colonnes indiqué.<BR></TD></TR>
+<TR VALIGN=top><TD>E</TD><TD>CNL</TD><TD>Descendre le curseur du nombre de ligne indiqué,<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>en colonne numéro 1.<BR></TD></TR>
+<TR VALIGN=top><TD>F</TD><TD>CPL</TD><TD>Remonter le curseur du nombre de lignes indiqué,<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>en colonne numéro 1.<BR></TD></TR>
+<TR VALIGN=top><TD>G</TD><TD>CHA</TD><TD>Déplacer le curseur à la ligne indiquée, même colonne.<BR></TD></TR>
+<TR VALIGN=top><TD>H</TD><TD>CUP</TD><TD>Déplacer le curseur à la ligne et à la colonne<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>indiquées (origine en 1, 1).<BR></TD></TR>
+<TR VALIGN=top><TD>J</TD><TD>ED</TD><TD>Effacer l'écran (par défaut depuis la position du<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>curseur jusqu'à la fin de l'écran).<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>ESC [ 1 J: efface du début jusqu'au curseur.<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>ESC [ 2 J: efface tout l'écran.<BR></TD></TR>
+<TR VALIGN=top><TD>K</TD><TD>EL</TD><TD>Efface la ligne (par défaut depuis le curseur jusqu'à<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>la fin de la ligne).<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>ESC [ 1 K: efface du début de ligne jusqu'au curseur.<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>ESC [ 2 K: efface toute la ligne.<BR></TD></TR>
+<TR VALIGN=top><TD>L</TD><TD>IL</TD><TD>Insère le nombre indiqué de lignes blanches.<BR></TD></TR>
+<TR VALIGN=top><TD>M</TD><TD>DL</TD><TD>Supprimer le nombre indiqué de lignes.<BR></TD></TR>
+<TR VALIGN=top><TD>P</TD><TD>DCH</TD><TD>Supprime le nombre indiqué de caractères sur la ligne<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>en cours.<BR></TD></TR>
+<TR VALIGN=top><TD>X</TD><TD>ECH</TD><TD>Efface le nombre indiqué de caractères sur la ligne<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>en cours.<BR></TD></TR>
+<TR VALIGN=top><TD>a</TD><TD>HPR</TD><TD>Avancer le curseur jusqu'à la colonne indiquée.<BR></TD></TR>
+<TR VALIGN=top><TD>c</TD><TD>DA</TD><TD>Répondre ESC [ ? 6 c: `Je suis un VT102'.<BR></TD></TR>
+<TR VALIGN=top><TD>d</TD><TD>VPA</TD><TD>Placer le curseur sur la ligne indiquée, même colonne.<BR></TD></TR>
+<TR VALIGN=top><TD>e</TD><TD>VPR</TD><TD>Descendre le curseur du nombre indiqué de lignes.<BR></TD></TR>
+<TR VALIGN=top><TD>f</TD><TD>HVP</TD><TD>Placer le curseur aux lignes et colonnes indiquées.<BR></TD></TR>
+<TR VALIGN=top><TD>g</TD><TD>TBC</TD><TD>Sans paramètre: effacer la tabulation a la position<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>courante.<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>ESC [ 3 g: effacer toutes les tabulations.<BR></TD></TR>
+<TR VALIGN=top><TD>h</TD><TD>SM</TD><TD>Fixe le mode (voir plus bas).<BR></TD></TR>
+<TR VALIGN=top><TD>l</TD><TD>RM</TD><TD>Réinitialise le mode (voir plus bas).<BR></TD></TR>
+<TR VALIGN=top><TD>m</TD><TD>SGR</TD><TD>Fixe les attributs (voir plus bas).<BR></TD></TR>
+<TR VALIGN=top><TD>n</TD><TD>DSR</TD><TD>Indique le statut (voir plus bas).<BR></TD></TR>
+<TR VALIGN=top><TD>q</TD><TD>DECLL</TD><TD>Fixe les LEDs du clavier.<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>ESC [ 0 q: Effacer toutes les LEDs<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>ESC [ 1 q: Allumer LED Scroll-Lock (Défilement)<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>ESC [ 2 q: Allumer LED Num-Lock (Pavé numérique)<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>ESC [ 3 q: Allumer LED Caps-Lock (Majuscules)<BR></TD></TR>
+<TR VALIGN=top><TD>r</TD><TD>DECSTBM</TD><TD>Indique une région de défilement, les paramètres <BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>correspondent aux lignes haute et basse.<BR></TD></TR>
+<TR VALIGN=top><TD>s</TD><TD>?</TD><TD>Mémoriser l'emplacement du curseur.<BR></TD></TR>
+<TR VALIGN=top><TD>u</TD><TD>?</TD><TD>Restituer l'emplacement du curseur.<BR></TD></TR>
+<TR VALIGN=top><TD>`</TD><TD>HPA</TD><TD>Déplacer le curseur à la colonne indiquée, même ligne.<BR></TD></TR>
+</TABLE>
+
+<A NAME="lbAH">&nbsp;</A>
+<H3>Affichage graphique ECMA-48</H3>
+
+<P>
+La séquence ECMA-48 SGR suivante ESC [ &lt;paramètres&gt; m fixe les paramètres
+d'affichage. Plusieurs attributs peuvent être indiqués dans la même séquence.
+<P>
+
+<TABLE>
+<TR VALIGN=top><TD>param</TD><TD>résultat.<BR></TD></TR>
+<TR VALIGN=top><TD>0</TD><TD>réinitialiser tous les attributs à leurs valeurs par défaut.<BR></TD></TR>
+<TR VALIGN=top><TD>1</TD><TD>attribut gras.<BR></TD></TR>
+<TR VALIGN=top><TD>2</TD><TD>attribut demi-luminosité (simulé par une couleur sur certains<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD>écrans couleurs).<BR></TD></TR>
+<TR VALIGN=top><TD>4</TD><TD>attribut soulignement (simulé par une couleur sur certains<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD>écrans couleurs).<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD>(Les couleurs utilisées pour simuler la demi-luminosité ou le<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD>soulignement sont choisies en utilisant ESC ] ...).<BR></TD></TR>
+<TR VALIGN=top><TD>5</TD><TD>clignotement.<BR></TD></TR>
+<TR VALIGN=top><TD>7</TD><TD>vidéo inversée.<BR></TD></TR>
+<TR VALIGN=top><TD>10</TD><TD>réinitialise la correspondance des touches, affiche l'état de<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD>contrôle et change l'attribut &quot;méta&quot;.<BR></TD></TR>
+<TR VALIGN=top><TD>11</TD><TD>active une correspondance nulle, affiche l'état de contrôle et<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD>change l'attribut &quot;méta&quot;.<BR></TD></TR>
+<TR VALIGN=top><TD>12</TD><TD>active une correspondance nulle, affiche l'état de contrôle et<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD>active l'attribut &quot;méta&quot;. (le changement d'attribut méta sert<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD>à changer le bit de poids fort avant la conversion avec la table<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD>de correspondance).<BR></TD></TR>
+<TR VALIGN=top><TD>21</TD><TD>intensité normale (non compatible avec ECMA-48).<BR></TD></TR>
+<TR VALIGN=top><TD>22</TD><TD>intensité normale.<BR></TD></TR>
+<TR VALIGN=top><TD>24</TD><TD>pas de soulignement.<BR></TD></TR>
+<TR VALIGN=top><TD>25</TD><TD>pas de clignotement.<BR></TD></TR>
+<TR VALIGN=top><TD>27</TD><TD>pas d'inversion vidéo.<BR></TD></TR>
+<TR VALIGN=top><TD>30</TD><TD>encre noire.<BR></TD></TR>
+<TR VALIGN=top><TD>31</TD><TD>encre rouge.<BR></TD></TR>
+<TR VALIGN=top><TD>32</TD><TD>encre verte.<BR></TD></TR>
+<TR VALIGN=top><TD>33</TD><TD>encre marron.<BR></TD></TR>
+<TR VALIGN=top><TD>34</TD><TD>encre bleue.<BR></TD></TR>
+<TR VALIGN=top><TD>35</TD><TD>encre magenta.<BR></TD></TR>
+<TR VALIGN=top><TD>36</TD><TD>encre cyan.<BR></TD></TR>
+<TR VALIGN=top><TD>37</TD><TD>encre blanche.<BR></TD></TR>
+<TR VALIGN=top><TD>38</TD><TD>soulignement, et couleur d'encre par défaut.<BR></TD></TR>
+<TR VALIGN=top><TD>39</TD><TD>arrêt soulignement et couleur d'encre par défaut.<BR></TD></TR>
+<TR VALIGN=top><TD>40</TD><TD>fond noir.<BR></TD></TR>
+<TR VALIGN=top><TD>41</TD><TD>fond rouge.<BR></TD></TR>
+<TR VALIGN=top><TD>42</TD><TD>fond vert.<BR></TD></TR>
+<TR VALIGN=top><TD>43</TD><TD>fond marron.<BR></TD></TR>
+<TR VALIGN=top><TD>44</TD><TD>fond bleu.<BR></TD></TR>
+<TR VALIGN=top><TD>45</TD><TD>fond magenta.<BR></TD></TR>
+<TR VALIGN=top><TD>46</TD><TD>fond cyan.<BR></TD></TR>
+<TR VALIGN=top><TD>47</TD><TD>fond blanc.<BR></TD></TR>
+<TR VALIGN=top><TD>49</TD><TD>couleur de fond par défaut.<BR></TD></TR>
+</TABLE>
+
+<A NAME="lbAI">&nbsp;</A>
+<H3>Modes ECMA-48</H3>
+
+<DL COMPACT>
+<DT>ESC [ 3 h<DD>
+DECCRM (inactif par défaut): Afficher les caractères de contrôle.
+<DT>ESC [ 4 h<DD>
+DECIM (inactif par défaut): Mode d'insertion.
+<DT>ESC [ 20 h<DD>
+LF/NL (inactif par défaut): faire suivre les LF, VT ou FF par un CR.
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H3>Demande de rapport d'état ECMA-48</H3>
+
+<DL COMPACT>
+<DT>ESC [ 5 n<DD>
+Rapport d'état du périphérique (DSR): La réponse est ESC [ 0 n (Terminal OK).
+<DT>ESC [ 6 n<DD>
+Rapport de position du curseur (CPR): La réponse est ESC [ <I>y</I> ; <I>x</I> R,
+où <I>x,y</I> est la position actuelle du curseur.
+</DL>
+<A NAME="lbAK">&nbsp;</A>
+<H3>Modes privés DEC (DECSET/DECRST)</H3>
+
+Ces modes ne sont pas décrits dans l'ECMA-48. La liste ci-dessous
+présente les séquences d'activation des modes, les séquences de
+désactivation sont obtenues en remplaçant le `h' final par un `l'.
+<DL COMPACT>
+<DT>ESC [ ? 1 h<DD>
+DECCKM (inactif par défaut): Les touches de déplacement du curseur
+émettent un préfixe ESC O plutôt que ESC [.
+<DT>ESC [ ? 3 h<DD>
+DECCOLM (inactif par défaut): Bascule de 80 colonnes en 132 colonnes.
+Les sources du gestionnaire de console indiquent que ce code n'est pas
+suffisant à lui seul. Certains utilitaires comme
+<I><A HREF="/cgi-bin/man/man2html?8+resizecons">resizecons</A></I>(8)
+
+modifient également les registres matériels de la carte vidéo.
+<DT>ESC [ ? 5 h<DD>
+DECSCNM (inactif par défaut): Mode d'inversion vidéo.
+<DT>ESC [ ? 6 h<DD>
+DECOM (inactif par défaut): Adressage du curseur relatif au coin
+haut gauche de la région de défilement.
+<DT>ESC [ ? 7 h<DD>
+DECAWM (actif par défaut): saut de ligne automatique. Un caractère émis
+après la colonne 80 (ou 132 en mode DECCOLM), est affiché au début de
+la ligne suivante.
+<DT>ESC [ ? 8 h<DD>
+DECARM (actif par défaut): Répétition automatique des touches du clavier.
+<DT>ESC [ ? 9 h<DD>
+État de souris X10 (inactif par défaut): Fixe le mode de rapport d'état
+de la souris à 1 (ou le réinitialise à 0) - voir plus bas.
+<DT>ESC [ ? 25 h<DD>
+DECCM (actif par défaut): curseur visible.
+<DT>ESC [ ? 1000 h<DD>
+État de souris X11 (inactif par défaut): Fixe le mode de rapport d'état
+de la souris à 2 (ou le réinitialise à 0) - voir plus bas.
+
+</DL>
+<A NAME="lbAL">&nbsp;</A>
+<H3>Séquences CSI privées de la console Linux</H3>
+
+
+Les séquences suivantes ne sont ni ECMA-48 ni du VT102 original.
+Elles sont spécifiques au gestionnaire de console de Linux.  
+Les couleurs sont indiquées ainsi :
+0 = noir, 1 = rouge, 2 = vert, 3 = marron, 4 = bleu, 5 = magenta, 6 =
+cyan, 7 = blanc.
+<P>
+<TABLE>
+<TR VALIGN=top><TD>ESC [ 1 ; <I>n</I> ]</TD><TD>Choisit la couleur <I>n</I> pour simuler<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD>le soulignement.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC [ 2 ; <I>n</I> ]</TD><TD>Choisit la couleur <I>n</I> pour simuler<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD>la demi-brillance.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC [ 8 ]</TD><TD>Utilise la paire de couleurs actuelle par défaut.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC [ 9 ; <I>n</I> ]</TD><TD>Délai d'économiseur d'écran en minutes.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC [ 10 ; <I>n</I> ]</TD><TD>Fréquence du bip en Hz.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC [ 11 ; <I>n</I> ]</TD><TD>Durée du bip en ms.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC [ 12 ; <I>n</I> ]</TD><TD>Bascule sur la console virtuelle indiquée.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC [ 13 ]</TD><TD>Arrête l'économiseur d'écran.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC [ 14 ; <I>n</I> ]</TD><TD>Indique l'intervalle d'arrêt écran VESA en minutes.<BR></TD></TR>
+</TABLE>
+
+<P>
+<A NAME="lbAM">&nbsp;</A>
+<H2>JEUX DE CARACTÈRES</H2>
+
+<P>
+Le noyau connaît 4 types de traductions des octets en symboles graphiques
+pour la console. Les 4 tables sont a) Latin1 -&gt; PC,  b) VT100 graphique -&gt; PC,
+c) PC -&gt; PC, d) spécifique utilisateur.
+<P>
+Il existe deux jeux de caractères, appelés G0 et G1, et l'un d'entre eux
+est sélectionné comme jeu en cours (initialement G0).
+La frappe de ^N sélectionne le jeu G1 comme jeu en cours, la frappe de ^O
+sélectionne le jeu G0.
+<P>
+Ces variables G0 et G1 pointent vers des tables de traduction, qui peuvent
+être modifiées par l'utilisateur. Initialement elles pointent respectivement
+vers les tables a) et b).
+Les séquences 
+<I>ESC ( B</I>, <I>ESC ( 0</I>, <I>ESC ( U</I> et <I>ESC ( K</I>
+
+font pointer G0 respectivement vers les tables a), b), c) et d).
+Les séquences
+<I>ESC ) B</I>, <I>ESC ) 0</I>, <I>ESC ) U</I>, <I>ESC ) K</I>
+
+font pointer G1 vers les tables a), b), c) et d) respectivement.
+<P>
+La séquence ESC c réinitialise le terminal. C'est ce qui doit être effectué
+lorsque l'écran est rempli de codes incompréhensibles.
+La commande classique &quot;echo ^V^O&quot; sélectionne seulement le jeu G0,
+elle ne garantit pas que G0 pointe sur la table a).
+Dans certaines distributions, on trouve une commande
+<B><A HREF="/cgi-bin/man/man2html?1+reset">reset</A></B>(1)
+
+qui effectue simplement &quot;echo ^[c&quot;.
+Si l'entrée de la base terminfo pour la console est correcte, et dispose
+d'une entrée rs1=\Ec
+alors la commande &quot;tput reset&quot; fonctionnera aussi.
+<P>
+La table de correspondance définie par l'utilisateur peut être
+construite en utilisant
+<B><A HREF="/cgi-bin/man/man2html?8+mapscrn">mapscrn</A></B>(8).
+
+Cette correspondance agit ainsi : si le symbole c doit être imprimé, alors
+le symbole s = map[c] est envoyé à la mémoire vidéo. La représentation
+graphique correspondant à s est placée par défaut en mémoire morte, et 
+peut être modifiée en utilisant
+<B><A HREF="/cgi-bin/man/man2html?8+setfont">setfont</A>(8).</B>
+
+<P>
+<A NAME="lbAN">&nbsp;</A>
+<H2>GESTION DE SOURIS</H2>
+
+<P>
+Les possibilités de gestion de souris sont prévues pour fournir un rapport
+d'état de la souris compatible avec xterm.
+Comme le gestionnaire de console n'a aucun moyen de connaître le périphérique,
+ni le type de souris, ces rapports sont envoyés dans le flux de saisie
+de la console uniquement quand une requête ioctl de mise à jour de la souris
+est reçue.
+Ces requêtes doivent être déclenchées par une application utilisateur capable
+de gérer les souris, comme le démon <B><A HREF="/cgi-bin/man/man2html?8+gpm">gpm</A>(8)</B>.
+<P>
+Les paramètres numériques pour toutes les séquences de suivi de 
+souris engendrées par <I>xterm</I> sont encodés dans un unique
+caractère, de code <I>valeur</I>+040.  par exemple, `!' correspond à 1.
+Le système de coordonnées d'écran commence à 1.
+<P>
+En mode de compatibilité X10, une séquence d'échappement est envoyée
+lors de l'appui sur un bouton, encodant la position et le numéro du
+bouton pressé.
+Ce mode est activé avec ESC [ ? 9 h et désactivé par ESC [ ? 9 l.
+Lors d'une pression sur un bouton, <I>xterm</I> envoie
+ESC [ M <I>bxy</I> (6 caractères).  Dans ce message <I>b</I> correspond
+au numéro de bouton -1, <I>x</I> et <I>y</I> sont les coordonnées de 
+l'emplacement où le bouton a été pressé.
+Ce sont les mêmes codes que ceux produits par le noyau.
+<P>
+En mode de suivi normal (non implémenté sous Linux 2.0.24), une séquence
+d'échappement est envoyée lors de l'appui sur un bouton, mais aussi lors
+du relâchement. Des informations sur les touches de modification (SHIFT,
+CTL...) sont également envoyées.
+Le mode est activé par ESC [ ? 1000 h et désactivé avec ESC [ 1000 l.
+Lors de l'appui ou du relâchement d'un bouton, <I>xterm</I> envoie
+ESC [ M <I>bxy</I>. Les deux bits de poids faible de <I>b</I> correspondent
+à l'état du bouton 0=B1 pressé, 1=B2 pressé, 2=B3 pressé, 3=relâchement.
+Les bits de poids forts codent l'éventuelle touche modificatrice enfoncée
+lors de l'appui sur le bouton 4=Shift, 8=Méta, 16=Control. À nouveau <I>x</I>
+et <I>y</I> sont les coordonnées de la souris au moment de l'évènement. Le
+coin en haut à gauche de l'écran a pour coordonnées (1,1).
+<P>
+<A NAME="lbAO">&nbsp;</A>
+<H2>COMPARAISON AVEC D'AUTRES TERMINAUX</H2>
+
+<P>
+Beaucoup d'autres terminaux sont dits compatibles VT100, comme
+la console Linux. Nous allons voir ici les différences entre cette
+dernière et les deux types principaux de terminaux : le DEC VT102 et
+<I><A HREF="/cgi-bin/man/man2html?1+xterm">xterm</A></I>(1).
+
+
+<A NAME="lbAP">&nbsp;</A>
+<H3>Gestion des caractères de contrôle</H3>
+
+Le VT102 reconnaissait les caractères de contrôle supplémentaires suivants :
+<DL COMPACT>
+<DT>
+<DD>NUL (0x00) était ignoré.
+<DT>
+<DD>ENQ (0x05) renvoyait un message d'identification.
+<DT>
+<DD>DC1 (0x11, ^Q, XON) reprenait une transaction.
+<DT>
+<DD>DC3 (0x13, ^S, XOFF) demandait au vt100 d'ignorer tous les codes saufs
+XOFF et XON (et d'arrêter également de transmettre).
+</DL>
+<P>
+
+Une gestion de DC1/DC3 compatible VT100 pouvait être activé par le gestionnaire
+de terminaux.
+<P>
+
+Le programme
+<I>xterm</I>
+
+(en mode VT100) reconnaît les caractères de contrôle
+BEL, BS, HT, LF, VT, FF, CR, SO, SI, ESC.
+
+<A NAME="lbAQ">&nbsp;</A>
+<H3>Séquences d'échappement</H3>
+
+Les séquences d'échappement VT100 non implémentées sur la console Linux :
+<P>
+
+<TABLE>
+<TR VALIGN=top><TD>ESC N</TD><TD>SS2</TD><TD>Basculement G2 simple. (Sélectionner le jeu G2 pour le<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>caractère suivant uniquement)<BR></TD></TR>
+<TR VALIGN=top><TD>ESC O</TD><TD>SS3</TD><TD>Basculement G3 simple. (Sélectionner le jeu G3 pour le<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>caractère suivant uniquement)<BR></TD></TR>
+<TR VALIGN=top><TD>ESC P</TD><TD>DCS</TD><TD>Chaîne de contrôle de périphérique (terminée par ESC \)<BR></TD></TR>
+<TR VALIGN=top><TD>ESC X</TD><TD>SOS</TD><TD>Début de chaîne.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC ^</TD><TD>PM</TD><TD>Message privé (terminé par ESC \)<BR></TD></TR>
+<TR VALIGN=top><TD>ESC \</TD><TD>ST</TD><TD>Fin de chaîne<BR></TD></TR>
+<TR VALIGN=top><TD>ESC * ...</TD><TD></TD><TD>Désigne le jeu de caractère G2<BR></TD></TR>
+<TR VALIGN=top><TD>ESC + ...</TD><TD></TD><TD>Désigne le jeu de caractère G3<BR></TD></TR>
+</TABLE>
+
+<P>
+Le programme
+<I>xterm</I>
+
+(en mode VT100) reconnaît ESC c, ESC # 8, ESC &gt;, ESC =,
+ESC D, ESC E, ESC H, ESC M, ESC N, ESC O, ESC P ... ESC \,
+ESC Z (il répond ESC [ ? 1 ; 2 c, `Je suis un VT100 avec des
+options vidéo avancées')
+et ESC ^ ... ESC \ avec les mêmes significations que celles indiquées
+plus haut.
+Il accepte ESC (, ESC ), ESC *,  ESC + suivis de 0, A, B pour les caractères
+spéciaux DEC, les tracés de lignes, l'ASCII UK, et l'ASCII US,
+respectivement.
+Il accepte ESC ] pour fixer certaines ressources :
+<P>
+
+<TABLE>
+<TR VALIGN=top><TD>ESC ] 0 ; txt BEL</TD><TD>Utiliser txt pour le nom d'icône et le <BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD>titre de la fenêtre<BR></TD></TR>
+<TR VALIGN=top><TD>ESC ] 1 ; txt BEL</TD><TD>Utiliser txt pour le nom d'icône.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC ] 2 ; txt BEL</TD><TD>Utiliser txt pour le titre de la fenêtre.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC ] 4 6 ; nom BEL</TD><TD>Modifier le nom du fichier de journalisation<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD>(généralement désactivé à la compilation)<BR></TD></TR>
+<TR VALIGN=top><TD>ESC ] 5 0 ; fn BEL</TD><TD>Choisir la fonte fn<BR></TD></TR>
+</TABLE>
+
+<P>
+Les codes suivants ont une signification légèrement différente des
+codes originaux&nbsp;:
+<P>
+
+<TABLE>
+<TR VALIGN=top><TD>ESC 7  DECSC</TD><TD>Mémoriser l'emplacement du curseur.</TD><TD><BR></TD></TR>
+<TR VALIGN=top><TD>ESC 8  DECRC</TD><TD>Restaurer l'emplacement du curseur.</TD><TD><BR></TD></TR>
+</TABLE>
+
+<P>
+Il reconnaît également&nbsp;:
+<P>
+
+<TABLE>
+<TR VALIGN=top><TD>ESC F</TD><TD></TD><TD>Curseur en bas à gauche de l'écran (si activé par la<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>ressource hpLowerleftBugCompat)<BR></TD></TR>
+<TR VALIGN=top><TD>ESC l</TD><TD></TD><TD>Verrouillage mémoire (comme les terminaux HP).<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>verrouille la mémoire sous le curseur.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC m</TD><TD></TD><TD>Déverrouillage mémoire (comme les terminaux HP);<BR></TD></TR>
+<TR VALIGN=top><TD>ESC n</TD><TD>LS2</TD><TD>Invoque le jeu de caractères G2.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC o</TD><TD>LS3</TD><TD>Invoque le jeu de caractères G3.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC |</TD><TD>LS3R</TD><TD>Choisit le jeu G3 comme GR ([NDT] ??)<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>Pas d'effet visible dans un xterm.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC }</TD><TD>LS2R</TD><TD>Choisit le jeu G2 comme GR<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>Pas d'effet visible dans un xterm.<BR></TD></TR>
+<TR VALIGN=top><TD>ESC ~</TD><TD>LS1R</TD><TD>Choisit le jeu G1 comme GR<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD>Pas d'effet visible dans un xterm.<BR></TD></TR>
+</TABLE>
+
+<P>
+Il ne reconnaît pas ESC % ...
+<P>
+<A NAME="lbAR">&nbsp;</A>
+<H3>Séquences CSI</H3>
+
+Le programme
+<I>xterm</I>
+
+(avec XFree86 3.1.2G) ne reconnaît pas les séquences de clignotement
+ou d'invisibilité.
+La version de base sous X11R6 ne reconnaît pas les séquences de
+choix de couleur.
+Toutes les autres séquences ECMA-48 CSI reconnues par la console Linux
+sont reconnue par
+<I>xterm</I>,
+
+et inversement.
+<P>
+Le programme
+<I>xterm</I>
+
+reconnaîtra également toutes les séquences privées DEC citées plus haut,
+mais aucune séquence privée Linux.
+Pour plus de détail sur les séquences privées
+d'<I>xterm</I>
+
+consulter le document
+<I>Xterm Control Sequences</I>
+
+d'Edward Moy et Stephen Gildea, disponible avec la distribution X.
+<P>
+<A NAME="lbAS">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<P>
+Avec le noyau 2.0.23, CSI fonctionne mal, et les caractères NUL ne sont pas
+ignorés dans les séquences d'échappement.
+<P>
+<A NAME="lbAT">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?4+console">console</A></B>(4),
+
+<B><A HREF="/cgi-bin/man/man2html?4+console_ioctl">console_ioctl</A></B>(4),
+
+<B><A HREF="/cgi-bin/man/man2html?4+charsets">charsets</A></B>(4)
+
+<P>
+<A NAME="lbAU">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">COMMANDES DE LA CONSOLE LINUX</A><DD>
+<DL>
+<DT><A HREF="#lbAE">Caractères de contrôle</A><DD>
+<DT><A HREF="#lbAF">Séquences d'échappement ESC, non CSI</A><DD>
+<DT><A HREF="#lbAG">Séquences d'échappement ECMA-48 CSI</A><DD>
+<DT><A HREF="#lbAH">Affichage graphique ECMA-48</A><DD>
+<DT><A HREF="#lbAI">Modes ECMA-48</A><DD>
+<DT><A HREF="#lbAJ">Demande de rapport d'état ECMA-48</A><DD>
+<DT><A HREF="#lbAK">Modes privés DEC (DECSET/DECRST)</A><DD>
+<DT><A HREF="#lbAL">Séquences CSI privées de la console Linux</A><DD>
+</DL>
+<DT><A HREF="#lbAM">JEUX DE CARACTÈRES</A><DD>
+<DT><A HREF="#lbAN">GESTION DE SOURIS</A><DD>
+<DT><A HREF="#lbAO">COMPARAISON AVEC D'AUTRES TERMINAUX</A><DD>
+<DL>
+<DT><A HREF="#lbAP">Gestion des caractères de contrôle</A><DD>
+<DT><A HREF="#lbAQ">Séquences d'échappement</A><DD>
+<DT><A HREF="#lbAR">Séquences CSI</A><DD>
+</DL>
+<DT><A HREF="#lbAS">BOGUES</A><DD>
+<DT><A HREF="#lbAT">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAU">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:53 GMT, February 11, 2014
+</BODY>
+</HTML>

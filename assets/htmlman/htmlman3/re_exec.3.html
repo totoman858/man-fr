@@ -1,0 +1,112 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of RE_COMP</TITLE>
+</HEAD><BODY>
+<H1>RE_COMP</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+re_comp, re_exec - Fonction regex BSD.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/regex.h">regex.h</A>&gt;</B>
+
+<P>
+<B>char *re_comp (char *</B><I>regex</I><B>);</B>
+
+<BR>
+
+<B>int re_exec (char *</B><I>string</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>re_comp</B>
+
+permet de compiler une expression régulière, terminée par un caractère nul,
+et pointée par
+<I>regex</I>.
+
+Le motif compilé occupe une zone de mémoire statique, le buffer de motif,
+qui sera ecrasée par un autre appel à
+<B>re_comp</B>.
+
+Si
+<I>regex</I>
+
+vaut
+<B>NULL</B>,
+
+rien n'est effectué, et le contenu du buffer de motif n'est pas altéré.
+<P>
+<B>re_exec</B>
+
+est utilisé pour verifier si la chaîne terminée par un caractère nul, pointée
+par
+<I>string</I>
+
+correspond au motif précédemment compilé par
+<I>regex</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>re_comp</B>
+
+renvoie
+<B>NULL</B>
+
+s'il peut compiler correctement
+<I>regex,</I>
+
+sinon, il renvoie un pointeur sur le message d'erreur approprié.
+<P>
+<B>re_exec</B>
+
+renvoie 1 si la correspondance est exacte, zéro si elle échoue.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.3
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?7+regex">regex</A></B>(7),
+
+<B>Manuel regex GNU</B>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:51 GMT, February 11, 2014
+</BODY>
+</HTML>

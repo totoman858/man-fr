@@ -1,0 +1,107 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TOUPPER</TITLE>
+</HEAD><BODY>
+<H1>TOUPPER</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+toupper, tolower - Conversion de lettres en majuscules ou minuscules.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/ctype.h">ctype.h</A>&gt;</B>
+
+<B>int toupper (int </B><I>c</I><B>);</B>
+<B>int tolower (int </B><I>c</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>toupper()</B>
+
+convertit la lettre 
+<I>c</I>
+
+en majuscule si c'est possible.
+<P>
+
+<B>tolower()</B>
+
+convertit la lettre 
+<I>c</I>
+
+en minuscule si c'est possible.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La valeur renvoyée est celle de la lettre convertie, ou bien
+<I>c</I>
+
+si la conversion n'etait pas possible.
+<P>
+
+Si
+<I>c</I>
+
+n'est ni un caractère non-signé, ni EOF, le comportement de ces
+fonctions est imprévisible.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ANSI C, BSD 4.3
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+La définition de &quot;majuscule&quot; et &quot;minuscule&quot; dépend de la localisation.
+Par exemple la localisation
+<B>C</B>
+
+par défaut ne connait rien concernant les accents, et n'effectue alors
+aucune conversion.
+<P>
+
+Dans certaines langues, des lettres minuscules n'ont pas d'équivalent
+majuscule.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+isalpha">isalpha</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setlocale">setlocale</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?7+locale">locale</A></B>(7)
+
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:16 GMT, February 11, 2014
+</BODY>
+</HTML>

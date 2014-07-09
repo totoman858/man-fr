@@ -1,0 +1,120 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of UNIQ</TITLE>
+</HEAD><BODY>
+<H1>UNIQ</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+uniq - Éliminer les lignes dupliquées dans un fichier trié.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>uniq</B>
+
+[-cdu] [-f nb_champs] [-s nb_caractères] [-w nb_caractères]
+[-#nb_champs] [+#nb_caractères] [--count] [--repeated] [--unique]
+[--skip-fields=nb_champs] [--skip-chars=nb_caractères]
+[--check-chars=nb_caractères] [--help] [--version] [fichier_entrée] [fichier_sortie]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>uniq</B>.
+
+<P>
+<B>uniq</B>
+
+affiche les lignes uniques d'un fichier trié, ne conservant qu'un seul
+exemplaire de celles dupliquées. 
+<P>
+Il peut également ne montrer que les
+lignes n'apparaissant qu'une seule fois, ou celles apparaissant plusieurs
+fois.
+<P>
+<B>uniq</B>
+
+réclame que le fichier d'entrée soit trié car il ne compare que les 
+lignes consécutives.
+<P>
+
+Si le fichier de sortie n'est pas mentionné, 
+<B>uniq</B>
+
+écrit sur la sortie standard.
+Si le fichier d'entrée n'est pas précise non plus,
+<B>uniq</B>
+
+lit depuis l'entrée standard.
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><I>-u, --unique</I>
+
+<DD>
+N'afficher que les lignes uniques.
+<DT><I>-d, --repeated</I>
+
+<DD>
+N'afficher que les lignes dupliquées.
+<DT><I>-c, --count</I>
+
+<DD>
+Afficher également le nombre d'occurrences de chaque ligne.
+<DT><I>-nombre, -f, --skip-fields=nombre</I>
+
+<DD>
+Ignorer <I>nombre</I> champs avant de vérifier l'unicité. Les
+<I>nombre</I> premiers champs, et tous les blancs qu'ils contiennent
+sont ignorés. Les champs sont définis comme des chaînes de caractères
+non-blancs, séparées par des espaces ou des tabulations.
+<DT><I>+nombre, -s, --skip-chars=nombre</I>
+
+<DD>
+Ignorer <I>nombre</I> caractères avant de vérifier l'unicité.
+Si l'on utilise conjointement cette option et l'option --skip-fileds,
+les champs sont sautés préalablement avant de sauter les caractères.
+<DT><I>-w, --check-chars=nombre</I>
+
+<DD>
+Ne comparer que <I>nombre</I> caractères de chaque ligne, après avoir
+éventuellement sauté les champs et les caractères indiqués.
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et se terminer normalement.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et se terminer normalement.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:43 GMT, February 11, 2014
+</BODY>
+</HTML>

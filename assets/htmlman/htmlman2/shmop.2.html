@@ -1,0 +1,392 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SHMOP</TITLE>
+</HEAD><BODY>
+<H1>SHMOP</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+shmop, shmat, shmdt - Opérations sur la mémoire partagée.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/shm.h">sys/shm.h</A>&gt;</B>
+</PRE>
+
+<P>
+<B>void *shmat ( int </B><I>shmid</I><B>,</B>
+
+<B>const void * </B><I>shmaddr</I><B>,</B>
+
+<B>int </B><I>shmflg</I><B>);</B>
+
+<P>
+<B>int shmdt (const void * </B><I>shmaddr</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>shmat</B>
+
+attache le segment de mémoire partagée identifié par
+<B>shmid</B>
+
+au segment de données du processus appelant.
+L'adresse d'attachement est indiquée par
+<I>shmaddr</I>
+
+avec les critères suivants&nbsp;:
+<DL COMPACT>
+<DT><DD>
+Si
+<I>shmaddr</I>
+
+vaut
+<B>NULL</B>,
+
+le système essaye de trouver une adresse libre pour attacher
+le segment.
+<DT><DD>
+Si
+<I>shmaddr</I>
+
+n'est pas
+<B>NULL</B>
+
+et si
+<B>SHM_RND</B>
+
+est indiqué dans
+<I>shmflg</I>,
+
+l'attachement a lieu à l'adresse 
+<I>shmaddr</I>
+
+arrondie au multiple inférieur de
+<B>SHMLBA</B>.
+
+Sinon
+<I>shmaddr</I>
+
+doit être alignée sur une frontière de page, où l'attachement a lieu.
+</DL>
+<P>
+
+Si
+<B>SHM_RDONLY</B>
+
+est indiqué dans
+<I>shmflg</I>,
+
+le segment est attaché en lecture seulement, et le processus doit disposer
+de la permission de lecture dessus. Sinon le segment est attaché en lecture
+et écriture et le processus doit disposer des deux permissions d'accès.
+Il n'y a pas de notion d'écriture seule pour les
+segments de mémoire partagée.
+<P>
+
+L'option (spécifique à Linux)
+<B>SHM_REMAP</B>
+
+peut être ajoutée dans
+<I>shmflg</I>
+
+pour indiquer que la projection du segment doit remplacer une projection
+précédente dans l'intervalle commençant en
+<I>shmaddr</I>
+
+et s'étendant sur la taille du segment.
+(Normalement une erreur
+<B>EINVAL</B>
+
+se produirait si une projection existait déjà dans l'intervalle indiqué).
+Dans ce cas,
+<I>shmaddr</I>
+
+ne doit pas être
+<B>NULL</B>.
+
+<P>
+
+La valeur
+<B>brk</B>
+
+du processus appelant n'est pas altérée par l'attachement. Le segment est
+automatiquement détaché quand le processus se termine. Le même segment peut être
+attaché à la fois en lecture seule et en lecture/écriture. Il peut également
+être attaché en plusieurs endroits de l'espace d'adressage du processus.
+<P>
+
+Si 
+<B>shmat</B>
+
+réussit, les membres de la structure
+<B>shmid_ds</B>
+
+associée au segment de mémoire partagée sont mis à jour ainsi :
+<DL COMPACT>
+<DT><DD>
+<B>shm_atime</B>
+
+correspond à l'heure actuelle.
+<DT><DD>
+<B>shm_lpid</B>
+
+contient le PID de l'appelant.
+<DT><DD>
+<B>shm_nattch</B>
+
+est incrémenté de 1
+</DL>
+<P>
+
+Notez que l'attachement réussit même si le segment de mémoire est
+marqué pour destruction.
+<P>
+
+La fonction
+<B>shmdt</B>
+
+détache le segment de mémoire partagée situe à l'adresse indiquée par
+<I>shmaddr</I>.
+
+Le segment doit être effectivement attaché, et l'adresse
+<I>shmaddr</I>
+
+doit être celle renvoyée précédement par
+<B>shmat.</B>
+
+<P>
+
+Quand
+<B>shmdt</B>
+
+réussit, les membres de la structure
+<B>shmid_ds</B>
+
+associée au segment de mémoire partagée sont mis à jour ainsi :
+<DL COMPACT>
+<DT><DD>
+<B>shm_dtime</B>
+
+correspond à l'heure actuelle.
+<DT><DD>
+<B>shm_lpid</B>
+
+contient le PID de l'appelant.
+<DT><DD>
+<B>shm_nattch</B>
+
+est décrémenté de 1. S'il devient nul, et si le
+segment est marqué pour destruction, il est
+effectivement détruit.
+</DL>
+<P>
+
+La région occupée de l'espace d'adressage du processus est
+libérée.
+<P>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>AUTRES APPELS SYSTÈMES</H2>
+
+<DL COMPACT>
+<DT><B>fork()</B>
+
+<DD>
+Après un
+<B>fork()</B>
+
+le fils hérite des segments de mémoire partagée.
+<DT><B>exec()</B>
+
+<DD>
+Après un
+<B>exec()</B>
+
+tous les segments de mémoire partagée sont détachés (pas détruits).
+<DT><B>exit()</B>
+
+<DD>
+Lors d'un
+<B>exit()</B>
+
+tous les segments de mémoire partagée sont détachés (pas détruits).
+</DL>
+<P>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Les deux fonctions renvoient
+<B>-1</B>
+
+si elles échouent, auquel cas
+<B>errno</B>
+
+contient le code d'erreur.
+Sinon
+<B>shmat</B>
+
+renvoie l'adresse d'attachement du segment de mémoire partagée, et
+<B>shmdt</B>
+
+renvoie
+<B>0</B>.
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<B>shmat</B> :
+
+<DL COMPACT>
+<DT><B>EACCES</B>
+
+<DD>
+L'appelant n'a pas les permissions d'accès nécessaires pour l'attachement.
+<DT><B>EINVAL</B>
+
+<DD>
+<I>shmid</I>
+
+est invalide,
+<I>shmaddr</I>
+
+est mal alignée,
+ou
+<B>SH_REMAP</B>
+
+a été réclamé et
+<I>shmaddr</I>
+
+est
+<B>NULL</B>.
+
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour le système.
+</DL>
+<P>
+
+<B>shmdt</B> :
+
+<DL COMPACT>
+<DT><B>EINVAL</B>.
+
+<DD>
+Pas de segment attaché à l'adresse
+<I>shmaddr.</I>
+
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Utiliser
+<B>shmat</B>
+
+avec 
+<I>shmaddr</I>
+
+éggale à
+<B>NULL</B>
+
+est la manière conseillée, portable, d'attecher un segment de mémoire partagé.
+Soyez conscients que le segment attaché de cette manière peut l'être à
+des adresses différentes dans les différents processus.
+Ainsi, tout pointeur contenu dans la mémoire partagé doit être relatif
+(typiquement par rapport au début du segment) et pas
+absolu.
+<P>
+
+Les paramètres système suivant influent sur
+<B>shmat</B> :
+
+<DL COMPACT>
+<DT><B>SHMLBA</B>
+
+<DD>
+Multiple pour l'adresse de début de segment.
+Doit être aligné sur une frontière de page.
+Pour l'implémentation actuelle,
+<B>SHMBLA</B>
+
+à la même valeur que
+<B>PAGE_SIZE</B>.
+
+</DL>
+<P>
+
+L'implémentation n'a pas de limite intrinsèque pour le nombre maximal de
+segment de mémoire partagée par processus.
+(<B>SHMSEG</B>).
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID. SVr4 mentionne une condition d'erreur supplémentaire EMFILE.
+Dans SVID-v4 le type de l'argument <I>shmaddr</I> a été modifié de
+<B>char *</B>
+
+en
+<B>const void *</B>,
+
+et le type de retour de <I>shmat</I>() de
+<B>char *</B>
+
+en
+<B>void *</B>.
+
+(Les bibliothèques Linux libc4 et libc5 avaient le prototype
+<B>char * ,</B>
+
+la GlibC 2 celui
+<B>void *</B>).
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+brk">brk</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?5+ipc">ipc</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+shmctl">shmctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+shmget">shmget</A></B>(2).
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">AUTRES APPELS SYSTÈMES</A><DD>
+<DT><A HREF="#lbAF">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAG">ERREURS</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:56 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,274 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of defoma</TITLE>
+</HEAD><BODY>
+<H1>defoma</H1>
+Section: User Commands  (1)<BR>Updated: 4 mars 2001<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+defoma - gestionnaire de polices Debian, outil de configuration automatique 
+des polices.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>defoma-font</B>
+
+[<I>options</I>]
+
+<I>commande arguments</I>
+
+<BR>
+
+<B>defoma-app</B>
+
+[<I>options</I>]
+
+<I>commande arguments</I>
+
+<BR>
+
+<B>defoma-subst</B>
+
+[<I>options</I>]
+
+<I>commande arguments</I>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Defoma signifie « Debian Font Manager ». C'est l'outil de configuration
+des polices de Debian. Cette page est une introduction à Defoma. 
+Reportez-vous aux pages de manuel de defoma-font, defoma-app 
+ou defoma-subst pour plus d'information sur chaque commande. 
+<P>
+
+Bien que les polices soient en général partagées par plusieurs applications, 
+il n'y a pas d'outil permettant de configurer les polices
+pour chaque application, par exemple, pour les applications
+de haut niveau comme les traitements de texte et les programmes
+de dessin vectoriel.
+Defoma propose une solution à ce problème. Quand une police est installée
+ou retirée, Defoma met à jour la configuration 
+des polices pour chaque application via un script propre à chaque
+application.
+<P>
+
+Le
+<B>script de configuration Defoma</B>
+
+est un script perl que l'application devrait installer sous le nom
+
+<I>nom-application.defoma</I>
+
+dans 
+/usr/share/defoma/scripts
+
+
+, il prend en charge la configuration d'une police pour une application.
+Voici un exemple de script, il s'agit de
+
+foo.defoma.
+
+<PRE>
+
+@ACCEPT_CATEGORIES = qw(type1 truetype);
+
+package foo;
+
+sub type1 {
+  my $com = shift;
+  ...
+}
+
+sub truetype {
+  my $com = shift;
+  ...
+}
+
+1;
+
+</PRE>
+
+Cet exemple est le script qui configure les polices 
+<I>truetype </I>
+
+et 
+<I>type1 </I>
+
+de l'application
+<I>foo</I>.
+
+Les fonctions portent le nom du type de police, elles sont appelées
+par Defoma qui leur passe une commande et des arguments.
+Voici la liste des commandes&nbsp;:
+<P>
+<PRE>
+* register
+* unregister
+* do-install-real do-install-alias do-install-subst
+* do-remove-real do-remove-alias do-remove-subst
+* init
+* term
+* purge
+</PRE>
+
+<P>
+Les commandes
+<I>do-install-* </I>et<I> do-remove-*</I>
+
+sont appelées par la
+<B>base de référence (id cache)</B>
+
+et ne sont pas utilisées en pratique, à moins que le script n'y fasse
+explicitement appel.
+<I>init</I> et <I>term</I>
+
+sont appelées, respectivement, avant le début de l'inscription et après
+la fin de la désinscription.
+<P>
+
+La
+<B>base de référence</B>
+
+est une autre caractéristique de Defoma.
+La configuration automatique soulève le problème  des conflits
+d'espaces de noms. D'habitude, les applications appellent les
+polices par leur nom logique (les noms 
+de polices XLFD et Postscript) plutôt que par leur nom propre
+(le nom du fichier de police). Les noms logiques, appelés identifiants
+par Defoma, peuvent rapidement entrer en conflit, surtout si
+l'utilisation des alias est autorisée. 
+Le fonctionnement de la base de référence permet de faire correspondre à
+un identifiant une seule police installée,
+même si plusieurs polices ont le même identifiant.
+<P>
+
+La
+<B>substitution d'identifiant</B>
+
+est une caractéristique supplémentaire de la
+<B>base&nbsp;de&nbsp;référence</B>.
+
+<P>
+<P>
+Elle permet à une police donnée de fournir un identifiant donné spécifié
+dans un fichier de règle. Un fichier de règle décrit les règles,
+c'est-à-dire les identifiants devant
+être substitués (autrement dit, requis) et les indications qui leur
+sont
+associées. Les règles permettent, dans le cas d'un identifiant requis,
+d'avoir des polices plus ressemblantes avec la même substitution, pour 
+un identifiant requis. Cette fonctionnalité peut également être utilisée
+pour créer des correspondances entre polices de différentes catégories.
+<P>
+
+<B>category</B>
+
+est le type d'une police. La configuration de polices de même type
+est souvent similaire, ceci permet donc de regrouper les configurations
+semblables dans le script.
+<P>
+
+<B>indications (hints)</B>
+
+regroupent les caractéristiques principales de la police, représentées 
+par une liste de types d'indication avec leur valeurs associées.
+Elles peuvent être spécifiées sur la ligne de commande de defoma-font
+ou dans un 
+<B>fichier&nbsp;d'indications&nbsp;(hintfile)</B>.
+
+<P>
+
+Le
+<B>fichier d'indications</B>
+
+est un fichier contenant plusieurs indications, pour une ou plusieurs
+polices. Comme il est placé dans
+
+/etc/defoma/hints
+
+, les utilisateurs peuvent modifier eux-mêmes les indications.
+<B>defoma-hints</B>
+
+est l'outil qui fabrique les fichiers d'indications, vous
+n'avez donc pas à écrire ces fichiers à la main.
+Voici une exemple de fichier d'indications&nbsp;:
+<P>
+<PRE>
+category type1
+begin /usr/share/fonts/type1/foo.pfa
+  FontName = Helvetica
+  Charset = ISO8859-1
+  Family = Helvetica
+  Weight = Medium
+  Shape = Upright NoSerif
+  GeneralFamily = SansSerif
+  X-FontName = -urw-helvetica-medium-r-noraml--0-0-0-0-p-iso8859-1
+end
+begin /usr/share/fonts/type1/foob.pfa
+  FontName = Helvetica-Bold
+  Charset = ISO8859-1
+  Family = Helvetica
+  Weight = Bold
+  Shape = Upright NoSerif
+  GeneralFamily = SansSerif
+  X-FontName = -urw-helvetica-bold-r-noraml--0-0-0-0-p-iso8859-1
+end
+</PRE>
+
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+defoma-font">defoma-font</A></B>(1).
+
+<B><A HREF="/cgi-bin/man/man2html?1+defoma-app">defoma-app</A></B>(1).
+
+<B><A HREF="/cgi-bin/man/man2html?1+defoma-subst">defoma-subst</A></B>(1).
+
+<B><A HREF="/cgi-bin/man/man2html?1+defoma-hints">defoma-hints</A></B>(1).
+
+<B><A HREF="/cgi-bin/man/man2html?1+defoma-psfont-installer">defoma-psfont-installer</A></B>(1).
+
+<B><A HREF="/cgi-bin/man/man2html?1+defoma-reconfigure">defoma-reconfigure</A></B>(1).
+
+<B><A HREF="/cgi-bin/man/man2html?3pm+Defoma::Font">Defoma::Font</A></B>(3pm).
+
+<B><A HREF="/cgi-bin/man/man2html?3pm+Defoma::Id">Defoma::Id</A></B>(3pm).
+
+<B><A HREF="/cgi-bin/man/man2html?3pm+Defoma::Subst">Defoma::Subst</A></B>(3pm).
+
+<B><A HREF="/cgi-bin/man/man2html?3pm+Defoma::Common">Defoma::Common</A></B>(3pm).
+
+
+/usr/share/doc/defoma-doc/developers.html/index.html
+<BR>
+
+/usr/share/doc/defoma-doc/defoma-script.html/index.html
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Antoine Gémis &lt;<A HREF="mailto:agemis@netuup.com">agemis@netuup.com</A>&gt;.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:41 GMT, February 11, 2014
+</BODY>
+</HTML>

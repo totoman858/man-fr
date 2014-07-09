@@ -1,0 +1,366 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of NANO</TITLE>
+</HEAD><BODY>
+<H1>NANO</H1>
+Section: User Commands  (1)<BR>Updated: version 1.3.11<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+
+
+
+<P>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+nano - NAno un NOuvel éditeur, un clone libre et amélioré de Pico
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>nano</B>
+
+<I>[+LIGNE,COLONNE]&nbsp;[options]&nbsp;[fichier]</I>
+
+<BR>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel décrit brièvement la commande <B>nano</B>.
+<P>
+
+
+
+
+<B>nano</B> est un éditeur petit, sympathique et libre, qui vise à remplacer
+Pico, l'éditeur par défaut du logiciel non libre Pine. <B>nano</B> ne se
+contentant pas de copier l'interface et l'ergonomie de Pico, il offre
+également certaines fonctions manquantes (ou désactivées par défaut)
+dans Pico. Ces fonctionnalités sont, par exemple, les fonctions de
+recherche et de remplacement, et la possibilité de sauter directement à un
+numéro de ligne.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>+</B><I>LIGNE</I>,<I>COLONNE</I>
+
+<DD>
+Démarre avec le curseur positionné à la colonne <I>COLONNE</I> de 
+la ligne <I>LIGNE</I> au lieu de démarrer à la colonne&nbsp;1, ligne&nbsp;1.
+<DT><B>-?</B>
+
+<DD>
+Identique à <B>-h (--help)</B>.
+<DT><B>-A (--smarthome)</B>
+
+<DD>
+Rend plus malin le fonctionnement de la touche «&nbsp;Début&nbsp;». Lorsque l'on
+appuie sur cette touche à n'importe quel endroit excepté au tout début
+du texte d'une ligne (i.&nbsp;e. au premier caractère non blanc), le curseur
+se positionnera au début du texte de la ligne (qu'il soit en avant ou en
+arrière). Si le curseur est déjà là, il se placera au vrai début de la
+ligne.
+<DT><B>-B (--backup)</B>
+
+<DD>
+Lors de l'écriture d'un fichier, crée une copie de sécurité de la
+version précédente, en ajoutant un tilde (~) au nom du fichier.
+<DT><B>-C </B><I>répertoire</I> (--backupdir=<I>répertoire</I>)
+
+<DD>
+Définit le répertoire utilisé par <B>nano</B> pour enregistrer les copies 
+de sécurité uniques si celles-ci sont activées.
+<DT><B>-E (--tabstospaces)</B>
+
+<DD>
+Convertit les tabulations clavier en espaces.
+<DT><B>-F (--multibuffer)</B>
+
+<DD>
+Active le mode multi-espace, autorisant l'édition simultanée de 
+plusieurs fichiers, si ce mode est disponible.
+<DT><B>-H (--historylog)</B>
+
+<DD>
+Enregistre les chaînes ayant fait l'objet d'une recherche ou d'un
+remplacement dans le fichier <I>~/.nano_history</I> afin de permettre leur
+réutilisation. Ceci n'est possible que si <B>nano</B> est configuré pour
+utiliser les fichiers nanorc.
+<DT><B>-I (--ignorercfiles)</B>
+
+<DD>
+Ne pas utiliser pas les fichiers <I>SYSCONFDIR/nanorc</I> et 
+<I>~/.nanorc</I> (si <B>nano</B> est capable de les utiliser).
+<DT><B>-K (--rebindkeypad)</B>
+
+<DD>
+Interprète les touches du pavé numérique afin qu'elles fonctionnent 
+toutes correctement. Vous ne devriez utiliser cette option que si ce 
+n'est pas le cas, car nano ne sera plus capable d'utiliser la souris 
+correctement lorsque cette option sera activée.
+<DT><B>-L (--nonewlines)</B>
+
+<DD>
+Ne pas ajouter de passage à la ligne à la fin des fichiers.
+<DT><B>-N (--noconvert)</B>
+
+<DD>
+Désactive la conversion automatique des fichiers depuis les formats Mac et
+DOS.
+<DT><B>-O (--morespace)</B>
+
+<DD>
+Utiliser la ligne blanche située sous la ligne de titre comme
+espace supplémentaire d'édition.
+<DT><B>-Q </B><I>chaîne</I> (--quotestr=<I>chaîne</I>)
+
+<DD>
+Définit le préfixe par défaut des citations. Nano utilise ce préfixe
+pour réaliser une justification correcte des citations. Si nano est
+capable d'utiliser des expressions rationnelles, le préfixe par défaut
+sera &quot;<I>^([&nbsp;\t]*[#:&gt;\|}])+</I>&quot;, sinon, ce sera &quot;<I>&gt;&nbsp;</I>&quot;.
+<DT><B>-R (--restricted)</B>
+
+<DD>
+Mode restreint&nbsp;: aucune lecture ou écriture de fichiers non indiqués 
+sur la ligne de commande, pas de lecture des fichiers nanorc, 
+interdiction de suspendre, interdiction d'ajouter au début, à la fin 
+ou de sauvegarder un fichier ayant déjà un nom sous un nom différent. 
+Cette option peut aussi être activée en appelant <B>nano</B> sous un nom 
+commençant par «&nbsp;r&nbsp;» (par exemple «&nbsp;rnano&nbsp;»).
+<DT><B>-S (--smooth)</B>
+
+<DD>
+Active le défilement progressif. Le texte défilera ligne-par-ligne au lieu
+de défiler morceau-par-morceau.
+<DT><B>-T </B><I>nombre</I> (--tabsize=<I>nombre</I>)
+
+<DD>
+Définit la taille (largeur) des tabulations en nombre de colonnes. Le 
+nombre indiqué doit être strictement supérieur à 0. La valeur par défaut 
+est de 8.
+<DT><B>-U (--quickblank)</B>
+
+<DD>
+Effacement rapide de la ligne d'état. Les messages affichés par la ligne 
+d'état disparaîtront après une frappe clavier au lieu de 25. Notez que
+<B>-c</B> annule cette option.
+<DT><B>-V (--version)</B>
+
+<DD>
+Affiche le numéro de version et l'auteur.
+<DT><B>-W (--wordbounds)</B>
+
+<DD>
+Détection plus précise des limites de mots, obtenue en considérant les 
+caractères de ponctuation comme faisant partie des mots.
+<DT><B>-Y </B><I>chaîne</I> (--syntax=<I>chaîne</I>)
+
+<DD>
+Indique quel mode de colorisation syntaxique adopter, parmi les modes
+définis dans le fichier <I>.nanorc</I>, si cette fonctionnalité est
+disponible.
+<DT><B>-c (--const)</B>
+
+<DD>
+Affiche en permanence la position du curseur. Notez que cette option 
+annule l'option <B>-U</B>.
+<DT><B>-d (--rebinddelete)</B>
+
+<DD>
+Interprète différemment la touche «&nbsp;Supprimer&nbsp;», afin que les touches 
+«&nbsp;Effacement arrière&nbsp;» et «&nbsp;Supprimer&nbsp;» fonctionnent correctement. 
+Vous ne devriez avoir besoin de cette option que si, sur votre système, 
+la touche «&nbsp;Effacement arrière&nbsp;» produit l'effet de la touche
+«&nbsp;Supprimer&nbsp;».
+<DT><B>-h (--help)</B>
+
+<DD>
+Affiche un résumé des options disponibles en ligne de commande.
+<DT><B>-i (--autoindent)</B>
+
+<DD>
+Indentation automatique. Commence chaque nouvelle ligne au même niveau que
+la ligne précédente. Utile pour l'édition de code source.
+<DT><B>-k (--cut)</B>
+
+<DD>
+Coupe le texte du curseur à la fin de la ligne, au lieu de couper la 
+ligne entière.
+<DT><B>-l (--nofollow)</B>
+
+<DD>
+Si le fichier édité est un lien symbolique, au lieu de le suivre, 
+remplace le lien par le nouveau fichier. Sans doute utile pour éditer 
+les fichiers de <I>/tmp</I>, non&nbsp;?
+<DT><B>-m (--mouse)</B>
+
+<DD>
+Active l'utilisation de la souris (si elle est disponible pour votre
+système).
+<DT><B>-o </B><I>répertoire</I> (--operatingdir=<I>répertoire</I>)
+
+<DD>
+Définit le répertoire de travail. Demande à <B>nano</B> de mettre en place
+quelque chose de similaire à un environnement d'exécution restreint
+(<I>chroot</I>).
+<DT><B>-p (--preserve)</B>
+
+<DD>
+Préserve les séquences XON et XOFF (^Q et ^S), afin qu'elle soient reçues
+par le terminal.
+<DT><B>-r </B><I>colonne</I> (--fill=<I>colonne</I>)
+
+<DD>
+Passe automatiquement à la ligne une fois arrivé à la colonne 
+<I>colonne</I>. Si la valeur indiquée est de 0 ou moins, le point de 
+passage à la ligne aura lieu à la taille de l'écran moins <I>colonne</I>. 
+Cela permet de faire varier le point de passage à la ligne lorsque l'on 
+change la taille de l'écran. La valeur par défaut est de -8.
+<DT><B>-s </B><I>programme</I> (--speller=<I>programme</I>)
+
+<DD>
+Choix d'un correcteur orthographique de remplacement.
+<DT><B>-t (--tempfile)</B>
+
+<DD>
+S'il a été modifié, le fichier sera sauvegardé automatiquement sans
+demande de confirmation. Identique à l'option <B>-t</B> de Pico.
+<DT><B>-v (--view)</B>
+
+<DD>
+Mode visualisation (lecture seule).
+<DT><B>-w (--nowrap)</B>
+
+<DD>
+Désactive le passage automatique à la ligne.
+<DT><B>-x (--nohelp)</B>
+
+<DD>
+Désactive la barre d'aide affichée en bas de l'écran.
+<DT><B>-z (--suspend)</B>
+
+<DD>
+Autorise à suspendre l'éditeur.
+<DT><B>-a, -b, -e, -f, -g, -j</B>
+
+<DD>
+Ignoré, pour être compatible avec Pico.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS D'INITIALISATION</H2>
+
+<B>nano</B> lit les fichiers d'initialisation dans l'ordre suivant&nbsp;: 
+<I>SYSCONFDIR/nanorc</I>, puis <I>~/.nanorc</I>. Référez-vous à la page de 
+manuel de <B><A HREF="/cgi-bin/man/man2html?5+nanorc">nanorc</A>(5)</B> et au fichier d'exemple <I>nanorc.sample</I>, 
+qui devraient tous les deux être livrés avec <B>nano</B>.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Si aucun correcteur orthographique de remplacement n'est indiqué dans la 
+ligne de commande ou dans l'un des fichiers nanorc, <B>nano</B> prendra 
+la commande indiquée par la variable d'environnement <B>SPELL</B> si 
+elle est définie.
+<P>
+Dans certains cas, <B>nano</B> essaiera de sauvegarder le fichier en cours
+d'édition dans un fichier de secours. Cela arrivera principalement si
+<B>nano</B> reçoit un signal SIGHUP ou SIGTERM, ou bien se trouve à court de
+mémoire. Le nom de ce fichier de secours sera <I>nano.save</I> si le fichier en
+cours n'avait pas encore de nom, ou sera composé du nom du fichier en cours
+suivi du suffixe «&nbsp;.save&nbsp;». Si un fichier de ce nom existe déjà dans
+le répertoire, un «&nbsp;.save&nbsp;» et un nombre seront ajoutés à la fin du
+nom du fichier en cours afin de le rendre unique (par exemple,
+«&nbsp;.save.1&nbsp;»). En mode multi-espace, <B>nano</B> réalisera une
+sauvegarde de tous les fichiers en cours dans leurs fichiers de secours
+respectifs.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Merci de nous faire parvenir vos commentaires et de nous signaler les
+bogues, en écrivant, en anglais, à <B><A HREF="mailto:nano@nano-editor.org">nano@nano-editor.org</A></B>.
+<P>
+La liste de discussion anglophone <B>nano</B> est disponible à l'adresse
+<B><A HREF="mailto:nano-devel@gnu.org">nano-devel@gnu.org</A></B>.
+<P>
+Pour vous abonner, envoyez un courrier électronique à
+<B><A HREF="mailto:nano-devel-request@gnu.org">nano-devel-request@gnu.org</A></B>, ayant pour objet «&nbsp;subscribe&nbsp;».
+<P>
+N'hésitez pas également à envoyez vos commentaires, suggestions et 
+corrections relatives à l'adaptation française de cette page de manuel 
+ou du logiciel à <B><A HREF="mailto:jean-philippe.guerard@corbeaunoir.org">jean-philippe.guerard@corbeaunoir.org</A></B>.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>SITE INTERNET</H2>
+
+<A HREF="http://www.nano-editor.org/">http://www.nano-editor.org/</A>
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+
+<DL COMPACT>
+<DT><B><A HREF="/cgi-bin/man/man2html?5+nanorc">nanorc</A></B>(5)<DD>
+</DL>
+<P>
+
+<I>/usr/share/doc/nano/</I> (ou son équivalent sur votre système)
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Chris Allegretta &lt;<A HREF="mailto:chrisa@asty.org">chrisa@asty.org</A>&gt; et d'autres (voir les fichiers 
+<I>AUTHORS</I> et <I>THANKS</I> pour plus d'information). Cette page de 
+manuel a été initialement rédigée par Jordi Mallach 
+&lt;<A HREF="mailto:jordi@sindominio.net">jordi@sindominio.net</A>&gt; pour le système GNU Debian (mais elle peut être 
+utilisée par d'autres).
+<P>
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Cette adaptation française a été réalisé par Jean-Philippe&nbsp;Guérard 
+&lt;<A HREF="mailto:jean-philippe.guerard@corbeaunoir.org">jean-philippe.guerard@corbeaunoir.org</A>&gt; le 6&nbsp;avril&nbsp;2006 à partir 
+de la version du 5&nbsp;avril&nbsp;2006 de la page de manuel de nano 1.3.11. 
+Cette version a été relue par Gérard Delafond.
+<P>
+Un maximum de soin a été apporté lors de l'élaboration de cette
+traduction&nbsp;; néanmoins, quelques imperfections peuvent subsister. Si
+vous en rencontrez, que ce soit dans la version française ou dans la
+version originale, n'hésitez pas à les signaler à l'auteur ou au
+traducteur.
+<P>
+La version originale la plus à jour de ce document est toujours 
+consultable via la commande :
+<P>
+LANGUAGE=en man nano
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">FICHIERS D'INITIALISATION</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">SITE INTERNET</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">AUTEUR</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:42 GMT, February 11, 2014
+</BODY>
+</HTML>

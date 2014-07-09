@@ -1,0 +1,1251 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DPKG-SOURCE</TITLE>
+</HEAD><BODY>
+<H1>DPKG-SOURCE</H1>
+Section: Utilitaires de Dpkg (1)<BR>Updated: Januari 2000<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM </H2>
+
+dpkg-source, dpkg-gencontrol, dpkg-shlibdeps, dpkg-genchanges,
+dpkg-buildpackage, dpkg-distaddfile, dpkg-parsechangelog
+- Les outils de Debian pour les paquets source.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>dpkg-source</B>
+
+<B>-x </B><I>fichier.dsc</I>
+
+<BR>
+
+<B>dpkg-source -b</B>
+
+[<I>options</I>] <I>répertoire</I> [<I>répertoire-d'origine</I>|'']
+
+<BR>
+
+<B>dpkg-gencontrol</B>
+
+[<I>options</I>]
+
+<BR>
+
+<B>dpkg-shlibdeps</B>
+
+<I>options</I>
+
+<BR>
+
+<B>dpkg-genchanges</B>
+
+[<I>options</I>]
+
+<BR>
+
+<B>dpkg-buildpackage</B>
+
+[<I>options</I>]
+
+<BR>
+
+<B>dpkg-distaddfile</B>
+
+[<I>options</I>]<I> fichier section priorité</I>
+
+<BR>
+
+<B>dpkg-parsechangelog</B>
+
+[<I>options</I>]
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>dpkg-source</B>
+
+empaquète ou dépaquète une archive source Debian.
+<P>
+<B>dpkg-gencontrol</B>
+
+lit les information contenues dans une arborescence Debian dépaquetée et 
+crée le fichier «&nbsp;control&nbsp;» d'un paquet binaire (par défaut, c'est 
+le fichier debian/tmp/DEBIAN/control)&nbsp;;
+il ajoute aussi une entrée pour ce paquet binaire dans
+<B>debian/files</B>.
+
+<P>
+<B>dpkg-shlibdeps</B>
+
+calcule, pour les exécutables nommés dans ses arguments, les dépendances 
+envers les bibliothèques partagées. Ces dépendances sont ajoutées 
+sous la forme
+<B>shlibs:</B><I>dependencyfield</I>
+
+-- où
+<I>dependencyfield</I>
+
+est le nom du champ «&nbsp;dépendance&nbsp;» --
+dans le fichier
+<B>debian/substvars</B>
+
+qui indique les substitutions de variables. Toute autre variable après
+<I>shlibs:</I>
+
+est supprimée du fichier.
+<B>dpkg-shlibdeps</B>
+
+lit les informations concernant les dépendances envers les bibliothèques 
+partagées dans les fichiers suivants&nbsp;:
+<B>debian/shlibs.local,</B>
+
+<B>/etc/dpkg/shlibs.override,</B>
+
+le fichier
+<B>shlibs,</B>
+
+(fichier du paquet contenant un fichier qui, selon
+<B>objdump,</B>
+
+satisfait au système de dépendance envers les bibliothèques) ou bien
+<B>/etc/dpkg/shlibs.default.</B>
+
+Le premier trouvé est utilisé. Voyez le
+<I>Debian packaging manual</I>
+
+pour des détails sur le format des fichiers qui traitent des dépendances 
+envers les bibliothèques partagées.
+<P>
+<B>dpkg-genchanges</B>
+
+lit les informations à la fois dans une arborescence debian dépaquetée et déjà 
+construite et sur les fichiers qui ont été crées&nbsp;; puis il crée un fichier de 
+contrôle pour la mise en place dans l'archive Debian (c'est le fichier
+.changes<B> ).</B>
+
+<P>
+<B>dpkg-buildpackage</B>
+
+est un script de contrôle qui peut faciliter la construction automatique d'un
+paquet.
+<P>
+<B>dpkg-distaddfile</B>
+
+ajoute une entrée pour un fichier dans
+<B>debian/files.</B>
+
+<P>
+<B>dpkg-parsechangelog</B>
+
+lit et fait l'analyse du fichier «&nbsp;changelog&nbsp;» d'une arborescence source 
+dépaquetée et affiche les informations qu'il contient sur la sortie
+standard et sous une forme lisible par la machine.
+<P>
+Aucune de ces commandes ne permet la combinaison de plusieurs options en une 
+seule et elles ne permettent pas d'indiquer la valeur d'une option dans un
+argument séparé.
+<A NAME="lbAE">&nbsp;</A>
+<H2>LES OPTIONS COMMUNES</H2>
+
+Beaucoup de ces programmes partagent les options qui sont décrites ici&nbsp;;
+on décrit en même temps les programmes qui les acceptent.
+<DL COMPACT>
+<DT><B>-h</B>
+
+<DD>
+Affiche la version du programme et un message d'aide qui
+comprend un résumé des options acceptées. Tous les outils pour les paquets 
+source comprennent cette option.
+<DT><B>-v</B><I>version</I>
+
+<DD>
+Avec
+<B>dpkg-buildpackage</B>, <B>dpkg-genchanges</B> et <B>dpkg-parsechangelog</B>
+
+cette option force l'utilisation des informations contenues dans le fichier
+«&nbsp;changelog&nbsp;» et qui concernent toutes les versions strictement plus 
+récentes que
+<I>version.</I>
+
+<P>
+Avec
+<B>dpkg-gencontrol,</B>
+
+cette option donne le numéro de version du paquet binaire qui sera crée.
+<DT><B>-C</B><I>description-des-changements</I>
+
+<DD>
+Lit la description des changements dans le fichier
+<I>description-des-changements</I>
+
+plutôt que dans le fichier
+«&nbsp;changelog&nbsp;» de l'arborescence source.
+<B>dpkg-buildpackage</B> et <B>dpkg-genchanges</B>
+
+acceptent cette option.
+<DT><B>-m</B><I>adresse-du-responsable</I>
+
+<DD>
+Utilise
+<I>adresse-du-responsable</I>
+
+comme nom et adresse électronique du responsable de paquet pour cette mise en
+place, plutôt que d'utiliser les informations contenues dans le fichier
+«&nbsp;control&nbsp;» de l'arborescence source.
+<B>dpkg-buildpackage</B> et <B>dpkg-genchanges</B>
+
+acceptent cette option.
+<DT><B>-e</B><I>adresse-du-responsable</I>
+
+<DD>
+Utilise
+<I>adresse-du-responsable</I>
+
+comme nom et adresse électronique du responsable de paquet pour cette mise en
+place, plutôt que d'utiliser les informations contenues dans le fichier
+«&nbsp;changelog&nbsp;» de l'arborescence source.
+<B>dpkg-buildpackage</B> et <B>dpkg-genchanges</B>
+
+acceptent cette option.
+<DT><B>-si</B>, <B>-sa</B>, <B>-sd</B>
+
+<DD>
+Ces options contrôlent si l'archive source originale est incluse
+dans l'installation produite par
+<B>dpkg-buildpackage</B> et <B>dpkg-genchanges</B>
+
+quand on construit un paquet source (i.e., les options
+<B>-b</B> or <B>-B</B>
+
+ne sont pas utilisées).
+<P>
+Par défaut, ou quand l'option
+<B>-si</B>
+
+est indiquée, les sources originales sont incluses si le numéro de version
+se termine par
+<B>-0</B> ou <B>-1,</B>
+
+i.e., si la partie « révision Debian » du numéro de version est égal à
+<B>0</B> ou <B>1.</B>
+
+<P>
+L'option
+<B>-sa</B>
+
+force l'inclusion des sources originales&nbsp;;
+l'option
+<B>-sd</B>
+
+force leur exclusion et inclut seulement le «&nbsp;diff&nbsp;».
+<DT><B>-V</B><I>nom</I><B>=</B><I>valeur</I>
+
+<DD>
+Fixe la valeur d'une variable de substitution.
+<B>dpkg-source</B>, <B>dpkg-gencontrol</B> and <B>dpkg-genchanges</B>
+
+acceptent cette option.
+Voyez ci-dessous pour une discussion sur la valeur de substitution.
+<DT><B>-T</B><I>fichier/substvars</I>
+
+<DD>
+Lit (ou, écrit, pour
+<B>dpkg-shlibdeps),</B>
+
+les variables de substitution dans le fichier
+<I>fichier/substvars</I>;
+
+Par défaut c'est le fichier
+<B>debian/substvars.</B>
+
+<B>dpkg-source</B>, <B>dpkg-gencontrol</B>, <B>dpkg-shlibdeps</B> et <B>dpkg-genchanges</B>
+
+acceptent cette option.
+<DT><B>-D</B><I>champ</I><B>=</B><I>valeur</I>
+
+<DD>
+Remplace ou ajoute en sortie un champ dans le fichier de contrôle.
+<B>dpkg-source</B>, <B>dpkg-gencontrol</B> et <B>dpkg-genchanges</B>
+
+acceptent cette option.
+<DT><B>-U</B><I>champ</I>
+
+<DD>
+Supprime en sortie un champ dans le fichier de contrôle.
+<B>dpkg-source</B>, <B>dpkg-gencontrol</B> and <B>dpkg-genchanges</B>
+
+acceptent cette option.
+<DT><B>-b</B>|<B>-B</B>|<B>-S</B>
+
+<DD>
+Avec
+<B>dpkg-genchanges</B> et <B>dpkg-buildpackage</B>
+
+les options
+<B>-b</B> et <B>-B</B>
+
+indiquent qu'on veut seulement construire un paquet binaire.
+L'option
+<B>-b</B>
+
+indique qu'aucun fichier source n'est à construire ou à distribuer, et
+l'option
+<B>-B</B>
+
+indique en plus qu'aucun fichier, appartenant à un paquet binaire ne dépendant 
+pas d'une architecture, n'est à distribuer.
+L'option
+<B>-S</B>
+
+indique que seul le source doit être installé et qu'on a pas besoin de
+construire un paquet binaire. Seul
+<B>dpkg-buildpackage</B>
+
+se sert des options
+<B>-b</B> et <B>-B</B>;
+
+<B>dpkg-genchanges</B>
+
+crée seulement un fichier
+<B>.changes</B>
+
+pour tous les fichiers produits par la cible
+<B>binary-*</B>
+
+du paquet qui est construit.
+<P>
+L'option
+<B>-b</B>
+
+indique à
+<B>dpkg-source</B>
+
+de construire un paquet source (plutôt que d'en extraire un) -- 
+voyez ci-dessous.
+<DT><B>-c</B><I>fichier/control</I>
+
+<DD>
+indique le principal fichier de contrôle des sources où trouver des
+renseignements. Par défaut, c'est le fichier
+<B>debian/control</B>.
+
+<B>dpkg-source</B>, <B>dpkg-gencontrol</B> et <B>dpkg-genchanges</B>
+
+acceptent cette option.
+<DT><B>-l</B><I>fichier/changelog</I>
+
+<DD>
+indique le fichier d'enregistrement des changements où trouver des
+renseignements. Par défaut, c'est le fichier
+<B>debian/changelog.</B>
+
+<B>dpkg-source</B>, <B>dpkg-gencontrol</B> et <B>dpkg-genchanges</B>
+
+acceptent cette option.
+<DT><B>-f</B><I>fichier/liste-des-fichiers</I>
+
+<DD>
+lit ou écrit la liste des fichiers qui doivent être mis en place dans le 
+fichier
+<I>fichier/liste-des-fichiers,</I>
+
+plutôt que dans le fichier
+<B>debian/files.</B>
+
+<B>dpkg-gencontrol</B>, <B>dpkg-genchanges</B> et <B>dpkg-distaddfile</B>
+
+acceptent cette option.
+<DT><B>-F</B><I>format-du-changelog</I>
+
+<DD>
+donne le format du fichier changelog. Par défaut, c'est une ligne spéciale,
+près de la fin du fichier, qui l'indique (voyez le Debian packaging manual)&nbsp;;
+sinon, on utilise le format classique
+<B>debian,</B>
+
+décrit dans le
+<I>Debian packaging manual.</I>
+
+<B>dpkg-source</B>, <B>dpkg-gencontrol</B> et <B>dpkg-genchanges</B>
+
+acceptent cette option.
+<DT><B>-W</B>
+
+<DD>
+Cette option transforme certaines erreurs en avertissements. Seul dpkg-source 
+l'utilise, mais
+<B>dpkg-buildpackage</B>
+
+la reconnait et la transmet à
+<B>dpkg-source</B>.
+
+<DT><B>-E</B>
+
+<DD>
+Cette option annule une précédente option
+<B>-W</B>.
+
+Elle n'est actuellement comprise que par
+<B>dpkg-buildpackage</B> et <B>dpkg-source</B>.
+
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>LES OPTIONS DE DPKG-SOURCE</H2>
+
+Quand on fournit les options communes
+<B>-c</B> et <B>-l</B>
+
+avec des chemins relatifs, on considère qu'ils sont relatifs au répertoire 
+le plus élevé de l'arborescence source.
+<DL COMPACT>
+<DT><B>-x</B>
+
+<DD>
+Cette option sert à extraire un paquet source. On doit donner un seul argument
+sans option : le nom du fichier de contrôle des sources Debian
+(<B>.dsc</B>).
+
+Aucune option n'est utile avec
+<B>dpkg-source -x.</B>
+
+<B>dpkg-source</B>
+
+lit, dans le fichier de contrôle, les noms des fichiers qui composent le 
+paquet source&nbsp;; il suppose qu'ils sont dans le même répertoire que le
+fichier
+<B>.dsc.</B>
+
+<P>
+Les fichiers extraits du paquet auront le même système de propriété et de 
+permission que s'ils avaient été simplement crées -- les répertoires et
+les fichiers exécutables auront un système de permission égal à 0777 et
+les simples fichiers, 0666&nbsp;; ces deux systèmes étant modifiés par le
+masque de celui qui fait l'extraction&nbsp;; Si le répertoire parent est
+«&nbsp;setgid&nbsp;», les répertoires extraits le seront aussi et tous les fichiers
+et répertoires hériteront du système de propriété de ce groupe.
+<DT><B>-b</B>
+
+<DD>
+Construire : empaqueter une arborescence. Un ou deux arguments, sans options,
+seront fournis. Le premier représente le nom du répertoire qui contient 
+l'arborescence non empaquetée. Si l'on donne un second argument, ce sera le 
+nom du répertoire source original ou bien le nom du fichier «&nbsp;tar&nbsp;» ou bien
+une chaîne vide si le paquet est «&nbsp;debian pure souche&nbsp;» et n'a donc pas de
+fichiers «&nbsp;diffs&nbsp;» concernant sa «&nbsp;debianisation&nbsp;». S'il n'y a pas de 
+second argument, et selon les autres arguments donnés,
+<B>dpkg-source</B>
+
+cherche le fichier « tar »  des sources originelles
+<I>paquet</I><B>_</B><I>version-originelle</I><B>.orig.tar.gz</B>
+
+ou bien le répertoire source originel
+<I>répertoire</I><B>.orig</B>
+
+ou bien une chaîne vide (pas de source originel, et donc pas de «&nbsp;diffs&nbsp;»).
+<DT><B>-i[&lt;regexp&gt;]</B>
+
+<DD>
+On peut donner une expression régulière Perl correspondant aux fichiers
+d'une liste qui doivent être filtrés pour le «&nbsp;diff&nbsp;». 
+(Cette liste est créée par une commande «&nbsp;find&nbsp;».) L'option <B>-i</B> toute 
+seule filtre les sous-répertoires CVS, RCS et libtool .deps et tous les
+fichiers qu'ils contiennent, aussi bien les fichiers de sauvegarde
+terminés par un «&nbsp;~&nbsp;» que ceux crées par une interruption de l'éditeur JOE.
+<P>
+C'est très utile pour supprimer les fichiers superflus qui sont inclus dans 
+le .diff.gz (p.ex., «&nbsp;debian/BUGS_TODO/*&nbsp;» ou «&nbsp;debian/RCS/*,v&nbsp;»). Quand 
+on suit avec un CVS distant un paquet que l'on maintient, et qu'on a pas la
+possibilité d'enregistrer les fichiers debian de contrôle ou d'étiqueter
+<I><A HREF="/cgi-bin/man/man2html?1+cvs-buildpackage">cvs-buildpackage</A>(1)</I>, il faut faire un «&nbsp;checkout/update&nbsp;» 
+supplémentaire dans un répertoire tenu vierge pour créer le fichier 
+
+dates qui diffèrent de celles du répertoire de travail&nbsp;; cela provoque indûment
+leur inclusion dans chaque .diff.gz crée, à moins d'utiliser l'option
+<B>-i</B>.
+<DT><B>-I&lt;fichier&gt;</B>
+
+<DD>
+Avec cette option, le fichier est passé à l'option --exclude  de tar quand on
+veut créer un fichier .orig.tar.gz ou .tar.gz. Par exemple, -ICVS fera que
+tar sautera les répertoires du CVS quand il doit créer un fichier .tar.gz. On
+peut répéter cette option pour exclure plusieurs fichiers.
+<DT><B>-sa</B>,<B>-sp</B>,<B>-su</B>,<B>-sk</B>,<B>-sA</B>,<B>-sP</B>,<B>-sU</B>,<B>-sK</B>,<B>-ss</B> avec <B>-b</B>
+
+<DD>
+Quand on spécifie
+<B>-sk</B> ou <B>-sp,</B>
+
+<B>dpkg-source</B>
+
+s'attend à ce que le source originel soit un fichier «&nbsp;tar&nbsp;» ; par défaut 
+c'est le fichier
+<I>paquet</I><B>_</B><I>version-originelle</I><B>.orig.tar.gz</B>.
+
+Il le laisse en place en tant que fichier «&nbsp;tar&nbsp;»  ou le copie dans le
+répertoire en cours s'il n'y est pas déjà.
+Quand on utilise
+<B>-sp</B>
+
+au lieu de
+<B>-sk,</B>
+
+il le supprime ensuite.
+<P>
+Quand on spécifie
+<B>-su</B> ou <B>-sr,</B>
+
+le source originel est attendu comme un répertoire&nbsp;; par défaut c'est le 
+répertoire
+<I>paquet</I><B>-</B><I>version-originelle</I><B>.orig</B>
+
+et
+<B>dpkg-source</B>
+
+crée une nouvelle archive du source originel.
+Quand on utilise
+<B>-sr,</B>
+
+<B>dpkg-source </B>
+
+supprime ce répertoire après usage.
+<P>
+Quand on utilise
+<B>-ss,</B>
+
+<B>dpkg-source</B>
+
+s'attend à ce que le source originel soit disponible à la fois comme un
+répertoire et comme un fichier «&nbsp;tar&nbsp;». Il se sert du répertoire pour créer
+le «&nbsp;diff&nbsp;», mais se sert du fichier «&nbsp;tar&nbsp;» pour créer le fichier
+<B>.dsc.</B>
+
+On doit faire attention avec cette option  -- Si le répertoire et le
+fichier «&nbsp;tar&nbsp;» ne correspondent pas, une mauvaise archive source en
+résulte.
+<P>
+Quand on utilise
+<B>-sn,</B>
+
+<B>dpkg-source</B>
+
+ne cherche pas de source originel, et ne crée pas de «&nbsp;diff&nbsp;».
+Le second argument, s'il existe, doit être une chaîne vide. Cela sert pour
+les paquets Debian pure souche qui n'ont pas un source originel distinct et 
+donc, pas de fichier «&nbsp;diff&nbsp;» de debianisation.
+<P>
+Quand on utilise
+<B>-sa</B> ou <B>-sA,</B>
+
+<B>dpkg-source</B>
+
+cherche un source originel soit sous forme de fichier «&nbsp;tar&nbsp;», soit sous 
+forme de répertoire -- le deuxième argument, s'il existe, ou bien une chaîne 
+vide (cela revient à utiliser l'option
+<B>-sn).</B>
+
+Quand un fichier «&nbsp;tar&nbsp;» existe, il est dépaqueté et
+<B>dpkg-source</B>
+
+crée un fichier «&nbsp;diff&nbsp;»&nbsp;; ensuite il supprime le fichier «&nbsp;tar&nbsp;» (cela 
+revient à utiliser l'option
+<B>-sp)</B>;
+
+quand un répertoire est trouvé, il est dépaqueté et
+<B>dpkg-source</B>
+
+crée le source originel et supprime ensuite ce répertoire (cela revient
+à utiliser l'option
+<B>-sr)</B>;
+
+Quand ni l'un ni l'autre n'est trouvé,
+<B>dpkg-source</B>
+
+suppose que le paquet ne possède pas de fichier «&nbsp;diff&nbsp;» de debianisation,
+mais seulement une simple archive source (cela revient à utiliser l'option
+<B>-sn).</B>
+
+Quand les deux sont trouvés,
+<B>dpkg-source</B>
+
+ignore le répertoire, et le remplace si l'option
+<B>-sA</B>
+
+a été spécifiée (cela revient à utiliser l'option
+<B>-sP)</B>;
+
+ou bien il provoque une erreur quand l'option
+<B>-sa</B>
+
+a été spécifiée.
+L'option par défaut est
+<B>-sA.</B>
+
+<P>
+Les options
+<B>-sa</B>, <B>-sp</B>, <B>-sk</B>, <B>-su</B> et <B>-sr</B>
+
+ne remplacent pas les fichiers «&nbsp;tar&nbsp;» ou les répertoires existants. Pour 
+cela, il faut utiliser les options
+<B>-sA</B>, <B>-sP</B>, <B>-sK</B>, <B>-sU</B> et <B>-sR.</B>
+
+<DT><B>-sp</B>,<B>-su</B>,<B>-sn</B> avec <B>-x</B>
+
+<DD>
+Dans tous ces cas, l'arborescence existante d'un source originel est supprimée.
+<P>
+Quand on utilise l'option
+<B>-sp</B>
+
+lors d'une extraction, le source originel (s'il existe) est laissé en tant
+que fichier «&nbsp;tar&nbsp;». S'il n'est pas déjà dans le répertoire en cours ou
+si ce répertoire contient un fichier différent, le fichier «&nbsp;tar&nbsp;» est
+copié dans ce répertoire. C'est le comportement par défaut.
+<P>
+L'option
+<B>-su</B>
+
+dépaquète une arborescence source originelle.
+<P>
+L'option
+<B>-sn</B>
+
+assure que le source originel ne sera ni copié dans le répertoire en cours, 
+ni dépaqueté. Une arborescence source originelle présente dans le répertoire 
+en cours est toujours supprimée.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>LES OPTIONS POUR DPKG-GENCONTROL</H2>
+
+<B>dpkg-gencontrol</B>
+
+ne prend pas d'argument sans options.
+<DL COMPACT>
+<DT><B>-p</B><I>paquet</I>
+
+<DD>
+cette option produit les informations concernant le paquet binaire
+<I>paquet.</I>
+
+Si le fichier de contrôle des sources liste un seul paquet binaire, on peut
+omettre cette option&nbsp;; sinon c'est indispensable d'indiquer le paquet pour
+lequel on veut produire les informations.
+<DT><B>-n</B><I>nom-de-fichier</I>
+
+<DD>
+Le nom du paquet est
+<I>nom-de-fichier</I>
+
+au lieu de l'habituel : paquet_version_arch.deb.
+<DT><B>-is</B>, <B>-ip</B>, <B>-isp</B>
+
+<DD>
+ces options incluent, dans le fichier de contrôle du paquet binaire, les champs
+<B>Section</B> et <B>Priority</B>
+
+qui concernent ce paquet et qui se trouvent dans le fichier principal de 
+contrôle des sources. Habituellement on ne met pas ces informations là
+mais dans le fichier
+<B>.changes.</B>
+
+L'option
+<B>-isp</B>
+
+inclue les deux champs,
+<B>-is</B> seulement le champ <B>Section</B> et <B>-ip</B> seulement le champ <B>Priority</B>.
+
+<DT><B>-P</B><I>rep-de-construction-du-paquet</I>
+
+<DD>
+Cette option indique à
+<B>dpkg-source</B>
+
+que le répertoire de construction du paquet est
+<I>rep-de-construction-du-paquet</I>
+
+au lieu de
+<B>debian/tmp.</B>
+
+Cette valeur sert à trouver la valeur par défaut de la variable de
+substitution
+<B>Installed-Size</B>
+
+et celle du champ correspondant dans le fichier de contrôle (on utilise la
+commande
+<B>du</B>)<B>;</B>
+
+elle donne aussi l'emplacement par défaut pour le fichier de sortie.
+<DT><B>-O</B>
+
+<DD>
+Cette option provoque l'affichage du fichier de contrôle sur la sortie 
+standard au lieu de
+<B>debian/tmp/DEBIAN/control</B>
+
+(ou
+<I>rep-de-construction-du-paquet</I><B>/DEBIAN/control</B>
+
+si l'option
+<B>-P</B>
+
+a été utilisée).
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>LES OPTIONS POUR DPKG-SHLIBDEPS</H2>
+
+<B>dpkg-shlibdeps</B>
+
+interprète des arguments sans option comme des commandes 
+exécutables, comme si on avait simplement donné
+<B>-e</B><I>exécutable</I>.
+
+<DL COMPACT>
+<DT><B>-e</B><I>exécutable</I>
+
+<DD>
+Cette option inclue les bonnes dépendances envers les bibliothèques partagées 
+que demande
+<I>exécutable.</I>
+
+<DT><B>-d</B><I>champ-dépendance</I>
+
+<DD>
+Cette option ajoute les dépendances destinées au champ «&nbsp;dépendance&nbsp;» du 
+fichier de contrôle
+<I>champ-dépendance.</I>
+
+(Les dépendances pour ce champ sont dans la variable 
+<B>shlibs:</B><I>champ-dépendance</I>.)
+
+<P>
+L'option
+<B>-d</B><I>champ-dépendance</I>
+
+concerne tous les exécutables qui suivent l'option, jusqu'à la prochaine option
+<B>-d</B><I>champ-dépendance</I>.
+
+Par défaut,
+<I>champ-dépendance</I>
+
+vaut
+<B>Depends</B>.
+
+<P>
+Quand, dans plusieurs champs reconnus ayant trait aux dépendances comme
+les champs
+<B>Pre-Depends</B>, <B>Depends</B>, <B>Recommends</B>, <B>Enhances</B> ou <B>Suggests,</B>
+
+apparaît la même entrée (ou bien un ensemble d'alternatives)
+<B>dpkg-shlibdeps</B>
+
+supprime automatiquement les dépendances dans tous les champs sauf celui qui
+représente les dépendances les plus importantes.
+<DT><B>-p</B><I>préfixe-pour-le-nom-des-variables</I>
+
+<DD>
+Les variables de substitution commenceront par
+<I>préfixe-pour-le-nom-des-variables&nbsp;:</I>
+
+au lieu de
+<B>shlibs:</B>.
+
+De même, toute variable de substitution commençant par
+<I>préfixe-pour-le-nom-des-variables&nbsp;:</I>
+
+(au lieu de
+<B>shlib:</B>)
+
+sont enlevés du fichier de substitution des variables.
+<DT><B>-L</B><I>fichier-local-shlibs</I>
+
+<DD>
+<B>dpkg-shlibs</B>
+
+lira les information de remplacement concernant les dépendances envers les
+bibliothèques partagées dans
+<I>fichier-local-shlibs</I>
+
+au lieu de
+<B>debian/shlibs.local</B>.
+
+<DT><B>-O</B>
+
+<DD>
+Les définitions des variables de substitution seront affichées sur la sortie
+standard, plutôt qu'ajoutées dans le fichier de substitution des variables qui
+est par défaut
+debian/substvars.
+
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>LES OPTIONS DE DPKG-GENCHANGES </H2>
+
+<B>dpkg-genchanges</B>
+
+ne prend pas d'argument sans options.
+<DL COMPACT>
+<DT><B>-u</B><I>répertoire-des-fichiers-à-installer</I>
+
+<DD>
+Cherche les fichiers à installer dans
+<I>répertoire-des-fichiers-à-installer</I>
+
+plutôt que dans
+<B>..</B>
+
+(<B>dpkg-genchanges</B>
+
+doit trouver ces fichiers de manière à mettre leurs tailles et leurs sommes de
+contrôle dans le fichier
+<B>.changes.)</B>
+
+<DT><B>-q</B>
+
+<DD>
+<B>dpkg-genchanges</B>
+
+affiche habituellement des messages d'information sur la sortie d'erreur 
+standard ; par exemple, combien de fichiers source du paquet sont en cours
+d'installation.
+<B>-q</B>
+
+supprime ces messages.
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>LES OPTIONS DE DPKG-BUILDPACKAGE</H2>
+
+<B>dpkg-buildpackage</B>
+
+ne prend pas d'arguments sans options.
+<DL COMPACT>
+<DT><B>-k</B><I>key-id</I>
+
+<DD>
+Précise un «&nbsp;key-ID&nbsp;» pour la signature des paquets.
+<DT><B>-r</B><I>commande-pour-obtenir-privilèges-de-root</I>
+
+<DD>
+Quand
+<B>dpkg-buildpackage</B>
+
+doit exécuter une partie du processus de construction en tant que root,
+il préfixe la commande exécutée par
+<I>commande-pour-obtenir-privilèges-de-root</I>
+
+si elle existe.
+<I>commande-pour-obtenir-privilèges-de-root</I>
+
+sera le nom d'un programme présent dans le
+<B>PATH</B>
+
+et ce programme prend comme argument le nom de la commande réelle à
+exécuter et les arguments qu'elle doit prendre.
+<I>commande-pour-obtenir-privilèges-de-root</I>
+
+ne contiendra pas d'espace ni aucun « métacaractère » du shell.
+
+<I>commande-pour-obtenir-privilèges-de-root</I>
+
+est classiquement
+<B>sudo</B>, <B>super</B> ou <B>really</B>.
+
+<B>su</B>
+
+ne va pas, puisque ce programme demande une option
+<B>-c</B>
+
+pour exécuter une commande&nbsp;; et même alors il ne peut qu'appeler le shell
+de l'utilisateur au lieu de passer directement les arguments à la commande
+qui doit être exécutée.
+<DT><B>-p</B><I>commande-de-signature</I>
+
+<DD>
+Quand
+<B>dpkg-buildpackage</B>
+
+doit exécuter GPG ou PGP pour signer un fichier source de contrôle
+(<B>.dsc</B>)
+
+ou un fichier
+<B>.changes,</B>
+
+il exécute
+<I>commande-de-signature</I>
+
+(en examinant le
+<B>PATH</B>
+
+si nécessaire) au lieu de
+<B>pgp</B>.
+
+<I>commande-de-signature</I>
+
+obtient tous les arguments qu'aurait obtenu
+<B>pgp.</B>
+
+Si
+<I>commande-de-signature</I>
+
+veut recevoir ses arguments à la manière GPG plutôt qu'à la manière PGP,
+on choisira l'option
+<B>-sgpg.</B>
+
+<I>commande-de-signature</I>
+
+ne contiendra pas d'espace ni aucun «&nbsp;métacaractère&nbsp;» du shell.
+<DT><B>-tc</B>
+
+<DD>
+Nettoyage de l'arborescence (en utilisant
+<I>commande-pour-obtenir-privilèges-de-root</I>
+
+<B>debian/rules clean</B>)
+
+après la construction du paquet.
+<DT><B>-us</B>, <B>-uc</B>
+
+<DD>
+Ne pas signer, respectivement, soit le paquet source, soit le fichier 
+«&nbsp;.changes&nbsp;».
+<DT><B>-a</B><I>architecture</I>
+
+<DD>
+Précise l'architecture Debian pour laquelle on construit. L'architecture de la
+machine sur laquelle on construit est automatiquement déterminée ; c'est aussi
+l'architecture par défaut de la machine hôte.
+<DT><B>-i[&lt;regexp&gt;]</B>
+
+<DD>
+chaîne passée telle quelle à
+<B>dpkg-source.</B>
+
+<DT><B>-I&lt;fichier&gt;</B>
+
+<DD>
+fichier passé tel quel à
+<B>dpkg-source.</B>Peut<B>être</B>répétée.
+
+<B>-D</B>
+
+Vérifier les dépendances de constructions et les conflits ; se termine en cas
+de problèmes.
+<DT><B>-d</B>
+
+<DD>
+Ne pas vérifier les dépendances de constructions et les conflits.
+<DT><B>-nc</B>
+
+<DD>
+Ne pas nettoyer l'arborescence source (imlies -b)
+<DT></DL>
+<A NAME="lbAK">&nbsp;</A>
+<H2>LES ARGUMENTS DE DPKG-DISTADDFILE</H2>
+
+<DD>
+<B>dpkg-distaddfile</B>
+
+ne prend pas d'option particulière. Il prend trois arguments sans options,
+à savoir le nom du fichier, la section et la priorité, pour le fichier
+<B>.changes.</B>
+
+<P>
+Le nom du fichier sera indiqué relativement au répertoire dans lequel
+<B>dpkg-genchanges</B>
+
+s'attend à trouver les fichiers, habituellement
+<B>..</B>,
+
+plutôt que relativement au répertoire dans lequel est exécuté
+<B>dpkg-distaddfile.</B>
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>LES ARGUMENTS DE DPKG-PARSECHANGELOG</H2>
+
+<B>dpkg-parsechangelog</B>
+
+ne prend ni d'option particulière ni d'argument sans options.
+<A NAME="lbAM">&nbsp;</A>
+<H2>LA SUBSTITUTION DE VARIABLE</H2>
+
+Avant que
+<B>dpkg-source</B>, <B>dpkg-gencontrol</B> et <B>dpkg-genchanges</B>
+
+n'écrivent leurs informations de contrôle (dans le fichier source de contrôle
+<B>.dsc</B>
+
+pour
+<B>dpkg-source</B>
+
+et sur la sortie standard pour
+<B>dpkg-gencontrol</B> et <B>dpkg-genchanges),</B>
+
+ils accomplissent quelques substitutions de variable dans le fichier de 
+sortie.
+<P>
+Une substitution de variable est de la forme&nbsp;:
+<B>${</B><I>variable-name</I><B>}</B>.
+
+Les noms de variable consistent en caractères alphanumériques, traits d'union 
+et «&nbsp;deux points&nbsp;»&nbsp;; ils commencent par une lettre ou un chiffre.
+La substitution se fait répétitivement jusqu'à ce qu'il n'en reste aucune à
+faire ; le texte entier du champ après la substitution est réexaminé pour
+chercher d'autres substitutions.
+<P>
+Quand toutes les substitutions ont été faites, chaque occurrence de la
+chaîne
+<B>${}</B>
+
+(laquelle n'est pas une substitution autorisée) est remplacée par un signe
+<B>$.</B>
+
+<P>
+On peut définir les variables en utilisant l'option commune
+<B>-V.</B>
+
+On peut aussi se servir du fichier
+<B>debian/substvars</B>
+
+(ou tout autre fichier avec l'option
+<B>-T).</B>
+
+Ce fichier est composé de lignes de la forme suivante&nbsp;:
+<I>name</I><B>=</B><I>value</I>.
+
+Les espaces résiduels sur chaque ligne, les lignes vides et les lignes qui
+commencent par un symbole
+<B>#</B>
+
+sont ignorés.
+<P>
+En outre, les variables standards suivantes sont disponibles&nbsp;:
+<DL COMPACT>
+<DT><B>Arch</B>
+
+<DD>
+L'architecture pour laquelle on construit (tirée de
+<B>dpkg --print-architecture</B>).
+
+<DT><B>Source-Version</B>
+
+<DD>
+La version du paquet source (tirée du fichier changelog).
+<DT><B>Installed-Size</B>
+
+<DD>
+La taille de tous les fichiers installés du paquet. Cette valeur est copiée
+dans le champ adéquat du fichier « control » ; Quand on fixe cette variable, 
+cela modifie la valeur de ce champ. Quand elle est indéterminée,
+<B>dpkg-gencontrol</B>
+
+use de la commande
+<B>du -k debian/tmp</B>
+
+pour trouver une valeur par défaut.
+<DT><B>Extra-Size</B>
+
+<DD>
+L'espace disque supplémentaire utilisé pour l'installation du paquet. 
+Quand on fixe cette variable, on ajoute sa valeur à la valeur de la variable
+<B>Installed-Size</B>
+
+(qu'elle soit définie explicitement ou calculée par défaut) avant que la 
+variable
+<B>Installed-Size</B>
+
+ne soit copiée dans le champ du fichier «&nbsp;control&nbsp;».
+<DT><B>F:</B><I>fieldname</I>
+
+<DD>
+La valeur du champ
+<I>fieldname</I>
+
+affiché en sortie et qui doit être classiquement en majuscules.  Quand on 
+fixe ces variables,
+cela ne prend effet que là où elles sont effectivement développées.
+<DT><B>Format</B>
+
+<DD>
+La version du format du fichier
+<B>.changes</B>
+
+produite par la version des scripts construisant le source. Quand on
+détermine cette variable, le contenu du champ
+<B>Format</B>
+
+dans le fichier
+<B>.changes</B>
+
+est aussi modifié.
+<DT><B>Newline</B>, <B>Space</B>, <B>Tab</B>
+
+<DD>
+Ces variables contiennent chacune le caractère correspondant.
+<DT><B>shlibs:</B><I>dependencyfield</I>
+
+<DD>
+Les variables déterminées de cette façon sont produites par
+<B>dpkg-shlibdeps</B>
+
+- voyez plus haut.
+</DL>
+<P>
+
+Quand une variable est référencée mais n'est pas définie, cela produit
+un avertissement et une valeur nulle est assumée.
+<A NAME="lbAN">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><B>debian/control</B>
+
+<DD>
+Le principal fichier d'information sur les sources&nbsp;; il donne des 
+renseignements qui ne dépendent pas d'une version concernant le paquet
+source et les paquets binaires qui peuvent être créés.
+<DT><B>debian/changelog</B>
+
+<DD>
+Le fichier d'enregistrement des modifications ; on s'en sert pour connaître
+les informations qui dépendent d'une version du paquet source, par exemple
+l'urgence ou la distribution d'une installation sur le serveur, les
+modifications faites depuis telle édition et le numéro de la version source
+lui-même.
+<DT><B>debian/files</B>
+
+<DD>
+la liste des fichiers créés qui seront installés sur le serveur.
+<B>dpkg-gencontrol</B>
+
+ajoute les noms présumés des fichiers des paquets binaires à partir des
+fichiers « control » qu'il crée&nbsp;; pour ajouter d'autres fichiers on peut se
+servir de
+<B>dpkg-distaddfile.</B>
+
+<B>dpkg-genchanges</B>
+
+lit dans ce fichier les données nécessaires à la création du fichier
+<B>.changes.</B>
+
+<P>
+<DT><B>debian/substvars</B>
+
+<DD>
+La liste des variables de substitution et leurs valeurs.
+<DT><B>debian/shlibs.local</B>
+
+<DD>
+Fichier particulier à un paquet remplaçant les informations qui concernent les
+dépendances envers des bibliothèques partagées.
+<DT><B>/etc/dpkg/shlibs.override</B>
+
+<DD>
+Fichier système remplaçant les informations qui concernent les dépendances
+envers des bibliothèques partagées.
+<DT><B>/etc/dpkg/shlibs.default</B>
+
+<DD>
+Fichier système par défaut concernant les informations de dépendances envers 
+des bibliothèques partagées.
+</DL>
+<A NAME="lbAO">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Le moment où a lieu le remplacement d'un champ par rapport à certaines
+déterminations de champ affiché sur la sortie standard est plutôt embrouillé.
+
+<P>
+On opère deux fois la substitution de variable sur les entrées d'un paquet 
+binaire dans le fichier
+<B>debian/files.</B>
+
+Cela ne devrait pas poser de problèmes puisque
+<B>$</B>, <B>{</B> et <B>}</B>
+
+ne sont pas permis dans les noms de paquets et les numéros de version.
+<P>
+On devrait pouvoir mettre des espaces et des métacaractères du shell dans les
+arguments initiaux de
+<I>commande-pour-obtenir-privilèges-de-root</I> et <I>commande-de-signature</I>.
+
+<A NAME="lbAP">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<I>Debian packaging manual</I>,
+
+<BR>
+
+<I>Debian policy manual</I>,
+
+<BR>
+
+<B><A HREF="/cgi-bin/man/man2html?1+dpkg-deb">dpkg-deb</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+dpkg">dpkg</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+dselect">dselect</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?1+gpg">gpg</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+pgp">pgp</A></B>(1).
+
+<A NAME="lbAQ">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Ces outils et cette page de manuel ont été écrits par Ian Jackson.
+<A NAME="lbAR">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright (C) 1995-1996 Ian Jackson
+<BR>
+
+Copyright (C) 2000 Wichert Akkerman
+<BR>
+
+Ce sont des logiciels libres&nbsp;; voyez la «&nbsp; GNU General Public Licence&nbsp;» 
+version 2 ou supérieure pour le copyright. Il n'y a
+<B>pas</B>
+
+de garantie. Voyez
+<B>/usr/share/doc/dpkg/copyright</B>
+
+et
+<B>/usr/share/common-licenses/GPL</B>
+
+pour des précisions.
+<A NAME="lbAS">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Philippe Batailler, Février 2001.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM </A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">LES OPTIONS COMMUNES</A><DD>
+<DT><A HREF="#lbAF">LES OPTIONS DE DPKG-SOURCE</A><DD>
+<DT><A HREF="#lbAG">LES OPTIONS POUR DPKG-GENCONTROL</A><DD>
+<DT><A HREF="#lbAH">LES OPTIONS POUR DPKG-SHLIBDEPS</A><DD>
+<DT><A HREF="#lbAI">LES OPTIONS DE DPKG-GENCHANGES </A><DD>
+<DT><A HREF="#lbAJ">LES OPTIONS DE DPKG-BUILDPACKAGE</A><DD>
+<DT><A HREF="#lbAK">LES ARGUMENTS DE DPKG-DISTADDFILE</A><DD>
+<DT><A HREF="#lbAL">LES ARGUMENTS DE DPKG-PARSECHANGELOG</A><DD>
+<DT><A HREF="#lbAM">LA SUBSTITUTION DE VARIABLE</A><DD>
+<DT><A HREF="#lbAN">FICHIERS</A><DD>
+<DT><A HREF="#lbAO">BOGUES</A><DD>
+<DT><A HREF="#lbAP">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAQ">AUTEUR</A><DD>
+<DT><A HREF="#lbAR">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAS">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:41 GMT, February 11, 2014
+</BODY>
+</HTML>

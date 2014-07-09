@@ -1,0 +1,262 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SHMCTL</TITLE>
+</HEAD><BODY>
+<H1>SHMCTL</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+shmctl - Contrôler la mémoire partagée.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/ipc.h">sys/ipc.h</A>&gt;</B>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/sys/shm.h">sys/shm.h</A>&gt;</B>
+
+<P>
+<B>int shmctl(int </B><I>shmid</I><B>, int </B><I>cmd</I><B>, struct shmid_ds *</B><I>buf</I><B>);</B>
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>shmctl()</B>
+permet à l'utilisateur d'obtenir des informations concernant un segment de mémoire
+partagée, ainsi que de fixer le propriétaire le groupe et les permissions d'accès
+à ce segment. Cette fonction permet également de détruire un segment.
+Les informations concernant le segment identifié par
+<I>shmid</I> sont renvoyées dans une structure <I>shmid_ds</I>&nbsp;:
+<P>
+
+
+<PRE>
+struct shmid_ds {
+  struct          ipc_perm shm_perm; /* Permissions d'accès       */
+  int             shm_segsz;         /* Taille segment en octets  */
+  time_t          shm_atime;         /* Heure dernier attachement */
+  time_t          shm_dtime;         /* Heure dernier détachement */
+  time_t          shm_ctime;         /* Heure dernier changement  */
+  unsigned short  shm_cpid;          /* PID du créateur           */
+  unsigned short  shm_lpid;          /* PID du dernier opérateur  */
+  short           shm_nattch;        /* Nombre d'attachements     */
+  ...
+};
+</PRE>
+
+
+<P>
+
+Le champ <I>shm_perm</I> a la forme suivante :
+<P>
+
+
+<PRE>
+struct ipc_perm
+{
+  key_t  key;
+  ushort uid;   /* UID et GID effectifs du propriétaire    */
+  ushort gid;
+  ushort cuid;  /* UID et GID effectif du créateur         */
+  ushort cgid;
+  ushort mode;  /* Mode d'accès sur 9 bits de poids faible */
+  ushort seq;   /* numéro de séquence                      */
+};
+</PRE>
+
+
+<P>
+
+Les commandes <I>cmd</I> suivantes sont disponibles :
+<BR>
+
+<DL COMPACT>
+<DT><B>IPC_STAT</B>
+
+<DD>
+permet de récupérer dans le buffer <I>buf</I> les informations
+concernant le segment de mémoire partagée.
+L'apellant doit avoir la permission d'accès en lecture sur
+le segment.
+<DT><B>IPC_SET</B>
+
+<DD>
+sert à appliquer les changements que l'utilisateur a apportés dans
+les champs <I>uid</I>, <I>gid</I>,ou <I>mode</I> 
+de la structure <I>shm_perms</I>.  Seuls les 9 bits de poids
+faibles sont utilisés dans <I>mode</I>. Le membre
+<I>shm_ctime</I>
+
+est aussi mis à jour.
+L'appelant doit être le créateur du segment, son propriétaire, ou
+le Super-User.
+<DT><B>IPC_RMID</B>
+
+<DD>
+permet de considérer un segment comme prêt pour la destruction. Il sera détruit
+effectivement après le dernier détachement (quand le membre
+<I>shm_nattch</I>
+
+de la structure
+<I>shmid_ds</I>
+
+associée vaudra zéro.)  
+L'appelant doit être le créateur du segment, son propriétaire, ou
+le Super-User.
+</DL>
+<P>
+
+Attention, même après le dernier détachement, le contenu du segment
+n'est pas effacé par le système. Un processus réalisant à nouveau
+un attachement recupèrera son contenu. Il est à la charge du processus
+l'utilisateur d'écraser le contenu du segment s'il ne veut pas qu'il
+persiste.
+<P>
+
+De plus  le <B>Super-User</B> peut autoriser ou interdire le
+swapping d'un segment avec les commandes suivantes 
+(spécifique Linux) :
+<BR>
+
+<DL COMPACT>
+<DT><B>SHM_LOCK</B>
+
+<DD>
+empêche le swapping d'un segment de mémoire partagée. L'appelant
+doit consulter chaque page concernée après avoir effectué le
+verrouillage pour s'assurer qu'elle est bien présente en mémoire.
+<DT><B>SHM_UNLOCK</B>
+
+<DD>
+réautorise le swapping d'un segment. 
+</DL>
+<P>
+
+Les appels
+<B>IPC_INFO</B>,
+
+<B>SHM_STAT</B>
+
+et
+<B>SHM_INFO</B>
+
+sont utilisés par le programme
+<B><A HREF="/cgi-bin/man/man2html?8+ipcs">ipcs</A></B>(8)
+
+afin d'obtenir des informations sur les ressources allouées. Dans le futur,
+ceci peut changer, ou être accessible via le pseudo système de fichiers proc.
+<P>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>shmctl</B>
+
+renvoie 0 s'il réussit et -1 s'il échoue, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EACCES</B>
+
+<DD>
+on demande <B>IPC_STAT</B> mais
+<I>shm_perm.modes</I> ne permet pas la lecture du segment
+<I>shmid</I>.
+
+<DT><B>EFAULT</B>
+
+<DD>
+<I>cmd</I>
+
+à la valeur
+<B>IPC_SET</B>
+
+ou
+<B>IPC_STAT</B>
+
+mais
+<I>buf</I>
+
+pointe en-dehors de l'espace d'adressage accessible.
+<DT><B>EINVAL</B>
+
+<DD>
+<I>shmid</I> n'est pas un identificateur de segment valide,
+ou <I>cmd</I> n'est pas une commande reconnue.
+<DT><B>EIDRM</B>
+
+<DD>
+<I>shmid</I> pointe sur un segment détruit.
+<DT><B>EPERM</B>
+
+<DD>
+On réclame <B>IPC_SET</B> ou <B>IPC_RMID</B> mais l'appelant n'est
+ni le propriétaire du segment, ni son créateur, ni le Super-User.
+<DT><B>EOVERFLOW</B>
+
+<DD>
+on demande <B>IPC_STAT</B> mais la valeur de GID ou d'UID est trop
+grande pour être stockée dans la structure pointée par
+<I>buf</I>.
+
+<P>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Divers champs de la <I>struct shmid_ds</I> étaient des shorts sous Linux 2.2
+et sont devenus longs sous Linux 2.4. Pour en tirer parti, une recompilation
+sous GlibC 2.1.91 ou ultérieure doit suffire.
+(Le noyau distingue les anciens et nouveaux appels par un drapeau IPC_64
+dans
+<I>cmd</I>.)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID. SVr4 mentionne des conditions d'erreur supplémentaires
+ENOENT, ENOSPC, ENOMEM, EEXIST. Ni SVr4, ni SVID ne documentent la
+condition d'erreur EIDRM.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+shmget">shmget</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+shmop">shmop</A></B>(2)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:50 GMT, February 11, 2014
+</BODY>
+</HTML>

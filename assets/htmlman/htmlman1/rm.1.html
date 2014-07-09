@@ -1,0 +1,196 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of RM</TITLE>
+</HEAD><BODY>
+<H1>RM</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+rm - Effacer des fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>rm [</B><I>options</I><B>] </B><I>fichier...</I>
+
+<P>
+Options POSIX :
+<B>[-fiRr] [--]</B>
+
+<P>
+Options GNU (formes courtes) :
+<B>[-dfirvR] </B>
+
+<B>[--help] [--version] [--]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+([NDT] <B>rm</B> = remove - enlever).
+<B>rm</B>
+
+efface chaque fichier indiqué. Par défaut, il n'efface pas les répertoires.
+Mais lorsque les options -r ou -R sont fournies, toute l'arborescence
+en-dessous du répertoire indiqué est supprimée (il n'y a pas de limites
+à la profondeur de l'arborescence effacée avec `rm -r'). Si le dernier
+composant du chemin d'accès à un
+<I>fichier</I>
+
+est `.' ou `..', une erreur se produit (ceci évite les surprises désagréables
+avec des choses comme `rm -r .*').
+<P>
+
+Si l'option -i est indiquée ou si un fichier n'est pas accessible en écriture,
+si l'entrée standard est un terminal tty, et si les options <I>-f</I> ou
+<I>--force</I> ne sont
+pas indiquées,
+<B>rm</B>
+
+demande à l'utilisateur de confirmer l'effacement du fichier. Si
+la réponse n'est pas affirmative, le fichier est ignoré. La question est
+posée sur la sortie d'erreur standard, et la réponse attendue sur l'entrée
+standard.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS POSIX</H2>
+
+<DL COMPACT>
+<DT><B>-f</B>
+
+<DD>
+Ne pas demander de confirmation d'effacement, ne pas afficher de message
+de diagnostic, ne pas renvoyer de code d'erreur lorsqu'un fichier n'existe
+pas.
+<DT><B>-i</B>
+
+<DD>
+Demander à l'utilisateur de confirmer l'effacement de chaque fichier.
+Si la réponse ne commence pas par `y' ou `Y', le fichier est ignoré.
+Si les options -f et -i sont fournies simultanément, la dernière sur
+la ligne de commandes a l'avantage.
+<DT><B>-r</B> ou <B>-R</B>
+
+<DD>
+Effacer récursivement les sous-répertoires.
+<DT><B>--</B>
+
+<DD>
+Fin explicite de la liste des options. Ainsi, on peut supprimer
+un fichier nomme `-f' dans le répertoire en cours, en invoquant
+`rm -- -f'.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>PARTICULARITÉS SVID</H2>
+
+La Définition d'Interface Système V (SVID) interdit la suppression du
+dernier lien physique sur un fichier binaire exécutable en cours d'exécution.
+<A NAME="lbAG">&nbsp;</A>
+<H2>PARTICULARITÉ GNU</H2>
+
+L'implémentation GNU du paquetage fileutils-3.16 est erronée car elle limite
+la profondeur des arborescences supprimées récursivement. Au besoin, un
+utilitaire `deltree' permet de supprimer des hiérarchies très profondes.
+<A NAME="lbAH">&nbsp;</A>
+<H2>OPTIONS GNU</H2>
+
+<DL COMPACT>
+<DT><B>-d, --directory</B>
+
+<DD>
+Efface un répertoire avec 
+<B><A HREF="/cgi-bin/man/man2html?2+unlink">unlink</A></B>(2)
+
+à la place de
+<B><A HREF="/cgi-bin/man/man2html?2+rmdir">rmdir</A></B>(2),
+
+ne nécessitant pas que le répertoire soit vide.
+Seul le Super-User peut utiliser cette option.
+Comme un 'unlink' sur un répertoire déréférence tous les fichiers qui
+y étaient contenus, il est conseillé d'effectuer un
+<B><A HREF="/cgi-bin/man/man2html?8+fsck">fsck</A></B>(8)
+
+sur le système de fichiers après cette opération.
+<DT><B>-f, --force</B>
+
+<DD>
+Ignorer les fichiers non existants, et ne pas interroger l'utilisateur.
+<DT><B>-i, --interactive</B>
+
+<DD>
+Demander à l'utilisateur de confirmer l'effacement de chaque fichier.
+Si la réponse ne commence pas par `y' ou `Y', le fichier est ignoré.
+<DT><B>-r, -R, --recursive</B>
+
+<DD>
+Supprimer récursivement le contenu des répertoires.
+<DT><B>-v, --verbose</B>
+
+<DD>
+Afficher le nom de chaque fichier avant suppression.
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>OPTIONS STANDARDS GNU</H2>
+
+<DL COMPACT>
+<DT><B>--help</B>
+
+<DD>
+Afficher un message d'aide sur la sortie standard, et se terminer correctement.
+<DT><B>--version</B>
+
+<DD>
+Afficher le numéro de version sur la sortie standard, et se terminer
+correctement.
+<DT><B>--</B>
+
+<DD>
+Fin explicite de la liste des options. 
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+Les variables d'environnement LC_ALL, LC_COLLATE, LC_TYPE et LC_MESSAGES ont
+leurs significations habituelles.
+<A NAME="lbAK">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX 1003.2, sauf pour les limites de profondeur des arborescences.
+<A NAME="lbAL">&nbsp;</A>
+<H2>NOTES</H2>
+
+Cette page documente la version de
+<B>rm</B>
+
+rencontrée dans le paquetage fileutils-4.0. D'autres versions peuvent
+varier légèrement.
+<A NAME="lbAM">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS POSIX</A><DD>
+<DT><A HREF="#lbAF">PARTICULARITÉS SVID</A><DD>
+<DT><A HREF="#lbAG">PARTICULARITÉ GNU</A><DD>
+<DT><A HREF="#lbAH">OPTIONS GNU</A><DD>
+<DT><A HREF="#lbAI">OPTIONS STANDARDS GNU</A><DD>
+<DT><A HREF="#lbAJ">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAK">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAL">NOTES</A><DD>
+<DT><A HREF="#lbAM">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:43 GMT, February 11, 2014
+</BODY>
+</HTML>

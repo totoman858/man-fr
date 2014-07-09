@@ -1,0 +1,131 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ypmatch</TITLE>
+</HEAD><BODY>
+<H1>ypmatch</H1>
+Section: User Commands  (1)<BR>Updated: Mai 1999<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ypmatch - affiche les valeurs d'une ou plusieurs clés depuis une carte NIS
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSYS</H2>
+
+<B>ypmatch</B>
+
+[
+<B>-kt</B>
+
+]
+[
+<B>-d</B><I> domain</I>
+
+]
+<I>key ... mapname</I>
+
+<BR>
+
+<B>ypmatch</B>
+
+<B>-x</B>
+
+<P>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>ypmatch</B>
+
+affiche les valeurs d'une ou plusieurs clés depuis la carte NIS
+spécifiée par
+<I>mapname,</I>
+
+qui peut être un nom ou un surnom de carte.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-d</B><I> domain</I>
+
+<DD>
+Spécifie un domaine autre que celui par défaut retourné par
+<B><A HREF="/cgi-bin/man/man2html?1+domainname">domainname</A></B>(1).
+
+<DT><B>-k</B>
+
+<DD>
+Affiche les clés d'une carte. Cette option est utile pour les cartes
+dans lesquelles les valeurs sont nulles
+ou pour lesquelles la clé ne fait pas partie de la valeur.
+<DT><B>-t</B>
+
+<DD>
+Cette option désactive la traduction des surnoms de cartes.
+<DT><B>-x</B>
+
+<DD>
+Affiche la table de traduction des surnoms de carte.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><B>/var/yp/nicknames</B>
+
+<DD>
+table de traduction des surnoms de cartes.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+domainname">domainname</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?5+nicknames">nicknames</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ypbind">ypbind</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?1+ypcat">ypcat</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+yppoll">yppoll</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ypserv">ypserv</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+yset">yset</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?1+ypwhich">ypwhich</A></B>(1)
+
+<P>
+
+SH AUTEUR
+<B>ypcat</B>
+
+fait partie du paquetage
+<B>yp-tools</B>
+qui a été écrit par Thorsten Kukuk &lt;<A HREF="mailto:kukuk@suse.de">kukuk@suse.de</A>&gt;.
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Sébastien Blanchet, 2003
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSYS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:45 GMT, February 11, 2014
+</BODY>
+</HTML>

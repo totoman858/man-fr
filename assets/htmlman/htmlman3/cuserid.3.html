@@ -1,0 +1,132 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETLOGIN</TITLE>
+</HEAD><BODY>
+<H1>GETLOGIN</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getlogin, cuserid - Obtenir le nom de l'utilisateur.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>char * getlogin (void);</B>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<P>
+<B>char *cuserid (char * </B><I>string</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>getlogin</B> renvoie un pointeur sur une chaîne de caractères
+contenant le nom de l'utilisateur connecté sur le terminal contrôlant le
+processus, ou un pointeur NULL si cette information n'est pas disponible.
+La chaîne est allouée de manière statique et peut donc être ecrasée lors
+des appels ultérieurs à <B>getlogin</B> ou à <B>cuserid</B>.
+<P>
+
+La fonction <B>cuserid</B> renvoie un pointeur sur une chaîne de caractères
+contenant le nom de l'utilisateur associé à l'UID effectif du processus. Si
+<I>string</I> n'est pas un pointeur NULL, ce doit être une table contenant
+au moins <B>L_cuserid</B> caractères.
+La chaîne sera alors renvoyée dans cette table. Sinon (si <I>string</I> vaut NULL),
+un pointeur sur une chaîne allouée statiquement sera renvoyé. Cette chaîne
+peut être écrasée par des appels ultérieurs à <B>cuserid</B> ou à <B>getlogin</B>.
+<P>
+
+La constante symbolique <B>L_cuserid</B> est un entier déclaré dans <B>stdio.h</B>,
+indiquant la longueur nécessaire pour stocker un nom d'utilisateur.
+<P>
+
+Ces fonctions permettent d'identifier correctement l'utilisateur qui exécute
+le programme (<B>cuserid</B>) ou l'utilisateur connecté pour la session
+(<B>getlogin</B>).  (Ces deux éléments peuvent différer si le bit Set-UID du
+programme est validé). 
+<P>
+
+La plupart du temps, il est plus utile d'utiliser la variable d'environnement
+<B>LOGNAME</B> pour déterminer l'utilisateur. Ceci est plus flexible car il
+est justement possible de modifier <B>LOGNAME</B> arbitrairement.
+<A NAME="lbAE">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour allouer la structure passwd nécessaire.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<PRE>
+<I>/etc/passwd</I>    Base de données des mots de passe.
+</PRE>
+
+<I>/var/run/utmp</I> (traditionellement <I>/etc/utmp</I>;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;certaines&nbsp;version&nbsp;de&nbsp;la&nbsp;libc&nbsp;utilisent&nbsp;<I>/var/adm/utmp</I>)
+ou se trouve <I>utmp</I> - Le chemin d'accès dépend de la version de libc).
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX.1.  System V dispose d'une fonction <B>cuserid</B> qui utilise l'UID
+réel plutôt que l'UID effectif. La fonction <B>cuserid</B> a été incorporée
+dans la version POSIX de 1988, mais supprimée de la version de 1990.
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Malheureusement, il est souvent assez facile de tromper getlogin().
+Parfois il ne fonctionne pas du tout car certains programmes
+n'utilisent pas le fichier utmp correctement.
+Souvent, il ne retourne que les 8 premiers caractères du nom. L'utilisateur
+connecté sur le terminal de contrôle d'un programme n'est pas nécessairement
+celui qui a lancé le programme.
+<P>
+
+Personne ne sait précisement ce que fait cuserid(). Evitez-le dans des 
+programmes portables. Evitez-le de toute manière. Utilisez 
+getpwuid(geteuid()) à la place si vous en avez besoin. N'UTILISEZ PAS cuserid().
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+geteuid">geteuid</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getuid">getuid</A></B>(2)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">ERREURS</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:46 GMT, February 11, 2014
+</BODY>
+</HTML>

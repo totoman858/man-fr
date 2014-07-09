@@ -1,0 +1,148 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TEMPNAM</TITLE>
+</HEAD><BODY>
+<H1>TEMPNAM</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+tempnam - Créer un nom de fichier temporaire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<B>char *tempnam (const char *</B><I>rep</I><B>, const char *</B><I>préfixe</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>tempnam()</B> renvoie un pointeur sur un nom de fichier
+valide, en s'assurant qu'aucun fichier de ce nom n'existe au moment de
+son invocation.
+Le nom du fichier commencera par le
+<I>préfixe</I>
+
+si celui-ci n'est pas nul et contient jusqu'à cinq caractères.
+Le chemin d'accès devant le nom du fichier sera obligatoirement &quot;approprié&quot;
+(ce qui implique au minimum qu'on puisse y écrire).
+L'ordre de recherche du répertoire pour placer 
+le fichier est le suivant :
+(i) le répertoire indiqué par la variable d'environnement <I>TMPDIR</I>,
+s'il est accessible en écriture,
+(ii) le répertoire indiqué par l'argument <I>rep</I>, s'il n'est pas NULL,
+(iii)le répertoire défini par <I>P_tmpdir</I> (dans
+<I>&lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</I>)
+
+(iv) finalement, un répertoire dépendant de l'implémentation (<I>/tmp</I> par exemple).
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>tempnam()</B> renvoie un pointeur sur un nom de fichier
+unique, ou NULL si ce nom n'a pas pu être engendré.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire libre.
+<DT><B>EEXIST</B>
+
+<DD>
+Impossible de créer un nom de fichier unique.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+SUSv2 ne mentionne pas l'utilisation de TMPDIR, la GlibC ne l'emploiera que
+si le programme n'est pas Set-UID.
+SVID2 indique que le répertoire pour le cas (iv) est 
+<I>/tmp</I>.
+
+SVID2 précise que la chaîne renvoyée par
+<B>tempnam()</B>
+
+est allouée avec
+<B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></B>(3)
+
+et doit donc être libérée avec
+<B><A HREF="/cgi-bin/man/man2html?3+free">free</A></B>(3).
+
+<P>
+
+La fonction
+<B>tempnam()</B>
+
+crée une chaîne différente à chaque fois qu'elle est appelée,
+jusqu'à TMP_MAX (définie dans
+<I>&lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</I>)
+
+fois. Si on l'appelle plus de TMP_MAX fois,
+le comportement dépend de l'implémentation.
+<P>
+
+Dans le cas où l'argument
+<I>préfixe</I>
+
+est plus long que cinq caractères, la GlibC n'utilisera que
+les cinq premiers octets.
+En cas d'échec pour créer un nom de fichier inexistant, la GlibC renverra l'erreur EEXIST.
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+La signification précise de &quot;approprié&quot; est indéfinie, la détermination des
+conditions d'accessibilité à un répertoire n'est pas spécifiée.
+N'utilisez pas cette fonction, utilisez
+<B><A HREF="/cgi-bin/man/man2html?3+mkstemp">mkstemp</A></B>(3)
+
+à la place.
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3, BSD 4.3
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+mktemp">mktemp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+mkstemp">mkstemp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+tmpnam">tmpnam</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+tmpfile">tmpfile</A></B>(3)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:08 GMT, February 11, 2014
+</BODY>
+</HTML>

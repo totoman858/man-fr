@@ -1,0 +1,192 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LOCKF</TITLE>
+</HEAD><BODY>
+<H1>LOCKF</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+lockf - Poser, examiner ou supprimer un verrou Posix sur un fichier ouvert.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int lockf(int </B>fd<B>, int </B>cmd<B>, off_t </B>len<B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette fonction pose, examine, ou supprime un verrou Posix sur un fichier ouvert.
+Le fichier est indiqué par 
+<I>fd</I>,
+
+un descripteur ouvert en écriture, l'action par
+<I>cmd</I>,
+
+et la section par les octets aux positions
+<I>pos</I>..<I>pos</I>+<I>len</I>-1
+
+si len est positive et 
+<I>pos</I>-<I>len</I>..<I>pos</I>-1
+
+si len est négative, où
+<I>pos</I>
+
+est la position actuelle dans le fichier. Si
+<I>len</I>
+
+vaut zéro, la section s'étend de la position courant à l'infini, englobant
+la fin-de-fichier et les extensiont ultérieures.
+Dans tous les cas, la section peut s'étendre au-delà de la fin du fichier.
+<P>
+
+Sous Linux, cette fonction est juste une interface pour l'appel-système
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2).
+
+(En général, les relations entre
+<B>lockf</B>
+
+et
+<B>fcntl</B>
+
+sont indéterminées).
+<P>
+
+Les opérations valides sont les suivantes&nbsp;:
+<DL COMPACT>
+<DT><B>F_LOCK</B>
+
+<DD>
+Poser un verrou exclusif sur la section indiquée du fichier.
+Si (une partie de) la section est déjà verrouillée, l'appel bloque jusqu'à la
+suppression du verrou précédent.
+Si la section recouvre un verrou existant (du même processus), les deux sont
+regroupés.
+Les verrouillages sont libérés lorsque le processus ferme un descripteur du
+fichier.
+Un processus fils n'hérite pas du verrou.
+<DT><B>F_TLOCK</B>
+
+<DD>
+Comme
+<B>F_LOCK</B>
+
+mais l'appel n'est pas bloquant, il renvoie une erreur si le fichier est
+déjà verrouillé.
+<DT><B>F_ULOCK</B>
+
+<DD>
+Déverrouiller la section indiquée du fichier. Ceci peut conduire une section
+verrouillée à être découpée en deux sections.
+<DT><B>F_TEST</B>
+
+<DD>
+Verifier s'il y a un verrou : l'appel renvoie 0 si la section indiquée est
+libre ou verrouillée par le processus appelant, et -1 avec
+<B>EACCES </B>
+
+dans
+<I>errno</I>
+
+si un autre processus possède le verrou.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Si elle réussit, cette fonction renvoie 0. En cas d'erreur, elle renvoie -1 et
+remplit
+<I>errno</I>
+
+en conséquence.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EAGAIN</B>
+
+<DD>
+Le fichier est verrouillée et
+<B>F_TLOCK</B>
+
+ou
+<B>F_TEST</B>
+
+étaient indiqués, ou encore l'opération est impossible car le fichier est
+projetée dans la mémoire d'un autre processus.
+<DT><B>EBADF</B>
+
+<DD>
+<I>fd</I>
+
+n'est pas un descripteur valide.
+<DT><B>EDEADLK</B>
+
+<DD>
+L'opération
+<B>T_LOCK</B>
+
+demandée amènerait à un cas de blocage.
+<DT><B>EINVAL</B>
+
+<DD>
+Une opération invalide a été réclamée sur
+<I>fd</I>.
+
+<DT><B>ENOLCK</B>
+
+<DD>
+La table des verrous est pleine.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SYSV,  POSIX 1003.1-2001
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+flock">flock</A></B>(2)
+
+<BR>
+
+On peut aussi examiner
+<I>locks.txt</I>
+
+et
+<I>mandatory.txt</I>
+
+dans la documentation Linux
+<I>/usr/src/linux/Documentation</I>.
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:06 GMT, February 11, 2014
+</BODY>
+</HTML>

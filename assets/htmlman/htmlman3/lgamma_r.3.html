@@ -1,0 +1,132 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LGAMMA</TITLE>
+</HEAD><BODY>
+<H1>LGAMMA</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+lgamma, lgammaf, lgammal, lgamma_r, lgammaf_r, lgammal_r - Logarithme de la fonction gamma.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/math.h">math.h</A>&gt;</B>
+
+<B>double lgamma(double </B><I>x</I><B>);</B>
+<BR>
+<B>float lgammaf(float </B><I>x</I><B>);</B>
+<BR>
+<B>long double lgammal(long double </B><I>x</I><B>);</B>
+
+<B>double lgamma_r(double </B><I>x</I><B>, int *</B><I>signp</I><B>);</B>
+<BR>
+<B>float lgammaf_r(float </B><I>x</I><B>, int *</B><I>signp</I><B>);</B>
+<BR>
+<B>long double lgammal_r(long double </B><I>x</I><B>, int *</B><I>signp</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction Gamma est définie ainsi&nbsp;:
+<P>
+<BR>&nbsp;Gamma(x)&nbsp;=&nbsp;intégrale&nbsp;de&nbsp;0&nbsp;à&nbsp;l'infini&nbsp;de&nbsp;t^(x-1)&nbsp;e^-t&nbsp;dt
+<P>
+Elle est déféinie pour tous réels sauf les entiers négatifs ou nuls.
+Pour un entier non-négatif <I>m</I> on a
+<P>
+<BR>&nbsp;Gamma(m+1)&nbsp;=&nbsp;m!
+<P>
+et, plus généralement pour tout <I>x</I>:
+<P>
+<BR>&nbsp;Gamma(x+1)&nbsp;=&nbsp;x&nbsp;*&nbsp;Gamma(x)
+<P>
+Pour <I>x</I> &lt; 0.5 on peut écrire
+<P>
+<BR>&nbsp;Gamma(x)&nbsp;*&nbsp;Gamma(1-x)&nbsp;=&nbsp;PI/sin(PI*x)
+<P>
+
+La fonctin <B>lgamma()</B> renvoie le logarithme naturel (néperien) de
+la valeur absolue de la fonction Gamma.
+Le signe de la fonction Gamma est stocké dans la variable entière
+externe <I>signgam</I> déclaré dans
+<I>&lt;<A HREF="file:///usr/include/math.h">math.h</A>&gt;</I>.
+
+Il vaut 1 si la fonction Gamma est positive ou nulle, -1
+si elle est négative.
+<P>
+
+Comme l'utilisation de la variable statique
+<I>signgam</I>
+
+n'est pas sûre en multi-threads, les fonctions <B>lgamma_r()</B> etc. ont été
+introduite, elles renvoient le signe dans le paramètre
+<I>signp</I>.
+
+<P>
+
+Pour les <I>x</I> entiers négatifs ou nuls, <B>lgamma()</B> renvoie HUGE_VAL,
+remplit <I>errno</I> avec ERANGE, et déclenche l'exception Division par zéro.
+(De mêm, <B>lgammaf()</B> renvoie HUGE_VALF et <B>lgammal()</B> renvoie
+HUGE_VALL.)
+<A NAME="lbAE">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Une application voulant vérifier les conditions d'erreur doit mettre
+<I>errno</I>
+
+à zéro et appeler
+<I>feclearexcept(FE_ALL_EXCEPT)</I>
+
+avant d'invoquer ces fontions. En retour, si
+<I>errno</I>
+
+est non-null ou si
+<I>fetestexcept(FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW | FE_UNDERFLOW)</I>
+
+est non-nul, une erreur s'est produite.
+<DL COMPACT>
+<DT><B>ERANGE</B>
+
+<DD>
+Argument invalide, valeur entière négative dans <I>x</I>.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+C99, SVID 3, BSD 4.3
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+tgamma">tgamma</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">ERREURS</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:13 GMT, February 11, 2014
+</BODY>
+</HTML>

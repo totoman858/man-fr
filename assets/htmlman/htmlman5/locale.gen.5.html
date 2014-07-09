@@ -1,0 +1,67 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of locale.gen</TITLE>
+</HEAD><BODY>
+<H1>locale.gen</H1>
+Section: File Formats (5)<BR>Updated: Janvier 2002<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+locale.gen - Fichier de configuration pour locale-gen
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le fichier <B>/etc/locale.gen</B> liste les locales qui vont être
+générées par la commande <B>locale-gen</B>.
+<P>
+Chaque ligne est de la forme :
+<P>
+&lt;locale&gt; &lt;charset&gt;
+<P>
+où &lt;locale&gt; est une des locales données dans  
+<B>/usr/share/i18n/locales</B>
+
+et &lt;charset&gt; est un des jeux de caractères listés dans 
+<B>/usr/share/i18n/charsets</B>
+
+<P>
+La commande
+<B>locale-gen</B>
+
+génèrera toute les locales, en les plaçant dans
+<B>/usr/lib/locale</B>.
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?8+locale-gen">locale-gen</A>(8), <A HREF="/cgi-bin/man/man2html?1+localedef">localedef</A>(1), <A HREF="/cgi-bin/man/man2html?1+locale">locale</A>(1), <A HREF="/cgi-bin/man/man2html?5+locale.alias">locale.alias</A>(5)
+<A NAME="lbAE">&nbsp;</A>
+<H2>AUTHOR</H2>
+
+Alastair McKinstry &lt;<A HREF="mailto:mckinstry@computer.org">mckinstry@computer.org</A>&gt;
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Traduction de Julien Louis &lt;<A HREF="mailto:leonptitlouis@ifrance.com">leonptitlouis@ifrance.com</A>&gt;
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAE">AUTHOR</A><DD>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:55 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,236 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETCONTEXT</TITLE>
+</HEAD><BODY>
+<H1>GETCONTEXT</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getcontext, setcontext - Lire ou écrire le contexte utilisateur.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/ucontext.h">ucontext.h</A>&gt;</B>
+
+<P>
+<B>int getcontext(ucontext_t *</B><I>ucp</I><B>);</B>
+
+<BR>
+
+<B>int setcontext(const ucontext_t *</B><I>ucp</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Dans un environnement de type SysV, il existe deux types
+<B>mcontext_t</B> et <B>ucontext_t</B>
+
+définis dans
+<I>&lt;<A HREF="file:///usr/include/ucontext.h">ucontext.h</A>&gt;</I>
+
+et les quatre fonctions
+<B>getcontext</B>(), <B>setcontext</B>(), <B>makecontext</B>() et <B>swapcontext</B>()
+
+permettent le changement de contexte au niveau utilisateur entre plusieurs
+fils de contrôle au sein du même processus (threads).
+<P>
+
+Le type
+<B>mcontext_t</B>
+
+est opaque et dépend de la machine. Le type
+<B>ucontext_t</B>
+
+est une structure ayant au moins les champs suivants&nbsp;:
+<DL COMPACT><DT><DD>
+<PRE>
+typedef struct ucontext {
+        struct ucontext *uc_link;
+        sigset_t uc_sigmask;
+        stack_t uc_stack;
+        mcontext_t uc_mcontext;
+        ...
+} ucontext_t;
+</PRE>
+
+</DL>
+
+Les types
+<B>sigset_t  et  stack_t</B>
+
+sont définis dans
+<I>&lt;<A HREF="file:///usr/include/signal.h">signal.h</A>&gt;</I>.
+
+Ici,
+<I>uc_link</I>
+
+pointe sur le contexte qui doit être restauré lorsque le contexte courant
+se terminera (si le contexte en cours a été créé par
+<B>makecontext</B>()),
+
+<I>uc_sigmask</I>
+
+est l'ensemble des signaux bloqués dans ce contexte (voir
+<B><A HREF="/cgi-bin/man/man2html?2+sigaltstack">sigaltstack</A></B>(2)),
+
+et
+<I>uc_mcontext</I>
+
+est la représentation - dépendant de la machine - du contexte sauvegardé,
+qui inclue les registres du processeur pour le thread appelant.
+<P>
+
+La fonction
+<B>getcontext</B>()
+
+remplit la structure pointée par
+<I>ucp</I>
+
+avec le contexte actuellement actif.
+<P>
+
+La fonction
+<B>setcontext</B>()
+
+restaure le contexte utilisateur pointé par
+<I>ucp</I>.
+
+Un appel réussi ne revient pas. Le contexte doit avoir été obtenu par un appel
+<B>getcontext</B>(),
+
+ou
+<B>makecontext</B>(),
+
+ou passé en troisième argument à un gestionnaire de signal.
+<P>
+
+Si le contexte a été obtenu par un appel
+<B>getcontext</B>(),
+
+l'exécution du programme reprend comme si cet appel venait juste de se terminer.
+<P>
+
+Si le contexte a été obtenu par un appel
+<B>makecontext</B>(),
+
+l'exécution du programme continue par l'appel de la fonction
+<I>func</I>
+
+indiquée en second argument de
+<B>makecontext</B>().
+
+Quand la fonction
+<I>func</I>
+
+se terminer, on continue avec le membre
+<I>uc_link</I>
+
+de la structure
+<I>ucp</I>
+
+spécifiée en premier argument de l'appel
+<B>makecontext</B>().
+
+Si ce membre est NULL, le thread se termine.
+<P>
+
+Si le contexte a été obtenu lors d'un appel à un gestionnaire de signal, alors
+le texte des anciens standards dit que &quot;l'exécution du programme continue avec
+l'instruction suivant celle qui a été interrompue par le signal&quot;. Toutefois
+cette phrase a été supprimée de SUSv2, et remplacée par &quot;le résultat
+n'est pas spécifié&quot;.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Lorsqu'ils réussissent,
+<B>getcontext</B>()
+
+renvoie zéro et
+<B>setcontext</B>()
+
+ne revient pas. En cas d'erreur, ils retournent -1 et remplissent
+<I>errno</I>
+
+avec le code d'erreur adéquat.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Aucune définie.
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+L'incarnation la plus ancienne de ce mécanisme était constituée de la paire
+<B>setjmp</B>()/<B>longjmp</B>().
+
+Comme ils ne précisent pas la gestion des signaux, l'étape suivante fut
+<B>sigsetjmp</B>()/<B>siglongjmp</B>().
+
+Le mécanisme actuel donne plus de contrôle. En revanche, il n'y a pas de
+moyen simple pour savoir si le retour de
+<B>getcontext</B>()
+
+se fait depuis son premier appel ou par l'intermédiaire d'un appel
+<B>setcontext</B>().
+
+L'utilisateur doit inventer son propre système de comptabilisation, et pas
+dans un registre car il serait restauré.
+<P>
+
+Lorsqu'un signal arrive, le contexte utilisateur courant est sauvegardé et 
+un nouveau contexte est créé par le noyau pour exécuter le gestionnaire.
+N'utilisez pas
+<B>longjmp</B>()
+
+dans le gestionnaire, le comportement est indéfini. Utilisez
+<B>siglongjmp</B>() ou <B>setcontext</B>().
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SUSv2
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigaction">sigaction</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigaltstack">sigaltstack</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigprocmask">sigprocmask</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+longjmp">longjmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+sigsetjmp">sigsetjmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+makecontext">makecontext</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:52 GMT, February 11, 2014
+</BODY>
+</HTML>

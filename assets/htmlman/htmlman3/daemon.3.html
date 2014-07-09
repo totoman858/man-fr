@@ -1,0 +1,125 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DAEMON</TITLE>
+</HEAD><BODY>
+<H1>DAEMON</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+daemon - Exécution en arrière-plan.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int daemon (int </B><I>nochdir</I><B>, int </B><I>noclose);</I>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>daemon</B>()
+
+sert aux programmes désireux de se détacher de leur terminal de contrôle, et
+de s'exécuter en arrière plan à la manière des démons système.
+<P>
+
+Si l'argument 
+<I>nochdir</I>
+
+vaut zéro,
+<B>daemon</B>()
+
+modifie le répertoire de travail pour revenir à la racine (&quot;/&quot;). Ceci évite de bloquer un système
+de fichiers (comme /home) que l'on ne pourrait pas démonter durant son exécution.
+<P>
+
+Si l'argument
+<I>noclose</I>
+
+vaut zéro,
+<B>daemon</B>()
+
+redirige l'entrée standard, la sortie standard, et la sortie d'erreur vers <I>/dev/null</I>.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+(Cette fonction exécute un
+<I>fork()</I>,
+
+et s'il réussit, le père effectue un
+<I>_exit</I>(0),
+
+ainsi toutes les erreurs éventuelles apparaissent uniquement
+du côté fils).
+La fonction
+<B>daemon</B>()
+
+renvoie zéro si elle réussit.
+Si une erreur se produit,
+<B>daemon</B>()
+
+renvoie -1 et remplit la variable globale
+<I>errno</I>
+
+avec l'un des code d'erreurs renvoyés par les fonctions
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+setsid">setsid</A></B>(2).
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setsid">setsid</A></B>(2)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+L'implémentation de la GlibC peut également renvoyer -1 si
+<I>/dev/null</I>
+
+existe mais n'est pas un noeud spécial en mode caractère, avec
+les numéros mineur et majeur attendus. Dans ce cas,
+<I>errno</I>
+
+ne sera pas remplie.
+<A NAME="lbAH">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+La fonction
+<B>daemon</B>()
+
+est apparue en premier dans BSD4.4.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:08 GMT, February 11, 2014
+</BODY>
+</HTML>

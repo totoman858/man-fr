@@ -1,0 +1,79 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SHELLS</TITLE>
+</HEAD><BODY>
+<H1>SHELLS</H1>
+Section: Manuel de l administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+shells - Chemins d'accès aux shells de connexion valides.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>/etc/shells</B>
+
+est un fichier de texte contenant les chemins d'accès complets aux
+shells de login valides.
+Ce fichier est consulté par
+<B><A HREF="/cgi-bin/man/man2html?1+chsh">chsh</A></B>(1)
+
+et peut être également lu par d'autres programmes.
+<P>
+
+Soyez conscients que certaines applications consultent ce fichier pour
+vérifier si un utilisateur donné est un utilisateur normal. Par exemple,
+les démons Ftp interdisent traditionnellement l'accès aux utilisateurs
+dont le shell de connexion ne se trouve pas dans ce fichier.
+<A NAME="lbAD">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+<PRE>
+$ ls -l /etc/shells 
+-rw-r--r--   1 root     root           40 Jul 13 22:55 /etc/shells
+$ cat /etc/shells 
+/bin/bash
+/bin/csh
+/bin/sh
+/bin/tcsh
+$ 
+</PRE>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/etc/shells</I>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+chsh">chsh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getusershell">getusershell</A></B>(3)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">EXEMPLES</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:55 GMT, February 11, 2014
+</BODY>
+</HTML>

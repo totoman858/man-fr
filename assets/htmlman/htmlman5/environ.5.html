@@ -1,0 +1,324 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ENVIRON</TITLE>
+</HEAD><BODY>
+<H1>ENVIRON</H1>
+Section: Manuel de l administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+environ - Environnement de l'utilisateur.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+
+<PRE>
+<B>extern char **environ;</B>
+<BR>
+</PRE>
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La variable
+<I>environ</I>
+
+pointe sur un tableau de chaînes que l'on nomme `environnement'.
+(Cette variable doit être déclaré dans les programmes utilisateurs,
+mais elle est présente dans
+<I>unistd.h</I>
+
+si le fichier d'en-tête provient de libc4 ou libc5, ou encore
+de glibc si la variable
+<B>_GNU_SOURCE</B>
+
+est définie.)
+Ce tableau de chaînes de caractères qui est fourni à
+<B><A HREF="/cgi-bin/man/man2html?3+exec">exec</A></B>(3)
+
+quand un processus démarre. Par convention ces chaînes ont la forme
+`<I>nom</I><B>=</B><I>valeur</I>'.  
+Des exemples classiques sont&nbsp;:
+<DL COMPACT>
+<DT><B>USER</B>
+
+<DD>
+Le nom de l'utilisateur connecté (utilisé par des programmes de style BSD).
+<DT><B>LOGNAME</B>
+
+<DD>
+Le nom de l'utilisateur connecté (dans les programmes de style Système V).
+<DT><B>HOME</B>
+
+<DD>
+Le répertoire de login d'un utilisateur, mis en place par
+<B><A HREF="/cgi-bin/man/man2html?1+login">login</A></B>(1)
+
+depuis le fichier des mots de passe
+<B><A HREF="/cgi-bin/man/man2html?5+passwd">passwd</A></B>(5).
+
+<DT><B>LANG</B>
+
+<DD>
+Le nom du lieu à utiliser pour les configurations locales,
+s'il n'est pas écrasé par <B>LC_ALL</B> ou d'autres variables comme
+<B>LC_COLLATE</B>, <B>LC_CTYPE</B>, <B>LC_MESSAGES</B>, <B>LC_MONETARY</B>,
+<B>LC_NUMERIC</B>, <B>LC_TIME</B>, cf.
+<B><A HREF="/cgi-bin/man/man2html?5+locale">locale</A></B>(5).
+
+<DT><B>PATH</B>
+
+<DD>
+Une liste de préfixes de répertoires, que
+<B><A HREF="/cgi-bin/man/man2html?1+sh">sh</A></B>(1)
+
+et de nombreux autres programmes utilisent pour trouver un
+fichier dont le chemin est incomplet.
+Les préfixes sont séparés par des `<B>:</B>'.
+(De même il existe <B>CDPATH</B> utilisé par certains shells pour
+connaître le répertoire destination d'une commande cd,
+<B>MANPATH</B> utilisé par <B><A HREF="/cgi-bin/man/man2html?1+man">man</A></B>(1) pour trouver les pages de
+manuel, etc...)
+<DT><B>PWD</B>
+
+<DD>
+Le répertoire de travail actuel, renseigné par certains shells.
+<DT><B>SHELL</B>
+
+<DD>
+Le nom de fichier du shell à la connexion de l'utilisateur.
+<DT><B>TERM</B>
+
+<DD>
+Le type de terminal utilisé pour les affichages.
+<DT><B>PAGER</B>
+
+<DD>
+L'application préférée de l'utilisateur pour afficher des textes (comme 
+<B><A HREF="/cgi-bin/man/man2html?1+less">less</A></B>(1)).
+
+<DT><B>EDITOR</B>/<B>VISUAL</B>
+
+<DD>
+L'application préférée de l'utilisateur pour éditer des textes.
+<DT><B>BROWSER</B>
+
+<DD>
+L'utilitaire préféré pour examiner des URLs. Une suite de noms de navigateurs
+séparés par des deux-points. Voir <A HREF="http://www.tuxedo.org/~esr/BROWSER/">http://www.tuxedo.org/~esr/BROWSER/</A> .
+</DL>
+<P>
+
+D'autres noms peuvent être inscrits dans l'environnement par
+la commande <B>export</B> avec la syntaxe `nom=valeur' 
+sous 
+<B><A HREF="/cgi-bin/man/man2html?1+sh">sh</A></B>(1),
+
+ou par la commande <B>setenv</B> avec
+<B><A HREF="/cgi-bin/man/man2html?1+csh">csh</A></B>(1).
+
+Des arguments peuvent aussi être insérés dans l'environnement lors
+d'un <B><A HREF="/cgi-bin/man/man2html?2+exec">exec</A></B>(2).  
+<P>
+Un programme C peut manipuler l'environnement en utilisant les fonctions
+<B>getenv</B>(),
+
+<B>putenv</B>(),
+
+<B>setenv</B>(),
+
+et
+<B>unsetenv</B>().
+
+<P>
+Remarquez que le comportement de nombreux programmes ou routines
+de bibliothèque est influencé par la présence, ou par la valeur
+de certaines variables d'environnement. En voici quelques exemples :
+<P>
+
+Les variables
+<B>LANG</B>, <B>LANGUAGE</B>, <B>NLSPATH</B>, <B>LOCPATH</B>, <B>LC_ALL</B>, <B>LC_MESSAGES</B>, 
+
+etc. influencent la localisation.
+<P>
+
+<B>TMPDIR</B>
+
+modifie le préfixe de chemin d'accès des fichiers crées par
+<B>tmpnam()</B> et consort, les répertoires temporaires de
+<B><A HREF="/cgi-bin/man/man2html?1+sort">sort</A></B>(1) ou d'autres programmes.
+<P>
+
+<B>LD_LIBRARY_PATH</B>, <B>LD_PRELOAD</B>
+
+et les autres variables LD_* modifient
+le comportement du chargeur/éditeur de liens dynamique.
+<P>
+
+<B>POSIXLY_CORRECT</B>
+
+oblige certains programmes ou routines à respecter
+scrupuleusement le standard POSIX.
+<P>
+
+Le comportement de <B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></B>(3) est influencé par les variables
+MALLOC_*.
+<P>
+
+La variable
+<B>HOSTALIASES</B>
+
+fournit le nom du fichier d'alias consulté
+par <B>gethostbyname</B>().
+<P>
+
+<B>TZ</B> et <B>TZDIR</B>
+
+gèrent les informations sur les fuseaux horaires utilisées par
+<B><A HREF="/cgi-bin/man/man2html?3+tzset">tzset</A></B>(3)
+
+et donc par les fonctions comme
+<I>ctime</I>(),
+
+<I>localtime</I>(),
+
+<I>mktime</I>(),
+
+<I>strftime</I>().
+
+Voir
+<B><A HREF="/cgi-bin/man/man2html?1+tzselect">tzselect</A></B>(1).
+
+<P>
+
+<B>TERMCAP</B>
+
+donne des indications sur la manière de traiter le terminal
+(ou donne le nom d'un fichier contenant ces spécifications).
+<P>
+
+<BR>&nbsp;COLUMNS&nbsp;&quot;&nbsp;et&nbsp;&quot;&nbsp;LINES
+indiquent aux applications la taille de la fenêtre, éventuellement avec
+préséance sur la taille réelle.
+<P>
+
+<B>PRINTER</B> ou <B>LPDEST</B>
+
+indiquent l'imprimante à utiliser. Voir
+<B><A HREF="/cgi-bin/man/man2html?1+lpr">lpr</A></B>(1).
+
+<P>
+
+Etc.
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+Il est clair qu'il y a ici un risque concernant la sécurité. De nombreuses
+commandes système peuvent être induites en erreur par un utilisateur
+qui fournirait des valeurs particulières pour
+<B>IFS</B> ou <B>LD_LIBRARY_PATH</B>.
+
+<P>
+Il y a aussi un risque de pollution de l'espace des noms.
+Des programmes comme
+<I>make</I>
+
+et
+<I>autoconf</I>
+
+permettent la surcharge des noms d'utilitaires par défaut par des variables
+d'environnement avec le même nom en majuscule.
+Ainsi on peut employer
+<B>CC</B>
+
+pour sélectionner un compilateur C (et de même
+<B>MAKE</B>,
+
+<B>AR</B>,
+
+<B>AS</B>,
+
+<B>FC</B>,
+
+<B>LD</B>,
+
+<B>LEX</B>,
+
+<B>RM</B>,
+
+<B>YACC</B>,
+
+etc.).
+Toutefois dans certains cas, ces variables fournissent des paramètres à
+certains programmes plutôt qu'un nom d'utilitaire. Ainsi il existe
+<B>MORE</B>,
+
+<B>LESS</B>,
+
+ou
+<B>GZIP</B>.
+
+De telles utilisations sont considérées comme des erreurs et doivent être
+évitées dans les nouveaux programmes. Les auteurs de
+<I>gzip</I>
+
+par exemple, devraient penser à renommer leur option
+<B>GZIP_OPT</B>.
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+login">login</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+sh">sh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+bash">bash</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+csh">csh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+tcsh">tcsh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+execve">execve</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+clearenv">clearenv</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+exec">exec</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getenv">getenv</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+putenv">putenv</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setenv">setenv</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+unsetenv">unsetenv</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+locale">locale</A></B>(5).
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:55 GMT, February 11, 2014
+</BODY>
+</HTML>

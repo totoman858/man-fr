@@ -1,0 +1,127 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FPURGE</TITLE>
+</HEAD><BODY>
+<H1>FPURGE</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fpurge, __fpurge - Purger un flux
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+/* non supporté */
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<B>int fpurge(FILE *</B><I>stream</I><B>);</B>
+
+/* supporté */
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/stdio_ext.h">stdio_ext.h</A>&gt;</B>
+
+<B>void  __fpurge(FILE *</B><I>stream</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>fpurge()</B>
+
+efface les tampons d'un flux donné.
+Pour les flux de sortie, on se débarrasse de toute sortie n'ayant pas encore été écrite.
+Pour les flux d'entrée, on renonce à toute entrée lue par l'objet sous-jacent  
+mais n'ayant pas encore été acquise par
+<B><A HREF="/cgi-bin/man/man2html?3+getc">getc</A></B>(3);
+
+Cela inclut tout texte ré-injecté dans le flux par <I>ungetc</I>(). Voir aussi
+<B><A HREF="/cgi-bin/man/man2html?3+fflush">fflush</A></B>(3).
+
+<P>
+
+La fonction
+<B>__fpurge()</B>
+
+fait exactement la même chose mais n'a pas de code de retour.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+En cas de succès,
+<B>fpurge()</B>
+
+renvoie 0.
+En cas d'erreur, elle renvoie -1 et positionne
+<I>errno</I>
+
+de façon adéquate.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+<I>stream</I>
+
+ne correspond pas à un flux ouvert.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Ces fonctions ne sont ni standards ni portables.
+La fonction
+<I>fpurge</I>()
+
+a été introduite sous BSD 4.4 et n'est pas disponible sous Linux.
+La fonction
+<I>__fpurge</I>()
+
+a été introduite sous solaris, et se trouve dans la glibc 2.1.95 et ses versions ultérieures.
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Vouloir purger des tampons d'entrée constitue généralement une erreur.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+fclean">fclean</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fflush">fflush</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setbuf">setbuf</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+stdio_ext">stdio_ext</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Stéphan Rafin, 2002.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:52 GMT, February 11, 2014
+</BODY>
+</HTML>

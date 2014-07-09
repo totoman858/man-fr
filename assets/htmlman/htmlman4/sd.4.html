@@ -1,0 +1,170 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SD</TITLE>
+</HEAD><BODY>
+<H1>SD</H1>
+Section: Manuel du programmeur Linux (4)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+sd - contrôleur de disques SCSI.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+#include &lt;<A HREF="file:///usr/include/linux/hdreg.h">linux/hdreg.h</A>&gt;
+<A NAME="lbAD">&nbsp;</A>
+<H2>CONFIGURATION</H2>
+
+Les noms de ces périphériques blocs suivent la convention suivante :
+<B>sd</B><I>lp,</I>
+
+ou
+<I>l</I>
+
+est une lettre indiquant le lecteur physique, et
+<I>p</I>
+
+est un nombre caractérisant la partition sur ce disque physique. Souvent
+le numéro de partition
+<I>p</I>,
+
+sera absent si le périphérique correspond à l'ensemble du disque.
+<P>
+Les disques SCSI ont un numéro majeur valant 8, et un numéro mineur de
+la forme (16 *
+<I>numéro_disque</I>) + <I>numéro_partition</I>,
+
+où
+<I>numéro_disque</I>
+
+est le numéro du disque physique dans l'ordre de détection, et
+<I>numéro_partition</I>
+
+est le suivant&nbsp;:
+<P>
+partition 0  = disque entier
+<BR>
+
+partitions 1-4 = partitions primaires DOS.
+<BR>
+
+partitions 5-8 = partitions étendues (logiques) DOS.
+<P>
+Par exemple,
+<B>/dev/sda</B>
+
+aura un majeur 8, mineur 0, et se référera à l'ensemble du premier disque SCSI.
+<B>/dev/sdb3</B>
+
+aura un majeur 8 mineur 19, et indiquera la troisième partition primaire DOS
+sur le second disque SCSI du système.
+<P>
+Actuellement, seuls les périphériques blocs sont disponibles, les interfaces
+&quot;raw&quot; ne sont pas encore implémentées.
+<A NAME="lbAE">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les ioctls suivants sont disponibles :
+<DL COMPACT>
+<DT>HDIO_REQ<DD>
+<DL COMPACT><DT><DD>
+Renvoie les paramètres disques du BIOS dans la structure suivante :
+<DL COMPACT><DT><DD>
+<PRE>
+<B>struct hd_geometry {
+      unsigned char heads;
+      unsigned char sectors;
+      unsigned short cylinders;
+      unsigned long start;
+};
+</B></PRE>
+
+</DL>
+
+<P>
+Un pointeur sur cette structure est passé en paramètre de
+<B><A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A></B>(2).
+
+<P>
+En retour on obtient les informations sur la géométrie du disque
+<I>telle qu'elle est comprise par le DOS!</I>
+
+Cette géométrie n'est
+<I>pas</I>
+
+la géométrie physique du disque.
+Elle est utilisée lors de la construction de la table des partitions du
+disque, néanmoins elle est quand même nécessaire pour
+<B><A HREF="/cgi-bin/man/man2html?1+fdisk">fdisk</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+efdisk">efdisk</A></B>(1),
+
+et
+<B><A HREF="/cgi-bin/man/man2html?1+lilo">lilo</A></B>(1).
+
+Si les informations de géométrie ne sont pas valables, zéro sera renvoyé
+pour tous les paramètres.
+</DL>
+
+<DT>BLKGETSIZE<DD>
+Renvoie la taille du périphérique en secteurs. Le paramètre
+<B><A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A></B>(2)
+
+doit être un pointeur sur un
+<B>long</B>.
+
+<DT>BLKRRPART<DD>
+Force la relecture de la table des partitions du disque SCSI. Aucun paramètre
+n'est nécessaire.
+<P>
+Les ioctls
+<B><A HREF="/cgi-bin/man/man2html?4+scsi">scsi</A></B>(4)
+
+sont également supportés. Si le paramètre
+<B><A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A></B>(2)
+
+est nécessaire, et est NULL, alors
+<B>ioctl</B>()
+
+retournera -EINVAL.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/dev/sd[a-h]: Les disques entiers.
+<BR>
+
+/dev/sd[a-h][0-8]: Les partitions individuelles.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?4+scsi">scsi</A></B>(4)
+
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">CONFIGURATION</A><DD>
+<DT><A HREF="#lbAE">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:52 GMT, February 11, 2014
+</BODY>
+</HTML>

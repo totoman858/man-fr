@@ -1,0 +1,136 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DPKG-QUERY</TITLE>
+</HEAD><BODY>
+<H1>DPKG-QUERY</H1>
+Section: dpkg suite (8)<BR>Updated: August 2001<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+dpkg-query - Un outil pour interroger la base de données de dpkg
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>dpkg-query</B>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>dpkg-query</B> est un outil pour afficher des informations sur les paquets
+connus par la base de données de <B>dpkg</B>.
+<P>
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>COMMANDES</H2>
+
+<DL COMPACT>
+<DT><B>-l</B> | <B>--list</B> <I>paquet-nom-motif</I> ...<DD>
+Liste les paquets correspondant au motif donné. Quand on ne donne aucun
+<I>paquet-nom-motif</I>, tous les paquets listés dans 
+<I>/var/lib/dpkg/available</I> sont affichés. Les métacaractères ordinaires du
+shell sont autorisés dans <I>paquet-nom-motif</I>. Il faudra sans doute mettre
+<I>paquet-nom-motif</I> entre apostrophes pour éviter l'expansion des noms de
+fichier par le shell. Par exemple, tous les paquets dont le nom commence par
+«&nbsp;libc5&nbsp;» seront affichés par la commande&nbsp;:
+<P>
+
+<PRE>
+  <B>dpkg-query -l 'libc5*'</B>
+</PRE>
+
+<DT><B>-W</B> | <B>--show</B> <I>paquet-nom-motif</I>...<DD>
+Tout comme l'option <B>--list</B>, elle affiche la liste des paquets qui 
+correspondent au motif donné. La sortie peut cependant être formatée en 
+utilisant l'option <B>--showformat</B>.
+<DT><B>-s</B> | <B>--status</B> <I>paquet-nom</I> ...<DD>
+Donne l'état du paquet indiqué. C'est simplement l'affichage de l'entrée
+de la base de données concernant les états des paquets installés.
+<DT><B>-L</B> | <B>--listfiles</B> <I>paquet</I> ...<DD>
+Affiche la liste des fichiers de <I>paquet</I> installés sur le système.
+Il faut remarquer cependant que les fichiers créés par les scripts 
+d'installation particuliers au paquet ne sont pas affichés.
+<DT><B>-S</B> | <B>--search</B> <I>motif-de-recherche</I> ...<DD>
+Recherche un nom de fichier dans les paquets installés. On peut utiliser
+dans le motif tous les métacaractères du shell.
+<DT><B>-p</B> |<B>--print-avail</B> paquet<DD>
+Affiche des renseignements détaillés sur <I>paquet</I>, tels qu'ils sont
+trouvés dans le fichier <I>/var/lib/dpkg/available</I>.
+<DT><B>--licence</B> | <B>--license</B><DD>
+Affiche des renseignements sur la licence et le copyright.
+<DT><B>--version</B><DD>
+Affiche des renseignements sur la version.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>--admindir=</B><I>dir</I><DD>
+Changer l'endroit où se trouve la base de données de <B>dpkg</B> database. Par
+défaut, c'est <I>/var/lib/dpkg</I>.
+<DT><B>--showformat=</B><I>format</I><DD>
+On se sert de cette option pour préciser le format de la sortie que produit la
+commande <B>--show</B>. Ce format est une chaîne, produite pour chaque paquet,
+qui peut contenir les séquences d'échappement classiques comme \n (nouvelle 
+ligne), \r (retour chariot) ou \\ (simple barre oblique). On peut inclure
+des informations concernant un paquet (variables référençant des champs) en 
+se servant de la syntaxe ${var[;largeur]}. Les champs sont alignés sur la 
+droite, sauf si largeur est négatif, auquel cas ils sont alignés sur la
+gauche.
+<P>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+<DL COMPACT>
+<DT><B>COLUMNS</B><DD>
+Fixer le nombre de colonnes influence la sortie de l'option <B>--list</B> en
+modifiant la largeur d'affichage.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>Voir aussi</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+dpkg">dpkg</A></B>(8)
+
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+copyright 2001 Wichert Akkerman
+
+&lt;<A HREF="mailto:wakkerma@debian.org">wakkerma@debian.org</A>&gt;
+
+<P>
+C'est un logiciel libre&nbsp;; voyez la licence publique générale du projet GNU
+version 2 ou supérieure pour les droits de copie. Il n'y a PAS de garantie.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTEUR</H2>
+
+Philippe Batailler, Août 2001.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">COMMANDES</A><DD>
+<DT><A HREF="#lbAF">OPTIONS</A><DD>
+<DT><A HREF="#lbAG">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAH">Voir aussi</A><DD>
+<DT><A HREF="#lbAI">AUTEUR</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTEUR</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:02 GMT, February 11, 2014
+</BODY>
+</HTML>

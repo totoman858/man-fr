@@ -1,0 +1,676 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DIFF</TITLE>
+</HEAD><BODY>
+<H1>DIFF</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+diff - Trouver les différences entre des fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>diff</B>
+
+[options] source cible
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Dans le cas le plus simple,
+<I>diff</I>
+
+compare le contenu du fichier
+<I>source</I>
+
+et celui du fichier
+<I>cible</I>.
+
+Un nom de fichier remplacé par un tiret
+<B>-</B>
+
+correspond à la lecture depuis l'entrée standard.
+Un cas particulier est représenté par <B> &quot;diff --&quot; </B>
+qui compare une copie de l'entrée standard avec elle-même.
+<P>
+Si la
+<I>source</I>
+
+est un répertoire, et pas la
+<I>cible</I>,
+
+alors
+<I>diff</I>
+
+compare le fichier
+<I>cible</I>
+
+avec le fichier placé dans le répertoire
+<I>source</I>
+
+et dont le nom soit identique à la 
+<I>cible</I>.
+
+La situation réciproque est également possible.
+Le fichier indiqué (pas le répertoire) ne peut pas être
+<B>-</B>.
+
+En effet, l'entrée standard n'a pas de nom et la correspondance
+``nom à nom'' ne pourrait pas s'appliquer.
+<P>
+Si les deux fichiers
+<I>source</I>
+
+et
+<I>cible</I>
+
+sont des répertoires, 
+<I>diff</I>
+
+compare les fichiers correspondant dans les deux répertoires, dans l'ordre
+alphabétique. Cette comparaison n'est pas récursive, à moins d'employer
+l'option
+<B>-r</B>
+
+ou
+<B>--recursive</B>.
+
+<I>diff</I>
+
+ne compare jamais le contenu ``réel'' d'un répertoire en le considérant comme un fichier.
+<P>
+Les options de
+<B>diff</B>
+
+commencent par un tiret <B>-</B>,
+ainsi les fichiers
+<I>source</I>
+
+et
+<I>cible</I>
+
+ne devraient pas commencer par un tiret
+<B>-</B>.
+
+Toutefois, le double tiret
+<B>--</B>
+
+est un argument spécial signifiant ``fin des options'', ainsi des noms de
+fichiers commençant par un tiret peuvent être mentionnés à sa suite.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H3>Options</H3>
+
+Voici une liste de l'ensemble des options que le
+<I>diff</I>
+
+GNU accepte. La plupart des options ont deux noms équivalents, l'un constitué
+d'une seule lettre précédée par
+<B>-</B>,
+
+et l'autre composé d'un nom long plus explicite, précédé par
+<B>--</B>.
+
+<P>
+Plusieurs options avec lettre unique (sauf si elle prennent un argument) peuvent
+être combinées en un seul mot de la ligne de commande ; ainsi :
+<B>-ac</B>
+
+est équivalent à
+<B>-a -c</B>.
+
+<P>
+Les options avec un nom long peuvent être abrégées s'il n'y a pas d'ambiguïté.
+<P>
+Les crochets
+(<B>[</B>
+
+et
+<B>]</B>)
+
+indiquent qu'une option prend éventuellement un argument.
+<DL COMPACT>
+<DT><B>-</B><I>nb</I><DD>
+(nb est un nombre entier) Afficher
+<I>nb</I>
+
+lignes de contexte. Cette option ne précise pas le format de sortie par elle-même, elle
+n'a pas d'effet si elle n'est pas combinée avec
+<B>-c</B>
+
+ou
+<B>-u</B>.
+
+Cette option est obsolète. Pour fonctionner correctement,
+<I>patch</I>
+
+nécessite typiquement deux lignes de contexte.
+<DT><B>-a</B>
+
+<DD>
+Traiter tous les fichiers comme du texte, et les comparer ligne-à-ligne, même
+s'ils semblent contenir des données binaires.
+<DT><B>-b</B>
+
+<DD>
+Ne pas tenir compte des différences concernant des espaces blancs.
+<DT><B>-B</B>
+
+<DD>
+Ne pas tenir compte des différences qui concernent des lignes blanches.
+<DT><B>--brief</B>
+
+<DD>
+Indiquer seulement si les fichiers diffèrent, pas les différences elles-mêmes.
+<DT><B>-c</B>
+
+<DD>
+Utiliser le format de sortie contextuel.
+<DT><B>-C </B><I>nb</I>
+
+<DD>
+<BR>
+
+
+<DT><B>--context[=</B><I>nb</I><B>]</B>
+
+<DD>
+(nb est un nombre entier)
+Utiliser le format de sortie contextuel en affichant
+<I>nb</I>
+
+lignes de texte. Par défaut 
+<I>nb</I>
+
+vaut 3.
+Pour fonctionner correctement,
+<I>patch</I>
+
+nécessite typiquement au moins deux lignes de contexte.
+<DT><B>--changed-group-format=</B><I>format</I>
+
+<DD>
+Utiliser le
+<I>format</I>
+
+pour afficher un groupe de lignes contenant des différences entre
+les deux fichiers. L'affichage est du type si-alors-sinon (voir option -D)
+<DT><B>-d</B>
+
+<DD>
+Modifier l'algorithme pour trouver éventuellement des ensembles de changements plus petits.
+Ceci rend
+<I>diff</I>
+
+plus lent (parfois beaucoup plus lent).
+<DT><B>-D </B><I>nom</I>
+
+<DD>
+Sortir les deux textes originaux regroupés. La différenciation se fait
+par des directives de préprocesseur ifdef-then-else concernant l'existence, ou non, 
+de la macro ayant le
+<I>nom</I>
+
+indiqué. Par exemple on utilisera `<I>diff -D Nouvelle_version ancien_fichier.c nouveau_fichier.c</I>'
+pour obtenir un fichier pouvant être compilé au choix avec la constante symbolique Nouvelle_version.
+<DT><B>-e</B>
+
+<DD>
+<BR>
+
+
+<DT><B>--ed</B>
+
+<DD>
+Sortir un script valide pour
+<I>ed</I>.
+
+<DT><B>--exclude=</B><I>motif</I>
+
+<DD>
+Lors de la comparaison de répertoires, ignorer les fichiers et les sous-répertoires dont
+le nom correspond au
+<I>motif</I>.
+
+<DT><B>--exclude-from=</B><I>fichier</I>
+
+<DD>
+Lors de la comparaison de répertoires, ignorer les fichiers et les sous-répertoires dont
+le nom correspond à n'importe quel motif indiqué dans le
+<I>fichier</I>.
+
+<DT><B>--expand-tabs</B>
+
+<DD>
+Développer les tabulations en espaces en sortie, afin de préserver l'alignement des
+tabulations des fichiers d'entrée.
+<DT><B>-f</B>
+
+<DD>
+S'arranger pour que la sortie ressemble vaguement à un script
+<I>ed</I>,
+
+mais en préservant l'ordre des modifications du fichier.
+<DT><B>-F </B><I>regexp</I>
+
+<DD>
+Dans les formats contextuel et unifiés, pour chaque bloc de différences, afficher
+quelques lignes précédentes qui correspondent à l'expression rationnelle
+<I>regexp</I>.
+
+<DT><B>--forward-ed</B>
+
+<DD>
+S'arranger pour que la sortie ressemble vaguement à un script
+<B>ed</B>
+
+mais en préservant l'ordre des modifications du fichier.
+<DT><B>-h</B>
+
+<DD>
+Cette option n'a aucun effet, il s'agit simplement de préserver la compatibilité Unix.
+<DT><B>-H</B>
+
+<DD>
+Utiliser une heuristique accélérant le traitement des gros fichiers ayant de nombreux
+petits changements dispersés.
+<DT><B>--horizon-lines=</B><I>nb</I>
+
+<DD>
+Ne pas éliminer les 
+<I>nb</I>
+
+dernières lignes du préfixe commun, ni les
+<I>nb</I>
+
+premières lignes du suffixe commun.
+<DT><B>-i</B>
+
+<DD>
+Ignore les différences entre majuscules et minuscules.
+<DT><B>-I </B><I>regexp</I>
+
+<DD>
+Ignorer les changements consistant seulement en insertion ou suppression de
+lignes correspondant à l'expression régulière
+<I>regexp</I>.
+
+<DT><B>--ifdef=</B><I>nom</I>
+
+<DD>
+Sortir les deux textes originaux regroupés. La différenciation se fait
+par des directives de préprocesseur ifdef-then-else concernant l'existence, ou non, 
+de la macro ayant le
+<I>nom</I>
+
+indiqué.
+<DT><B>--ignore-all-space</B>
+
+<DD>
+Ignorer les espaces lors des comparaisons de lignes
+<DT><B>--ignore-blank-lines</B>
+
+<DD>
+Ignorer les changements consistant uniquement en insertion ou suppression de
+lignes blanches.
+<DT><B>--ignore-case</B>
+
+<DD>
+Ignorer les différences entre majuscules et minuscules.
+<DT><B>--ignore-matching-lines=</B><I>regexp</I>
+
+<DD>
+Ignorer les changements consistant seulement en insertion ou suppression de
+lignes correspondant à l'expression rationnelle
+<I>regexp</I>.
+
+<DT><B>--ignore-space-change</B>
+
+<DD>
+Ignorer les changements concernant le nombre d'espaces blanches.
+<DT><B>--initial-tab</B>
+
+<DD>
+Sortir une tabulation plutôt qu'une espace avant le texte dans le format
+normal ou contextuel. Ceci améliore la présentation des alignements.
+<DT><B>-l</B>
+
+<DD>
+Envoyer la sortie à
+<I>pr</I>
+
+pour la paginer.
+<DT><B>-L </B><I>étiquette</I>
+
+<DD>
+<BR>
+
+
+<DT><B>--label=</B><I>étiquette</I>
+
+<DD>
+Utiliser l'<I>étiquette</I>
+à la place du nom de fichier dans les en-têtes des formats contextuels ou unifiés.
+<DT><B>--left-column</B>
+
+<DD>
+N'afficher que la colone de gauche des lignes communes dans le format
+side-by-side.
+<DT><B>--line-format=</B><I>format</I>
+
+<DD>
+Utiliser le
+<I>format</I>
+
+pour afficher toutes les lignes d'entrée dans le format if-then-else.
+<DT><B>--minimal</B>
+
+<DD>
+Modifier l'algorithme pour trouver éventuellement des ensembles de changements plus petits.
+Ceci rend
+<I>diff</I>
+
+plus lent (parfois beaucoup plus lent).
+<DT><B>-n</B>
+
+<DD>
+Sortir les différences au format RCS. Comme
+<B>-f</B>
+
+sauf que chaque commande précise le nombre de lignes affectées.
+<DT><B>-N</B>
+
+<DD>
+<BR>
+
+
+<DT><B>--new-file</B>
+
+<DD>
+Dans les comparaisons de répertoires, si un fichier ne se trouve que dans un seul
+répertoire, considérer qu'il est présent, mais vide dans l'autre répertoire.
+<DT><B>--new-group-format=</B><I>format</I>
+
+<DD>
+Utiliser le
+<I>format</I>
+
+pour sortir un groupe de lignes ne se trouvant que dans le second fichier, dans
+le format if-then-else.
+<DT><B>--new-line-format=</B><I>format</I>
+
+<DD>
+Utiliser le
+<I>format</I>
+
+pour sortir une ligne ne se trouvant que dans le second fichier, dans
+le format if-then-else.
+<DT><B>--old-group-format=</B><I>format</I>
+
+<DD>
+Utiliser le
+<I>format</I>
+
+pour sortir un groupe de lignes ne se trouvant que dans le premier fichier, dans
+le format if-then-else.
+<DT><B>--old-line-format=</B><I>format</I>
+
+<DD>
+Utiliser le
+<I>format</I>
+
+pour sortir une ligne ne se trouvant que dans le premier fichier, dans
+le format if-then-else.
+<DT><B>-p</B>
+
+<DD>
+Indiquer dans quelle fonction C se trouve chaque changement.
+<DT><B>-P</B>
+
+<DD>
+Dans les comparaisons de répertoires, si un fichier ne se trouve que dans le second
+répertoire, considérer qu'il est présent, mais vide dans l'autre répertoire.
+<DT><B>--paginate</B>
+
+<DD>
+Envoyer la sortie à
+<I>pr</I>
+
+pour la paginer.
+<DT><B>-q</B>
+
+<DD>
+Indiquer seulement si les fichiers différent, pas les différences elles-mêmes.
+<DT><B>-r</B>
+
+<DD>
+Lorsque l'on compare des répertoires, comparer également tous les sous-répertoires
+récursivement.
+<DT><B>--rcs</B>
+
+<DD>
+Sortir les différences au format RCS. Comme
+<B>-f</B>
+
+sauf que chaque commande précise le nombre de lignes affectées.
+<DT><B>--recursive</B>
+
+<DD>
+Lorsque l'on compare des répertoires, comparer également tous les sous-répertoires
+récursivement.
+<DT><B>--report-identical-files</B>
+
+<DD>
+<BR>
+
+
+<DT><B>-s</B>
+
+<DD>
+Indiquer lorsque deux fichiers sont identiques.
+<DT><B>-S </B><I>fichier</I>
+
+<DD>
+Lorsque l'on compare des répertoires, commencer par le
+<I>fichier</I>indiqué.
+
+Ceci permet une reprise après une comparaison interrompue.
+<DT><B>--sdiff-merge-assist</B>
+
+<DD>
+Afficher des informations supplémentaires pour aider
+<I>sdiff</I>.
+
+Celui-ci utilise cette option lorsqu'il invoque
+<I>diff</I>.
+
+L'utilisateur n'a aucune raison d'appeler cette option.
+<DT><B>--show-c-function</B>
+
+<DD>
+Indiquer dans quelle fonction C se trouve chaque changement.
+<DT><B>--show-function-line=</B><I>regexp</I>
+
+<DD>
+Dans les formats contextuel et unifiés, pour chaque bloc de différences, afficher
+quelques lignes précédentes correspondant à l'expression rationnelle
+<I>regexp</I>.
+
+<DT><B>--side-by-side</B>
+
+<DD>
+Utiliser le format de sortie côte-à-côte.
+<DT><B>--speed-large-files</B>
+
+<DD>
+Utiliser une heuristique accélérant le traitement des gros fichiers ayant de nombreux
+petits changements dispersés.
+<DT><B>--starting-file=</B><I>fichier</I>
+
+<DD>
+Lorsque l'on compare des répertoires, commencer par le
+<I>fichier</I>indiqué.
+
+Ceci permet une reprise après une comparaison interrompue.
+<DT><B>--suppress-common-lines</B>
+
+<DD>
+Ne pas afficher les lignes communes dans le format side-by-side.
+<DT><B>-t</B>
+
+<DD>
+Développer les tabulations en espaces en sortie, afin de préserver l'alignement des
+tabulations des fichiers d'entrée.
+<DT><B>-T</B>
+
+<DD>
+Sortir une tabulation plutôt qu'un espace avant le texte dans le format
+normal ou contextuel. Ceci améliore la présentation des alignements.
+<DT><B>--text</B>
+
+<DD>
+Traiter tous les fichiers comme du texte, et les comparer ligne-à-ligne, même
+s'ils semblent contenir des données binaires.
+<DT><B>-u</B>
+
+<DD>
+Utiliser le format de sortie unifié.
+<DT><B>--unchanged-group-format=</B><I>format</I>
+
+<DD>
+Utiliser le
+<I>format</I>
+
+pour sortir un groupe de lignes communes aux deux fichiers, dans
+le format if-then-else.
+<DT><B>--unchanged-line-format=</B><I>format</I>
+
+<DD>
+Utiliser le
+<I>format</I>
+
+pour sortir une ligne commune aux deux fichiers, dans
+le format if-then-else.
+<DT><B>--unidirectional-new-file</B>
+
+<DD>
+Dans les comparaisons de répertoires, si un fichier ne se trouve que dans le second
+répertoire, considérer qu'il est présent, mais vide dans l'autre répertoire.
+<DT><B>-U </B><I>nb</I>
+
+<DD>
+<BR>
+
+
+<DT><B>--unified[=</B><I>nb</I><B>]</B>
+
+<DD>
+Utiliser le format unifié, en montrant
+<I>nb</I>
+
+lignes de contexte, ou 3 lignes si
+<I>nb</I>
+
+n'est pas précisé. Pour fonctionner correctement,
+<I>patch</I>
+
+nécessite typiquement deux lignes de contexte
+<DT><B>-v</B>
+
+<DD>
+<BR>
+
+
+<DT><B>--version</B>
+
+<DD>
+Afficher le numéro de version de
+<I>diff</I>.
+
+<DT><B>-w</B>
+
+<DD>
+Ignorer les espaces blancs lors de la comparaison de lignes.
+<DT><B>-W </B><I>nb</I>
+
+<DD>
+<BR>
+
+
+<DT><B>--width=</B><I>nb</I>
+
+<DD>
+Utiliser une sortie ayant 
+<I>nb</I>
+
+colonnes de texte dans le format side-by-side.
+<DT><B>-x </B><I>motif</I>
+
+<DD>
+Lors de la comparaison de répertoires, ignorer les fichiers et les sous-répertoires dont
+le nom correspond au
+<I>motif</I>.
+
+<DT><B>-X </B><I>file</I>
+
+<DD>
+Lors de la comparaison de répertoires, ignorer les fichiers et les sous-répertoires dont
+le nom correspond à l'un quelconque des motifs indiqués dans le
+<I>fichier</I>.
+
+<DT><B>-y</B>
+
+<DD>
+Utiliser l'affichage côte-à-côte (side-by-side).
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+cmp">cmp</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+comm">comm</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+diff3">diff3</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+ed">ed</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+patch">patch</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+pr">pr</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+sdiff">sdiff</A></B>(1)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>DIAGNOSTIC</H2>
+
+Un code de retour valant 0 signifie qu'aucune différence n'a été trouvée, 1
+signifie que des différences sont apparues, 2 indique une erreur.
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1999-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">Options</A><DD>
+</DL>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">DIAGNOSTIC</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:48 GMT, February 11, 2014
+</BODY>
+</HTML>

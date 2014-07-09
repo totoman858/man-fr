@@ -1,0 +1,596 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of OPEN</TITLE>
+</HEAD><BODY>
+<H1>OPEN</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+open, creat - Ouvrir ou créer éventuellement un fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/stat.h">sys/stat.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/fcntl.h">fcntl.h</A>&gt;</B>
+
+<B>int open(const char *</B><I>pathname</I><B>, int </B><I>flags</I><B>);</B>
+<B>int open(const char *</B><I>pathname</I><B>, int </B><I>flags</I><B>, mode_t </B><I>mode</I><B>);</B>
+<B>int creat(const char *</B><I>pathname</I><B>, mode_t </B><I>mode</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+L'appel-système
+<B>open()</B>
+
+sert à convertir un chemin d'accès en descripteur de fichier (un petit entier
+non négatif utilisable pour les opérations d'entrées/sorties ultérieures telles
+<B>read</B>, <B>write</B>, etc.).
+
+Lorsque l'appel-système réussit, le descripteur renvoyé sera le plus petit
+descripteur de fichier non encore ouvert pour le processus. Cet appel crée
+un nouveau descripteur, non-partagé avec les autres processus. Toutefois le
+partage de fichiers ouverts peut se produire avec
+l'appel-système
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2)).
+
+Le nouveau descripteur de fichier est configuré pour rester ouvert au travers
+des fonctions exec (voir
+<B><A HREF="/cgi-bin/man/man2html?2+fntl">fntl</A></B>(2)).
+
+Le pointeur de position dans le fichier est placée à son début.
+<P>
+Le paramètre
+<I>flags</I>
+
+est l'un des éléments
+<B>O_RDONLY</B>, <B>O_WRONLY</B> ou <B>O_RDWR</B>
+
+qui réclament respectivement l'ouverture du fichier en lecture seule, 
+écriture seule, ou lecture/écriture.
+À cette valeur peut être ajouté un ou plusieurs attributs avec un
+<I>OU binaire  :</I>
+
+<DL COMPACT>
+<DT><B>O_CREAT</B>
+
+<DD>
+Créer le fichier s'il n'existe pas.
+Le possesseur (UID) du fichier est renseigné avec l'UID effectif du processus.
+Le groupe propriétaire (GID) du fichier est le GID effectif du processus
+ou le GID du répertoire parent (ceci dépend du système de
+fichiers, des options de montage, du mode du répertoire parent, etc.) Voir
+par exemple les options de montage
+<I>bsdgroups</I>
+
+et 
+<I>sysvgroups</I>
+
+du système de fichiers ext2, décrites dans la page
+<B><A HREF="/cgi-bin/man/man2html?8+mount">mount</A></B>(8)).
+
+<DT><B>O_EXCL</B>
+
+<DD>
+En conjonction avec
+<B>O_CREAT</B>,
+
+déclenchera une erreur si le fichier existe, et
+<B>open</B>
+
+échouera. On considère qu'un lien symbolique, quelque soit l'endroit où
+il pointe.
+<B>O_EXCL</B>
+
+ne fonctionne pas sur les systèmes de fichiers NFS. Les programmes qui
+ont besoin de cette fonctionnalité pour verrouiller des tâches risquent
+de rencontrer une concurrence critique (race condition). La solution consiste
+à créer un fichier unique sur le même système de fichiers (par exemple avec le
+PID et le nom de l'hôte), utiliser
+<B><A HREF="/cgi-bin/man/man2html?2+link">link</A></B>(2)
+
+pour créer un lien sur un fichier de verrouillage et d'utiliser
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2)
+
+sur ce fichier unique pour vérifier si le nombre de liens a augmenté
+jusqu'à 2. Ne pas utiliser la valeur de retour de <B>link()</B>.
+<DT><B>O_NOCTTY</B>
+
+<DD>
+Si
+<I>pathname</I>
+
+correspond à un périphérique de terminal --- voir
+<B><A HREF="/cgi-bin/man/man2html?4+tty">tty</A></B>(4)
+
+---, il ne deviendra pas le terminal contrôlant le processus
+même si celui-ci n'est attaché à aucun autre terminal.
+<DT><B>O_TRUNC</B>
+
+<DD>
+Si le fichier existe, est un fichier régulier, et est ouvert en écriture
+(O_RDWR ou O_WRONLY), il sera tronqué à une longueur nulle. Si le fichier
+est une FIFO ou un périphérique terminal, l'attribut O_TRUNC est ignoré.
+Sinon, le comportement de O_TRUNC n'est pas précisé. Sur de nombreuses versions
+de Linux, il sera ignoré ; sur d'autres versions il déclenchera une erreur).
+<DT><B>O_APPEND</B>
+
+<DD>
+Le fichier est ouvert en mode &quot;ajout&quot;. Initialement, et avant chaque
+<B>write</B>,
+
+la tête de lecture/écriture est placée à la fin du fichier
+comme avec
+<B>lseek</B>.
+
+Il y a un risque d'endommager le fichier lorsque
+<B>O_APPEND</B>
+
+est utilisé, sur un système de fichiers NFS, si plusieurs processus
+tentent d'ajouter des données simultanément au même fichier.
+Ceci est dû au fait que NFS ne supporte pas l'opération d'ajout de données
+dans un fichier, aussi le noyau client est obligé de la simuler, avec un
+risque de concurrence des tâches.
+<DT><B>O_NONBLOCK</B> ou <B>O_NDELAY</B>
+
+<DD>
+Le fichier est ouvert en mode &quot;non-bloquant&quot;. Ni la fonction
+<B>open</B>
+
+ni aucune autre opération ultérieure sur ce fichier
+ne laissera le processus appelant en attente. Pour la manipulation des
+FIFO (tubes nommés), voir également
+<B><A HREF="/cgi-bin/man/man2html?4+fifo">fifo</A></B>(4).
+
+Ce mode n'a pas nécessairement d'effet sur autre chose que les FIFOs.
+<DT><B>O_SYNC</B>
+
+<DD>
+Le fichier est ouvert en écriture synchronisée. Chaque appel à
+<B>write</B>
+
+sur le fichier bloquera le processus appelant jusqu'à ce que les
+données aient été écrites physiquement sur le support matériel
+(voir la section RESTRICTIONS plus bas).
+<DT><B>O_NOFOLLOW</B>
+
+<DD>
+Si
+<I>pathname</I>
+
+est un lien symbolique, l'ouverture échoue. Ceci est une extension
+FreeBSD, qui fut ajoutée à Linux dans la version 2.1.126.
+Les liens symboliques se trouvant dans le chemin d'accès proprement
+dit seront suivis normalement. Les en-tête de glibc 2.0.100 et 
+suivant contiennent une définition de cet attribut.
+<I> Les noyaux antérieurs au 2.1.126 ignorent simplement cet attribut
+si vous l'utilisez</I>.
+<DT><B>O_DIRECTORY</B>
+
+<DD>
+Si
+<I>pathname</I>
+
+n'est pas un répertoire, l'ouverture échoue. Cet attribut est spécifique
+à Linux et fut ajouté dans la version 2.1.126 du noyau, pour éviter
+des problèmes de dysfonctionnement si <I><A HREF="/cgi-bin/man/man2html?3+opendir">opendir</A></I>(3) est invoqué
+sur une FIFO ou un périphérique de bande. Cet attribut ne devrait
+jamais être utilisé ailleurs que dans l'implémentation de <B>opendir</B>.
+<DT><B>O_DIRECT</B>
+
+<DD>
+Essayer de minimiser les effets du cache d'entrée/sortie sur ce fichier.
+Ceci dégradera en général les performances, mais est utilise dans des
+situations spéciales, lorsque les applications ont leur propres caches.
+Les entrées/sorties dans le fichier se font directement depuis l'espace
+utilisateur, elles sont synchrones (à la fin de
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2),
+
+les donnée ont obligatoirement été transférées). La taille des transferts,
+l'alignement du buffer et la position dans le fichier doivent être des
+multiples de la taille de blocs logiques du système de fichiers.
+
+<BR>
+
+Une interface à la sémantique similaire pour les périphériques de type
+bloc est décrite à la page
+<B><A HREF="/cgi-bin/man/man2html?8+raw">raw</A></B>(8).
+
+<DT><B>O_ASYNC</B>
+
+<DD>
+Déclencher un signal (SIGIO par défaut, mais peut être changé via
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2))
+
+lorsque la lecture ou l'écriture devienne possible sur ce descripteur.
+Ceci n'est possible que pour les terminaux, pseudo-terminaux et sockets.
+Voir
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2)
+
+pour plus de détails.
+<DT><B>O_LARGEFILE</B>
+
+<DD>
+Sur les systèmes 32 bits qui supportent les Systèmes de Fichiers Larges,
+autoriser quand même l'ouverture des fichiers dont la taille ne peut
+pas être représentée sur 31 bits.
+</DL>
+<P>
+
+Certains de ces attributs optionnels peuvent être modifiés
+par la suite avec la fonction
+<B>fcntl</B>.
+
+<P>
+L'argument
+<I>mode</I>
+
+indique les permissions à utiliser si un nouveau fichier est créé.
+Cette valeur est modifiée par le
+<B>umask</B>
+
+du processus : la véritable valeur utilisée est
+<B>(mode &amp; ~umask)</B>.
+
+Notez que ce mode ne s'applique qu'aux accès ultérieurs du fichier
+nouvellement créé. L'appel
+<B>open</B>
+
+qui crée un fichier dont le mode est en lecture seule fournira quand même
+un descripteur de fichier en lecture et écriture.
+<P>
+
+Les constantes symboliques suivantes sont disponibles pour
+<I>mode</I>:
+
+<DL COMPACT>
+<DT><B>S_IRWXU</B>
+
+<DD>
+00700 L'utilisateur (propriétaire du fichier) a les 
+autorisations de lecture, écriture, exécution.
+<DT><B>S_IRUSR (S_IREAD)</B>
+
+<DD>
+00400 L'utilisateur a l'autorisation de lecture.
+<DT><B>S_IWUSR (S_IWRITE)</B>
+
+<DD>
+00200 L'utilisateur a l'autorisation d'écriture.
+<DT><B>S_IXUSR (S_IEXEC)</B>
+
+<DD>
+00100 L'utilisateur a l'autorisation d'exécution.
+<DT><B>S_IRWXG</B>
+
+<DD>
+00070 Le groupe a les autorisations de lecture, écriture, exécution.
+<DT><B>S_IRGRP</B>
+
+<DD>
+00040 Le groupe a l'autorisation de lecture.
+<DT><B>S_IWGRP</B>
+
+<DD>
+00020 Le groupe a l'autorisation d'écriture.
+<DT><B>S_IXGRP</B>
+
+<DD>
+00010 Le groupe a l'autorisation d'exécution.
+<DT><B>S_IRWXO</B>
+
+<DD>
+00007 Tout le monde a les autorisations de lecture, écriture, exécution.
+<DT><B>S_IROTH</B>
+
+<DD>
+00004 Tout le monde a l'autorisation de lecture.
+<DT><B>S_IWOTH</B>
+
+<DD>
+00002 Tout le monde a l'autorisation d'écriture.
+<DT><B>S_IXOTH</B>
+
+<DD>
+00001 Tout le monde a l'autorisation d'exécution.
+</DL>
+<P>
+
+Le
+<I>mode</I>
+
+devrait toujours être indiqué quand 
+<B>O_CREAT</B>
+
+est dans les attributs
+<I>flags</I>,
+
+(il est ignoré dans les autres cas).
+<P>
+<B>creat</B>
+
+est équivalent à 
+<B>open</B>
+
+avec l'attribut
+<I>flags</I>
+
+égal à
+<B>O_CREAT | O_WRONLY | O_TRUNC</B>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>open</B> et <B>creat</B>
+
+renvoient le nouveau descripteur de fichier s'ils réussissent, 
+ou -1 s'ils échouent, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+Notez que
+<B>open</B>
+
+peut ouvrir des fichiers spéciaux mais
+<B>creat</B>
+
+ne peut pas en créer,
+il faut utiliser
+<B><A HREF="/cgi-bin/man/man2html?2+mknod">mknod</A></B>(2)
+
+à la place.
+<P>
+
+Sur les systèmes de fichiers NFS, où la correspondance d'UID est activée,
+<B>open</B> peut renvoyer un descripteur de fichier alors qu'une requête
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2) par exemple sera refusée avec le code d'erreur <B>EACCES</B>.
+En effet, c'est le client qui effectué <B>open</B> en vérifiant les
+autorisations d'accès, mais la correspondance d'UID est calculée par
+le serveur au moment des requêtes de lecture ou d'écriture.
+<P>
+Si un fichiers est créé, ses horodatages atime, ctime, mtime sont fixés à
+l'heure actuelle, ainsi que ctime et mtime du répertoire parent.
+Sinon, si le fichier est modifié à cause de l'attribut O_TRUNC, ses
+champs ctime et mtime sont remplis avec l'heure actuelle.
+<P>
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EEXIST</B>
+
+<DD>
+<I>pathname</I>
+
+existe déjà et
+<B>O_CREAT</B> et <B>O_EXCL</B>
+
+ont été indiqués.
+<DT><B>EISDIR</B>
+
+<DD>
+On a demandé une écriture alors que
+<I>pathname</I>
+
+correspond à un répertoire (en fait,
+<B>O_WRONLY</B>
+
+ou
+<B>O_RDWR</B>
+
+ont été demandés).
+<DT><B>EACCES</B>
+
+<DD>
+L'accès demandé au fichier est interdit, ou l'un des répertoires
+du chemin
+<I>pathname</I>
+
+ne permet pas de consultation, ou le fichier n'existe pas mais
+le répertoire parent ne permet pas l'écriture.
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+<I>pathname</I> est trop long.
+
+<DT><B>ENOENT</B>
+
+<DD>
+O_CREAT est absent et le fichier n'existe pas.
+Ou un répertoire du chemin d'accès
+<I>pathname</I>
+
+n'existe pas, ou est un lien symbolique pointant nulle part.
+<DT><B>ENOTDIR</B>
+
+<DD>
+Un élément du chemin d'accès
+<I>pathname</I>
+
+n'est pas un répertoire, ou l'attribut <B>O_DIRECTORY</B> est
+utilisé et
+<I>pathname</I>
+
+n'est pas un répertoire.
+<DT><B>ENXIO</B>
+
+<DD>
+O_NONBLOCK | O_WRONLY est indiqué, le fichier est une FIFO et le
+processus n'a pas de fichier ouvert en lecture.
+Ou le fichier est un noeud spécial et il n'y a pas de périphérique
+correspondant.
+<DT><B>ENODEV</B>
+
+<DD>
+<I>pathname</I>
+
+correspond à un fichier spécial et il n'y a pas de périphérique correspondant.
+<DT><B>EROFS</B>
+
+<DD>
+Un accès en écriture est demandé alors que
+<I>pathname</I>
+
+réside sur un système de fichiers en lecture seule.
+<DT><B>ETXTBSY</B>
+
+<DD>
+On a demandé une écriture alors que
+<I>pathname</I>
+
+correspond à un fichier exécutable actuellement utilisé.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>pathname</I> pointe en dehors de l'espace d'adressage accessible
+
+<DT><B>ELOOP</B>
+
+<DD>
+<I>pathname</I>
+
+contient une référence circulaire (à travers un lien symbolique), ou
+l'attribut <B>O_NOFOLLOW</B> est indiqué et
+<I>pathname</I>
+
+est un lien symbolique.
+<DT><B>ENOSPC</B>
+
+<DD>
+<I>pathname</I>
+
+devrait être créé mais le périphérique concerné n'a plus assez de
+place pour un nouveau fichier.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour le noyau
+<DT><B>EMFILE</B>
+
+<DD>
+Le processus a déjà ouvert le nombre maximal de fichiers.
+<DT><B>ENFILE</B>
+
+<DD>
+La limite du nombre total de fichiers ouverts sur le système est
+atteinte.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID, POSIX, X/OPEN, BSD 4.3.
+Les attributs
+<B>O_NOFOLLOW</B>
+
+et
+<B>O_DIRECTORY</B>
+
+sont spécifiques à Linux.
+Il faut définir la constante symbolique
+<B>_GNU_SOURCE</B>
+
+pour avoir leurs définitions.
+L'effet (indéfini) de
+<B>O_RDONLY | O_TRUNC</B>
+
+varie suivant les implémentations. Sur de nombreux systèmes, le ficier est
+effectivement tronqué.
+<P>
+
+L'attribut
+<B>O_DIRECT</B>
+
+a été introduit par SGI IRIX, qui a des restritions d'alignement identiques à
+Linux. IRIX a aussi un appel <A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A>(2) pour obtenir les alignements et tailles
+appropriés. FreeBSD 4.x a introduit un attribut du même nom, mais sans
+les restrictions d'alignement. Le support a été ajouté
+dans Linux 2.4.10.
+Les noyaux plus anciens ignorent simplement cet attribut.
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+&quot;Ce qui m'a toujours dérangé avec O_DIRECT est que toute l'interface est
+stupide et a probablement été conçue par un singe dérangé, sous l'influence
+de substances psychotropes puissantes&quot;. -- Linus.
+<A NAME="lbAI">&nbsp;</A>
+<H2>RESTRICTIONS</H2>
+
+Plusieurs problèmes se posent avec le protocole NFS, concernant
+entre autres
+<B>O_SYNC</B>, et <B>O_NDELAY</B> .
+
+<P>
+POSIX fournit trois variantes différentes des entrées/sorties
+synchronisées correspondant aux attributs <B>O_SYNC</B>, 
+<B>O_DSYNC</B> et <B>O_RSYNC</B>. 
+Actuellement (2.1.130) elles sont toutes équivalentes sous Linux.
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+close">close</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+link">link</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mknod">mknod</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mount">mount</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+umask">umask</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+unlink">unlink</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fopen">fopen</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?4+fifo">fifo</A></B>(4)
+
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">RESTRICTIONS</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:00 GMT, February 11, 2014
+</BODY>
+</HTML>

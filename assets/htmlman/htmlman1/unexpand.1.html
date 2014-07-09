@@ -1,0 +1,105 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of UNEXPAND</TITLE>
+</HEAD><BODY>
+<H1>UNEXPAND</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+unexpand - Convertir les espaces en tabulation.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>unexpand</B>
+
+[-tab1[,tab2[,...]]] [-t tab1[,tab2[,...]]] [-a]
+[--tabs=tab1[,tab2[,...]]] [--all] [--help] [--version] [fichier...]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>unexpand</B>.
+
+<P>
+<B>unexpand</B>
+
+recopie le contenu de chacun des fichiers indiqués sur la sortie standard,
+en remplaçant les chaînes de deux espaces ou plus par autant de tabulations
+que possible, suivies d'autant d'espaces que nécessaire.
+<P>
+Si aucun fichier n'est fourni, ou si le nom `-' est mentionné, la lecture
+se fera depuis l'entrée standard.
+<P>
+Par défaut
+<B>unexpand</B>
+
+ne convertit que les espaces et les tabulations en début de ligne (ceux qui
+précèdent tous caractères non-blancs).
+Il conserve les caractères BackSpace en sortie, ceux-ci diminuant le nombre
+de colonnes dans le calcul des tabulations.
+<P>
+Par défaut, les taquets de tabulations sont placés toutes les 8 colonnes.
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><I>-, -t, --tabs tab1[,tab2[,...]]</I>
+
+<DD>
+Si une seule valeur est indiquée, positionner les taquets de tabulation
+tous les <I>tab1</I> espaces (par défaut 8). Sinon, placer les taquets en
+colonnes <I>tab1</I>, <I>tab2</I>, etc... (numérotée à partir de 0)
+après le dernier taquet, les espaces et les tabulations ne seront
+pas modifiées. Si les taquets sont spécifiés par l'option
+<I>-t</I>
+
+ou
+<I>--tabs</I>,
+
+ils peuvent être séparés par des blancs ou des virgules.
+Cette options implique l'utilisation de l'option
+<I>-a</I>.
+
+<DT><I>-a, --all</I>
+
+<DD>
+Convertir toutes les chaînes de deux espaces au minimum, et pas seulement
+les chaînes en début de ligne.
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et se terminer normalement.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et se terminer normalement.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:49 GMT, February 11, 2014
+</BODY>
+</HTML>

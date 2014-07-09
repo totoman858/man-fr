@@ -1,0 +1,209 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FUTEX</TITLE>
+</HEAD><BODY>
+<H1>FUTEX</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+futex - Mécanisme de verrouillage rapide en mode utilisateur.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/linux/futex.h">linux/futex.h</A>&gt;</B>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/sys/time.h">sys/time.h</A>&gt;</B>
+
+<P>
+<B>int sys_futex (void *</B><I>futex</I><B>, int </B><I>op</I><B>, int </B><I>val</I><B>, const struct timespec *</B><I>timeout</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+L'appel-système
+<B>sys_futex</B>
+
+donne à un programme la possibilité d'attendre qu'une valeur à une adresse donnée
+change, ou de réveiller tous ceux qui sont en attente sur cette adresse. Bien
+que les adresses soient différentes dans des processus séparés, le noyau
+fera la correspondant lors de l'appel-système.
+Ceci est typiquement employé pour implémenter
+les verrous en mémoire partagéé, tels qu'ils
+sont décrits dans
+<B><A HREF="/cgi-bin/man/man2html?4+futex">futex</A></B>(4).
+
+<P>
+
+Quant une opération
+<B><A HREF="/cgi-bin/man/man2html?4+futex">futex</A></B>(4)
+
+ne se termine pas de manière satisfaisante dans l'espace utilisateur, un appel
+au noyau est nécessaire pour l'arbitrage. Ceci signifie soit endormir le
+processus appelant, soit réveiller le processus en attente.
+<P>
+
+Les appelants de cette fonction doivent accepter les sémantiques décrites dans
+<B><A HREF="/cgi-bin/man/man2html?4+futex">futex</A></B>(4).
+
+Comme celles-ci impliquent l'écriture d'instructions non-portables en assembleur,
+leurs utilisateurs sont des auteurs de bibliothèques plus que des développeurs applicatifs.
+<P>
+
+L'argument
+<I>futex</I>
+
+doit pointer sur un entier aligné qui stocke le compteur. L'opération à exécuter
+est transmise dans le paramètre
+<I>op</I>,
+
+avec la valeur
+<I>val</I>.
+
+<P>
+
+Trois opérations sont définies pour le moment&nbsp;:
+<DL COMPACT>
+<DT><B>FUTEX_WAIT</B>
+
+<DD>
+Cette opération vérifie que l'adresse du futex contient toujours la valeur indiquée
+et s'endort en attendant un
+<I>FUTEX_WAKE</I>
+
+à cette adresse. Les deux étapes sont liées atomiquement. Si l'argument
+<I>timeout</I>
+
+est non-NULL, il contient la durée maximale de sommeil. Sinon elle est infinie.
+D'après
+<B><A HREF="/cgi-bin/man/man2html?4+futex">futex</A></B>(4),
+
+cet appel est exécuté si la décrémentation du compteur donne une valeur négative
+(indiquant un conflit) et le sommeil durera jusqu'à ce qu'un autre processus
+relâche le futex et exécute
+<B>FUTEX_WAKE</B>.
+
+<DT><B>FUTEX_WAKE</B>
+
+<DD>
+Cette opération réveille au plus
+<I>val</I>
+
+processus en attente sur l'adresse du futex (endormis dans
+<I>FUTEX_WAIT</I>).
+
+D'après
+<B><A HREF="/cgi-bin/man/man2html?4+futex">futex</A></B>(4),
+
+ceci est exécuté si l'incrémentation du compteur montre qu'il y a des processus
+en attente, une fois que la valeur du futex a été mise à 1 (indiquant qu'il
+est disponible).
+<DT><B>FUTEX_FD</B>
+
+<DD>
+Pour permettre des réveils asynchrones, cette opération associe un descripteur de
+fichier avec un futex. Si un autre processus exécute un
+<B>FUTEX_WAIT</B>,
+
+l'appelant recevra le signal dont le numéro a été indiqué dans
+<I>val</I>.
+
+L'appelant doit refermer le descripteur de fichier après utilisation.
+<P>
+Pour éviter les situations de concurrence, l'appelant doit tester si le futex a
+été libéré après le retour de
+<B>FUTEX_FD</B>.
+
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<P>
+
+Suivant l'opération exécutée, la valeur renvoyée peut avoir différentes significations.
+<DL COMPACT>
+<DT><B>FUTEX_WAIT</B>
+
+<DD>
+Renvoie 0 si le processus a été réveillé par un
+<B>FUTEX_WAKE</B>.
+
+Renvoie ETIMEDOUT en cas de dépasse de délai. Renvoie EWOULDBLOCK si le futex
+n'avait pas la valeur attendue. L'arrivée d'un signal peut faire renvoyer EINTR.
+<DT><B>FUTEX_WAKE</B>
+
+<DD>
+Renvoie le nombre de processus réveillés.
+<DT><B>FUTEX_FD</B>
+
+<DD>
+Renvoie le nouveau descripteur associé au futex.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+<P>
+
+Répétons-le, les futex de base ne sont pas conçus comme une abstraction facile à
+employer pour les utilisateurs. Les implémenteurs doivent maitriser l'assembleur
+et avoir lu les sources de la bibliothèque en espace utilisateur décrite plus bas.
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+<P>
+
+Les futex ont été conçus et créés par Hubertus Franke (IBM Thomas J. Watson Research Center), 
+Matthew Kirkwood, Ingo Molnar (Red Hat) et Rusty Russell (IBM Linux Technology Center).
+Cette page a été écrite par Bert Hubert.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VERSIONS</H2>
+
+<P>
+
+Le support initial des futex a été ajouté dans Linux 2.5.7 mais avec une sémantique
+différent de celle décrite ci-dessus, qui est disponible depuis Linux 2.5.40.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?4+futex">futex</A></B>(4),
+
+<P>
+`Fuss, Futexes and Furwocks: Fast Userlevel Locking in Linux' (proceedings of the Ottawa Linux Symposium 2002), 
+<P>
+Bibliothèque futex-*.tar.bz2 &lt;URL:<A HREF="ftp://ftp.nl.kernel.org:/pub/linux/kernel/people/rusty/">ftp://ftp.nl.kernel.org:/pub/linux/kernel/people/rusty/</A>&gt;.
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">AUTEURS</A><DD>
+<DT><A HREF="#lbAH">VERSIONS</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:01 GMT, February 11, 2014
+</BODY>
+</HTML>

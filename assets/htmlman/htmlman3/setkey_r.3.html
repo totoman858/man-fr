@@ -1,0 +1,212 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ENCRYPT</TITLE>
+</HEAD><BODY>
+<H1>ENCRYPT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+encrypt, setkey, encrypt_r, setkey_r - Crypter des messages de 64 bits.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#define _XOPEN_SOURCE</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>void encrypt(char </B><I>block</I><B>[64], int </B><I>edflag</I><B>);</B>
+
+<P>
+<B>#define _XOPEN_SOURCE</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<P>
+<B>void setkey(const char *</B><I>key</I><B>);</B>
+
+<P>
+<B>#define _GNU_SOURCE</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/crypt.h">crypt.h</A>&gt;</B>
+
+<P>
+<B>void setkey_r (const char *</B><I>key</I><B>, struct crypt_data *</B><I>data</I><B>);</B>
+
+<BR>
+
+<B>void encrypt_r (char *</B><I>block</I><B>, int </B><I>edflag</I><B>, struct crypt_data *</B><I>data</I><B>);</B>
+
+<P>
+Édition des liens avec
+<B>-lcrypt</B>.
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ces fonction cryptent et décryptent des messages de 64 bits. La fonction
+<B>setkey</B>()
+
+permet de fournir la clé à utiliser pour
+<B>encrypt</B>().
+
+Le paramètre
+<I>key</I>
+
+est une table d'octets, chacun ayant la valeur 0 ou 1. L'octet
+<I>key[n]</I>
+
+où n=8*q-1 est ignoré, ce qui ramène la clé à 56 bits effectifs.
+<P>
+
+La fonction
+<B>encrypt</B>()
+
+modifie le buffer transmis, en le cryptant si le paramètre
+<I>edflag</I>
+
+vaut 0, et en le décryptant s'il vaut 1. Le paramètre
+<I>block</I>
+
+est, comme le paramètre
+<I>key</I>,
+
+une représentation de la valeur à encoder sous forme de vecteur de bits.
+Le résultat est renvoyé dans le même vecteur.
+<P>
+
+Ces fonctions ne sont pas réentrantes, c'est-à-dire que la clé est stockée
+dans une zone de stockage statique. Les fonctions
+<B>setkey_r ()</B>
+
+et
+<B>encrypt_r ()</B>
+
+sont des versions réentrantes. Elles utilisent la structure suivante pour
+contenir la clé&nbsp;:
+<DL COMPACT><DT><DD>
+<PRE>
+struct crypt_data {
+      char keysched[16 * 8];
+      char sb0[32768];
+      char sb1[32768];
+      char sb2[32768];
+      char sb3[32768];
+      char crypt_3_buf[14];
+      char current_salt[2];
+      long int current_saltbits;
+      int  direction, initialized;
+};
+</PRE>
+
+</DL>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉES</H2>
+
+Ces routines ne renvoient pas de valeur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Mettez
+<I>errno</I>
+
+à zéro avant d'appeler les routines ci-dessus. Si elles réussissent, il
+n'est pas modifié. Sinon, il peut valoir&nbsp;:
+<DL COMPACT>
+<DT><B>ENOSYS</B>
+
+<DD>
+La fonction n'est pas disponible. (Par exemple à cause des restrictions
+américaines sur l'exportation de routines cryptographiques...)
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+Avec la GlibC 2.2, il faudra lier cet exemple avec la bibliothèque libcrypt.
+Pour servir à quelque chose, les tables key[] et txt[] devraient être
+remplies avec des zones significatives. Notez que l'en-tête &lt;<A HREF="file:///usr/include/crypt.h">crypt.h</A>&gt; donne
+toujours les prototypes de setkey() et encrypt().
+<P>
+<PRE>
+#include &lt;<A HREF="file:///usr/include/crypt.h">crypt.h</A>&gt;
+
+main() {
+  char key[64];      /* bit pattern for key */
+  char txt[64];      /* bit pattern for messages */
+  setkey(key);
+  encrypt(txt, 0);   /* encode */
+  encrypt(txt, 1);   /* decode */
+}
+</PRE>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTE</H2>
+
+Dans la GlibC 2.2, ces fonctions utilisent l'algorithme DES.
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Les fonctions
+<B>encrypt</B>()
+
+et
+<B>setkey</B>()
+
+sont conformes ) SVID, SUSv2, et POSIX 1003.1-2001.
+Les fonctions
+<B>encrypt_r</B>()
+
+et 
+<B>setkey_r</B>()
+
+sont des extensions GNU.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+cbc_crypt">cbc_crypt</A></B>(3)
+
+<B><A HREF="/cgi-bin/man/man2html?3+crypt">crypt</A></B>(3)
+
+<B><A HREF="/cgi-bin/man/man2html?3+ecb_crypt">ecb_crypt</A></B>(3)
+
+<B><A HREF="/cgi-bin/man/man2html?3+fcrypt">fcrypt</A></B>(3)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉES</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">EXEMPLE</A><DD>
+<DT><A HREF="#lbAH">NOTE</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:49 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,79 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CONSOLETYPE</TITLE>
+</HEAD><BODY>
+<H1>CONSOLETYPE</H1>
+Section: User Commands  (1)<BR>Updated: Red Hat, Inc<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+<B>consoletype</B>
+
+- affiche le type de la console connectée à l'entrée standard
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>consoletype</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>consoletype</B>
+
+affiche le type de la console connectée à l'entrée standard. Il affiche
+<I>vt</I>
+
+si la console est un terminal virtuel (périphérique /dev/tty* ou /dev/console
+si l'on n'est pas sur une console série)
+<I>serial</I>
+
+si l'entrée standard est une console série (/dev/console ou /dev/ttyS*) et
+<I>pty</I>
+
+si l'entrée standard est un pseudo terminal.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR DE RETOUR</H2>
+
+<B>consoletype</B>
+
+renvoie
+<DL COMPACT>
+<DT><I>0</I>
+
+<DD>
+pour un terminal virtuel
+<DT><I>1</I>
+
+<DD>
+pour une console série
+<DT><I>2</I>
+
+<DD>
+pour un pseudo terminal.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTEUR</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 2002
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR DE RETOUR</A><DD>
+<DT><A HREF="#lbAF">TRADUCTEUR</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:41 GMT, February 11, 2014
+</BODY>
+</HTML>

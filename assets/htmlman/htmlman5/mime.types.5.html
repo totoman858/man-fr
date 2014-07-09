@@ -1,0 +1,128 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of mime.types</TITLE>
+</HEAD><BODY>
+<H1>mime.types</H1>
+Section: Easy Software Products (5)<BR>Updated: Common UNIX Printing System<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mime.types - Fichier de description des types MIME de CUPS
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le fichier <I>mime.types</I> définit les types de fichier reconnus par CUPS.
+<P>
+
+D'autres types de fichiers peuvent être ajoutés au fichier <I>mime.types</I>
+ou à d'autres fichier dans le répertoire <B>/etc/cups</B>. Ceux-ci doivent
+porter l'extension «&nbsp;.types&nbsp;».
+<P>
+
+Chaque ligne du fichier <I>mime.types</I> est soit une règle, soit
+une ligne vide, soit un commentaire (ligne commençant par le caractère
+#). Chaque ligne définissant une règle commence par le nom du type MIME,
+et peut être suivi par une liste de règle des reconnaissance utilisées
+pour déterminer le type du fichier&nbsp;:
+<BR>
+
+<PRE>
+
+    super/type règle [ ... règleN]
+</PRE>
+
+Ces règles doivent être mises entre parenthèses, liées par un &quot;+&quot; pour
+exprimer un ET logique, &quot;,&quot; ou une espace pour exprimer un OU logique.
+Elles sont précédées de &quot;!&quot; pour exprimer un NON logique.
+<A NAME="lbAD">&nbsp;</A>
+<H2>RÈGLES</H2>
+
+Les règles sont composées de deux parties&nbsp;: une extension de fichier et des
+fonctions de tests entre parenthèses. Les fonctions suivantes peuvent être
+utilisées&nbsp;:
+<DL COMPACT>
+<DT>match(&quot;motif&quot;)<DD>
+<BR>
+
+Reconnaissance d'un motif sur le nom du fichier
+<DT>ascii(début, longueur)<DD>
+<BR>
+
+Vrai si tous les octets de la portion de document sont des caractères ASCII
+imprimables (CR, NL, TAB, BS, 32-126)
+<DT>printable(début, longueur)<DD>
+<BR>
+
+Vrai si tous les octets de la portion de document sont des caractères 8 bits
+imprimables (CR, NL, TAB, BS, 32-126, 128-254)
+<DT>string(début, &quot;chaîne&quot;)<DD>
+<BR>
+
+Vrai si les octets sont identiques à &quot;chaîne&quot;
+<DT>char(début, valeur)<DD>
+<BR>
+
+Vrai si les octets sont identiques
+<DT>short(début, valeur)<DD>
+<BR>
+
+Vrai si les nombres entiers (16 bits) sont identiques
+<DT>int(début, valeur)<DD>
+<BR>
+
+Vrai si les nombres entiers (32 bits) sont identiques
+<DT>locale(&quot;chaîne&quot;)<DD>
+<BR>
+
+Vrai si les définitions de langage sont identiques
+<DT>contains(début, portée, &quot;chaîne&quot;)<DD>
+<BR>
+
+Vrai si la chaîne est trouvée dans la portion de document
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>CHAÎNES DE CARACTÈRES</H2>
+
+Les chaînes de caractères peuvent être définies entre guillemets (&quot;&quot;)
+pour des chaînes contenant des espaces ou entre crochets (&lt;&gt;) pour des
+chaînes en hexadécimal.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?5+classes.conf">classes.conf</A>(5), <A HREF="/cgi-bin/man/man2html?8+cupsd">cupsd</A>(8), <A HREF="/cgi-bin/man/man2html?5+cupsd.conf">cupsd.conf</A>(5), <A HREF="/cgi-bin/man/man2html?5+mime.convs">mime.convs</A>(5), <A HREF="/cgi-bin/man/man2html?5+printers.conf">printers.conf</A>(5),
+CUPS Software Administrators Manual,
+<A HREF="http://localhost:631/documentation.html">http://localhost:631/documentation.html</A>
+<A NAME="lbAG">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright 1993-2003 Easy Software Products, Tous droits réservés.
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Gilles QUERRET &lt;<A HREF="mailto:gilles.querret@nerim.net">gilles.querret@nerim.net</A>&gt;
+
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">RÈGLES</A><DD>
+<DT><A HREF="#lbAE">CHAÎNES DE CARACTÈRES</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:53 GMT, February 11, 2014
+</BODY>
+</HTML>

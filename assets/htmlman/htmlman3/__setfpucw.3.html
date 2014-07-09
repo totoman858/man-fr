@@ -1,0 +1,125 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of __SETFPUCW</TITLE>
+</HEAD><BODY>
+<H1>__SETFPUCW</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+__setfpucw - Positionner le mot de contrôle du FPU sur les machines i386 (obsolète).
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/i386/fpu_control.h">i386/fpu_control.h</A>&gt;</B>
+
+<P>
+<B>void __setfpucw((unsigned short) </B><I>mot_de_controle</I><B>);</B>
+
+<BR>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>__setfpucw</B>
+
+transfere le
+<I>mot_de_controle</I>
+
+dans les registres du FPU (Floating Point Unit, unité de calcul en virgule
+flottante), sur les machines reposant sur une architecture à base de i386.
+Ceci permet de commander la précision des calculs en virgule flottante, les
+arrondis, et les exceptions mathématiques.
+<A NAME="lbAE">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+<P>
+<B>__setfpucw(0x1372)</B>
+
+<P>
+Positionne le mot de contrôle du FPU sur une machine i386 ainsi :
+<BR>
+
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Précision&nbsp;étendue
+<BR>
+
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Arrondi&nbsp;au&nbsp;plus&nbsp;proche
+<BR>
+
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;Exceptions&nbsp;si&nbsp;débordement,&nbsp;division&nbsp;par&nbsp;zéro,&nbsp;ou&nbsp;NaN&nbsp;(not&nbsp;a&nbsp;number)
+<BR>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>DISPONIBILITÉ</H2>
+
+Depuis la GlibC 2.1, cette fonction n'existe plus. Il y a quelques fonctions
+nouvelles de l'ISO C9X, dont les prototypes se trouvent dans
+<I>/usr/include/fenv.h</I>,
+
+permettant de commander le mode d'arrondi du FPU comme
+<I>fegetround</I>(),
+
+<I>fesetround</I>(),
+
+l'environnement en virgule flottante comme
+<I>fegetenv</I>(),
+
+<I>feholdexcept</I>(),
+
+<I>fesetenv</I>(),
+
+<I>feupdateenv</I>(),
+
+et la gestion des exception comme
+<I>feclearexcept</I>(),
+
+<I>fegetexceptflag</I>(),
+
+<I>feraiseexcept</I>(),
+
+<I>fesetexceptflag</I>(),
+
+<I>fetestexcept</I>().
+
+<P>
+
+Si l'accès direct au mot de commande du FPU est encore nécessaire, on peut
+utiliser les macros _FPU_GETCW et _FPU_SETCW de
+<I>/usr/include/fpu_control.h</I>.
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+feclearexcept">feclearexcept</A></B>(3)
+
+<BR>
+
+<B>/usr/include/i386/fpu_control.h</B>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1998-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">EXEMPLE</A><DD>
+<DT><A HREF="#lbAF">DISPONIBILITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:10 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,266 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of OSPAM</TITLE>
+</HEAD><BODY>
+<H1>OSPAM</H1>
+Section: ospam (1)<BR>Updated: Novembre 2002<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ospam - Un système SGML conforme à la norme internationale ISO 8879 -- Standard
+Generalized Markup Language (Langage de balisage généralisé normalisé).
+Un système SGML étendu conforme à l'annexe A de la norme
+internationale ISO/IEC 10744 -- Hypermedia/Time-based Structuring Language
+(Langage de structuration hypermédia/événementiel)
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<PRE>
+<B>ospam</B> [<B>-CeghilprRvx</B>] [<B>-a</B><I>type_lien</I>] [<B>-A</B><I>architecture</I>]
+      [<B>-b</B><I>bctf</I>] [<B>-c</B><I>fichier_catalogue</I>] [<B>-D</B><I>répertoire</I>]
+      [<B>-f</B><I>fichier</I>] [<B>-m</B><I>option_balisage</I>] [<B>-o</B><I>nom_entité</I>]
+      [<B>-w</B><I>type_avertissement</I>] [<I>sysid</I>...]
+</PRE>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+<P>
+
+<B>ospam</B> (OpenSP Add Markup) est un éditeur de flux de balisage SGML
+implémenté en utilisant l'analyseur syntaxique OpenSP. <B>ospam</B> analyse le
+document SGML contenu dans <I>sysid</I> et copie sur la sortie standard la
+portion de l'entité document contenant l'instance de document, ajoutant ou
+modifiant le balisage comme spécifié par les options <B>-m</B>. L'option
+<B>-p</B> peut être utilisée pour inclure la déclaration SGML et le prologue
+dans la sortie. L'option <B>-o</B> peut être utilisée pour produire en sortie
+d'autres entités. L'option <B>-x</B> peut être utilisée pour développer les
+appels d'entités.
+<P>
+<P>
+
+Les options suivantes sont disponibles&nbsp;:
+<P>
+<DL COMPACT>
+<DT><B>-a</B><I>nom</I>, <B>--activate=</B><I>nom</I><DD>
+Active le type de document ou de lien <I>nom</I>.
+<P>
+<DT><B>-A</B><I>architecture</I>, <B>--architecture=</B><I>architecture</I><DD>
+Analyse par rapport à l'architecture <I>architecture</I>.
+<P>
+<DT><B>-b</B><I>bctf</I>, <B>--bctf=</B><I>bctf</I><DD>
+Utilise le BCTF <I>bctf</I> pour produire la sortie.
+<P>
+<DT><B>-c</B><I>sysid</I>, <B>--catalog=</B><I>sysid</I><DD>
+Utilise le fichier d'entrées de catalogue <I>sysid</I>.
+<P>
+<DT><B>-C</B>, <B>--catalogs</B><DD>
+Elle a le même effet qu'avec <B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>.
+<P>
+<DT><B>-D</B><I>répertoire</I>, <B>--directory=</B><I>répertoire</I><DD>
+Recherche dans <I>répertoire</I> les fichiers spécifiés dans les identificateurs
+système. Elle a le même effet qu'avec <B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>.
+<P>
+<DT><B>-e</B>, <B>--open-entities</B><DD>
+Décrit les entités ouvertes dans les messages d'erreur.
+<P>
+<DT><B>-E</B><I>erreurs_max</I>, <B>--max-errors=</B><I>erreurs_max</I><DD>
+Quitte après <I>erreurs_max</I> erreurs.
+<P>
+<DT><B>-f</B><I>nom_fichier</I>, <B>--error-file=</B><I>nom_fichier</I><DD>
+Redirige les erreurs dans <I>nom_fichier</I>. C'est pratique surtout avec les
+shells qui ne gèrent pas la redirection de la sortie d'erreur standard
+«&nbsp;stderr&nbsp;».
+<P>
+<DT><B>-h</B>, <B>--hoist-omitted-tags</B><DD>
+Restitue les balises omises du début des entités internes. Si le texte au début
+d'une entité interne rend une balise implicite, celle-ci devrait être traitée
+comme faisant partie de l'entité interne&nbsp;: avec cette option, elle sera au contraire
+traitée comme faisant partie de l'entité qui appelait l'entité interne. Cette option
+se comporte différemment avec les options <B>-momittag</B> ou <B>-x</B>
+<B>-x</B>.
+<P>
+<DT><B>--help</B><DD>
+Affiche un texte d'aide et quitte.
+<P>
+<DT><B>-i</B><I>nom</I>, <B>--include=</B><I>nom</I><DD>
+Elle a le même effet qu'avec <B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>.
+<P>
+<DT><B>-l</B>, <B>--lowercase</B><DD>
+Préférer les minuscules. Les noms ajoutés qui étaient soumis à une
+substitution en majuscules seront convertis en minuscules.
+<P>
+<DT><B>-m</B><I>option_balisage</I>, <B>--markup-option=</B><I>option_balisage</I><DD>
+Modifier le balisage dans la sortie selon la valeur de
+<I>option_balisage</I> comme suit&nbsp;:
+<P>
+<B>omittag</B> Ajoute les balises qui ont été omises en utilisant la minimisation
+par omission de balisage. Les balises fermantes qui ont été omises parce que
+l'élément a un contenu déclaré de valeur «&nbsp;EMPTY&nbsp;» ou une référence de contenu
+explicite ne seront pas ajoutées.
+<P>
+<B>shortref</B> Remplace les appels abrégés par des appels d'entités nommées.
+<P>
+<B>net</B> Modifie les balises fermantes nulles en balises fermantes non
+minimisées, et modifie les balises ouvrantes autorisant les balises
+fermantes nulles en balises ouvrantes non minimisées.
+<P>
+<B>emptytag</B> Modifie les balises vides en balises non minimisées.
+<P>
+<B>unclosed</B> Modifie les balises non fermées en balises non minimisées.
+<P>
+<B>attname</B> Ajoute les noms d'attribut et les indicateurs de valeur omis.
+<P>
+<B>attvalue</B> Ajoute les délimiteurs littéraux omis des valeurs d'attribut.
+<P>
+<B>attspec</B> Ajoute les spécifications d'attribut omises.
+<P>
+<B>current</B> Ajoute les spécifications d'attribut omises pour les attributs
+courants. Cette option est impliquée par l'option «&nbsp;attspec&nbsp;».
+<P>
+<B>shorttag</B> Équivalente à la combinaison des options «&nbsp;net&nbsp;»,
+«&nbsp;emptytag&nbsp;», «&nbsp;unclosed&nbsp;», «&nbsp;attname&nbsp;», «&nbsp;attvalue&nbsp;» et «&nbsp;attspec&nbsp;».
+<P>
+<B>rank</B> Ajoute les suffixes de niveau omis.
+<P>
+<B>reserved</B> Met les noms réservés en majuscules.
+<P>
+<B>ms</B> Retire les déclarations de sections marquées dont le statut effectif
+est «&nbsp;IGNORE&nbsp;», et remplace chaque déclaration de sections marquées dont le
+statut effectif est «&nbsp;INCLUDE&nbsp;» par sa section marquée. Dans l'instance de
+document, des commentaires vides seront ajoutés avant ou après la déclaration
+de la section marquée pour s'assurer que les fins d'enregistrements ignorées
+(NdT&nbsp;: <B>R</B>ecord <B>E</B>nds) restent ignorées.
+<P>
+Plusieurs options -m sont autorisées.
+<P>
+<DT><B>-n</B>, <B>--error-numbers</B><DD>
+Affiche les numéros d'erreur dans les messages d'erreur.
+<P>
+<DT><B>-o</B><I>nom_entité</I>, <B>--output-entity=</B><I>nom_entité</I><DD>
+Produit en sortie le nom de l'entité générale plutôt que l'entité document. La
+sortie correspondra à la première fois que l'entité est appelée dans le contenu.
+<P>
+<DT><B>-p</B>, <B>--output-prolog</B><DD>
+Produit en sortie la partie de l'entité document contenant la déclaration SGML
+(si celle-ci est explicitement présente dans l'entité document) et le prologue
+avant toute autre chose. Si cette option est spécifiée deux fois ou plus, alors
+tous les appels d'entités apparaissant entre les déclarations dans le
+prologue seront développées&nbsp;; ceci inclut l'appel implicite à l'entité
+contenant le sous-ensemble externe de la DTD, s'il y en a un. Notez que la
+déclaration SGML ne sera pas incluse si elle a été spécifiée par une entrée
+«&nbsp;SGMLDECL&nbsp;» dans un catalogue.
+<P>
+<DT><B>-r</B>, <B>--raw</B><DD>
+N'opère aucune conversion sur les «&nbsp;RSs&nbsp;» (NdT&nbsp;: <B>R</B>ecord <B>S</B>tart)
+et les «&nbsp;REs&nbsp;» (NdT&nbsp;: <B>R</B>ecord <B>E</B>nd) lors de la production en
+sortie de l'entité. L'entité devrait typiquement avoir l'attribut de gestionnaire de
+stockage «&nbsp;records=asis&nbsp;».
+<P>
+<DT><B>-R</B>, <B>--restricted</B><DD>
+Elle a le même effet qu'avec <B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>.
+<P>
+<DT><B>-v</B>, <B>--version</B><DD>
+Affiche le numéro de version.
+<P>
+<DT><B>-w</B><I>type_avertissement</I>, <B>--warning=</B><I>type_avertissement</I><DD>
+Contrôle les avertissements et les erreurs en fonction de <I>type_avertissement</I>.
+Elle a le même effet qu'avec <B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>.
+<P>
+<DT><B>-x</B>, <B>--expand-references</B><DD>
+Développe les appels à des entités qui sont modifiées. Si cette option est
+spécifiée deux fois ou plus, tous les appels aux entités qui contiennent
+des balises seront développés.
+<P>
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<P>
+<P>
+
+Les balises omises sont ajoutées à l'endroit où elles sont impliquées par
+l'analyseur SGML (excepté celles modifiées par l'option <B>-h</B>)&nbsp;;
+ce n'est pas souvent vraiment où elles sont voulues.
+<P>
+<P>
+
+Le cas des délimiteurs généraux n'est pas préservé.
+<P>
+<P>
+
+Des résultats incorrects peuvent être produits si on utilise une syntaxe 
+concrête variante comportant des délimiteurs dans le balisage à ajouter
+qui ont un préfixe semblable à un suffixe propre à un autre délimiteur.
+<P>
+<P>
+
+Si un appel d'entité dans une valeur par défaut utilise l'entité par défaut, 
+qu'une entité avec ce nom est définie postérieurement, et que cette valeur 
+par défaut est ajoutée à l'instance de document, alors le document résultant
+peut ne pas être équivalent au document original. <B>ospam</B> produira un
+avertissement lorsque les deux premières conditions seront réunies.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<P>
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>, <B><A HREF="/cgi-bin/man/man2html?1+ospent">ospent</A>(1)</B>, <B><A HREF="/cgi-bin/man/man2html?1+onsgmlnorm">onsgmlnorm</A>(1)</B>, <B><A HREF="/cgi-bin/man/man2html?1+osx">osx</A>(1)</B>
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+James Clark, Ian Castle &lt;<A HREF="mailto:ian.castle@openjade.org">ian.castle@openjade.org</A>&gt;.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Alain Portal &lt;aportal AT univ-montp2 DOT fr&gt;, 16 juin 2004
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>RELECTURE</H2>
+
+<P>
+
+Jean-Marc Destabeaux &lt;jmdestabeaux AT free DOT fr&gt;
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>AVERTISSEMENT SUR LA TRADUCTION</H2>
+
+<P>
+Il est possible que cette traduction soit imparfaite ou périmée.
+En cas de doute, veuillez vous reporter au document original en langue anglaise
+fourni avec le programme.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">BOGUES</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">AUTEURS</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+<DT><A HREF="#lbAI">RELECTURE</A><DD>
+<DT><A HREF="#lbAJ">AVERTISSEMENT SUR LA TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:43 GMT, February 11, 2014
+</BODY>
+</HTML>

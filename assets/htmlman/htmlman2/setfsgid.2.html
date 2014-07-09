@@ -1,0 +1,130 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SETFSGID</TITLE>
+</HEAD><BODY>
+<H1>SETFSGID</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+setfsgid - Fixer le GID pour les vérifications d'accès au système de fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+/* glibc uses &lt;<A HREF="file:///usr/include/sys/fsuid.h">sys/fsuid.h</A>&gt; */
+<P>
+<B>int setfsgid(uid_t </B><I>fsgid</I><B>)</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>setfsgid</B>
+
+fixe le GID que le noyau Linux utilisera pour vérifier tous
+les accès du processus au système de fichiers.
+Normalement la valeur de
+<I>fsgid</I>
+
+va masquer la valeur  du GID effectif. En fait, si
+le GID effectif est modifié,
+<I>fsgid</I>
+
+sera aussi modifié pour la nouvelle valeur du GID effectif.
+<P>
+L'appel explicite de
+<B>setfsgid</B>
+
+n'est normalement utile qu'aux programmes tels que le serveur
+NFS qui ont besoin de modifier le GID utilisé pour les
+accès aux fichiers sans changer véritablement leurs
+GID réels et effectifs.
+Une modification du GID normal d'un programme comme 
+un serveur NFS serait un trou de sécurité qui l'exposerait
+à des signaux indésirables en provenance d'autres processus
+du même groupe.
+<P>
+<B>setfsgid</B>
+
+ne réussira que si l'appelant est le Super-User ou si
+<I>fsgid</I>
+
+correspond au véritable GID, au GID effectif,
+au GID sauvé, ou encore à la valeur actuelle de
+<I>fsgid</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>setfsgid</B>
+
+renvoie la valeur précédente
+<I>fsgid</I>
+
+s'il réussit. 
+En cas d'erreur la valeur actuelle de
+<I>fsgid</I>
+
+est renvoyée.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<B>setfsgid</B>
+
+est spécifique à Linux et ne doit pas être employé dans des programmes
+conçus pour être portables.
+Il est présent depuis Linux 1.1.44 et dans la bibliothèque C depuis libc 4.7.6.
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Il n'y a pas de messages d'erreur renvoyés. Il serait bon d'avoir au moins
+un code d'erreur
+<B>EPERM</B>.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTE</H2>
+
+Lorsque la bibliothèque GlibC s'aperçoit que l'argument n'est pas un GID valide, elle revoie -1 et
+place EINVAL dans <I>errno</I> sans essayer d'appeler l'appel-système réel.
+<P>
+
+Notez que lors de l'introduction de cet appel-système, un processus pouvait
+envoyer un signal à un autre processus avec le même UID effectif. De nos
+jours les permissions pour les signaux sont légèrement différentes.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+kill">kill</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setfsuid">setfsuid</A></B>(2)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">NOTE</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:52 GMT, February 11, 2014
+</BODY>
+</HTML>

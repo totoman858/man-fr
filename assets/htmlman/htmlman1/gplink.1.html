@@ -1,0 +1,168 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of gplink</TITLE>
+</HEAD><BODY>
+<H1>gplink</H1>
+Section: User Commands  (1)<BR>Updated: (c) 2002, 2003, 2004, 2005 Craig Franklin<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<P>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+gplink - Éditeur de liens GNU PIC
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>gplink [options] [objets] [bibliothèques]</B>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>AVERTISSEMENT</H2>
+
+Les informations de cette page de manuel sont extraites de la documentation 
+complète de gputils et sont limitées à la signification des options. Pour une 
+documentation complète, reportez-vous au fichier «&nbsp;gputils.ps&nbsp;» (en anglais) 
+situé dans le répertoire doc de gputils.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>gplink</B>
+
+conbine un nombre de fichiers objets et archives, reloge leurs données, et lie
+leurs références symboles. Il produit en sortie un exécutable pour les
+microcontrôleurs PIC (TM) de Microchip (TM).
+<B>gplink</B>
+
+est une partie de gputils. Consultez la page manuel <A HREF="/cgi-bin/man/man2html?1+gputils">gputils</A>(1) pour avoir
+des détails sur les autres utilitaires GNU PIC.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-a FMT, --hex-format FMT       </B>
+
+<DD>
+gplink reconnaît les formats de fichiers hexadécimaux inhx8m, inhx8s, inhx16,
+et inhx32. Cette option contrôle quel format de fichier hexadécimal est
+utilisé. La valeur par défaut est inhx32.
+<DT><B>-c, --object </B>
+
+<DD>
+Produire en sortie un objet exécutable.
+<DT><B>-d, --debug </B>
+
+<DD>
+Produire des messages de débogage.
+<DT><B>-f VALEUR, --fill VALEUR</B>
+
+<DD>
+Remplir la mémoire programme inutilisée et non protégée avec VALEUR. VALEUR 
+supplante la valeur de remplissage du script éditeur de liens. VALEUR ne doit
+pas être supérieure à 0xffff. VALEUR est en hexadécimal et doit être précédée
+par «&nbsp;0x&nbsp;».
+<DT><B>-h, --help</B>
+
+<DD>
+Afficher un message d'usage.
+<DT><B>-I RÉP, --include RÉP</B>
+
+<DD>
+Spécifier le répertoire d'inclusion d'en-tête.
+<DT><B>-m, --map</B>
+
+<DD>
+Produire en sortie un fichier d'équivalence.
+<DT><B>-o FICHIER, --output FICHIER</B>
+
+<DD>
+Nom alternatif du fichier de sortie.
+<DT><B>-q, --quiet</B>
+
+<DD>
+Supprimer tout ce qui est envoyé sur la sortie standard.
+<DT><B>-r, --use-shared</B>
+
+<DD>
+Essayer de reloger des sections de données non partagées vers la mémoire
+partagée si la translation échoue.
+<DT><B>-s FICHIER, --script FICHIER</B>
+
+<DD>
+Choisir le script éditeur de lien.
+<DT><B>-v, --version</B>
+
+<DD>
+Afficher la version.
+<P>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+gputils">gputils</A>(1)
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Craig Franklin &lt;<A HREF="mailto:craigfranklin@users.sourceforge.net">craigfranklin@users.sourceforge.net</A>&gt;
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal AT univ-montp2 DOT fr&gt; le 14 octobre 2004 et révisée
+le 24 mai 2005.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=en&nbsp;man&nbsp;1&nbsp;gplink</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright (C) 2002, 2003, 2004, 2005 Craig Franklin
+<P>
+Ce programme est un logiciel libre&nbsp;; vous pouvez le redistribuer et/ou le
+modifier sous les termes de la licence GNU GPL telle que publiée par la Free
+Software Foundation&nbsp;; soit la version 2, soit (à votre convenance) toute
+version ultérieure.
+<P>
+Ce programme est distribué dans l'espoir qu'il soit utile, mais
+SANS AUCUNE GARANTIE&nbsp;; même sans la garantie implicite d'UTILISABILITÉ
+ou d'ADAPTATION À UN USAGE PRÉCIS. Lisez la licence GNU GPL pour plus
+de détails.
+<P>
+Vous devriez avoir reçu une copie de la licence GNU GPL avec ce programme&nbsp;;
+si ce n'est pas le cas, écrivez à Free Software Foundation, Inc., 675 Mass Ave,
+Cambridge, MA 02139, USA.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">AVERTISSEMENT</A><DD>
+<DT><A HREF="#lbAE">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAF">OPTIONS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">AUTEUR</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+<DT><A HREF="#lbAJ">COPYRIGHT</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:47 GMT, February 11, 2014
+</BODY>
+</HTML>

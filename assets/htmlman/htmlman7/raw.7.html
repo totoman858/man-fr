@@ -1,0 +1,390 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of RAW</TITLE>
+</HEAD><BODY>
+<H1>RAW</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+raw, SOCK_RAW - Sockets brutes (raw) IPv4 sous Linux.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/netinet/in.h">netinet/in.h</A>&gt;</B>
+
+<BR>
+
+<B>raw_socket = socket(PF_INET, SOCK_RAW, int </B><I>protocol</I><B>);</B>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les sockets brutes (raw) permettent d'implémenter des protocoles IPv4 dans l'espace
+utilisateur. Une socket raw reçoit ou envoie des datagrammes sans les en-têtes
+de la couche de liaison.
+<P>
+La couche IPv4 génère des en-têtes IP lorsqu'elle envoie un paquet à moins que l'option
+<B>IP_HDRINCL</B>
+
+soit activée sur la socket.
+Lorsqu'elle est activée, la socket doit contenir l'en-tête IP.
+Pour la réception, l'en-tête IP est toujours inclus dans le paquet.
+<P>
+Seuls les processus avec un UID effectif nul ou une capacité
+<B>CAP_NET_RAW </B>
+
+sont autorisés à ouvrir des sockets raw.
+<P>
+Tous les paquets ou les erreurs correspondant au numéro de
+<I>protocole</I>
+
+spécifié pour la
+socket raw sont transmis à cette socket. Pour voir une liste des
+protocoles autorisés, consulter les numéros assignés dans la RFC 1700 et
+<B><A HREF="/cgi-bin/man/man2html?3+getprotobyname">getprotobyname</A></B>(3).
+
+<P>
+Un protocole
+<B>IPPROTO_RAW</B>
+
+implique l'activation de
+<B>IP_HDRINCL </B>
+
+et autorise l'émission suivant n'importe quel protocole IP indiquée dans
+l'en-tête. La réception de tous les protocoles IP avec
+<B>IPPROTO_RAW</B>
+
+n'est pas possible avec les sockets raw.
+<P>
+<TABLE BORDER>
+<TR VALIGN=top><TD ALIGN=center COLSPAN=2>IP Champs d'en-tête modifiés en émission par IP_HDRINCL<BR></TD></TR>
+<TR VALIGN=top><TD>Checksum IP</TD><TD>Toujours rempli.<BR></TD></TR>
+<TR VALIGN=top><TD>Adresse source</TD><TD>Rempli si contient des zéros.<BR></TD></TR>
+<TR VALIGN=top><TD>ID Paquet</TD><TD>Rempli si contient des zéros.<BR></TD></TR>
+<TR VALIGN=top><TD>Longueur totale</TD><TD>Toujours rempli.<BR></TD></TR>
+</TABLE>
+
+<P>
+
+<P>
+Si
+<B>IP_HDRINCL</B>
+
+est spécifié et si l'en-tête IP à une adresse non-nulle, alors l'adresse 
+destination de la socket est utilisée pour router le paquet. Quand
+<B>MSG_DONTROUTE</B>
+
+est spécifié, l'adresse de destination devrait toujours viser une interface locale
+sinon un examen de la table de routage a quand même lieu, mais les routes avec
+une passerelle sont ignorées.
+<P>
+Si
+<B>IP_HDRINCL</B>
+
+n'est pas spécifié, alors les options d'en-tête IP peuvent être fixées sur les
+sockets raw avec
+<B><A HREF="/cgi-bin/man/man2html?2+setsockopt">setsockopt</A></B>(2);
+
+voir
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7)
+
+pour plus d'informations.
+<P>
+Dans Linux 2.2 tous les champs d'en-tête et les options peuvent être fixés en
+utilisant les options IP. Ceci signifie que les sockets raw ne servent en général
+que pour les nouveaux protocoles ou les protocoles sans interface utilisateur (comme ICMP).
+<P>
+Lorsqu'un paquet est reçu, il est passé à toutes les sockets raw qui ont été attachées
+à son protocole avant d'être transmis aux gestionnaires des autres protocoles (par exemple
+les modules des protocoles du noyau).
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>FORMAT D'ADRESSE</H2>
+
+<P>
+Les sockets raw utilisent la structure d'adresse
+<B>sockaddr_in </B>
+
+standard, définie dans
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7).
+
+<P>
+Le champ
+<B>sin_port</B>
+
+peut être utilisé pour spécifier un numéro de protocole IP, mais il est ignoré pour
+l'émission dans Linux 2.2 et devrait être toujours mis à
+zéro (voir paragraphe BOGUES).
+Pour les paquets entrants
+<B>sin_port </B>
+
+est rempli avec le protocole du paquet.
+Voir le fichier d'en-tête
+<B>&lt;<A HREF="file:///usr/include/netinet/in.h">netinet/in.h</A>&gt;</B>
+
+pour les protocoles IP valides.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS DES SOCKETS</H2>
+
+Les options des sockets raw peuvent être écrites avec
+<B><A HREF="/cgi-bin/man/man2html?2+setsockopt">setsockopt</A></B>(2)
+
+et lues avec
+<B><A HREF="/cgi-bin/man/man2html?2+getsockopt">getsockopt</A></B>(2)
+
+en passant l'attribut de
+famille
+<I>SOL_RAW</I>.
+
+<P>
+<DL COMPACT>
+<DT><B>ICMP_FILTER</B>
+
+<DD>
+Active un filtre spécial sur les sockets raw attachées au protocole
+<B>IPPROTO_ICMP</B>.
+
+La valeur a un bit pour chaque type de message ICMP qui doit être
+rejeté. La valeur par défaut est de ne filtrer aucun messages ICMP.
+<P>
+</DL>
+<P>
+
+De plus, toutes les options
+<B>SOL_IP</B> de
+
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7)
+
+valides pour les sockets datagrammes sont supportées.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les sockets raw fragmentent un paquet lorsque sa longueur totale dépasse le
+MTU de l'interface (voir toutefois le paragraphe BOGUES).
+Une alternative plus rapide et préférable pour le réseau est d'implémenter la recherche
+du MTU des chemins comme décrit dans la section
+<B>IP_PMTU_DISCOVER </B>
+
+de
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7).
+
+<P>
+Une socket raw peut être attachée à une adresse locale spécifique en utilisant l'appel
+<B><A HREF="/cgi-bin/man/man2html?2+bind">bind</A></B>(2).
+
+Si elle n'est pas attachée, tous les paquets du protocole IP spécifié sont reçus.
+De plus une socket raw peut être attachée à un périphérique réseau particulier avec
+<B>SO_BINDTODEVICE</B> ;
+
+voir
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7).
+
+<P>
+Une socket
+<B>IPPROTO_RAW</B>
+
+ne fonctionne qu'en émission.
+Si vous désirez vraiment recevoir tous les paquets IP, utilisez une socket
+<B><A HREF="/cgi-bin/man/man2html?7+packet">packet</A></B>(7)
+
+avec le protocole
+<B>ETH_P_IP</B>.
+
+Notez que les sockets packet ne réassemblent pas les fragments IP contrairement aux sockets raw.
+<P>
+Si vous voulez recevoir tous les paquets ICMP pour une socket datagramme, il est souvent
+préférable d'utiliser
+<B>IP_RECVERR</B>
+
+sur cette socket particulière, voir
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7).
+
+<P>
+Les sockets raw peuvent capturer tous les protocoles sous Linux, même les protocoles comme
+ICMP ou TCP qui ont un module dans le noyau. Dans ce cas, le paquet est passé simultanément
+au module du noyau et à la socket raw. Ce comportement n'est pas portable, de nombreuses
+autres implémentations des sockets BSD ont des limitations ici.
+<P>
+Linux ne modifie jamais les en-têtes fournis par l'utilisateur (sauf pour remplir les
+champs ne contenant que des zéros comme cela est décrit pour
+<B>IP_HDRINCL</B>).
+
+Ceci diffère de nombreuses autres implémentations des sockets raw.
+<P>
+Les sockets raw sont en général peu portables et devrait être évitées dans les
+programmes conçus pour être adaptés sur d'autres systèmes
+<P>
+L'émission sur les sockets raw devrait employer le protocole dans
+<B>sin_port</B> ;
+
+ceci a été perdu dans Linux 2.2. Un remède est d'utiliser
+<B>IP_HDRINCL.</B>
+
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>GESTION D'ERREUR</H2>
+
+Les erreurs provenant du réseau ne sont transmise à l'utilisateur que lorsque la socket
+est connectée ou si le drapeau
+<B>IP_RECVERR</B>
+
+est actif. Pour les sockets connectées, seules
+<B>EMSGSIZE   </B>
+
+et
+<B>EPROTO </B>
+
+sont transmises, pour compatibilité. Avec
+<B>IP_RECVERR</B>
+
+toutes les erreurs réseau sont sauvegardées dans la file d'erreurs.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EMSGSIZE</B>
+
+<DD>
+Paquet trop grand. Soit la recherche du MTU des chemins est active (voir l'attribut
+<B>IP_PMTU_DISCOVER</B>
+
+de socket) soit la taille du paquet dépasse le maximum autorisé par IPv4
+(64 Ko).
+<DT><B>EACCES</B>
+
+<DD>
+L'utilisateur essaye d'envoyer sur une adresse broadcast sans avoir le
+drapeau broadcast sur la socket.
+<DT><B>EPROTO</B>
+
+<DD>
+Une erreur ICMP est arrivé, indiquant un problème de paramétrage.
+<DT><B>EFAULT</B>
+
+<DD>
+Une adresse mémoire invalide a été fournie.
+<DT><B>EOPNOTSUPP</B>
+
+<DD>
+Un attribut invalide a été transmis à un appel sur la socket (comme
+<B>MSG_OOB</B>).
+
+<DT><B>EINVAL</B>
+
+<DD>
+Argument invalide.
+<DT><B>EPERM</B>
+
+<DD>
+L'utilisateur n'a pas la permission d'ouvrir des sockets raw. Seuls les
+processus avec un UID effectif nul ou la capacité
+<B>CAP_NET_RAW </B>
+
+peuvent le faire.
+<P>
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VERSIONS</H2>
+
+<B>IP_RECVERR </B>
+
+et
+<B>ICMP_FILTER </B>
+
+sont nouveaux dans Linux 2.2. Ce sont des extensions Linux et ne doivent pas être
+employés dans des programmes portables.
+<P>
+Linux 2.0 assurait une compatibilité bogue-à-bogue avec le code des sockets raw de
+BSD lorsque l'attribut SO_BSDCOMPAT était utilisé. Ceci a été supprimé dans 2.2.
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Les extensions de Proxy transparent ne sont pas décrites.
+<P>
+Lorsque l'option
+<B>IP_HDRINCL</B>
+
+est active, les datagrammes ne seront pas fragmentés et sont limités au MTU de l'interface.
+C'est une limitation de Linux 2.2.
+<P>
+Utiliser en émission le protocole IP indiqué dans
+<B>sin_port</B>
+
+a été supprimé dans Linux 2.2. On utilise toujours le protocole auquel la socket a été attachée
+avec <B><A HREF="/cgi-bin/man/man2html?2+bind">bind</A></B>(2) ou celui de l'appel 
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2)
+
+initial.
+<P>
+<A NAME="lbAL">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Cette page de manuel a été écrite par Andi Kleen. 
+<P>
+<A NAME="lbAM">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?2+recvmsg">recvmsg</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sendmsg">sendmsg</A></B>(2).
+
+<P>
+
+<B>RFC1191 </B>
+
+pour la recherche du MTU par chemin.
+<P>
+<B>RFC791 </B>
+
+et le fichier d'en-tête
+<B>&lt;<A HREF="file:///usr/include/linux/ip.h">linux/ip.h</A>&gt;</B>
+
+pour le protocole IP.
+<A NAME="lbAN">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2001-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">FORMAT D'ADRESSE</A><DD>
+<DT><A HREF="#lbAF">OPTIONS DES SOCKETS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">GESTION D'ERREUR</A><DD>
+<DT><A HREF="#lbAI">ERREURS</A><DD>
+<DT><A HREF="#lbAJ">VERSIONS</A><DD>
+<DT><A HREF="#lbAK">BOGUES</A><DD>
+<DT><A HREF="#lbAL">AUTEURS</A><DD>
+<DT><A HREF="#lbAM">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAN">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:58 GMT, February 11, 2014
+</BODY>
+</HTML>

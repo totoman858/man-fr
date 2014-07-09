@@ -1,0 +1,571 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LILO.CONF</TITLE>
+</HEAD><BODY>
+<H1>LILO.CONF</H1>
+Section: Manuel de l'administrateur Linux (5)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+lilo.conf - Fichier de configuration pour Lilo.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+Ce fichier, par défaut
+<I>/etc/lilo.conf</I>,
+
+est lu lors de l'installation du chargeur Lilo (voir <A HREF="/cgi-bin/man/man2html?8+lilo">lilo</A>(8)).
+<P>
+
+Il doit avoir la forme suivante
+<DL COMPACT>
+<DT><DD>
+<PRE>
+boot = /dev/hda
+delay = 40
+compact
+vga = normal
+root = /dev/hda1
+read-only
+image = /zImage-2.5.99
+        label = try
+image = /zImage-2.2.0
+        label = 2.2.0
+image = /tamu/vmlinuz
+        label = tamu
+        root = /dev/hdb2
+        vga = ask
+other = /dev/hda3
+        label = dos
+        table = /dev/hda
+</PRE>
+
+</DL>
+<P>
+
+Ce fichier de configuration indique que Lilo utilise le secteur de boot
+principal (Master Boot Record) sur le disque /dev/hda. (Pour plus d'information
+sur les différentes manières d'utiliser Lilo, et les interactions avec d'autres
+systèmes d'exploitation, voir le fichier user.tex de la documentation Lilo.)
+<P>
+
+Au démarrage, le chargeur va attendre 4 secondes (40 dixièmes de seconde) pour
+une éventuelle pression sur SHIFT.
+Si on ne presse pas SHIFT, l'image du premier noyau (/zImage-1.5.99, qui a
+probablement été installé 5 minutes plus tôt) sera chargée.
+Si l'on presse SHIFT, Lilo demandera quelle image utiliser pour démarrer.
+En pressant [TAB] ou ([?] sur les claviers US), la liste des choix possibles
+sera affichée. Il est alors possible de démarrer sur ce noyau flambant neuf ou
+sur un noyau plus ancien, ou sur un noyau situé sur un autre système de
+fichiers principal (juste au cas où l'on vient de faire une ânerie sur le
+système racine habituel), ou même de démarrer un autre système
+d'exploitation.
+Il peut y avoir jusqu'à 16 images différentes dans lilo.conf.
+<P>
+
+Comme on peut le voir ci-dessus, un fichier de configuration commence avec un
+certain nombre d'options globales (les 6 premières lignes de l'exemple),
+puis viennent les options pour chacune des images à gérer. Lorsqu'une option est
+indiquée pour une image, elle a priorité sur l'option globale correspondante.
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>OPTIONS GLOBALES</H2>
+
+Il existe plusieurs mots-clés, les descriptions ci-dessous
+sont extraites de user.tex (un peu abrégées).
+<DL COMPACT>
+<DT><B>backup=</B><I>backup-file</I>
+
+<DD>
+Copier le secteur de boot original dans le fichier
+<I>backup-file</I>
+
+(qui peut également être un périphérique, par exemple
+<I>/dev/null</I>)
+
+à la place de
+<I>/boot/boot.NNNN</I>.
+
+<DT><B>boot=</B><I>boot-device</I>
+
+<DD>
+indique le nom du périphérique (ex : une partition de disque dur) qui
+contient le secteur de boot. Si ce mot-clé est omis, le secteur de boot
+lu (et éventuellement écrit) est celui du périphérique actuellement
+monte comme racine du système de fichiers.
+<DT><B>change-rules</B>
+
+<DD>
+définit les changements au moment du boot des numéros de partition (masquage).
+Voir la section &quot;Partition type change rules&quot; du fichier user.tex pour plus de détails.
+<DT><B>compact</B>
+
+<DD>
+Essaye de regrouper les lectures de secteurs adjacents en une seule
+requête. Ceci réduit nettement le temps de chargement et la taille
+du fichier de carte. L'utilisation de `compact' est surtout recommandée lorsque
+l'on boote depuis une disquette.
+<DT><B>default=</B><I>name</I>
+
+<DD>
+Utiliser par défaut l'image indiquée. Si `default' est omis, la
+première image du fichier de configuration est utilisée comme image
+par défaut.
+<DT><B>delay=</B><I>dsecs</I>
+
+<DD>
+indique la durée (en dixièmes de secondes) pendant laquelle le chargeur
+attendra avant de démarrer la première image. Ceci est utilisé sur les
+systèmes qui bootent immédiatement sur le disque dur après avoir mis
+le clavier en marche. Si `delay' est absent, ou si sa valeur est nulle,
+le chargeur n'attend pas.
+<DT><B>disk=</B><I>device-name</I>
+
+<DD>
+Précise les valeurs des paramètres non-standards du disque indiqué.
+Voir la section &quot;Géométrie du disque&quot; dans user.tex pour plus de
+détails.
+Le paramètre `bios=' est particulièrement utile. Le BIOS numérote
+les disques 0x80, 0x81... et il est impossible de savoir quel
+disque Linux correspond à quel disque BIOS (car cela dépend de la
+configuration du BIOS et de son type). Ainsi si votre configuration
+est très particulière, vous pouvez indiquer les correspondances
+entre disques Linux et disques BIOS.
+Par exemple, 
+<P>
+<PRE>
+    disk=/dev/sda
+        bios=0x80
+    disk=/dev/hda
+        bios=0x81
+</PRE>
+
+<P>
+indique que votre disque SCSI est le premier disque BIOS, et votre
+disque IDE le second disque BIOS.
+<DT><B>disktab=</B><I>disktab-file</I>
+
+<DD>
+Indique le nom d'un fichier de paramètres pour le disque. Si cette
+option est absente, le fichier
+<I>/etc/disktab</I>
+
+est recherché. Il vaut mieux éviter d'utiliser ces fonctionnalités.
+<DT><B>fix-table</B>
+
+<DD>
+Ceci permet à Lilo d'ajuster les adresses 3D (secteur/tête/cylindre)
+de la table des partitions. 
+Chaque partition possède une adresse 3D et une adresse linéaire pour
+son premier et son dernier secteur.
+<P>
+Si la partition n'est pas alignée sur une frontière de piste, et si
+certains autres systèmes d'exploitation (MS-DOS, ou OS/2) utilisent
+le même disque, ils peuvent modifier l'adresse 3D.
+Lilo ne peut installer son secteur de démarrage que sur des partitions
+où les deux types d'adressage correspondent.
+Si l'option `fix-table' est indiquée, Lilo réajustera les
+adresses 3D incorrectes.
+<P>
+ATTENTION :
+Ceci ne garantit pas que les autres systèmes d'exploitation ne vont
+pas essayer de modifier à nouveau l'adressage plus tard. Il est
+également possible que ces corrections aient des effets de bords
+inattendus.
+<P>
+La véritable correction à apporter consiste à repartitionner le
+disque avec un utilitaire qui aligne les partitions sur les frontières
+de pistes.
+<P>
+De plus, avec certains disques (les gros disques EIDE avec une traduction
+d'adresses automatique), et sous certaines circonstances, il est
+inévitable d'obtenir des conflits dans la table des partitions.
+<DT><B>force-backup=</B><I>backup-file</I>
+
+<DD>
+Comme `backup' mais écrase la sauvegarde précédente s'il y en a une.
+<DT><B>ignore-table</B>
+
+<DD>
+ne pas tenir compte des erreurs dans la table des partitions.
+<DT><B>install=</B><I>boot-sector</I>
+
+<DD>
+Utiliser le fichier indiqué comme secteur de démarrage.
+Si `install' est omis,
+<I>/boot/boot.b</I>
+
+sera utilisé par défaut.
+<DT><B>linear</B>
+
+<DD>
+Crée des adresses de secteur linéaires plutôt que des adresses 3D
+(secteur/tete/cylindre). Les adresses linéaires sont traduites à
+l'exécution, et ne dépendent pas de la géométrie du disque.
+<P>
+Notez que les disquettes de démarrage risquent de ne pas être portables
+d'une machine à l'autre si `linear' est utilisé, car les services BIOS
+pour déterminer la géométrie du disque ne fonctionnent pas bien avec les
+disquettes. Quand on utilise `linear' avec des gros disques,
+<I>/sbin/lilo</I>
+
+risque de générer des références à des zones de disque inaccessibles
+car les adresses 3D ne sont pas connues avant le boot.
+<DT><B>lba32</B>
+
+<DD>
+Utiliser des Adresses de Blocs Logiques 32-bits plutôt que les adresses
+secteur/tête/cylindre. Si le BIOS supporte l'adressage par paquets, alors les
+appels par paquets seront utilisés pour accéder au disque. Ceci petmet de booter
+sur n'importe quelle partition d'un disque supérieur à 8.4&nbsp;Go, la limite de
+l'adressage S/T/C. Si le BIOS ne supporte pas l'adressage par paquets, alors
+les adresses 'lba32' sont convertie en S/T/C comme 'linear'. Avec 'lba32', toutes
+les adresses sur disquette restent sous la forme S/T/C.
+<DT><B>lock</B>
+
+<DD>
+Autorise l'enregistrement de lignes de commande au démarrage comme
+un choix par défaut pour les redémarrages ultérieurs. De cette
+façon, Lilo &quot;verrouille&quot; un choix jusqu'à ce qu'il soit écrasé manuellement.
+<DT><B>map=</B><I>map-file</I>
+
+<DD>
+Indique l'emplacement du fichier de carte des noyaux. Si `map' est omis,
+<I>/boot/map</I>
+
+est utilisé.
+<DT><B>message=</B><I>message-file</I>
+
+<DD>
+indique l'emplacement d'un fichier contenant un message qui sera
+affiché avant l'invite de démarrage. Aucun message n'est affiché
+pendant l'attente de la touche SHIFT, après avoir imprimé &quot;LILO &quot;.
+Dans ce message, le caractère FF (Ctrl-L) efface l'écran.
+La taille du message est limitée à 65535 octets. Le fichier carte
+doit être reconstruit si le message est modifié ou déplacé.
+<DT><B>nowarn</B>
+
+<DD>
+Désactive les avertissements à propos de risques futurs.
+<DT><B>optional</B>
+
+<DD>
+Correspond à l'option `optional' spécifique à une image, que l'on
+applique alors à toutes les images (voir plus bas).
+<DT><B>password=</B><I>password</I>
+
+<DD>
+Correspond à l'option `password' spécifique à une image, que l'on
+applique alors à toutes les images (voir plus bas).
+<DT><B>prompt</B>
+
+<DD>
+Affiche obligatoirement l'invite de démarrage, sans réclamer de
+pression sur SHIFT. Un redémarrage intempestif (coupure électrique)
+de la machine est impossible si `prompt' est indiqué, et 
+pas `timeout'.
+<DT><B>restricted</B>
+
+<DD>
+Correspond à l'option `restricted' spécifique à une image, que l'on
+applique alors à toutes les images (voir plus bas).
+<DT><B>serial=</B><I>paramètres</I>
+
+<DD>
+Autorise la prise de contrôle par une ligne série. Le port série 
+mentionné est initialisé, et le chargeur accepte des instructions
+à la fois depuis le clavier et depuis le port.
+<P>
+L'émission d'un `break' sur la prise série est équivalente à la
+pression sur SHIFT afin de réclamer l'attention du chargeur.
+Toutes les images devraient être protégées par mots de passe si 
+l'accès au port série est moins sécurisé que l'accès au clavier
+(par exemple à travers un modem).
+<P>
+La chaîne de paramètres à la syntaxe suivante :
+<P>
+<PRE>
+    &lt;port&gt;[,&lt;bps&gt;[&lt;parité&gt;[&lt;bits&gt;]]]
+</PRE>
+
+<P>
+&lt;port&gt;:  numéro du port série (0 correspond à COM1, alias /dev/ttyS0).
+Les quatre ports (s'ils existent) peuvent être utilisés.
+<P>
+&lt;bps&gt;: vitesse du port série. Les vitesses suivantes sont supportées :
+110, 150, 300, 600, 1200, 2400, 4800 et 9600 bps (2400 bps par défaut).
+<P>
+&lt;parité&gt;: parité utilisée sur la ligne. Le chargeur ignore la parité
+en entrée, et élimine le 8ème bit. Les lettres suivantes décrivent
+la parité : n  aucune,  e  paire, o  impaire.
+<P>
+&lt;bits&gt;: nombre de bits par caractères. Seuls les caractères de 7 et
+8 bits sont supportés. (par défaut 8 si parité n, 7 si parité e ou o).
+<P>
+Si `serial' est indiqué, la valeur de `delay' est automatiquement
+portée a 20.
+<P>
+Exemple : serial=0,2400n8 initialise COM1 avec les paramètres par défaut.
+<DT><B>timeout=</B><I>dsecs</I>
+
+<DD>
+Indique un délai (en dixièmes de secondes) pour la saisie au clavier.
+Si aucune touche n'est pressée durant ce délai la saisie est abandonnée.
+Sur l'invite de connexion, l'image par défaut est lancée, sur la
+saisie de mot de passe, l'action est annulée.
+La valeur par défaut du timeout est infinie.
+<DT><B>verbose=</B><I>niveau</I>
+
+<DD>
+Valide de nombreux rapports de progression. Plus le nombre est élevé,
+plus Lilo sera volubile. Si -v est de plus ajouté sur la ligne de
+commande, le niveau sera augmenté. Le niveau maximal de volubilité est 5.
+</DL>
+<P>
+
+En outre, des paramètres de configuration du noyau
+<B>append</B>, <B>ramdisk</B>, <B>read-only</B>, <B>read-write</B>, <B>root</B>
+
+et
+<B>vga</B>
+
+peuvent être indiqués dans la section des options globales. Ils sont
+utilisés par défaut à moins d'être surchargés dans les sections de
+configurations spécifiques des images.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>SECTIONS SPÉCIFIQUES AUX IMAGES</H2>
+
+Une section spécifique à une image débute soit par une ligne
+<P>
+<PRE>
+    <B>image=</B><I>pathname</I>
+</PRE>
+
+<P>
+(qui indique un fichier ou un périphérique contenant l'image d'un
+noyau Linux), soit par une ligne
+<P>
+<PRE>
+    <B>other=</B><I>pathname</I>
+</PRE>
+
+<P>
+pour indiquer le démarrage d'un autre système d'exploitation.
+<P>
+
+<P>
+Dans le premier cas, si la ligne <B>image</B> demande le démarrage depuis
+un périphérique, alors il faut également indiquer l'intervalle de
+secteurs à utiliser. Ceci se fait ainsi :
+<P>
+<PRE>
+         <B>range=</B><I>debut</I>-<I>fin</I>
+</PRE>
+
+<P>
+<P>
+Dans le second cas (démarrer un autre système) il existe 3 options.
+<DL COMPACT>
+<DT><B>loader=</B><I>chain-loader</I>
+
+<DD>
+Ceci indique le chargeur à utiliser. Par défaut
+<I>/boot/chain.b</I>
+
+est utilisé. Le chargeur doit être précisé si l'on démarre depuis un
+périphérique autre que le premier disque dur ou disquette.
+<DT><B>table=</B><I>device</I>
+
+<DD>
+Cette option spécifie le périphérique qui contient la table de partitions.
+Le chargeur ne transmettra pas les informations sur les partitions au
+système à démarrer si cette variable est omise (certains systèmes 
+d'exploitation utilisent d'autres moyens pour déterminer la partition
+depuis laquelle ils démarrent, par exemple MS-DOS stocke habituellement
+les informations géométriques dans son secteur de démarrage).
+Notez que /sbin/lilo doit être relancé si une table de partitions référencée
+dans une option `table' est modifiée.
+<DT><B>unsafe</B>
+
+<DD>
+Ne pas toucher au secteur de démarrage lors de la création de la carte.
+Ceci désactive certains contrôles, y compris la vérification de la table
+des partitions.
+Si le secteur de boot se trouve sur une disquette avec un format propriétaire,
+l'utilisation de UNSAFE évite d'avoir à insérer un disque lisible dans
+le lecteur durant l'installation de la carte.
+Les options `unsafe' et `table' sont mutuellement exclusives.
+</DL>
+<P>
+
+<P>
+Dans tous les cas les options suivantes s'appliquent&nbsp;:
+<DL COMPACT>
+<DT><B>label=</B><I>nom</I>
+
+<DD>
+Le chargeur utilise le nom de fichier principal (sans le chemin
+d'accès) de chaque image pour les identifier. On peut indiquer
+ici un nom différent qui sera utilisé lors de l'invite de
+connexion.
+<DT><B>alias=</B><I>nom</I>
+
+<DD>
+Un deuxième nom peut être utilisé comme alias pour la même image.
+<DT><B>lock</B>
+
+<DD>
+(voir au-dessus)
+<DT><B>optional</B>
+
+<DD>
+Omettre l'image si elle n'est pas présente lors de la création de
+la carte. Ceci est utile pour indiquer des noyaux de test qui
+ne sont pas toujours présents.
+<DT><B>password=</B><I>password</I>
+
+<DD>
+Protéger le chargement de l'image par un mot de passe.
+<DT><B>restricted</B>
+
+<DD>
+Ne demander un mot de passe que si l'on ajoute des paramètres
+sur la ligne de commande (par exemple `single' pour redémarrer
+en mode mono-utilisateur).
+</DL>
+<P>
+
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS DU NOYAU</H2>
+
+Si l'image chargée est un noyau Linux, on peut lui passer des
+paramètres supplémentaire sur la ligne de commande.
+<DL COMPACT>
+<DT><B>append=</B><I>chaîne</I>
+
+<DD>
+Ajoute l'option indiquée sur la ligne de commande transmise au
+noyau. Ceci est typiquement utilisé pour indiquer des paramètres
+matériels qui ne peuvent pas être auto-détectés, ou pour lesquels
+l'auto-détection peut être dangereuse. Par exemple :
+<P>
+<PRE>
+     append = &quot;hd=64,32,202&quot;
+</PRE>
+
+<P>
+<DT><B>literal=</B><I>chaîne</I>
+
+<DD>
+Comme `append', mais élimine de surcroît toutes les autres options
+(par ex : l'emplacement du périphérique racine). Comme des options
+vitales peuvent être supprimées malencontreusement avec `literal',
+celle-ci ne peut pas apparaître dans les options globales.
+<DT><B>ramdisk=</B><I>size</I>
+
+<DD>
+Indique la taille d'un disque virtuel optionnel. Une valeur nulle
+empêche la création du disque RAM. Si cette variable est omise,
+la taille de disque virtuel indiquée dans la configuration de
+l'image du noyau est utilisée.
+<DT><B>read-only</B>
+
+<DD>
+Ceci indique que le système de fichiers racine doit être monté en
+lecture seule. Typiquement le démarrage du noyau remontera ce
+système en lecture/écriture plus tard (après l'avoir vérifié).
+<DT><B>read-write</B>
+
+<DD>
+Ceci indique que le système de fichiers racine doit être monté en
+lecture/écriture.
+<DT><B>root=</B><I>root-device</I>
+
+<DD>
+Précise le périphérique à monter en tant que racine du système de
+fichier. Si le mot-clé
+<B>current</B>
+
+est utilise en guise de
+<I>root-device</I>
+
+la racine du système actuel est utilisée. Si la racine a été 
+changée avec l'option -r, le périphérique correspondant est utilisé.
+Si la variable `root' est omise, le périphérique indiqué dans l'image
+du noyau est utilisé.
+(Il est positionné au moment de la compilation par la variable ROOT_DEV
+dans le fichier Makefile, et peut être changé ultérieurement avec le
+programme
+<I><A HREF="/cgi-bin/man/man2html?8+rdev">rdev</A></I>(8)).
+
+<DT><B>vga=</B><I>mode</I>
+
+<DD>
+Ceci précise le mode texte VGA à utiliser pendant le démarrage. Les
+valeurs suivantes sont autorisées (pas de différence majuscule/minuscule) :
+<P>
+<B>normal</B>:
+
+Mode texte 80x25 normal.
+<P>
+<B>extended</B> (ou <B>ext</B>):
+
+Mode texte 80x50.
+<P>
+<B>ask</B>:
+
+Arrêter et demander à l'utilisateur (lors du démarrage).
+<P>
+&lt;numéro&gt;:  Utiliser le mode texte correspondant. Une liste des
+modes disponibles peut être obtenue en démarrant avec
+<I>vga=ask  </I>
+
+et en pressant [Enter]. 
+<P>
+Si cette variable est omise, le mode VGA déclaré dans l'image du noyau
+est utilisé. (Le mode est indiqué à la compilation du noyau dans la
+variable SVGA_MODE du fichier Makefile, et peut être changé ultérieurement
+avec le programme
+<I><A HREF="/cgi-bin/man/man2html?8+rdev">rdev</A></I>(8)).
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?8+lilo">lilo</A>(8), <A HREF="/cgi-bin/man/man2html?8+rdev">rdev</A>(8).
+<BR>
+
+La distribution Lilo est accompagnée d'une documentation très complète, dont
+la présente page n'est qu'un extrait.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">OPTIONS GLOBALES</A><DD>
+<DT><A HREF="#lbAE">SECTIONS SPÉCIFIQUES AUX IMAGES</A><DD>
+<DT><A HREF="#lbAF">OPTIONS DU NOYAU</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:54 GMT, February 11, 2014
+</BODY>
+</HTML>

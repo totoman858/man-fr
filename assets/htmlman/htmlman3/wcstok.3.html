@@ -1,0 +1,101 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of WCSTOK</TITLE>
+</HEAD><BODY>
+<H1>WCSTOK</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+wcstok - Extraire des mots d'une chaîne de caractères larges.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/wchar.h">wchar.h</A>&gt;</B>
+
+<B>wchar_t *wcstok (wchar_t *</B><I>wcs</I><B>, const wchar_t *</B><I>delim</I><B>, wchar_t **</B><I>ptr</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>wcstok</B> est l'équivalent pour les caractères larges de la fonction <B>strtok</B>,
+avec un argument supplémentaire permettant de l'employer dans un contexte multithreads.
+On peut l'utiliser pour découper la chaîne de caractères larges <I>wcs</I> en éléments syntaxiques (tokens),
+définis comme des sous-chaîne ne contenant aucun caractère large contenu dans la chaîne <I>delim</I>.
+<P>
+
+La recherche démarre en <I>wcs</I>, si <I>wcs</I> n'est pas NULL, ou en <I>*ptr</I> si <I>wcs</I> est NULL.
+D'abord tous les caractères larges délimiteurs sont ignorés, c'est à dire que le pointeur est placé au-delà
+de tous les caractères se trouvant dans <I>delim</I>.
+Si la fin de la chaîne est atteinte, <B>wcstok</B> renvoie NULL pour indiquer qu'aucun mot n'a été trouvé, et stocke 
+dans <I>*ptr</I> une valeur qui forcera les éventuels appels suivants de <B>wcstok</B> à renvoyer NULL.
+Sinon, la fonction considère avoir atteint le début d'un mot, et renvoie un pointeur dessus après l'avoir fait suivre
+par un L'\0' (en remplaçant le premier caractère se trouvant dans <I>delim</I>). Elle met à jour le pointeur <I>*ptr</I> pour
+qu'un nouvel appel de <B>wcstok</B> continue la recherche à la suite du mot trouvé.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>wcstok</B> renvoie un pointeur sur le mot suivant, ou NULL si aucun mot n'a été trouvé.
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+La chaîne de caractères larges <I>wcs</I> originale est modifiée de manière destructrice durant l'opération.
+<A NAME="lbAG">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+Le code suivant parcourt les mots contenus dans la chaîne de caractères larges.
+<P>
+<PRE>
+wchar_t * wcs = ...;
+wchar_t * token;
+wchar_t * etat;
+for (token = wcstok (wcs, &quot; \t\n&quot;, &amp; etat);
+     token != NULL;
+     token = wcstok (NULL, &quot; \t\n&quot;, &amp; etat)) {
+  ...
+}
+</PRE>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ISO/ANSI C, UNIX98
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+strtok">strtok</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+wcschr">wcschr</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">EXEMPLE</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:11 GMT, February 11, 2014
+</BODY>
+</HTML>

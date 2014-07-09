@@ -1,0 +1,84 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FCLOSE</TITLE>
+</HEAD><BODY>
+<H1>FCLOSE</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fcloseall - Fermer tous les flux ouverts.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#define _GNU_SOURCE</B>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<P>
+<B>int fcloseall(void);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction 
+<B>fcloseall</B>
+
+dissocie tous les flux ouverts des fichiers sous-jacents. Toutes les données en attente
+dans les buffers de sortie sont écrites d'abord en utilisant
+<B><A HREF="/cgi-bin/man/man2html?3+fflush">fflush</A></B>(3).
+
+Notez que les flux standards (stdin, stdout et stderr) sont également fermés.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Cette fonction renvoie toujours 0.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+close">close</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fclose">fclose</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fflush">fflush</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fopen">fopen</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setbuf">setbuf</A></B>(3)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+La fonction
+<B>fcloseall</B>
+
+est une extension GNU.
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:12 GMT, February 11, 2014
+</BODY>
+</HTML>

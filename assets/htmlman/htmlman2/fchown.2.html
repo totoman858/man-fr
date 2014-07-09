@@ -1,0 +1,259 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CHOWN</TITLE>
+</HEAD><BODY>
+<H1>CHOWN</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM </H2>
+
+chown, fchown, lchown - Modifier l'appartenance d'un fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int chown(const char *</B><I>path</I><B>, uid_t </B><I>owner</I><B>, gid_t </B><I>group</I><B>);</B>
+
+<BR>
+
+<B>int fchown(int </B><I>fd</I><B>, uid_t </B><I>owner</I><B>, gid_t </B><I>group</I><B>);</B>
+
+<BR>
+
+<B>int lchown(cost char *</B><I>path</I><B>, uid_t </B><I>owner</I><B>, gid_t </B><I>group</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le propriétaire et le groupe du fichier désigné par le chemin
+<I>path</I>
+
+ou par le descripteur de fichier
+<I>fd</I>
+
+sont modifiés. Seul le Super-User peut changer le propriétaire d'un fichier. Le
+propriétaire peut changer le groupe du fichier pour n'importe quel groupe auquel
+il appartient. Le Super-User peut changer le groupe arbitrairement.
+<P>
+Si l'argument
+<I>owner</I>
+
+ou 
+<I>group</I>
+
+vaut -1, l'élément correspondant n'est pas changé.
+<P>
+Quand le propriétaire, ou le groupe d'un fichier exécutable sont modifiés par
+un utilisateur ordinaire, les bits S_ISUID et S_ISGID sont effacés.
+POSIX ne précise pas s'il faut agir de même lorsque c'est le Super-Utilisateur
+qui invoque
+<I>chown</I>.
+
+Le comportement de Linux dans ce cas dépend de la version du noyau.
+Si le fichier n'est pas exécutable par les membres de son groupe, (son
+bit S_IXGRP étant à zéro) le bit S_ISGID indique la présence d'un verrou
+obligatoire sur le fichier, et n'est donc pas effacé par un
+<I>chown</I>.
+
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>chown</B>, <B>lchown</B>, et <B>fchown</B>
+
+renvoient 0 s'ils réussissent, ou -1 s'ils échouent, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Suivant le type de système de fichiers, plusieurs erreurs peuvent être
+renvoyées. Les plus courantes pour  
+<B>chown</B>
+
+sont les suivantes :
+<P>
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+L'UID effectif du processus ne correspond pas à celui du fichier, et n'est 
+pas nul, ou le propriétaire
+<I>owner</I>
+
+ou le groupe
+<I>group</I>
+
+sont spécifiés incorrectement.
+<DT><B>EROFS</B>
+
+<DD>
+Le fichier spécifié réside sur un système de fichiers en lecture seule.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>path</I>
+
+pointe en dehors de l'espace d'adressage accessible.
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+<I>path</I>
+
+est trop long.
+<DT><B>ENOENT</B>
+
+<DD>
+Le fichier n'existe pas.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour le noyau.      
+<DT><B>ENOTDIR</B>
+
+<DD>
+Un élément du chemin d'accès n'est pas un répertoire.
+<DT><B>EACCES</B>
+
+<DD>
+L'accès à un élément du chemin est interdit.                  
+<DT><B>ELOOP</B>
+
+<DD>
+<I>path</I>
+
+contient une référence circulaire (à travers un lien symbolique)
+</DL>
+<P>
+
+Les erreurs courantes pour
+<B>fchown</B>
+
+sont les suivantes :
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+Le descripteur de fichier est invalide
+<DT><B>ENOENT</B>
+
+<DD>
+Cf chown. 
+<DT><B>EPERM</B>
+
+<DD>
+Cf chown. 
+<DT><B>EROFS</B>
+
+<DD>
+Cf chown. 
+<B>EIO</B>
+
+Une erreur d'entrée/sortie bas-niveau s'est produite durant
+la modification de l'i-noeud.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Dans les versions de Linux antérieures à 2.1.81 (sauf 2.1.46),
+<B>chown</B>
+
+ne suivait pas les liens symboliques. Depuis cette version,
+<B>chown</B>
+
+suit les liens symboliques, et il existe un nouvel appel-système,
+<B>lchown</B>, 
+
+qui ne les suit pas.
+Depuis Linux 2.1.86, ce nouvel appel système (qui a donc la même
+sémantique que l'ancien
+<B>chown</B>)
+
+a pris son numéro de Syscall, et
+<B>chown</B>
+
+a reçu un nouveau numéro.
+<P>
+
+Le prototype de la fonction
+<B>fchown</B>
+
+est seulement utilisable si la constante symbolique
+<B>_BSD_SOURCE</B>
+
+est définie (soit explicitement, soit implicitement en ne définissant
+pas _POSIX_SOURCE ou en compilant avec l'attribut -ansi).
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+L'appel système
+<B>chown</B>
+
+est conforme à
+SVr4, SVID, POSIX, X/OPEN.  La version 4.4BSD ne peut être appelée que
+par le Super-User (ce qui signifie qu'un utilisateur ordinaire ne
+peut pas céder la propriété d'un fichier).
+SVr4 documente les erreurs  EINVAL, EINTR, ENOLINK et EMULTIHOP, mais pas
+ENOMEM.  POSIX.1 ne décrit ni ENOMEM ni ELOOP.
+<P>
+
+L'appel système
+<B>fchown</B>
+
+est conforme à 4.4BSD et SVr4.
+SVr4 indique des conditions d'erreurs supplémentaires EINVAL, EIO, EINTR, et ENOLINK.
+<A NAME="lbAI">&nbsp;</A>
+<H2>REMARQUES</H2>
+
+La sémantique de <B>chown</B>() est volontairement modifiée sur les systèmes
+de fichiers NFS où la correspondance d'UID est activée. De plus, c'est la
+sémantique de tous les appels systèmes accédant au contenu des fichiers qui
+est modifiée, puisque <B>chown</B>() peut déclencher une interdiction immédiate
+d'accès à des fichiers déjà ouverts. Un cache situé du côté client peut induire
+un délai entre l'instant où l'appartenance du fichier est modifiée et le
+moment où l'accès est effectivement accordé à l'utilisateur.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+chmod">chmod</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+flock">flock</A></B>(2).
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM </A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">REMARQUES</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:01 GMT, February 11, 2014
+</BODY>
+</HTML>

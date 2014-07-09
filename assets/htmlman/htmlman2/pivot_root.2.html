@@ -1,0 +1,172 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PIVOT_ROOT</TITLE>
+</HEAD><BODY>
+<H1>PIVOT_ROOT</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+pivot_root - Modifier la racine du système de fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/linux/unistd.h">linux/unistd.h</A>&gt;</B>
+
+<P>
+<B>_syscall2(int,pivot_root,const char *,new_root,const char *,put_old)</B>
+
+<P>
+<B>int pivot_root(const char *</B><I>new_root</I><B>, const char *</B><I>put_old</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>pivot_root</B> déplace la racine du système de fichiers pour le processus courant
+vers le répertoire <I>put_old</I> et fait de <I>new_root</I> la nouvelle racine du
+système de fichiers pour le processus en cours.
+<P>
+L'utilisation typique de pivot_root est durant le boot, lorsque le système
+monte un système de fichiers temporaire (par ex. un <B>initrd</B>) puis monte
+le véritable système de fichier, et le transforme en racine pour tous les
+processus et threads concernés.
+<P>
+<B>pivot_root</B> peut changer ou non le répertoire de travail en cours
+de tous les processus et threads qui utilisaient l'ancien répertoire racine.
+L'appelant de <B>pivot_root</B> doit s'assurer que les processus ayant pour
+racine ou répertoire de travail l'ancien répertoire se comportent correctement.
+Le meilleur moyen est de modifier leur répertoire de travail et répertoire
+racine avant d'invoquer <B>pivot_root</B>.
+<P>
+Le paragraphe ci-dessus est intentionellement flou, car l'implémentation
+de <B>pivot_root</B> peut changer dans le futur. Actuellement,
+<B>pivot_root</B> modifie la racine et le répertoire de travail de tous les
+processus ou threads en <I>new_root</I> s'ils pointent sur l'ancien répertoire.
+Ceci est nécessaire pour éviter que des threads du noyau ne conservent
+l'ancien répertoire occupé, même s'ils accèdent au nouveau système de fichiers.
+Dans le futur, il y aura peut-être un mécanisme pour les threads du noyau
+pour renoncer explicitement à tout accès au système de fichiers, ce qui
+évitera ce mécanisme un peu invasif.
+<P>
+Notez que ceci s'applique aussi au processus en cours&nbsp;: <B>pivot_root</B>
+peut changer ou non son répertoire de travail. Il vaut mieux donc appeler
+<B>chdir(&quot;/&quot;)</B> immédiatement après <B>pivot_root</B>.
+<P>
+Les restrictions suivantes s'appliquent à<I>new_root</I> et <I>put_old</I>&nbsp;:
+<DL COMPACT>
+<DT>-<DD>
+Ils doivent être des répertoires,
+<DT>-<DD>
+<I>new_root</I> et <I>put_old</I> ne doivent pas être sur le même système de
+fichiers que la racine actuelle.
+<DT>-<DD>
+<I>put_old</I> doit être un descendant de <I>new_root</I>&nbsp;: ajouter un nombre
+non-nul de <B>/..</B> à la chaîne <I>put_old</I> doit ramener au même
+répertoire que <I>new_root</I>.
+<DT>-<DD>
+Aucun système de fichiers ne doit être monté sur <I>put_old</I>.
+</DL>
+<P>
+
+Voir <B><A HREF="/cgi-bin/man/man2html?8+pivot_root">pivot_root</A>(8)</B> pour des exemples d'utilisation supplémentaires.
+<P>
+Si la racine en cours n'est pas un point de montage (après un <B><A HREF="/cgi-bin/man/man2html?2+chroot">chroot</A>(2)</B>
+ou un <B>pivot_root</B>, voir plus bas), ce n'est pas l'ancien répertoire,
+mais le point de montage du système de fichiers qui est monté dans <I>put_old</I>.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+<I>new_root</I> n'a pas besoin d'être un point de montage. Dans ce cas,
+<B>/proc/mounts</B> montrera le point de montage concernant
+<I>new_root</I> comme racine (<B>/</B>).
+<A NAME="lbAF">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+S'il réussit, l'appel renvoie zéro. Sinon il renvoie -1 et rempli
+<I>errno</I>.
+<A NAME="lbAG">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<B>pivot_root</B> peut renvoyer  (dans <I>errno</I>) toute erreur renvoyée par
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A>(2)</B>. De plus, il peut renvoyer&nbsp;:
+<P>
+<DL COMPACT>
+<DT><B>EBUSY</B>
+
+<DD>
+<I>new_root</I> ou <I>put_old</I> sont sur le système de fichier principal actuel,
+ou un système de fichiers est déjà monté sur <I>put_old</I>.
+<DT><B>EINVAL</B>
+
+<DD>
+<I>put_old</I> n'est pas un descendant de <I>new_root</I>.
+<DT><B>ENOTDIR</B>
+
+<DD>
+<I>new_root</I> ou <I>put_old</I> n'est pas un répertoire.
+<DT><B>EPERM</B>
+
+<DD>
+Le processus appelant n'a pas les capacités d'administration.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<B>pivot_root</B> ne devrait pas modifier le répertoire racine et le répertoire
+de travail des autres processus du système.
+<P>
+Les utilisations les plus obscures de <B>pivot_root</B> peuvent rapidement
+rendre fou.
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<B>pivot_root</B> est spécifique à Linux et donc non portable.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+<B>pivot_root</B> a été introduit dans Linux 2.3.41.
+<A NAME="lbAK">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+chdir">chdir</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+chroot">chroot</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?4+initrd">initrd</A></B>(4),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pivot_root">pivot_root</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2)
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAG">ERREURS</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAK">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:00 GMT, February 11, 2014
+</BODY>
+</HTML>

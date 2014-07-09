@@ -1,0 +1,260 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DEBSUMS</TITLE>
+</HEAD><BODY>
+<H1>DEBSUMS</H1>
+Section: Commandes Utilisateur (1)<BR>Updated: 2002/10/26<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+debsums - vérifie les sommes de contrôle MD5 des paquets Debian installés
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>debsums</B>
+
+[<I>options</I>]
+
+[<I>paquet</I>|<I>deb</I>]
+
+...
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Vérifie les paquets Debian installés grâce à une liste de sommes de contrôle MD5.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-a</B>, <B>--all</B>
+
+<DD>
+Vérifie aussi les fichiers de configuration (ignorés par défaut).
+<DT><B>-c</B>, <B>--changed</B>
+
+<DD>
+Envoie la liste des fichiers modifiés sur la sortie standard (ceci implique
+<B>-s</B>).
+
+<DT><B>-l</B>, <B>--list-missing</B>
+
+<DD>
+Liste les paquets (ou fichiers .deb) qui n'ont pas de somme de contrôle MD5.
+<DT><B>-s</B>, <B>--silent</B>
+
+<DD>
+Affiche seulement les erreurs.
+<DT><B>-m</B>, <B>--md5sums</B>=<I>fichier</I>
+
+<DD>
+Lit la liste des sommes de contrôle dans
+<I>fichier</I>.
+
+<DT><B>-r</B>, <B>--root</B>=<I>répertoire</I>
+
+<DD>
+Répertoire racine de la vérification (/ par défaut).
+<DT><B>-d</B>, <B>--admindir</B>=<I>répertoire</I>
+
+<DD>
+Répertoire administratif de dpkg (/var/lib/dpkg par défaut).
+<DT><B>-p</B>, <B>--deb-path</B>=<I>répertoire</I>[:<I>répertoire</I>...]
+
+<DD>
+Répertoires où chercher les paquets demandés 
+(le répertoire courant par défaut).
+<DT><DD>
+Quand on utilise 
+<B>apt-get autoclean </B>
+
+ou qu'on ne vide pas du tout le cache, /var/cache/apt/archives est
+un argument intéressant pour cette option.
+La commande&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><DD>
+apt-get --reinstall -d install `debsums -l`
+</DL>
+</DL>
+
+<DT><DD>
+peut être utilisée pour remplir à nouveau le cache avec les paquets manquants. 
+<DT><B>-g</B>, <B>--generate</B>=[<B>missing</B>|<B>all</B>][,<B>keep</B>[,<B>nocheck</B>]]
+
+<DD>
+Fabrique les sommes de contrôle MD5 à partir du contenu des paquets. Si
+l'argument n'est pas une archive .deb mais un nom de paquet, le programme
+cherchera un fichier .deb nommé
+<I>paquet</I>_<I>version</I>_<I>arch</I>.deb
+
+dans le répertoire indiqué par l'option
+<B>-p.</B>
+
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>missing</B>
+
+<DD>
+Si les paquets ne contiennent pas de somme de contrôle MD5, elle seront
+calculées à partir des fichiers .deb.
+<DT><B>all</B>
+
+<DD>
+Ignore les sommes de contrôle enregistrées. Utilise les sommes de contrôle des
+fichiers .deb ou les calcule à partir de ceux-ci.
+<DT><B>keep</B>
+
+<DD>
+Écrit les sommes de contrôle extraites ou calculées dans 
+/var/lib/dpkg/info/<I>paquet</I>.md5sums.
+
+<DT><B>nocheck</B>
+
+<DD>
+Ceci implique
+<B>keep&nbsp;;</B>
+
+le paquet installé n'est plus comparé à sa somme de contrôle extraite ou
+calculée.
+</DL>
+</DL>
+
+<DT><DD>
+Afin d'assurer la compatibilité ascendante, l'option courte
+<B>-g</B>
+
+équivaut à
+<B>--generate=missing.</B>
+
+</DL>
+<P>
+
+<B>--help</B>
+
+
+<DL COMPACT>
+<DT><B>--version</B>
+
+<DD>
+
+Affiche l'aide et la version.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+<DL COMPACT>
+<DT>debsums foo bar<DD>
+Vérifie les sommes de contrôle des paquets installés
+<B>foo</B>
+
+et
+<B>bar.</B>
+
+<DT>debsums foo.deb bar.deb<DD>
+Comme ci-dessus, en utilisant les sommes de contrôle des archives (ou celles
+calculées à partir des archives).
+<DT>debsums -l<DD>
+Liste des paquets installés ne possédant pas de somme de contrôle.
+<DT>debsums -ca<DD>
+Liste les paquets modifiés parmi les paquets installés ayant une somme de
+contrôle.
+<DT>debsums -cagp /var/cache/apt/archives<DD>
+Comme ci-dessus, en utilisant les sommes de contrôle des fichiers .deb archives
+disponibles.
+</DL>
+<P>
+
+
+<PRE>
+DPkg::Post-Invoke {
+<BR>
+    &quot;debsums --generate=nocheck -sp /var/cache/apt/archives&quot;;
+<BR>
+};
+<DL COMPACT>
+<DT><DD></PRE>
+
+
+partie du fichier /etc/apt/apt.conf utilisée pour fabriquer les sommes de
+contrôle manquantes après une mise à jour ou après une installation.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VARIABLES D'ENVIRONNEMENT</H2>
+
+<DL COMPACT>
+<DT><B>TPMDIR</B>
+
+<DD>
+Répertoire d'extraction des informations et du contenu des paquets archivés
+(/tmp par défaut).
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>AVERTISSEMENTS</H2>
+
+Bien qu'en général le programme puisse être lancé par un utilisateur
+normal, certains paquets peuvent ne pas être lisibles par tout le monde et ne
+seront alors pas vérifiés. Des privilèges étendus seront bien sûr nécessaires
+quand on fabriquera les sommes de contrôle en activant l'option
+<B>keep.</B>
+
+<P>
+
+Les fichiers ayant été remplacés par un autre paquet peuvent être considérés à
+tort comme ayant été modifiés.
+<P>
+
+<B>debsums</B>
+
+est d'une utilité limitée en tant qu'outil de sécurité, à moins que le
+programme et tous les outils apparentés (dpkg, perl, Digest::MD5, etc.) soient
+lancés d'un média reconnu comme sûr (comme un cédérom de secours bootable, voir 
+l'option --root) et que les sommes de contrôle aient étés calculées à partir
+des fichiers .deb (--generate=all) présents sur ce média ou certifiées en 
+utilisant l'option --md5sums.
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Écrit par Brendan O'Dea &lt;<A HREF="mailto:bod@debian.org">bod@debian.org</A>&gt;.
+<BR>
+
+à partir d'un programme de Christophe Lameter &lt;<A HREF="mailto:clameter@debian.org">clameter@debian.org</A>&gt; et
+Petr Cech &lt;<A HREF="mailto:cech@debian.org">cech@debian.org</A>&gt;.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright &#169; 2002  Brendan O'Dea &lt;<A HREF="mailto:bod@debian.org">bod@debian.org</A>&gt;
+<BR>
+
+Ce programme est un logiciel libre, sous licence GNU General Public License.
+Il n'y a AUCUNE garantie&nbsp;; même en cas de COMMERCIALISATION ou d'ADAPTATION
+À DES BESOINS PARTICULIERS.
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Antoine Gémis &lt;<A HREF="mailto:agemis@netuup.com">agemis@netuup.com</A>&gt;.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">EXEMPLES</A><DD>
+<DT><A HREF="#lbAG">VARIABLES D'ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAH">AVERTISSEMENTS</A><DD>
+<DT><A HREF="#lbAI">AUTEUR</A><DD>
+<DT><A HREF="#lbAJ">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:44 GMT, February 11, 2014
+</BODY>
+</HTML>

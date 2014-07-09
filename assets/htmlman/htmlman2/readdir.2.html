@@ -1,0 +1,172 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of READDIR</TITLE>
+</HEAD><BODY>
+<H1>READDIR</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+readdir - Lire une entrée de répertoire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/linux/dirent.h">linux/dirent.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/linux/unistd.h">linux/unistd.h</A>&gt;</B>
+
+<B>_syscall3(int, readdir, uint, fd, struct dirent *, dirp, uint, count);</B>
+
+<B>int readdir(unsigned int </B><I>fd</I><B>, struct dirent *</B><I>dirp</I><B>, unsigned int </B><I>count</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette fonction n'est normalement pas intéressante
+pour les programmeurs.
+Utiliser
+<B><A HREF="/cgi-bin/man/man2html?3+readdir">readdir</A></B>(3)
+
+pour les fonctionnalités conformes POSIX.
+Cette page documente l'interface de l'appel système bas-niveau,
+qui peut changer, et qui est remplacée par
+<B><A HREF="/cgi-bin/man/man2html?2+getdents">getdents</A></B>(2).
+
+<P>
+
+<B>readdir</B>
+
+lit une structure
+<I>dirent</I>
+
+depuis le répertoire pointé par
+<I>fd</I>
+
+et la place en mémoire dans la zone pointée par
+<I>dirp.</I>
+
+Le paramètre
+<I>count</I>
+
+est ignoré, au plus une structure dirent est lue.
+<P>
+
+La structure 
+<I>dirent</I>
+
+est déclarée comme suit :
+<P>
+
+<DL COMPACT><DT><DD>
+<PRE>
+struct dirent
+{
+    long d_ino;                 /* inode number */
+    off_t d_off;                /* offset to this <I>dirent</I> */
+    unsigned short d_reclen;    /* length of this <I>d_name</I> */
+    char d_name [NAME_MAX+1];   /* file name (null-terminated) */
+}
+</PRE>
+
+</DL>
+
+<P>
+
+<I>d_ino</I>
+
+est un numéro d'i-node.
+<I>d_off</I>
+
+est la distance entre le début du répertoire et cette
+structure
+<I>dirent.</I>
+
+<I>d_reclen</I>
+
+est la longueur
+<I>d_name,</I>
+
+sans compter le caractère nul final.
+<I>d_name</I>
+
+est le nom de fichier terminé par un caractère nul.
+<P>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>readdir</B>
+
+renvoie 1 s'il réussit, 0 en fin de répertoire, ou -1 s'il échoue, 
+auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+<I>fd</I>
+
+est invalide.
+<DT><B>EFAULT</B>
+
+<DD>
+L'argument pointe en dehors de l'espace d'adressage.
+<DT><B>EINVAL</B>
+
+<DD>
+Le buffer de résultat est trop petit.
+<DT><B>ENONENT</B>
+
+<DD>
+Répertoire inexistant.
+<DT><B>ENOTDIR</B>
+
+<DD>
+Le descripteur est associé à un fichier, pas à un répertoire.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Cet appel-système est spécifique à Linux.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+getdents">getdents</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+readdir">readdir</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:58 GMT, February 11, 2014
+</BODY>
+</HTML>

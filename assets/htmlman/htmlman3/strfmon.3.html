@@ -1,0 +1,196 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STRFMON</TITLE>
+</HEAD><BODY>
+<H1>STRFMON</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+strfmon - Convertir des valeurs monétaires en chaînes de caractères.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/monetary.h">monetary.h</A>&gt;</B>
+
+<B>ssize_t strfmon(char *</B><I>s</I><B>, size_t </B><I>max</I><B>, const char *</B><I>format</I><B>,</B>
+<B>...);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>strfmon()</B> met en forme les valeurs transmises, en
+fonction des spécification de la chaîne de <I>format</I> et place le résultat
+dans la chaîne de caractère <I>s</I> de taille <I>max</I>.
+<P>
+
+Les caractères ordinaires de <I>format</I> sont copié dans <I>s</I> sans
+conversion. Les indicateurs de conversion sont introduits par un caractère `%'.
+Immédiatement à sa suite il peut y avoir zéro ou plusieurs drapeau parmi
+les suivants&nbsp;:
+<DL COMPACT>
+<DT><B>=</B><I>f</I>
+
+<DD>
+Le caractère unique 
+<I>f</I>
+
+sert comme caractère numérique de remplissage (à utiliser avec une précision
+à gauche, voir plus bas).
+Sans indication, il s'agit du caractère espace.
+<DT><B>^</B>
+
+<DD>
+Ne pas utiliser les caractères de regroupement (par milliers par exemple) qui
+peuvent être définis pour la localisation en cours. Par défaut, le groupement est actif.
+<DT><B>(</B> or <B>+</B>
+
+<DD>
+L'attribut ( indique que les valeurs négatives doivent être encadrées entre parenthèses.
+L'attribut + indique que le signe doit être traité de la manière par défaut, c'est à dire
+les valeurs précédées de l'indication locale de signe. Par exemple rien pour les valeurs
+positives et &quot;-&quot; pour les négatives.
+<DT><B>!</B>
+
+<DD>
+Omettre le signe monétaire.
+<DT><B>-</B>
+
+<DD>
+Justifier tous les champs à gauche. Par défaut la justification est à droite.
+</DL>
+<P>
+
+Ensuite, peut venir un champ de largeur : un chiffre décimal indiquant la largeur
+minimale en octets. Par défaut elle vaut 0. Un résultat plus petit que cette largeur
+est complété avec des espaces (à gauche à moins que la justification soit à gauche). 
+<P>
+
+Ensuite, il peut y avoir une précision à gauche de la forme &quot;#&quot; suivi par une chaîne
+de chiffres décimaux. Si le nombre de chiffres à gauche de la virgule est inférieur à
+cette valeur, la représentation est complétée à gauche avec le caractère de remplissage.
+Les caractères de groupement ne sont pas comptés dans la largeur du champ.
+<P>
+
+Ensuite, il peut y avoir une précision à droite de la forme &quot;.&quot; suivi par une chaîne
+de chiffres décimaux. La valeur est arrondie à ce nombre de décimales
+avant d'être mise en forme.
+La valeur par défaut est précisée dans les champs
+<I>frac_digits</I>
+
+et
+<I>int_frac_digits</I>
+
+de la localisation en cours.
+Si la précision à droite est 0, aucun symbole décimal n'est affiché.
+(Le symbole décimal est déterminé par LC_MONETARY, et peut différer
+de celui indiqué dans LC_NUMERIC.)
+<P>
+
+Finalement, la spécification de conversion doit se terminer par un caractère de
+conversion. Les trois caractères disponibles sont :
+<DL COMPACT>
+<DT><B>%</B>
+
+<DD>
+(Dans ce cas, la spécification entière doit être exactement &quot;%%&quot;).
+Placer un caractère `%' dans la chaîne de résultat.
+<DT><B>i</B>
+
+<DD>
+Un argument de type double est converti en utilisant les formats internationaux
+des monnaies dans la localisation en cours.
+<DT><B>n</B>
+
+<DD>
+Un argument de type double est converti en utilisant les formats nationaux
+des monnaies dans la localisation en cours.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>strfmon</B>() renvoie le nombre de caractères placés dans la
+chaine <I>s</I>, sans compter le caractère NUL final, à condition
+que tout tienne dans le buffer fourni.
+Sinon, il rempli
+<I>errno</I>
+
+avec la valeur E2BIG et renvoie -1. Le contenu de la chaîne est indéfini dans ce cas.
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+L'appel
+<DL COMPACT><DT><DD>
+<PRE>
+strfmon(buf, sizeof(buf), &quot;[%^=*#6n] [%=*#6i]&quot;,
+        1234.567, 1234.567);
+</PRE>
+
+</DL>
+
+affiche
+<DL COMPACT><DT><DD>
+[ fl **1234,57] [ NLG  **1 234,57]
+</DL>
+
+Dans la localisation hollandaise (fl étant &quot;florijnen&quot; et NLG &quot;Netherlands Guilders&quot;).
+Le caractère de groupement est horrible car il prend autant de place qu'un chiffre, alors
+qu'il ne devrait occuper qu'un demi-espace,
+ce qui peut induire en erreur.
+Etonnament, le &quot;fl&quot; est précédé et suivi par un espace,
+et &quot;NLG&quot; est précédé par un espace et suivi par deux.
+Il s'agit peut-être d'un bogue dans le fichier de localisation. Les localisations
+italienne, australienne, suisse, et
+portugaise donnent
+<DL COMPACT><DT><DD>
+[ L. **1235] [ ITL  **1.235]
+<BR>
+
+[ $**1234.57] [ AUD **1,234.57]
+<BR>
+
+[Fr. **1234,57] [CHF  **1.234,57]
+<BR>
+
+[ **1234$57Esc] [ **1.234$57PTE ]
+</DL>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+setlocale">setlocale</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+sprintf">sprintf</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?7+locale">locale</A></B>(7)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2001-2003..
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">EXEMPLE</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:35 GMT, February 11, 2014
+</BODY>
+</HTML>

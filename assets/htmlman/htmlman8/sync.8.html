@@ -1,0 +1,160 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SYNC</TITLE>
+</HEAD><BODY>
+<H1>SYNC</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+sync - Synchroniser les données en mémoire et celles sur disque.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSYS</H2>
+
+<B>sync [--help] [--version]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La commande
+<B>sync</B>
+
+écrit sur le disque toutes les données dans les buffers en mémoire.
+Ceci peut inclure les superblocs modifiés, les i-noeuds modifiés,
+et les écritures différées. Ceci est implémenté dans le noyau, le
+programme
+<B>sync</B>
+
+ne fait rien d'autre que d'invoquer l'appel-système
+<B><A HREF="/cgi-bin/man/man2html?2+sync">sync</A></B>(2).
+
+<P>
+
+Le noyau garde des données en mémoire pour éviter d'avoir à faire trop de lectures
+et écritures (relativement lentes) sur le disque. Ceci améliore sensiblement les
+performances, mais si l'ordinateur se plante, des données peuvent être perdues, ou
+le système de fichiers peut être endommagé.
+L'application
+<B>sync</B>
+
+garantit que le contenu des buffers en mémoire soit écrit sur le disque.
+<P>
+
+Normalement,
+<B>sync</B>
+
+devrait être invoqué avant que le processeurs soit arrêté de manière
+anomale (par exemple avant de déclencher une panique du noyau lors
+du débogage d'un nouveau module du noyau). En général, la machine
+doit être arrêtée en employant les commandes
+<B><A HREF="/cgi-bin/man/man2html?8+shutdown">shutdown</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+reboot">reboot</A></B>(8),
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?8+halt">halt</A></B>(8),
+
+qui tentent de mettre le système dans un état calme, avant d'appeler
+<B><A HREF="/cgi-bin/man/man2html?2+sync">sync</A></B>(2).
+
+(Il existe plusieurs implémentations de ces commandes, consultez la
+documentation de votre distribution, car sur certains systèmes il ne
+faut pas appeler
+<B><A HREF="/cgi-bin/man/man2html?8+reboot">reboot</A></B>(8)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?8+halt">halt</A></B>(8)
+
+directement.)
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS STANDARDS GNU</H2>
+
+<DL COMPACT>
+<DT><B>--help</B>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et terminer normalement.
+<DT><B>--version</B>
+
+<DD>
+Afficher le numéro de version sur la sortie standard et terminer normalement.
+<DT><B>--</B>
+
+<DD>
+Terminer la liste des options.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+Les variables d'environnement LANG, LC_ALL, LC_CTYPE et LC_MESSAGES
+ont leur significations habituelles.
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX 1003.2
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Sous Linux,
+<B>sync</B>
+
+garantit seulement que l'écriture des blocs modifiés est programmée. Il
+peut y avoir un petit retard entre le retour de l'appel-système et l'écriture
+effective. Les commandes
+<B><A HREF="/cgi-bin/man/man2html?8+reboot">reboot</A></B>(8)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?8+halt">halt</A></B>(8)
+
+gèrent ceci en dormant quelques secondes après l'invocation de
+<B><A HREF="/cgi-bin/man/man2html?2+sync">sync</A></B>(2).
+
+<P>
+
+Cette page décrit la commande
+<B>sync</B>
+
+telle qu'elle est fournie dans le paquetage fileutils-4.0. D'autres
+versions peuvent être légèrement différentes.
+Les rapports de bogue peuvent être envoyés à <A HREF="mailto:fileutils-bugs@gnu.ai.mit.edu">fileutils-bugs@gnu.ai.mit.edu</A>.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+sync">sync</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?8+halt">halt</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+reboot">reboot</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+update">update</A></B>(8)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSYS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS STANDARDS GNU</A><DD>
+<DT><A HREF="#lbAF">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:00 GMT, February 11, 2014
+</BODY>
+</HTML>

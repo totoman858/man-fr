@@ -1,0 +1,582 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SCANF</TITLE>
+</HEAD><BODY>
+<H1>SCANF</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+scanf, fscanf, sscanf, vscanf, vsscanf, vfscanf - Entrées formatées.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+<B>int scanf (const char * </B><I>format</I><B>, ...</B><I>);</I>
+<BR>
+<B>int fscanf (FILE * </B><I>stream</I><B>, const char * </B><I>format</I><B>, ...</B><I>);</I>
+<BR>
+<B>int sscanf (const char * </B><I>str</I><B>, const char * </B><I>format</I><B>, ...</B><I>);</I>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdarg.h">stdarg.h</A>&gt;</B>
+<B>int vscanf (const char * </B><I>format</I><B>, va_list </B><I>ap</I><B>);</B>
+<BR>
+<B>int vsscanf (const char * </B><I>str</I><B>, const char * </B><I>format</I><B>, va_list </B><I>ap</I><B>);</B>
+<BR>
+<B>int vfscanf (FILE * </B><I>stream</I><B>, const char * </B><I>format</I><B>, va_list </B><I>ap</I><B>);</B>
+</PRE><A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les fonctions de la famille
+<B>scanf</B>
+
+analysent leurs entrées conformément au
+<I>format</I>
+
+décrit plus bas. Ce format peut contenir des
+<I>indicateurs de conversion</I>.
+
+Les résultats des conversions, s'il y en a, sont stockés dans des arguments
+<I>pointeurs</I>.
+
+La fonction
+<B>scanf</B>
+
+lit ses données depuis le flux d'entrée standard
+<I>stdin</I>,
+
+<B>fscanf</B>
+
+lit ses entrées depuis le flux pointé par
+<I>stream</I>,
+
+et
+<B>sscanf</B>
+
+lit ses entrées dans la chaîne de caractères pointée par
+<I>str</I>.
+
+<P>
+
+La fonction
+<B>vfscanf</B>
+
+est analogue à
+<B><A HREF="/cgi-bin/man/man2html?3+vfprintf">vfprintf</A></B>(3)
+
+et lit ses arguments depuis le flux pointé par
+<I>stream</I>
+
+en utilisant une liste variable d'arguments pointeurs, voir
+<B><A HREF="/cgi-bin/man/man2html?3+stdarg">stdarg</A></B>(3).
+
+La fonction
+<B>vscanf</B>
+
+examine l'entrée standard en utilisant une liste variable 
+d'arguments pointeurs et la fonction
+<B>vsscanf</B>
+
+examine une chaîne. Elles sont respectivement analogues aux fonctions
+<B>vprintf</B>
+
+et
+<B>vsprintf</B>.
+
+<P>
+
+Les arguments
+<I>pointeurs</I>
+
+successifs doivent correspondre correctement aux indicateurs de conversion
+fournis (voir néanmoins l'attribut '*' plus bas).
+Toutes les conversions sont introduites par le caractère
+<B>%</B>
+
+(symbole pourcent).
+La chaîne
+<I>format</I>
+
+peut également contenir d'autres caractères. Les blancs (comme les espaces,
+les tabulations ou les retours chariots) dans la chaîne
+<I>format</I>
+
+correspondent à un nombre quelconque de blancs (et même aucun) dans la
+chaine d'entrée.
+Tous les autres caractères ne peuvent correspondre qu'a eux-même.
+L'examen de l'entrée s'arrête dès qu'un caractère d'entrée ne correspond
+pas à un caractère du format.
+L'examen s'arrête également quand une conversion d'entrée est impossible
+(voir ci-dessous).
+<A NAME="lbAE">&nbsp;</A>
+<H2>CONVERSIONS</H2>
+
+A la suite du caractère
+<B>%</B>
+
+introduisant une conversion, il peut y avoir un nombre quelconque de
+caractères
+<I>attributs</I>
+
+de la liste suivante :
+<DL COMPACT>
+<DT><B>*</B>
+
+<DD>
+Ne pas stocker le résultat. La conversion est bien effectuée comme d'habitude,
+mais le resultat est éliminé au lieu d'être memorisé dans un pointeur.
+<DT><B>a </B>
+
+<DD>
+(GlibC) Indique que la conversion sera de type
+<B>s</B>,
+
+la mémoire nécessaire pour la chaine sera allouée avec <B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A>(3)</B> et
+le pointeur sera assigné à la variable de type
+<I>char</I>
+
+qui n'a pas besoin d'être initialisée auparavant.
+Cet attribut n'existe pas en
+<I>C ANSI</I>.
+
+<DT><B>a</B>
+
+<DD>
+(C99) Équivalent à
+<B>f.</B>
+
+<DT><B>h</B>
+
+<DD>
+Indique que la conversion sera de type
+<B>dioux</B>
+
+ou
+<B>n</B>
+
+et que le pointeur suivant est un pointeur sur un
+<I>short  int</I>
+
+(plutôt que sur un
+<I>int</I>).
+
+<DT><B>l</B>
+
+<DD>
+Indique que la conversion sera de type
+<B>dioux</B>
+
+ou
+<B>n</B>
+
+et que le pointeur suivant est un pointeur sur un
+<I>long  int</I>
+
+(plutôt que sur un
+<I>int</I>),
+
+ou que la conversion sera de type
+<B>efg</B>
+
+et que le pointeur suivant est un pointeur sur un
+<I>double</I>
+
+(plutôt que sur un
+<I>float</I>).
+
+Indiquer deux attributs
+<B>l</B>
+
+successifs est équivalent à indiquer l'attribut
+<B>L</B>.
+
+<DT><B>L</B>
+
+<DD>
+Indique que la conversion sera de type
+<B>efg</B>
+
+et que le pointeur suivant est un pointeur sur un
+<I>long double</I>
+
+ou que la conversion sera de type
+<B>dioux</B>
+
+et que le pointeur suivant est un pointeur sur un
+<I>long long</I>.
+
+(ce type n'existe pas en
+<I>C ANSI</I>.
+
+Un programme l'utilisant ne sera pas portable sur toutes 
+les machines).
+<DT><B>q</B>
+
+<DD>
+est équivalent à L.
+Cet attribut n'existe pas en
+<I>C ANSI</I>.
+
+</DL>
+<P>
+
+En plus de ces attributs peut se trouver un champ optionnel de longueur
+maximale, exprimée sous forme d'entier, entre le caractère
+<B>%</B>
+
+et l'indicateur de conversion.
+Si aucune longueur n'est donnée, une valeur infinie est utilisée par défaut
+(avec une exception, voir plus bas).
+Autrement, la conversion examinera au plus le nombre de caractères indiqués.
+Avant que les conversions ne commencent, la plupart d'entre elles éliminent
+les blancs. Ces espaces blancs ne sont pas comptés dans le champ de largeur
+maximale.
+<P>
+
+Les conversions suivantes sont disponibles&nbsp;:
+<DL COMPACT>
+<DT><B>%</B>
+
+<DD>
+Correspond à un caractère  `%'.  Ceci signifie qu'un indicateur `%%' 
+dans la chaîne de format correspond à un seul caractere `%' dans la
+chaine d'entrée. Aucune conversion, et aucune assignation n'a lieu.
+<DT><B>d</B>
+
+<DD>
+Correspond à un entier décimal éventuellement signé, le pointeur
+correspondant doit être du type
+<I>int *</I>.
+
+<DT><B>D</B>
+
+<DD>
+Equivalent à
+<B>ld</B>,
+
+utilisé uniquement pour compatibilité avec des versions précédentes.
+(Et seulement dans libc4. Dans libc5 et glibc le %D est ignoré silencieusement,
+ce qui conduit d'anciens programmes à échouer mystérieusement).
+<DT><B>i</B>
+
+<DD>
+correspond à un entier éventuellement signé. Le pointeur suivant doit être
+du type
+<I>int *.</I>
+
+L'entier est en base 16 (héxadécimal) s'il commence par `0x' ou `0X',
+en base 8 (octal) s'il commence par un `0', 
+et en base 10 sinon.  Seuls les caractères correspondants à la base
+concernée sont utilisés.
+<DT><B>o</B>
+
+<DD>
+Correspond à un entier octal non signé. Le pointeur correspondant doit être
+du type
+<I>unsigned int *</I>.
+
+<DT><B>u</B>
+
+<DD>
+Correspond à un entier décimal non signé. Le pointeur suivant doit être 
+du type
+<I>unsigned int *</I>.
+
+<DT><B>x</B>
+
+<DD>
+Correspond à un entier héxadécimal non signé. Le pointeur suivant doit
+être du type
+<I>unsigned int *</I>.
+
+<DT><B>X</B>
+
+<DD>
+Equivalent à
+<B>x </B>
+
+<DT><B>f</B>
+
+<DD>
+Correspond à un nombre réel éventuellement signé. Le pointeur correspondant
+doit être du type
+<I>float *</I>.
+
+<DT><B>e</B>
+
+<DD>
+Equivalent à
+<B>f</B>.
+
+<DT><B>g</B>
+
+<DD>
+Equivalent à
+<B>f</B>.
+
+<DT><B>E</B>
+
+<DD>
+Equivalent à
+<B>f</B>
+
+<DT><B>s</B>
+
+<DD>
+Correspond à une séquence de caractères différents des caractères blancs. Le
+pointeur correspondant doit être du type
+<I>char *,</I>
+
+et la chaine doit être assez large pour accueillir toute la séquence, ainsi
+que le caractère
+<B>NUL</B>
+
+final. La conversion s'arrête au premier caractère blanc, ou à la longueur
+maximale du champ.
+<DT><B>c</B>
+
+<DD>
+Correspond à une séquence de
+<I>width</I>
+
+caractères (par défaut 1). Le pointeur associé doit être du type
+<I>char *,</I>
+
+et il doit y avoir suffisament de place dans la chaîne pour tous les
+caracteres. Aucun caractère
+<B>NUL</B>
+
+final n'est ajouté.
+Les caractères blancs de début ne sont pas supprimés. Si on veut les éliminer,
+il faut utiliser un espace dans le format.
+<DT><B>[</B>
+
+<DD>
+Correspond à une séquence non vide de caractères appartenant à un ensemble
+donné. Le pointeur correspondant doit être du type
+<I>char *</I>,
+
+et il doit y avoir suffisament de place dans le tableau de caractères pour
+accueillir la chaîne ainsi qu'un caractère
+<B>NUL</B>
+
+final. Les caractères blancs du début ne sont pas supprimés. La chaîne est
+constituées de caractères inclus ou exclus d'un ensemble donné. L'ensemble
+est composé des caractères compris entre les deux crochets
+<B>[</B>
+
+et
+<B>]</B>.
+
+L'ensemble
+<I>exclut</I>
+
+ces caractères si le premier après le crochet ouvrant est un accent
+circonflexe
+<B>^</B>.
+
+Pour inclure un crochet fermant dans l'ensemble, il suffit de le placer
+en première position après le crochet ouvrant, ou l'accent circonflexe ;
+à tout autre emplacement il servira à terminer l'ensemble.
+Le caractère tiret
+<B>-</B>
+
+a également une signification particulière. Quand il est placé entre deux autres
+caractères, il ajoute à l'ensemble les caractères intermédiaires. Pour inclure
+un tiret dans l'ensemble, il faut le placer en dernière position avant le
+crochet fermant.Par exemple, `[^]0-9-]' correspond à l'ensemble
+`Tout sauf le crochet fermant, les chiffres de 0 à 9, et le tiret'.
+La chaine se termine dès l'occurence d'un caractère exclus (ou inclus s'il y
+à un accent circonflexe ) de l'ensemble, ou dès qu'on atteint la longueur
+maximale du champ.
+<DT><B>p</B>
+
+<DD>
+Correspond à une valeur de pointeur (comme affichée par `%p' dans
+<B><A HREF="/cgi-bin/man/man2html?3+printf">printf</A></B>(3).
+
+Le pointeur correspondant doit être du type
+<I>void *</I>.
+
+<DT><B>n</B>
+
+<DD>
+Aucune lecture n'est faite. Le nombre de caractères déjà lus est stocké
+dans le pointeur correspondant, qui doit être de type
+<I>int *.</I>
+
+Ce n'est
+<I>pas</I>
+
+une conversion, mais le stockage peut quand même être supprimé avec un attribut
+<B>*</B>.
+
+Le standard C indique : `L'exécution d'une directive %n n'incrémente pas
+le compteur d'assignations renvoyé à la fin de l'exécution'. Mais il semble
+qu'il y ait des contradictions sur ce point. Il est probablement sage de
+ne pas faire de suppositions sur l'effet de la conversion %n sur la valeur
+renvoyée.
+</DL>
+<P>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Ces fonctions renvoient le nombre d'éléments d'entrées correctement assignés.
+Ce nombre peut être plus petit que le nombre d'élements attendus, et même
+être nul, s'il y a une erreur de mise en correspondance.
+La valeur zéro indique qu'aucune conversion n'a été faite bien que des
+caractères étaient disponibles en entrée.
+Typiquement c'est un caractère d'entrée invalide qui en est la cause, par
+exemple un caractère alphabétique dans une conversion `%d'.
+La valeur
+<B>EOF</B>
+
+est renvoyée si une erreur d'entrée a eu lieu avant toute conversion, par
+exemple une fin de fichier. Si une erreur fin-de-fichier se produit après
+que les conversions aient commencé, le nombre de conversions réussies
+sera renvoyé.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+strtol">strtol</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strtoul">strtoul</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strtod">strtod</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getc">getc</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+printf">printf</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Les fonctions
+<B>fscanf</B>,
+
+<B>scanf</B>,
+
+et
+<B>sscanf</B>
+
+sont conformes à ANSI X3.159-1989 (``C ANSI'').
+<P>
+
+L'attribut
+<B>q</B>
+
+est une notation
+<I>BSD 4.4</I>
+
+pour
+<I>long long</I>,
+
+alors que
+<B>ll</B>
+
+ou l'utilisation de
+<B>L</B>
+
+dans les conversions entières sont des notations GNU.
+<P>
+
+Les versions Linux de ces fonctions sont basées sur la bibliothèque
+<I>libio GNU</I>.
+
+Jetez un oeil sur la documentation
+<I>info</I>
+
+de la
+<I>libc GNU (glibc-1.08)</I>
+
+pour une description complète. 
+<A NAME="lbAI">&nbsp;</A>
+<H2>BOGUES </H2>
+
+Toutes ces fonctions sont totalement conformes à ANSI X3.159-1989, mais
+lui ajoutent les attributs
+<B>q</B>
+
+et
+<B>a</B>
+
+ainsi que des comportements supplémentaires des attributs
+<B>L</B>
+
+et
+<B>l</B>.
+
+Ce derniers doivent être considérés comme des bugs, car ils modifient le
+comportement d'attributs définis dans ANSI X3.159-1989.
+<P>
+
+Certaines combinaisons d'attributs 
+n'ont pas de sens en
+<I>C ANSI</I>
+
+(par exemple
+<B>%Ld</B>).
+
+Bien qu'elles aient un comportement bien défini sous Linux, ce n'est
+peut être pas le cas sur d'autres architectures.
+Il vaut donc mieux n'utiliser que des attributs définis en
+<I>C ANSI</I>,
+
+par exemple, utilisez
+<B>q</B>
+
+à la place de
+<B>L</B>
+
+avec les conversions
+<B>diouxX</B>
+
+ou
+<B>ll</B>.
+
+<P>
+
+L'utilisation
+<B>q</B>
+
+n'est pas la même sous
+<I>BSD 4.4</I>,
+
+car il peut être utilisé avec des conversions de réels de manière équivalente à
+<B>L</B>.
+
+[NDT] La conversion <B>%s</B> devrait toujours être accompagnée d'une longueur maximale
+de chaîne de caractères. En effet, il existe un risque de débordement de buffer, qui
+peut conduire à un trou de sécurité important dans un programme Set-UID ou Set-GID.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">CONVERSIONS</A><DD>
+<DT><A HREF="#lbAF">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">BOGUES </A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:20 GMT, February 11, 2014
+</BODY>
+</HTML>

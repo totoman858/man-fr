@@ -1,0 +1,78 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of INTRO</TITLE>
+</HEAD><BODY>
+<H1>INTRO</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+intro - Introductions aux fonctions de bibliothèque.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette section décrit toutes les fonctions de bibliothèque, à l'exception
+des fonctions incluses dans la section 2, implémentant des appels systèmes.
+Il y a plusieurs groupes de fonctions, qui peuvent être identifiés par
+une lettre ajoutée au numéro de section :
+<DL COMPACT>
+<DT>(3C)<DD>
+Ces fonctions, celles de la section 2 et celles du chapitre 3S sont
+contenues dans la bibliotheque C libc, utilisée par
+<B><A HREF="/cgi-bin/man/man2html?1+cc">cc</A></B>(1)
+
+par défaut.
+<DT>(3S)<DD>
+Ces fonctions correspondent à la bibliothèque
+<B><A HREF="/cgi-bin/man/man2html?3S+stdio">stdio</A></B>(3S).
+
+Elles sont contenues dans la bibliothèque libc standard.
+<DT>(3M)<DD>
+Ces fonctions sont contenues dans la bibliothèque arithmétique libm,
+elles sont utilisées par défaut par le compilateur FORTRAN
+<B><A HREF="/cgi-bin/man/man2html?1+f77">f77</A></B>(1),
+
+mais pas par le compilateur C
+<B><A HREF="/cgi-bin/man/man2html?1+cc">cc</A></B>(1),
+
+qui nécessite l'option <I>-lm</I>.
+<DT>(3F)<DD>
+Ces fonctions sont contenues dans la bibliothèque FORTRAN libF77.
+Il n'y a pas besoin d'option spéciales de compilation pour les utiliser.
+<DT>(3X)<DD>
+Diverses bibliothèques spécifiques. Les pages de manuel documentant ces 
+fonctions indiquent le nom des bibliothèques.
+<DT>(3THR)<DD>
+Ces fonctions sont spécifiques aux threads (tels que décrits par la norme
+POSIX). Ces fonctions sont fournies par la libpthread de la GLibC.
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Les noms des auteurs, et les conditions de copyright se trouvent dans
+les en-têtes des pages de manuel. Ils peuvent être différents de page en
+page&nbsp;!
+<A NAME="lbAE">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">AUTEURS</A><DD>
+<DT><A HREF="#lbAE">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:31 GMT, February 11, 2014
+</BODY>
+</HTML>

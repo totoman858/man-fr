@@ -1,0 +1,116 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GSIGNAL</TITLE>
+</HEAD><BODY>
+<H1>GSIGNAL</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+gsignal, ssignal - Gestion de signaux. 
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/signal.h">signal.h</A>&gt;</B>
+
+<B>typedef void (*sighandler_t)(int);</B>
+
+<B>int gsignal(</B><I>signum</I><B>);</B>
+
+<B>sighandler_t ssignal(int </B><I>signum</I><B>, sighandler_t </B><I>action</I><B>);</B>
+</PRE><A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+N'utilisez pas ces fonctions sous Linux.
+À cause d'une ancienne méprise, elles sont en réalité des synonymes de
+<I>raise()</I>
+
+et
+<I>signal()</I>,
+
+respectivement.
+<P>
+
+Ailleurs, sur des système SysV, ces fonctions implémentent un gestion des
+signaux entièrement indépendante des appels-systèmes classiques
+signal et kill. La fonction
+<B>ssignal()</B>
+
+défini l'action à entreprendre quand le signal
+numéro
+<I>signum</I>
+
+et envoyé au processus à l'aide de la fonction
+<B>gsignal()</B>,
+
+et renvoie l'action précédente, comme SIG_DFL.
+La fonction
+<B>gsignal()</B>
+
+agit ainsi&nbsp;: si aucune action (ou SIG_DFL) est indiqué pour
+<I>signum</I>,
+
+alors elle ne fait rien et renvoie zéro.
+Si l'action SIG_IGN est indiqué pour
+<I>signum</I>,
+
+alors elles ne fait rien et renvoie 1.
+Sinon, elle replace l'action à  SIG_DFL et appelle
+le gestionnaire concerné, avec l'argument
+<I>signum</I>,
+
+et renvoie la valeur de retour de cette fonction.
+L'intervalle de valeurs possibles pour
+<I>signum</I>
+
+varie (souvent 1-15 ou 1-17).
+<A NAME="lbAE">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID2, XPG2.
+Ces fonctions sont disponibles sous AIX, DG-UX, HPUX, SCO, Solaris, Tru64.
+Elles sont considérés obsolètes sur la plupart de ces systèmes et sont
+erronées avec les bibliothèques libc Linux et GlibC.
+Certains systèmes ont
+<I>gsignal_r()</I>
+
+et
+<I>ssignal_r()</I>.
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+kill">kill</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+signal">signal</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+raise">raise</A></B>(3)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:22 GMT, February 11, 2014
+</BODY>
+</HTML>

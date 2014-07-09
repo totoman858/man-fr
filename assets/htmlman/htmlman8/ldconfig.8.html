@@ -1,0 +1,240 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LDCONFIG</TITLE>
+</HEAD><BODY>
+<H1>LDCONFIG</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+/sbin/ldconfig - Configuration de l'éditeur de liens dynamiques.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>/sbin/ldconfig</B>
+
+[
+<B>-nNvXV</B>
+
+]
+[
+<B>-f&nbsp;configuration</B>
+
+]
+[
+<B>-C&nbsp;cache</B>
+
+]
+[
+<B>-r&nbsp;racine</B>
+
+]
+<I>répertoire</I>&nbsp;...
+
+
+<P>
+
+
+<B>/sbin/ldconfig</B>
+
+<B>-l</B>
+
+[
+<B>-v</B>
+
+]
+<I>bibliothèque</I>&nbsp;...
+
+
+<P>
+
+
+<B>/sbin/ldconfig</B>
+
+<B>-p</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>ldconfig</B>
+
+crée les liens nécessaires et met en cache les bibliothèques partagées les
+plus récentes trouvées dans les répertoires indiqués sur la ligne de
+commande, dans le fichier
+<I>/etc/ld.so.conf</I>,
+
+et dans les répertoires sûrs
+(<I>/lib</I>
+
+et
+<I>/usr/lib</I>).
+
+Le cache est utilisé par le chargeur / éditeur de liens
+<I>ld.so</I>
+
+ou
+<I>ld-linux.so</I>.
+
+<B>ldconfig</B>
+
+vérifie les en-têtes et noms des fichiers des bibliothèques qu'il trouve
+pour déterminer les versions et mettre à jour les liens.
+<P>
+
+<B>ldconfig</B>
+
+essaye de déduire le type bibliothèque ELF (LibC5 ou LibC6/GlibC) en se
+basant sur la bibliothèque C utilisée pour les liens de la bibliothèque.
+Ainsi, lorsqu'on crée une bibliothèque dynamique, il est sage d'indiquer
+explicitement la bibliothèque C utilisée (en employant l'option -lc).
+<P>
+
+Certaines bibliothèques existantes ne contiennent pas assez d'information
+pour déduire leur type. Ainsi, le format du fichier
+<I>/etc/ld.so.conf</I>
+
+permet d'indiquer le type attendu. Cela ne doit servir
+<B>que</B>
+
+pour les bibliothèques ELF qui ne fonctionnent pas sinon. Le format est
+&quot;dirname=TYPE&quot;, où TYPE peut être libc4, libc5 ou libc6. (Cette syntaxe
+marche aussi sur la ligne de commande). Les espaces ne sont
+<B>pas</B>
+
+autorisés. Voir aussi l'option
+<B>-p</B>.
+
+Normalement
+<B>ldconfig</B>
+
+doit être lancé par le Super-Utilisateur, car il peut avoir besoin de
+l'autorisation d'écriture sur certains fichiers appartenant à root.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-v</B>
+
+<DD>
+Mode volubile.
+Affiche le numéro de version actuelle, le nom de chaque répertoire au fur et
+à mesure du parcours, et les liens qui sont créés.
+Peut surcharger le mode silencieux.
+<DT><B>-n</B>
+
+<DD>
+Ne traiter que les répertoires indiqués sur la ligne de commande.
+Ne pas s'occuper des répertoires sûrs
+(<I>/lib</I>
+
+et
+<I>/usr/lib</I>)
+
+ni de ceux indiqués dans
+<I>/etc/ld.so.conf</I>.
+
+Nécessité l'option
+<B>-N</B>.
+
+<DT><B>-N</B>
+
+<DD>
+Ne pas reconstruire le cache.
+Si l'option
+<B>-X</B>
+
+n'est pas indiquée, les liens sont quand même mis à jour.
+<DT><B>-X</B>
+
+<DD>
+Ne pas mettre à jour les liens.
+Si l'option
+<B>-N</B>
+
+n'est pas indiquée, le cache est quand même reconstruit.
+<DT><B>-f configuration</B>
+
+<DD>
+Utiliser le fichier de
+<B>configuration</B>
+
+indiqué plutôt que
+<I>/etc/ld.so.conf</I>.
+
+<DT><B>-C cache</B>
+
+<DD>
+Utiliser le
+<B>cache</B>
+
+indiqué plutôt que
+<I>/etc/ld.so.cache</I>.
+
+<DT><B>-r racine</B>
+
+<DD>
+Se déplacer vers, et utiliser le répertoire
+<B>racine</B>
+
+indiqué.
+<DT><B>-l</B>
+
+<DD>
+Mode bibliothèque. Lier manuellement les bibliothèques individuelles.
+Destiné seulement aux experts.
+<DT><B>-p</B>
+
+<DD>
+Afficher la liste des répertoires et des bibliothèques potentielles
+enregistrés dans le cache actuel.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+
+<DL COMPACT>
+<DT><B>/lib/ld.so</B>
+
+<DD>
+chargeur/éditeur de liens dynamiques
+<DT><B>/etc/ld.so.conf</B>
+
+<DD>
+liste de répertoires où chercher les bibliothèques, séparés par des blancs,
+des virgules ou des deux-points.
+<DT><B>/etc/ld.so.cache</B>
+
+<DD>
+liste ordonnée des bibliothèques trouvées dans les répertoires
+indiqués dans
+<B>/etc/ld.so.conf</B>.
+
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,246 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MSGCTL</TITLE>
+</HEAD><BODY>
+<H1>MSGCTL</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+msgctl - Contrôler les messages.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/ipc.h">sys/ipc.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/msg.h">sys/msg.h</A>&gt;</B>
+</PRE>
+
+<P>
+<B>int msgctl ( int </B><I>msqid</I><B>,</B>
+
+<B>int  </B><I>cmd</I><B>,</B>
+
+<B>struct msqid_ds *</B><I>buf</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette fonction permet d'effectuer l'opération 
+indiquée par
+<I>cmd</I>
+
+sur la file de messages ayant l'identificateur
+<I>msqid.</I>
+
+Les valeurs possibles de
+<I>cmd</I>
+
+sont&nbsp;:
+<DL COMPACT>
+<DT><B>IPC_STAT</B>
+
+<DD>
+Copier les informations depuis la structure représentant
+la file de messages dans la structure pointée par
+<I>buf</I>.
+
+L'appelant doit avoir des privilèges d'accès en lecture sur
+la file de messages.
+<DT><B>IPC_SET</B>
+
+<DD>
+Écrire la valeurs de certains champs de la structure
+<B>msqid_ds</B>
+
+pointée par
+<I>buf</I>
+
+dans la structure représentant la file de messages, 
+en mettant à jour le champ
+<B>msg_ctime</B>.
+
+Les champs suivant de la structure peuvent être mis à jour&nbsp;:
+<PRE>
+
+<B>        msg_perm.uid
+        msg_perm.gid
+        msg_perm.mode </B>/* 9 bits poids faibles */
+        msg_qbytes
+</PRE>
+
+
+<P>
+L'UID effectif du processus appelant doit être soit 
+celui du Super-User
+soit celui du créateur ou du propriétaire 
+de la file de messages.
+Seul le Super-User peut augmenter la valeur de
+<B>msg_qbytes</B>
+
+au-dessus de la constante système
+<B>MSGMNB.</B>
+
+<DT><B>IPC_RMID</B>
+
+<DD>
+Effacer immédiatement la file de messages et ses structures
+de données, en réveillant tous les processus écrivains et
+lecteurs en attente. Ils obtiendront un code d'erreur, et
+<B>errno</B>
+
+aura la valeur
+<B>EIDRM.</B>
+
+L'UID effectif du processus appelant doit être soit celui 
+du Super-User
+soit celui du créateur ou du propriétaire de la file de messages.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>msgctl</B>
+
+renvoie 0 s'il réussit, ou -1 s'il échoue, auquel
+cas
+<B>errno</B>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EACCES</B>
+
+<DD>
+L'argument
+<I>cmd</I>
+
+réclame l'opération
+<B>IPC_STAT</B>
+
+mais le processus appelant n'a pas d'accès en lecture sur la
+file de messages
+<I>msqid.</I>
+
+<DT><B>EFAULT</B>
+
+<DD>
+L'argument
+<I>cmd</I>
+
+réclame l'opération
+<B>IPC_SET</B>
+
+ou
+<B>IPC_STAT</B>
+
+mais
+<I>buf</I>
+
+pointe en dehors de l'espace d'adressage accessible.
+<DT><B>EIDRM</B>
+
+<DD>
+La file de messages a déjà été supprimée.
+<DT><B>EINVAL</B>
+
+<DD>
+<I>cmd</I>
+
+ou
+<I>msqid</I>
+
+ont une valeur illégale.
+<DT><B>EPERM</B>
+
+<DD>
+L'argument
+<I>cmd</I>
+
+réclame l'opération
+<B>IPC_SET</B>
+
+ou
+<B>IPC_RMID</B>
+
+mais l'UID effectif du processus appelant n'a pas
+assez de privilèges pour réaliser la commande.
+C'est aussi le cas d'un processus non Super-User
+tentant d'augmenter
+<B>msg_qbytes</B>
+
+au-dessus de la valeur
+<B>MSGMNB</B>.
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les appels
+<B>IPC_INFO</B>,
+
+<B>MSG_STAT</B>
+
+et
+<B>MSG_INFO</B>
+
+sont utilisés par le programme
+<B><A HREF="/cgi-bin/man/man2html?8+ipcs">ipcs</A></B>(8)
+
+pour fournir des informations sur les ressources allouées
+dans le futur, ceci peut être modifié si besoin, ou remplacé par
+une interface avec le système de fichiers proc.
+<P>
+
+Divers champs de la structure <I>struct msqid_ds</I> étaient des shorts sous
+Linux 2.2 et sont devenus longs sous Linux 2.4. Pour en profiter, une
+recompilation avec la GlibC 2.1.91 ou ultérieure devrait suffire.
+(Le noyau distingue les appels anciens et nouveaux par un drapeau IPC_64 dans
+<I>cmd</I>).
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID. SVID ne documente pas la condition d'erreur EIDRM.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+ipc">ipc</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgget">msgget</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgsnd">msgsnd</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgrcv">msgrcv</A></B>(2).
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:00 GMT, February 11, 2014
+</BODY>
+</HTML>

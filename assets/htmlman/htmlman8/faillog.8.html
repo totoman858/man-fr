@@ -1,0 +1,134 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FAILLOG</TITLE>
+</HEAD><BODY>
+<H1>FAILLOG</H1>
+Section: Maintenance Commands (8)<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<P>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+faillog - examine le fichier faillog et fixe les limites d'échec de connexion
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<DL COMPACT>
+<DT><B>faillog</B> [<B>-u</B> <I>nom-connexion</I>] [<B>-a</B>] [<B>-t</B> <I>jours</I>]<DD>
+[<B>-m</B> <I>max</I>] [<B>-pr</B>] 
+<P>
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>faillog</B> affiche le contenu du journal des échecs de connexion
+<I>/var/log/faillog</I>, et maintient le décompte et les limites de ces échecs.
+L'ordre des arguments passés à <B>faillog</B> est important.
+Chaque argument est traité dans l'ordre donné.
+<P>
+
+L'option <B>-p</B> permet d'afficher les entrées d'échec dans l'ordre des
+identifiants utilisateurs.
+L'option <B>-u </B><I>nom-connexion</I> permet d'afficher uniquement les
+enregistrements d'échecs relatifs à <I>nom-connexion</I>.
+L'option <B>-t </B><I>jours</I> permet d'afficher uniquement les enregistrements
+d'échec survenus depuis moins de <I>jours</I> jours.
+L'option <B>-t</B> annulle l'action de l'option <B>-u</B>.
+L'option <B>-a</B> permet de sélectionner tous les utilisateurs.
+Lorsqu'elle est utilisée avec l'option <B>-p</B>, cette option sélectionne tous
+les utilisateurs qui ont connu au moins un échec de connexion.
+Elle n'a aucun sens si elle est utilisée avec l'option <B>-r</B>.
+<P>
+
+L'option <B>-r</B> permet de remettre à zéro le compteur des échecs de connexion.
+Cette option nécessite que <I>/var/log/faillog</I> soit accessible en écriture.
+Si <B>-u </B><I>nom-connexion</I> est également spécifiée, seul le compteur d'échec
+de <I>nom-connexion</I> sera remis à zéro.
+<P>
+
+L'option <B>-m</B> permet de configurer le nombre maximum d'échecs de connexion
+avant que le compte ne soit désactivé.
+Cette option nécessite que <I>/var/log/faillog</I> soit accessible en écriture.
+L'option <B>-m </B><I>max</I> permet de configurer à <I>max</I> échecs le nombre
+maximum d'échecs de connexion pour l'ensemble des utilisateurs.
+Elle peut être modifiée par <B>-u </B><I>nom-connexion</I> pour limiter cette
+fonction à l'utilisateur <I>nom-connexion</I>.
+Choisir une limite de valeur <I>max</I> égale à 0 aura pour effet de ne fixer
+aucune limite d'échecs de connexion.
+La limite d'échecs de connexion pour l'utilisateur <B>root</B> devrait toujours
+être de 0 afin de s'affranchir de tout risque d'attaque déni de service contre
+le système.
+<P>
+
+Les options peuvent être combinées de n'importe quelle façon.
+Chacune des options <B>-p</B>, <B>-r</B>, et <B>-m</B> est immédiatement
+exécutée en utilisant les paramètres des options <B>-u</B> ou <B>-t</B> si elles
+sont utilisées.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>MISE EN GARDE</H2>
+
+<B>faillog</B> affiche seulement les utilisateurs qui n'ont pas réussi à se
+connecter depuis leur dernier échec de connexion.
+Pour afficher un utilisateur qui s'est connecté avec succès depuis son dernier
+échec, vous devez explicitement spécifier l'utilisateur avec l'option <B>-u</B>,
+ou bien afficher tous les utilisateurs avec l'option <B>-a</B>.
+<P>
+
+Sur certaines distributions, le fichier /var/log est remplacé par /var/adm ou /usr/adm.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/var/log/faillog - fichier de journalisation des échecs de connexion
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+login">login</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?5+faillog">faillog</A></B>(5)
+
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Julianne Frances Haugh (<A HREF="mailto:jockgrrl@ix.netcom.com">jockgrrl@ix.netcom.com</A>)
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction, réalisée par Alain Portal &lt;aportal AT univ-montp2 DOT fr&gt; le Novembre 2004.
+<P>
+L'équipe de traduction a fait le maximum pour réaliser une adaptation française de qualité.
+<P>
+La version anglaise la plus à jour de ce document est toujours consultable via la commande&nbsp;: LANGUAGE=en man xxxx
+<P>
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute erreur dans de cette page de manuel.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">MISE EN GARDE</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">AUTEUR</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:03 GMT, February 11, 2014
+</BODY>
+</HTML>

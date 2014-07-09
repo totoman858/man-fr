@@ -1,0 +1,107 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of NICE</TITLE>
+</HEAD><BODY>
+<H1>NICE</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+nice - Exécuter un programme avec une priorité d'ordonnancement modifiée.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>nice</B>
+
+[-n ajustement] [-ajustement] [--adjustment=ajustement]
+[--help] [--version] [commande [arg...]]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>nice</B>.
+
+<P>
+Remarquez que la plupart des shells ont une commande intégrée
+ayant le même nom et des fonctionnalités similaires.
+<P>
+
+Si aucun argument n'est fourni,
+<B>nice</B>
+
+affiche la priorité d'ordonnancement en cours, dont cette commande a hérité au
+lancement.
+<P>
+Sinon,
+<B>nice</B>
+
+exécute la
+<I>commande</I>
+
+désirée en ajustant la priorité d'ordonnancement.
+<P>
+Si aucun
+<I>ajustement</I>
+
+n'est précisé, la valeur de priorité de la commande est augmentée de 10.
+<P>
+[NDT] : `nice' signifie `gentil', la valeur de priorité considérée est une
+valeur de gentillesse. Plus celle-ci est élevée, plus le processus est
+gentil vis à vis des autres, leur laissant un accès plus fréquent à
+l'ordonnanceur.
+<P>
+Le Super-User peut indiquer un ajustement négatif. 
+<P>
+La priorité peut être
+ajustée avec
+<B>nice</B>
+
+dans l'intervalle -20 (le plus prioritaire) à 19 (le moins prioritaire).
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><I>-n ajustement, -ajustement, --adjustment=ajustement</I>
+
+<DD>
+Ajouter
+<I>ajustement</I>
+
+à la priorité de la commande, plutôt que la valeur 10 par défaut.
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et se terminer normalement.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et se terminer normalement.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:45 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,256 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SIGALTSTACK</TITLE>
+</HEAD><BODY>
+<H1>SIGALTSTACK</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+sigaltstack -  Consulter ou fixer la pile de signal.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/signal.h">signal.h</A>&gt;</B>
+
+<P>
+<B>int sigaltstack(const stack_t *</B><I>ss</I><B>, stack_t *</B><I>oss</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>sigaltstack</B> permet à un processus de définir une nouvelle
+pile spécifique pour les gestionnaires de signaux et/ou de récupérer
+l'état d'une pile spécifique de signal déjà existante. 
+Une pile spécifique de signal est utilisée durant l'exécution d'un 
+gestionnaire de signal si la mise en place de ce gestionnaire ( voir
+<B><A HREF="/cgi-bin/man/man2html?2+sigaction">sigaction</A></B>(2))
+
+le spécifiait.
+<P>
+La séquence d'actions nominale pour utiliser une pile spécifique de signal 
+est la suivante :
+<DL COMPACT>
+<DT>1.<DD>
+Allouer une zone mémoire qui sera utilisée comme pile spécifique 
+de signal.
+<DT>2.<DD>
+Utiliser <B>sigaltstack</B> afin d'informer le système de l'existence
+et de la position de la pile spécifique de signal.
+<DT>3.<DD>
+Lors de la mise en place du gestionnaire de signal en utilisant
+<B>sigaction</B>, informer le système que ce gestionnaire de 
+signal doit être exécuté sur la pile spécifique de signal en 
+positionnant le drapeau <B>SA_ONSTACK</B>.
+</DL>
+<P>
+
+L'argument <I>ss</I> est utilisé afin de définir
+une nouvelle pile spécifique de signal, tandis que
+l'argument <I>oss</I> est utilisé afin de récupérer des
+informations sur la pile de signal actuellement en place.
+Si une seule de ces actions vous intéresse,
+alors l'autre argument peut être positionné à NULL.
+Chacun de ces paramètres est une structure du type suivant :
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+typedef struct {
+    void  *ss_sp;     /* Adresse de base de la pile*/
+    int    ss_flags;  /* drapeaux */
+    size_t ss_size;   /* Nombre d'octets dans la pile */
+} stack_t;
+</PRE>
+
+</DL>
+
+<P>
+Afin de mettre en place une nouvelle pile spécifique de signal,
+<I>ss.ss_flags</I> est positionné à zéro, et <I>ss.sp_sp</I> et
+<I>ss.ss_size</I> spécifient l'adresse de début et la taille
+de la pile.
+La constante <B>SIGSTKSZ</B> est définie de façon à être 
+suffisamment grande pour couvrir les besoins typiques en espace mémoire
+d'une pile spécifique de signal,
+et la constante <B>MINSIGSTKSZ</B> définit la taille minimum
+nécessaire à l'exécution d'un gestionnaire de signal.
+<P>
+Afin de désactiver une pile existante, positionnez <I>ss.ss_flags</I>
+à <B>SS_DISABLE</B>. Dans ce cas, les autres champs de 
+<I>ss</I> sont ignorés.
+<P>
+Si <I>oss</I> ne vaut pas NULL, alors il est utilisé afin de renvoyer
+des informations sur la pile spécifique de signal qui était utilisée 
+avant l'appel à <B>sigaltstack</B>.
+Les champs <I>oss.ss_sp</I> et <I>oss.ss_size</I> renvoient l'adresse
+de départ et la taille de cette pile.
+Le champ <I>oss.ss_flags</I> peut renvoyer l'une des valeurs suivantes :
+<P>
+<DL COMPACT>
+<DT><B>SS_ONSTACK</B>
+
+<DD>
+Le processus s'exécute actuellement sur la pile
+spécifique de signal. (Remarquez qu'il n'est pas possible
+de changer la pile spécifique de signal si le processus
+est en train de s'exécuter sur cette dernière.)
+<DT><B>SS_DISABLE</B>
+
+<DD>
+La pile spécifique de signal est actuellement désactivée.
+<P>
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>sigaltstack</B> renvoie 0 en cas de succès, ou -1 en cas d'échec
+en positionnant alors <I>errno</I> pour préciser l'erreur.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ENOMEM</B>
+
+<DD>
+La taille de la nouvelle pile spécifique de signal 
+indiquée(<I>ss.ss_size</I>) est inférieure à <B>MINSTKSZ</B>.
+<DT><B>EFAULT</B>
+
+<DD>
+L'un des paramètres <I>ss</I> ou <I>oss</I> ne vaut pas NULL et pointe 
+vers une zone mémoire n'appartenant pas à l'espace d'adressage du 
+processus.
+<DT><B>EPERM</B>
+
+<DD>
+On a essayé de modifier la pile spécifique de signal alors
+que celle ci était active (i.e, le processus était déjà en train
+de s'exécuter sur la pile spécifique de signal courante).
+<DT><B>EINVAL</B>
+
+<DD>
+<I>ss</I> ne vaut pas NULL et le champ ss_flags contient
+une valeur non nulle différente de SS_DISABLE.
+<P>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le segment de code suivant donne un exemple d'utilisation de 
+<B>sigaltstack</B>:
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+stack_t ss;
+
+ss.ss_sp = malloc(SIGSTKSZ);
+if (ss.ss_sp == NULL)
+    /* Traitement de l'erreur */;
+ss.ss_size = SIGSTKSZ;
+ss.ss_flags = 0;
+if (sigaltstack(&amp;ss, NULL) == -1)
+    /* Traitement de l'erreur */;
+</PRE>
+
+</DL>
+
+<P>
+
+La mise en place d'une pile spécifique de signal est utile si
+un processus soupçonne qu'il est susceptible d'épuiser sa pile
+standard.
+Cela peut se produire, par exemple, lorsque la pile grossit au
+point de rencontrer la limite supérieure du tas, ou si elle 
+atteint une limite établie par un appel à <B>setrlimit(RLIMIT_STACK, &amp;rlim)</B>.
+Si la pile standard est épuisée, le noyau envoie au
+processus un signal <B>SIGSEGV</B>.
+Dans ces circonstances, la seule façon d'intercepter ce signal 
+est d'utiliser une pile spécifique de signal.
+<P>
+
+Sur la plupart des architectures supportées par Linux, les piles
+s'étendent vers les adresses décroissantes. <B>sigaltstack</B>
+prend automatiquement en charge le sens d'expansion de la 
+pile. 
+<P>
+
+Les fonctions appelées depuis un gestionnaire de signal s'exécutant
+sur une pile spécifique de signal utilisent également cette pile.
+(Cela s'applique également à tous les gestionnaires invoqués pour 
+d'autres signaux alors que le processus s'exécute sur la pile spécifique
+de signal.)
+Contrairement à la pile standard, le système n'accroît pas
+automatiquement la pile spécifique de signal.
+Dépasser la taille allouée pour la pile spécifique de signal 
+conduit à des résultats imprévisibles.
+<P>
+
+Un appel <B>execve</B> réussi détruit toutes piles spécifiques de 
+signal existantes.
+<P>
+
+<B>sigaltstack</B> succède à l'ancien appel <B>sigstack</B>.
+Pour des raisons de compatibilité, la glibc implante
+<B>sigstack</B>.
+Toutes les nouvelles applications devraient être écrites en utilisant
+<B>sigaltstack.
+<P>
+</B><A NAME="lbAH">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+BSD 4.2 possédait un appel système <I>sigstack</I>(). Il utilisait 
+une structure légèrement différente, et avait comme désavantage 
+principal la nécessité pour  l'appelant de connaître le sens 
+d'expansion de la pile.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SUSv2, SVr4, POSIX 1003.1-2001.
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigaction">sigaction</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setrlimit">setrlimit</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+execve">execve</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+sigsetjmp">sigsetjmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+siglongjmp">siglongjmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?7+signal">signal</A></B>(7)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Stéphan Rafin, 2002.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:02 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,149 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of cups-lpd</TITLE>
+</HEAD><BODY>
+<H1>cups-lpd</H1>
+Section: Easy Software Products (8)<BR>Updated: Common UNIX Printing System<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+cups-lpd - Reçoit les travaux d'impression et renvoie le statut des imprimantes aux clients lpd
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>cups-lpd</B>
+
+[ -o
+<I>option=valeur</I>
+
+]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>cups-lpd</B> est un mini serveur Line Printer Daemon («&nbsp;LPD&nbsp;») qui
+gère les client génériques utilisant le protocole LPD.
+<B>cups-lpd</B> ne fonctionne pas comme un démon réseau solitaire, mais 
+utilise le super-serveur <B><A HREF="/cgi-bin/man/man2html?8+inetd">inetd</A>(8)</B>. Ajoutez la ligne suivante au fichier
+<B>inetd.conf</B> pour activer le démon <B>cups-lpd</B>&nbsp;:
+<BR>
+
+<PRE>
+
+    printer stream tcp nowait lp /path/to/cups/daemon/cups-lpd cups-lpd
+</PRE>
+
+<P>
+
+Si vous utilisez le super-serveur <I><A HREF="/cgi-bin/man/man2html?8+xinetd">xinetd</A>(8)</I>, ajoutez la ligne suivante au fichier
+<B>xinetd.conf</B>&nbsp;:
+<BR>
+
+<PRE>
+
+    service printer
+    {
+        socket_type = stream
+        protocol = tcp
+        wait = no
+        user = lp
+        server = /path/to/cups/daemon/cups-lpd
+    }
+</PRE>
+
+<P>
+
+/path/to/cups/daemon est habituellement /usr/lib/cups/daemon ou
+/usr/libexec/cups/daemon, suivant votre système d'exploitation. Vous
+pouvez trouver cette information dans le fichier cupsd.conf.
+<A NAME="lbAE">&nbsp;</A>
+<H2>SÉCURITÉ</H2>
+
+<B>cups-lpd</B> n'applique pour le moment aucun des contrôles d'accès définis
+dans les fichiers <I><A HREF="/cgi-bin/man/man2html?5+cupsd.conf">cupsd.conf</A>(5)</I>, <I><A HREF="/cgi-bin/man/man2html?5+hosts.allow">hosts.allow</A>(5)</I> ou
+<I><A HREF="/cgi-bin/man/man2html?5+hosts.deny">hosts.deny</A>(5)</I> utilisés par les wrappers TCP. L'exécution de
+<B>cups-lpd</B> sur un serveur permet donc le lancement d'impressions depuis
+n'importe quel ordinateur de votre réseau, voire même de n'importe quel
+ordinateur sur Terre.
+<P>
+
+Bien que <I>xinetd</I> possède un contrôle d'accès intégré, il est recommandé
+d'utiliser le wrapper TCP fourni avec <I>inetd</I> pour limiter les accès aux
+ordinateurs pouvant lancer des impressions sur un serveur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+L'option <I>-o</I> ajoute des options à tous les travaux d'impression.
+Cette option est souvent utilisée pour désactiver le filtre «&nbsp;l&nbsp;» de manière
+à ce que les travaux passant par le réseau soient filtrés correctement.
+<BR>
+
+<PRE>
+
+    printer stream tcp nowait lp /usr/lib/cups/daemon/cups-lpd cups-lpd 
+        -o document-format=application/octet-stream
+
+    server = /usr/lib/cups/daemon/cups-lpd
+    server_args = -o document-format=application/octet-stream
+</PRE>
+
+<P>
+
+Dans cet exemple, le format du document est réinitialisé à la valeur
+<I>application/octet-stream</I>, ce qui force l'auto-détection du type de
+fichier.
+<A NAME="lbAG">&nbsp;</A>
+<H2>COMPATIBILITÉ</H2>
+
+<B>cups-lpd</B> ne se conforme pas à la RFC 1179 concernant l'utilisation
+des ports systèmes (1 à 1024), car l'utilisation de ces ports n'empêche pas
+un utilisateur d'envoyer un travail d'impression. Bien que ce comportement
+soit différent de celui des implémentations LPD Berkeley, il ne devrait pas
+affecter le déroulement correct des impressions.
+<P>
+
+Le format de sortie des demandes d'état se conforme à la RFC 2569, Mapping
+between LPD and IPP Protocols. Comme bon nombre d'implémentations LPD ne suivent
+pas cette définition, la récupération d'état par un client LPD peut être
+erronée.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?8+inetd">inetd</A>(8), <A HREF="/cgi-bin/man/man2html?8+xinetd">xinetd</A>(8),
+CUPS Software Administrators Manual,
+<A HREF="http://localhost:631/documentation.html">http://localhost:631/documentation.html</A>
+<A NAME="lbAI">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright 1993-2003 Easy Software Products, Tous droits réservés.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Gilles QUERRET &lt;<A HREF="mailto:gilles.querret@nerim.net">gilles.querret@nerim.net</A>&gt;
+
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">SÉCURITÉ</A><DD>
+<DT><A HREF="#lbAF">OPTIONS</A><DD>
+<DT><A HREF="#lbAG">COMPATIBILITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:00 GMT, February 11, 2014
+</BODY>
+</HTML>

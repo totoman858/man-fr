@@ -1,0 +1,81 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of lpmove</TITLE>
+</HEAD><BODY>
+<H1>lpmove</H1>
+Section: Easy Software Products (8)<BR>Updated: Common UNIX Printing System<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+lpmove - Déplace un travail d'impression vers une nouvelle destination
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>lpmove</B>
+
+[ -E ]
+<I>ID_du_travail destination</I>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>lpmove</B> déplace les <I>travaux d'impression</I> vers une nouvelle
+<I>destination</I>. On peut spécifier le travail sous deux formes&nbsp;:
+soit l'ID du travail d'impression, soit ancienne destination et ID du travail.
+Exemple&nbsp;:
+<BR>
+
+<PRE>
+
+     lpmove 123 NouvelleImprimante
+     lpmove AncienneImprimante-123 NouvelleImprimante
+</PRE>
+
+<P>
+
+L'option <I>-E</I> force le cryptage des données lors de la connexion au serveur.
+<A NAME="lbAE">&nbsp;</A>
+<H2>COMPATIBILITÉ</H2>
+
+La version System V de <B>lpmove </B> permet de déplacer tous les travaux d'impression
+d'une file d'attente vers une autre. Cette fonctionnalité n'est pas gérée par CUPS.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+cancel">cancel</A>(1), <A HREF="/cgi-bin/man/man2html?1+lp">lp</A>(1),
+CUPS Software Users Manual,
+<A HREF="http://localhost:631/documentation.html">http://localhost:631/documentation.html</A>
+<A NAME="lbAG">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright 1993-2003 Easy Software Products, Tous droits réservés.
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Gilles QUERRET &lt;<A HREF="mailto:gilles.querret@nerim.net">gilles.querret@nerim.net</A>&gt;
+
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">COMPATIBILITÉ</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:05 GMT, February 11, 2014
+</BODY>
+</HTML>

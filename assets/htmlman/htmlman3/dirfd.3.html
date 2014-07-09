@@ -1,0 +1,106 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DIRFD</TITLE>
+</HEAD><BODY>
+<H1>DIRFD</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+dirfd - Obtenir un descripteur fichier pour un répertoire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/dirent.h">dirent.h</A>&gt;</B>
+
+<P>
+<B>int dirfd(DIR *</B><I>rep</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>dirfd()</B>
+
+renvoie le descripteur de fichier associé au flux de répertoire
+<I>rep</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>ERRORS</H2>
+
+En cas d'erreur, -1 est renvoyée.
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le prototype de
+<B>dirfd</B>
+
+n'est disponible que si
+<B>_BSD_SOURCE</B>
+
+ou
+<B>_SVID_SOURCE</B>
+
+est définie (de manière explicite, ou implicite, en ne définissant pas
+_POSIX_SOURCE ou en compilant avec l'option -ansi).
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Ceci est une extension BSD, présente dans 4.3BSD-Reno, mais pas dans
+4.2BSD.  Elle est également présente dans la libc5 (depuis la version
+5.1.2) et dans la GlibC2.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+closedir">closedir</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+opendir">opendir</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+readdir">readdir</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+rewinddir">rewinddir</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+scandir">scandir</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+seekdir">seekdir</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+telldir">telldir</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 2002
+
+<BR>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">ERRORS</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:20 GMT, February 11, 2014
+</BODY>
+</HTML>

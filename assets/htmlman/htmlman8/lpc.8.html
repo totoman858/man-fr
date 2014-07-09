@@ -1,0 +1,113 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of lpc</TITLE>
+</HEAD><BODY>
+<H1>lpc</H1>
+Section: Easy Software Products (8)<BR>Updated: Common UNIX Printing System<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+lpc - Programme de contrôle de l'imprimante
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>lpc</B>
+
+[
+<I>commande</I>
+
+[
+<I>paramètre(s)</I>
+
+] ]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>lpc</I> permet de contrôler partiellement des imprimantes et classes d'imprimantes
+de CUPS. Il est également utilisé pour récupérer l'état des files d'attente.
+<P>
+
+Si aucune option n'est donnée dans la ligne de commande, lpc affichera une
+invite et prendra ses commandes depuis l'entrée standard.
+<A NAME="lbAE">&nbsp;</A>
+<H2>COMMANDES</H2>
+
+<I>lpc</I> reconnaît un sous-ensemble des commandes reconnues le programme <I>lpc</I>
+de Berkeley&nbsp;:
+<DL COMPACT>
+<DT><I>exit<DD>
+<BR>
+
+Quitte l'interpréteur de commandes.
+<DT>help [commande]</I><DD>
+<BR>
+
+Affiche un message d'aide.
+<DT>quit<DD>
+<BR>
+
+Quitte l'interpréteur de commandes.
+<DT>status <I>[file-attente]</I><DD>
+<BR>
+
+Affiche l'état des files d'attente d'une ou plusieurs classes ou imprimantes.
+<DT>? <I>[commande]</I><DD>
+<BR>
+
+Affiche un message d'aide.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>LIMITATIONS</H2>
+
+Étant donné que <I>lpc</I> est spécifique au système d'impression de Berkeley, il
+est impossible de l'utiliser pour configurer les files d'attente de CUPS. Pour cela,
+vous devez utiliser le programme <I><A HREF="/cgi-bin/man/man2html?8+lpadmin">lpadmin</A>(8)</I> ou tout autre client compatible
+avec CUPS remplissant ces fonctions.
+<A NAME="lbAG">&nbsp;</A>
+<H2>COMPATIBILITÉ</H2>
+
+La version CUPS de <I>lpc</I> n'implémente pas toutes les commandes de la version Berkeley.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?8+accept">accept</A>(8), <A HREF="/cgi-bin/man/man2html?1+cancel">cancel</A>(1), <A HREF="/cgi-bin/man/man2html?8+disable">disable</A>(8), <A HREF="/cgi-bin/man/man2html?8+enable">enable</A>(8), <A HREF="/cgi-bin/man/man2html?1+lp">lp</A>(1), <A HREF="/cgi-bin/man/man2html?1+lpr">lpr</A>(1), <A HREF="/cgi-bin/man/man2html?1+lprm">lprm</A>(1),
+<A HREF="/cgi-bin/man/man2html?1+lpstat">lpstat</A>(1), <A HREF="/cgi-bin/man/man2html?8+reject">reject</A>(8),
+CUPS Software Administrators Manual,
+<A HREF="http://localhost:631/documentation.html">http://localhost:631/documentation.html</A>
+<A NAME="lbAI">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright 1993-2002 Easy Software Products, Tous droits réservés.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Gilles QUERRET &lt;<A HREF="mailto:gilles.querret@nerim.net">gilles.querret@nerim.net</A>&gt;
+
+
+
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">COMMANDES</A><DD>
+<DT><A HREF="#lbAF">LIMITATIONS</A><DD>
+<DT><A HREF="#lbAG">COMPATIBILITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:02 GMT, February 11, 2014
+</BODY>
+</HTML>

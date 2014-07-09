@@ -1,0 +1,153 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MII-TOOL</TITLE>
+</HEAD><BODY>
+<H1>MII-TOOL</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 28 mars 2004<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mii-tool - Voir et manipuler l'état de l'unité «&nbsp;Media Independent Interface&nbsp;».
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>mii-tool</B>
+
+[<B>-v</B>, <B>--verbose</B>]
+[<B>-V</B>, <B>--version</B>]
+[<B>-R</B>, <B>--reset</B>]
+[<B>-r</B>, <B>--restart</B>]
+[<B>-w</B>, <B>--watch</B>]
+[<B>-l</B>, <B>--log</B>]
+[<B>-A</B>, <B>--advertise=</B><I>media,...</I>]
+[<B>-F</B>, <B>--force=</B><I>media</I>]
+[<I>interface&nbsp;...</I>]
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cet utilitaire vérifie ou configure l'état de l'unité «&nbsp;Media Independent
+Interface&nbsp;» (MII) d'une interface réseau. La plupart des adaptateurs Ethernet
+rapides utilisent l'unité MII pour autonégocier la vitesse du lien et la
+configuration duplex.
+<P>
+
+La plupart des périphériques réseaux intelligents utilise un protocole
+d'autonégociation pour communiquer sur des technologies de medium qu'ils
+supportent, et choisissent la technologie media la plus rapide supportée
+mutuellement. L'option <B>-A</B> ou <B>--advertise</B> peut être utilisée
+pour indiquer à la MII de seulement annoncer un sous-ensemble de ces
+capacités. Certains périphériques passifs, comme les hubs à une seule vitesse,
+sont incapables d'autonégociation. Pour gérer de tels périphériques,
+le protocole MII permet également l'établissement d'un lien par simple
+détection du lien 10baseT ou 100baseT. L'option <B>-F</B> ou <B>--force</B>
+permet de forcer le fonctionnement de la MII dans un mode particulier plutôt
+que de faire appel à l'autonégociation. Les options <B>-A</B> et <B>-F</B>
+sont mutuellement exclusives.
+<P>
+
+La sortie par défaut indique la vitesse négociée du lien et l'état du lien
+pour chacune des interfaces. Si aucune interface n'est spécifiée sur la ligne
+de commande,
+<B>mii-tools</B>
+
+vérifiera toues les interfaces disponibles de
+<B>eth0</B>
+
+à
+<B>eth7</B>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-v</B>, <B>--verbose</B><DD>
+Afficher des informations plus détaillées sur l'état de l'unité MII.
+Si elle est utilisée deux fois, elle affichera également le contenu brut
+des registres de la MII.
+<DT><B>-V</B>, <B>--version</B><DD>
+Afficher les informations de version du programme.
+<DT><B>-R</B>, <B>--reset</B><DD>
+Réinitialiser la MII à sa configuration par défaut.
+<DT><B>-r</B>, <B>--restart</B><DD>
+Relancer l'autonégociation.
+<DT><B>-w</B>, <B>--watch</B><DD>
+Montrer l'interface et rapporter les modifications de l'état du lien.
+Les interfaces MII sont scrutées toutes les secondes.
+<DT><B>-l</B>, <B>--log</B><DD>
+Utilisée avec
+<B>-w</B>,
+
+enregistrer les modifications de l'état du lien dans le système de
+journalisation du système plutôt que d'afficher sur la sortie standard.
+<DT><B>-F</B><I> media</I>, <B>--force=</B><I>media</I><DD>
+Désactiver l'autonégociation et forcer la MII à des opérations
+<B>100baseTx-FD</B>, <B>100baseTx-HD</B>, <B>10baseT-FD</B>
+ou <B>10baseT-HD</B>.
+<DT><B>-A</B><I> media,...</I>, <B>--advertise=</B><I>media,...</I><DD>
+Activer et relancer l'autonégociation et annoncer seulement les technologies
+media spécifiées. Les media valides sont <B>100baseT4</B>, <B>100baseTx-FD</B>,
+<B>100baseTx-HD</B>, <B>10baseT-FD</B> et <B>10baseT-HD</B>.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>DIAGNOSTICS</H2>
+
+<DL COMPACT>
+<DT>SIOCGMIIPHY on 'eth?' failed: Invalid argument<DD>
+Si l'interface n'est pas en fonctionnement («&nbsp;up&nbsp;»), le noyau refusera
+de rapporter l'état de son lien.
+<DT>SIOCGMIIPHY on 'eth?' failed: Operation not permitted<DD>
+La plupart des noyaux restreignent l'accès au super utilisateur.
+<DT>SIOCGMIIPHY on 'eth?' failed: No such device<DD>
+Le noyau ne sait rien du périphérique cité.
+<DT>SIOCGMIIPHY on 'eth?' failed: Operation not supported<DD>
+L'interface en question ne supporte pas les requêtes MII.
+Elle n'a tout simplement pas de transmetteur MII.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+David Hinds - <A HREF="mailto:dhinds@pcmcia.sourceforge.org">dhinds@pcmcia.sourceforge.org</A>
+<BR>
+
+Donald Becker - <A HREF="mailto:becker@scyld.com">becker@scyld.com</A>
+<BR>
+
+Bernd Eckenfels - <A HREF="mailto:ecki@debian.org">ecki@debian.org</A>
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal&nbsp;AT&nbsp;univ-montp2&nbsp;DOT&nbsp;fr&gt; le 17&nbsp;août&nbsp;2006.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;8&nbsp;mii-tool</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">DIAGNOSTICS</A><DD>
+<DT><A HREF="#lbAG">AUTEURS</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

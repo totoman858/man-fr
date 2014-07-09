@@ -1,0 +1,248 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CATOPEN</TITLE>
+</HEAD><BODY>
+<H1>CATOPEN</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+catopen, catclose - Ouverture/fermeture d'un catalogue de messages.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/nl_types.h">nl_types.h</A>&gt;</B>
+
+<P>
+<B>nl_catd catopen (char *</B><I>name</I><B>, int </B><I>flag</I><B>);</B>
+
+<P>
+<B>int catclose (nl_catd </B><I>catalog</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>catopen()</B>
+
+ouvre un catalogue de message, et en retourne un descripteur.
+Celui-ci reste valide jusqu'à un appel catclose() ou exec().
+Si un descripteur de fichier est utilisé pour implémenter le descripteur de
+catalogue, il disposera de l'attribut FD_CLOEXEC.
+<P>
+
+L'argument
+<I>name</I>
+
+indique le nom du catalogue à ouvrir.
+Si
+<I>name</I>
+
+indique un chemin d'accès absolu (contenant un '/' )
+alors il est employé comme chemin d'accès au catalogue.
+Sinon, la variable d'environnement
+<B>NLSPATH</B>
+
+est utilisée, après avoir substitué
+<I>name</I>
+
+à son argument
+<B>%N</B>
+
+(voir
+<B><A HREF="/cgi-bin/man/man2html?7+locale">locale</A></B>(7)).
+
+Lorsque le processus à des privilèges root, l'emploi éventuel de
+<B>NLSPATH</B>
+
+n'est pas garanti.
+Si
+<B>NLSPATH</B>
+
+n'est pas définie dans l'environnement, ou si le catalogue de messages ne
+peut être ouvert dans aucun des chemins qu'elle contient, alors un chemin
+prédéfini, dépendant de l'implémentation, est utilisé.
+Ce dernier peut dépendre de la catégorie de localisation 
+<B>LC_MESSAGES</B>
+
+si l'argument
+<I>flag</I>
+
+vaut NL_CAT_LOCALE
+ou de la variable d'environnement
+<B>LANG</B>
+
+si l'argument
+<I>flag</I>
+
+vaut zéro.
+Changer la partie LC_MESSAGES de la localisation, peut rendre invalides les
+descripteurs de catalogues déjà ouverts.
+<P>
+
+L'argument
+<I>flag</I>
+
+de
+<B>catopen()</B>
+
+indique l'origine du langage à utiliser.
+S'il vaut
+<B>NL_CAT_LOCALE</B>
+
+alors il utilisera la configuration de la localisation pour
+<B>LC_MESSAGES.</B>
+
+Sinon, il utilisera la variable d'environnement
+<B>LANG</B>.
+
+<P>
+
+La fonction
+<B>catclose()</B>
+
+Ferme le catalogue identifié par
+<I>catalog</I>.
+
+Ceci invalide toute référence ultérieure au catalogue par le descripteur
+<I>catalog</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<P>
+
+La fonction
+<B>catopen()</B>
+
+renvoie un descripteur de catalogue de messages, du type
+<I>nl_catd</I>
+
+si elle réussit.
+En cas d'échec elle renvoie (nl_catd) -1,
+et remplit
+<I>errno</I>
+
+avec le code d'erreur. Les erreurs possibles incluent toutes celles
+que peut renvoyer
+<I><A HREF="/cgi-bin/man/man2html?2+open">open</A></I>(2).
+
+<P>
+
+La fonction
+<B>catclose()</B>
+
+renvoie 0 si elle réussit, ou -1 en cas d'échec.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+<DL COMPACT>
+<DT><B>LC_MESSAGES</B>
+
+<DD>
+Peut servir à déterminer le langage
+à utiliser, si
+<I>flag</I>
+
+vaut
+<B>NL_CAT_LOCALE</B>.
+
+<DT><B>LANG</B>
+
+<DD>
+Le langage à utiliser, si
+<I>flag</I>
+
+vaut zéro.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Tout ceci correspond à la description de POSIX 1003.1-2001. La valeur
+de NL_CAT_LOCALE dans la GlibC est 1.
+(Voir MCLoadAll plus bas).
+Le chemin par défaut varie, mais il inclut en général plusieurs emplacements sous
+<I>/usr/share/locale</I>.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES POUR LIBC4 ET LIBC5</H2>
+
+Ces fonctions sont disponibles sous Linux depuis la version 4.4.4.c de libc.so, et
+ultérieures.
+Dans le cas des libc4 et libc5, le descripteur de catalogue
+<I>nl_catd</I>
+
+est en réalite une zone de mémoire de projection <B>mmap()</B> et non pas
+un descripteur de fichier.
+L'argument
+<I>flag</I>
+
+de
+<B>catopen()</B>
+
+devrait être soit
+<B>MCLoadBySet</B>
+
+(= 0) soit
+<B>MCLoadAll</B>
+
+(= 1).
+La première valeur indique qu'un ensemble du catalogue doit être chargé
+quand le besoin s'en fait sentir, alors que la seconde réclame le chargement
+em mémoire dès l'appel
+<B>catopen</B>()
+
+initial.
+Le chemin par défaut varie, mais il inclut en général plusieurs emplacements sous
+<I>/etc/locale</I>
+
+et
+<I>/usr/lib/locale</I>.
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX 1003.1-2001.
+Dans XPG 1987, Vol. 3 , il est dit&nbsp;:
+<I>L'argument flag de catopen est réservé pour un usage futur</I>
+
+<I>et doit être mis à 0</I>.
+
+L'origine des constantes MCLoadBySet et MCLoadAll est inconnue.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+catgets">catgets</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setlocale">setlocale</A></B>(3)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">NOTES POUR LIBC4 ET LIBC5</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:37 GMT, February 11, 2014
+</BODY>
+</HTML>

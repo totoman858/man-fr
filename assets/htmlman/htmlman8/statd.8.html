@@ -1,0 +1,127 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of rpc.statd</TITLE>
+</HEAD><BODY>
+<H1>rpc.statd</H1>
+Section: Maintenance Commands (8)<BR>Updated: 11 June 1999<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+rpc.statd - surveillant de l'activité NSM
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>/usr/sbin/rpc.statd [-F]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le serveur
+<B>rpc.statd</B>
+
+implémente le protocole RPC NSM (Network Status Monitor&nbsp;: Surveillance de
+l'Activité Réseau). Ce service est en fait très mal nommé car il ne fournit pas
+le moyen d'exercer une surveillance continue comme son nom le laisse supposer. Au
+contraire, NSM fournit le moyen de prévenir d'une réinitialisation du système.
+Il est utilisé par le service de verrouillage de fichier de NFS&nbsp;:
+<B>rpc.lockd</B>,
+
+pour implémenter une reprise du verrouillage quand la machine serveur NFS se
+réinitialise.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H3>Opérations</H3>
+
+Pour chaque serveur ou client NFS à surveiller,
+<B>rpc.statd</B>
+
+créé un fichier dans
+<B>/var/lib/nfs/sm</B>.
+
+Quand il se lance, pour chacun de ces fichiers, il notifie le démon
+<B>rpc.statd</B>
+
+sur ces machines.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-F</B>
+
+<DD>
+Par défaut,
+<B>rpc.statd</B>
+
+fork et se place lui-même en arrière-plan quand il se lance. L'argument
+<B>-F</B>
+
+lui dit de rester à l'avant plan [Ndt&nbsp;: et donc de ne pas rendre la main
+immédiatement]. Cette option n'est utile que pour déboguer.
+<P>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<B>/var/lib/nfs/sm/state</B>
+
+<BR>
+
+<B>/var/lib/nfs/sm/*</B>
+
+<BR>
+
+<B>/var/lib/nfs/sm.bak/*</B>
+
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+rpc.nfsd">rpc.nfsd</A>(8)</B>
+
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+<BR>
+
+Jeff Uphoff &lt;<A HREF="mailto:juphoff@transmeta.com">juphoff@transmeta.com</A>&gt;
+<BR>
+
+Olaf Kirch &lt;<A HREF="mailto:okir@monad.swb.de">okir@monad.swb.de</A>&gt;
+<BR>
+
+H.J. Lu &lt;<A HREF="mailto:hjl@gnu.org">hjl@gnu.org</A>&gt;
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 2000
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">Opérations</A><DD>
+</DL>
+<DT><A HREF="#lbAF">OPTIONS</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">AUTEURS</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:00 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,383 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of UNIX</TITLE>
+</HEAD><BODY>
+<H1>UNIX</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+unix, PF_UNIX, AF_UNIX, PF_LOCAL, AF_LOCAL - Sockets pour communications locales entre processus.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/un.h">sys/un.h</A>&gt;</B>
+
+<P>
+<I>unix_socket</I><B> = socket(PF_UNIX, type, 0);</B>
+
+<BR>
+
+<I>error</I><B> = socketpair(PF_UNIX, type, 0, int *</B><I>sv</I><B>);</B>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La famille de socket
+<B>PF_UNIX</B>
+
+(aussi connue sous le nom
+<B>PF_LOCAL</B>)
+
+sert à communiquer efficacement entre processus sur la même machine.
+Une socket Unix peut être soit anonyme (créée par
+<B><A HREF="/cgi-bin/man/man2html?2+socketpair">socketpair</A></B>(2))
+
+soit associée à un fichier de type socket.
+Linux supporte aussi un espace de noms abstrait, indépendant du système
+de fichiers.
+<P>
+Les types valides sont
+<B>SOCK_STREAM </B>
+
+pour une socket orientée flux, et
+<B>SOCK_DGRAM</B>
+
+pour une socket orientée datagramme, préservant les limites entre messages.
+Les socket Unix sont toujours fiables et ne réordonnent pas les datagrammes.
+<P>
+Les sockets Unix supportent la transmission de descripteurs de fichiers ou
+d'identificateurs d'un processus à l'autre en utilisant des données annexes.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>FORMAT D'ADRESSE</H2>
+
+Une adresse Unix est définie comme un nom dans le système de fichier ou une
+chaîne unique dans l'espace de noms abstrait. Les sockets créées par
+<B><A HREF="/cgi-bin/man/man2html?2+socketpair">socketpair</A></B>(2)
+
+sont anonymes. Pour les sockets non-anonymes, l'adresse cible peut être
+indiquée en utilisant
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2).
+
+L'adresse locale peut être fixée avec
+<B><A HREF="/cgi-bin/man/man2html?2+bind">bind</A></B>(2).
+
+Quand une socket est connectée et qu'elle n'a pas encore d'adresse locale,
+une adresse unique dans l'espace de noms abstrait lui est automatique founie.
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+#define UNIX_PATH_MAX   108
+
+
+struct sockaddr_un {
+    sa_family_t  sun_family;              /* AF_UNIX */
+    char         sun_path[UNIX_PATH_MAX]; /* chemin accès */
+};
+</PRE>
+
+</DL>
+
+<P>
+<B>sun_family </B>
+
+contient toujours la valeur
+<B>AF_UNIX</B>.
+
+<B>sun_path</B>
+
+contient le chemin d'accès à la socket, terminé par un zéro, dans le système
+de fichiers. Si
+<B>sun_path</B>
+
+commence par un octet nul, il se réfère à l'espace abstrait maintenu
+par le module du protocole Unix.
+L'adresse de la socket dans cet espace est donné par le reste des octets dans
+<B>sun_path</B>.
+
+Notez que les noms dans l'espace abstrait ne sont pas terminés par un zéro.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS DES SOCKETS</H2>
+
+Pour des raisons historiques, les options de ces sockets sont spécifiées
+avec un type SOL_SOCKET même si elles sont spécifiques PF_UNIX.
+On peut les fixer avec
+<B><A HREF="/cgi-bin/man/man2html?2+setsockopt">setsockopt</A></B>(2)
+
+et les lire avec
+<B><A HREF="/cgi-bin/man/man2html?2+getsockopt">getsockopt</A></B>(2)
+
+en spécifiant la famille SOL_SOCKET.
+<DL COMPACT>
+<DT><B>SO_PASSCRED</B>
+
+<DD>
+Valide la réception des identifiants dans les messages annexes du processus
+émetteur. Lorsque cette option est active et la socket non encore connectée
+un nom unique dans l'espace abstrait sera généré automatiquement.
+On attend un attribut booléen entier.
+<P>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>MESSAGES ANNEXES</H2>
+
+Les données annexes sont envoyées et reçues en utilisant
+<B><A HREF="/cgi-bin/man/man2html?2+sendmsg">sendmsg</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+recvmsg">recvmsg</A></B>(2).
+
+Pour des raisons historiques, les messages annexes listés ci-dessous
+sont spécifiés avec un type SOL_SOCKET même s'ils sont sépcifiques PF_UNIX.
+Pour les envoyer, fixez le champ
+<B>cmsg_level</B>
+
+de la structure 
+<B>cmsghdr</B>
+
+à SOL_SOCKET et le champ
+<B>cmsg_type </B>
+
+avec le type du message. Pour plus de détails, voir
+<B><A HREF="/cgi-bin/man/man2html?3+cmsg">cmsg</A></B>(3).
+
+<P>
+<DL COMPACT>
+<DT><B>SCM_RIGHTS</B>
+
+<DD>
+Envoie ou reçoit un jeu de descripteurs de fichiers ouverts par un autre
+processus. La portion de données contient une table de descripteurs.
+Les descripteurs passés se comportent comme s'ils avaient été créés avec
+<B><A HREF="/cgi-bin/man/man2html?2+dup">dup</A></B>(2).
+
+<P>
+<DT><B>SCM_CREDENTIALS</B>
+
+<DD>
+Envoyer ou recevoir les identifiants Unix. Ceci peut servir à
+l'authentification. Les identifications sont passés en message annexe en
+<B>struct ucred</B>.
+
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct ucred {
+    pid_t  pid;  /* PID processus émetteur */  
+    uid_t  uid;  /* UID processus émetteur */ 
+    gid_t  gid;  /* GID processus émetteur */ 
+};
+</PRE>
+
+</DL>
+
+<P>
+Les identifiants que l'émetteur envoie sont vérifiés par le noyau.
+Un processus avec un UID effectif nul est autorisé à indiquer des valeurs
+autres que les siennes.
+L'émetteur doit indiquer son propre PID (sauf s'il a la capacité
+<B>CAP_SYS_ADMIN</B>),
+
+son UID réel, effectif ou sauvé (sauf s'il a la capacité
+<B>CAP_SETUID</B>),
+
+et son GID réel, effecif ou sauvé (sauf s'il a la capacité
+<B>CAP_SETGID</B>).
+
+Pour recevoir un message
+<B>struct ucred</B>
+
+l'option
+<B>SO_PASSCRED </B>
+
+doit être validée sur la socket.
+<P>
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>VERSIONS</H2>
+
+<B>SCM_CREDENTIALS</B>
+
+et l'espace de noms abstrait ont été introduits avec Linux 2.2 et ne doivent
+pas être utilisés dans des programmes portables.
+(Certains systèmes dérivés de BSD supportent aussi le passage d'identifiants,
+mais les détails d'implémentation diffèrent).
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>NOTES</H2>
+
+Dans l'implémentation Linux, les sockets qui sont visibles dans le système
+de fichiers honorent les permissions du répertoire où elles se trouvent.
+Leur propriétaire, groupe et autorisations peuvent être changées.
+La création d'une nouvelle socket échouera si le processus n'a pas le droit
+d'écrire et de parcours (exécution) dans le répertoire où elle est créée.
+La connexion sur une socket nécessite les permissions de lecture/écriture.
+Le comportement diffère de plusieurs systèmes dérivés de BSD qui ignorent
+les permissions sur les sockets Unix. Les programmes portable ne doivent
+pas s'appuyer sur ces fonctionnalités pour la sécurité.
+<P>
+Lier une socket avec un nom de fichier créer la socket dans le système de
+fichier, qu'il faudra détruire lorsqu'elle n'est plus utile
+(en appelant
+<B><A HREF="/cgi-bin/man/man2html?2+unlink">unlink</A></B>(2)).
+
+La sémantique habituelle Unix s'applique&nbsp;; la socket peut être effacée
+à tout moment, et sera effectivement supprimée lorsque sa dernière référence
+sera fermée.
+<P>
+Pour passer un descripteur ou des identifiants, il faut envoyer ou recevoir
+au moins un octet de donnée.
+<P>
+Les sockets flux Unix ne supportent pas la notion de données hors-bande.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ENOMEM</B>
+
+<DD>
+Plus de mémoire.
+<DT><B>ECONNREFUSED</B>
+
+<DD>
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2)
+
+a été appelé sur une socket qui n'est pas en écoute. Ceci peut arriver si
+la socket distante n'existe pas ou si le fichier n'est pas une socket.
+<DT><B>EINVAL</B>
+
+<DD>
+Argument invalide. Une cause habituelle est l'oubli de AF_UNIX dans le champ
+sun_type de l'adresse passée ou lorsque la socket est dans un état
+invalide pour l'opération.
+<DT><B>EOPNOTSUPP</B>
+
+<DD>
+Opération de flux sur une socket non orientée flux, ou tentatice d'utiliser
+des options de données hors-bande.
+<DT><B>EPROTONOSUPPORT</B>
+
+<DD>
+Le protocole passé n'est pas PF_UNIX.
+<DT><B>ESOCKTNOSUPPORT</B>
+
+<DD>
+Type de socket inconu.
+<DT><B>EPROTOTYPE</B>
+
+<DD>
+La socket distante ne correspond pas au type local (SOCK_DGRAM vs.
+SOCK_STREAM)
+<DT><B>EADDRINUSE</B>
+
+<DD>
+L'adresse locale est déjà prise ou l'objet existe déjà dans le système de
+fichier.
+<DT><B>EISCONN</B>
+
+<DD>
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2)
+
+a été appelée sur une socket déjà connectée, ou l'adresse cible a été
+indiquée sur une socket connectée.
+<DT><B>ENOTCONN</B>
+
+<DD>
+L'opération nécessite une adresse cible, mais la socket n'est pas connectée.
+<DT><B>ECONNRESET</B>
+
+<DD>
+La socket distante a été fermée de manière inattendue.
+<DT><B>EPIPE</B>
+
+<DD>
+La socket distante, de type flux,  a été fermée. Dans ce cas un signal
+<B>SIGPIPE </B>
+
+est émis également. Ceci peut être évité en passant l'attribut
+<B>MSG_NOSIGNAL</B>
+
+dans 
+<B><A HREF="/cgi-bin/man/man2html?2+sendmsg">sendmsg</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+recvmsg">recvmsg</A></B>(2).
+
+<DT><B>EFAULT</B>
+
+<DD>
+Adresse mémoire utilisateur invalide.
+<DT><B>EPERM</B>
+
+<DD>
+L'émetteur a transmis des identifiants invalide dans la
+<B>struct ucred</B>.
+
+</DL>
+<P>
+
+D'autres erreurs peuvent être déclenchées par le niveau socket générique ou
+par le système de fichiers. Voir les pages de manuel correspondantes
+pour plus de détails.
+<A NAME="lbAK">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+recvmsg">recvmsg</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sendmsg">sendmsg</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+socketpair">socketpair</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+cmsg">cmsg</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?7+capabilities">capabilities</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7)
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Cette page de manuel a été écrite par Andi Kleen.
+<A NAME="lbAM">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">FORMAT D'ADRESSE</A><DD>
+<DT><A HREF="#lbAF">OPTIONS DES SOCKETS</A><DD>
+<DT><A HREF="#lbAG">MESSAGES ANNEXES</A><DD>
+<DT><A HREF="#lbAH">VERSIONS</A><DD>
+<DT><A HREF="#lbAI">NOTES</A><DD>
+<DT><A HREF="#lbAJ">ERREURS</A><DD>
+<DT><A HREF="#lbAK">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAL">AUTEUR</A><DD>
+<DT><A HREF="#lbAM">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:57 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,290 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of QUOTACTL</TITLE>
+</HEAD><BODY>
+<H1>QUOTACTL</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+quotactl - Manipuler les quotas de disque.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/quota.h">sys/quota.h</A>&gt;</B>
+
+<P>
+<B>int quotactl (int </B><I>cmd</I><B>, const char * </B><I>special</I><B>, int </B><I>id</I><B>,</B>
+
+<B>caddr_t </B><I>addr</I><B>);</B>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/linux/unistd.h">linux/unistd.h</A>&gt;</B>
+
+<P>
+<B>_syscall4 (int </B><I>quotactl</I><B>, int </B><I>cmd</I><B>, const char * </B><I>special</I><B>,</B>
+
+<B>int </B><I>id</I><B>, caddr_t </B><I>addr</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le système de quotas permet de définir pour chaque utilisateur et/ou
+groupe une limite souple et une limite impérative à
+la quantité d'espace disque utilisable sur un système de
+fichiers donné.
+<P>
+La limite impérative ne peut pas être dépassée. La limite
+souple peut être dépassée, mais des avertissements
+s'ensuivront. De plus l'utilisateur ne peut pas dépasser une
+limite souple pendant plus d'une semaine (par défaut)
+d'affilée. Une fois la semaine écoulée, la limite souple
+devient une limite impérative.
+<P>
+L'appel système
+<B>quotactl</B>
+
+manipule ces quotas. Son premier argument est de la forme
+<I>QCMD(</I><B>subcmd</B><I>,</I><B>type</B><I>)</I>
+
+ou
+<I>type</I>
+
+vaut soit
+<B>USRQUOTA</B>
+
+soit
+<B>GRPQUOTA</B>
+
+(respectivement pour les quotas d'utilisateur et de groupe), 
+et ou
+<I>subcmd</I>
+
+est décrit plus bas
+<P>
+Le second argument
+<I>special</I>
+
+est un périphérique par bloc auquel les quotas s'appliquent.
+Il doit être monté.
+<P>
+Le troisième argument
+<I>id</I>
+
+est l'identifiant de l'utilisateur ou du groupe auquel
+s'appliquent les quotas.
+<P>
+La quatrième argument
+<I>addr</I>
+
+est l'adresse d'une structure de données dépendant de la
+commande à utiliser.
+<P>
+La commande
+<I>subcmd</I>
+
+est dans la liste suivante :
+<DL COMPACT>
+<DT><B>Q_QUOTAON</B>
+
+<DD>
+Valider les quotas. L'argument
+<I>addr</I>
+
+est le chemin d'accès au fichier contenant les quotas pour le
+système de fichiers.
+<DT><B>Q_QUOTAOFF</B>
+
+<DD>
+Désactiver les quotas.
+<DT><B>Q_GETQUOTA</B>
+
+<DD>
+Obtenir les limites actuelles et l'utilisation courante de
+l'espace disque. L'argument
+<I>addr</I>
+
+est un pointeur sur une structure dqblk (définie dans
+<I>&lt;<A HREF="file:///usr/include/sys/quota.h">sys/quota.h</A>&gt;</I>).
+
+<DT><B>Q_SETQUOTA</B>
+
+<DD>
+Fixe la limite et l'utilisation actuelle.
+<I>addr</I>
+
+est identique à 
+<B>Q_GETQUOTA</B>
+
+<DT><B>Q_SETQLIM</B>
+
+<DD>
+Fixer les limites.
+<I>addr</I>
+
+est identique à 
+<B>Q_GETQUOTA</B>
+
+<DT><B>Q_SETUSE</B>
+
+<DD>
+Fixer l'utilisation.
+<DT><B>Q_SYNC</B>
+
+<DD>
+Synchroniser les quotas d'un système de fichiers.
+<DT><B>Q_GETSTATS</B>
+
+<DD>
+Obtenir des statistiques
+<P>
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>quotactl</B>
+
+renvoie 0 quand il réussit.
+En cas d'échec, -1 est renvoyé et
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ENOPKG</B>
+
+<DD>
+Le noyau n'a pas été compilé avec le support de quotas.
+<DT><B>EFAULT</B>
+
+<DD>
+Mauvaise valeur pour
+<I>addr.</I>
+
+<DT><B>EINVAL</B>
+
+<DD>
+<I>type</I>
+
+n'est pas un type de quota supporté. Ou bien
+<I>special</I>
+
+n'a pas pu être trouvé.
+<DT><B>ENOTBLK</B>
+
+<DD>
+<I>special</I>
+
+n'est pas un périphérique bloc.
+<DT><B>ENODEV</B>
+
+<DD>
+<I>special</I>
+
+n'est pas dans la table de montage.
+<DT><B>EACCES</B>
+
+<DD>
+Le fichier de quotas n'est pas un fichier ordinaire.
+<DT><B>EIO</B>
+
+<DD>
+Impossible de lire ou d'écrire le fichier de quotas.
+<DT><B>EMFILE</B>
+
+<DD>
+Trop de fichiers ouverts, impossible d'ouvrir le 
+fichier des quotas
+<DT><B>EBUSY</B>
+
+<DD>
+<B>Q_QUOTAON</B>
+
+a été requis mais les quotas sont déjà actifs.
+<DT><B>ESRCH</B>
+
+<DD>
+<B>Q_GETQUOTA</B>
+
+ou
+<B>Q_SETQUOTA</B>
+
+ou
+<B>Q_SETUSE</B>
+
+ou
+<B>Q_SETQLIM</B>
+
+ont été requis sur  système de fichiers n'ayant pas de
+quotas actifs.
+<DT><B>EPERM</B>
+
+<DD>
+Le processus n'est pas root (pour le système de fichiers)
+et
+<B>Q_GETQUOTA</B>
+
+a été requis pour un autre identifiant
+<I>id</I>
+
+que celui du processus, ou une commande autre que
+<B>Q_GETSTATS</B>
+
+ou
+<B>Q_SYNC</B>
+
+a été réclamée.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+quota">quota</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getrlimit">getrlimit</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setrlimit">setrlimit</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+ulimit">ulimit</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?8+quotacheck">quotacheck</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+quotaon">quotaon</A></B>(8)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:59 GMT, February 11, 2014
+</BODY>
+</HTML>

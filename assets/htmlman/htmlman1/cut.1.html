@@ -1,0 +1,135 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CUT</TITLE>
+</HEAD><BODY>
+<H1>CUT</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+cut - Supprimer une partie de chaque ligne d'un fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>cut</B>
+
+{-b liste_octets, --bytes=liste_octets} [-n] [--help] [--version] [fichier...]
+<P>
+<B>cut</B>
+
+{-c liste_caractères, --characters=liste_caractères}
+[--help] [--version] [fichier...]
+<P>
+<B>cut</B>
+
+{-f liste_champs, --fields=liste_champs} [-d séparateur] [-s]
+[--delimiter=séparateur] [--only-delimited] [--help] [--version] [fichier...]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>cut</B>.
+
+<P>
+<B>cut</B>
+
+affiche une partie de chaque ligne de chacun des fichiers mentionnés, ou
+de l'entrée standard si aucun fichier n'est indiqué. Un nom de fichier
+`-' correspond également à l'entrée standard.
+<P>
+La partie affichée est sélectionnée par les options présentées ci-dessous.
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+Les
+<I>liste_d_octets</I>,
+
+<I>liste_de_caractères</I>,
+
+et
+<I>liste_de_champs</I>
+
+se présentent sous forme d'un ou plusieurs nombres ou intervalles (deux nombres
+séparés par un tiret), séparés par des virgules.
+La numérotation des octets, caractères ou champs commence à 1.
+Des intervalles incomplets peuvent être indiqués : `-m' signifiant
+`1-m'; `n-' signifiant de `n' à la fin de la ligne.
+<DL COMPACT>
+<DT><I>-b, --bytes liste_d_octets</I>
+
+<DD>
+Afficher uniquement les octets aux positions indiquées dans la
+<I>liste_d_octets</I>.
+
+Les tabulations et les caractères BackSpaces sont traités comme tous les
+autres caractères, ils occupent 1 octet.
+<DT><I>-c, --characters liste_de_caractères</I>
+
+<DD>
+Afficher uniquement les caractères aux positions indiquées dans la
+<I>liste_de_caractères</I>.
+
+Pour l'instant c'est équivalent à -b,
+mais cette option différera avec l'internationalisation.
+Les tabulations et les caractères BackSpaces sont traités comme tous les
+autres caractères, ils occupent 1 caractère.
+<DT><I>-f, --fields liste_de_champs</I>
+
+<DD>
+N'afficher que les champs indiqués dans la
+<I>liste_de_champs</I>.
+
+Les champs sont séparés, par défaut, par une Tabulation.
+<DT><I>-d, --delimiter séparateur</I>
+
+<DD>
+Avec -f, les champs sont délimités par le premier caractère du
+<I>séparateur</I>
+
+à la place de la Tabulation.
+<DT><I>-n</I>
+
+<DD>
+Ne pas couper les caractères multi-octets (sans effet pour le moment).
+<DT><I>-s, --only-delimited</I>
+
+<DD>
+Avec -f, ne pas afficher les lignes qui ne contiennent pas le caractère
+séparateur de champs.
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et terminer normalement.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et terminer normalement.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:47 GMT, February 11, 2014
+</BODY>
+</HTML>

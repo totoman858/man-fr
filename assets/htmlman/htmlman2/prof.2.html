@@ -1,0 +1,90 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of UNIMPLEMENTED</TITLE>
+</HEAD><BODY>
+<H1>UNIMPLEMENTED</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+afs_syscall, break, ftime, getpmsg, gtty, lock, mpx, prof, profil, putmsg, security, stty, ulimit - Appels systèmes non implémentés.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ces appels systèmes ne sont pas implémentés dans le noyau Linux 2.4.
+<A NAME="lbAD">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Tous ces appels systèmes renvoient -1 et
+<I>errno</I>
+
+contient le code d'erreur
+<B>ENOSYS</B>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTE</H2>
+
+Remarquez que
+<I><A HREF="/cgi-bin/man/man2html?3+ftime">ftime</A></I>(3),
+
+<I><A HREF="/cgi-bin/man/man2html?3+profil">profil</A></I>(3),
+
+et
+<I><A HREF="/cgi-bin/man/man2html?3+ulimit">ulimit</A></I>(3)
+
+sont implémentés comme des fonctions de bibliothèque.
+<P>
+Certains appels-systèmes comme
+<I><A HREF="/cgi-bin/man/man2html?2+alloc_hugepages">alloc_hugepages</A></I>(2),
+
+<I><A HREF="/cgi-bin/man/man2html?2+free_hugepages">free_hugepages</A></I>(2),
+
+<I><A HREF="/cgi-bin/man/man2html?2+ioperm">ioperm</A></I>(2),
+
+<I><A HREF="/cgi-bin/man/man2html?2+iopl">iopl</A></I>(2),
+
+et 
+<I><A HREF="/cgi-bin/man/man2html?2+vm86">vm86</A></I>(2)
+
+n'existent que sur certaines architectures.
+<P>
+Certains appels-systèmes comme
+<I><A HREF="/cgi-bin/man/man2html?2+ipc">ipc</A></I>(2),
+
+et
+<I>{create,init,delete}<A HREF="/cgi-bin/man/man2html?2+_module">_module</A></I>(2)
+
+n'existent que si le noyau Linux a été compilé avec les options de support
+adéquates.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+obsolete">obsolete</A></B>(2)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAE">NOTE</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:02 GMT, February 11, 2014
+</BODY>
+</HTML>

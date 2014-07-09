@@ -1,0 +1,99 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STPCPY</TITLE>
+</HEAD><BODY>
+<H1>STPCPY</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+stpcpy - Copier une chaîne en renvoyant un pointeur sur sa fin.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/string.h">string.h</A>&gt;</B>
+
+<B>char *stpcpy (char *</B><I>dest</I><B>, const char *</B><I>src</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>stpcpy()</B> copie la chaine pointée par <I>src</I>
+(y compris le caractère `\0' final) dans la chaine pointée par
+<I>dest</I>.  Les deux chaînes ne doivent pas se chevaucher, et la chaîne
+<I>dest</I> doit être assez grande pour accueillir la copie.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>stpcpy()</B> renvoie un pointeur sur la <B>fin</B> de la chaîne
+<I>dest</I> (c'est à dire l'adresse du caractère nul final)
+au lieu du début.
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+Par exemple, ce programme utilise <B>stpcpy</B> pour concaténer <B>foo</B> et
+<B>bar</B> produisant ainsi <B>foobar</B>, qui est alors affichée.
+<PRE>
+
+   #include &lt;<A HREF="file:///usr/include/string.h">string.h</A>&gt;
+
+   int
+   main (void)
+   {
+      char buffer [7];
+      char *vers = buffer;
+      vers = stpcpy (vers, &quot;foo&quot;);
+      vers = stpcpy (vers, &quot;bar&quot;);
+      printf (&quot;%s\n&quot;, buffer);
+   }
+</PRE>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Cette fonction ne fait partie ni du standard ANSI ni de POSIX, elle n'est
+pas spécifique Unix, et n'est pas une extension GNU.
+Peut-être vient-elle de l'environnement MS-DOS...
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+strcpy">strcpy</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+bcopy">bcopy</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+memccpy">memccpy</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+memcpy">memcpy</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+memmove">memmove</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">EXEMPLE</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:20 GMT, February 11, 2014
+</BODY>
+</HTML>

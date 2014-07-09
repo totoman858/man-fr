@@ -1,0 +1,501 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of VIM</TITLE>
+</HEAD><BODY>
+<H1>VIM</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 7 Août 2000<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+vim - Vi IMproved, un éditeur de texte pour les programmeurs.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<BR>
+
+<B>vim</B>
+
+[options] [file ..]
+<BR>
+
+<B>vim</B>
+
+[options] -
+<BR>
+
+<B>vim</B>
+
+[options] -t tag
+<BR>
+
+<B>vim</B>
+
+[options] -q [fic_erreur]
+<P>
+
+<BR>
+
+<B>ex</B>
+
+<BR>
+
+<B>view</B>
+
+<BR>
+
+<B>gvim</B>
+
+<B>gview</B>
+
+<BR>
+
+<B>rvim</B>
+
+<B>rview</B>
+
+<B>rgvim</B>
+
+<B>rgview</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>Vim</B>
+
+est un éditeur de texte compatible avec VI.
+On peut l'utiliser pour éditer tout texte ASCII.
+Il est particulièrement adapté pour l'édition de programmes.
+<P>
+
+Il comporte de nombreuses améliorations par rapport à VI: 'annulation'
+multi-niveaux, fenêtres et tampons multiples, coloration syntaxique,
+édition de la ligne de commandes, complétion des noms de fichiers, aide
+en ligne,
+sélection visuelle, etc...
+Voir &quot;:help vi_diff.txt&quot; pour un sommaire des différences entre
+<B>Vim</B>
+
+et Vi.
+<P>
+
+Pendant l'exécution de
+<B>Vim</B>
+
+on peut obtenir toute une aide par le système d'aide_en_ligne grâce à la
+commande &quot;:help&quot;. Voir la section AIDE plus bas.
+<P>
+
+Le plus souvent
+<B>Vim</B>
+
+est lancé pour éditer un simple fichier avec la commande
+<P>
+
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>vim fichier<BR>
+<P>
+
+Plus généralement
+<B>Vim</B>
+
+est lancé avec&nbsp;:
+<P>
+
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>vim [options] [liste_de_fichiers]<BR>
+<P>
+
+Si la liste_de_fichiers est omise, l'éditeur démarre avec un tampon
+vide. Autrement on pourra invoquer l'un des points suivants pour choisir
+au moins un fichier à éditer.
+<DL COMPACT>
+<DT>fichier ..<DD>
+Une liste de noms de fichiers.
+Le premier sera le fichier courant et lu dans le tampon.
+Le curseur sera activé sur la première ligne du tampon.
+Vous pouvez visualiser les autres fichiers avec la commande &quot;:next&quot;.
+Pour éditer un fichier commençant par un tiret, préfixer la liste des
+fichiers par &quot;--&quot;.
+<DT>-<DD>
+Le fichier à éditer est lu sur stdin. Les commandes sont lues depuis
+stderr, qui devrait être un terminal.
+<DT>-t {tag}<DD>
+Le fichier à éditer ainsi que la position initiale du curseur dépendent
+d'un &quot;tag&quot;, une sorte de label goto.
+{tag} est recherché dans le fichier des tags, le fichier correspondant
+devient le fichier courant et la commande associée est exécutée.
+Surtout employé dans les programmes en C, auquel cas {tag} pourrait être
+le nom d'une fonction.
+Au final, le fichier contenant cette fonction devient le fichier
+courant et le curseur est activé au début de la fonction.
+Voir &quot;:help tag-commands&quot;.
+<DT>-q [fic_erreur]<DD>
+Démarrer en mode quickFix.
+Le fichier [fic_erreur] est lu et la première erreur est affichée.
+Si [fic_erreur] est omis, le nom de fichier est obtenu par l'option
+'errorfile' (&quot;AztecC.Err&quot; par défaut pour l'Amiga, &quot;errors.err&quot; sur
+d'autres systèmes).
+Les erreurs suivantes peuvent être atteintes avec la commande &quot;:cn&quot;.
+Voir &quot;:help quickfix&quot;.
+</DL>
+<P>
+
+<B>Vim</B>
+
+se comporte différemment selon le nom de la commande (l'exécutable peut
+cependant être le même fichier).
+<DL COMPACT>
+<DT>vim<DD>
+La façon &quot;normale&quot;, tout est par défaut.
+<DT>ex<DD>
+Démarre en mode ex.
+Passer en mode Normal avec la commande &quot;:vi&quot;.
+S'obtient aussi avec l'argument &quot;-e&quot;.
+<DT>view<DD>
+Démarre en mode lecture-seule. Toute modification des fichiers est
+impossible. S'obtient aussi avec l'argument &quot;-R&quot;.
+<DT>gvim gview<DD>
+La version IHM graphique.
+Ouvre une nouvelle fenêtre.
+S'obtient aussi avec l'argument &quot;-g&quot;.
+<DT>rvim rview rgvim rgview<DD>
+Comme ci-dessus, mais avec des restrictions. Il ne sera pas possible de
+démarrer un nouveau shell, ou de suspendre
+<B>Vim.</B>
+
+S'obtient aussi avec l'argument &quot;-Z&quot;.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+Les options peuvent être passées dans n'importe quel ordre, avant ou
+après les noms de fichier. Des options sans argument peuvent être
+combinées après un unique tiret.
+<DL COMPACT>
+<DT>+[num]<DD>
+Pour le premier fichier le curseur sera activé sur la ligne &quot;num&quot;. Si
+&quot;num&quot; est omis, le curseur sera activé sur la dernière ligne.
+<DT>+/{mot}<DD>
+Pour le premier fichier le curseur sera activé sur la première
+occurence de {mot}.
+Voir &quot;:help search-pattern&quot; pour les motifs de recherche disponibles.
+<DT>+{commande}<DD>
+<DT>-c {commande}<DD>
+La {commande} sera exécutée après lecture du premier fichier.
+La {commande} est interprétée comme une commande Ex.
+Si la {commande} contient des espaces elle doit être entourée de
+guillemets (cela dépend du shell qui est utilisé).
+Exemple&nbsp;: Vim &quot;+set si&quot; main.c
+<BR>
+
+Note&nbsp;: Vous pouvez utiliser jusqu'à 10 commandes &quot;+&quot; ou &quot;-c&quot;.
+<DT>-b<DD>
+Mode binaire.
+Quelques options sont activées rendant possible l'édition d'un
+fichier binaire ou exécutable.
+<DT>-C<DD>
+Compatible. Activer l'option &quot;compatible&quot;.
+<B>Vim</B>
+
+se comportera alors quasiment comme Vi, même s'il existe un fichier .vimrc.
+<DT>-d {device}<DD>
+Ouverture de {device} comme terminal.
+Seulement sur l'Amiga.
+Exemple&nbsp;:
+&quot;-d con:20/30/600/150&quot;.
+<DT>-e<DD>
+Lancer
+<B>Vim</B>
+
+En mode Ex, comme si l'exécutable s'appelait &quot;ex&quot;
+<DT>-f<DD>
+Foreground. 
+<B>Vim</B>
+
+ne passe pas en arrière-plan. Plus particulièrement, pour la version IHM
+<B>Vim</B>
+
+ne fork pas et ne se détache pas du shell d'où il a été appelé.
+Sur l'Amiga,
+<B>Vim</B>
+
+n'est pas redémarré pour ouvrir une nouvelle fenêtre.
+Cette option devrait être utilisée quand
+<B>Vim</B>
+
+est exécuté par un programme qui attendra la fin de la session d'édition
+(ex. mail).
+Sur l'Amiga les commandes &quot;:sh&quot; et &quot;:!&quot; ne marcheront pas.
+<DT>-F<DD>
+Si
+<B>Vim</B>
+
+a été compilé avec le support FKMAP pour le clavier Farsi et pour
+l'édition des fichiers orientés de droite à gauche, cette option lance 
+<B>Vim</B>
+
+en mode Farsi, c-a-d que 'fkmap' et 'rightleft' sont activés.
+Sinon un message d'erreur apparaît et 
+<B>Vim</B>
+
+s'interrompt.
+<DT>-g<DD>
+Si
+<B>Vim</B>
+
+a été compilé avec le support IHM, cette option autorise l'IHM.
+Si aucun support IHM n'a été compilé, un message d'erreur apparaît et
+<B>Vim</B>
+
+s'interrompt.
+<DT>-h<DD>
+Donne un minimum d'aide sur les arguments et options de la ligne de
+commande.
+Après ça
+<B>Vim</B>
+
+s'éteint.
+<DT>-H<DD>
+Si
+<B>Vim</B>
+
+a été compilé avec le support RIGHTLEFT pour l'édition de fichiers
+orientés de droite à gauche et le clavier Hébreu, cet option lance
+<B>Vim</B>
+
+en mode Hébreu, c-à-d que 'hkmap' et 'rightleft' sont activés.
+Sinon un message d'erreur apparaît et 
+<B>Vim</B>
+
+s'interrompt.
+<DT>-i {viminfo}<DD>
+Lorsque le fichier viminfo est autorisé, cette option indique le
+fichier à utiliser à la place du &quot;~/.viminfo&quot; par défaut.
+Ceci peut aussi être employé pour désactiver l'utilisation du fichier .viminfo,
+en passant le nom &quot;NONE&quot;.
+<DT>-L<DD>
+Comme -r.
+<DT>-l<DD>
+Mode lisp .
+Active les option 'lisp' et 'showmatch'.
+<DT>-m<DD>
+Désactive la modification des fichiers.
+Désactive l'option 'write', écrire dans des fichiers n'est alors plus
+possible.
+<DT>-N<DD>
+Mode no-compatible.  Désactive l'option 'compatible' .
+<B>Vim</B>
+
+se comportera alors un peu mieux, mais moins compatible Vi, même s'il
+n'existe pas de fichier .vimrc.
+<DT>-n<DD>
+Pas de fichier swap utilisé.
+La récupération après plantage sera impossible.
+Utile si vous voulez éditer un fichier sur un medium très lent (ex.
+disquette).
+Peut aussi être obtenu avec &quot;:set uc=0&quot;.
+Peut être désactivé par &quot;:set uc=200&quot;.
+<DT>-o[N]<DD>
+Ouvre N fenêtres.
+Lorsque N est omis, ouvre une fenêtre pour chaque fichier.
+<DT>-R<DD>
+Mode Lecture-seule.
+L'option 'readonly' sera activée.
+Vous pouvez toujours éditer le buffer, mais serez prévenu d'un
+écrasement accidentel du fichier.
+Si vous voulez modifier un fichier, ajoutez un point d'exclamation à la
+commande Ex, comme dans &quot;:w!&quot;.
+L'option -R implique aussi l'option -n (voir plus haut).
+L'option 'readonly' peut être désactivée avec &quot;:set noro&quot;.
+Voir &quot;:help 'readonly'&quot;. 
+<DT>-r<DD>
+Liste les fichiers de swap, avec l'information sur leur utilisation pour
+récupération.
+<DT>-r {file}<DD>
+Mode de récupération.
+Le fichier de swap est utilisé pour récupérer une session d'édition
+plantée.
+Le fichier de swap est un fichier de même nom que le fichier texte avec
+&quot;.swap&quot; en suffixe.
+Voir &quot;:help recovery&quot;.
+<DT>-s<DD>
+Mode silencieux. Seulement pour un démarrage à la &quot;Ex&quot; ou quand l'option
+&quot;-e&quot; est passée avant l'option &quot;-s&quot;.
+<DT>-s {scriptin}<DD>
+Le fichier de script {scriptin}  est lu.
+Les caractères du fichier sont interprétés comme si vous les tapiez.
+La même chose peut-être obtenue avec la commande &quot;:source! {scriptin}&quot;.
+Si la fin du fichier est atteinte avant que l'éditeur ne s'arrête, des
+caractères supplémentaires sont lus au clavier.
+<DT>-T {terminal}<DD>
+Indique à 
+<B>Vim</B>
+
+le nom du terminal que vous utilisez.
+Seulement nécessaire lorsque la détection automatique ne
+fonctionne pas.
+Devrait être un terminal connu de
+<B>Vim</B>
+
+(builtin) ou défini dans le fichier termcap ou terminfo.
+<DT>-u {vimrc}<DD>
+Utilise les commandes du fichier {vimrc} pour les initialisations.
+Toutes les autres initialisations sont ignorées.
+Utiliser cela pour éditer des fichiers de type particulier.
+Peut aussi être utilisé pour ignorer toute initialisation en passant le
+nom &quot;NONE&quot;.
+Voir &quot;:help initialization&quot; au sein de vim pour plus de détails.
+<DT>-U {gvimrc}<DD>
+Utilise les commandes dans le fichier {gvimrc}  pour des initialisations
+IHM.
+Toutes les autres initialisations IHM sont ignorées.
+Peut aussi être utilisé pour ignorer toute initialisation IHM en passant
+le nom &quot;NONE&quot;.
+Voir &quot;:help gui-init&quot; au sein de vim pour plus de détails.
+<DT>-V<DD>
+Mode volubile.  Donne des messages sur les fichiers qui sont sourcés ainsi que
+sur la lecture et l'écriture d'un fichier viminfo.
+<DT>-v<DD>
+Lance 
+<B>Vim</B>
+
+en mode Vi, exactement comme si l'exécutable s'appelait &quot;vi&quot;. Cela n'a
+d'effet que si l'exécutable s'appelle &quot;ex&quot;.
+<DT>-w {scriptout}<DD>
+Tous les caractères que vous tapez sont enregistrés dans le fichier
+{scriptout}, jusqu'à ce que vous quittiez
+<B>Vim.</B>
+
+Ceci est utile si vous voulez créer un fichier de script à utiliser avec
+&quot;vim&nbsp;-s&quot; ou &quot;:source&nbsp;!&quot;
+Si le fichier {scriptout} existe, les caractères sont ajoutés à la fin.
+<DT>-W {scriptout}<DD>
+Comme -w, mais un fichier existant sera écrasé.
+<DT>-x<DD>
+Utiliser le cryptage lors de l'écriture de fichiers. Demandera une clef
+de cryptage.
+<DT>-Z<DD>
+Mode restreint. Fonctionne comme quand l'exécutable démarre avec &quot;r&quot;.
+<DT>--<DD>
+Signale la fin des options.
+Les arguments suivants seront interprétés comme nom de fichier.
+Ce peut être utilisé pour éditer un fichier commençant par '-'.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>AIDE EN LIGNE</H2>
+
+Taper &quot;:help&quot; dans
+<B>Vim</B>
+
+pour commencer.
+Taper &quot;:help sujet&quot; pour obtenir de l'aide sur un sujet précis.
+Par exemple&nbsp;: &quot;:help ZZ&quot; pour de l'aide sur la commande &quot;ZZ&quot;.
+Utiliser &lt;Tab&gt; et CTRL-D pour compléter les sujets (&quot;:help cmdline-completion&quot;).
+Des tags sont là pour sauter d'un endroit à un autre (comme des liens
+hypertexte, voir &quot;:help&quot;).
+Tous les fichiers de documentation peuvent être visualisés de cette
+façon, par exemple &quot;:help syntax.txt&quot;.
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT>/usr/local/lib/vim/doc/*.txt<DD>
+Les fichiers de documentation de
+<B>Vim.</B>
+
+Utiliser &quot;:help doc-file-list&quot; pour en avoir la liste complète.
+<DT>/usr/local/lib/vim/doc/tags<DD>
+Les fichiers de tags utilisés pour trouver l'information dans les
+fichiers de documentation.
+<DT>/usr/local/lib/vim/syntax/syntax.vim<DD>
+Initialisations système générales pour la syntaxe.
+<DT>/usr/local/lib/vim/syntax/*.vim<DD>
+Fichiers de syntaxe pour différents langages.
+<DT>/usr/local/lib/vim/vimrc<DD>
+Initialisations système générales de 
+<B>Vim.</B>
+
+<DT>/usr/local/lib/vim/gvimrc<DD>
+Initialisations système générales de gvim.
+<DT>/usr/local/lib/vim/optwin.vim<DD>
+Script utilisé pour la commande &quot;:options&quot;, une façon élégante de voir
+et d'activer les options. 
+<DT>/usr/local/lib/vim/menu.vim<DD>
+Initialisations menu générales pour gvim.
+<DT>/usr/local/lib/vim/bugreport.vim<DD>
+Script pour générer un rapport de bug. Voir &quot;:help bugs&quot;.
+<DT>/usr/local/lib/vim/filetype.vim<DD>
+Script pour détecter le type d'un fichier par son nom.
+Voir &quot;:help 'filetype'&quot;.
+<DT>/usr/local/lib/vim/scripts.vim<DD>
+Script pour détecter le type d'un fichier par son contenu.
+Voir &quot;:help 'filetype'&quot;.
+</DL>
+<P>
+
+Pour infos récentes lire la home page VIM/ :
+<BR>
+
+&lt;URL:<A HREF="http://www.vim.org/">http://www.vim.org/</A>&gt;
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+vimtutor">vimtutor</A>(1)
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+La majeur partie de 
+<B>Vim</B>
+
+a été conçue par Bram Moolenaar, avec l'aide de beaucoup d'autres
+contributeurs.
+Voir &quot;:help credits&quot;.
+<BR>
+
+<B>Vim</B>
+
+est basé sur Stevie, maintenu par: Tim Thompson,
+Tony Andrews et G.R. (Fred) Walter.
+Cependant, il reste très peu de choses du code original.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Probablement.
+Voir &quot;:help todo&quot; pour une liste de problèmes connus.
+<P>
+
+Remarquer que bon nombre de points qui pourraient être considérés comme
+des bugs par certains, sont en fait dus à une reproduction trop fidèle
+du comportement de VI. Et si vous pensez que d'autres points sont des
+bugs &quot;parce que Vi le fait différemment&quot;, vous devriez jeter un oeil plus
+attentif au fichier vi_diff.txt (ou taper :help vi_diff.txt dans Vim).
+Regardez aussi les options 'compatible' et 'coptions'.
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Richard Hitier, 2000.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">AIDE EN LIGNE</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">AUTEUR</A><DD>
+<DT><A HREF="#lbAJ">BOGUES</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:47 GMT, February 11, 2014
+</BODY>
+</HTML>

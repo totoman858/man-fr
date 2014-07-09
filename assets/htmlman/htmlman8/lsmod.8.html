@@ -1,0 +1,113 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LSMOD</TITLE>
+</HEAD><BODY>
+<H1>LSMOD</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+lsmod - Afficher la liste des modules du noyau chargés en mémoire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>lsmod</B>
+
+[-hV]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>lsmod</B>
+
+affiche des informations sur les modules du noyau chargés en mémoire.
+<P>
+
+Le format est : nom, taille, compteur d'usage, liste des modules
+l'utilisant. Les informations affichées sont identiques à celles
+de /proc/modules.
+<P>
+
+Si le module gère son propre déchargement à l'aide d'une routine
+<I>can_unload</I>
+
+alors le compteur d'usage affiché est toujours -1, quelque soit
+la vraie valeur.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-h</B>, <B>--help</B>
+
+<DD>
+Affiche une page d'aide.
+<DT><B>-V</B>, <B>--version</B>
+
+<DD>
+Affiche le numéro de version et se termine.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+insmod">insmod</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+modprobe">modprobe</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+depmod">depmod</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+rmmod">rmmod</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ksyms">ksyms</A>(8)</B>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+La modularisation du noyau a été conçue par un illustre inconnu dont le nom n'a
+pas été retenu.
+<BR>
+
+La version initiale pour Linux a été écrite par  Bas Laarhoven &lt;<A HREF="mailto:bas@vimec.nl">bas@vimec.nl</A>&gt;
+<BR>
+
+Version 0.99.14 par Jon Tombs &lt;<A HREF="mailto:jon@gtex02.us.es">jon@gtex02.us.es</A>&gt;
+<BR>
+
+Amélioré par Bjorn Ekwall &lt;<A HREF="mailto:bj0rn@blox.se">bj0rn@blox.se</A>&gt;
+<BR>
+
+Réécrit au gout du jour dans la version 2.1.17 du noyau par Richard Henderson
+&lt;<A HREF="mailto:rth@tamu.edu">rth@tamu.edu</A>&gt; (Décembre 1996)
+<BR>
+
+Mise à jour par Bjorn Ekwall &lt;<A HREF="mailto:bj0rn@blox.se">bj0rn@blox.se</A>&gt; en mars 1999
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 1999-2000.
+
+<BR>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:04 GMT, February 11, 2014
+</BODY>
+</HTML>

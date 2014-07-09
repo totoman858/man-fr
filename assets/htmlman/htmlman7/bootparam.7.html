@@ -1,0 +1,1890 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of BOOTPARAM</TITLE>
+</HEAD><BODY>
+<H1>BOOTPARAM</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+bootparam - Introduction aux paramètres de démarrage du noyau Linux.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le noyau Linux accepte un certain nombre d'options en ligne de commande, aussi
+appelées paramètres de démarrage, au moment où il est chargé. En général ceci est
+utilisé principalement pour fournir au noyau des informations sur les paramètres
+matériels, qu'il serait incapable de déterminer seul, ou pour éviter/remplacer
+les valeurs qu'il détecterait normalement.
+<P>
+Quand le noyau est démarre directement par le BIOS (par exemple depuis une
+disquette sur laquelle le noyau a été copié en utilisant `cp zImage /dev/fd0'),
+il n'y a pas de possibilités de préciser des paramètres.
+Aussi, afin de tirer parti de ces possibilités, vous devez utiliser un chargeur
+capable de transmettre les options, comme Lilo ou loadlin.
+Pour un petit nombre de paramètres, on peut également modifier l'image du noyau
+elle-même, en utilisant 
+<B><A HREF="/cgi-bin/man/man2html?8+rdev">rdev</A></B>(8).
+
+<P>
+Le programme LILO (LInux LOader) de Werner Almesberger est le plus utilisé.
+<BR>&nbsp;Il&nbsp;permet&nbsp;de&nbsp;démarrer&nbsp;des&nbsp;noyaux&nbsp;divers,&nbsp;et&nbsp;de&nbsp;mémoriser&nbsp;la&nbsp;configuration
+dans un fichier de texte.(Voir
+<B><A HREF="/cgi-bin/man/man2html?8+lilo">lilo</A></B>(8)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?5+lilo.conf">lilo.conf</A></B>(5).)
+
+LILO peut démarrer DOS, OS/2, Linux, FreeBSD, etc. et est assez souple d'emploi.
+<P>
+L'autre chargeur classique de Linux est `LoadLin', un programme DOS, qui peut
+démarrer un noyau Linux depuis une session DOS (avec des arguments)
+à condition que certaines ressources soient disponibles.
+Ceci est très utile pour les personnes désirant lancer Linux depuis le DOS.
+<P>
+LoadLin est également particulièrement utile s'il y a des périphériques qui
+nécessitent un driver DOS pour placer le matériel dans un état donné.
+Un exemple classique est celui des cartes sonores `Compatibles SoundBlaster'
+qui ont besoin d'un driver DOS pour manipuler des registres exotiques afin
+de placer la carte dans un mode compatible SB. Démarrer le DOS pour initialiser
+la carte avec le driver en question, puis charger Linux depuis le prompt du
+DOS avec LoadLin évitera la réinitialisation de la carte au redémarrage.
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>LISTE D'ARGUMENTS</H2>
+
+<P>
+La ligne de commande du noyau est une liste de chaînes de caractères
+(les arguments) séparées par des espaces.  
+La plupart des arguments de démarrages ont la forme suivante&nbsp;:
+<DL COMPACT>
+<DT><DD>
+nom[=valeur_1][,valeur_2]...[,valeur_10]
+</DL>
+<P>
+
+où `nom' est un mot-clé unique utilisé pour identifier la partie du noyau à
+laquelle les valeurs éventuelles sont associées. Les arguments multiples sont
+présentés les uns après les autres, séparés par des virgules.
+Notez que la limite de 10 valeurs est réelle, le code actuel n'en acceptant
+pas plus. (Néanmoins, vous pouvez ré-utiliser le même mot-clé avec 10
+paramètres supplémentaires dans certaines situations inhabituelles,
+en espérant que la fonction d'initialisation les supportera).
+<P>
+La plupart du traitement a lieu dans 
+<I>linux/init/main.c</I>.
+
+Tout d'abord le noyau vérifie si l'argument est l'un des mots-clés
+<B>root=</B>, <B>nfsroot=</B>, <B>nfsaddrs=</B>, <B>ro</B>, <B>rw</B> , <B>debug</B>,
+
+ou
+<B>init</B>.
+
+La signification de ces options est donnée plus bas.
+<P>
+Ensuite il parcourt une liste de fonctions d'initialisation (contenue dans la
+table bootsetups) pour vérifier si la chaîne de l'argument spécifiée (par exemple `foo')
+est associée avec une fonction d'initialisation (`foo_setup()') pour un périphérique
+ou une partie du noyau. Si l'on transmet la ligne foo=3,4,5,6 alors le noyau cherchera
+dans la table bootsetups si `foo' est enregistré. S'il l'est, le noyau appellera
+la fonction associée à `foo' (foo_setup()) en lui passant les arguments 3, 4, 5 et 6
+donnés sur la ligne de commande.
+<P>
+Tout ce qui est de la forme `foo=bar' et qui ne concerne pas une fonction 
+d'initialisation est interprété comme une variable d'environnement à fixer. Un
+exemple (inutile ?) serait l'utilisation de `TERM=vt100' comme argument de démarrage.
+<P>
+Les arguments restants, qui n'ont pas été interceptés par le noyau, et qui ne sont
+pas interprétés comme des variables d'environnement, seront passés au processus
+numéro un, habituellement <B>init</B>. L'argument le plus courant dans ce cas
+est `single' qui indique à <B>init</B> de démarrer en mode mono-utilisateur,
+sans lancer les démons.
+Regardez la page de manuel de la version d'init installé sur votre système pour
+connaître les arguments qu'il accepte.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>ARGUMENTS GÉNÉRAUX NON SPÉCIFIQUES À UN PÉRIPHÉRIQUE</H2>
+
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H3>`init=...'</H3>
+
+Ceci fournit une commande initiale à faire exécuter par le noyau.
+Si ce paramètre n'est pas fourni, ou est introuvable, le noyau
+essaiera successivement&nbsp;:
+<I>/etc/init</I>,
+
+<I>/bin/init</I>,
+
+<I>/sbin/init</I>,
+
+<I>/bin/sh</I>
+
+et paniquera si tout cela échoue.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H3>`nfsaddrs=...'</H3>
+
+Ceci permet de fournir une adresse de démarrage nfs. Cette adresse
+est utilisée en cas de démarrage depuis un réseau.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H3>`nfsroot=...'</H3>
+
+<P>
+Ceci indique le nom nfs de la racine. Si cette chaîne ne commence
+ni par '/' ni par ',' ni par un chiffre, elle est alors préfixée
+automatiquement par `/tftpboot/'.
+Ceci est utilisé en cas de démarrage depuis un réseau.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H3>`no387'</H3>
+
+<P>
+(Uniquement si la constante CONFIG_BUGi386 est définie.)
+Certains coprocesseurs i387 ont des bogues qui apparaissent en mode protégé 32 bits.
+par exemple, les premiers ULSI-387 bloquaient le système durant l'exécution des
+opérations en virgule flottante.
+Si l'argument `no387' est indiqué, Linux ignore le coprocesseur arithmétique même
+s'il en détecte un. Bien sûr, le noyau doit être compilé avec l'option d'émulation
+mathématique.
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H3>`no-hlt'</H3>
+
+<P>
+(Uniquement si la constante CONFIG_BUGi386 est définie.)
+Certaines puces i486DX-100 anciennes ont un problème avec l'instruction `hlt', en
+ceci qu'elle ne pouvaient pas reprendre fiablement le cours des opérations après
+l'utilisation de `hlt'. L'option `no-hlt' indique à Linux d'utiliser une boucle
+infinie quand il n'a rien à faire et de ne pas arrêter le CPU. 
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H3>`root=...'</H3>
+
+<P>
+Cet argument indique au noyau quel périphérique doit être utilisé comme système
+de fichiers racine pendant le démarrage. La configuration par défaut est déterminée
+lors de la compilation du noyau, et est généralement égale à la racine du système
+de fichiers utilise lors de la compilation.
+Pour surcharger cette valeur, et sélectionner par exemple le second lecteur de
+disquette, on utilisera `root=/dev/fd1'. (le périphérique racine peut également
+être configuré en utilisant
+<B><A HREF="/cgi-bin/man/man2html?8+rdev">rdev</A></B>(8).)
+
+<P>
+Le périphérique racine peut être spécifié de manière symbolique ou numérique.
+Une spécification symbolique a la forme /dev/XXYN, où XX désigne un type de
+périphérique (`hd' pour un disque dur compatible ST-506, avec Y dans l'intervalle
+`a'-`d'; `sd' pour un disque compatible SCSI, avec Y dans `a'-`e';
+`ad' pour un disque Atari ACSI, avec Y dans `a'-`e',
+`ez' pour un disque amovible EZ135 sur le port parallèle, avec Y=`a',
+`xd' pour un disque compatible XT, Y étant `a' ou `b'; `fd' pour
+un lecteur de disquette, Y étant le numéro - fd0 serait
+DOS `A:', et fd1 `B:'), Y la lettre ou le numéro du
+lecteur, et N le numéro (en décimal) de la partition (absent pour les disquettes).
+Les noyaux récents autorisent de nombreux autres types de périphériques
+principalement pour les CD-ROMs: nfs, ram, scd, mcd, cdu535, aztcd, cm206cd,
+gscd, sbpcd, sonycd, bpcd.
+(Le type nfs indique un boot sur réseau, et ram se rapporte à un disque
+virtuel en mémoire).
+<P>
+Notez bien que cela n'a rien à voir avec la désignation des périphériques dans
+le système de fichiers, le préfixe `/dev/' est purement conventionnel.
+<P>
+La spécification numérique, plus compliquée et moins portable, du périphérique 
+racine en utilisant les numéros majeur/mineur est également acceptée.
+(par exemple /dev/sda3 a pour nombres majeur 8, mineur 3, et peut donc être 
+mentionné ainsi : `root=0x803'.)
+<P>
+<A NAME="lbAL">&nbsp;</A>
+<H3>`ro' et `rw'</H3>
+
+<P>
+L'option `ro' indique au noyau de monter le système de fichiers racine en lecture
+seule (read-only), ainsi les programmes de vérification de la cohérence du
+système de fichiers pourront travailler su un système au repos.
+Aucun processus ne peut écrire sur le système de fichiers en question jusqu'à
+ce qu'il soit remonté en lecture/écriture (Read/Write), avec un
+`mount -w -n -o remount /'.
+(Voir
+<B><A HREF="/cgi-bin/man/man2html?8+mount">mount</A></B>(8).)
+
+<P>
+L'option `rw' indique au noyau de monter le système de fichiers racine en
+lecture/écriture. C'est l'option par défaut.
+<P>
+Le choix entre lecture-seule et lecture/écriture peut aussi être fixé avec
+<B><A HREF="/cgi-bin/man/man2html?8+rdev">rdev</A></B>(8).
+
+<P>
+<A NAME="lbAM">&nbsp;</A>
+<H3>`reserve=...'</H3>
+
+<P>
+Cet argument permet de protéger une zone de ports d'entrées/sorties de l'auto-détection.
+La forme de l'option est&nbsp;:
+<DL COMPACT>
+<DT><DD>
+<B>reserve=</B><I>base_IO,longueur[,base_IO,longueur]...</I>
+
+</DL>
+<P>
+
+Dans certaines machines il peut être nécessaire d'empêcher les drivers de rechercher
+des périphériques dans des régions spécifiques. En effet, certains matériels peuvent
+mal réagir à l'auto-détection, ou seraient mal reconnus.
+<P>
+L'option reserve indique une zone de ports d'entrées/sorties qu'il ne faut pas
+examiner. Un driver de périphérique n'utilisera pas une région réservée, à moins
+qu'une autre option le lui indique explicitement. 
+<P>
+Par exemple, la ligne de commande
+<DL COMPACT>
+<DT><DD>
+reserve=0x300,32  blah=0x300
+</DL>
+<P>
+
+empêche tous les drivers, sauf `blah' d'examiner 0x300-0x31F.
+<P>
+<A NAME="lbAN">&nbsp;</A>
+<H3>`mem=...'</H3>
+
+<P>
+L'appel BIOS, défini dans les spécifications du PC, qui indique la quantité de 
+mémoire installée n'est prévu que pour la détection de 64 Mo au plus.
+Linux utilise cet appel BIOS pendant le démarrage pour obtenir la quantité de
+mémoire installée. SI vous avez plus de 64&nbsp;Mo, vous devez utiliser cet argument
+de démarrage pour indiquer au noyau la valeur exacte.
+Cette valeur est fournie en décimal ou en hexadécimal (préfixe 0x), et
+les suffixes `k' (kilo-octets) ou `M' (méga-octets) peuvent être
+utilisés.
+Voici un extrait d'une note de Linus sur l'utilisation du paramètre `mem='&nbsp;:
+<P>
+``Le noyau acceptera n'importe quelle valeur fournie pour le paramètre `mem=xx' 
+et s'il s'avère que vous lui avez menti, il va se planter horriblement tôt ou tard.
+Ce paramètre indique la plus haute adresse mémoire accessible, ainsi
+`mem=0x1000000' signifie que vous avez 16&nbsp;Mo de RAM par exemple. Pour une machine
+avec 96 Mo cela deviendrait `mem=0x6000000'.
+<P>
+NOTE NOTE NOTE&nbsp;: certaines machines peuvent utiliser le sommet de la mémoire pour
+cacher le BIOS ou n'importe quoi d'autre, aussi vous ne pourrez pas adresser les
+96 Mo en entier. L'inverse est aussi vrai, certaines cartes mères vont projeter
+la mémoire physique recouverte par le BIOS juste au-dessus de la mémoire
+accessible, auquel cas vous auriez accès à 96&nbsp;Mo&nbsp;+ 384&nbsp;ko par exemple.  
+Si vous faites croire a Linux qu'il dispose de plus de mémoire que ce qu'il
+a en réalité, des sales trucs vont se produire&nbsp;: peut-être pas tout de suite,
+mais plus tard à coup sûr.''
+<P>
+<A NAME="lbAO">&nbsp;</A>
+<H3>`panic=N'</H3>
+
+Par défaut, le noyau ne redémarrera pas automatiquement après un
+cas de panique, mais cette option permet d'indiquer un délai (en seconde)
+entre la panique, et le redémarrage automatique.
+Ce délai peut également être configuré avec &quot;echo N &gt; /proc/sys/kernel/panic&quot;.
+<P>
+<A NAME="lbAP">&nbsp;</A>
+<H3>`reboot=[warm|cold][,[bios|hard]]'</H3>
+
+(Uniquement si la constante CONFIG_BUGi386 est définie.)
+Depuis le noyau 2.0.22, <B><A HREF="/cgi-bin/man/man2html?2+reboot">reboot</A></B>(2) effectue par défaut un redémarrage à froid.
+Certains ont demandé la restauration de l'ancienne valeur par défaut
+`reboot=warm'. Un redémarrage à froid peut être nécessaire pour réinitialiser
+certains périphériques, mais risque de détruire des données présentes dans
+le cache disque. Un redémarrage à chaud peut être plus rapide.
+Par défaut, le redémarrage est effectué matériellement (hard) en demandant
+au contrôleur de clavier de baisser le niveau de la ligne reset. Il existe
+toutefois des cartes mères où cela ne fonctionne pas, l'option `reboot=bios'
+permet alors de redémarrer de manière logicielle, en appelant le BIOS.
+<P>
+<A NAME="lbAQ">&nbsp;</A>
+<H3>`nosmp' et `maxcpus=N'</H3>
+
+(Seulement si la constante __SMP__ est définie.)
+L'option `nosmp' ou `maxcpus=0' empêche totalement l'activation du mode SMP.
+Une option `maxcpus=N' limite le nombre maximum de CPU activés en mode SMP.
+<P>
+<P>
+<P>
+<A NAME="lbAR">&nbsp;</A>
+<H2>ARGUMENTS DE DÉMARRAGE POUR LES DÉVELOPPEURS DU NOYAU</H2>
+
+<P>
+<A NAME="lbAS">&nbsp;</A>
+<H3>`debug'</H3>
+
+<P>
+Les messages du noyau sont manipulés par le démon de journalisation klogd,
+ainsi ils peuvent être stockés sur disque. Les messages disposant d'une
+priorité supérieure à la valeur
+<I>console_loglevel</I>
+
+sont aussi affichés sur la console (Voir &lt;<A HREF="file:///usr/include/linux/kernel.h">linux/kernel.h</A>&gt;.). Par défaut,
+cette variable est positionnée pour journaliser tout ce qui est plus 
+important que les messages de débogage. Cet argument de démarrage indiquera
+au noyau d'afficher également les messages de la priorité DEBUG.
+Le niveau de la console peut aussi être modifié pendant l'exécution, avec une
+option de klogd. Voir
+<B><A HREF="/cgi-bin/man/man2html?8+klogd">klogd</A></B>(8).
+
+<P>
+<A NAME="lbAT">&nbsp;</A>
+<H3>`profile=N'</H3>
+
+<P>
+Il est possible d'activer les fonctions de suivi du noyau si l'on
+désire s'assurer de l'emplacement où le noyau consomme ses cycles CPU.
+Le suivi est activé en remplissant la variable
+<I>prof_shift</I>
+
+avec une valeur non-nulle.
+Ceci peut être effectué soit en définissant la constante CONFIG_PROFILE durant
+la compilation, soit en indiquant l'option `profile=' au démarrage.
+La valeur reçue par la variable
+<I>prof_shift</I>
+
+sera N s'il est fourni, ou CONFIG_PROFILE_SHIFT si cette variable existe
+ou 2 par défaut. La signification de la variable correspond à la
+finesse du suivi. A chaque top d'horloge, si le système exécute
+du code du noyau, un compteur est incrémenté&nbsp;:
+<DL COMPACT>
+<DT><DD>
+profile[adresse &gt;&gt; prof_shift]++;
+</DL>
+<P>
+
+Les informations brutes concernant le suivi peuvent être lues dans
+<I>/proc/profile</I>.
+
+Vous préférerez probablement utiliser un outil comme readprofile.c
+pour les examiner.
+L'écriture dans
+<I>/proc/profile</I>
+
+effacera les compteurs.
+<P>
+<A NAME="lbAU">&nbsp;</A>
+<H3>`swap=N1,N2,N3,N4,N5,N6,N7,N8'</H3>
+
+Ceci permet de configurer les huit paramètres max_page_age, page_advance, 
+page_decline, page_initial_age, age_cluster_fract, age_cluster_min,
+pageout_weight, bufferout_weight qui contrôlent l'algorithme de swap
+du noyau. A n'utiliser que par les développeurs du noyau.
+<P>
+<A NAME="lbAV">&nbsp;</A>
+<H3>`buff=N1,N2,N3,N4,N5,N6'</H3>
+
+Ceci permet de configurer les six paramètres max_buff_age, buff_advance,
+buff_decline, buff_initial_age, bufferout_weight, buffermem_grace
+qui contrôlent la gestion des buffers
+du noyau. A n'utiliser que par les développeurs du noyau.
+<P>
+<P>
+<A NAME="lbAW">&nbsp;</A>
+<H2>ARGUMENTS DE DÉMARRAGE POUR DISQUES VIRTUELS</H2>
+
+(Uniquement si le noyau a été compilé avec l'option CONFIG_BLK_DEV_RAM.)
+Il est généralement déconseillé d'utiliser un disque virtuel
+sous Linux. Le système gérera mieux la mémoire disponible tout seul.
+Néanmoins, pendant le démarrage, ou durant la création de disquettes
+de démarrage, il peut être utile de charger le contenu d'une disquette
+sur un disque virtuel.
+Il peut également arriver sur certain systèmes que des modules particuliers
+concernant les systèmes de fichiers ou le matériel aient besoin d'être chargés
+avant l'accès au disque principal.
+<P>
+Avec Linux 1.3.48, la gestion des disques virtuels a été profondément modifiée.
+Auparavant la mémoire était allouée de manière statique, avec un paramètre
+`ramdisk=N' qui indiquait la taille.
+(On pouvait également configurer la taille du disque directement dans l'image
+du noyau à la compilation, ou avec 
+<B><A HREF="/cgi-bin/man/man2html?8+rdev">rdev</A></B>(8).)
+
+Actuellement, les disques virtuels utilisent les buffers caches, et grossissent
+dynamiquement.
+Pour obtenir plus d'information (par exemple comment utiliser
+<B><A HREF="/cgi-bin/man/man2html?8+rdev">rdev</A></B>(8)
+
+avec les nouveaux disques virtuels), consultez le fichier
+<I>/usr/src/linux/Documentation/ramdisk.txt</I>.
+
+<P>
+Il y a quatre paramètres, deux booléens et deux entiers.
+<P>
+<A NAME="lbAX">&nbsp;</A>
+<H3>`load_ramdisk=N'</H3>
+
+Si N=1, un disque virtuel est chargé en mémoire, si N=0 pas
+de chargement (comportement par défaut).
+<P>
+<A NAME="lbAY">&nbsp;</A>
+<H3>`prompt_ramdisk=N'</H3>
+
+Si N=1, demander l'insertion d'une disquette (comportement par défaut)
+Si N=0, ne rien demander (donc ce paramètre n'est jamais utilisé...)
+<P>
+<A NAME="lbAZ">&nbsp;</A>
+<H3>`ramdisk_size=N' ou (obsolète) `ramdisk=N'</H3>
+
+Fixer la taille maximale du disque virtuel à N&nbsp;ko. Par défaut la valeur
+est de 4096&nbsp;ko (4&nbsp;Mo).
+<P>
+<A NAME="lbBA">&nbsp;</A>
+<H3>`ramdisk_start=N'</H3>
+
+Indiquer le numéro de bloc de départ (l'emplacement sur la disquette où
+démarre le contenu du disque virtuel). Ceci est utile dans le cas
+où l'image du disque virtuel suit une image de noyau.
+<P>
+<A NAME="lbBB">&nbsp;</A>
+<H3>`noinitrd'</H3>
+
+(Uniquement si le noyau a été compilé avec les options CONFIG_BLK_DEV_RAM
+et CONFIG_BLK_DEV_INITRD.)
+On peut actuellement compiler le noyau pour qu'il utilise initrd.
+Quand cette possibilité est activée, le processus de démarrage charge
+le noyau et un disque virtuel initial. Puis le noyau convertit initrd
+en un disque virtuel &quot;normal&quot; qui est monté en lecture/écriture à la
+racine. Ensuite /linuxrc est exécuté. A la suite de quoi le vrai
+système de fichiers est monté à la racine, et le système initrd
+est déplacé en /initrd. Finalement, la séquence de démarrage habituelle
+(appel de /sbin/init) est exécutée.
+<P>
+Pour une description détaillée des possibilités de initrd, voyez le
+fichier
+<I>/usr/src/linux/Documentation/initrd.txt</I>.
+
+<P>
+L'option `noinitrd' indique au noyau que contrairement aux options avec
+lesquelles il a été compilé, il ne doit pas effectuer les étapes sus-mentionnées,
+mais au contraire laisser les données de initrd sous
+<I>/dev/initrd</I>.
+
+(Ce périphérique ne peut être utilisé qu'une seule fois, les données sont libérées
+dès que le dernier processus les ayant utilisé a refermé
+<I>/dev/initrd</I>.)
+
+<P>
+<P>
+<A NAME="lbBC">&nbsp;</A>
+<H2>ARGUMENTS DE DÉMARRAGE POUR PÉRIPHÉRIQUES SCSI</H2>
+
+<P>
+Notations générales pour cette section
+<P>
+<I>iobase</I>
+
+-- Le premier port d'entrée/sortie utilisé par l'hôte SCSI. Il est
+indique en notation hexadécimale, habituellement dans l'intervalle
+0x200 à 0x3ff.
+<P>
+<I>irq</I>
+
+-- L'interruption matérielle pour laquelle la carte est configurée.
+Les valeurs possibles dépendent de la carte en question, mais sont généralement
+5, 7, 9, 10, 11, 12, et 15. Les autres valeurs sont plutôt utilisées par des
+périphériques comme les disques IDE, les lecteurs de disquettes, les ports
+série, etc...
+<P>
+<I>scsi-id</I>
+
+-- L'identifiant utilisé par l'adaptateur pour se distinguer sur le bus SCSI.
+Peu d'adaptateurs permettent de modifier cette valeur, qui est plutôt figée en
+interne. La valeur classique est 7 mais les cartes Seagate et Future Domain 
+TMC-950 utilisent 6.
+<P>
+<I>parity</I>
+
+-- Le fait que l'hôte SCSI attendent que le périphérique lui fournisse ou non
+une valeur de parité pour toutes les informations. Un 1 valide le contrôle de
+parité, un 0 le désactive. Encore une fois, tous les adaptateurs ne supportent
+pas la modification de ce comportement comme argument de démarrage.
+<P>
+<A NAME="lbBD">&nbsp;</A>
+<H3>`max_scsi_luns=...'</H3>
+
+<P>
+Un périphérique SCSI peut contenir plusieurs `sous-périphériques' en lui-même.
+L'exemple courant est celui des nouveaux lecteurs de CD-ROM qui gèrent
+plusieurs disques en même temps. Chaque CD est adressé par un numéro d'unité
+logique, `Logical Unit Number' (LUN).
+Mais la plupart des périphériques SCSI, comme les disques durs, ou les lecteurs
+de bande, n'ont qu'un seul sous-périphérique avec un LUN nul.
+<P>
+Certains périphériques SCSI mal conçus ne peuvent pas être testés sur plusieurs
+LUN, aussi, si la constante CONFIG_SCSI_MULTI_LUN n'est pas définie, les noyaux
+récents n'examineront que le LUN zéro.
+<P>
+Pour indiquer le nombre de LUN à examiner au démarrage, on indiquera
+`max_scsi_luns=n' comme argument, n étant un nombre entre 1 et 8.
+Pour éviter les ennuis décrits ci-dessus, on utilisera n=1 avec des
+périphériques à problèmes.
+<P>
+<A NAME="lbBE">&nbsp;</A>
+<H3>Configuration des lecteurs de bande SCSI</H3>
+
+<P>
+Certaines configurations au démarrage des lecteurs de bandes SCSI peuvent être
+effectuées ainsi&nbsp;:
+<DL COMPACT>
+<DT><DD>
+<B>st=</B><I>buf_size[,write_threshold[,max_bufs]]</I>
+
+</DL>
+<P>
+
+Les deux premiers nombres sont indiqués en ko. La valeur par défaut de
+<I>buf_size</I>
+
+est 32&nbsp;ko, et la taille maximum exagérément grande est 16384&nbsp;ko.
+Le nombre
+<I>write_threshold</I>
+
+représente la valeur a partir de laquelle le buffer est effectivement écrit sur la
+bande, par défaut 30&nbsp;ko.  
+Le nombre maximum de buffers varie avec le nombre de lecteur détectés, et
+vaut 2 par défaut.
+Un exemple d'utilisation serait&nbsp;:
+<DL COMPACT>
+<DT><DD>
+st=32,30,2
+</DL>
+<P>
+
+Des détails complets se trouvent dans le fichier README.st, du répertoire
+scsi des sources du noyau.
+<P>
+<A NAME="lbBF">&nbsp;</A>
+<H3>Configuration Adaptec aha151x, aha152x, aic6260, aic6360, SB16-SCSI</H3>
+
+<P>
+Les numéros aha se réfèrent aux cartes, et les numéros aic à la véritable
+puce SCSI placée sur ces cartes, y compris la Soundblaster-16 SCSI.
+<P>
+Le code de détection pour ces hôtes SCSI recherche un BIOS installé, et si
+aucun n'est présent, la carte ne sera pas trouvée. Alors il vous faudra utiliser
+un argument de la forme&nbsp;:
+<DL COMPACT>
+<DT><DD>
+<B>aha152x=</B><I>iobase[,irq[,scsi-id[,reconnect[,parity]]]]</I>
+
+</DL>
+<P>
+
+Si le driver a été compilé avec les options de débogage, une sixième valeur
+peut spécifier le niveau de débogage.
+<P>
+Tous les paramètres sont identiques à ceux décrits au début de cette section
+et la valeur 
+<I>reconnect</I>
+
+permettra au périphérique de se déconnecter/reconnecter si elle est non nulle.
+Un exemple d'utilisation serait :
+<DL COMPACT>
+<DT><DD>
+aha152x=0x340,11,7,1
+</DL>
+<P>
+
+Notez que tous les paramètres doivent être indiqués dans l'ordre, ce qui signifie
+que pour spécifier une parité, il faut également spécifier les valeurs de
+iobase, irq, scsi-id et reconnect.
+<P>
+<A NAME="lbBG">&nbsp;</A>
+<H3>Configuration Adaptec aha154x</H3>
+
+<P>
+Les cartes aha1542 disposent d'un contrôleur de disquettes i82077, mais pas les
+cartes aha1540. Ce sont des cartes maîtresses sur le bus, et ont un paramètre
+indiquant leur ``courtoisie'' dans le partage du bus avec d'autres périphériques.
+Les arguments de démarrage ressemblent à
+<DL COMPACT>
+<DT><DD>
+<B>aha1542=</B><I>iobase[,buson,busoff[,dmaspeed]]</I>
+
+</DL>
+<P>
+
+Les valeurs acceptables de iobase sont habituellement 0x130, 0x134, 0x230, 0x234, 0x330, ou 0x334. Des cartes clones peuvent proposer d'autres valeurs.
+<P>
+Les valeurs
+<I>buson</I>, et <I>busoff</I>
+
+se réfèrent au nombre de micro-secondes pendant lesquelles la carte maîtrise le bus
+ISA. Les valeurs par défaut sont 11 micro-secondes on, et 4 micro-secondes off, 
+ainsi d'autres cartes (comme les cartes ethernet ISA LANCE) ont la possibilité 
+d'accéder au bus ISA.
+<P>
+La valeur
+<I>dmaspeed</I>
+
+se rapporte au débit (en Mo/sec) utilisé pour les transferts DMA (Direct Memory
+Access). La valeur par défaut est 5&nbsp;Mo/sec. Des cartes récentes vous permettent
+de choisir cette valeur dans une configuration logicielle, les anciennes en
+positionnant des cavaliers. On peut utiliser des valeurs jusqu'à 10 Mo/sec, à
+condition que la carte mère soit capable de les gérer. Il faut expérimenter
+prudemment pour les valeurs dépassant 5&nbsp;Mo/sec.
+<P>
+<A NAME="lbBH">&nbsp;</A>
+<H3>Configuration Adaptec aha274x, aha284x, aic7xxx</H3>
+
+<P>
+Ces cartes peuvent accepter un argument de la forme :
+<DL COMPACT>
+<DT><DD>
+<B>aic7xxx=</B><I>extended,no_reset</I>
+
+</DL>
+<P>
+
+La valeur
+<I>extended</I>,
+
+si elle est non nulle, indique que la traduction étendue est validée
+pour les gros disques. La valeur
+<I>no_reset</I>,
+
+si elle est non nulle, indique que le driver ne doit pas réinitialiser le bus
+SCSI lors du démarrage de l'hôte.
+<P>
+<A NAME="lbBI">&nbsp;</A>
+<H3>Configuration des hôtes SCSI AdvanSys (`advansys=')</H3>
+
+<P>
+Le pilote AdvanSys accepte jusqu'à quatre adresses d'entrée/sortie qui
+seront examinées pour détecter une carte SCSI AdvanSys. Notez que ces
+valeurs, si elles sont utilisées ne modifient en rien la détection des
+périphériques EISA ou PCI. Elles ne concernent que les cartes ISA ou
+VLB. De plus si le pilote a été compilé avec les options de débogage,
+on peut configurer le niveau de débogage avec le paramètre
+0xdeb[0-f]. Le niveau des messages de débogage est configuré
+avec la valeur 0-f permettant ainsi d'accéder à 16 niveaux de messages.
+<P>
+<A NAME="lbBJ">&nbsp;</A>
+<H3>AM53C974</H3>
+
+<DL COMPACT>
+<DT><DD>
+<B>AM53C974=</B><I>host-scsi-id,target-scsi-id,max-rate,max-offset</I>
+
+</DL>
+<P>
+
+<P>
+<A NAME="lbBK">&nbsp;</A>
+<H3>Configuration des hôtes SCSI BusLogic (`buslogic=')</H3>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+<B>BusLogic=</B><I>N1,N2,N3,N4,N5,S1,S2,...</I>
+
+</DL>
+<P>
+
+Pour une description détaillée des paramètres de ligne de commande
+concernant les périphériques BusLogic, consultez le fichier
+<I>/usr/src/linux/drivers/scsi/BusLogic.c</I>
+
+(lignes 3149-3270 dans la version de noyau dont je dispose). Le texte
+ci-dessous en est un extrait très abrégé.
+<P>
+Les paramètres N1-N5 sont des entiers, les paramètres S1,... des chaînes
+de caractères. N1 correspond à l'adresse d'E/S ou l'adaptateur (Host Adapter)
+est situé. N2 est la taille de la file d'attente (Tagged Queue Depth)
+pour les périphériques qui supportent le `Tagged Queuing'.
+N3 est le temps de démarrage du bus (Bus Settle Time) en secondes. Il
+s'agit de la durée d'attente entre un reset matériel d'un adaptateur
+hôte qui déclenche un reset du bus SCSI, et toute autre commande
+SCSI.
+N4 sont des options locales (pour un adaptateur hôte).
+N5 sont des options globales (pour tous les adaptateurs hôtes).
+<P>
+Les chaînes d'options sont utilisées pour obtenir un contrôle sur
+le `Tagged Queuing'
+(TQ:Default, TQ:Enable, TQ:Disable, TQ:&lt;Per-Target-Spec&gt;), sur
+l' Error Recovery (ER:Default, ER:HardReset, ER:BusDeviceReset,
+ER:None, ER:&lt;Per-Target-Spec&gt;), et sur la détection de l'adaptateur
+hôte (NoProbe, NoProbeISA, NoSortPCI).
+<P>
+<A NAME="lbBL">&nbsp;</A>
+<H3>Configuration EATA/DMA</H3>
+
+La liste par défaut des ports d'entrée/sortie à examiner peut être
+modifiée avec
+<DL COMPACT>
+<DT><DD>
+<B>eata=</B><I>iobase,iobase,...</I><B>.</B>
+
+</DL>
+<P>
+
+<P>
+<A NAME="lbBM">&nbsp;</A>
+<H3>Configuration Future Domain TMC-16x0</H3>
+
+<DL COMPACT>
+<DT><DD>
+<B>fdomain=</B><I>iobase,irq[,adapter_id]</I>
+
+</DL>
+<P>
+
+<P>
+<A NAME="lbBN">&nbsp;</A>
+<H3>Configuraton Great Valley Products (GVP)</H3>
+
+<DL COMPACT>
+<DT><DD>
+<B>gvp11=</B><I>dma_transfer_bitmask</I>
+
+</DL>
+<P>
+
+<P>
+<A NAME="lbBO">&nbsp;</A>
+<H3>Configuration Future Domain TMC-8xx, TMC-950</H3>
+
+<DL COMPACT>
+<DT><DD>
+<B>tmc8xx=</B><I>mem_base,irq</I>
+
+</DL>
+<P>
+
+La valeur
+<I>mem_base</I>
+
+étant l'adresse utilisée par la carte pour projeter ses ports d'entrée/sortie en
+mémoire. C'est généralement l'une des valeurs suivantes :
+0xC8000, 0xCA000, 0xCC000, 0xCE000, 0xDC000, ou 0xDE000.
+<P>
+<A NAME="lbBP">&nbsp;</A>
+<H3>Configuration IN2000</H3>
+
+<DL COMPACT>
+<DT><DD>
+<B>in2000=</B><I>S</I>
+
+</DL>
+<P>
+
+où S est une chaîne d'éléments mots-clés[:valeur], séparés par
+des virgules. Les mots-clés reconnus sont (certains nécessitent
+des valeurs) :
+ioport:addr, noreset, nosync:x, period:ns, disconnect:x,
+debug:x, proc:x. Pour des détails sur ces paramètres, voir
+<I>/usr/src/linux/drivers/scsi/in2000.c</I>.
+
+<P>
+<A NAME="lbBQ">&nbsp;</A>
+<H3>Configuration NCR5380 et NCR53C400</H3>
+
+<P>
+L'argument de démarrage est de la forme
+<DL COMPACT>
+<DT><DD>
+<B>ncr5380=</B><I>iobase,irq,dma</I>
+
+</DL>
+<P>
+
+ou
+<DL COMPACT>
+<DT><DD>
+<B>ncr53c400=</B><I>iobase,irq</I>
+
+</DL>
+<P>
+
+Si la carte n'utilise pas les interruptions, une valeur d'IRQ de 255 (0xff)
+permettra de les désactiver. Une valeur IRQ de 254 réclame une autodétection.
+On trouvera plus de détails dans le fichier
+<I>/usr/src/linux/drivers/scsi/README.g_NCR5380</I>.
+
+<P>
+<A NAME="lbBR">&nbsp;</A>
+<H3>Configuration NCR53C8xx</H3>
+
+<DL COMPACT>
+<DT><DD>
+<B>ncr53c8xx=</B><I>S</I>
+
+</DL>
+<P>
+
+où S est une chaîne d'éléments mots-clés:valeur, séparés par
+des virgules. Les mots-clés reconnus sont :
+mpar (master_parity), spar (scsi_parity),
+disc (disconnection), specf (special_features), ultra (ultra_scsi),
+fsn (force_sync_nego), tags (default_tags), sync (default_sync),
+verb (verbose), debug (debug), burst (burst_max).
+Pour des détails sur les valeurs correspondantes, voir
+<I>/usr/src/linux/drivers/scsi/ncr53c8xx.c</I>.
+
+<P>
+<A NAME="lbBS">&nbsp;</A>
+<H3>Configuration NCR53c406a</H3>
+
+<DL COMPACT>
+<DT><DD>
+<B>ncr53c406a=</B><I>iobase[,irq[,fastpio]]</I>
+
+</DL>
+<P>
+
+Utiliser irq = 0 pour un fonctionnement sans interruption.
+Fixer fastpio à 1 pour un mode pio rapide, et à 0 pour un mode lent.
+<P>
+<A NAME="lbBT">&nbsp;</A>
+<H3>Configuraton Pro Audio Spectrum</H3>
+
+<P>
+La PAS16 utilise une puce SCSI NC5380, et les modèles récents permettent une
+configuration de la carte sans avoir recours aux cavaliers. L'argument de
+démarrage est de la forme :
+<DL COMPACT>
+<DT><DD>
+<B>pas16=</B><I>iobase,irq</I>
+
+</DL>
+<P>
+
+La seule nouveauté est que l'on peut indiquer la valeur 255 pour l'IRQ, ce qui
+configure le driver pour un fonctionnement sans interruptions, au prix d'une
+dégradation des performances. La valeur usuelle pour iobase est 0x388.
+<P>
+<A NAME="lbBU">&nbsp;</A>
+<H3>Configuration Seagate ST-0x</H3>
+
+<P>
+Si votre carte n'est pas détectée au boot, vous devrez utiliser un argument de
+démarrage de la forme :
+<DL COMPACT>
+<DT><DD>
+<B>st0x=</B><I>mem_base,irq</I>
+
+</DL>
+<P>
+
+La valeur
+<I>mem_base</I>
+
+étant l'adresse utilisée par la carte pour projeter ses ports d'entrée/sortie en
+mémoire. C'est généralement l'une des valeurs suivantes : 0xC8000, 0xCA000, 
+0xCC000, 0xCE000, 0xDC000, ou 0xDE000.
+<P>
+<A NAME="lbBV">&nbsp;</A>
+<H3>Configuration Trantor T128</H3>
+
+<P>
+Ces cartes, basées également sur une puce NCR5380, acceptent les options suivantes :
+<DL COMPACT>
+<DT><DD>
+<B>t128=</B><I>mem_base,irq</I>
+
+</DL>
+<P>
+
+Les valeurs acceptables de
+<I>mem_base</I>
+
+sont : 0xCC000, 0xC8000, 0xDC000, 0xD8000.
+<P>
+<A NAME="lbBW">&nbsp;</A>
+<H3>Configuration UltraStor 14F/34F</H3>
+
+<P>
+La liste par défaut des ports d'entrée/sortie à examiner peut être
+modifiée avec
+<DL COMPACT>
+<DT><DD>
+<B>eata=</B><I>iobase,iobase,...</I><B>.</B>
+
+</DL>
+<P>
+
+<P>
+<A NAME="lbBX">&nbsp;</A>
+<H3>Configuration WD7000</H3>
+
+<DL COMPACT>
+<DT><DD>
+<B>wd7000=</B><I>irq,dma,iobase</I>
+
+</DL>
+<P>
+
+<P>
+<A NAME="lbBY">&nbsp;</A>
+<H3>Configuration du contrôleur SCSI Commodore Amiga A2091/590</H3>
+
+<DL COMPACT>
+<DT><DD>
+<B>wd33c93=</B><I>S</I>
+
+</DL>
+<P>
+
+où S est une chaîne d'options séparées par des virgules. Les options
+reconnues sont :
+nosync:bitmask, nodma:x, period:ns, disconnect:x, debug:x,
+clock:x, next. Pour plus de détails, voir
+<I>/usr/src/linux/drivers/scsi/wd33c93.c</I>.
+
+<P>
+<P>
+<A NAME="lbBZ">&nbsp;</A>
+<H2>DISQUES DURS</H2>
+
+<P>
+<A NAME="lbCA">&nbsp;</A>
+<H3>paramètres des disques IDE et des lecteurs CD-ROM</H3>
+
+<P>
+Le driver IDE accepte plusieurs paramètres, principalement pour indiquer la 
+géométrie du disque avec des contrôleurs obsolètes.
+Les spécifications du disque sont indiquées en utilisant `hdX=' 
+avec X dans l'intervalle `a'-`h'.
+<P>
+Les options communes à plusieurs disques sont indiquées avec le préfixe `hd='.
+Notez que l'utilisation d'un préfixe spécifique à un disque avec une option
+non spécifique marchera également comme prévu.
+<P>
+Notez encore que `hd=' peut être utilisé pour faire référence au disque suivant,
+non spécifié, dans la séquence (a, ..., h).  
+Les options `hd=' sont présentées brièvement ci-dessous, regardez le fichier
+README.ide dans linux/drivers/block pour plus de détails.
+<P>
+<A NAME="lbCB">&nbsp;</A>
+<H3>Les options `hd=cyls,heads,sects[,wpcom[,irq]]'</H3>
+
+<P>
+Ces options sont utilisées pour indiquer la géométrie physique du disque.
+Seules les trois premières valeurs sont nécessaires. Les nombres de 
+cylindres/têtes/secteurs seront ceux utilisés par fdisk.
+La valeur de compensation en écriture (write precompensation wpcom) est ignorée
+pour les disques IDE. L'IRQ indiquée sera utilisée avec le contrôleur du disque
+dur, et n'est donc pas réellement spécifique au disque.
+<P>
+<A NAME="lbCC">&nbsp;</A>
+<H3>L'option `hd=serialize'</H3>
+
+<P>
+L'interface double IDE CMD-640 est mal conçue, en ceci que lorsqu'un disque sur
+la seconde interface est utilisé simultanément au disque sur la première interface,
+les données seront corrompues. Utiliser cette option indique au driver de s'assurer
+que les deux disques ne sont jamais utilisés en même temps.
+<P>
+<A NAME="lbCD">&nbsp;</A>
+<H3>L'option `hd=dtc2278'</H3>
+
+<P>
+Cette option indique au driver que vous avez une interface IDE DTC-2278D.
+Le driver essaiera alors d'utiliser des opérations spécifiques DTC, afin de valider
+la seconde interface, et d'obtenir des transferts rapides.
+<P>
+<A NAME="lbCE">&nbsp;</A>
+<H3>L'option `hd=noprobe'</H3>
+
+<P>
+Ne pas examiner ce disque. Par exemple
+<DL COMPACT>
+<DT><DD>
+hdb=noprobe hdb=1166,7,17
+</DL>
+<P>
+
+va désactiver la recherche, mais indique quand même les paramètres géométriques du
+disque, ainsi il sera reconnu comme périphérique bloc valide, et pourra donc être
+utilisé.
+<P>
+<A NAME="lbCF">&nbsp;</A>
+<H3>L'option `hd=nowerr'</H3>
+
+<P>
+Certains disques ont apparemment le bit WRERR_STAT positionné en permanence. Ceci
+autorise le driver à ignorer ce bit.
+<P>
+<A NAME="lbCG">&nbsp;</A>
+<H3>L'option `hd=cdrom'</H3>
+
+<P>
+Ceci indique au driver IDE qu'il y a un lecteur de CD-ROM compatible ATAPI
+attaché à la place d'un disque dur normal. Dans la plupart des cas, le CD-ROM
+est identifié automatiquement, mais à défaut cette option peut vous aider.
+<P>
+<A NAME="lbCH">&nbsp;</A>
+<H3>Options du driver Standard ST-506 (`hd=')</H3>
+
+<P>
+Le driver Standard peut accepter des arguments concernant la géométrie des
+disques similaires à ceux du driver IDE. Notez cependant qu'il n'attendra
+que 3 valeurs (cylindres/têtes/secteurs) et tout ce qui suivra sera ignoré
+silencieusement.
+De plus il n'accepte que l'option `hd=' en argument, `hda=' et autres ne seront
+pas valides. Le format est le suivant :
+<DL COMPACT>
+<DT><DD>
+hd=cylindres,têtes,secteurs
+</DL>
+<P>
+
+Si deux disques sont installés, on répète une seconde fois l'argument, avec les
+paramètres du deuxième disque.
+<P>
+<A NAME="lbCI">&nbsp;</A>
+<H3>Options du driver XT(`xd=')</H3>
+
+<P>
+Si vous avez la malchance d'utiliser encore ces vieilles cartes 8 bits qui 
+transfèrent les données avec une vitesse phénoménale de 125 ko/s voici des
+informations qui vous concernent.
+Si la carte n'est pas reconnue, il faut utiliser un argument de boot de la forme :
+<DL COMPACT>
+<DT><DD>
+xd=type,irq,iobase,dma_chan
+</DL>
+<P>
+
+La valeur type indique le fabricant de la carte, pour ignorer l'autodétection.
+Pour une liste des types, consultez le fichiers
+<I>drivers/block/xd.c</I>
+
+des sources du noyau. Ce type est un indice dans la table
+<I>xd_sigs</I>
+
+qui évolue suivant les versions du noyau. Aujourd'hui (Linux 2.5.0) les types
+sont
+0=générique&nbsp;; 1=DTC 5150cx&nbsp;; 2,3=DTC 5150x&nbsp;; 4,5=Western Digital&nbsp;; 6,7,8=Seagate&nbsp;; 9=Omti&nbsp;;10=XEBEC. Lorsque plusieurs types correspondent au même
+fabricant, ils sont équivalents. 
+<P>
+La fonction xd_setup() ne vérifie pas les valeurs, et suppose que vous avez bien
+saisi les quatre. Ne la décevez pas ! Voici un exemple d'utilisation pour un 
+contrôleur WD1002 avec un BIOS désactivé en utilisant le paramètre de contrôleur
+XT `default' :
+<DL COMPACT>
+<DT><DD>
+xd=2,5,0x320,3
+</DL>
+<P>
+
+<P>
+<A NAME="lbCJ">&nbsp;</A>
+<H3>Disques amovibles Syquest's EZ*</H3>
+
+<DL COMPACT>
+<DT><DD>
+<B>ez=</B><I>iobase[,irq[,rep[,nybble]]]</I>
+
+</DL>
+<P>
+
+<P>
+<A NAME="lbCK">&nbsp;</A>
+<H2>Périphériques bus IBM MCA</H2>
+
+Voir également
+<I>/usr/src/linux/Documentation/mca.txt</I>.
+
+<P>
+<A NAME="lbCL">&nbsp;</A>
+<H3>Disques durs ESDI PS/2</H3>
+
+Il est possible d'indiquer la géométrie désirée durant le
+démarrage :
+<DL COMPACT>
+<DT><DD>
+<B>ed=</B><I>cyls,tetes,secteurs.</I>
+
+</DL>
+<P>
+
+Pour un ThinkPad-720, ajoutez l'option
+<DL COMPACT>
+<DT><DD>
+<B>tp720=1</B>.
+
+</DL>
+<P>
+
+<P>
+<A NAME="lbCM">&nbsp;</A>
+<H3>Configuration de sous-systèmes SCSI IBM Microchannel</H3>
+
+<DL COMPACT>
+<DT><DD>
+<B>ibmmcascsi=</B><I>N</I>
+
+</DL>
+<P>
+
+où N est le <I>pun</I> (ID SCSI) du sous-système.
+<P>
+<A NAME="lbCN">&nbsp;</A>
+<H2>CD-ROMs (Non-SCSI/ATAPI/IDE)</H2>
+
+<P>
+<A NAME="lbCO">&nbsp;</A>
+<H3>L'Interface Aztech</H3>
+
+<P>
+La syntaxe pour ce type de carte est :
+<DL COMPACT>
+<DT><DD>
+aztcd=iobase[,magic_number]
+</DL>
+<P>
+
+Si l'on fournit un numéro magique valant 0x79 alors le driver démarrera quelque
+soit la version du matériel, même inconnue. Toutes les autres valeurs sont
+ignorées.
+<P>
+<A NAME="lbCP">&nbsp;</A>
+<H3>Lecteurs de CD-ROM sur port parallèle</H3>
+
+Syntaxe :
+<DL COMPACT>
+<DT><DD>
+pcd.driveN=prt,pro,uni,mod,slv,dly
+<BR>
+
+pcd.nice=nice
+</DL>
+<P>
+
+où 'port' est l'adresse de base, 'pro' est le numéro de protocole, 'uni' est
+le sélecteur d'unité (pour les chaînes de périphériques), 'mod' est le mode
+(ou -1 pour laisser le noyau choisir le meilleur automatiquement), 'slv' est
+1 si il s'agit d'un esclave, et 'dly' est un petit entier pour ralentir les
+accès au port. Le paramètre 'nice' demande l'utilisation par le pilote
+des temps d'inactivité du CPU, au détriment de la vitesse.
+<P>
+<A NAME="lbCQ">&nbsp;</A>
+<H3>l'Interface Sony CDU-31A and CDU-33A</H3>
+
+<P>
+Cette interface CD-ROM est présente sur certaines cartes sonores Pro Audio 
+Spectrum et sur d'autres cartes fournies par Sony. La syntaxe est la suivante :
+<DL COMPACT>
+<DT><DD>
+cdu31a=iobase,[irq[,is_pas_card]]
+</DL>
+<P>
+
+Fournir une valeur d'IRQ nulle indique au driver que les interruptions matérielles
+ne sont pas supportées (comme sur certaines cartes PAS). Si votre carte supporte
+les interruptions, vous devez les utiliser car cela réduit grandement l'utilisation
+du CPU par le driver.
+<P>
+La valeur de
+<I>is_pas_card</I>
+
+doit être `PAS' si l'on utilise une carte Pro Audio Spectrum, et rien sinon.
+<P>
+<A NAME="lbCR">&nbsp;</A>
+<H3>L'interface Sony CDU-535</H3>
+
+<P>
+La syntaxe de cette interface CD-ROM est la suivante :
+<DL COMPACT>
+<DT><DD>
+sonycd535=iobase[,irq]
+</DL>
+<P>
+
+Un zéro peut être utilisé comme iobase en tant que valeur fictive si l'on veut
+seulement indiquer la valeur d'IRQ.
+<P>
+<A NAME="lbCS">&nbsp;</A>
+<H3>L'Interface GoldStar</H3>
+
+<P>
+La syntaxe pour cette interface est :
+<DL COMPACT>
+<DT><DD>
+gscd=iobase
+</DL>
+<P>
+
+<P>
+<A NAME="lbCT">&nbsp;</A>
+<H3>L'interface ISP16</H3>
+
+Syntaxe :
+<DL COMPACT>
+<DT><DD>
+isp16=[iobase[,irq[,dma[,type]]]]
+</DL>
+<P>
+
+(trois entiers et une chaîne). Si le type indique est `noisp16',
+l'interface ne sera pas configurée. Sinon les autres types
+possibles sont :
+`Sanyo&quot;, `Sony', `Panasonic' et `Mitsumi'.
+<P>
+<A NAME="lbCU">&nbsp;</A>
+<H3>L'Interface Mitsumi Standard</H3>
+
+<P>
+La syntaxe pour cette interface CD-ROM est :
+<DL COMPACT>
+<DT><DD>
+mcd=iobase,[irq[,wait_value]]
+</DL>
+<P>
+
+La valeur
+<I>wait_value</I>
+
+est utilisée comme délai interne pour les personnes qui ont des problèmes avec
+leur lecteur, et est implémenté ou non en fonction d'une directive #define à la
+compilation.
+Le Mitsumi FX400 est un lecteur CD-ROM IDE/ATAPI et n'utilise pas le driver mcd.
+<P>
+<A NAME="lbCV">&nbsp;</A>
+<H3>L'Interface Mitsumi XA/MultiSession</H3>
+
+<P>
+Il s'agit du même matériel que le précédent, mais le pilote de périphérique
+a des possibilités étendues.
+Syntaxe:
+<DL COMPACT>
+<DT><DD>
+mcdx=iobase[,irq]
+</DL>
+<P>
+
+<P>
+<A NAME="lbCW">&nbsp;</A>
+<H3>L'Interface Optics Storage</H3>
+
+<P>
+La syntaxe pour ce type de carte est :
+<DL COMPACT>
+<DT><DD>
+optcd=iobase
+</DL>
+<P>
+
+<P>
+<A NAME="lbCX">&nbsp;</A>
+<H3>L'Interface Phillips CM206</H3>
+
+<P>
+La syntaxe pour ce type de carte est :
+<DL COMPACT>
+<DT><DD>
+cm206=[iobase][,irq]
+</DL>
+<P>
+
+<P>
+Le driver suppose que les nombres entre 3 et 11 sont des valeurs d'IRQ, et
+ceux entre 0x300 et 0x370 des ports d'entrées/sorties. Ainsi on peut
+spécifier une seule valeur ou les deux, dans un ordre quelconque. Il accepte
+également `cm206=auto' pour valider l'autodétection.
+<P>
+<A NAME="lbCY">&nbsp;</A>
+<H3>L'Interface Sanyo</H3>
+
+<P>
+La syntaxe pour ce type de carte est :
+<DL COMPACT>
+<DT><DD>
+sjcd=iobase[,irq[,dma_channel]]
+</DL>
+<P>
+
+<P>
+<A NAME="lbCZ">&nbsp;</A>
+<H3>L'Interface SoundBlaster Pro</H3>
+
+<P>
+La syntaxe pour ce type de carte est :
+<DL COMPACT>
+<DT><DD>
+sbpcd=iobase,type
+</DL>
+<P>
+
+où type est l'une des chaînes suivantes (respecter majuscules/minuscules) :
+`SoundBlaster', `LaserMate', ou `SPEA'. La valeur pour iobase est celle de
+l'interface CD-ROM, et non pas celle de la partie son de la carte.
+<P>
+<A NAME="lbDA">&nbsp;</A>
+<H2>PÉRIPHÉRIQUES ETHERNET</H2>
+
+<P>
+Chaque périphérique utilise des paramètres spécifiques, mais ils partagent tous
+au moins une valeur d'IRQ, une base d'entrée/Sortie et un nom. Dans sa forme la
+plus générique la ligne d'argument est la suivante :
+<DL COMPACT>
+<DT><DD>
+ether=irq,iobase[,parm_1[,...parm_8]],nom
+</DL>
+<P>
+
+le premier argument non-numérique est considéré comme le nom. La valeur de 
+parm_n (si elle existe) a une signification différente pour chacun des drivers.
+Habituellement les valeurs parm_n sont utilisées pour indiquer des options comme
+l'adresse d'une mémoire partagée, la sélection d'interface, le canal DMA, etc.
+<P>
+L'utilisation la plus courante de ce paramètre est de forcer la détection d'une
+seconde carte ethernet, car l'attitude par défaut consiste a n'en détecter qu'une
+seule. Ceci peut être effectué simplement avec :
+<DL COMPACT>
+<DT><DD>
+ether=0,0,eth1
+</DL>
+<P>
+
+Notez que les valeurs nulles pour irq et iobase dans l'exemple précédent indiquent
+au driver d'effectuer l'auto-détection.
+<P>
+Le Ethernet-HowTo contient une documentation très complète sur l'utilisation de
+plusieurs cartes, et sur les valeurs des param_n spécifiques aux cartes ou drivers.
+Les lecteurs intéressés se référeront à la section traitant de leur carte dans ce
+document.
+<P>
+<A NAME="lbDB">&nbsp;</A>
+<H2>LES LECTEURS DE DISQUETTES</H2>
+
+<P>
+Il existe de nombreuses options pour le driver de lecteurs de disquettes, et elles
+sont listées dans le fichier README.fd du répertoire linux/drivers/block. 
+Les informations suivantes sont extraites de ce fichier.
+<P>
+<A NAME="lbDC">&nbsp;</A>
+<H3>floppy=mask,allowed_drive_mask</H3>
+
+<P>
+Utiliser la valeur mask comme masque binaire des lecteurs valides. Par défaut,
+seules les unités 0 et 1 de chaque contrôleurs de disquettes sont valides, car
+certains périphériques non-standard (cartes mères ASUS PCI) bloquent
+le clavier quand on accède aux unités 2 ou 3. Cette option est quelque peu obsolète
+avec la configuration cmos.
+<P>
+<A NAME="lbDD">&nbsp;</A>
+<H3>floppy=all_drives</H3>
+
+<P>
+Valide tous les lecteurs. Utilisez ceci si vous disposez de plus de deux lecteurs
+connectés sur un même contrôleur.
+<P>
+<A NAME="lbDE">&nbsp;</A>
+<H3>floppy=asus_pci</H3>
+
+<P>
+Ne valide que les unités 0 et 1 (option par défaut).
+<P>
+<A NAME="lbDF">&nbsp;</A>
+<H3>floppy=daring</H3>
+
+<P>
+indique au driver que le contrôleur a un comportement correct. Ceci permet
+des opérations plus efficaces et plus rapides, mais peut échouer avec certains 
+contrôleurs.
+<P>
+<A NAME="lbDG">&nbsp;</A>
+<H3>floppy=0,daring</H3>
+
+<P>
+indique au driver que le contrôleur doit être utilisé avec méfiance.
+<P>
+<A NAME="lbDH">&nbsp;</A>
+<H3>floppy=one_fdc</H3>
+
+<P>
+indique au driver que vous n'avez qu'un seul contrôleur (attitude par défaut).
+<P>
+<A NAME="lbDI">&nbsp;</A>
+<H3>floppy=two_fdc or floppy=adresse,two_fdc</H3>
+
+<P>
+indique au driver que vous disposez de deux contrôleurs. Le second est supposé se
+trouver à l'adresse indiquée. Si l'adresse est absente, on suppose qu'elle vaut
+0x370.
+<P>
+<A NAME="lbDJ">&nbsp;</A>
+<H3>floppy=thinkpad</H3>
+
+<P>
+indique au driver que vous avez un Thinkpad. Les Thinkpads utilisent une convention
+inversée pour le changement de disques.
+<P>
+<A NAME="lbDK">&nbsp;</A>
+<H3>floppy=0,thinkpad</H3>
+
+<P>
+indique au driver que vous n'avez pas de Thinkpad. 
+<P>
+<A NAME="lbDL">&nbsp;</A>
+<H3>floppy=drive,type,cmos</H3>
+
+<P>
+fixe le type cmos du lecteur, et valide le lecteur. Ceci est utile si
+vous avez plus de deux lecteurs de disquettes (seulement deux sont indiqués dans
+la configuration cmos), ou si votre BIOS utilise un type de mémoire cmos 
+non-standard. Indiquer CMOS à 0 pour les deux premiers disques (défaut), fera
+lire la mémoire cmos par le driver pour ces deux disques.
+<P>
+<A NAME="lbDM">&nbsp;</A>
+<H3>floppy=unexpected_interrupts</H3>
+
+<P>
+Afficher un message d'avertissement si une interruption inattendue est reçue
+(comportement par défaut).
+<P>
+<A NAME="lbDN">&nbsp;</A>
+<H3>floppy=no_unexpected_interrupts or floppy=L40SX</H3>
+
+<P>
+Ne pas afficher de message d'avertissement si une interruption inattendue est 
+reçue. Ceci est nécessaire sur les ordinateurs portables IBM L40SX dans certains modes vidéos.
+(Il semble y avoir une interaction entre la vidéo et les disquettes. Les 
+interruptions inattendues n'affectent que les performances et peuvent être
+ignorées en toute sécurité).
+<P>
+<A NAME="lbDO">&nbsp;</A>
+<H2>LE CONTRÔLEUR SON</H2>
+
+<P>
+Le driver sonore ne peut accepter que des arguments pour surcharger les valeurs
+définies à la compilation. Ceci n'est pas recommandé car il est assez complexe.
+Les options sont décrites dans le fichier Readme.Linux du répertoire 
+linux/drivers/sound. Il accepte des arguments de boot de la forme :
+<DL COMPACT>
+<DT><DD>
+sound=device1[,device2[,device3...[,device10]]]
+</DL>
+<P>
+
+où chaque valeur de deviceN utilise le format 0xTaaaId, avec :
+<P>
+T - Type de périphérique : 1=FM, 2=SB, 3=PAS, 4=GUS, 5=MPU401, 6=SB16,
+7=SB16-MPU401
+<P>
+aaa - Adresse d'entrée/sortie en hexadécimal
+<P>
+I - Interruption en hexadécimal (10=A, 11=B, ...)
+<P>
+d - Canal DMA
+<P>
+Comme vous le voyez c'est assez compliqué, et il vaut mieux compiler un noyau avec
+ses propres valeurs. L'utilisation de l'argument de démarrage `sound=0' désactivera
+totalement le driver sonore.
+<P>
+<P>
+<A NAME="lbDP">&nbsp;</A>
+<H2>DRIVERS ISDN</H2>
+
+<P>
+<A NAME="lbDQ">&nbsp;</A>
+<H3>Le driver ISDN ICN</H3>
+
+Syntaxe :
+<DL COMPACT>
+<DT><DD>
+icn=iobase,membase,icn_id1,icn_id2
+</DL>
+<P>
+
+où icn_id1,icn_id2 sont deux chaînes permettant d'identifier
+la carte dans les messages du noyau.
+<P>
+<A NAME="lbDR">&nbsp;</A>
+<H3>Le driver ISDN PCBIT</H3>
+
+Syntaxe :
+<DL COMPACT>
+<DT><DD>
+pcbit=membase1,irq1[,membase2,irq2]
+</DL>
+<P>
+
+où membaseN est l'adresse de départ de la mémoire partagée de la Nième
+carte, et irqN est la configuration d'interruption de la Nième carte.
+Par défaut IRQ vaut 5 et membase 0xD0000.
+<P>
+<A NAME="lbDS">&nbsp;</A>
+<H3>Le driver ISDN Teles</H3>
+
+Syntaxe :
+<DL COMPACT>
+<DT><DD>
+teles=iobase,irq,membase,protocol,teles_id
+</DL>
+<P>
+
+où iobase est l'adresse du port d'entrée/sortie de la carte, membase est
+l'adresse de départ de la mémoire partagée, irq le canal d'interruption
+utilisé par la carte, et teles_id un identificateur ASCII unique.
+<P>
+<A NAME="lbDT">&nbsp;</A>
+<H2>DRIVERS DE PORT SÉRIE</H2>
+
+<P>
+<A NAME="lbDU">&nbsp;</A>
+<H3>Le driver RISCom/8 Multiport Serial(`riscom8=')</H3>
+
+Syntaxe :
+<DL COMPACT>
+<DT><DD>
+riscom=iobase1[,iobase2[,iobase3[,iobase4]]]
+</DL>
+<P>
+
+Plus de détails sont disponibles dans
+<I>/usr/src/linux/Documentation/riscom8.txt</I>.
+
+<P>
+<A NAME="lbDV">&nbsp;</A>
+<H3>Le driver DigiBoard (`digi=')</H3>
+
+<P>
+Si l'on utilise cette option, elle doit avoir exactement six paramètres.
+Syntaxe :
+<DL COMPACT>
+<DT><DD>
+digi=status,type,altpin,numports,iobase,membase
+</DL>
+<P>
+
+Les paramètres peuvent être fournis sous forme d'entiers ou
+de chaînes. Si l'on utilise des chaînes, iobase et membase
+doivent être indiqués en hexadécimal.
+Les argument entiers sont, dans l'ordre :
+status (<A HREF="/cgi-bin/man/man2html?1+Enable">Enable</A>(1) activer ou Disable(0) désactiver la carte),
+type (PC/Xi(0), PC/<A HREF="/cgi-bin/man/man2html?1+Xe">Xe</A>(1), PC/<A HREF="/cgi-bin/man/man2html?2+Xeve">Xeve</A>(2), PC/<A HREF="/cgi-bin/man/man2html?3+Xem">Xem</A>(3)),
+altpin (<A HREF="/cgi-bin/man/man2html?1+Enable">Enable</A>(1) activer ou Disable(0) désactiver la seconde configuration des broches),
+numports (nombre de ports sur la carte),
+iobase (Port d'entrée/sortie de la carte (en hexa)),
+membase (Adresse de base de la fenêtre mémoire (en hexa)).
+Ainsi, les deux chaînes d'arguments suivantes sont équivalentes :
+<DL COMPACT>
+<DT><DD>
+digi=E,PC/Xi,D,16,200,D0000
+<BR>
+
+digi=1,0,0,16,0x200,851968
+</DL>
+<P>
+
+Plus de détails sont disponibles dans
+<I>/usr/src/linux/Documentation/digiboard.txt</I>.
+
+<P>
+<A NAME="lbDW">&nbsp;</A>
+<H3>Le driver Baycom Serial/Parallel Radio Modem</H3>
+
+Syntaxe :
+<DL COMPACT>
+<DT><DD>
+baycom=iobase,irq,modem
+</DL>
+<P>
+
+Il y a exactement 3 paramètres. Si vous avez plusieurs cartes,
+utilisez plusieurs commandes `baycom='.
+Le paramètre modem est une chaîne prenant l'une des valeurs suivantes
+ser12, ser12*, par96, par96*. Ici * indique la gestion logicielle
+du DCD doit être activée, et ser12/par96 correspond au type de modem
+supporté.
+Pour plus de détails, consultez
+<I>/usr/src/linux/drivers/net/README.baycom</I>.
+
+<P>
+<A NAME="lbDX">&nbsp;</A>
+<H3>Le driver Soundcard radio modem</H3>
+
+Syntaxe :
+<DL COMPACT>
+<DT><DD>
+soundmodem=iobase,irq,dma[,dma2[,serio[,pario]]],0,mode
+</DL>
+<P>
+
+Tous les paramètres sont des entiers, sauf les deux derniers.
+La valeur 0 est nécessaire pour éviter un bogue dans le code de démarrage.
+Le paramètre `mode' est une chaîne avec la syntaxe hw:modem,
+où hw correspond à sbc, wss, ou wssfdx et modem correspond à
+afsk1200, ou fsk9600.
+<P>
+<A NAME="lbDY">&nbsp;</A>
+<H2>PILOTE D'IMPRIMANTE</H2>
+
+<P>
+<A NAME="lbDZ">&nbsp;</A>
+<H3>`lp='</H3>
+
+Syntaxe :
+<DL COMPACT>
+<DT><DD>
+lp=0
+<BR>
+
+lp=auto
+<BR>
+
+lp=reset
+<BR>
+
+lp=port[,port...]
+</DL>
+<P>
+
+<P>
+On peut indiquer au pilote
+d'imprimante les ports à utiliser et ceux à ne pas utiliser. Ceci permet
+d'éviter que le pilote n'examine tous les ports, afin que d'autres
+pilotes (PLIP, PPA) les utilisent.
+<P>
+Le format de l'argument, est une suite de paires (adresse entrée/sortie,
+irq). Par exemple lp=none,parport0 utilisera le premier port parallèle pour
+lp1, et désactivera lp0.
+Pour désactiver complètement le pilote
+d'imprimante, utilisez lp=0.
+<P>
+<A NAME="lbEA">&nbsp;</A>
+<H3>Driver WDT500/501</H3>
+
+Syntaxe :
+<DL COMPACT>
+<DT><DD>
+wdt=io,irq
+</DL>
+<P>
+
+<P>
+<A NAME="lbEB">&nbsp;</A>
+<H2>DRIVERS SOURIS</H2>
+
+<P>
+<A NAME="lbEC">&nbsp;</A>
+<H3>`bmouse=irq'</H3>
+
+<P>
+Le driver busmouse n'accepte qu'un seul paramètre, la valeur d'IRQ matérielle
+à utiliser.
+<P>
+<A NAME="lbED">&nbsp;</A>
+<H3>`msmouse=irq'</H3>
+
+<P>
+Ceci est exactement la même chose pour le driver msmouse.
+<P>
+<A NAME="lbEE">&nbsp;</A>
+<H3>souris ATARI</H3>
+
+<P>
+
+atamouse=threshold[,y-threshold]
+<DL COMPACT>
+<DT><DD>
+Si un seul argument est fourni, il sera utilisé à la fois pour les seuils
+x-threshold et y-threshold. Sinon, le premier argument est x-threshold et
+le second y-threshold. Ces valeurs doivent être dans l'intervalle 1 à
+20 inclus. La valeur par défaut est 2.
+<P>
+</DL>
+<A NAME="lbEF">&nbsp;</A>
+<H2>PÉRIPHÉRIQUES VIDÉO</H2>
+
+<P>
+<A NAME="lbEG">&nbsp;</A>
+<H3>`no-scroll'</H3>
+
+<P>
+Cette option indique au pilote de console de ne pas utiliser de
+défilement matériel (quand le défilement est géré en déplaçant
+l'adresse de l'écran dans la mémoire vidéo sans déplacer les
+données). Ceci est nécessaire pour certaines machines Braille.
+<P>
+<A NAME="lbEH">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Linus Torvalds (et de nombreux autres)
+<P>
+<A NAME="lbEI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+klogd">klogd</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?5+lilo.conf">lilo.conf</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+lilo">lilo</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+mount">mount</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+rdev">rdev</A></B>(8)
+
+<P>
+<P>
+Cette page de manuel a été conçue à partir du Boot-Parameter-HOWTO version 1.0.1
+écrit par Paul Gortmaker. Des compléments d'information seront donc trouvés dans
+ce document (ou une version plus récente).
+Une source d'information à jour est :
+<I>/usr/src/linux/Documentation/kernel-parameters.txt</I>.
+
+<A NAME="lbEJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">LISTE D'ARGUMENTS</A><DD>
+<DT><A HREF="#lbAE">ARGUMENTS GÉNÉRAUX NON SPÉCIFIQUES À UN PÉRIPHÉRIQUE</A><DD>
+<DL>
+<DT><A HREF="#lbAF">`init=...'</A><DD>
+<DT><A HREF="#lbAG">`nfsaddrs=...'</A><DD>
+<DT><A HREF="#lbAH">`nfsroot=...'</A><DD>
+<DT><A HREF="#lbAI">`no387'</A><DD>
+<DT><A HREF="#lbAJ">`no-hlt'</A><DD>
+<DT><A HREF="#lbAK">`root=...'</A><DD>
+<DT><A HREF="#lbAL">`ro' et `rw'</A><DD>
+<DT><A HREF="#lbAM">`reserve=...'</A><DD>
+<DT><A HREF="#lbAN">`mem=...'</A><DD>
+<DT><A HREF="#lbAO">`panic=N'</A><DD>
+<DT><A HREF="#lbAP">`reboot=[warm|cold][,[bios|hard]]'</A><DD>
+<DT><A HREF="#lbAQ">`nosmp' et `maxcpus=N'</A><DD>
+</DL>
+<DT><A HREF="#lbAR">ARGUMENTS DE DÉMARRAGE POUR LES DÉVELOPPEURS DU NOYAU</A><DD>
+<DL>
+<DT><A HREF="#lbAS">`debug'</A><DD>
+<DT><A HREF="#lbAT">`profile=N'</A><DD>
+<DT><A HREF="#lbAU">`swap=N1,N2,N3,N4,N5,N6,N7,N8'</A><DD>
+<DT><A HREF="#lbAV">`buff=N1,N2,N3,N4,N5,N6'</A><DD>
+</DL>
+<DT><A HREF="#lbAW">ARGUMENTS DE DÉMARRAGE POUR DISQUES VIRTUELS</A><DD>
+<DL>
+<DT><A HREF="#lbAX">`load_ramdisk=N'</A><DD>
+<DT><A HREF="#lbAY">`prompt_ramdisk=N'</A><DD>
+<DT><A HREF="#lbAZ">`ramdisk_size=N' ou (obsolète) `ramdisk=N'</A><DD>
+<DT><A HREF="#lbBA">`ramdisk_start=N'</A><DD>
+<DT><A HREF="#lbBB">`noinitrd'</A><DD>
+</DL>
+<DT><A HREF="#lbBC">ARGUMENTS DE DÉMARRAGE POUR PÉRIPHÉRIQUES SCSI</A><DD>
+<DL>
+<DT><A HREF="#lbBD">`max_scsi_luns=...'</A><DD>
+<DT><A HREF="#lbBE">Configuration des lecteurs de bande SCSI</A><DD>
+<DT><A HREF="#lbBF">Configuration Adaptec aha151x, aha152x, aic6260, aic6360, SB16-SCSI</A><DD>
+<DT><A HREF="#lbBG">Configuration Adaptec aha154x</A><DD>
+<DT><A HREF="#lbBH">Configuration Adaptec aha274x, aha284x, aic7xxx</A><DD>
+<DT><A HREF="#lbBI">Configuration des hôtes SCSI AdvanSys (`advansys=')</A><DD>
+<DT><A HREF="#lbBJ">AM53C974</A><DD>
+<DT><A HREF="#lbBK">Configuration des hôtes SCSI BusLogic (`buslogic=')</A><DD>
+<DT><A HREF="#lbBL">Configuration EATA/DMA</A><DD>
+<DT><A HREF="#lbBM">Configuration Future Domain TMC-16x0</A><DD>
+<DT><A HREF="#lbBN">Configuraton Great Valley Products (GVP)</A><DD>
+<DT><A HREF="#lbBO">Configuration Future Domain TMC-8xx, TMC-950</A><DD>
+<DT><A HREF="#lbBP">Configuration IN2000</A><DD>
+<DT><A HREF="#lbBQ">Configuration NCR5380 et NCR53C400</A><DD>
+<DT><A HREF="#lbBR">Configuration NCR53C8xx</A><DD>
+<DT><A HREF="#lbBS">Configuration NCR53c406a</A><DD>
+<DT><A HREF="#lbBT">Configuraton Pro Audio Spectrum</A><DD>
+<DT><A HREF="#lbBU">Configuration Seagate ST-0x</A><DD>
+<DT><A HREF="#lbBV">Configuration Trantor T128</A><DD>
+<DT><A HREF="#lbBW">Configuration UltraStor 14F/34F</A><DD>
+<DT><A HREF="#lbBX">Configuration WD7000</A><DD>
+<DT><A HREF="#lbBY">Configuration du contrôleur SCSI Commodore Amiga A2091/590</A><DD>
+</DL>
+<DT><A HREF="#lbBZ">DISQUES DURS</A><DD>
+<DL>
+<DT><A HREF="#lbCA">paramètres des disques IDE et des lecteurs CD-ROM</A><DD>
+<DT><A HREF="#lbCB">Les options `hd=cyls,heads,sects[,wpcom[,irq]]'</A><DD>
+<DT><A HREF="#lbCC">L'option `hd=serialize'</A><DD>
+<DT><A HREF="#lbCD">L'option `hd=dtc2278'</A><DD>
+<DT><A HREF="#lbCE">L'option `hd=noprobe'</A><DD>
+<DT><A HREF="#lbCF">L'option `hd=nowerr'</A><DD>
+<DT><A HREF="#lbCG">L'option `hd=cdrom'</A><DD>
+<DT><A HREF="#lbCH">Options du driver Standard ST-506 (`hd=')</A><DD>
+<DT><A HREF="#lbCI">Options du driver XT(`xd=')</A><DD>
+<DT><A HREF="#lbCJ">Disques amovibles Syquest's EZ*</A><DD>
+</DL>
+<DT><A HREF="#lbCK">Périphériques bus IBM MCA</A><DD>
+<DL>
+<DT><A HREF="#lbCL">Disques durs ESDI PS/2</A><DD>
+<DT><A HREF="#lbCM">Configuration de sous-systèmes SCSI IBM Microchannel</A><DD>
+</DL>
+<DT><A HREF="#lbCN">CD-ROMs (Non-SCSI/ATAPI/IDE)</A><DD>
+<DL>
+<DT><A HREF="#lbCO">L'Interface Aztech</A><DD>
+<DT><A HREF="#lbCP">Lecteurs de CD-ROM sur port parallèle</A><DD>
+<DT><A HREF="#lbCQ">l'Interface Sony CDU-31A and CDU-33A</A><DD>
+<DT><A HREF="#lbCR">L'interface Sony CDU-535</A><DD>
+<DT><A HREF="#lbCS">L'Interface GoldStar</A><DD>
+<DT><A HREF="#lbCT">L'interface ISP16</A><DD>
+<DT><A HREF="#lbCU">L'Interface Mitsumi Standard</A><DD>
+<DT><A HREF="#lbCV">L'Interface Mitsumi XA/MultiSession</A><DD>
+<DT><A HREF="#lbCW">L'Interface Optics Storage</A><DD>
+<DT><A HREF="#lbCX">L'Interface Phillips CM206</A><DD>
+<DT><A HREF="#lbCY">L'Interface Sanyo</A><DD>
+<DT><A HREF="#lbCZ">L'Interface SoundBlaster Pro</A><DD>
+</DL>
+<DT><A HREF="#lbDA">PÉRIPHÉRIQUES ETHERNET</A><DD>
+<DT><A HREF="#lbDB">LES LECTEURS DE DISQUETTES</A><DD>
+<DL>
+<DT><A HREF="#lbDC">floppy=mask,allowed_drive_mask</A><DD>
+<DT><A HREF="#lbDD">floppy=all_drives</A><DD>
+<DT><A HREF="#lbDE">floppy=asus_pci</A><DD>
+<DT><A HREF="#lbDF">floppy=daring</A><DD>
+<DT><A HREF="#lbDG">floppy=0,daring</A><DD>
+<DT><A HREF="#lbDH">floppy=one_fdc</A><DD>
+<DT><A HREF="#lbDI">floppy=two_fdc or floppy=adresse,two_fdc</A><DD>
+<DT><A HREF="#lbDJ">floppy=thinkpad</A><DD>
+<DT><A HREF="#lbDK">floppy=0,thinkpad</A><DD>
+<DT><A HREF="#lbDL">floppy=drive,type,cmos</A><DD>
+<DT><A HREF="#lbDM">floppy=unexpected_interrupts</A><DD>
+<DT><A HREF="#lbDN">floppy=no_unexpected_interrupts or floppy=L40SX</A><DD>
+</DL>
+<DT><A HREF="#lbDO">LE CONTRÔLEUR SON</A><DD>
+<DT><A HREF="#lbDP">DRIVERS ISDN</A><DD>
+<DL>
+<DT><A HREF="#lbDQ">Le driver ISDN ICN</A><DD>
+<DT><A HREF="#lbDR">Le driver ISDN PCBIT</A><DD>
+<DT><A HREF="#lbDS">Le driver ISDN Teles</A><DD>
+</DL>
+<DT><A HREF="#lbDT">DRIVERS DE PORT SÉRIE</A><DD>
+<DL>
+<DT><A HREF="#lbDU">Le driver RISCom/8 Multiport Serial(`riscom8=')</A><DD>
+<DT><A HREF="#lbDV">Le driver DigiBoard (`digi=')</A><DD>
+<DT><A HREF="#lbDW">Le driver Baycom Serial/Parallel Radio Modem</A><DD>
+<DT><A HREF="#lbDX">Le driver Soundcard radio modem</A><DD>
+</DL>
+<DT><A HREF="#lbDY">PILOTE D'IMPRIMANTE</A><DD>
+<DL>
+<DT><A HREF="#lbDZ">`lp='</A><DD>
+<DT><A HREF="#lbEA">Driver WDT500/501</A><DD>
+</DL>
+<DT><A HREF="#lbEB">DRIVERS SOURIS</A><DD>
+<DL>
+<DT><A HREF="#lbEC">`bmouse=irq'</A><DD>
+<DT><A HREF="#lbED">`msmouse=irq'</A><DD>
+<DT><A HREF="#lbEE">souris ATARI</A><DD>
+</DL>
+<DT><A HREF="#lbEF">PÉRIPHÉRIQUES VIDÉO</A><DD>
+<DL>
+<DT><A HREF="#lbEG">`no-scroll'</A><DD>
+</DL>
+<DT><A HREF="#lbEH">AUTEURS</A><DD>
+<DT><A HREF="#lbEI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbEJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:59 GMT, February 11, 2014
+</BODY>
+</HTML>

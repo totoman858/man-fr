@@ -1,0 +1,96 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of USERNETCTL</TITLE>
+</HEAD><BODY>
+<H1>USERNETCTL</H1>
+Section: Maintenance Commands (8)<BR>Updated: Red Hat, Inc.<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+usernetctl - autoriser un utilisateur à manipuler une interface réseau (si c'est permis)
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>usernetctl</B>
+
+<I>nom-interface</I> <I>up</I>|<I>down</I>|<I>report</I>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>usernetctl</B>
+
+vérifie si les utilisateurs ont la permission de manipuler l'interface
+réseau spécifiée par <I>nom-interface</I>, et essaie ensuite de l'activer ou
+de la désactiver si <I>up</I> ou <I>down</I> (respectivement) a été spécifié
+sur la ligne de commandes, ou renvoie une valeur de retour vraie ou fausse
+(respectivement) si l'option de rapport a été spécifiée.
+<P>
+<B>usernetctl</B>
+
+n'est pas destiné à être appelé directement par un utilisateur, bien qu'il
+fonctionne correctement dans ce cas actuellement. Il est utilisé comme
+enveloppe par les scripts ifup et ifdown, de sorte que les utilisateurs
+peuvent faire exactement la même chose que root&nbsp;:
+<P>
+<PRE>
+ifup <I>nom-interface</I>
+ifdown <I>nom-interface</I>
+</PRE>
+
+<P>
+<B>ifup</B> et <B>ifdown</B> appelleront automatiquement <B>usernetctl</B>
+pour permettre le changement d'état de l'interface.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><I>nom-interface</I>
+
+<DD>
+Le nom de l'interface réseau à vérifier, par exemple «&nbsp;ppp0&nbsp;». Pour
+assurer la compatibilité amont, «&nbsp;ifcfg-ppp0&nbsp;» et
+«&nbsp;/etc/sysconfig/network-scripts/ifcfg-ppp0&nbsp;» sont également supportés.
+<DT><I>up</I>|<I>down</I><DD>
+Essayer d'activer (de désactiver) l'interface réseau.
+<DT><I>report</I><DD>
+Rapporter si les utilisateurs peuvent ou pas activer l'interface réseau.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Des configurations de périphériques alternatives peuvent hériter des
+permissions de configuration par défaut.
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Frédéric Delanoy &lt;<I>delanoy_f at yahoo.com</I>&gt;, 2000.
+<A NAME="lbAH">&nbsp;</A>
+<H2>AVERTISSEMENT SUR LA TRADUCTION</H2>
+
+Il est possible que cette traduction soit imparfaite ou périmée. En cas de
+doute, veuillez vous reporter au document original en langue anglaise fourni
+avec le programme.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+<DT><A HREF="#lbAH">AVERTISSEMENT SUR LA TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:00 GMT, February 11, 2014
+</BODY>
+</HTML>

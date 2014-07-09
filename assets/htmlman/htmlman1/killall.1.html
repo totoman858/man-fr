@@ -1,0 +1,193 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of KILLALL</TITLE>
+</HEAD><BODY>
+<H1>KILLALL</H1>
+Section: de (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+killall - Envoyer un signal à des processus indiqués par leurs noms.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+
+<B>killall</B>
+
+[<B>-e</B>,<B>--exact</B>]
+
+[<B>-g</B>,<B>--process-group</B>]
+
+[<B>-i</B>,<B>--interactive</B>]
+
+[<B>-q</B>,<B>--quiet</B>]
+
+[<B>-v</B>,<B>--verbose</B>]
+
+[<B>-w</B>,<B>--wait</B>]
+
+[<B>-V,</B>--version<B>]</B>
+
+[<B>-S</B>,<B>--sid</B>]
+
+[<B>-c</B>,<B>--context</B>]
+
+[<B>-s</B>,<B>--signal</B>
+
+<I>signal</I>]
+
+[<B>--</B>]
+
+<I>nom ...</I>
+
+<BR>
+
+<B>killall</B>
+
+-l
+
+<BR>
+
+<B>killall</B>
+
+-V,<B>--version</B>
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>killall</B>
+
+envoie un signal à tous les processus en train d'exécuter les commandes
+mentionnées. Si aucun signal n'est précisé, TERM est envoyé.
+<P>
+
+Les signaux peuvent être indiqués soit par leur nom (par exemple <B>-HUP</B>)
+soit par leur numéro (par exemple <B>-1</B>).
+Le signal 0 (vérifier que le processus existe) n'a pas de nom.
+<P>
+
+Si le nom de la commande contient un slash (<B>/</B>),
+les processus exécutant ce fichier seront sélectionnés, indépendamment de
+leurs noms.
+<P>
+
+<B>killall</B> renvoie un code non-nul si aucun processus n'a été trouvé
+pour une au moins des commandes précisées.
+Si un processus au moins a reçu un signal pour chaque commande mentionnée,
+<B>killall</B> renvoie zéro.
+<P>
+
+Un processus <B>killall</B> ne s'envoie jamais de signal à lui-même
+(mais il peut en envoyer à d'autres processus <B>killall</B>).
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-e</B>, <B>--exact</B><DD>
+Demander une correspondance exacte pour les noms très longs. Si un nom de
+commande est plus long que 15 caractères, il peut être tronqué (s'il est
+swappé, par ex.) Ainsi, <B>killall</B> tuera tout ce qui correspond aux 15
+premiers caractères. Avec l'option <B>-e</B>, les entrées partielles sont
+sautées, et <B>killall</B> affiche un message pour chacune d'entre-elles si
+<B>-v</B> est spécifiée avec <B>-e</B>.
+<DT><B>-g</B>, <B>--process-group</B><DD>
+Tuer le groupe auquel le processus appartient. Les signal n'est envoyé qu'une
+seule fois au groupe, même si plusieurs processus lui appartenant ont été
+trouvés.
+<DT><B>-i</B>, <B>--interactive</B><DD>
+Demander confirmation interactivement avant l'émission du signal.
+<DT><B>-l</B>, <B>--list</B><DD>
+Afficher la liste de tous les signaux connus.
+<DT><B>-q</B>, <B>--quiet</B><DD>
+Ne pas se plaindre si aucun processus n'est tué.
+<DT><B>-v</B>, <B>--verbose</B><DD>
+Afficher un compte-rendu de l'émission du signal.
+<DT><B>-V</B>, <B>--version</B><DD>
+Afficher un numéro de version.
+<DT><B>-w</B>, <B>--wait</B><DD>
+Attendre que tous les processus tués meurent. <B>killall</B> vérifiera une
+fois par seconde s'il existe encore un processus visé, et ne reviendra que
+lorsqu'il n'y en aura plus. Notez que <B>killall</B> peut attendre
+indéfiniment si le signal est ignoré, n'a pas d'effet ou si le processus
+reste à l'état zombie.
+<DT><B>-S</B><DD>
+(Flask seulement) Ne tuer que les processus avec le SID indiqué. Impossible
+avec <B>-c</B>. Doit précéder les autres arguments sur la ligne de commande.
+<DT><B>-c</B><DD>
+(Flask seulement) Ne tuer que les processus avec le contexte de sécurité
+indiqué. Impossible avec <B>-S</B>. Doit précéder les autres arguments sur la
+ligne de commande.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<PRE>
+/proc   emplacement du pseudo-système de fichiers Proc.
+</PRE>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+La sélection des processus par nom de fichier ne fonctionne que pour
+les exécutables qui sont maintenus ouverts pendant l'exécution. Un
+exécutable corrompu ne peut pas être tué de cette manière.
+<P>
+
+Attention, la commande <B>killall</B> <I>nom</I> n'a peut-être pas la
+même signification sur des systèmes non-Linux, tout spécialement
+lorsqu'elle est invoquée par un utilisateur privilégié...
+<P>
+
+<B>killall -w</B> ne détecte pas si un processus disparaît et est remplacé
+par un nouveau processus avec le même PID entre deux examens.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Werner Almesberger &lt;<A HREF="mailto:werner.almesberger@lrc.di.epfl.ch">werner.almesberger@lrc.di.epfl.ch</A>&gt;
+Since version 20 Craig Small &lt;<A HREF="mailto:csmall@small.dropbear.id.au">csmall@small.dropbear.id.au</A>&gt;
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+kill">kill</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+fuser">fuser</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+pgrep">pgrep</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+pidof">pidof</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+ps">ps</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+kill">kill</A></B>(2)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">AUTEUR</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:50 GMT, February 11, 2014
+</BODY>
+</HTML>

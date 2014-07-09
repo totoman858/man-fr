@@ -1,0 +1,139 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of BASE-CONFIG</TITLE>
+</HEAD><BODY>
+<H1>BASE-CONFIG</H1>
+Section: Maintenance Commands (8)<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+base-config - Configuration du système de base Debian
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>base-config [nouveau]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>base-config</B>
+
+est le programme lancé lors du premier redémarrage d'un nouveau
+système debian. Il vous guide pas à pas dans la configuration
+du système, l'installation de nouveaux programmes, etc.
+Vous pourrez lancer à nouveau ce programme plus tard si vous désirez
+modifier la configuration de votre système.
+<A NAME="lbAE">&nbsp;</A>
+<H2>IMPLÉMENTATION</H2>
+
+<B>base-config</B>
+
+est un script qui lance, par ordre numérique, les programmes
+présents dans
+<B>/usr/lib/base-config/</B>.
+
+Lors de l'installation d'un nouveau système debian, 
+chaque programme reçoit «&nbsp;new&nbsp;» comme premier argument.
+<P>
+
+base-config vérifie les codes de retour de chacun des programmes lancés. 
+Un programme peut retourner une valeur supérieure à 0 et inférieure à 10
+pour indiquer une erreur. Les codes de retour compris entre 101 et 200, une
+fois soustrait 100, sont utilisés pour passer la main au programme ayant le
+numéro le plus proche du code de retour&nbsp;; ceci peut être utilisé pour avancer ou reculer dans 
+le processus de configuration.
+<P>
+
+D'autres paquets peuvent insérer des programmes dans
+<B>/usr/lib/base-config/</B>,
+
+ils feront alors partie de la configuration du système de base. Afin de
+conserver l'homogénéité et l'aspect professionnel du processus
+d'installation, il est fortement conseillé que la communication entre ces
+paquets et l'utilisateur se fasse entièrement via debconf.
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+Chaque exécution de base-config est consignée dans
+<B>/var/log/installer.log</B>.
+
+<P>
+
+Si le fichier 
+<B>/root/dbootstrap_settings </B>
+
+existe, il sera lu par base-config.
+Afin de configurer le comportement de base-config, ce fichier inclut
+de nombreuses variables d'environnement. C'est la présence de ce fichier, créé
+par debootstrap (le programme d'installation de disquettes de démarrage) pendant
+le processus d'installation, qui permet à base-config d'effectuer toutes les
+tâches correspondant à une nouvelle installation.
+<A NAME="lbAG">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+base-config tient compte des variables d'environnement suivantes. Ces
+variables peuvent être définies dynamiquement, pendant l'installation, ou bien
+encore passées en paramètre au noyau sur la ligne de commande de 
+<B>lilo (8)</B>
+
+(ou d'un autre chargeur de démarrage). Consultez la documentation
+de votre chargeur de démarrage pour plus d'informations. 
+Par exemple, lilo peut être lancé avec un paramètre tel que
+«&nbsp;linux DEBIAN_FRONTEND=readline&nbsp;».
+<DL COMPACT>
+<DT><B>DEBIAN_FRONTEND</B>
+
+<DD>
+<DT><B>DEBIAN_PRIORITY</B>
+
+<DD>
+<DT><B>DEBCONF_DEBUG</B>
+
+<DD>
+<DT><B>DEBCONF_TERSE</B>
+
+<DD>
+Contrôle de nombreux aspects de debconf. Voir
+<B>debconf (7)</B>
+
+<DT><B>KEEP_BASE_DEBS</B>
+
+<DD>
+Par défaut, base-config supprime les fichiers .deb utilisés par 
+<B>debootstrap (8)</B>
+
+pour installer le système de base. C'est utile quand on manque de place.
+Si vous désirez conserver ces fichiers, affectez «&nbsp;yes&nbsp;» à cette variable.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Joey Hess &lt;<A HREF="mailto:joey@kitenet.net">joey@kitenet.net</A>&gt;
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Antoine Gémis &lt;<A HREF="mailto:agemis@netuup.com">agemis@netuup.com</A>&gt;.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">IMPLÉMENTATION</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAH">AUTEUR</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:04 GMT, February 11, 2014
+</BODY>
+</HTML>

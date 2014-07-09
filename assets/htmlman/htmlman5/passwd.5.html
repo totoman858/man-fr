@@ -1,0 +1,191 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PASSWD</TITLE>
+</HEAD><BODY>
+<H1>PASSWD</H1>
+Section: Manuel de l administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+passwd - Fichier des mots de passe.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>passwd</B>
+
+est un fichier de texte qui contient la liste des comptes sur le système,
+ainsi que des informations utiles sur ces comptes, comme l'identification
+de l'utilisateur, du groupe, le répertoire personnel, le shell, etc.
+Souvent, ce fichier contient également le mot de passé chiffré de l'utilisateur.
+Le fichier des mots
+de passe doit permettre la lecture par tout le monde (de nombreux
+utilitaires comme
+<I><A HREF="/cgi-bin/man/man2html?1+ls">ls</A></I>(1)
+
+l'utilisent pour convertir les UID en noms d'utilisateur).
+Par contre seul le Super-User doit disposer de droits d'écriture sur
+le fichier.
+<P>
+
+Au bon vieux temps, aucun problème de sécurité ne se posait avec ce
+droit de lecture général. Chacun pouvait consulter les mots de passe
+cryptés, mais le matériel était trop lent pour pouvoir décrypter un
+mot de passe bien choisi. De plus le principe de base d'Unix reposait
+sur une communauté soudée d'utilisateurs sans intentions néfastes.
+Actuellement, il est de plus en plus recommandé d'utiliser des
+systèmes de masquage des mots de passe, comme 
+<B>shadow</B>
+
+avec lequel le fichier
+<I>/etc/passwd</I>
+
+contient des * à la place des mots de passe, et où ces derniers sont
+stockés sous forme cryptée dans
+<I>/etc/shadow</I>
+
+qui n'est lisible que par le Super-utilisateur.
+<P>
+
+Que le masquage des mots de passe soit utilisé ou non, de nombreux
+administrateurs systèmes utilisent un astérisque dans le champ
+
+pourra pas se connecter (Voir le paragraphe Notes plus bas).
+<P>
+
+Si vous devez créer un nouvel utilisateur, placez un astérisque dans le champ
+
+passwd (1)
+pour le mettre à jour.
+<P>
+
+Il doit y avoir, dans le fichier des mots de passe, une ligne par utilisateur,
+avec le format suivant&nbsp;:
+<P>
+<DL COMPACT><DT><DD>
+account:passwd:UID:GID:GECOS:directory:shell
+</DL>
+
+<P>
+Les divers champs sont les suivants :
+<P>
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><I>account</I>
+
+<DD>
+Le nom que l'utilisateur utilisera pour se connecter, il ne devrait normalement
+pas contenir de majuscules
+<DT><I>password</I>
+
+<DD>
+La représentation encryptée (optionnelle) du mot de passe.
+<DT><I>UID</I>
+
+<DD>
+L'ID numérique de l'utilisateur.
+<DT><I>GID</I>
+
+<DD>
+L'ID numérique du groupe principal de l'utilisateur.
+<DT><I>GECOS</I>
+
+<DD>
+Ce champ est optionnel et n'a qu'un rôle informatif. Il contient généralement
+le nom complet de l'utilisateur. GECOS signifie &quot;General Electric Comprehensive
+Operating System&quot;, qui fut renommé GCOS quand la division &quot;gros systèmes&quot; de
+General Electric a été vendue a Honeywell. Dennis Ritchie raconte&nbsp;:
+&quot;Il arrivait que l'on envoie des sorties d'impression ou des résultats de
+traitements différés vers une machine GCOS. Le champ GCOS du fichier password
+était un endroit classique pour glisser des informations dans la carte
+$IDENT. Pas très élégant...&quot;
+<DT><I>directory</I>
+
+<DD>
+Le répertoire de connexion de l'utilisateur (variable d'
+<I><A HREF="/cgi-bin/man/man2html?5+environnement">environnement</A></I>(5)
+
+$HOME).
+<DT><I>shell</I>
+
+<DD>
+Le programme à exécuter après la phase de connexion (par défaut 
+<I>/bin/sh</I>).
+
+Si ce fichier n'existe pas, l'utilisateur ne pourra pas se connecter avec
+<B><A HREF="/cgi-bin/man/man2html?1+login">login</A></B>(1).
+
+</DL>
+</DL>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>NOTES</H2>
+
+Si vous désirez créer des groupes d'utilisateurs, leurs champs GIDs doivent
+être identiques, et il doit y avoir une entrée correspondante dans le fichier
+<I>/etc/group</I>.
+
+<P>
+
+Si le mot de passe crypté est rempli avec un astérisque, l'utilisateur ne
+pourra pas se connecter avec
+<B><A HREF="/cgi-bin/man/man2html?1+login">login</A></B>(1),
+
+mais pourra toujours le faire avec
+<B><A HREF="/cgi-bin/man/man2html?1+rlogin">rlogin</A></B>(1),
+
+lancer des processus en utilisant
+<B><A HREF="/cgi-bin/man/man2html?1+rsh">rsh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+cront">cront</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+at">at</A></B>(1),
+
+ou des filtres de courrier, etc...
+La modification du champ &quot;Shell&quot; a généralement les mêmes effets, et autorise
+toujours l'utilisation de
+<B><A HREF="/cgi-bin/man/man2html?1+su">su</A></B>(1).
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/etc/passwd</I>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+passwd">passwd</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+login">login</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+su">su</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?5+group">group</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?5+shadow">shadow</A></B>(5)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">NOTES</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:54 GMT, February 11, 2014
+</BODY>
+</HTML>

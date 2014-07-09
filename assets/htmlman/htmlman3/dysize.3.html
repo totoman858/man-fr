@@ -1,0 +1,81 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DYSIZE</TITLE>
+</HEAD><BODY>
+<H1>DYSIZE</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+dysize - Obtenir le nombre de jours pour une année donnée.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<B>#define _BSD_SOURCE</B>   /* ou bien : #define _SVID_SOURCE */
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/time.h">time.h</A>&gt;</B>
+
+<P>
+<B>int dysize(int </B><I>year</I><B>);</B>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction renvoie 365 pour une année normale et 366 pour une année bissextile.
+L'identification d'une année bissextile repose sur le calcul suivant :
+<P>
+(year) %4 == 0 &amp;&amp; ((year) %100 != 0 || (year) %400 == 0)
+<P>
+La formule est définie dans la macro
+<I>__isleap(year)</I>
+
+que l'on trouve également dans 
+<I>&lt;<A HREF="file:///usr/include/time.h">time.h</A>&gt;</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Cette fonction apparaît dans SunOS 4.x.
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Il s'agit seulement d'une fonction à vocation de compatibilité. Ne l'utilisez pas dans de nouveaux programmes.
+La version Unix SCO de cette fonction est affectée par le bug de l'an 2000.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+strftime">strftime</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+time">time</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Stéphan Rafin, 2002.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:38 GMT, February 11, 2014
+</BODY>
+</HTML>

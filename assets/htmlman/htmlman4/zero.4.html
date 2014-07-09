@@ -1,0 +1,95 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of NULL</TITLE>
+</HEAD><BODY>
+<H1>NULL</H1>
+Section: Manuel du programmeur Linux (4)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+null, zero - Absorbeurs de données.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les données écrites sur un fichier spécial <B>null</B> ou <B>zero</B> 
+sont éliminées.
+<P>
+
+La lecture depuis un fichier spécial <B>null</B> retourne toujours
+&quot;fin de fichier&quot;, alors que la lecture depuis <B>zero</B> retourne
+toujours des caractères \0.
+<P>
+
+<B>null</B> et <B>zero</B> sont typiquement crées ainsi :
+<DL COMPACT><DT><DD>
+<P>
+mknod -m 666 /dev/null c 1 3
+<BR>
+
+mknod -m 666 /dev/zero c 1 5
+<BR>
+
+chown root:mem /dev/null /dev/zero
+<P>
+</DL>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>NOTES</H2>
+
+Si ces fichiers ne sont pas lisibles et accessibles en écriture par
+tous, de nombreux programmes vont se comporter étrangement.
+<P>
+[NDT] De nombreux administrateurs système débutants ont effacé plus ou
+moins volontairement le fichier <I>/dev/null</I> ou <I>/dev/zero</I>.
+Ceux-ci sont recréés dès qu'une commande se terminant par <I>&gt; /dev/null</I>
+est exécutée par <B>root</B>, mais ils sont recréés sous forme de fichier
+réguliers ! Un remplissage de la partition racine se produit alors
+au bout d'un temps plus ou moins long.
+<P>
+Si une erreur de saturation de la partition racine se produit, vérifiez
+donc la taille de /dev/null et /dev/zero, et le cas échéant recréez-les
+en utilisant les commandes indiquées ci-dessus.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/dev/null</I>
+
+<BR>
+
+<I>/dev/zero</I>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+chown">chown</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+mknod">mknod</A></B>(1)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">NOTES</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:53 GMT, February 11, 2014
+</BODY>
+</HTML>

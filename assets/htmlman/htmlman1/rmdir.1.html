@@ -1,0 +1,146 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of RMDIR</TITLE>
+</HEAD><BODY>
+<H1>RMDIR</H1>
+Section: Manuel de l'utilisateur Linux (1L)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+rmdir - Supprimer des répertoires vides.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>rmdir [</B><I>options</I><B>] [</B><I>répertoire...</I><B>]</B>
+
+<P>
+Options POSIX :
+<B>[-p] [--]</B>
+
+<P>
+Options GNU (forme courte):
+<B>[-p]</B>
+
+<B>[--ignore-fail-on-non-empty]</B>
+
+<B>[--help] [--version] [--]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>rmdir</B>
+
+supprime chaque répertoire vide indiqué. 
+([NDT] <B>rmdir</B> = Remove Directory).
+<P>
+
+Tout argument (autre que
+les options) ne se rapportant pas à un répertoire vide est considéré
+comme une erreur.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS POSIX</H2>
+
+<DL COMPACT>
+<DT><B>-p</B>
+
+<DD>
+Effacer les répertoires parents s'ils deviennent vides après
+la suppression des répertoires mentionnés en argument. Ainsi `rmdir -p
+a/b/c' est équivalent à `rmdir a/b/c; rmdir a/b; rmdir a'.
+<DT><B>--</B>
+
+<DD>
+Fin explicite de la liste des options.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS GNU</H2>
+
+<DL COMPACT>
+<DT><B>--ignore-fail-on-non-empty</B>
+
+<DD>
+Normalement, 
+<B>rmdir</B>
+
+refusera de supprimer un répertoire non-vide. Cette option empêchera
+<B>rmdir</B>
+
+d'échouer en supprimant un répertoire, si cet échec est dû au fait que
+le répertoire n'est pas vide.
+(Nouveauté de fileutils-4.0).
+<DT><B>-p, --parents</B>
+
+<DD>
+Comme décrit ci-dessus.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>OPTIONS STANDARDS GNU</H2>
+
+<DL COMPACT>
+<DT><B>--help</B>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et se terminer correctement.
+<DT><B>--version</B>
+
+<DD>
+Afficher le numéro de version sur la sortie standard et se terminer
+correctement.
+<DT><B>--</B>
+
+<DD>
+Fin des options.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+Les variables
+LANG, LC_ALL, LC_CTYPE et LC_MESSAGES ont leurs significations habituelles.
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX 1003.2
+<A NAME="lbAJ">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+La commande `<I>rmdir foo</I>' n'effacera le répertoire
+<I>foo</I>,
+
+que s'il est vide. Si on désire effacer également les répertoires
+non-vides, il faut utiliser `<I>rm -r foo</I>'.
+<A NAME="lbAK">&nbsp;</A>
+<H2>NOTES</H2>
+
+Cette page décrit la version de <B>rmdir</B> fournie dans le
+paquetage fileutils-4.0. D'autres versions peuvent différer légèrement.
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS POSIX</A><DD>
+<DT><A HREF="#lbAF">OPTIONS GNU</A><DD>
+<DT><A HREF="#lbAG">OPTIONS STANDARDS GNU</A><DD>
+<DT><A HREF="#lbAH">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">EXEMPLES</A><DD>
+<DT><A HREF="#lbAK">NOTES</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:45 GMT, February 11, 2014
+</BODY>
+</HTML>

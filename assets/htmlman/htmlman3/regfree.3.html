@@ -1,0 +1,439 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of REGEX</TITLE>
+</HEAD><BODY>
+<H1>REGEX</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+regcomp, regexec, regerror, regfree - Fonctions regex POSIX.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/regex.h">regex.h</A>&gt;</B>
+
+<P>
+
+
+<BR>
+u
+
+<B>int&nbsp;regcomp&nbsp;(regex_t *</B><I>preg</I><B>, const char *</B><I>regex</I><B>,</B>
+
+<B>int </B><I>cflags</I><B>);</B>
+
+
+
+<BR>
+u
+
+<B>int&nbsp;regexec&nbsp;(const regex_t *</B><I>preg</I><B>, const char *</B><I>string</I><B>,</B>
+
+<B>size_t </B><I>nmatch</I><B>, regmatch_t </B><I>pmatch[]</I><B>,</B>
+
+<B>int </B><I>eflags</I><B>);</B>
+
+
+
+<BR>
+u
+
+<B>size_t&nbsp;regerror&nbsp;(int </B><I>errcode</I><B>,</B>
+
+<B>const regex_t *</B><I>preg</I><B>, char *</B><I>errbuf</I><B>,</B>
+
+<B>size_t </B><I>errbuf_size</I><B>);</B>
+
+
+
+<BR>
+
+
+<B>void&nbsp;regfree&nbsp;(regex_t *</B><I>preg</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>COMPILATION REGEX POSIX</H2>
+
+<B>regcomp</B>
+
+est utilisée pour compiler une expression régulière sous une forme
+utilisable par la suite pour des recherches avec
+<B>regexec</B>.
+
+<P>
+On fournit à
+<B>regcomp</B>
+
+les arguments
+<I>preg</I>,
+
+un pointeur vers une zone de stockage du motif,
+<I>regex</I>,
+
+un pointeur vers une chaîne terminée par un caractère nul, et
+<I>cflags</I>,
+
+les attributs indiquant le type de compilation.
+<P>
+Toutes les recherches d'expressions régulières sont effectuées à travers
+la zone de motif compilé, ainsi
+<B>regexec</B>
+
+doit toujours recevoir l'adresse d'un motif initialisé par
+<B>regcomp</B>.
+
+<P>
+<I>cflags </I>
+
+peut être un
+<B>OU binaire</B>
+
+entre une ou plusieurs constantes symboliques suivantes :
+<DL COMPACT>
+<DT><B>REG_EXTENDED</B>
+
+<DD>
+Utiliser la syntaxe d'Expression Régulière Étendue
+<B>POSIX</B>
+
+pour interpréter
+<I>regex</I>.
+
+Sinon, la syntaxe d'Expression Régulière de Base
+<B>POSIX</B>
+
+est utilisée.
+<DT><B>REG_ICASE</B>
+
+<DD>
+Ne pas différencier les majuscules des minuscules. Les recherches
+<B>regexec</B>
+
+suivantes utilisant le buffer de motif n'effectueront pas la différentiation.
+<DT><B>REG_NOSUB</B>
+
+<DD>
+Ne pas utiliser les correspondances de sous-chaînes.
+Les paramètres
+<I>nmatch</I>
+
+et
+<I>pmatch</I>
+
+de
+<B>regexec</B>
+
+sont ignorés si le buffer de motif est compilé avec cet attribut.
+<DT><B>REG_NEWLINE</B>
+
+<DD>
+L'opérateur &quot;n'importe-quel-caractère&quot; ne s'identifie pas avec le saut de ligne.
+<P>
+Une liste d'exceptions
+(<B>[^...]</B>)
+
+s'identifie avec le saut de ligne, même si elle ne le contient pas explicitement.
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;
+L'opérateur Début-de-ligne
+(<B>^</B>)
+
+s'identifie avec une chaîne vide suivant immédiatement un saut de ligne,
+même si l'attribut
+<I>eflags</I>,
+
+de
+<B>regexec</B>,
+
+contient
+<B>REG_NOTBOL</B>.
+
+<P>
+L'opérateur Fin-de-ligne
+(<B>$</B>)
+
+s'identifie avec une chaîne vide précédant immédiatement un saut de ligne,
+même si l'attribut
+<I>eflags</I>
+
+contient
+<B>REG_NOTEOL</B>.
+
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>CORRESPONDANCE REGEX POSIX</H2>
+
+<B>regexec</B>
+
+est utilisée pour mettre en correspondance une chaîne terminée par un
+caractère nul, avec le buffer de motif précompilé
+<I>preg</I>.
+
+<I>nmatch</I>
+
+et
+<I>pmatch</I>
+
+fournissent des informations concernant l'emplacement des correspondances.
+<I>eflags</I>
+
+peut être un
+<B>OU binaire</B>
+
+entre les constantes
+<B>REG_NOTBOL</B>
+
+ou
+<B>REG_NOTEOL </B>
+
+qui modifient le comportement de la mise en correspondance décrite ci-dessous.
+<DL COMPACT>
+<DT><B>REG_NOTBOL</B>
+
+<DD>
+L'opérateur Début-de-ligne échoue toujours (mais voyez l'attribut de compilation
+<B>REG_NEWLINE </B>
+
+ci-dessus)
+Cet attribut peut être utilisé quand différentes portions d'une chaîne
+sont transmises à
+<B>regexec</B>
+
+et que le début de la chaine ne correspond pas à un début de ligne.
+<DT><B>REG_NOTEOL</B>
+
+<DD>
+L'opérateur Fin-de-ligne échoue toujours (mais voyez l'attribut de compilation
+<B>REG_NEWLINE</B>
+
+ci-dessus)
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H3>BYTE OFFSETS</H3>
+
+A moins que l'attribut
+<B>REG_NOSUB</B>
+
+n'ait été utilisé lors de la compilation du motif, il est possible d'obtenir
+des informations sur les correspondances de sous-chaînes.
+<I>pmatch</I>
+
+doit être dimensionnée pour contenir au moins
+<I>nmatch</I>
+
+éléments.
+Ils sont remplis par
+<B>regexec</B>
+
+avec les adresses des sous-chaînes mises en correspondance. Tous les éléments
+inutilisés de structure, contiendront la valeur -1.
+<P>
+La structure
+<B>regmatch_t </B>
+
+du type
+<I>pmatch</I>
+
+est définie dans
+<I>regex.h</I>
+
+ainsi :
+<PRE>
+
+typedef struct
+{
+  regoff_t  rm_so;
+  regoff_t  rm_eo ;
+} regmatch_t;
+
+</PRE>
+
+Chaque élément
+<I>rm_so</I>
+
+différent de -1 indique le point de départ de la sous-chaîne suivante la
+plus longue qui soit mise en correspondance. Cette valeur est un décalage
+(offset) dans la chaîne.
+L'élément
+<I>rm_eo </I>
+
+indique le décalage de la fin de la sous-chaîne.
+<A NAME="lbAG">&nbsp;</A>
+<H2>RETOUR D'ERREUR POSIX</H2>
+
+<B>regerror</B>
+
+est utilisé pour transformer les codes d'erreur renvoyés par
+<B>regcomp</B>
+
+et par
+<B>regexec</B>
+
+en libellés.
+<P>
+<B>regerror</B>
+
+reçoit le code
+<I>errcode</I>,
+
+le buffer de motif
+<I>preg</I>,
+
+un pointeur sur une chaîne de caractères
+<I>errbuf</I>,
+
+et la longueur maximale de cette chaîne
+<I>errbuf_size</I>.
+
+Cette fonction renvoie la taille
+<I>errbuf</I>
+
+nécessaire pour contenir le libellé d'erreur terminé par un caractère nul.
+Si
+<I>errbuf</I>
+
+et
+<I>errbuf_size</I>
+
+son non nuls,
+<I>errbuf</I>
+
+est rempli avec les
+<I>errbuf_size - 1</I>
+
+premiers caractères du libellé d'erreur, suivis d'un caractère nul.
+<A NAME="lbAH">&nbsp;</A>
+<H2>LIBÉRATION DU BUFFER DE MOTIF POSIX</H2>
+
+En fournissant à
+<B>regfree</B>
+
+un buffer de motif précompilé
+<I>preg,</I>
+
+il libérera la mémoire allouée au buffer durant la compilation avec
+<B>regcomp</B>.
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>regcomp</B>
+
+renvoie zéro si la compilation réussit, ou un code d'erreur en cas d'échec.
+<P>
+<B>regexec</B>
+
+renvoie zéro si la correspondance réussit, et
+<B>REG_NOMATCH</B>
+
+si elle échoue.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Les erreurs suivantes peuvent être déclenchées par
+<B>regcomp</B> :
+
+<DL COMPACT>
+<DT><B>REG_BADRPT</B>
+
+<DD>
+Utilisation invalide d'opérateurs de répetition, comme un caractère
+`<B>*</B>'
+
+en première place.
+<DT><B>REG_BADBR</B>
+
+<DD>
+Utilisation illégale de l'opérateur de référence inverse.
+<DT><B>REG_EBRACE</B>
+
+<DD>
+Crochet manquant.
+<DT><B>REG_EBRACK</B>
+
+<DD>
+Accolade manquante.
+<DT><B>REG_ERANGE</B>
+
+<DD>
+Utilisation illégale de l'opérateur d'intervalle. Par exemple la fin de
+l'intervalle est inférieure au début de l'intervalle.
+<DT><B>REG_ECTYPE</B>
+
+<DD>
+Nom de classe de caractère inconnu.
+<DT><B>REG_EPAREN</B>
+
+<DD>
+Parenthèse manquante.
+<DT><B>REG_ESUBREG</B>
+
+<DD>
+Référence inverse illégale vers une sous-expression.
+<DT><B>REG_EEND</B>
+
+<DD>
+Erreur non-spécifique.
+<DT><B>REG_ESCAPE</B>
+
+<DD>
+Séquence d'échappement invalide.
+<DT><B>REG_BADPAT</B>
+
+<DD>
+Utilisation illégale d'un opérateur du type groupe ou liste.
+<DT><B>REG_ESIZE</B>
+
+<DD>
+La compilation aurait besoin d'un buffer de taille supérieure à 64 Ko.
+<DT><B>REG_ESPACE</B>
+
+<DD>
+Pas assez de mémoire.
+</DL>
+<A NAME="lbAK">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX
+<A NAME="lbAL">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?7+regex">regex</A></B>(7),
+
+<B>Manuel Regex GNU</B>
+
+<A NAME="lbAM">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">COMPILATION REGEX POSIX</A><DD>
+<DT><A HREF="#lbAE">CORRESPONDANCE REGEX POSIX</A><DD>
+<DL>
+<DT><A HREF="#lbAF">BYTE OFFSETS</A><DD>
+</DL>
+<DT><A HREF="#lbAG">RETOUR D'ERREUR POSIX</A><DD>
+<DT><A HREF="#lbAH">LIBÉRATION DU BUFFER DE MOTIF POSIX</A><DD>
+<DT><A HREF="#lbAI">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAJ">ERREURS</A><DD>
+<DT><A HREF="#lbAK">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAL">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAM">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:43 GMT, February 11, 2014
+</BODY>
+</HTML>

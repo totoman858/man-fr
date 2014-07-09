@@ -1,0 +1,154 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETMNTENT</TITLE>
+</HEAD><BODY>
+<H1>GETMNTENT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getmntent, setmntent, addmntent, endmntent, hasmntopt - Obtenir des descriptions d'un système de fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/mntent.h">mntent.h</A>&gt;</B>
+
+<B>FILE *setmntent (const char *</B><I>filename</I><B>, const char *</B><I>type</I><B>);</B>
+
+<B>struct mntent *getmntent (FILE *</B><I>filep</I><B>);</B>
+
+<B>int addmntent (FILE *</B><I>filep</I><B>, const struct mntent *</B><I>mnt</I><B>);</B>
+
+<B>int endmntent (FILE *</B><I>filep</I><B>);</B>
+
+<B>char *hasmntopt (const struct mntent *</B><I>mnt</I><B>, const char *</B><I>opt</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ces routines servent à accéder au fichier de description des
+systèmes de fichiers <I>/etc/fstab</I> et aux descriptions des
+systèmes de fichiers montés <I>/etc/mtab</I>.
+<P>
+
+La fonction <B>setmntent()</B> ouvre le fichier de description des
+systèmes de fichiers <I>filep</I> et renvoie un pointeur de fichier
+utilisable avec <B>getmntent()</B>.
+L'argument <I>type</I> est le type d'accès demandé, et peut prendre les
+même valeurs que l'argument <I>mode</I> de <B><A HREF="/cgi-bin/man/man2html?3+fopen">fopen</A></B>(3).
+<P>
+
+La fonction <B>getmntent()</B> lit la ligne suivante du fichier de description
+des systèmes de fichiers <I>filep</I> et renvoie un pointeur sur une structure
+détaillant les champs de cette ligne. Il s'agit d'un pointeur sur une zone
+de données statiques, qui peut être écrasée par les appels ultérieurs à
+<B>getmntent()</B>.
+<P>
+
+La fonction <B>addmntent()</B> ajoute la structure mntent <I>mnt</I> à la
+fin du fichier ouvert <I>filep</I>.
+<P>
+
+La fonction <B>endmntent()</B> ferme le fichier de description des systèmes
+de fichiers <I>filep</I>.
+<P>
+
+La fonction <B>hasmntopt()</B> parcourt le champ <I>mnt_opts</I>
+(voir plus bas) de la structure mntent <I>mnt</I>, à la recherche
+d'une chaîne correspondant à <I>opt</I>.
+Voir <I>&lt;<A HREF="file:///usr/include/mntent.h">mntent.h</A>&gt;</I> pour les options de montage.
+<P>
+
+La structure <I>mntent</I> est définie dans <I>&lt;<A HREF="file:///usr/include/mntent.h">mntent.h</A>&gt;</I> ainsi :
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct mntent {
+   char *mnt_fsname; /* Nom du système de fichiers monté      */
+   char *mnt_dir;    /* Chemin d'accès au système de fichiers */
+   char *mnt_type;   /* Type de montage (voir mntent.h)       */
+   char *mnt_opts;   /* Options de montage (voir mntent.h)    */
+   int   mnt_freq;   /* Fréquence de sauvegarde (en jour)     */
+   int   mnt_passno; /* Ordre de passage dans fsck            */
+};
+
+</PRE>
+
+</DL>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>getmntent()</B> renvoie un pointeur sur la structure mntent,
+ou NULL en cas d'échec.
+<P>
+
+La fonction <B>addmntent()</B> renvoie 0 si elle réussit, et 1 si elle échoue.
+<P>
+
+La fonction <B>endmntent()</B> renvoie toujours 1.
+<P>
+
+La fonction <B>hasmntopt()</B> renvoie l'adresse de la sous-chaîne si une
+correspondance est trouvée, ou NULL sinon.
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<PRE>
+/etc/fstab  Description des systèmes de fichiers.
+/etc/mtab   Description des systèmes de fichiers montés.
+</PRE>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SunOS 4.1.3
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+SysV a aussi une fonction <B>getmntent</B>() mais l'appel est
+différent, ainsi que la structure renvoyée. Sous SysV, le
+fichier <I>/etc/mnttab</I> est employé.
+BSD 4.4 et Digital Unix ont une routine <B>getmntinfo</B>(),
+qui sert à invoquer l'appel-système <B>getfsstat</B>().
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+fopen">fopen</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+fstab">fstab</A></B>(5)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:22 GMT, February 11, 2014
+</BODY>
+</HTML>

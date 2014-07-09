@@ -1,0 +1,207 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of APT-BUILD</TITLE>
+</HEAD><BODY>
+<H1>APT-BUILD</H1>
+Section: User Commands  (1)<BR>Updated: Juillet 2002<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+apt-build - Rapatrie les sources et construit des paquets optimisés pour votre
+architecture. 
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+
+<B>apt-build&nbsp;&lt;options&gt;&nbsp;[&nbsp;update&nbsp;]&nbsp;[&nbsp;upgrade&nbsp;]&nbsp;[&nbsp;world&nbsp;]&nbsp;[&nbsp;install</B>
+
+<I>pkg</I>
+
+<B>]&nbsp;[&nbsp;remove</B>
+
+<I>pkg</I>
+
+<B>]</B>
+
+<B>]&nbsp;[&nbsp;info</B>
+
+<I>pkg</I>
+
+<B>]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+<B>apt-build</B>
+
+est une façade d'apt-get pour construire et installer des paquets optimisés
+pour une architecture donnée.
+<P>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>COMMANDES</H2>
+
+<DL COMPACT>
+<DT><B>update</B>
+
+<DD>
+Rapatrie les listes de nouveaux paquets
+<DT><B>upgrade</B>
+
+<DD>
+Réalise une mise à jour
+<DT><B>world</B>
+
+<DD>
+Reconstruit votre système
+<DT><B>install</B>
+
+<DD>
+Construit et installe de nouveaux paquets
+<DT><B>source</B>
+
+<DD>
+Télécharge et décompacte les sources dans le répertoire de construction
+<DT><B>info</B>
+
+<DD>
+Information sur un paquet qui peut être construit
+<DT><B>remove</B>
+
+<DD>
+Enlève un paquet
+<DT><B>dist-upgrade</B>
+
+<DD>
+Mise à jour de la distribution, regardez <A HREF="/cgi-bin/man/man2html?8+apt-get">apt-get</A>(8)
+<DT><B>clean-repository</B>
+
+<DD>
+Efface les paquets qui ont été construits
+<DT><B>update-repository</B>
+
+<DD>
+Met à jour le référentiel
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>--help&nbsp;</B>
+
+<DD>
+Affiche l'aide.
+<DT><B>--show-upgraded</B>,&nbsp;-u
+
+<DD>
+Montre les paquets qui seront mis à jour.
+<DT><B>--no-wrapper</B>
+
+<DD>
+Ne pas utiliser le wrapper de gcc.
+<DT><B>--remove-builddep</B>
+
+<DD>
+Enlève les dépendances de construction installées par apt-build.
+<DT><B>--no-source</B>
+
+<DD>
+Ne pas télécharger les sources.
+<DT><B>--build-dir</B>
+
+<DD>
+Spécifier le répertoire de construction.
+<DT><B>--build-only</B>
+
+<DD>
+Paquet binaire uniquement.
+<DT><B>--rebuild</B>
+
+<DD>
+Reconstruit un paquet.
+<DT><B>--reinstall</B>
+
+<DD>
+Construit et réinstalle un paquet déjà installé sur votre système.
+<DT><B>--build-command</B> &lt;<I>commande</I>&gt;
+
+<DD>
+Utilisez cette commande pour construire un paquet.
+<DT><B>--patch</B> &lt;<I>fichier</I>&gt;
+
+<DD>
+Appliquer une rustine avant de construire. Vous pouvez utiliser cette option une ou plusieurs fois.
+<DT><B>--patch-strip</B>,&nbsp;-p<B> &lt;</B><I>nombre</I>&gt;
+
+<DD>
+Préfixe pour appliquer la rustine (0 = -p0, 1 = -p1 ...).
+<DT><B>--yes</B>,&nbsp;-y
+
+<DD>
+Répond oui à toutes les questions.
+<DT><B>--purge</B>
+
+<DD>
+Purge au lieu d'enlever.
+<DT><B>--version</B>,&nbsp;-v
+
+<DD>
+Affiche la version.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Beaucoup.
+<P>
+
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+<P>
+
+<B>apt-build</B>
+
+a été écrit par Julien Danjou &lt;<A HREF="mailto:acid@debian.org">acid@debian.org</A>&gt;
+<P>
+
+Les 
+<B>wrapper</B>
+
+<B>gcc</B>
+
+et
+<B>g++</B>
+
+ont été écrits par Boris Lesner &lt;<A HREF="mailto:talanthyr@tuxfamily.org">talanthyr@tuxfamily.org</A>&gt;
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Pierre Machard &lt;<A HREF="mailto:pmachard@tuxfamily.org">pmachard@tuxfamily.org</A>&gt;.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">COMMANDES</A><DD>
+<DT><A HREF="#lbAF">OPTIONS</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">AUTEURS</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:41 GMT, February 11, 2014
+</BODY>
+</HTML>

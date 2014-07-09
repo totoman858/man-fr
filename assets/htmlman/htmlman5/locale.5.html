@@ -1,0 +1,880 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LOCALE</TITLE>
+</HEAD><BODY>
+<H1>LOCALE</H1>
+Section: Manuel de l administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+locale - Description d'un fichier de définition locale.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Un fichier de définition
+<B>locale</B>
+
+contient toutes les informations dont la commande
+<B><A HREF="/cgi-bin/man/man2html?1+localedef">localedef</A>(1)</B>
+
+a besoin pour créer la base de données locale binaire.
+<P>
+Le fichier de définition est constitué de sections, chacune d'entre-elles
+décrivant en détail une catégorie d'information locale.
+<A NAME="lbAD">&nbsp;</A>
+<H2>SYNTAXE</H2>
+
+Le fichier débute par un en-tête contenant les mots-clés suivants :
+<DL COMPACT>
+<DT><I>&lt;escape_char&gt;</I>
+
+<DD>
+suivi du caractère qui sera utilisé comme caractère d'échappement
+dans le reste du fichier, pour préfixer les caractères ayant une
+signification spéciale. Par défaut il s'agit du backslash (
+<B>\\  </B>
+
+).
+<DT><I>&lt;comment_char&gt;</I>
+
+<DD>
+suivi d'un caractère qui servira à introduire des commentaires dans
+le reste du fichier. Par défaut il s'agit du dièse (#).
+<P>
+</DL>
+<P>
+
+La définition de la localisation est divisée en plusieurs parties,
+chacune d'elles représentant une catégorie de localisation.
+Une partie peut être copiée directement depuis une autre localisation
+existante, ou peut être définie entièrement. Si l'on désire copier
+intégralement une catégorie, le seul mot-clé valide est
+<B>copy</B>
+
+suivi du nom de la localisation initiale.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H3>LC_CTYPE</H3>
+
+La définition de la catégorie
+<B>LC_CTYPE</B>
+
+définissant la typographie locale commence avec la chaîne
+<I>LC_CTYPE </I>
+
+en première colonne.
+<P>
+Les mots-clés suivants sont autorisés&nbsp;:
+<P>
+<DL COMPACT>
+<DT><I>upper</I>
+
+<DD>
+suivi d'une liste de lettres majuscules. Les lettres
+<B>A</B>
+
+à
+<B>Z</B>
+
+sont inclues automatiquement. Les caractères indiqués dans les
+classes
+<B>cntrl</B>,
+
+<B>digit</B>,
+
+<B>punct</B>,
+
+ou
+<B>space</B>
+
+ne sont pas autorisés.
+<P>
+<DT><I>lower</I>
+
+<DD>
+suivi d'une liste de lettres minuscules. Les lettres
+<B>a</B>
+
+à
+<B>z</B>
+
+sont inclues automatiquement. Les caractères indiqués dans les
+classes
+<B>cntrl</B>,
+
+<B>digit</B>,
+
+<B>punct</B>,
+
+ou
+<B>space</B>
+
+ne sont pas autorisés.
+<P>
+<DT><I>alpha</I>
+
+<DD>
+suivi d'une liste de lettres. Tous les caractères mentionnés
+dans
+<B>upper</B>
+
+ou
+<B>lower</B>
+
+sont inclus automatiquement. Les caractères indiqués dans les
+classes
+<B>cntrl</B>,
+
+<B>digit</B>,
+
+<B>punct</B>,
+
+ou
+<B>space</B>
+
+ne sont pas autorisés.
+<P>
+<DT><I>digit</I>
+
+<DD>
+suivi d'une liste de chiffres. Seuls les caractères
+<B>0 </B>
+
+à
+<B>9 </B>
+
+sont autorisés. Ils sont inclus automatiquement dans cette classe.
+<P>
+<DT><I>space</I>
+
+<DD>
+suivi d'une liste de caractères considérés comme une espace blanche.
+Les caractères indiqués dans les classes
+<B>upper</B>,
+
+<B>lower</B>,
+
+<B>alpha</B>,
+
+<B>digit</B>,
+
+<B>graph</B>,
+
+ou
+<B>xdigit</B>
+
+ne sont pas autorisés.
+Les caractères
+<B>&lt;space&gt;</B> (espace), 
+
+<B>&lt;form-feed&gt;</B> (saut de page), 
+
+<B>&lt;newline&gt;</B> (saut de ligne, 
+
+<B>&lt;carriage-return&gt;</B> (retour chariot), 
+
+<B>&lt;tab&gt;,</B>
+
+et
+<B>&lt;vertical-tab&gt;</B>
+
+sont inclus automatiquement.
+<P>
+<DT><I>cntrl</I>
+
+<DD>
+suivi d'une liste de caractères de contrôle.
+Les caractères mentionnés dans les classes
+<B>upper</B>,
+
+<B>lower</B>,
+
+<B>alpha</B>,
+
+<B>digit</B>,
+
+<B>punct</B>,
+
+<B>graph</B>,
+
+<B>print</B>,
+
+ou
+<B>xdigit</B>
+
+ne sont pas autorisés.
+<P>
+<DT><I>punct</I>
+
+<DD>
+suivi d'une liste de caractères de ponctuation.
+Les caractères mentionnés dans les classes
+<B>upper</B>,
+
+<B>lower</B>,
+
+<B>alpha</B>,
+
+<B>digit</B>,
+
+<B>cntrl</B>,
+
+<B>xdigit</B>,
+
+et le caractère
+<B>&lt;space&gt;</B>
+
+(espace) ne sont pas autorisés.
+<P>
+<DT><I>graph</I>
+
+<DD>
+suivi d'une liste de caractères affichables, sauf l'espace.
+Les caractères mentionnés dans les classes
+<B>upper</B>,
+
+<B>lower</B>,
+
+<B>alpha</B>,
+
+<B>digit</B>,
+
+<B>xdigit</B>,
+
+<B>upper, lower, alpha, digit, xdigit</B>
+
+et
+<B>punct </B>
+
+sont inclus automatiquement.
+Les caractères mentionnés dans la classe
+<B>cntrl</B>
+
+ne sont pas autorisés.
+<P>
+<DT><I>print</I>
+
+<DD>
+suivi d'une liste de caractères affichables, y compris l'espace.
+Les caractères mentionnés dans les classes
+<B>upper</B>,
+
+<B>lower</B>,
+
+<B>alpha</B>,
+
+<B>digit</B>,
+
+<B>xdigit</B>,
+
+<B>punct</B>,
+
+et le caractère
+<B>&lt;space&gt;</B>
+
+sont inclus automatiquement.
+Les caractères mentionnés dans la classe
+<B>cntrl</B>
+
+ne sont pas autorisés.
+<P>
+<DT><I>xdigit</I>
+
+<DD>
+suivi d'une liste de caractères représentant les chiffres hexadécimaux.
+Les chiffres décimaux doivent être mentionnés, suivi d'un ou plusieurs
+ensembles de six caractères, en ordre croissant.
+Les caractères suivant sont inclus par défaut :
+<B>0</B>
+
+à
+<B>9,</B>
+
+<B>a</B>
+
+à
+<B>f,</B>
+
+<B>A</B>
+
+à
+<B>F.</B>
+
+<P>
+<DT><I>blank</I>
+
+<DD>
+suivi d'une liste de caractères blancs.
+L'espace
+<B>&lt;space&gt;</B>
+
+et la tabulation
+<B>&lt;tab&gt;</B>
+
+sont inclus automatiquement.
+<P>
+<DT><I>toupper</I>
+
+<DD>
+suivi d'une liste de correspondance entre majuscules et minuscules.
+Chaque correspondance est représentée par une paire de lettres majuscule
+et minuscule, séparées par une virgule
+<B>,</B>
+
+et entourée de parenthèses.
+Les correspondances sont séparées par des points-virgules.
+<DT><I>tolower</I>
+
+<DD>
+suivi d'une liste de correspondance entre minuscules et majuscules.
+Si le mot-cle <I>tolower</I> est absent, la liste inverse de
+<I>toupper</I> est utilisée.
+<P>
+</DL>
+<P>
+
+La définition de la catégorie
+<B>LC_CTYPE</B>
+
+se termine avec la chaîne de caractères
+<I>END LC_CYTPE.</I>
+
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H3>LC_COLLATE</H3>
+
+<P>
+NDT : Je n'ai pas compris cette catégorie. J'imagine, sans certitude,
+qu'elle concerne les caractères superposés (par exemple :
+un accent &quot;mort&quot; suivi de la lettre à accentuer), ou
+collés (par exemple : 'o' et 'e' dans &quot;oeil&quot;). 
+Je laisse donc quelques phrases en anglais, de toute manière ce
+paragraphe est bien insuffisant, je trouve...
+<P>
+The 
+<B>LC_COLLATE </B>
+
+category defines the rules for collating characters.
+<P>
+A cause des limitations de la libc,
+les options POSIX ne sont pas toutes implémentées.
+La définition commence avec la chaîne
+<B>LC_COLLATE</B>
+
+en première colonne.
+<P>
+Les mots-clés suivants sont autorisés&nbsp;:
+<P>
+<DL COMPACT>
+<DT><I>collating-element</I>
+
+<DD>
+<P>
+<DT><I>collating-symbol</I>
+
+<DD>
+<P>
+</DL>
+<P>
+
+The order-definition starts with a line:
+<DL COMPACT>
+<DT><I>order_start</I>
+
+<DD>
+</DL>
+<P>
+
+followed by a list of keywords out of
+<B>forward,</B>
+
+<B>backward</B>
+
+or
+<B>position.</B>
+
+The order definition consists of lines that describe the order
+and is terminated with the keyword
+<DL COMPACT>
+<DT><I>order_end.</I>
+
+<DD>
+</DL>
+<P>
+
+<P>
+Pour plus de détails, regardez les sources dans
+<B>/usr/lib/nls/src</B>
+
+notamment les paragraphes
+<B>POSIX,</B>
+
+<B>Example</B>
+
+et
+<B>Example2</B>
+
+<P>
+<P>
+
+La définition
+<B>LC_COLLATE</B>
+
+se termine par la chaîne
+<I>END LC_COLLATE.</I>
+
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H3>LC_MONETARY</H3>
+
+La définition commence par la chaîne
+<B>LC_MONETARY</B>
+
+en première colonne.
+<P>
+Les mots-clés suivants sont autorisés.
+<P>
+<DL COMPACT>
+<DT><I>int_curr_symbol</I>
+
+<DD>
+suivi du code international de symbole monétaire. Il s'agit d'une
+chaîne de 4 caractères composée du code défini dans le standard
+ISO 4217 (trois caractères) suivie d'un séparateur.
+<DT><I>currency_symbol</I>
+
+<DD>
+suivi du symbole monétaire local.
+<DT><I>mon_decimal_point</I>
+
+<DD>
+suivi de la chaîne à utiliser comme délimiteur décimal
+lors de la mise en forme de valeurs monétaires.
+<DT><I>mon_thousands_sep</I>
+
+<DD>
+suivi de la chaîne à utiliser comme séparateur de groupes de chiffres
+lors de la mise en forme de valeurs monétaires.
+<DT><I>mon_grouping</I>
+
+<DD>
+suivi d'une chaîne décrivant la mise en forme numérique de
+valeurs monétaires.
+<DT><I>positive_sign</I>
+
+<DD>
+suivi de la chaîne à utiliser comme signe positif
+lors de la mise en forme de valeurs monétaires.
+<DT><I>negative_sign</I>
+
+<DD>
+suivi de la chaîne à utiliser comme indicateur négatif
+lors de la mise en forme de valeurs monétaires.
+<DT><I>int_frac_digits</I>
+
+<DD>
+suivi du nombre de décimales à afficher
+lors de la mise en forme avec le symbole.
+<B>int_curr_symbol.</B>
+
+<DT><I>frac_digits</I>
+
+<DD>
+suivi du nombre de décimales à afficher
+lors de la mise en forme avec le symbole.
+<B>currency_symbol.</B>
+
+<DT><I>p_cs_precedes</I>
+
+<DD>
+suivi d'un entier valant
+<B>1 </B>
+
+si les symboles monétaires
+<I>currency_symbol</I>
+
+ou
+<I>int_curr_symbol</I>
+
+doivent précéder la valeur numérique, et
+<B>0</B>
+
+s'ils doivent suivre la valeur numérique.
+<DT><I>p_sep_by_space</I>
+
+<DD>
+suivi d'un entier.
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>0</B>
+
+<DD>
+signifie qu'aucune espace ne doit être insérée entre le symbole et
+la valeur.
+<DT><B>1</B>
+
+<DD>
+signifie qu'une espace doit être insérée entre le symbole et
+la valeur.
+<DT><B>2 </B>
+
+<DD>
+signifie qu'une espace doit être inséré entre le symbole monétaire et le symbole de signe positif s'ils sont adjacents.
+</DL>
+</DL>
+
+<DT><I>n_cs_precedes</I>
+
+<DD>
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>0 </B>
+
+<DD>
+- le symbole suit la valeur
+<DT><B>1</B>
+
+<DD>
+- le symbole précède la valeur
+</DL>
+</DL>
+
+<DT><I>n_sep_by_space</I>
+
+<DD>
+Un entier valant
+<B>0</B>
+
+si aucune espace ne sépare les symboles
+<I>currency_symbol</I>
+
+ou
+<I>int_curr_symbol</I>
+
+de la valeur pour une quantité négative,
+<B>1</B>
+
+si une espace sépare le symbole de la valeur, et
+<B>2</B>
+
+si une espace sépare le symbole du signe s'ils sont adjacents.
+<DT><I>p_sign_posn</I>
+
+<DD>
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>0</B>
+
+<DD>
+Des parenthèses encadrent la valeur et les symboles
+<I>currency_symbol</I>
+
+ou
+<I>int_curr_symbol.</I>
+
+<DT><B>1</B>
+
+<DD>
+Le signe précède la valeur et les symboles
+<I>currency_symbol</I>
+
+ou
+<I>int_curr_symbol.</I>
+
+<DT><B>2</B>
+
+<DD>
+Le signe suit la valeur et les symboles
+<I>currency_symbol</I>
+
+ou
+<I>int_curr_symbol.</I>
+
+<DT><B>3</B>
+
+<DD>
+Le signe précède les symboles
+<I>currency_symbol</I>
+
+ou
+<I>int_curr_symbol.</I>
+
+<DT><B>4</B>
+
+<DD>
+Le signe suit les symboles
+<I>currency_symbol</I>
+
+ou
+<I>int_curr_symbol.</I>
+
+</DL>
+</DL>
+
+<DT><I>n_sign_posn</I>
+
+<DD>
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>0</B>
+
+<DD>
+Des parenthèses encadrent la valeur et les symboles
+<I>currency_symbol</I>
+
+ou
+<I>int_curr_symbol.</I>
+
+<DT><B>1</B>
+
+<DD>
+Le signe précède la valeur et les symboles
+<I>currency_symbol</I>
+
+ou
+<I>int_curr_symbol.</I>
+
+<DT><B>2</B>
+
+<DD>
+Le signe suit la valeur et les symboles
+<I>currency_symbol</I>
+
+ou
+<I>int_curr_symbol.</I>
+
+<DT><B>3</B>
+
+<DD>
+Le signe précède les symboles
+<I>currency_symbol</I>
+
+ou
+<I>int_curr_symbol.</I>
+
+<DT><B>4</B>
+
+<DD>
+Le signe suit les symboles
+<I>currency_symbol</I>
+
+ou
+<I>int_curr_symbol.</I>
+
+</DL>
+</DL>
+
+</DL>
+<P>
+
+La définition
+<B>LC_MONETARY</B>
+
+se termine par la chaîne
+<I>END LC_MONETARY.</I>
+
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H3>LC_NUMERIC</H3>
+
+La définition de cette catégorie commence par la chaîne
+<B>LC_NUMERIC</B>
+
+en première colonne.
+<P>
+Les mots-clés suivants sont autorisés&nbsp;:
+<P>
+<DL COMPACT>
+<DT><I>decimal_point</I>
+
+<DD>
+suivi d'une chaîne indiquant le séparateur decimal
+lors de la mise en forme d'une valeur numérique.
+<DT><I>thousands_sep</I>
+
+<DD>
+suivi d'une chaîne indiquant le séparateur de groupes
+lors de la mise en forme d'une valeur numérique.
+<DT><I>grouping</I>
+
+<DD>
+suivi d'une chaîne décrivant la mise en forme 
+d'une valeur numérique.
+</DL>
+<P>
+
+La définition de la catégorie
+<B>LC_NUMERIC</B>
+
+se termine par la chaîne
+<I>END LC_NUMERIC.</I>
+
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H3>LC_TIME</H3>
+
+La définition débute par la chaîne
+<B>LC_TIME</B>
+
+en première colonne.
+<P>
+Les mots-clés suivants sont autorisés&nbsp;:
+<P>
+<DL COMPACT>
+<DT><I>abday</I>
+
+<DD>
+suivi d'une liste des noms de jours abrégés. La liste commence par
+le Dimanche (Sunday).
+<DT><I>day</I>
+
+<DD>
+suivi d'une liste des noms de jours. La liste commence par
+le Dimanche (Sunday).
+<DT><I>abmon</I>
+
+<DD>
+suivi d'une liste des noms de mois abrégés.
+<DT><I>mon</I>
+
+<DD>
+suivi d'une liste des noms de mois.
+<DT><I>am_pm</I>
+
+<DD>
+suivi de la représentation locale des chaînes
+<B>am</B>
+
+et
+<B>pm</B>.
+
+<DT><I>d_t_fmt</I>
+
+<DD>
+Le format local de la date et de l'heure.
+<DT><I>d_fmt</I>
+
+<DD>
+Le format local de la date.
+<DT><I>t_fmt</I>
+
+<DD>
+Le format local pour l'heure.
+<DT><I>t_fmt_ampm</I>
+
+<DD>
+Le format local pour l'heure sur un cadran de 12 heures.
+</DL>
+<P>
+
+La définition de la catégorie
+<B>LC_TIME</B>
+
+se termine par la chaîne
+<I>END LC_TIME.</I>
+
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H3>LC_MESSAGES</H3>
+
+La définition de cette catégorie commence par la chaîne
+<B>LC_MESSAGES</B>
+
+en première colonne.
+<P>
+Les mots clés suivant sont reconnus :
+<P>
+<DL COMPACT>
+<DT><I>yesexpr</I>
+
+<DD>
+suivi d'une expression rationnelle correspondant à une réponse affirmative.
+<DT><I>noexpr</I>
+
+<DD>
+suivi d'une expression rationnelle correspondant à une réponse négative.
+<P>
+</DL>
+<P>
+
+La définition de la catégorie
+<B>LC_MESSAGES</B>
+
+se termine par la chaîne
+<I>END LC_MESSAGES.</I>
+
+<P>
+Se référer au standard POSIX.2 pour plus de détails.
+<A NAME="lbAK">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>/usr/lib/locale/<DD>
+base de données des localisations installées.
+<DT>/usr/lib/nls/charmap/*<DD>
+tables de caractères.
+<DL COMPACT><DT><DD>
+</DL>
+</DL>
+</DL>
+<A NAME="lbAL">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Cette page est incomplète.
+
+
+<A NAME="lbAM">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX.2
+<A NAME="lbAN">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+setlocale">setlocale</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+localeconv">localeconv</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+charmap">charmap</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?1+locale">locale</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+localedef">localedef</A></B>(1)
+
+<P>
+<A NAME="lbAO">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">SYNTAXE</A><DD>
+<DL>
+<DT><A HREF="#lbAE">LC_CTYPE</A><DD>
+<DT><A HREF="#lbAF">LC_COLLATE</A><DD>
+<DT><A HREF="#lbAG">LC_MONETARY</A><DD>
+<DT><A HREF="#lbAH">LC_NUMERIC</A><DD>
+<DT><A HREF="#lbAI">LC_TIME</A><DD>
+<DT><A HREF="#lbAJ">LC_MESSAGES</A><DD>
+</DL>
+<DT><A HREF="#lbAK">FICHIERS</A><DD>
+<DT><A HREF="#lbAL">BOGUES</A><DD>
+<DT><A HREF="#lbAM">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAN">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAO">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:55 GMT, February 11, 2014
+</BODY>
+</HTML>

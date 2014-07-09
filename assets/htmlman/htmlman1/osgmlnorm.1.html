@@ -1,0 +1,212 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of OSGMLNORM</TITLE>
+</HEAD><BODY>
+<H1>OSGMLNORM</H1>
+Section: osgmlnorm (1)<BR>Updated: Janvier 2002<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+osgmlnorm - Un système SGML conforme à la norme internationale ISO 8879 -- Standard
+Generalized Markup Language (Langage normalisé de balisage généralisé )
+Un système SGML étendu conforme à l'annexe A de la norme
+internationale ISO/IEC 10744 -- Hypermedia/Time-based Structuring Language
+(Langage de structuration hypermédia/événementiel)
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<PRE>
+<B>osgmlnorm</B> [<B>-CdeghmnrRvx</B>] [<B>-a</B><I>type_lien</I>] [<B>-A</B><I>architecture</I>]
+          [<B>-b</B><I>bctf</I>] [<B>-c</B><I>catalogue</I>] [<B>-D</B><I>répertoire</I>...]
+          [<B>-E</B><I>erreurs_max</I>...] [<B>-i</B><I>nom</I>...] [<B>-f</B><I>nom</I>...]
+          [<B>-w</B><I>type_avertissement</I>...] [<I>sysid</I>...]
+</PRE>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+<P>
+
+<B>osgmlnorm</B> affiche sur la sortie standard une instance de document normalisée
+pour le document SGML contenu dans la concaténation des entités ayant comme
+identificateurs système [<I>sysid</I>...].
+<P>
+<P>
+
+Quand l'instance normalisée est préfixée avec la déclaration SGML et le prologue
+originaux, elle aura le même ESIS (NdT&nbsp;: <B>E</B>lement <B>S</B>tructure
+<B>I</B>nformation <B>S</B>et) que le document SGML original, avec les exceptions
+suivantes&nbsp;:
+<P>
+<P>
+
+* La sortie de osgmlnorm ne protège pas contre la reconnaissance des délimiteurs
+d'appels abrégés, aussi toute déclaration «&nbsp;USEMAP&nbsp;» doit être
+retirée de la DTD.
+<P>
+<P>
+
+* L'instance normalisée utilisera les délimiteurs de référence, même si
+l'instance originale ne le faisait pas.
+<P>
+<P>
+
+* Si des sections marquées sont incluses dans la sortie en utilisant l'option
+<B>-m</B>, les noms réservés de référence seront utilisés comme mots clés de statut
+même si l'instance originale ne le faisait pas.
+<P>
+<P>
+
+* Toute information ESIS relative à la fonctionnalité SGML «&nbsp;LINK&nbsp;» sera perdue.
+<P>
+<P>
+
+L'instance normalisée n'utilisera aucune fonctionnalité de minimisation de
+balisage excepté que&nbsp;:
+<P>
+<P>
+
+* Tous les attributs qui n'étaient pas spécifiés dans l'instance originale ne
+seront pas inclus dans l'instance normalisée. (Les attributs courants seront
+inclus.)
+<P>
+<P>
+
+* Si la valeur déclarée d'un attribut était un groupe d'unités lexicales nominales, et qu'une
+valeur était spécifiée comme étant la même que le nom de l'attribut, le nom
+de l'attribut et l'indicateur de valeur seraient omis. Par exemple, avec HTML
+osgmlnorm produirait en sortie &lt;DL COMPACT&gt; plutôt que &lt;DL COMPACT=&quot;COMPACT&quot;&gt;
+<P>
+<P>
+
+Les options suivantes sont disponibles&nbsp;:
+<P>
+<DL COMPACT>
+<DT><B>-a</B><I>nom</I>, <B>--activate=</B><I>nom</I><DD>
+Active le type de document ou de lien <I>nom</I>.
+<P>
+<DT><B>-A</B><I>architecture</I>, <B>--architecture=</B><I>architecture</I><DD>
+Analyse par rapport à l'architecture <I>architecture</I>.
+<P>
+<DT><B>-b</B><I>bctf</I>, <B>--bctf=</B><I>bctf</I><DD>
+Utilise le BCTF (NdT&nbsp;: <B>B</B>it <B>C</B>ombinaison <B>T</B>ransformation
+<B>F</B>ormat) nommé <I>bctf</I> pour produire la sortie.
+<P>
+<DT><B>-c</B><I>sysid</I>, <B>--catalog=</B><I>sysid</I><DD>
+Met en correspondance les identificateurs publics et les noms d'entités avec
+les identificateurs système en utilisant le fichier d'entrées de catalogue dont
+l'identificateur système est <I>sysid</I>.
+<P>
+<DT><B>-C</B>, <B>--catalogs</B><DD>
+Elle a le même effet qu'avec <B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>.
+<P>
+<DT><B>-d</B>, <B>--dtd</B><DD>
+Produit en sortie une déclaration de type de document avec le même
+identificateur externe que le document d'entrée, et avec aucun sous-ensemble
+de déclaration interne. Aucune vérification n'est opérée pour s'assurer que
+l'instance document est valide par rapport à cette DTD.
+<P>
+<DT><B>-D</B><I>répertoire</I>, <B>--directory=</B><I>répertoire</I><DD>
+Recherche dans <I>répertoire</I> les fichiers spécifiés dans les identificateurs
+système.
+<P>
+Elle a le même effet qu'avec <B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>.
+<P>
+<DT><B>-e</B>, <B>--open-entities</B><DD>
+Décrit les entités ouvertes dans les messages d'erreur.
+<P>
+<DT><B>--error-numbers</B><DD>
+Affiche les numéros d'erreur dans les messages d'erreur.
+<P>
+<DT><B>-h</B>, <B>--help</B><DD>
+Affiche un texte d'aide et quitte.
+<P>
+<DT><B>-i</B><I>name</I>, <B>--include=</B><I>name</I><DD>
+Elle a le même effet qu'avec <B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>.
+<P>
+<DT><B>-m</B>, <B>--marked-sections</B><DD>
+Produit en sortie toutes les sections marquées qui se trouvent dans l'instance de
+document d'entrée.
+<P>
+<DT><B>-n</B>, <B>--comments</B><DD>
+Produit en sortie tous les commentaires qui se trouvent dans l'instance
+de document d'entrée.
+<P>
+<DT><B>-r</B>, <B>--raw</B><DD>
+Sortie brute. N'opère aucune conversion sur les «&nbsp;RSs&nbsp;» (NdT&nbsp;: <B>R</B>ecord
+<B>S</B>tart) et les «&nbsp;REs&nbsp;» (NdT&nbsp;: <B>R</B>ecord <B>E</B>nd) lors de
+l'affichage de l'entité. L'entité devrait typiquement avoir l'attribut de
+gestionnaire de stockage «&nbsp;records=asis&nbsp;».
+<P>
+<DT><B>-R</B>, <B>--restricted</B><DD>
+Elle a le même effet qu'avec <B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>.
+<P>
+<DT><B>-v</B>, <B>--version</B><DD>
+Affiche le numéro de version.
+<P>
+<DT><B>-w</B><I>type</I><DD>
+Contrôle les avertissements et les erreurs en fonction de «&nbsp;type&nbsp;». Elle a le
+même effet qu'avec <B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>.
+<P>
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<P>
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>, <B><A HREF="/cgi-bin/man/man2html?1+ospam">ospam</A>(1)</B>, <B><A HREF="/cgi-bin/man/man2html?1+ospent">ospent</A>(1)</B>, <B><A HREF="/cgi-bin/man/man2html?1+osx">osx</A>(1)</B>
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+James Clark, Ian Castle &lt;<A HREF="mailto:ian.castle@openjade.org">ian.castle@openjade.org</A>&gt;.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Alain Portal &lt;aportal AT univ-montp2 DOT fr&gt;, 16 juin 2004
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>RELECTURE</H2>
+
+<P>
+
+Jean-Marc Destabeaux &lt;jmdestabeaux AT free DOT fr&gt;
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>AVERTISSEMENT SUR LA TRADUCTION</H2>
+
+<P>
+Il est possible que cette traduction soit imparfaite ou périmée.
+En cas de doute, veuillez vous reporter au document original en langue anglaise
+fourni avec le programme.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">AUTEURS</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+<DT><A HREF="#lbAH">RELECTURE</A><DD>
+<DT><A HREF="#lbAI">AVERTISSEMENT SUR LA TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:44 GMT, February 11, 2014
+</BODY>
+</HTML>

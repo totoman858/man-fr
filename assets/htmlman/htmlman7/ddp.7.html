@@ -1,0 +1,385 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DDP</TITLE>
+</HEAD><BODY>
+<H1>DDP</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ddp - Implémentation Linux du protocole AppleTalk.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/netatalk/at.h">netatalk/at.h</A>&gt; </B>
+
+<P>
+<I>ddp_socket</I><B> = socket(PF_APPLETALK, SOCK_DGRAM, 0);</B>
+
+<BR>
+
+<I>raw_socket</I><B> = socket(PF_APPLETALK, SOCK_RAW, </B><I>protocole</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION </H2>
+
+Linux implémente le protocole AppleTalk décrit dans le document
+<I>Inside Appletalk</I>.
+
+Seuls le niveau DDP et l'AARP sont présents dans le noyau, ils sont
+conçus pour être utilisés via les bibliothèques du protocole
+<B>netatalk</B>.
+
+Cette page documente
+l'interface pour ceux qui ont envie (ou besoin)
+d'utiliser directement le niveau DDP.
+<P>
+
+La communication entre Appletalk et le programme utilisateur fonctionne
+en utilisant une interface compatible avec les sockets BSD. Voir
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7).
+
+<P>
+
+Une socket AppleTalk est créée en appelant la fonction
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2)
+
+avec un argument 
+<B>PF_APPLETALK</B>
+
+en famille de socket. Les types valides sont
+<B>SOCK_DGRAM</B>
+
+pour ouvrir une socket
+<B>ddp </B>
+
+ou 
+<B>SOCK_RAW</B>
+
+pour ouvrir une socket
+<B>raw</B>.
+
+<I>protocol</I>
+
+est le protocole Appletalk pour envoyer ou recevoir des données.
+Pour le type
+<B>SOCK_RAW </B>
+
+il faut indiquer
+<B>ATPROTO_DDP</B>.
+
+<P>
+
+Les sockets Raw peuvent seulement être ouvertes par un processus ayant UID effectif nul ou
+ayant la capacité
+<B>CAP_NET_RAW</B>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>FORMAT D'ADRESSE</H2>
+
+Une socket AppleTalk est définie comme la combinaison d'un numéro de réseau, d'un
+numéro de noeud et d'un numéro de port.
+<P>
+
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct at_addr {
+    u_short    s_net;
+    u_char     s_node;
+};
+
+struct sockaddr_atalk {
+    sa_family_t     sat_family; /* Famille d'adresse */
+    u_char          sat_port;   /* Port              */
+    struct at_addr  sat_addr;   /* noeud / réseau    */
+};
+
+</PRE>
+
+</DL>
+
+<P>
+
+<I>sat_family</I>
+
+doit toujours être rempli avec
+<B>AF_APPLETALK. </B>
+
+<I>sat_port</I>
+
+contient le numéro de port. Les numéros inférieurs à 129 sont
+réservés. Seuls les processus ayant un UID effectif nul ou
+la capacité
+<B>CAP_NET_BIND_SERVICE </B>
+
+peut appeler
+<B><A HREF="/cgi-bin/man/man2html?2+bind">bind</A></B>(2)
+
+sur ces sockets.
+<I>sat_addr </I>
+
+est l'adresse de l'hôte.
+Le membre
+<I>net</I>
+
+de la structure
+<B>at_addr</B>
+
+contient le numéro de réseau dans l'ordre des octets du réseau.
+La valeur
+<B>AT_ANYNET </B>
+
+est générique et correspond aussi à
+"ce réseau".
+Le membre
+<I>node</I>
+
+de la structure
+<B>at_addr</B>
+
+contient le numéro d'hôte. La valeur
+<B>AT_ANYNODE </B>
+
+est générique, et correspond aussi à
+"cet hôte". La valeur
+<B>ATADDR_BCAST </B>
+
+est une adresse broadcast locale.
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS DES SOCKETS</H2>
+
+Il n'y a pas d'options spécifiques au protocole sur les sockets.
+<A NAME="lbAG">&nbsp;</A>
+<H2>SYSCTLS</H2>
+
+Il y a une interface sysctls pour configurer certains paramètres AppleTalk globaux.
+<P>
+On peut y accéder en lisant ou écrivant les fichiers
+<B>/proc/sys/net/atalk/* </B>
+
+ou en utilisant l'appel-système
+<B><A HREF="/cgi-bin/man/man2html?2+sysctl">sysctl</A></B>(2).
+
+<DL COMPACT>
+<DT><B>aarp-expiry-time</B>
+
+<DD>
+L'intervalle de temps (en secondes) avant qu'une entrée du cache AARP expire.
+<DT><B>aarp-resolve-time</B>
+
+<DD>
+L'intervalle de temps (en secondes) avant qu'une entrée du cache AARP soit résolue.
+<DT><B>aarp-retransmit-limit</B>
+
+<DD>
+Le nombre de retransmissions d'une demande AARP avant de déclarer le noeud mort.
+<DT><B>aarp-tick-time</B>
+
+<DD>
+La période (en secondes) de la temporisation dirigeant l'AARP.
+</DL>
+<P>
+
+Les valeurs par défaut correspondent aux spécifications et ne doivent
+normalement pas être modifiées.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>IOCTLS</H2>
+
+Toutes les ioctls décrites dans la page
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7)
+
+s'appliquent au ddp.
+<P>
+
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>NOTES</H2>
+
+Soyez très prudents avec l'option
+<B>SO_BROADCAST</B>,
+
+elle n'est pas privilégiée sous Linux. Il est facile de surcharger le réseau
+en écrivant sans faire attention vers des adresses broadcast.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VERSIONS</H2>
+
+Appletalk est supporté par Linux 2.0 et ultérieurs. L'interface
+<B>sysctl </B>
+
+est nouvelle dans Linux 2.2.
+<A NAME="lbAK">&nbsp;</A>
+<H2>ERREURS</H2>
+
+
+
+<DL COMPACT>
+<DT><B>ENOTCONN</B>
+
+<DD>
+L'opération n'est définie que sur une socket connectée et ce n'était pas le cas.
+<DT><B>EINVAL</B>
+
+<DD>
+Argument invalide.
+<DT><B>EMSGSIZE </B>
+
+<DD>
+Le datagramme est plus grand que le MTU DDP.
+<DT><B>EACCES</B>
+
+<DD>
+L'utilisateur a essayé d'exécuter une opération sans avoir les permissions adéquates.
+Ceci inclut l'envoi vers une adresse broadcast sans avoir l'attribut correspondant,
+ou la tentative d'utilisation de port réservé sans UID effectif nul et sans la
+capacité
+<B>CAP_NET_BIND_SERVICE</B>.
+
+<DT><B>EADDRINUSE</B>
+
+<DD>
+L'adresse est déjà utilisée.
+<DT><B>ENOMEM</B> et <B>ENOBUFS</B>
+
+<DD>
+Pas assez de mémoire
+<DT><B>ENOPROTOOPT</B>  <B>EOPNOTSUPP</B>
+
+<DD>
+Option invalide.
+<DT><B>EPERM</B>
+
+<DD>
+L'utilisateur n'a pas les permissions nécessaires.
+<DT><B>EADDRNOTAVAIL</B>
+
+<DD>
+On a demandé une interface inexistante, ou l'adresse d'émission réclamée
+n'est pas locale.
+<DT><B>EAGAIN</B>
+
+<DD>
+L'opération bloquerait alors que la socket est non-bloquante.
+<DT><B>ESOCKTNOSUPPORT</B>
+
+<DD>
+La socket n'est pas configurée ou on a demandé un type inconnu.
+<DT><B>EISCONN</B>
+
+<DD>
+On appelle
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2)
+
+sur une socket déjà connectée.
+<DT><B>EALREADY</B>
+
+<DD>
+Une connexion est déjà en cours sur la socket non-bloquante.
+<DT><B>ECONNABORTED</B>
+
+<DD>
+Une connexion a été refermée pendant la durée de
+<B><A HREF="/cgi-bin/man/man2html?2+accept">accept</A></B>(2).
+
+<DT><B>EPIPE</B>
+
+<DD>
+La connexion a été fermée par l'interlocuteur.
+<DT><B>ENOENT</B>
+
+<DD>
+<B>SIOCGSTAMP </B>
+
+a été appelée sur une socket où aucun paquet n'est arrivé.
+<DT><B>EHOSTUNREACH</B>
+
+<DD>
+Aucune entrée dans la table de routage ne correspond à l'adresse
+de destination.
+<DT><B>ENODEV </B>
+
+<DD>
+Périphérique réseau non disponible ou incapable d'envoyer en IP.
+<DT><B>ENOPKG </B>
+
+<DD>
+Un sous-système du noyau n'est pas configuré.
+</DL>
+<A NAME="lbAL">&nbsp;</A>
+<H2>COMPATIBILITÉ</H2>
+
+L'interface socket AppleTalk de base est compatible avec
+<B>netatalk </B>
+
+sur les systèmes dérivés de BSD. Plusieurs systèmes BSD peuvent
+échouer à vérifier
+<B>SO_BROADCAST</B>
+
+lorsqu'ils envoient des trames broadcast. Ceci peut poser des
+problèmes de compatibilité.
+<P>
+
+Le mode socket
+<B>raw</B>
+
+est spécifique à Linux et existe pour supporter le paquetage
+CAP et les outils de supervision AppleTalk plus facilement.
+<A NAME="lbAM">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Il y a trop de valeurs d'erreurs incohérentes.
+<P>
+
+Les ioctls utilisées pour configurer les tables de routage, les périphériques,
+et les tables AARP ne sont pas décrites encore.
+<A NAME="lbAN">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+sendmsg">sendmsg</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+recvmsg">recvmsg</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7)
+
+<A NAME="lbAO">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION </A><DD>
+<DT><A HREF="#lbAE">FORMAT D'ADRESSE</A><DD>
+<DT><A HREF="#lbAF">OPTIONS DES SOCKETS</A><DD>
+<DT><A HREF="#lbAG">SYSCTLS</A><DD>
+<DT><A HREF="#lbAH">IOCTLS</A><DD>
+<DT><A HREF="#lbAI">NOTES</A><DD>
+<DT><A HREF="#lbAJ">VERSIONS</A><DD>
+<DT><A HREF="#lbAK">ERREURS</A><DD>
+<DT><A HREF="#lbAL">COMPATIBILITÉ</A><DD>
+<DT><A HREF="#lbAM">BOGUES</A><DD>
+<DT><A HREF="#lbAN">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAO">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:57 GMT, February 11, 2014
+</BODY>
+</HTML>

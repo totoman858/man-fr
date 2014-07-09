@@ -1,0 +1,83 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ISINF</TITLE>
+</HEAD><BODY>
+<H1>ISINF</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+isinf, isnan, finite - Tester si un nombre est infini ou non numérique (NaN).
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/math.h">math.h</A>&gt;</B>
+
+<B>int isinf (double </B><I>value</I><B>);</B>
+
+<B>int isnan (double </B><I>value</I><B>);</B>
+
+<B>int isfinite (double </B><I>value</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>isinf()</B> renvoie -1 si <I>value</I> représente moins l'infini,
+1 si <I>value</I> représente plus l'infini, et 0 sinon.
+<P>
+
+La fonction <B>isnan()</B> renvoie une valeur non nulle si <I>value</I> est
+non-numérique (NaN &quot;not-a-number&quot;), et 0 sinon.
+<P>
+
+La fonction <B>isfinite()</B> renvoie une valeur non nulle si <I>value</I> est
+fini et numérique, et 0 sinon.
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTE</H2>
+
+C99 fournit des macros supplémentaires, indépendantes du type comme
+<B>fpclassify</B>(),
+
+<B>isinf</B>()
+
+et
+<B>isnan</B>().
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.3
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+fpclassify">fpclassify</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:23 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,180 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SENDFILE</TITLE>
+</HEAD><BODY>
+<H1>SENDFILE</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+sendfile - Transfert de données entre descripteurs de fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/sendfile.h">sys/sendfile.h</A>&gt;</B>
+
+<P>
+<B>size_t sendfile(int</B><I> out_fd</I><B>, int</B><I> in_fd</I><B>, off_t *</B><I> offset</I><B>, size_t</B><I> count</I><B>);</B>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cet appel-système copie des données entre un descripteur de fichier et
+un autre. L'un ou l'autre de ces descripteurs peuvent être une socket
+(voir plus bas). Le descripteur
+<I>in_fd</I>
+
+doit être ouvert en lecture, et
+<I>out_fd</I>
+
+en écriture.
+Le pointeur
+<I>offset</I>
+
+doit correspondre à une variable contenant la position dans le fichier
+d'entrée à partir de laquelle
+<B>sendfile</B>()
+
+commencera la lecture. Lorsque la routine se termine, la variable est
+remplie avec la position de l'octet immédiatement après le dernier octet
+lu.
+L'argument
+<I>count</I>
+
+est le nombre d'octets à copier entre les descripteurs de fichiers.
+<P>
+Comme la copie est assurée à l'intérieur du noyau,
+<B>sendfile</B>()
+
+ne perd pas de temps à transférer des données entre l'espace noyau
+et l'espace utilisateur.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+L'appel
+<B>sendfile</B>()
+
+ne modifie pas la position courante dans le fichier
+<I>in_fd</I>,
+
+mais modifie celle de
+<I>out_fd</I>.
+
+<P>
+Si vous voulez utiliser <B>senbdfile</B>() pour envoyer un fichier au travers
+d'une socket TCP, tout en le précédant de données d'en-tête, voyez l'option
+<B>TCP_CORK </B>
+
+de
+<B><A HREF="/cgi-bin/man/man2html?7+tcp">tcp</A></B>(7)
+
+pour minimiser le nombre de paquets, et optimiser les performances.<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><BR>
+<P>
+Actuellement, le descripteur depuis lequel les données sont lues ne peut
+pas être une socket, il doit s'agir d'un fichier supportant les opérations
+de type mmap().
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Si le transfert a réussi, le nombre d'octets écrits dans
+<I>out_fd</I>
+
+est renvoyé. Sinon, <B>sendfile</B>() renvoie -1, et
+<I>errno</I>
+
+est configuré.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+Le fichier d'entrée n'est pas ouvert en lecture, ou celui de sortie en écriture.
+<DT><B>EINVAL</B>
+
+<DD>
+Le descripteur est invalide ou verrouillé.
+<DT><B>ENOMEM</B>
+
+<DD>
+Mémoire insuffisante pour lire depuis
+<I>in_fd</I>.
+
+<DT><B>EIO</B>
+
+<DD>
+Erreur d'entrée-sortie pendant la lecture depuis
+<I>in_fd</I>.
+
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>VERSIONS</H2>
+
+L'appel-système
+<B>sendfile</B>()
+
+est une nouveauté de Linux 2.2.<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><BR>
+Le fichier d'en-tête &lt;<A HREF="file:///usr/include/sys/sendfile.h">sys/sendfile.h</A>&gt; est présent depuis la GlibC 2.1.
+<P>
+Les autres Unix implémentent <B>sendfile</B>() avec d'autres sémantiques, et d'autres
+prototypes. Il ne faut pas l'utiliser dans un programme portable.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAG">ERREURS</A><DD>
+<DT><A HREF="#lbAH">VERSIONS</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:52 GMT, February 11, 2014
+</BODY>
+</HTML>

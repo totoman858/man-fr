@@ -1,0 +1,290 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LOCALE</TITLE>
+</HEAD><BODY>
+<H1>LOCALE</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+locale - Description du support multilingue.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/locale.h">locale.h</A>&gt;</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Une localisation est un ensemble de règles linguistiques et culturelles.
+Ceci couvre des aspects tels que la langue utilisée pour les messages,
+le jeu de caractères, les conventions lexicographiques etc...
+Un programme doit être capable de déterminer sa localisation et
+d'agir en conséquence pour être portable dans divers environnements
+culturels.
+<P>
+
+Le fichier d'en-tête
+<B>&lt;<A HREF="file:///usr/include/locale.h">locale.h</A>&gt;</B>
+
+déclare les types de données, les fonctions et les macros utilisés
+pour ces tâches.
+<P>
+
+Les fonctions qu'il déclare sont
+<B>setlocale()</B>
+
+pour indiquer la localisation et
+<B>localeconv()</B>
+
+pour obtenir des informations sur la mise en forme des nombres.
+<P>
+
+Il existe différentes catégories d'informations locales qui peuvent
+être utiles à un programme. Elles sont déclarées en tant que macros.
+En les utilisant comme premier argument de la fonction
+<B>setlocale()</B>,
+
+il devient possible de fixer l'une de ces informations :
+<DL COMPACT>
+<DT><B>LC_COLLATE</B>
+
+<DD>
+est utilisé pour modifier le comportement des fonctions
+<B>strcoll()</B>
+
+et
+<B>strxfrm()</B>,
+
+qui permettent les comparaisons de chaînes dans l'alphabet local.
+Par exemple le double-s allemand, est ordonné comme 'ss'.
+<DT><B>LC_TYPE</B>
+
+<DD>
+permet de modifier les manipulations et classifications de caractères,
+comme celles des fonctions
+<B>isupper()</B>
+
+et
+<B>toupper()</B>,
+
+et celles des fonctions travaillant sur des caractères multi-octets
+comme
+<B>mblen()</B>
+
+ou
+<B>wctomb()</B>.
+
+<DT><B>LC_MONETARY</B>
+
+<DD>
+modifie les informations renvoyées par
+<B>localeconv()</B>
+
+pour décrire la mise en forme habituelle des nombres, en accord avec des
+détails comme le point décimal ou la virgule décimale. Ces informations
+sont utilisées par les fonctions
+<B>strfmon()</B>.
+
+<DT><B>LC_MESSAGES</B>
+
+<DD>
+configure la langue utilisée pour afficher les messages, et la saisie de
+réponses affirmatives ou négatives. La bibliothèque C GNU contient les
+fonctions
+<B>gettext()</B>,
+
+<B>ngettext()</B>,
+
+et
+<B>rpmatch()</B>
+
+pour aider à utiliser ces données. Les fonctions de la famille Gettext
+obéissent aussi à la variable d'environnement
+<B>LANGUAGE</B>.
+
+<DT><B>LC_NUMERIC</B>
+
+<DD>
+modifie les informations utilisées par les fonctions des familles
+<B>printf()</B>
+
+et
+<B>scanf()</B>,
+
+lorsqu'elles doivent utiliser la configuration locale. Ces données
+peuvent également être obtenues avec la fonction
+<B>localeconv()</B>.
+
+<DT><B>LC_TIME</B>
+
+<DD>
+modifie le comportement de la fonction
+<B>strftime()</B>
+
+affichant l'heure dans un format local. Par exemple la plupart de
+l'Europe utilise un format horaire sur 24 heures, alors que les
+USA utilisent un format sur 12 heures.
+<DT><B>LC_ALL</B>
+
+<DD>
+regroupe toutes les catégories ci-dessus.
+</DL>
+<P>
+
+Si le second argument de la fonction
+<B>setlocale()</B>
+
+est une chaîne de caractères vide,
+<B>&quot;&quot;</B>,
+
+ceci correspond à la localisation par défaut, déterminée avec les
+étapes suivantes :
+<DL COMPACT>
+<DT>1.<DD>
+Si une variable d'environnement 
+<B>LC_ALL</B>
+
+n'est pas nulle, sa valeur est utilisée.
+<DT>2.<DD>
+Si une variable d'environnement ayant le même nom que les catégories
+mentionnées ci-dessus est non nulle, sa valeur est utilisée pour
+la catégorie en question.
+<DT>3.<DD>
+Si une variable d'environnement 
+<B>LANG</B>
+
+est non nulle, sa valeur est utilisée.
+</DL>
+<P>
+
+Les valeurs concernant la mise en forme numérique sont disponibles
+dans une structure
+<B>struct lconv</B>,
+
+renvoyée par la fonction
+<B>localeconv()</B>,
+
+déclarée ainsi :
+<PRE>
+struct lconv
+{
+  /* -------- Informations numériques (non-monétaires) ------- */
+
+  char *decimal_point;    /* Séparateur décimal                 */
+  char *thousands_sep;    /* Séparateur des milliers            */
+  /* 
+   * Chaque élément  indique  un  nombre de chiffres  dans  chaque
+   * groupe.
+   * Les éléments d'indice les plus élevés correspondent aux grou-
+   * pes les plus à gauche.
+   * Un élément de valeur CHAR_MAX signifie l'arrêt du groupement.
+   * Un élément de valeur 0  signifie que l'élément précédent est
+   * utilisé pour tous les groupes plus à gauche.
+   *
+   * NDT : c'est pas clair ? ben, la V.O. non plus !  ;-)
+   */
+  char *grouping;
+
+  /* ----------------- Informations monétaires ---------------- */
+
+  /* Les trois premiers caractères correspondent au symbole     */
+  /* monétaire d'après ISO 4217. Le quatrième symbole est le    */
+  /* séparateur, le cinquième est '\0'.                         */
+  char *int_curr_symbol;
+  char *currency_symbol;        /* Symbole monétaire local.     */
+  char *mon_decimal_point;      /* Caractère séparateur décimal */
+  char *mon_thousands_sep;      /* Caract. séparateur milliers  */
+  char *mon_grouping;           /* Comme 'grouping' (ci-dessus) */
+  char *positive_sign;          /* Signe pour valeurs positives */
+  char *negative_sign;          /* Signe pour valeurs négatives */
+  char int_frac_digits;         /* Int'l fractional digits.     */
+  char frac_digits;             /* Local fractional digits.     */
+  /* 1 : le symbole monétaire précède les valeurs positives,    */
+  /* 0 : le symbole monétaire suit les valeurs positives.       */
+  char p_cs_precedes;
+  /* 1 si un espace sépare le symbole monétaire d'une valeur +  */
+  char p_sep_by_space;
+  /* 1 : le symbole monétaire précède les valeurs négatives,    */
+  /* 0 : le symbole monétaire suit les valeurs négatives.       */
+  char n_cs_precedes;
+  /* 1 si un espace sépare le symbole monétaire d'une valeur -  */
+  char n_sep_by_space;
+  /* Positions des signes plus et moins :
+   * 0 Parenthèses autour de la valeur et du symbole monétaire.
+   * 1 Le signe précède la valeur et le symbole monétaire.
+   * 2 Le signe suit la valeur et le symbole monétaire.
+   * 3 Le signe précède immédiatement le symbole monétaire.
+   * 4 Le signe suit immédiatement le symbole monétaire.
+   */
+  char p_sign_posn;
+  char n_sign_posn;
+};
+</PRE>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<PRE>
+POSIX.1
+</PRE>
+
+Les fonctions de la bibliothèque Gnu Gettext sont décrites dans le
+document LI18NUX2000.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+setlocale">setlocale</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+localeconv">localeconv</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?1+locale">locale</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+localedef">localedef</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?3+nl_langinfo">nl_langinfo</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+gettext">gettext</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+ngettext">ngettext</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+rpmatch">rpmatch</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strfmon">strfmon</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strcoll">strcoll</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strxfrm">strxfrm</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strftime">strftime</A></B>(3)
+
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:56 GMT, February 11, 2014
+</BODY>
+</HTML>

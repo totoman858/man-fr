@@ -1,0 +1,255 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of RCMD</TITLE>
+</HEAD><BODY>
+<H1>RCMD</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+rcmd, rresvport, iruserok, ruserok - Routines renvoyant un flux de données pour une commande invoquée à distance.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<B>int rcmd (char ** </B><I>ahost</I><B>, int </B><I>inport</I><B>, const char *</B><I>locuser</I><B>, const char *</B><I>remuser</I><B>,  const char *</B><I>cmd</I><B>, int *</B><I>fd2p</I><B>);</B>
+
+<B>int rresvport ( int *</B><I>port</I><B>);</B>
+
+<B>int iruserok  (u_int32_t </B><I>raddr</I><B>, int </B><I>superuser</I><B>, const char *</B><I>ruser</I><B>, const char *</B><I>luser</I><B>);</B>
+
+<B>int ruserok (const char *</B><I>rhost</I><B>, int </B><I>superuser</I><B>, const char *</B><I>ruser</I><B>, const char *</B><I>luser</I><B>);</B>
+</PRE><A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>rcmd</B>
+
+est utilisée par le Super-Utilisateur pour éxécuter une commande
+sur une machine distante, en utilisant un shéma d'identification
+basé sur des numéros de ports réservés.
+<P>
+La fonction
+<B>rresvport</B>
+
+renvoie un descripteur sur une socket se trouvant dans l'espace des numéros
+de ports privilégiés.
+<P>
+Les fonctions
+<B>iruserok</B>
+
+et
+<B>ruserok</B>
+
+sont utilisées par les serveurs pour identifier les clients demandant un service
+avec
+
+<P>
+Les 4 fonctions sont déclarées dans le même fichier et sont utilisées par le serveur
+<B><A HREF="/cgi-bin/man/man2html?8+rshd">rshd</A></B>(8)
+
+entre autres.
+<P>
+
+La fonction
+<B>rcmd</B>
+
+recherche l'hôte
+<I>*ahost</I>
+
+en utilisant 
+<B><A HREF="/cgi-bin/man/man2html?3+gethostbyname">gethostbyname</A></B>(3),
+
+puis renvoie -1 si cet hôte n'existe pas. Sinon
+<I>*ahost</I>
+
+est rempli avec le nom standard de cet hôte, et
+une connexion est établie avec un serveur se trouvant sur l'un
+des ports bien connus
+<I>inport .</I>
+
+<P>
+
+Si la connexion réussit, une socket dans le domaine Internet, et de
+type
+<B>SOCK_STREAM</B>
+
+est renvoyée à l'appelant, et est fournie à la commande distante en guise de
+<I>stdin</I>
+
+et
+<I>stdout .</I>
+
+Si
+<I>fd2p</I>
+
+est non-nul, un canal auxiliaire est créé pour un processus de contrôle, et son
+descripteur sera placé dans 
+<I>*fd2p</I>.
+
+Le processus de contrôle renverra les sorties de diagnostique (numéro 2) sur ce
+canal, et acceptera également des octets qu'il considérera comme des
+numéro de signal
+<B>UNIX</B>
+
+à envoyer au groupe de processus de la commande.
+Si
+<I>fd2p</I>
+
+est nul, alors
+<I>stderr</I>
+
+(sortie numéro 2 de la commande distante)
+sera renvoyée sur
+<I>stdout</I>
+
+et rien n'est prévu pour l'envoi de signaux arbitraires au processus distant, bien
+que vous puissiez y parvenir en utilisant des données hors-bande.
+<P>
+
+Le protocole est décrit en détail dans
+<B><A HREF="/cgi-bin/man/man2html?8+rshd">rshd</A></B>(8).
+
+<P>
+
+La fonction
+<B>rresvport</B>
+
+est utilisée pour obtenir une socket attachée à une adresse privilégiée.
+Cette socket est utilisable ensuite pour
+<B>rcmd</B>
+
+et plusieurs autres fonctions.
+Les numéros de ports Internet privilégiés se trouvent dans l'intervalle 0 à 1023.
+Seul le Super-Utilisateur est autorisé à attacher une adresse de ce type à une socket.
+<P>
+<P>
+
+Les fonctions
+<B>iruserok</B>
+
+et
+<B>ruserok</B>
+
+prennent respectivement en argument une adresse IP et un nom d'hôte distant,
+deux noms d'utilisateurs et un drapeau indiquant si l'utilisateur local est
+Super-utilisateur.
+Ainsi, si l'utilisateur n'est
+<I>PAS</I>
+
+le Super-Utilisateur, elles vérifient le fichier
+<I>/etc/hosts.equiv</I>.
+
+Si ceci échoue, le fichier
+<I>.rhosts</I>
+
+est recherché dans le répertoire personnel de l'utilisateur local, afin
+de voir si la requête est autorisée.
+<P>
+
+Si ce fichier n'existe pas, ou s'il ne s'agit pas d'un fichier régulier, 
+ou s'il appartient à quelqu'un d'autre que l'utilisateur local ou
+le super-utilisateur, ou encore s'il est accessible en écriture par quelqu'un
+d'autre que son propriétaire, le test échoue automatiquement.
+Si la machine est listée dans le fichier
+<I>hosts.equiv</I>,
+
+ou si les noms d'hôte et d'utilisateur distants sont trouvés dans
+le fichier
+<I>.rhosts</I>
+
+
+et
+
+renvoient zéro.
+Sinon elles renvoient -1.
+Si le domaine local (obtenu par l'intermédiaire de
+<B><A HREF="/cgi-bin/man/man2html?2+gethostname">gethostname</A></B>(2))
+
+est le même que le domaine distant, seul le nom de machine a besoin d'être
+indiqué.
+<P>
+
+Si l'adresse IP de l'hôte distant est connue, on
+utilisera de préférence
+<B>iruserok</B>
+
+plutôt que
+<B>ruserok </B>
+
+qui nécessitent d'avoir un serveur DNS digne de confiance pour le domaine distant.
+<A NAME="lbAE">&nbsp;</A>
+<H2>DIAGNOSTIQUE</H2>
+
+La fonction
+<B>rcmd</B>
+
+renvoie un descripteur de socket valide si elle réussit, sinon elle renvoie
+-1 et affiche un message de diagnostique sur sa sortie d'erreur standard.
+<P>
+
+La fonction
+<B>rresvport</B>
+
+renvoie un descripteur de socket valide, attaché à une adresse privilégiée
+si elle réussit. Elle renvoie -1 sinon, et
+<I>errno</I>
+
+contient le code d'erreur.
+Le code d'erreur
+<B>EAGAIN</B>
+
+signifie en réalité ``Tous les ports réseau sont déjà utilisés''.
+<A NAME="lbAF">&nbsp;</A>
+<H3>VOIR AUSSI</H3>
+
+<B><A HREF="/cgi-bin/man/man2html?1+rlogin">rlogin</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+rsh">rsh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?3+rexec">rexec</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?8+rexecd">rexecd</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+rlogind">rlogind</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+rshd">rshd</A></B>(8)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Ces fonctions sont apparues dans
+<B>BSD 4.2</B>.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1998-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">DIAGNOSTIQUE</A><DD>
+<DL>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+</DL>
+<DT><A HREF="#lbAG">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:30 GMT, February 11, 2014
+</BODY>
+</HTML>

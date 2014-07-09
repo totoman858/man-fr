@@ -1,0 +1,142 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FREAD</TITLE>
+</HEAD><BODY>
+<H1>FREAD</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fread, fwrite - Entrées/sorties binaires sur un flux.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<P>
+<B>size_t fread (void *</B><I>ptr</I><B>, size_t </B><I>size</I><B>, size_t </B><I>nmemb</I><B>,</B>
+
+<B>FILE *</B><I>stream</I><B>);</B>
+
+<P>
+<B>size_t fwrite (const void *</B><I>ptr</I><B>, size_t </B><I>size</I><B>, size_t </B><I>nmemb</I><B>,</B>
+
+<B>FILE *</B><I>stream</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>fread</B>
+
+lit
+<I>nmemb</I>
+
+éléments de données, chacun d'eux représentant
+<I>size</I>
+
+octets de long, depuis le flux pointé par
+<I>stream</I>,
+
+et les stocke à l'emplacement pointé par
+<I>ptr</I>.
+
+<P>
+
+La fonction
+<B>fwrite</B>
+
+écrit
+<I>nmemb</I>
+
+éléments de données, chacun d'eux représentant
+<I>size</I>
+
+octet de long, dans le flux pointé par
+<I>stream</I>,
+
+après les avoir lus depuis l'emplacement pointé par
+<I>ptr</I>.
+
+<P>
+
+Pour des versions de ces fonctions ignorant les verrouillages, voir
+<B><A HREF="/cgi-bin/man/man2html?3+unlocked_stdio">unlocked_stdio</A></B>(3).
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>fread</B>
+
+et
+<B>fwrite</B>
+
+renvoient
+le nombre d'éléments correctement lus ou écrits (et non pas le nombre d'octets).
+Si une erreur se produit, ou si la fin du fichier est atteinte en lecture,
+le nombre renvoyé est plus petit que
+<I>nmemb</I>
+
+et peut même être nul.
+<P>
+
+<B>fread</B>
+
+traite la fin du fichier comme une erreur, et l'appelant devra appeler
+<B><A HREF="/cgi-bin/man/man2html?3+feof">feof</A></B>(3)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?3+ferror">ferror</A></B>(3)
+
+pour distinguer ce cas.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Les fonctions
+<B>fread</B>
+
+et
+<B>fwrite</B>
+
+sont conformes à ANSI X3.159-1989 (``ANSI C'').
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+feof">feof</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+ferror">ferror</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+unlocked_stdio">unlocked_stdio</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:37 GMT, February 11, 2014
+</BODY>
+</HTML>

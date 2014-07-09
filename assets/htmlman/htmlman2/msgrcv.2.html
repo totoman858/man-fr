@@ -1,0 +1,533 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MSGOP</TITLE>
+</HEAD><BODY>
+<H1>MSGOP</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+msgop, msgrcv, msgsnd - Opérations sur les messages.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/sys/ipc.h">sys/ipc.h</A>&gt;</B>
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/sys/msg.h">sys/msg.h</A>&gt;</B>
+</PRE>
+
+<P>
+<B>int msgsnd (int </B><I>msqid</I><B>,</B>
+
+<B>struct msgbuf * </B><I>msgp</I><B>,</B>
+
+<B>size_t </B><I>msgsz</I><B>,</B>
+
+<B>int </B><I>msgflg</I><B>);</B>
+
+<P>
+<B>ssize msgrcv (int </B><I>msqid</I><B>,</B>
+
+<B>struct msgbuf * </B><I>msgp</I><B>,</B>
+
+<B>size_t </B><I>msgsz</I><B>,</B>
+
+<B>long </B><I>msgtyp</I><B>,</B>
+
+<B>int </B><I>msgflg</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Pour envoyer ou recevoir un message, le processus appelant alloue
+une structure comme celle-ci :
+<P>
+<PRE>
+struct msgbuf {
+  long  mtype;    /* type de message ( &gt; 0 ) */
+  char  mtext[1]; /* contenu du message      */
+};
+</PRE>
+
+<P>
+avec une table
+<B>mtext</B>
+
+de taille
+<I>msgsz</I>,
+
+valeur entière non-négative. Les message de taille nulle (sans champ
+<I>msgsz</I>)
+
+sont autorisés.
+Le membre 
+<B>mtype</B>
+
+doit avoir une valeur strictement positive qui puisse
+être utilisée par le processus lecteur pour la
+sélection de messages (voir plus bas).
+<P>
+
+Le processus doit avoir une permission d'écriture sur la
+file pour envoyer un message, et une permission de
+lecture pour en recevoir un.
+<P>
+
+L'appel système
+<B>msgsnd</B>
+
+insère une copie du message pointé par l'argument
+<I>msgp</I>
+
+dans la file dont l'identificateur est indiqué par la valeur
+de l'argument
+<I>msqid</I>.
+
+<P>
+
+S'il y a assez de place dans la file,
+<B>msgsnd</B>
+
+réussit immédiatement.
+(La capacité de la filer est définie par le champ
+<I>msg_bytes</I>
+
+de la structure associée à la file de message. Durant la création de la file
+de champ est initialisé à
+<B>MSGMNB</B>
+
+octets, mais cette limite peut être modifiée avec
+<B>msgctl</B>).
+
+S'il n'y a pas assez de place, alors le comportement par défaut de
+<B>msgsnd</B>
+
+est de bloquer jusqu'à obtenir suffisament d'espace.
+En indiquant
+<B>IPC_NOWAIT</B>
+
+le message ne sera pas envoyé et l'appel système échouera en retournant
+<B>EAGAIN</B>
+
+dans
+<B>errno</B>.
+
+Sinon, le processus sera suspendu jusqu'à ce que la condition de
+blocage soit levée (auquel cas le message sera envoyé et l'appel
+système réussira), ou que la file soit supprimée
+(auquel cas l'appel système échouera et 
+<B>errno</B>
+
+contiendra
+<B>EIDRM</B>),
+
+ou que le processus reçoive un signal à intercepter (auquel cas
+l'appel système échouera et 
+<B>errno</B>
+
+contiendra
+<B>EINTR</B>).
+
+(<B>msgsnd</B> et <B>msgrcv</B>)
+
+ne sont jamais relancés automatiquement après interruption par un
+gestionnaire de signal, quelque soit la configuration de 
+<B>SA_RESTART</B>
+
+lors de l'installation du gestionnaire).
+<P>
+
+Si l'appel réussit, la structure de file de messages sera mise
+à jour ainsi :
+<DL COMPACT>
+<DT><DD>
+<B>msg_lspid</B>
+
+contient le PID du processus appelant.
+<DT><DD>
+<B>msg_qnum</B>
+
+est incrémenté de 1.
+<DT><DD>
+<B>msg_stime</B>
+
+est rempli avec l'heure actuelle.
+</DL>
+<P>
+
+l'appel système
+<B>msgrcv</B>
+
+lit un message depuis la file indiquée par
+<I>msqid</I>
+
+dans la structure
+<B>msgbuf</B>
+
+pointée par l'argument
+<I>msgp</I>,
+
+en extrayant le message en cas de réussite.
+<P>
+
+L'argument
+<I>msgsz</I>
+
+indique la taille maximale en octets du membre
+<B>mtext</B>
+
+de la structure pointée par l'argument
+<I>msgp</I>.
+
+Si le contenu du message est plus long que
+<I>msgsz</I>
+
+octets, et si l'argument
+<I>msgflg</I>
+
+contient
+<B>MSG_NOERROR</B>,
+
+alors le message sera tronqué (et la partie tronquée sera perdue).
+Sinon le message ne sera pas extrait de la file, et l'appel
+système échouera en indiquant
+<B>E2BIG</B>
+
+dans
+<B>errno</B>
+
+<P>
+
+L'argument
+<I>msgtyp</I>
+
+indique le type de message désiré&nbsp;:
+<DL COMPACT>
+<DT><DD>
+Si
+<I>msgtyp</I>
+
+vaut
+<B>0</B>,
+
+le premier message est lu.
+<DT><DD>
+Si
+<I>msgtyp</I>
+
+est supérieur à
+<B>0</B>,
+
+alors le premier message de type
+<I>msgtyp</I>
+
+est extrait de la file.
+Si
+<I>msgflg</I>
+
+contient
+<B>MSG_EXCEPT</B>
+
+l'inverse est effectué, le premier message de
+type 
+<B>différent</B>
+
+de
+<I>msgtyp</I>
+
+est extrait de la file.
+<DT><DD>
+Si
+<I>msgtyp</I>
+
+est inférieur à 
+<B>0</B>,
+
+le premier message de la file avec un type inférieur ou égal
+à la valeur absolue de
+<I>msgtyp</I>
+
+est extrait.
+</DL>
+<P>
+
+L'argument
+<I>msgflg</I>
+
+est composé d'un
+<I>OU</I>
+
+binaire ( | ) avec les options suivantes :
+<DL COMPACT>
+<DT><DD>
+<B>IPC_NOWAIT</B>
+
+Si aucun message du type désiré n'est présent, l'appel système échoue
+et
+<B>errno</B>
+
+est fixé à
+<B>ENOMSG.</B>
+
+<DT><DD>
+<B>MSG_EXCEPT</B>
+
+Utilisé avec
+<I>msgtyp</I>
+
+supérieur à
+<B>0</B>
+
+pour lire les messages de type différent de
+<I>msgtyp.</I>
+
+<DT><DD>
+<B>MSG_NOERROR</B>
+
+Tronque silencieusement les messages trop longs
+</DL>
+<P>
+
+Si aucun message du type requis n'est disponible et
+si on n'a pas demandé
+<B>IPC_NOWAIT</B>
+
+dans
+<I>msgflg</I>,
+
+Le processus appelant est bloqué jusqu'à l'occurrence d'un
+des évènements suivants.
+<DL COMPACT>
+<DT><DD>
+Un message du type désiré arrive dans la file.
+<DT><DD>
+La file de messages est supprimée.
+L'appel système échoue et 
+<B>errno</B>
+
+contient
+<B>EIDRM.</B>
+
+<DT><DD>
+Le processus appelant reçoit un signal à intercepter.
+L'appel système échoue et
+<B>errno</B>
+
+contient
+<B>EINTR.</B>
+
+</DL>
+<P>
+
+Si l'appel système réussit, la structure décrivant la file de messages
+est mise à jour comme suit :
+<DL COMPACT>
+<DT><DD>
+<B>msg_lrpid</B>
+
+est rempli avec le PID du processus appelant.
+<DT><DD>
+<B>msg_qnum</B>
+
+est décrémenté de 1
+<DT><DD>
+<B>msg_rtime</B>
+
+est rempli avec l'heure actuelle.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+En cas d'échec les deux appels systèmes renvoient
+<B>-1</B>
+
+et 
+<B>errno</B>
+
+contient le code d'erreur. 
+Sinon
+<B>msgsnd</B>
+
+renvoie
+<B>0</B>
+
+et
+<B>msgrvc</B>
+
+renvoie le nombre d'octets copiés dans la table
+<B>mtext.</B>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<B>msgsnd :</B>
+
+<DL COMPACT>
+<DT><B>EAGAIN</B>
+
+<DD>
+Le message n'a pas pu être envoyé à cause de la limite
+<B>msg_qbytes</B>
+
+pour la file et de la requête
+<B>IPC_NOWAIT</B>
+
+dans
+<I>mgsflg.</I>
+
+<DT><B>EACCES</B>
+
+<DD>
+le processus appelant n'a pas de permissions de lecture dans la file.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>msgp</I>
+
+pointe en dehors de l'espace d'adressage accessible.
+<DT><B>EIDRM</B>
+
+<DD>
+La file de message a été supprimée
+<DT><B>EINTR</B>
+
+<DD>
+Un signal est arrivé avant d'avoir pu écrire quoi que ce soit.
+<DT><B>EINVAL</B>
+
+<DD>
+<I>msqid</I>
+
+ou
+<I>mtype</I>
+
+ou
+<I>msgsz</I>
+
+sont invalides.
+<DT><B>ENOMEM</B>
+
+<DD>
+pas assez de mémoire pour le noyau.
+</DL>
+<P>
+
+<B>msgrcv :</B>
+
+<DL COMPACT>
+<DT><B>E2BIG</B>
+
+<DD>
+message trop long, et
+<B>MSG_NOERROR</B>
+
+n'a pas été requis.
+<DT><B>EACCES</B>
+
+<DD>
+Le processus appelant n'a pas de permission de lecture dans la file.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>msgp</I>
+
+pointe en dehors de l'espace d'adressage accessible.
+<DT><B>EIDRM</B>
+
+<DD>
+La file de messages a été supprimée.
+<DT><B>EINTR</B>
+
+<DD>
+Un signal est arrivé avant d'avoir pu lire quoi que ce soit.
+<DT><B>EINVAL</B>
+
+<DD>
+<I>msgqid</I>
+
+ou
+<I>msgsz</I>
+
+invalides.
+<DT><B>ENOMSG</B>
+
+<DD>
+<B>IPC_NOWAIT</B>
+
+a été requis et aucun message du type réclamé n'existe dans la file.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les limites systèmes suivantes influent sur
+<B>msgsnd  :</B>
+
+<DL COMPACT>
+<DT><B>MSGMAX</B>
+
+<DD>
+Taille maximum d'un message : l'implémentation Linux 0.99.13 fixe cette
+limite à 4080 octets.
+<DT><B>MSGMNB</B>
+
+<DD>
+Taille maximale d'une file de messages. Peut être augmentée par
+le Super-User.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID.
+<A NAME="lbAI">&nbsp;</A>
+<H2>NOTES</H2>
+
+L'argument pointeur est déclaré comme un <I>struct msgbuf *</I> avec les bibliothèques libc4, libc5, glibc 2.0, glibc 2.1.
+Il est déclaré comme un <I>void *</I> (<I>const void *</I> pour <I>msgsnd()</I>) avec la bibliothèque glibc 2.2, suivant ainsi
+les spécifications SUSv2.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+ipc">ipc</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgctl">msgctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgget">msgget</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgrcv">msgrcv</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgsnd">msgsnd</A></B>(2).
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">NOTES</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:00 GMT, February 11, 2014
+</BODY>
+</HTML>

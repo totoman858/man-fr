@@ -1,0 +1,223 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PCILIB</TITLE>
+</HEAD><BODY>
+<H1>PCILIB</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 10 avril 2008<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="ixAAB"></A>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+pcilib - Une bibliothèque pour accéder aux périphériques PCI
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La bibliothèque PCI (également connue sous les noms de
+<I>pcilib</I>
+
+et
+<I>libpci</I>)
+
+est une bibliothèque portable pour accéder aux périphériques PCI
+et à leur espace de configuration.
+<A NAME="lbAD">&nbsp;</A>
+<H2>MÉTHODES D'ACCÈS</H2>
+
+<P>
+
+La bibliothèque prend en charge diverses méthodes pour accéder à l'espace
+de configuration sur différents systèmes d'exploitation.
+Par défaut, la première méthode correspondante dans cette liste est
+utilisée, mais vous pouvez outrepasser cette décision (voir l'option
+<B>-A</B>
+
+de
+<B><A HREF="/cgi-bin/man/man2html?8+lspci">lspci</A></B>(8)).
+
+<DL COMPACT>
+<DT><B>linux-sysfs</B>
+
+<DD>
+Le système de fichiers
+<I>/sys</I>
+
+sur Linux&nbsp;2.6 et suivants.
+L'entête standard de l'espace de configuration est disponible pour tous
+les utilisateurs, le reste seulement pour le superutilisateur.
+Il prend en charge l'espace de configuration, les domaines PCI
+et les informations sur les pilotes attachés du noyau.
+<DT><B>linux-proc</B>
+
+<DD>
+L'interface
+<I>/proc/bus/pci</I>
+
+prise en charge depuis Linux&nbsp;2.1.
+L'entête standard de l'espace de configuration est disponible pour tous
+les utilisateurs, le reste seulement pour le superutilisateur.
+<DT><B>intel-conf1</B>
+
+<DD>
+Accès matériel direct via le mécanisme&nbsp;1 de configuration Intel.
+Disponible sur les architectures i386 et compatibles sous Linux,
+Solaris/x86, GNU Hurd et Windows.
+Nécessite les privilèges du superutilisateur.
+<DT><B>intel-conf2</B>
+
+<DD>
+Accès matériel direct via le mécanisme&nbsp;2 de configuration Intel.
+Disponible sur les architectures i386 et compatibles sous Linux,
+Solaris/x86, GNU Hurd et Windows.
+Nécessite les privilèges du superutilisateur.
+Avertissement&nbsp;: cette méthode n'est capable d'adresser que seulement
+les 16 premiers périphériques de chaque bus et semble être peu fiable
+dans la plupart des cas.
+<DT><B>fbsd-device</B>
+
+<DD>
+Le périphérique
+<I>/dev/pci</I>
+
+sur FreeBSD.
+Nécessite les privilèges du superutilisateur.
+<DT><B>aix-device</B>
+
+<DD>
+Méthode d'accès utilisée sur AIX.
+Nécessite les privilèges du superutilisateur.
+<DT><B>nbsd-libpci</B>
+
+<DD>
+Le périphérique
+<I>/dev/pci0</I>
+
+sur NetBSD accédé avec la bibliothèque locale libpci.
+<DT><B>obsd-device</B>
+
+<DD>
+Le périphérique
+<I>/dev/pci</I>
+
+sur OpenBSD.
+Nécessite les privilèges du superutilisateur.
+<DT><B>dump</B>
+
+<DD>
+Lire le contenu des registres de configuration à partir d'un fichier
+indiqué dans le paramètre
+<I>dump.name</I>.
+
+Le format correspond à la sortie de la commande
+<B>lspci -x</B>.
+
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>PARAMÈTRES</H2>
+
+<P>
+
+La bibliothèque est contrôlée par plusieurs paramètres.
+Ils doivent avoir des valeurs par défaut sensées, mais dans le cas où
+vous feriez quelque chose d'inhabituel (ou même quelque chose de bizarre),
+vous pouvez les surcharger (voir l'option
+<B>-O</B>
+
+de
+<B><A HREF="/cgi-bin/man/man2html?8+lspci">lspci</A></B>(8)).
+
+<A NAME="lbAF">&nbsp;</A>
+<H3>Paramètres des méthodes d'accès particulières</H3>
+
+<DL COMPACT>
+<DT><I>dump.name</I>
+
+<DD>
+Nom du fichier «&nbsp;dump&nbsp;» du bus à lire.
+<DT><I>fbsd.path</I>
+
+<DD>
+Chemin du périphérique PCI FreeBSD.
+<DT><I>nbsd.path</I>
+
+<DD>
+Chemin du périphérique PCI NetBSD.
+<DT><I>obsd.path</I>
+
+<DD>
+Chemin du périphérique PCI OpenBSD.
+<DT><I>proc.path</I>
+
+<DD>
+Chemin de l'arborescence des bus du système de fichiers procfs.
+<DT><I>sysfs.path</I>
+
+<DD>
+Chemin de l'arborescence des périphériques du système de fichiers sysfs.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H3>Paramètres pour résoudre les identifiants DNS</H3>
+
+<DL COMPACT>
+<DT><I>net.domain</I>
+
+<DD>
+Domaine DNS contenant la base de données des identifiants.
+<DT><I>net.cache_name</I>
+
+<DD>
+Nom du fichier utilisé pour le cache des identifiants résolus.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+lspci">lspci</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+setpci">setpci</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+update-pciids">update-pciids</A></B>(8)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Les utilitaires PCI sont maintenus par Martin Mares &lt;<A HREF="mailto:mj@ucw.cz">mj@ucw.cz</A>&gt;.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal&nbsp;AT&nbsp;univ-montp2&nbsp;DOT&nbsp;fr&gt; le 6&nbsp;juin&nbsp;2008.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;7&nbsp;pcilib</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">MÉTHODES D'ACCÈS</A><DD>
+<DT><A HREF="#lbAE">PARAMÈTRES</A><DD>
+<DL>
+<DT><A HREF="#lbAF">Paramètres des méthodes d'accès particulières</A><DD>
+<DT><A HREF="#lbAG">Paramètres pour résoudre les identifiants DNS</A><DD>
+</DL>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">AUTEUR</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:58 GMT, February 11, 2014
+</BODY>
+</HTML>

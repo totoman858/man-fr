@@ -1,0 +1,86 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CKSUM</TITLE>
+</HEAD><BODY>
+<H1>CKSUM</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+cksum - Fournir le nombre d'octets d'un fichier ainsi qu'une somme de contrôle.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>cksum</B>
+
+[--help] [--version] [fichier...]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>cksum</B>
+
+([NDT] : <B>cksum</B> = Check Sum - Somme de contrôle).
+<P>
+<B>cksum</B>
+
+calcule une somme de contrôle (CRC cyclic redundancy check) pour chaque
+fichier mentionné, ou pour l'entrée standard, si aucun nom de fichier n'est
+fourni, ou si le nom `-' est indiqué.
+<P>
+Il affiche la somme CRC, le nombre d'octets et le nom de chaque fichier (sauf
+s'il s'agit de l'entrée standard).
+<P>
+
+<B>cksum</B>
+
+est généralement utilisé pour s'assurer de l'intégrité d'un fichier
+transféré par un support non fiable (comme les news), ceci en comparant
+le résultat de 
+<B>cksum</B>
+
+sur les fichiers reçus avec le résultat de
+<B>cksum</B>
+
+sur les fichiers originaux.
+<P>
+L'algorithme CRC est indiqué dans les standards POSIX.2. Il n'est pas
+compatible avec les programmes
+<B>sum</B>
+
+de BSD ou SYSV, il est plus robuste.
+<DL COMPACT>
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et terminer normalement.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et terminer normalement.
+<P>
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:45 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,223 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DIRCOLORS</TITLE>
+</HEAD><BODY>
+<H1>DIRCOLORS</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+dircolors - Configuration des couleurs pour `ls'.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>dircolors</B>
+
+<B>[-b] [--sh] [--bourne-shell]</B>
+
+<B>[-c] [--csh] [--c-shell]</B>
+
+<B>[-p] [--print-database]</B>
+
+<B>[--help] [--version]</B>
+
+<B>[</B><I>FICHIER</I><B>]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>dircolors</B>
+
+affiche une liste de commandes shell permettant de définir les couleurs
+d'affichage de
+<B>ls</B>
+
+(et
+<B>dir</B>,
+
+etc...).
+<BR>
+
+Utilisation typique&nbsp;:
+<BR>
+
+<DL COMPACT><DT><DD>
+eval `dircolors [OPTION]... [FICHIER]`
+</DL>
+
+<P>
+
+Si un
+<I>FICHIER</I>
+
+est indiqué,
+<B>dircolors</B>
+
+le lira pour déterminer les couleurs à utiliser pour chaque type de
+fichiers. Sinon, une base de données précompilées est utilisée.
+Pour des détails sur le format du fichier, invoquez
+`dircolors -p'.
+<P>
+
+La sortie est une commande shell permettant de configurer la
+variable d'environnement
+<B>LS_COLORS</B>.
+
+Vous pouvez indiquer, sur la ligne de commande, la syntaxe shell à employer
+ou 
+<B>dircolors</B>
+
+essayera de la déterminer à partir de la variable d'environnement
+<B>SHELL</B>.
+
+<P>
+
+Après exécution de cette commande, `ls --color' (que l'on peut fournir
+comme alias de ls)
+affichera les fichiers avec les couleurs désirées.
+<P>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-b, --sh, --bourne-shell</B>
+
+<DD>
+Fournir des commandes pour un shell Bourne. C'est le comportement par défaut
+si la variable d'environnement
+<B>SHELL</B>
+
+existe, et ne se termine pas par
+<I>csh</I>
+
+ou
+<I>tcsh</I>.
+
+<DT><B>-c, --csh, --c-shell</B>
+
+<DD>
+Fournir des commandes pour un shell C. C'est le comportement par défaut
+si la variable d'environnement
+<B>SHELL</B>
+
+se termine par
+<I>csh</I>
+
+ou
+<I>csh</I>.
+
+<DT><B>-p, --print-database</B>
+
+<DD>
+Afficher la base de données des couleurs par défaut (fixée à la compilation).
+Cette sortie est elle-même un fichier de configuration valide, et est
+assez explicite concernant l'ensemble des possibilités.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS STANDARDS GNU</H2>
+
+<DL COMPACT>
+<DT><B>--help</B>
+
+<DD>
+Afficher un message d'aide sur la sortie standard, et terminer correctement.
+<DT><B>--version</B>
+
+<DD>
+Afficher un numéro de version sur la sortie standard, et terminer correctement.
+<DT><B>--</B>
+
+<DD>
+Fin de la liste d'options.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+Les variables LANG, LC_ALL, LC_CTYPE et LC_MESSAGES ont leurs significations habituelles.
+Les variables SHELL et TERM sont utilisées pour déterminer la syntaxe
+de la commande shell.
+La variable LS_COLORS sert à fournir les informations pour
+<B>ls</B>.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+La sortie colorée de
+<B><A HREF="/cgi-bin/man/man2html?1+ls">ls</A></B>(1)
+
+est une extension GNU.
+Cette implémentation n'est pas tout à fait compatible avec le paquetage
+<B>dircolors</B>/<B>color-ls</B>
+
+original de la distribution Linux Slackware. En particulier, les supports
+spécifiques des shells Z et Korn en sont absents. Les utilisateurs de ces
+shells devraient employer le mode Bourne shell (-b).
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+dir_colors">dir_colors</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?1+ls">ls</A></B>(1)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+Le programme
+<B>dircolors</B>
+
+lui-même n'utilise pas de fichier de configuration. Néanmoins, les scripts
+d'initialisation du shell invoquent, pour le personnaliser,
+<B>dircolors</B>
+
+avec l'un des fichiers suivants :
+<DL COMPACT>
+<DT><I>/etc/DIR_COLORS</I>
+
+<DD>
+Fichier de configuration global pour le système.
+<DT><I>~/.dir_colors</I>
+
+<DD>
+Fichier de configuration personnel pour un utilisateur.
+</DL>
+<A NAME="lbAK">&nbsp;</A>
+<H2>NOTES</H2>
+
+Cette page décrit la version de
+<B>dircolors</B>
+
+se trouvant dans le paquetage fileutils-4.0.
+D'autres versions peuvent différer légèrement.
+Signalez les bogues dans le programme à <A HREF="mailto:fileutils-bugs@gnu.ai.mit.edu">fileutils-bugs@gnu.ai.mit.edu</A>.
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1998-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">OPTIONS STANDARDS GNU</A><DD>
+<DT><A HREF="#lbAG">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">FICHIERS</A><DD>
+<DT><A HREF="#lbAK">NOTES</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:40 GMT, February 11, 2014
+</BODY>
+</HTML>

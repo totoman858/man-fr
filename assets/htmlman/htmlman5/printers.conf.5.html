@@ -1,0 +1,94 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of printers.conf</TITLE>
+</HEAD><BODY>
+<H1>printers.conf</H1>
+Section: Easy Software Products (5)<BR>Updated: Common UNIX Printing System<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+printers.conf - Fichier de configuration des imprimantes CUPS
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le fichier <I>printers.conf</I> définit les imprimantes locales
+de la machine. Il est habituellement situé dans le répertoire <I>/etc/cups</I>
+et est généré automatiquement par le programme <I><A HREF="/cgi-bin/man/man2html?8+cupsd">cupsd</A>(8)</I> lors
+de l'ajout ou de la suppression d'imprimantes.
+<P>
+
+Chaque ligne du fichier est une directive de configuration, une ligne
+vide ou un commentaire (ligne commençant par la caractère #).
+<A NAME="lbAD">&nbsp;</A>
+<H2>DIRECTIVES</H2>
+
+<DL COMPACT>
+<DT>Accepting<DD>
+<BR>
+
+Définit si l'imprimante accepte ou non les travaux d'impression.
+<DT>Info<DD>
+<BR>
+
+Définit un commentaire de description de l'imprimante.
+<DT>Location<DD>
+<BR>
+
+Définit un commentaire concernant la localisation physique de l'imprimante.
+<DT>DeviceURI<DD>
+<BR>
+
+Définit l'URI de l'imprimante.
+<DT>&lt;Printer name&gt; ... &lt;/Printer&gt;<DD>
+<BR>
+
+Définit une imprimante.
+<DT>State<DD>
+<BR>
+
+Définit l'état initial de l'imprimante (Idle ou Stopped).
+<DT>StateMessage<DD>
+<BR>
+
+Définit le message associé à cet état.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?5+classes.conf">classes.conf</A>(5), <A HREF="/cgi-bin/man/man2html?8+cupsd">cupsd</A>(8), <A HREF="/cgi-bin/man/man2html?5+cupsd.conf">cupsd.conf</A>(5), <A HREF="/cgi-bin/man/man2html?5+mime.convs">mime.convs</A>(5), <A HREF="/cgi-bin/man/man2html?5+mime.types">mime.types</A>(5),
+CUPS Software Administrators Manual,
+CUPS Interface Design Description,
+<A HREF="http://localhost:631/documentation.html">http://localhost:631/documentation.html</A>
+<A NAME="lbAF">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright 1993-2003 Easy Software Products, Tous droits réservés.
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Gilles QUERRET &lt;<A HREF="mailto:gilles.querret@nerim.net">gilles.querret@nerim.net</A>&gt;
+
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">DIRECTIVES</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:55 GMT, February 11, 2014
+</BODY>
+</HTML>

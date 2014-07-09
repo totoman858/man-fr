@@ -1,0 +1,141 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FORK</TITLE>
+</HEAD><BODY>
+<H1>FORK</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fork - Créer un processus fils.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>pid_t fork(void);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>fork</B>
+
+crée un processus fils qui diffère du processus parent uniquement par ses
+valeurs PID et PPID et par le fait que toutes les statistiques d'utilisation
+des ressources sont remises à zéro. Les verrouillages de fichiers, et les signaux en
+attente ne sont pas hérités.
+<P>
+
+Sous Linux,
+<B>fork</B>
+
+est implementé en utilisant une méthode de copie à l'écriture. 
+Ceci consiste à ne faire la véritable duplication d'une page
+mémoire que lorsqu'un processus en modifie une instance. Tant
+qu'aucun des deux processus n'écrit dans une page donnée, celle-ci
+n'est pas vraiment dupliquée.
+Ainsi les
+seules pénalisations induites par fork sont le temps et la mémoire 
+nécessaires à la copie de
+la table des pages du parent ainsi que la création d'une structure de
+tâche pour le fils.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+En cas de succès, le PID du fils est renvoyé au processus parent, et 
+0 est renvoyé au processus fils. En cas d'échec -1 est renvoyé dans le
+contexte du parent, aucun processus fils n'est créé, et
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EAGAIN</B>
+
+<DD>
+<B>fork</B>
+
+ne peut pas allouer assez de mémoire pour copier la table des pages du
+père et une structure de tâche pour le fils.
+<DT><B>ENOMEM</B>
+
+<DD>
+<B>fork</B>
+
+a échoué car le noyau n'a plus assez de mémoire.
+<P>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+<PRE>
+    pid_t   pid;
+
+    pid = fork ();
+
+    if (pid &gt; 0) {
+         /* Processus père      */
+    } else if (pid == 0) {
+         /* Processus fils      */
+    } else {
+         /* Traitement d'erreur */
+    }
+</PRE>
+
+<P>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+L'appel-système
+<B>fork</B>
+
+est conforme à SVr4, SVID, POSIX, X/OPEN, BSD 4.3.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+clone">clone</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+execve">execve</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+vfork">vfork</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+wait">wait</A></B>(2).
+
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">EXEMPLE</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:54 GMT, February 11, 2014
+</BODY>
+</HTML>

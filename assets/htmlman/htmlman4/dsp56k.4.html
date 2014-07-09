@@ -1,0 +1,120 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DSP56K</TITLE>
+</HEAD><BODY>
+<H1>DSP56K</H1>
+Section: Manuel du programmeur Linux (4)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+dsp56k - Périphérique d'interface DSP 56001.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+#include &lt;<A HREF="file:///usr/include/asm/dsp56k.h">asm/dsp56k.h</A>&gt;
+
+<B>ssize_t read (int </B><I>fd</I><B>, void * </B><I>data</I><B>, size_t </B><I>length</I><B>);</B>
+<B>ssize_t write (int </B><I>fd</I><B>, void * </B><I>data</I><B>, size_t </B><I>length</I><B>);</B>
+<B>int ioctl (int </B><I>fd</I><B>, </B><FONT SIZE="-1"><B>DSP56K_UPLOAD</B></FONT><B>, struct dsp56k_upload *</B><I>program</I><B>);</B>
+<B>int ioctl (int </B><I>fd</I><B>, </B><FONT SIZE="-1"><B>DSP56K_SET_TX_WSIZE</B></FONT><B>, int </B><I>wsize</I><B>);</B>
+<B>int ioctl (int </B><I>fd</I><B>, </B><FONT SIZE="-1"><B>DSP56K_SET_RX_WSIZE</B></FONT><B>, int </B><I>wsize</I><B>);</B>
+<B>int ioctl (int </B><I>fd</I><B>, </B><FONT SIZE="-1"><B>DSP56K_HOST_FLAGS</B></FONT><B>, struct dsp56k_host_flags *</B><I>flags</I><B>);</B>
+<B>int ioctl (int </B><I>fd</I><B>, </B><FONT SIZE="-1"><B>DSP56K_HOST_CMD</B></FONT><B>, int </B><I>cmd</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>CONFIGURATION</H2>
+
+Le DSP 56001 est un périphérique de type caractère, ayant un numéro majeur valant 55 et
+un mineur 0.
+<A NAME="lbAE">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le DSP 56001 Motorola est un processeur de signal numérique 24 bits entièrement programmable,
+que l'on trouve dans les ordinateurs compatibles avec l'Atari Falcon 030. Le fichier
+spécial <B>dsp56k</B> sert à commander le DSP 56001, pour envoyer ou recevoir des signaux
+sur le port hôte.
+<P>
+
+Pour envoyer un flux de signal vers le processeur, utilisez write() sur le périphérique, et
+pour en recevoir utilisez read(). Les données peuvent être émises ou reçues par blocs de 8,
+16, 24 ou 32 bits du côté hôte, mais seront toujours vues comme des blocs de 24 bits du côté du
+DSP 56001.
+<P>
+
+Les appels
+<I><A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A></I>(2)
+
+suivants permettent de commander le périphérique
+<B>dsp56k</B> :
+<DL COMPACT>
+<DT><B>DSP56K_UPLOAD</B><DD>
+réinitialise le DSP 56001 et télécharge un programme. Le troisième arguments de l'appel ioctl()
+doit être un pointeur sur une <B>struct dsp56k_binary</B> dont le champ <B>bin</B> pointe sur un
+programme DSP 56001 binaire. Le champ <B>len</B> doit contenir la longueur du programme en mots de 24 bits.
+<DT><B>DSP56K_SET_TX_WSIZE</B><DD>
+configure la taille des mots émis. Les valeurs autorisées se trouvent dans l'intervalle 1 à 4, correspondant
+au nombre d'octets envoyés à la fois. Ces données seront soit complétées avec des zéros, soit tronquées pour
+s'aligner sur le format natif 24 bits du DSP 56001.
+<DT><B>DSP56K_SET_RX_WSIZE</B><DD>
+configure la taille des mots reçus. Les valeurs autorisées se trouvent dans l'intervalle 1 à 4, correspondant
+au nombre d'octets reçus en une fois. Ces données seront soit complétées avec des zéros, soit tronquées pour
+s'aligner sur le format natif 24 bits du DSP 56001.
+<DT><B>DSP56K_HOST_FLAGS</B><DD>
+Lire ou écrire les attributs d'hôte. Ces attributs sont représentés par 4 bits à usage généraux qui peuvent
+être lus aussi bien par l'ordinateur hôte que par le DSP 56001. Les bits 0 et 1 peuvent être fixés par l'hôte, et
+les bits 2 et 3 peuvent être écrits par le DSP 56001.
+<P>
+Pour accéder aux attributs d'hôte, le troisième argument de l'appel ioctl() doit être un pointeur sur une
+<B>struct dsp56k_host_flags</B>.  Si les bits 0 ou 1 sont à 1 dans le champ <B>dir</B>, Le bit correspondant de
+<B>out</B> sera écrit dans les attributs d'hôte. L'état des attributs d'hôte sera renvoyé dans les quatre bits
+de poids faible du membre <B>status</B>.
+<DT><B>DSP56K_HOST_CMD</B><DD>
+envoie une commande d'hôte. Les valeurs autorisés sont dans l'intervalle 0 à 31 et correspondent à un numéro
+de commande (définie par l'utilisateur) manipulé par le programme tournant sur le DSP 56001.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/dev/dsp56k
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Fredrik Noring &lt;<A HREF="mailto:noring@nocrew.org">noring@nocrew.org</A>&gt;, lars brinkhoff &lt;<A HREF="mailto:lars@nocrew.org">lars@nocrew.org</A>&gt;,
+Tomas Berndtsson &lt;<A HREF="mailto:tomas@nocrew.org">tomas@nocrew.org</A>&gt;.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+linux/include/asm-m68k/dsp56k.h,
+linux/drivers/char/dsp56k.c,
+<A HREF="http://dsp56k.nocrew.org/,">http://dsp56k.nocrew.org/,</A>
+DSP56000/DSP56001 Digital Signal Processor User's Manual
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">CONFIGURATION</A><DD>
+<DT><A HREF="#lbAE">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">AUTEURS</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:52 GMT, February 11, 2014
+</BODY>
+</HTML>

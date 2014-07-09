@@ -1,0 +1,89 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TTY</TITLE>
+</HEAD><BODY>
+<H1>TTY</H1>
+Section: Manuel du programmeur Linux (4)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+tty - Terminal de contrôle.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le fichier <B>/dev/tty</B> 
+est un fichier spécial caractères, avec un numéro majeur 5 et un
+numéro mineur 0. Il possède habituellement le mode d'accès 0666 et
+appartient à root.tty.
+<P>
+Il s'agit d'un synonyme pour le terminal de contrôle d'un processus,
+s'il en a un.
+<P>
+
+En plus des requêtes <B>ioctl()</B> supportées par les périphériques
+<B>tty</B>, la requête <B>ioctl()</B> <B>TIOCNOTTY</B> est disponible.
+<A NAME="lbAD">&nbsp;</A>
+<H3>TIOCNOTTY</H3>
+
+Détacher le processus en cours de son terminal de contrôle
+<P>
+Si le processus est un leader de session, alors SIGHUP et SIGCONT
+seront envoyés au groupe de processus en avant-pklan, et tous les
+processus de la session perdent leur terminal de contrôle.
+<P>
+Cet <B>ioctl()</B> fonctionne uniquement avec les descripteurs de fichiers
+connectés à <B>/dev/tty</B>. Il est utilisé par les démons quand ils
+sont invoqués par un utilisateur depuis un terminal.
+Le processus tente d'ouvrir <B>/dev/tty</B>, s'il réussit il se détache
+alors du terminal avec <B>TIOCNOTTY</B>. Si l'ouverture échoue, il n'est
+évidemment pas attaché à un terminal et n'a pas besoin de se détacher.
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/dev/tty
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+mknod">mknod</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+chown">chown</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+getty">getty</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+termios">termios</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?4+console">console</A></B>(4),
+
+<B><A HREF="/cgi-bin/man/man2html?4+ttys">ttys</A></B>(4)
+
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAD">TIOCNOTTY</A><DD>
+</DL>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:53 GMT, February 11, 2014
+</BODY>
+</HTML>

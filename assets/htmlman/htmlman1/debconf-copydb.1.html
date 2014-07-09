@@ -1,0 +1,184 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DEBCONF-COPYDB.FR.1</TITLE>
+</HEAD><BODY>
+<H1>DEBCONF-COPYDB.FR.1</H1>
+Section: User Contributed Perl Documentation (1)<BR>Updated: 2003-02-14<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+<A NAME="ixAAC"></A>
+debconf-copydb - copie une base de données debconf
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<A NAME="ixAAD"></A>
+
+
+<PRE>
+ debconf-copydb sourcedb destdb [--pattern=pattern] [--config=Foo:bar]
+
+</PRE>
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<A NAME="ixAAE"></A>
+<B>debconf-copydb</B> copie des éléments d'une base de données debconf existante
+dans une autre base, ou dans une nouvelle. Les deux bases de données peuvent 
+être de différents formats&nbsp;; si c'est le cas, une conversion sera
+automatiquement faite.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<A NAME="ixAAF"></A>
+<DL COMPACT>
+<DT><I>sourcedb</I><DD>
+<A NAME="ixAAG"></A>
+Le nom de la base de données source. Elle sera définie dans votre fichier
+debconf.conf (ou .debconfrc).
+<DT><I>destdb</I><DD>
+<A NAME="ixAAH"></A>
+Le nom de la base de données de destination. Elle peut être définie dans
+debconf.conf ou .debconfrc, ou vous pouvez la définir sur la ligne de commande.
+(voir ci-dessous).
+<DT><B>-p</B> <I>pattern</I>, <B>--pattern</B> <I>pattern</I><DD>
+<A NAME="ixAAI"></A>
+Si ceci est spécifié, seuls les éléments dont les noms correspondent au
+motif dans <I>sourcedb</I> seront copiés.
+<DT><B>--owner-pattern</B> <I>pattern</I><DD>
+<A NAME="ixAAJ"></A>
+Si ceci est spécifié, seuls les éléments dont les propriétaires
+correspondent au motif dans <I>sourcedb</I> seront copiés.
+<DT><B>-c</B> <I>foo:bar</I>, <B>--config</B> <I>Foo:bar</I><DD>
+<A NAME="ixAAK"></A>
+Fixe l'option Foo à la valeur bar. Cela équivaut à écrire&nbsp;:
+
+
+<P>
+
+
+
+
+<PRE>
+  Foo: bar
+
+</PRE>
+
+
+
+
+<P>
+
+
+dans debconf.conf, excepté que vous voulez probablement omettre l'espace sur la
+ligne de commande (ou mettre une double apostrophe&nbsp;: ``Foo: bar''). Cela
+doit être généralement utilisé plusieurs fois, pour développer un paragraphe
+entier de configuration. Puisque les lignes blanches sont utilisées pour séparer
+les paragraphes dans debconf.conf, ce programme supposera que
+«&nbsp;Name:dbname&nbsp;» dénote le début d'un nouveau paragraphe.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+<A NAME="ixAAL"></A>
+
+
+<PRE>
+  debconf-copydb configdb backup
+
+</PRE>
+
+
+<P>
+
+Copie tout le contenu de configdb vers backup, en supposant que vous avez déjà
+défini la base de données backup dans votre debconf.conf.
+<P>
+
+
+
+<PRE>
+  debconf-copydb configdb newdb --pattern='^slrn/' \
+        --config=Name:newdb --config=Driver:File \
+        --config=Filename:newdb.dat
+
+</PRE>
+
+
+<P>
+
+Copie les données de slrn en dehors de configdb vers newdb. newdb n'est pas
+défini dans le fichier rc, donc le commutateur --config crée la base de
+données à la volée.
+<P>
+
+
+
+<PRE>
+  debconf-copydb configdb stdout -c Name:stdout -c Driver:Pipe \
+        -c InFd:none --pattern='^foo/'
+
+</PRE>
+
+
+<P>
+
+Envoie tous les éléments dans la base de données debconf relatifs au paquet foo.
+<P>
+
+
+
+<PRE>
+  debconf-copydb configdb pipe --config=Name:pipe \
+                --config=Driver:Pipe --config=InFd:none | \
+        ssh remotehost debconf-copydb pipe configdb \
+                --config=Name:pipe --config=Driver:Pipe
+
+</PRE>
+
+
+<P>
+
+Utilise un tube spécial pour copier une base de données sur
+un système distant.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A NAME="ixAAM"></A>
+<I><A HREF="/cgi-bin/man/man2html?5+debconf.conf">debconf.conf</A></I>(5)
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<A NAME="ixAAN"></A>
+Joey Hess &lt;<A HREF="mailto:joeyh@debian.org">joeyh@debian.org</A>&gt;
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<A NAME="ixAAO"></A>
+Julien Louis &lt;<A HREF="mailto:leonptitlouis@ifrance.com">leonptitlouis@ifrance.com</A>&gt;
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">EXEMPLES</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">AUTEUR</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:49 GMT, February 11, 2014
+</BODY>
+</HTML>

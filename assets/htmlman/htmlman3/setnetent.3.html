@@ -1,0 +1,152 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETNETENT</TITLE>
+</HEAD><BODY>
+<H1>GETNETENT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getnetent, getnetbyname, getnetbyaddr, setnetent, endnetent - Lire les informations réseau.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/netdb.h">netdb.h</A>&gt;</B>
+
+<B>struct netent *getnetent (void);</B>
+
+<B>struct netent *getnetbyname (const char *</B><I>name</I><B>);</B>
+
+<B>struct netent *getnetbyaddr (long </B><I>net</I><B>, int </B><I>type</I><B>);</B>
+
+<B>void setnetent (int </B><I>stayopen</I><B>);</B>
+
+<B>void endnetent (void);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>getnetent()</B> lit la ligne suivante du fichier <I>/etc/networks</I>,
+renvoie un pointeur sur une structure <I>netent</I> contenant les différents
+champs de la ligne. Le fichier <I>/etc/networks</I> est ouvert en lecture si
+besoin est.
+<P>
+
+La fonction <B>getnetbyname()</B> renvoie une structure <I>netent</I>
+concernant la ligne correspondant au nom de réseau <I>name</I> dans le
+fichier <I>/etc/networks</I>.
+<P>
+
+La fonction <B>getnetbyaddr()</B> renvoie une structure <I>netent</I> pour la
+ligne correspondant au réseau de numéro <I>net</I> et au <I>type</I> indiqué
+dans le fichier <I>/etc/networks/</I>.
+<P>
+
+La fonction <B>setnetent()</B> ouvre, ou revient au début, du fichier
+<I>/etc/networks</I>.  Si <I>stayopen</I> est vrai (vaut 1), alors le fichier
+ne sera pas refermé entre deux appels à <B>getnetbyname()</B> ou à
+<B>getnetbyaddr()</B>.
+<P>
+
+La fonctions <B>endservent()</B> referme le fichier <I>/etc/networks</I>.
+<P>
+
+La structure <I>netent</I> est définie dans <I>&lt;<A HREF="file:///usr/include/netdb.h">netdb.h</A>&gt;</I> ainsi :
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct netent {
+   char             *n_name;     /* Nom officiel  du réseau */
+   char            **n_aliases;  /* Liste d'alias           */
+   int               n_addrtype; /* Type d'adresse réseau   */
+   unsigned long int n_net;      /* Adresse du réseau       */
+}
+
+</PRE>
+
+</DL>
+
+<P>
+
+Les membres de la structures <I>netent</I> sont :
+<DL COMPACT>
+<DT><I>n_name</I>
+
+<DD>
+Le nom officiel du réseau.
+<DT><I>n_aliases</I>
+
+<DD>
+Une liste, terminée par zéro, d'alternatives au nom du réseau.
+<DT><I>n_addrtype</I>
+
+<DD>
+Le type d'adresse du réseau, actuellement il vaut toujours AF_INET.
+<DT><I>n_net</I>
+
+<DD>
+L'adresse du réseau, utilisant l'ordre des octets de l'hôte.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Les fonctions <B>getnetent()</B>, <B>getnetbyname()</B> et <B>getnetbyaddr()</B>
+renvoient une structure <I>netent</I> ou un pointeur NULL si une erreur se
+produit, ou si la fin du fichier est atteinte.
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/etc/networks</I>
+
+<DD>
+Base de données des réseaux.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.3
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+getprotoent">getprotoent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getservent">getservent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+networks">networks</A></B>(5),
+
+br
+<B>RFC 1101</B>.
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:20 GMT, February 11, 2014
+</BODY>
+</HTML>

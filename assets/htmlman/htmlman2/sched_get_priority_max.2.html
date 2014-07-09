@@ -1,0 +1,167 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GET_PRIORITY_MAX</TITLE>
+</HEAD><BODY>
+<H1>GET_PRIORITY_MAX</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+sched_get_priority_max, sched_get_priority_min  - Obtenir l'intervalle de priorités statiques de l'ordonnanceur.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sched.h">sched.h</A>&gt;</B>
+
+<P>
+<B>int sched_get_priority_max(int </B><I>policy</I><B>);
+<P>
+int sched_get_priority_min(int </B><I>policy</I><B>);
+
+</B><A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>sched_get_priority_max </B>
+
+renvoie la valeur maximale de priorité qui puisse être
+utilisée avec la politique d'ordonnancement identifiée 
+par <I>policy</I>.
+<B>sched_get_priority_min </B>
+
+renvoie la valeur minimale de priorité qui puisse être
+utilisée avec la politique d'ordonnancement identifiée 
+par <I>policy</I>.
+Les valeurs de <I>policy</I> pour les politiques 
+d'ordonnancement proposées sont :
+<I>SCHED_FIFO</I>,
+
+<I>SCHED_RR</I>,
+
+et
+<I>SCHED_OTHER</I>.
+
+<P>
+Les processus ayant des valeurs de priorités hautes sont
+sélectionnés avant les processus de basses priorités.
+Ainsi la valeur renvoyée par
+<B>sched_get_priority_max</B> sera supérieure à celle renvoyée
+par <B>sched_get_priority_min</B>.
+<P>
+Linux offre un intervalle de priorités statiques allant de
+1 à 99 pour les politiques d'ordonnancements <I>SCHED_FIFO</I> 
+et <I>SCHED_RR</I>
+et une priorité statique 0 pour <I>SCHED_OTHER</I>. 
+Les intervalles de priorités des différents algorithmes ne sont
+pas modifiables.
+<P>
+Les intervalles peuvent varier suivant les systèmes POSIX, et
+il est conseillé pour une application portable d'utiliser
+un intervalle de priorité virtuel, que l'on associera avec
+l'intervalle donné par <B>sched_get_priority_max</B> et
+<B>sched_get_priority_min</B>. 
+POSIX.1b réclame une distance d'au moins 32 entre les valeurs
+maximale et minimale des politiques <I>SCHED_FIFO</I> 
+et <I>SCHED_RR</I>.
+<P>
+Les systèmes POSIX sur lesquels
+<B>sched_get_priority_max</B>
+
+et
+<B>sched_get_priority_min</B>
+
+sont disponibles définissent
+<I>_POSIX_PRIORITY_SCHEDULING</I>
+
+dans &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>sched_get_priority_max</B>
+
+et
+<B>sched_get_priority_min</B>
+
+renvoient les valeurs de priorités maximale/minimale s'ils
+réussissent.
+En cas d'échec -1 est renvoyé, et
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+le paramètre <I>policy</I> ne correspond pas à une
+politique d'ordonnancement supportée.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX.1b (précédemment POSIX.4)
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_setaffinity">sched_setaffinity</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_getaffinity">sched_getaffinity</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_setscheduler">sched_setscheduler</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_getscheduler">sched_getscheduler</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_setparam">sched_setparam</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_getparam">sched_getparam</A></B>(2)
+
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_setscheduler">sched_setscheduler</A></B>(2)
+
+contient la description des politiques d'ordonnancement de
+Linux.
+<P>
+
+<I>Programming for the real world - POSIX.4</I>
+
+by Bill O. Gallmeister, O'Reilly &amp; Associates, Inc., ISBN 1-56592-074-0
+<BR>
+
+<I>IEEE Std 1003.1b-1993</I>
+
+(standard POSIX.1b)
+<BR>
+
+<I>ISO/IEC 9945-1:1996</I>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:00 GMT, February 11, 2014
+</BODY>
+</HTML>

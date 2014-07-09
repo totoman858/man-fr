@@ -1,0 +1,141 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DPKG-STATOVERRIDE</TITLE>
+</HEAD><BODY>
+<H1>DPKG-STATOVERRIDE</H1>
+Section: Utilitaires de dpkg (8)<BR>Updated: Novembre 2000<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+dpkg-statoverride -- annuler la propriété et le mode des fichiers
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>dpkg-statoverride</B> [options] --add &lt;user&gt; &lt;group&gt; &lt;mode&gt; <I>&lt;fichier&gt;</I>
+<BR>
+
+<B>dpkg-statoverride</B> [options] --remove <I>&lt;fichier&gt;</I>
+<BR>
+
+<B>dpkg-statoverride</B> [options] --list <I>[&lt;exp-reg&gt;]</I>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les «&nbsp;<B>stat overrides</B>&nbsp;» sont une façon de demander à Dpkg de changer le
+propriétaire ou le mode d'un fichier lors de l'installation d'un paquet.
+(Note&nbsp;: je dis «&nbsp;fichier&nbsp;» ici, mais cela peut être en réalité n'importe
+quel système de fichiers gérable par Dpkg, par exemple, des répertoires, des
+devices, etc.) On peut s'en servir pour forcer l'installation de programmes 
+qui sont normalement «&nbsp;setuid&nbsp;» sans ce drapeau «&nbsp;setuid&nbsp;», ou pour les
+rendre exécutables seulement par un groupe donné.
+<P>
+
+<B>dpkg-statoverride</B> est un utilitaire pour gérer la liste des annulations.
+Il possède trois fonctions élémentaires&nbsp;: l'ajout, la suppression et le 
+listage d'annulations.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><I>--add &lt;user&gt; &lt;group&gt; &lt;mode&gt; &lt;fichier&gt;</I>
+
+<DD>
+Ajouter une annulation pour <B>&lt;fichier&gt;</B>. <B>&lt;fichier&gt;</B> n'a pas besoin
+d'exister quand cette commande est utilisée&nbsp;; l'annulation est stockée et
+utilisée par la suite. Les utilisateurs ou les groupes peuvent être
+indiqués par leur nom (par exemple <B>root</B> ou <B>nobody</B>), ou bien par
+leur numéro, en préfixant ce numéro par le caractère «&nbsp;fB#&nbsp;» (par exemple,
+<B>#0</B> ou <B>#65534</B>).
+<DT><I>--remove &lt;fichier&gt;</I>
+
+<DD>
+Supprimer une annulation pour <B>&lt;fichier&gt;</B>.
+<DT><I>--list [&lt;exp-reg&gt;]</I>
+
+<DD>
+Lister toutes les annulations. Quand on donne une expression rationnelle, 
+on réduit la sortie aux annulations qui correspondent au motif. Quand il n'y 
+a pas d'annulation, ou quand aucune ne correspond au motif, 
+<B>dpkg-statoverride</B> se termine avec un code de sortie égal à 1.
+<DT><I>--force</I>
+
+<DD>
+Forcer une opération, même si une vérification raisonnable l'interdirait.
+C'est nécessaire pour annuler une précédente annulation.
+<DT><I>--update</I>
+
+<DD>
+Essayer de changer immédiatement le propriétaire et le mode du fichier
+si ce fichier existe. Cela marche uniquement avec <I>--add</I>.
+<DT><I>--quiet</I>
+
+<DD>
+Moins de bavardage sur ce qui est fait.
+<DT><I>--help</I>
+
+<DD>
+Afficher la version, le copyright et une aide.
+<DT><I>--admindir</I>
+
+<DD>
+Changer le répertoire de la base de données de dpkg, où se trouve aussi le
+fichier statoverride. par défaut, c'est /var/lib/dpkg.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/var/lib/dpkg/statoverride</I>
+
+<DD>
+Ce fichier contient la liste actuelle des annulations concernant le système.
+Il se trouve dans le répertoire d'administration de Dpkg, avec les autres 
+fichiers importants comme «&nbsp;status&nbsp;» ou «&nbsp;available&nbsp;».
+<BR>
+
+Note : dpkg-statoverride garde une copie de ce fichier, avec une extension
+&quot;-old&quot;, avant de le remplacer par un nouveau.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>Voir aussi</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+dpkg">dpkg</A></B>(8)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Copyright 2000 Wichert Akkerman
+
+&lt;<A HREF="mailto:wakkerma@debian.org">wakkerma@debian.org</A>&gt;
+
+<P>
+C'est un logiciel libre&nbsp;; voyez la licence publique générale du projet GNU
+version 2 ou supérieure pour les droits de copie. Il n'y a PAS de garantie.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTEUR</H2>
+
+Philippe Batailler, Août 2001.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">Voir aussi</A><DD>
+<DT><A HREF="#lbAH">AUTEUR</A><DD>
+<DT><A HREF="#lbAI">TRADUCTEUR</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:03 GMT, February 11, 2014
+</BODY>
+</HTML>

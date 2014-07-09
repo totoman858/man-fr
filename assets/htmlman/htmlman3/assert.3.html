@@ -1,0 +1,111 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ASSERT</TITLE>
+</HEAD><BODY>
+<H1>ASSERT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+assert - Terminer le programme en cas d'échec d'un test.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/assert.h">assert.h</A>&gt;</B>
+
+<B>void assert (int </B><I>expression</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Si la macro
+<B>NDEBUG</B>
+
+était définie lors de la dernière inclusion de
+<B>&lt;<A HREF="file:///usr/include/assert.h">assert.h</A>&gt;</B>,
+
+la macro
+<B>assert()</B>
+
+ne génère aucun code, et ne fait rien.
+Sinon, la macro
+<B>assert()</B>
+
+affiche un message d'erreur sur la sortie standard, et termine l'exécution
+du programme en cours en appelant
+<B>abort()</B>
+
+si 
+l'<I>expression</I>
+
+est fausse (égale à zéro).
+<P>
+
+Le but de cette macro est d'aider le programmeur à trouver des bogues dans son
+application. Le message &quot;assertion failed un file foo.c, function do_bar(),
+line 1287&quot; n'est d'aucune aide pour l'utilisateur final.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Aucune valeur n'est renvoyée.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ISO9899 (ANSI C).  Dans le standard 1990
+<I>expression</I>
+
+devait être de type
+<B>int</B>
+
+et le comportement était indéfini si ce n'était pas le cas, mais depuis le
+standard 1999, elle peut être de n'importe quel type scalaire.
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<B>assert()</B>
+
+étant implementée comme une macro, si l'expression testée à des effets de
+bord, le comportement du programme diffèrera suivant l'existence de
+<B>NDEBUG</B>.
+
+Ceci peut induire des Heisenbugs (conformes à la théorie de Heisenberg ;-), qui disparaissent quand
+le débugging est utilisé.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+exit">exit</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+abort">abort</A></B>(3)
+
+<B><A HREF="/cgi-bin/man/man2html?3+assert_perror">assert_perror</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:33 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,395 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SETSCHEDULER</TITLE>
+</HEAD><BODY>
+<H1>SETSCHEDULER</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+sched_setscheduler, sched_getscheduler - Lire / fixer la politique d'ordonnancement et ses paramètres.
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sched.h">sched.h</A>&gt;</B>
+
+<P>
+<B>int sched_setscheduler(pid_t </B><I>pid</I><B>, int </B><I>policy</I><B>,</B>
+
+<B>const struct sched_param *</B><I>p</I><B>);</B>
+
+<P>
+<B>int sched_getscheduler(pid_t </B><I>pid</I><B>);</B>
+
+<P>
+<PRE>
+
+<B>struct sched_param {
+    ...
+    int </B><I>sched_priority</I><B>;
+    ...
+};
+
+</B></PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>sched_setscheduler</B>
+
+fixe à la fois la politique d'ordonnancement et ses paramètres pour 
+le processus identifié par <I>pid</I>. 
+Si <I>pid</I> vaut zéro, la politique du processus en cours sera
+fixée.
+L'interprétation du paramètre <I>p</I> dépend de la politique 
+employée. Actuellement il y a trois politiques proposées par Linux :
+<I>SCHED_FIFO</I>,
+
+<I>SCHED_RR</I>,
+
+et
+<I>SCHED_OTHER.</I>
+
+Leurs sémantiques respectives sont décrites ci-dessous.
+<P>
+<B>sched_getscheduler</B>
+
+lit la politique  d'ordonnancement et ses paramètres pour 
+le processus identifié par <I>pid</I>. 
+Si <I>pid</I> vaut zéro, la politique du processus en cours sera
+récupérée.
+<P>
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H3>Politiques d'ordonnancement</H3>
+
+L'ordonnanceur est la partie du noyau qui décide quel processus
+prêt va être exécuté ensuite. L'ordonnanceur de Linux propose
+trois politiques différentes, une pour les processus classiques,
+et deux pour les applications à vocation temps-réel.
+<P>
+Une valeur de priorité statique <I>sched_priority</I> est
+assignée à chaque processus, et ne peut être modifiée que par
+l'intermédiaire d'appels systèmes.
+Conceptuellement, l'ordonnanceur dispose d'une liste de tous
+les processus prêts pour chaque valeur possible de <I>sched_priority</I>
+(<I>sched_priority</I> est dans l'intervalle 0 à 99).
+<P>
+Afin de déterminer quel processus doit s'exécuter ensuite, 
+l'ordonnanceur de Linux recherche la liste non-vide de plus haute
+priorité statique et prend le processus en tête de cette liste.
+La politique d'ordonnancement détermine pour chaque processus
+l'emplacement où il sera inséré dans la liste contenant les
+processus de même priorité statique, et comment il se déplacera
+dans cette liste.
+<P>
+<P>
+<I>SCHED_OTHER</I> est l'ordonnancement universel temps-partagé
+par défaut, utilisé par la plupart des processus.
+<I>SCHED_FIFO</I> et <I>SCHED_RR</I> sont prévus pour des 
+applications temps-réel qui nécessitent un contrôle précis de
+la sélection des processus prêts.
+<P>
+Les processus ordonnancés avec <I>SCHED_OTHER</I> doivent avoir
+une priorité statique de 0, ceux ordonnancés par <I>SCHED_FIFO</I> ou
+<I>SCHED_RR</I> peuvent avoir une priorité statique dans l'intervalle
+1 à 99.
+Seuls les processus disposant de privilèges Super-User peuvent
+obtenir une priorité statique supérieure a 0 afin d'être
+ordonnancé par <I>SCHED_FIFO</I> ou <I>SCHED_RR</I>. 
+<P>
+Les appels systèmes <B>sched_get_priority_min</B> et
+<B>sched_get_priority_max</B> permettent de déterminer l'intervalle
+de priorités valides de manière portable sur les systèmes conformes
+à la norme POSIX.1b.
+<P>
+Tout ordonnancement est préemptif&nbsp;: Si un processus avec une priorité
+statique plus élevée devient prêt, le processus en cours est
+interrompu et retourne dans sa liste d'attente. La politique 
+d'ordonnancement détermine simplement l'ordre utilisé dans une
+liste de processus prêts avec des priorités statiques égales.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H3>SCHED_FIFO: Ordonnancement First In-First out (premier arrivé, premier servi)</H3>
+
+<I>SCHED_FIFO</I> ne peut être utilisé qu'avec des priorités statiques 
+supérieures à 0, ce qui signifie que dès qu'un processus <I>SCHED_FIFO</I>
+devient prêt, un processus normal <I>SCHED_OTHER</I> en cours
+d'exécution sera interrompu.
+<I>SCHED_FIFO</I> est un ordonnancement simple à base de tranches
+de temps. Pour les processus ordonnancés par <I>SCHED_FIFO</I> 
+les règles suivantes sont appliquées :
+Un processus <I>SCHED_FIFO</I> qui a été préempté par un autre
+processus de priorité supérieure restera en tête de sa liste
+et reprendra son exécution dès que tous les processus de
+priorités supérieures sont à nouveau bloqués.
+Quand un processus <I>SCHED_FIFO</I> devient prêt, il est
+inséré à la fin de sa liste. 
+Un appel système
+<B>sched_setscheduler</B> ou <B>sched_setparam</B> placera le
+processus <I>SCHED_FIFO</I> identifié par <I>pid</I> à la fin de
+sa liste s'il est prêt.
+Un processus appelant <B>sched_yield</B> sera placé à la fin de sa liste.
+Aucun autre évènement ne modifiera l'ordre des listes de priorités
+statiques égales avec <I>SCHED_FIFO</I>.
+Un processus <I>SCHED_FIFO</I> s'exécute jusqu'à ce qu'il soit bloqué
+par une opération d'entrée/sortie, qu'il soit préempté par un processus
+de priorité supérieure, ou qu'il appelle <B>sched_yield</B>.
+<P>
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H3>SCHED_RR: Ordonnancement Round Robin </H3>
+
+<I>SCHED_RR</I> est une amélioration simple de la politique <I>SCHED_FIFO</I>. 
+Tout ce qui est décrit pour <I>SCHED_FIFO</I> s'applique aussi à <I>SCHED_RR</I>,
+sauf que chaque processus ne dispose que d'une tranche temporelle
+limitée pour son exécution.
+Si un processus sous politique <I>SCHED_RR</I> s'est exécuté depuis
+une durée supérieure ou égale à la tranche temporelle (time quantum),
+il sera placé à la fin de la liste de sa priorité.
+Un processus sous <I>SCHED_RR</I> qui a été préempté par un
+processus de priorité supérieure terminera sa tranche de temps
+lorsqu'il reprendra son exécution.
+la longueur du time quantum peut être lue avec <B>sched_rr_get_interval</B>.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H3>SCHED_OTHER: Ordonnancement temps-partagé par défaut</H3>
+
+La politique <I>SCHED_OTHER</I> ne peut être utilisée qu'avec des
+priorités statiques à 0. C'est la politique standard de l'ordonnanceur
+temps partagé de Linux, et est conçue pour tous les processus ne
+réclamant pas de fonctionnalités temps-réel.
+Le processus à exécuter est choisi dans la liste des processus de
+priorités statiques nulles, en utilisant une priorité dynamique
+qui ne s'applique que dans cette liste.
+La priorité dynamique est basée sur la valeur de &quot;gentillesse&quot; du
+processus (fixée avec les appels systèmes <B>nice</B> ou 
+<B>setpriority</B>) et est incrémentée à chaque time quantum 
+où le processus est prêt mais non sélectionné par l'ordonnanceur.
+Ceci garantit une progression équitable de tous les processus
+<I>SCHED_OTHER</I>.
+<P>
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H3>Temps de réponse</H3>
+
+Un processus de haute priorité bloqué en attente d'entrées/sorties
+est affecté d'un certain temps de réponse avant d'être sélectionné
+à nouveau. Le concepteur d'un gestionnaire de périphérique
+peut réduire grandement ce temps de réponse en utilisant
+un gestionnaire d'interruptions lentes comme décrit dans
+<B><A HREF="/cgi-bin/man/man2html?9+request_irq">request_irq</A></B>(9).
+
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H3>Divers</H3>
+
+Les processus fils héritent de la politique d'ordonnancement et
+des paramètres associés lors d'un
+<B>fork</B>.
+
+<P>
+Le verrouillage de pages en mémoire est généralement nécessaire
+pour les processus temps réel afin d'éviter les délais de
+pagination. Ceci peut être effectué avec
+<B><A HREF="/cgi-bin/man/man2html?2+mlock">mlock</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+mlockall">mlockall</A></B>(2).
+
+<P>
+Comme une boucle sans fin non bloquante dans un processus ordonnancé
+sous une politique <I>SCHED_FIFO</I> ou <I>SCHED_RR</I> bloquera
+indéfiniment tous les processus avec une priorité plus faible,
+le développeur d'applications temps-réel devrait toujours 
+conserver sur une console un shell ordonnancé avec une priorité 
+supérieure à celle de l'application testée.
+Ceci permettra un 
+<B>kill</B>((1)
+
+d'urgence des applications testées qui ne se bloquent pas ou
+qui ne se terminent pas comme prévu.
+Comme les processus sous <I>SCHED_FIFO</I> et <I>SCHED_RR</I> 
+peuvent préempter les autres processus normaux pour toujours,
+seuls les processus Super-User ont le droit d'activer ces politiques
+sous Linux.
+<P>
+Les systèmes POSIX sur lesquels
+<B>sched_setscheduler</B>
+
+et
+<B>sched_getscheduler</B>
+
+sont disponibles définissent
+<I>_POSIX_PRIORITY_SCHEDULING</I>
+
+dans &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;.
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>sched_setscheduler</B>
+
+renvoie 0 s'il réussit
+<B>sched_getscheduler</B>
+
+renvoie la politique pour le processus s'il réussit.
+<P>
+En cas d'échec, -1 est renvoyé et
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAL">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ESRCH</B>
+
+<DD>
+Le processus numéro <I>pid</I> n'existe pas.
+<DT><B>EPERM</B>
+
+<DD>
+Le processus appelant n'a pas les privilèges nécessaires. Seul
+les processus Super-User peuvent activer les politiques 
+<I>SCHED_FIFO</I> et <I>SCHED_RR</I>.
+Le processus appelant
+<B>sched_setscheduler</B>
+
+doit avoir un UID effectif égal à celui du processus
+<I>pid</I>,
+
+ou être Super-User.
+<DT><B>EINVAL</B>
+
+<DD>
+La valeur de politique d'ordonnancement <I>policy</I> n'existe pas,
+ou le paramètre <I>p</I> n'a pas de signification pour
+la politique <I>policy</I>.
+</DL>
+<A NAME="lbAM">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX.1b (POSIX.4)
+<A NAME="lbAN">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Sous Linux 1.3.81,<I>SCHED_RR</I> n'a pas été testé totalement, et ne
+se comporte peut être pas exactement comme décrit ci-dessus.
+<A NAME="lbAO">&nbsp;</A>
+<H2>NOTE</H2>
+
+Le noyau Linux standard est un système d'exploitation à vocation généraliste,
+et peut gérer des processus en arrière-plan, des applications interactives,
+et des applications en temps-réel souple (qui ont besoin de répondre à des
+critères temporels moyens).
+Cette page de manuel est prévue pour ce type d'applications.
+<P>
+
+Le noyau Linux standard n'est
+<I>pas</I>
+
+prévu pour le support des applications en temps-réel strict,
+dans lesquelles les limites temporelles (souvent inférieures à la seconde)
+sont sûres d'être respectées sous risque d'échec catastrophique.
+Comme tous les systèmes à vocations générales, Linux est prévu pour optimiser
+les performances moyennes. Les performances critiques pour la gestion des
+interruptions sont bien pires que les performances moyennes, les verrous
+divers du noyau (comme ceux pour les SMP) créent de longs temps d'attente,
+plusieurs améliorations des performances moyennes se font au détriment des
+performances critiques.
+Pour la plupart des situations, c'est ce que l'on attend, mais si vous désirez
+de véritables performances temps-réel, il faut se tourner vers des
+extensions comme RTLinux (<A HREF="http://www.rtlinux.org)">http://www.rtlinux.org)</A> ou un système
+d'exploitation conçu pour le temps-réel strict.
+<A NAME="lbAP">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_setaffinity">sched_setaffinity</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_getaffinity">sched_getaffinity</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_setparam">sched_setparam</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_getparam">sched_getparam</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_yield">sched_yield</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_get_priority_max">sched_get_priority_max</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_get_priority_min">sched_get_priority_min</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_rr_get_interval">sched_rr_get_interval</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+nice">nice</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setpriority">setpriority</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getpriority">getpriority</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mlockall">mlockall</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+munlockall">munlockall</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mlock">mlock</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+munlock">munlock</A></B>(2).
+
+<P>
+
+<I>Programming for the real world - POSIX.4</I>
+
+by Bill O. Gallmeister, O'Reilly &amp; Associates, Inc., ISBN 1-56592-074-0
+<BR>
+
+<I>IEEE Std 1003.1b-1993</I>
+
+(POSIX.1b standard)
+<BR>
+
+<I>ISO/IEC 9945-1:1996</I>
+
+- C'est une nouvelle révision 1996 de POSIX.1 qui regroupe en
+un seul standard les normes POSIX.1(1990), POSIX.1b(1993), POSIX.1c(1995), et
+POSIX.1i(1995).
+<P>
+<A NAME="lbAQ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">Politiques d'ordonnancement</A><DD>
+<DT><A HREF="#lbAF">SCHED_FIFO: Ordonnancement First In-First out (premier arrivé, premier servi)</A><DD>
+<DT><A HREF="#lbAG">SCHED_RR: Ordonnancement Round Robin </A><DD>
+<DT><A HREF="#lbAH">SCHED_OTHER: Ordonnancement temps-partagé par défaut</A><DD>
+<DT><A HREF="#lbAI">Temps de réponse</A><DD>
+<DT><A HREF="#lbAJ">Divers</A><DD>
+</DL>
+<DT><A HREF="#lbAK">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAL">ERREURS</A><DD>
+<DT><A HREF="#lbAM">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAN">BOGUES</A><DD>
+<DT><A HREF="#lbAO">NOTE</A><DD>
+<DT><A HREF="#lbAP">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAQ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:53 GMT, February 11, 2014
+</BODY>
+</HTML>

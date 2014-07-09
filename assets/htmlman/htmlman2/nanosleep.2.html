@@ -1,0 +1,193 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of NANOSLEEP</TITLE>
+</HEAD><BODY>
+<H1>NANOSLEEP</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+nanosleep - Arrêter l'exécution pendant une durée donnée.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/time.h">time.h</A>&gt;</B>
+
+<P>
+<B>int nanosleep(const struct timespec *</B><I>req</I><B>, struct timespec *</B><I>rem</I><B>);
+
+</B><A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>nanosleep</B>
+
+suspend l'exécution du programme en cours pour une durée valant
+au moins
+<I>*req</I>.
+
+Cette fonction peut se terminer plus tôt que prévu si un signal a
+été reçu par le processus. Dans ce cas, elle renvoie -1, 
+positionne <I>errno</I> à la valeur
+<B>EINTR</B>,
+
+et inscrit le temps restant dans la structure pointée par
+<I>rem</I>
+
+a moins que
+<I>rem</I>
+
+soit
+<B>NULL</B>.
+
+La valeur de
+<I>*rem</I>
+
+peut être utilisée pour rappeler à nouveau
+<B>nanosleep</B>
+
+afin de terminer la pause.
+<P>
+La structure
+<I>timespec</I>
+
+est utilisée pour indiquer l'intervalle de temps en nano-secondes.
+Elle est définie dans 
+<I>&lt;<A HREF="file:///usr/include/time.h">time.h</A>&gt;</I>
+
+et a la forme suivante
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct timespec
+{
+        time_t  tv_sec;         /* secondes */
+        long    tv_nsec;        /* nano-secondes */
+};
+
+</PRE>
+
+</DL>
+
+<P>
+
+La valeur du champ nano-seconde doit être dans l'intervalle 0 à 999 999 999.
+<P>
+Par rapport à
+<B><A HREF="/cgi-bin/man/man2html?3+sleep">sleep</A></B>(3)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?3+usleep">usleep</A></B>(3),
+
+<B>nanosleep</B>
+
+a l'avantage de n'affecter aucun signal, d'être au standard POSIX,
+de fournir une meilleure résolution, et de permettre de continuer facilement
+un sommeil interrompu par un signal.
+<A NAME="lbAE">&nbsp;</A>
+<H2>ERREURS</H2>
+
+En cas d'erreur ou d'interruption, l'appel système
+<B>nanosleep</B>
+
+renvoie -1 et place dans
+<I>errno</I>
+
+une des valeurs suivantes :
+<DL COMPACT>
+<DT><B>EINTR</B>
+
+<DD>
+La pause a été interrompue par un signal non-bloqué délivré au
+processus. Le temps restant de sommeil a été inscrit dans 
+*<I>rem</I> pour que le processus puisse terminer facilement son
+sommeil.
+<DT><B>EINVAL</B>
+
+<DD>
+La valeur du champ
+<I>tv_nsec</I>
+
+n'est pas dans l'intervalle 0 à 999&nbsp;999&nbsp;999 ou
+<I>tv_sec</I>
+
+est négatif.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>BOGUES</H2>
+
+L'implémentation actuelle de
+<B>nanosleep</B>
+
+est construite sur le mécanisme de temporisation du noyau, qui
+dispose d'une résolution valant 1/<I>HZ</I>&nbsp;s 
+(10&nbsp;ms sur Linux/i386 et 1&nbsp;ms sur Linux/Alpha).
+Ainsi,
+<B>nanosleep</B>
+
+dormira toujours pour une durée au moins égale au temps spécifié, 
+mais il peut prendre jusqu'à 10 ms de plus (i386) avant de faire
+redémarrer le processus.
+Pour la même raison, la valeur retournée dans *<I>rem</I> en cas 
+d'interruption par un signal est arrondie au multiple supérieur
+de 1/<I>HZ</I>&nbsp;s.
+<P>
+Certaines applications nécessitant des pauses plus précises
+(par exemple pour le contrôle de périphériques matériels
+avec un délai critique),
+<B>nanosleep</B>
+
+peut aussi offrir des pauses avec une précision plus élevée.
+Si le processus est mis sous le contrôle d'un ordonnanceur
+temps réel comme
+<I>SCHED_FIFO</I>
+
+ou
+<I>SCHED_RR</I>,
+
+les pauses jusqu'à 2&nbsp;ms seront effectuées avec des boucles actives
+d'une précision de l'ordre de la micro-seconde.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX.1b (anciennement POSIX.4).
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+sleep">sleep</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+usleep">usleep</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_setscheduler">sched_setscheduler</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+timer_create">timer_create</A></B>(2)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">ERREURS</A><DD>
+<DT><A HREF="#lbAF">BOGUES</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:53 GMT, February 11, 2014
+</BODY>
+</HTML>

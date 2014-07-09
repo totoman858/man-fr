@@ -1,0 +1,104 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GROUPDEL</TITLE>
+</HEAD><BODY>
+<H1>GROUPDEL</H1>
+Section: Maintenance Commands (8)<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<P>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+groupdel - Supprime un groupe
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>groupdel</B> <I>groupe</I>
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La commande <B>groupdel</B> modifie les fichiers des comptes système, effaçant
+toutes les entrées qui font référence à <I>groupe</I>.
+Le groupe cité doit exister.
+<P>
+
+Vous devez vérifier manuellement tous les systèmes de fichiers pour être certain
+qu'il ne reste plus un seul fichier appartenant au groupe cité.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>MISE EN GARDE</H2>
+
+Vous ne devez pas supprimer le groupe primaire d'un utilisateur existant.
+Vous devez d'abord supprimer l'utilisateur avant de supprimer le groupe.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/etc/group - informations sur les groupes
+<BR>
+
+/etc/gshadow - informations masquées sur les groupes
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+chfn">chfn</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+chsh">chsh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+passwd">passwd</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+groupadd">groupadd</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+groupmod">groupmod</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+useradd">useradd</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+userdel">userdel</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+usermod">usermod</A></B>(8)
+
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Julianne Frances Haugh (<A HREF="mailto:jockgrrl@ix.netcom.com">jockgrrl@ix.netcom.com</A>)
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction, réalisée par Alain Portal &lt;aportal AT univ-montp2 DOT fr&gt; le Novembre 2004.
+<P>
+L'équipe de traduction a fait le maximum pour réaliser une adaptation française de qualité.
+<P>
+La version anglaise la plus à jour de ce document est toujours consultable via la commande&nbsp;: LANGUAGE=en man xxxx
+<P>
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute erreur dans de cette page de manuel.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">MISE EN GARDE</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">AUTEUR</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:00 GMT, February 11, 2014
+</BODY>
+</HTML>

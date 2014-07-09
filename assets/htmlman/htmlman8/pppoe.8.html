@@ -1,0 +1,362 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PPPOE</TITLE>
+</HEAD><BODY>
+<H1>PPPOE</H1>
+Section: Maintenance Commands (8)<BR>Updated: 3 juillet 2000<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+pppoe - Client PPPoE espace utilisateur.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>pppd pty 'pppoe </B>[<I>pppoe_options</I>]<B>' </B>[<I>pppd_options</I>]
+
+<P>
+
+<B>pppoe -A </B>[<I>pppoe_options</I>]
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>pppoe</B> est un client espace utilisateur pour PPPoE (Point-to-Point Protocol
+over Ethernet), le Protocole Point à Point sur Ethernet pour Linux et autres
+systèmes UNIX. <B>pppoe</B> travaille de concert avec le démon PPP <B>pppd</B>
+pour fournir une connexion PPP sur Ethernet, comme utilisée par bien des
+fournisseurs d'accès DSL.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-I </B><I>interface</I>
+
+<DD>
+L'option <B>-I</B> spécifie l'interface Ethernet à utiliser. Sous Linux,
+celle-ci est typiquement <I>eth0</I> ou <I>eth1</I>. L'interface devrait être
+«&nbsp;montée&nbsp;» avant que vous ne démarriez <B>pppoe</B>, mais <I>ne</I> devrait
+<I>pas</I> être configurée pour avoir une adresse IP.
+<P>
+<DT><B>-T </B><I>timeout</I>
+
+<DD>
+L'option <B>-T</B> provoque l'arrêt de <B>pppoe</B> si aucun trafic de
+session n'est détecté au bout de <I>timeout</I> secondes. Je vous recommande
+d'utiliser cette option comme une mesure de sécurité supplémentaire, et si vous
+le faites, vous devez vous assurer que PPP génère suffisamment de trafic afin
+que la fin d'attente (NdT&nbsp;: timeout) ne soit normalement pas déclenchée. La
+meilleure façon d'opérer est d'utiliser l'option <I>lcp-echo-interval</I> de
+<B>pppd</B>. Vous devriez établir la fin d'attente de PPPoE à quatre fois la
+valeur de l'intervalle d'écho LCP.
+<P>
+<DT><B>-D </B><I>nom_fichier</I>
+
+<DD>
+L'option <B>-D</B> provoque le vidage de chaque paquet dans le fichier spécifié
+par <I>nom_fichier</I>. Elle n'est destinée qu'au débogage&nbsp;; elle produit une
+immense quantité de sortie et réduit fortement les performances.
+<P>
+<DT><B>-V</B>
+
+<DD>
+L'option <B>-V</B> provoque l'affichage du numéro de version et la sortie de
+<B>pppoe</B>.
+<P>
+<DT><B>-A</B>
+
+<DD>
+L'option <B>-A</B> provoque l'envoi par <B>pppoe</B> d'un paquet PADI puis
+affiche les noms des concentrateurs d'accès dans chacun des paquets PADO qu'il
+reçoit. N'utilisez pas cette option avec <B>pppd</B>&nbsp;; l'option <B>-A</B> est
+censée être utilisée interactivement pour donner des informations intéressantes
+à propos du concentrateur d'accès.
+<P>
+<DT><B>-S </B><I>nom_service</I>
+
+<DD>
+Spécifie le nom du service désiré. <B>pppoe</B> initiera des sessions seulement
+avec des concentrateurs d'accès qui peuvent fournir le service spécifié. Dans
+la majorité des cas, vous <I>ne</I> devriez <I>pas</I> spécifier cette
+option. Utilisez-la seulement si vous savez qu'il y a de multiples concentrateurs
+d'accès ou si vous savez avoir besoin d'un nom de service spécifique.
+<P>
+<DT><B>-C </B><I>nom_ca</I>
+
+<DD>
+Spécifie le nom du concentrateur d'accès désiré. <B>pppoe</B> initiera des
+sessions seulement avec le concentrateur d'accès spécifié. Dans la plupart des
+cas, vous <I>ne</I> devriez <I>pas</I> spécifier cette option. Utilisez-la
+seulement si vous savez qu'il y a de multiples concentrateurs d'accès. Si les
+options <B>-S</B> et <B>-C</B> sont toutes les deux spécifiées, elles doivent
+<I>toutes les deux</I> correspondre pour que <B>pppoe</B> initie une session.
+<P>
+<DT><B>-U</B>
+
+<DD>
+Provoque l'utilisation par <B>pppoe</B> du tag Host-Uniq dans ses paquets de
+découverte. Ceci vous permet de lancer plusieurs démons <B>pppoe</B> sans que
+leurs paquets de découverte n'interfèrent entre eux. Vous devez fournir cette
+option à <I>tous</I> les démons <B>pppoe</B> si vous avez l'intention de lancer
+simultanément plusieurs démons.
+<P>
+<DT><B>-s</B>
+
+<DD>
+Provoque l'utilisation par <B>pppoe</B> de l'encapsulation PPP
+<I>synchrone</I>. Si vous utilisez cette option, alors vous <I>devez</I> utiliser
+l'option <B>sync</B> avec <B>pppd</B>. Vous êtes encouragés à utiliser cette
+option si elle fonctionne, car elle réduit grandement le surdébit CPU de
+<B>pppoe</B>. Toutefois, cela PEUT ne pas être fiable sur des machines lentes
+-- il y a une compétition entre l'écriture d'une donnée par pppd et sa lecture
+par pppoe. Pour cette raison, le réglage par défaut est asynchrone. Si vous
+rencontrez des bogues ou des plantages avec PPP Synchrone, désactivez-le -- ne
+me demandez pas d'assurer le service après-vente&nbsp;!
+<P>
+<DT><B>-m </B><I>MSS</I>
+
+<DD>
+Force <B>pppoe</B> à <I>fixer</I> la taille maximale du segment TCP à la valeur
+spécifiée. À cause du surdébit de PPPoE, la taille maximale du segment pour
+PPPoE est plus petite que pour l'encapsulation normale d'Ethernet. Cela pourrait
+poser des problèmes pour des machines d'un réseau local situé derrière une
+passerelle utilisant pppoe. Si vous avez un réseau local derrière une
+passerelle, et si cette passerelle est connectée à Internet en utilisant pppoe,
+il vous est fortement recommandé d'utiliser l'option <B>-m 1412</B>. Cela
+évite d'avoir à configurer le MTU sur tous les hôtes du réseau local.
+<P>
+<DT><B>-p </B><I>fichier</I>
+
+<DD>
+Provoque l'écriture par <B>pppoe</B> de son numéro de processus dans le fichier
+spécifié. Cela peut être utilisé pour repérer et détruire les processus
+<B>pppoe</B>.
+<P>
+<DT><B>-e </B><I>sess:mac</I>
+
+<DD>
+Force <B>pppoe</B> à sauter la phase découverte et à aller directement à la phase
+session. La session est donnée par <I>sess</I> et l'adresse MAC du vis-à-vis par
+<I>mac</I>. Ce mode <I>n</I>'est <I>pas</I> destiné à une utilisation normale&nbsp;; il
+est conçu seulement pour <B><A HREF="/cgi-bin/man/man2html?8+pppoe-server">pppoe-server</A></B>(8).
+<P>
+<DT><B>-n</B>
+
+<DD>
+Force <B>pppoe</B> à ne pas ouvrir d'interface de connexion découverte. Ce mode
+<I>n</I>'est <I>pas</I> destiné à une utilisation normale&nbsp;; il est conçu seulement
+pour <B><A HREF="/cgi-bin/man/man2html?8+pppoe-server">pppoe-server</A></B>(8).
+<P>
+<DT><B>-k</B>
+
+<DD>
+Force <B>pppoe</B> à clôturer une session existante en envoyant une trame PADT,
+et quitte. Vous devez utiliser l'option <B>-e</B> conjointement à cette option
+pour spécifier la session à tuer. Cela peut être pratique pour tuer des
+sessions lorsqu'un vis-à-vis défectueux ne réalise pas que la session est close.
+<P>
+<DT><B>-d</B>
+
+<DD>
+Force <B>pppoe</B> à effectuer une découverte et quitte, après avoir affiché les
+informations de la session sur la sortie standard. Les informations de la
+session sont affichées exactement dans le format attendu par l'option
+<B>-e</B>. Cette option vous permet d'initier une découverte PPPoE, elle
+effectue quelqu'autre travail, et lance la véritable session PPP. <I>Soyez
+prudent</I>&nbsp;; si vous utilisez cette option dans une boucle, vous créez beaucoup
+de sessions qui peuvent perturber votre vis-à-vis.
+<P>
+<DT><B>-f disc:sess</B>
+
+<DD>
+L'option <B>-f</B> règle les types de trame Ethernet pour la découverte PPPoE
+et les trames de session. Les types sont spécifiés par des nombres hexadécimaux
+séparés par deux points. Le standard PPPoE utilise des types de trames 8863:8864.
+<I>Vous ne devriez pas utiliser cette option</I> à moins d'être absolument certain
+que le vis-à-vis auquel vous ayez affaire utilise des types de trame non
+normalisés. Si votre FAI utilise des types de trame non normalisés,
+plaignez-vous&nbsp;!
+<P>
+<DT><B>-h</B>
+
+<DD>
+L'option <B>-h</B> provoque l'affichage par <B>pppoe</B> de l'information d'usage
+et quitte.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>ARRIÈRE-PLAN PPPOE</H2>
+
+<P>
+PPPoE (Point-to-Point Protocol over Ethernet), qui est décrit dans la RFC 2516
+(NdT&nbsp;: on trouvera une version française de la RFC 2516 à la page
+<I><A HREF="http://abcdrfc.free.fr/rfc-vf/rfc2516.html">http://abcdrfc.free.fr/rfc-vf/rfc2516.html</A></I>) est un protocole qui permet
+de maintenir l'abstraction de session sur les réseaux Ethernet pontés.
+<P>
+PPPoE travaille en encapsulant des trames PPP dans des trames Ethernet. Le
+protocole a deux étapes distinctes&nbsp;: la <I>découverte</I> et la <I>session</I>.
+<P>
+Dans l'étape découverte, l'hôte diffuse une trame particulière PADI (PPPoE
+Active Discovery Initiation), le paquet de découverte «&nbsp;Initialisation&nbsp;»,
+afin de découvrir tous les <I>concentrateurs d'accès</I>. Les concentrateurs
+d'accès (typiquement, seulement un concentrateur d'accès) répondent avec un
+paquet de découverte «&nbsp;Offre&nbsp;» PADO (PPPoE Active Discovery Offer), annonçant
+leur présence ainsi que les services qu'ils offrent. L'hôte choisit un de ces
+concentrateurs d'accès et transmet un paquet de découverte «&nbsp;Requête&nbsp;» PADR
+(PPPoE Active Discovery Request), interrogeant pour une session. Le concentrateur
+d'accès répond avec un paquet de découverte «&nbsp;Confirmation de session&nbsp;» PADS
+(PPPoE Active Discovery Session-Confirmation). Le protocole passe ensuite à
+l'étape session.
+<P>
+Dans l'étape session, l'hôte et le concentrateur d'accès échangent des trames
+PPP intégrées dans des trames Ethernet. Le MTU Ethernet normal est de 1500
+octets, mais l'entête PPPoE plus deux octets d'en-tête pour la trame PPP
+encapsulée signifie que le MTU de l'interface PPP est au plus 1492 octets.
+Cela provoque <I>toutes sortes de problèmes</I> si vous utilisez une machine
+Linux comme pare-feu et si les interfaces derrière le pare-feu ont un MTU
+supérieur à 1492. En fait, pour être sûr, je vous recommande de régler le MTU
+des machines situées derrière le pare-feu à 1412, pour parer à la pire
+éventualité des options TCP et IP dans leur en-têtes respectifs.
+<P>
+Normalement, PPP utilise le Protocole de Contrôle des Liens (LCP) pour couper
+un lien PPP. Toutefois, la spécification PPPoE autorise la rupture du lien avec
+le paquet de découverte «&nbsp;Terminaison&nbsp;» PADT (PPPoE Active Discovery
+Terminate). Le client reconnaît ce paquet et s'achèvera correctement si une
+requête terminaison est reçue pour la session PPP.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>BUTS AVOUÉS</H2>
+
+<P>
+Les objectifs que je m'étais fixés pour ce client PPPoE étaient les suivants,
+par ordre décroissant d'importance&nbsp;:
+<P>
+<DL COMPACT>
+<DT><B>o</B>
+
+<DD>
+Il doit fonctionner.
+<P>
+<DT><B>o</B>
+
+<DD>
+Il doit être un programme espace utilisateur et pas un patch pour le noyau.
+<P>
+<DT><B>o</B>
+
+<DD>
+Le code doit être facile à lire et à maintenir.
+<P>
+<DT><B>o</B>
+
+<DD>
+Il doit être pleinement conforme à la RFC 2516, le standard PPPoE.
+<P>
+<DT><B>o</B>
+
+<DD>
+Il ne doit jamais raccrocher définitivement --&nbsp;si la connexion est coupée, il
+doit le détecter et sortir, permettant à un script enveloppe de redémarrer la
+connexion.
+<P>
+<DT><B>o</B>
+
+<DD>
+Il doit avoir un fonctionnement sûr.
+<P>
+</DL>
+<P>
+
+Je pense avoir atteint tous ces objectifs, mais (bien sûr) suis ouvert à toute
+suggestion, patch et idée. Rendez-vous sur ma page d'accueil,
+<A HREF="http://www.roaringpenguin.com,">http://www.roaringpenguin.com,</A> pour les informations de contact.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+<P>
+Pour de meilleurs résultats, vous devez donner à <B>pppd</B> une option mtu de
+1492. J'ai pu observé des problèmes avec des trames excessivement grandes, à
+moins d'avoir réglé cette option. Aussi, si <B>pppoe</B> tourne sur une machine
+pare-feu, toutes les machines derrière le pare-feu doivent avoir des MTU de 1412.
+<P>
+Si vous avez des problèmes, consultez les journaux de votre système. <B>pppoe</B>
+consigne des informations intéressantes dans le journal du système. Vous pouvez
+mettre en place la journalisation des messages de niveau <I>debug</I> pour un
+diagnostic complet.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<B>pppoe</B> a été écrit par David F. Skoll &lt;<A HREF="mailto:dfs@roaringpenguin.com">dfs@roaringpenguin.com</A>&gt;,
+fortement inspiré d'une version antérieure de Luke Stras.
+<P>
+La page d'accueil <B>pppoe</B> est <I><A HREF="http://www.roaringpenguin.com/pppoe/">http://www.roaringpenguin.com/pppoe/</A></I>.
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal AT univ-montp2 DOT fr&gt; le 3&nbsp;février&nbsp;2003
+et révisée le 18&nbsp;janvier&nbsp;2006.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=en&nbsp;man&nbsp;8&nbsp;pppoe</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-start">pppoe-start</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-stop">pppoe-stop</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-connect">pppoe-connect</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppd">pppd</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?5+pppoe.conf">pppoe.conf</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-setup">pppoe-setup</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-status">pppoe-status</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-server">pppoe-server</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-sniff">pppoe-sniff</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-relay">pppoe-relay</A></B>(8)
+
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">ARRIÈRE-PLAN PPPOE</A><DD>
+<DT><A HREF="#lbAG">BUTS AVOUÉS</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">AUTEUR</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+<DT><A HREF="#lbAK">VOIR AUSSI</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:04 GMT, February 11, 2014
+</BODY>
+</HTML>

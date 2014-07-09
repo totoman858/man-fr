@@ -1,0 +1,258 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ERR</TITLE>
+</HEAD><BODY>
+<H1>ERR</H1>
+Section: C Library Functions (3)<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+<BR>BSD mandoc<BR>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+
+
+<B>err</B>
+
+ 
+<B>verr</B>
+
+ 
+<B>errx</B>
+
+ 
+<B>verrx</B>
+
+ 
+<B>warn</B>
+
+ 
+<B>vwarn</B>
+
+ 
+<B>warnx</B>
+
+ 
+<B>vwarnx</B>
+
+ 
+ - Messages d'erreur formatés.
+
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+Fd #include &lt;<A HREF="file:///usr/include/err.h">err.h</A>&gt;
+
+Ft void
+
+Fn err int eval const char *fmt ...
+
+Ft void
+
+Fn errx int eval const char *fmt ...
+
+Ft void
+
+Fn warn const char *fmt ...
+
+Ft void
+
+Fn warnx const char *fmt ...
+
+Fd #include &lt;<A HREF="file:///usr/include/stdarg.h">stdarg.h</A>&gt;
+
+Ft void
+
+Fn verr int eval const char *fmt va_list args
+
+Ft void
+
+Fn verrx int eval const char *fmt va_list args
+
+Ft void
+
+Fn vwarn const char *fmt va_list args
+
+Ft void
+
+Fn vwarnx const char *fmt va_list args
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les fonctions de la famille
+Fn err
+
+et
+Fn warn
+
+affiche un message d'erreur formaté sur la sortie d'erreur
+standard.
+Dans tous les cas, elles affichent le nom du programme, un deux-points, et
+un espace.
+Si l'argument
+Fa fmt
+
+n'est pas NULL, le message est affiché avec un format de type
+<A HREF="/cgi-bin/man/man2html?3+printf">printf</A>(3)
+
+
+La sortie se termine par un saut de ligne.
+<P>
+
+Les fonctions
+Fn err ,
+
+Fn verr ,
+
+Fn warn ,
+
+et
+Fn vwarn 
+
+ajoutent un message d'erreur obtenu avec
+<A HREF="/cgi-bin/man/man2html?3+strerror">strerror</A>(3)
+
+
+à partir d'un code transmis ou de la variable globale
+<I>errno</I>
+
+ 
+précédé d'un autre deux-points et d'un espace, sauf si l'argument
+Fa fmt
+
+est
+<B>NULL</B>
+
+ 
+<P>
+
+Les fonctions
+Fn err ,
+
+Fn verr ,
+
+Fn warn ,
+
+utilisent
+Fn vwarn
+
+la variable global
+<I>errno</I>
+
+pour rechercher le message d'erreur.
+<P>
+
+Les fonctions
+Fn errx
+
+et
+Fn warnx
+
+n'ajoutent pas de message d'erreur.
+<P>
+
+Les fonctions
+Fn err ,
+
+Fn verr ,
+
+Fn errx ,
+
+et
+Fn verrx
+
+ne reviennent pas, elles terminent le programme avec le code de retour
+Fa eval .
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+Afficher la chaîne d'information sur errno et sortir&nbsp;:
+
+<BLOCKQUOTE>
+<PRE>
+if ((p = malloc(size)) == NULL)
+        err(1, NULL);
+if ((fd = open(file_name, O_RDONLY, 0)) == -1)
+        err(1, &quot;%s&quot;, file_name);
+</PRE>
+</BLOCKQUOTE>
+
+<P>
+
+Afficher un message d'erreur et sortir&nbsp;:
+
+<BLOCKQUOTE>
+<PRE>
+if (tm.tm_hour &lt; START_TIME)
+        errx(1, &quot;too early, wait until %s&quot;, start_time_string);
+</PRE>
+</BLOCKQUOTE>
+
+<P>
+
+Prévenir d'une erreur&nbsp;:
+
+<BLOCKQUOTE>
+<PRE>
+if ((fd = open(raw_device, O_RDONLY, 0)) == -1)
+        warnx(&quot;%s: %s: trying the block device&quot;,
+            raw_device, strerror(errno));
+if ((fd = open(block_device, O_RDONLY, 0)) == -1)
+        err(1, &quot;%s&quot;, block_device);
+</PRE>
+</BLOCKQUOTE>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSi</H2>
+
+<A HREF="/cgi-bin/man/man2html?3+exit">exit</A>(3),
+
+
+<A HREF="/cgi-bin/man/man2html?3+printf">printf</A>(3),
+
+
+<A HREF="/cgi-bin/man/man2html?3+perror">perror</A>(3),
+
+
+<A HREF="/cgi-bin/man/man2html?3+strerror">strerror</A>(3)
+
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Les fonctions
+Fn err
+
+et
+Fn warn
+
+sont apparues dans
+BSD 4.4
+ 
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">EXEMPLES</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSi</A><DD>
+<DT><A HREF="#lbAG">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:23 GMT, February 11, 2014
+</BODY>
+</HTML>

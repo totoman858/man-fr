@@ -1,0 +1,98 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of BCMP</TITLE>
+</HEAD><BODY>
+<H1>BCMP</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+bcmp - Comparaison de blocs d'octets.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/string.h">string.h</A>&gt;</B>
+
+<B>int bcmp (const void *</B><I>s1</I><B>, const void *</B><I>s2</I><B>, size_t </B><I>n</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>bcmp ()</B>
+
+compare les blocs de
+<I>n</I>
+
+octets
+<I>s1</I>
+
+et
+<I>s2</I>.
+
+S'ils sont égaux, et en particulier si
+<I>n</I>
+
+est nul,
+<B>bcmp()</B>
+
+renvoie zéro. Sinon une valeur non-nulle est renvoyée.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction 
+<B>bcmp()</B>
+
+renvoie 0 si les deux blocs sont égaux, et une
+valeur non-nulle sinon.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.3. Cette fonction est déconseillée, utilisez plutôt
+<B>memcmp</B>
+
+pour de nouveaux programmes.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+memcmp">memcmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strcasecmp">strcasecmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strcmp">strcmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strcoll">strcoll</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strncmp">strncmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strncasecmp">strncasecmp</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:28 GMT, February 11, 2014
+</BODY>
+</HTML>

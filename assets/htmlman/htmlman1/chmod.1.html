@@ -1,0 +1,268 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CHMOD</TITLE>
+</HEAD><BODY>
+<H1>CHMOD</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+chmod - Modifier les autorisations d'accès à un fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>chmod [</B><I>options</I><B>] </B><I>mode fichier...</I>
+
+<P>
+Options POSIX :
+<B>[-R] [--]</B>
+
+<P>
+Mode GNU :
+<B>[--reference= ficref ]</B>
+
+<P>
+Options GNU (forme courte):
+<B>[-cfvR]</B>
+
+<B>[--help] [--version] [--]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>chmod</B>
+
+modifie les permissions d'accès de chacun des fichiers indiqués,
+en suivant l'indication de
+<I>mode</I>,
+
+qui peut être une représentation symbolique du changement à effectuer,
+ou un nombre octal représentant le motif binaire des nouvelles 
+autorisations.
+<P>
+
+Le format symbolique des changements de mode est
+`[ugoa...][[+-=][rwxXstugo...]...][,...]'.  
+<P>
+Plusieurs opérations symboliques peuvent être séparées par des virgules.
+<P>
+
+Une combinaison des lettres `ugoa' contrôle la catégorie d'accès à modifier.
+Il peut s'agir de l'utilisateur possédant le fichier (u), 
+des autres utilisateurs du même groupe que le fichier (g),
+des utilisateurs n'appartenant pas au groupe du fichier (o),
+ou de tous les utilisateurs (a).
+Si aucune catégorie n'est indiquée, l'ensemble (a) est
+pris par défaut, mais les bits correspondant à des bits à 1 du
+umask ne sont pas affectés.
+<P>
+
+L'opérateur `+' autorise un accès, l'opérateur `-' interdit un
+accès, et l'opérateur `=' autorise exclusivement
+l'accès indiqué.
+<P>
+<P>
+
+Les lettres `rwxXstugo' sélectionne le type d'autorisation concernée :
+<DL COMPACT>
+<DT>r<DD>
+lecture,
+<DT>w<DD>
+écriture,
+<DT>x<DD>
+exécution (ou parcours pour les répertoires),
+<DT>X<DD>
+exécution, uniquement si le fichier est un répertoire, ou s'il a déjà une
+autorisation d'exécution pour une des catégories d'utilisateur (s'il s'agit
+donc bien d'un fichier exécutable),
+<DT>s<DD>
+utiliser l'ID du propriétaire ou du groupe propriétaire du fichier
+lors de l'exécution,
+<DT>t<DD>
+(sticky-bit)
+conserver le code du programme sur le périphérique de swap après
+exécution. Non documenté par POSIX, il s'agit du comportement original, mais
+de nos jours il sert uniquement pour les répertoires. Il indique que seuls
+le propriétaire du répertoire, et le propriétaire d'un fichier qui s'y
+trouve ont le droit de supprimer ce fichier. C'est typiquement utilisé
+pour les répertoires comme /tmp ayant une autorisation d'écriture générale.
+<DT>u<DD>
+les permissions dont dispose actuellement le propriétaire du fichier,
+<DT>g<DD>
+les permissions dont disposent actuellement les autres membres du
+groupe propriétaire du fichier,
+<DT>o<DD>
+les permissions dont disposent tous les autres utilisateurs.
+</DL>
+<P>
+
+Une valeur numérique pour le <I>mode</I> est constituée de 1 à 4 chiffres
+en octal (0 a 7), calculés en additionnant les bits de valeurs 4, 2,
+et 1. Un bit non mentionné étant considéré comme nul. Le premier chiffre
+correspond aux attributs Set-UID (4), Set-GID (2), et conservation du
+code en mémoire [`sticky bit'] (1).
+Le second chiffre correspond aux autorisations
+de lecture (4), écriture (2) et exécution pour l'utilisateur propriétaire
+du fichier. Les troisième et quatrième chiffres correspondent respectivement
+aux autorisations d'accès pour les membres du groupe du fichier, et pour
+les autres utilisateurs.
+<P>
+
+<B>chmod</B>
+
+ne modifie jamais les autorisations d'accès des liens symboliques,
+l'appel système
+<B><A HREF="/cgi-bin/man/man2html?2+chmod">chmod</A></B>(2)
+
+ne peut pas les modifier. Ceci n'est pas un problème puisque ces
+autorisations ne sont jamais prises en compte. En fait,
+<B>chmod</B>
+
+modifie les autorisations d'accès du fichier cible du lien symbolique
+à condition que le lien soit explicitement mentionné sur
+la ligne de commande.
+En revanche,
+<B>chmod</B>
+
+ignore purement et simplement les liens symboliques qu'il rencontre
+lors des descentes récursives de répertoires.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS POSIX</H2>
+
+<DL COMPACT>
+<DT><B>-R</B>
+
+<DD>
+Modifier récursivement les autorisations des répertoires et de leurs contenus.
+<DT><B>--</B>
+
+<DD>
+Indique la fin explicite de la liste des options.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>DESCRIPTION GNU SUPPLÉMENTAIRE</H2>
+
+Une extension GNU (ajoutée avec les outils fileutils 4.0) permet d'utiliser
+<B>--reference=</B><I>ficref</I>
+
+comme description de mode : le mode sera le même que celui du fichier
+<I>ficref</I>.
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>OPTIONS GNU</H2>
+
+<DL COMPACT>
+<DT><B>-c, --changes</B>
+
+<DD>
+Ne décrire que les fichiers dont les permissions ont réellement changé.
+<DT><B>-f, --silent, --quiet</B>
+
+<DD>
+Ne pas afficher de messages d'erreurs concernant les fichiers dont les
+autorisations n'ont pas pu être modifiées.
+<DT><B>-v, --verbose</B>
+
+<DD>
+Décrire les modifications apportées.
+<DT><B>-R, --recursive</B>
+
+<DD>
+Modifier récursivement les autorisations des répertoires et de leurs contenus.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>OPTIONS GNU STANDARDS</H2>
+
+<DL COMPACT>
+<DT><B>--help</B>
+
+<DD>
+Afficher un message d'aide, et terminer normalement.
+<DT><B>--version</B>
+
+<DD>
+Afficher le numéro de version et terminer normalement.
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+LANG, LC_ALL, LC_CTYPE et LC_MESSAGES ont leurs significations habituelles.
+Pour les systèmes conformes XSI : NLSPATH a sa signification habituelle.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX 1003.2 ne documente que l'option -R. Toutes les autres options peuvent
+ne pas être portables.
+<P>
+POSIX ne décrit pas l'utilisation du bit `t' (sticky). Le standard ne
+précise pas non plus si
+<B>chmod</B>
+
+doit préserver la cohérence en effaçant ou en refusant de positionner les
+bits Set-UID ou Set-GID si tous les bits d'exécution sont effacés.
+<A NAME="lbAK">&nbsp;</A>
+<H2>MODES NON STANDARDS</H2>
+
+Nous avons décrit plus haut le comportement du bit `t' sur les répertoires.
+Chaque système attache une signification personnel à ce bit. En particulier
+Linux adopte le comportement de System V (void SVID version 3), en utilisant
+le bit Set-GID des fichiers sans autorisation d'exécution pour le groupe
+comme un verrou. Pour plus de détails voyez le fichier
+<I>/usr/src/linux/Documentation/mandatory.txt</I>.
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>NOTES</H2>
+
+Cette page décrit la version de
+<B>chmod</B>
+
+que l'on rencontre dans le paquetage fileutils-4.0. D'autres versions
+peuvent varier légèrement.
+<A NAME="lbAM">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+chattr">chattr</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+chown">chown</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+install">install</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+chmod">chmod</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+umask">umask</A></B>(2)
+
+<A NAME="lbAN">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS POSIX</A><DD>
+<DT><A HREF="#lbAF">DESCRIPTION GNU SUPPLÉMENTAIRE</A><DD>
+<DT><A HREF="#lbAG">OPTIONS GNU</A><DD>
+<DT><A HREF="#lbAH">OPTIONS GNU STANDARDS</A><DD>
+<DT><A HREF="#lbAI">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAJ">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAK">MODES NON STANDARDS</A><DD>
+<DT><A HREF="#lbAL">NOTES</A><DD>
+<DT><A HREF="#lbAM">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAN">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:46 GMT, February 11, 2014
+</BODY>
+</HTML>

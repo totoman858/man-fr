@@ -1,0 +1,303 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FCRONDYN</TITLE>
+</HEAD><BODY>
+<H1>FCRONDYN</H1>
+Section:  (1)<BR>Updated: 6 février 2006<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<P>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fcrondyn - Dialoguer dynamiquement avec un démon fcron en cours d'exécution.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<B>fcrondyn</B> [ <B>-c </B><I>fichier</I><B></B> ] [ <B>-i</B> ]
+<P>
+<P>
+<B>fcrondyn</B> [ <B>-c </B><I>fichier</I><B></B> ] <B>-x </B><I>commande</I><B></B>
+<P>
+<P>
+<B>fcrondyn</B> [ <B>-h</B> ]
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+<B>Fcrondyn</B> est un outil utilisateur conçu pour interagir avec un
+démon fcron en cours d'exécution. Il peut, par exemple, afficher les
+tâches utilisateur chargées par <B>fcron</B>, lancer l'une d'elles, modifier
+la «~gentillesse~» (Ndt~: nice) d'une tâche en cours
+d'exécution, envoyer un signal à une tâche, etc.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-i</B><DD>
+Lancer <B>fcrondyn</B> en mode interactif. <B>fcrondyn</B> est également
+lancée en mode interactif lorsqu'aucune option n'est fournie.
+<DT><B>-x </B><I>commande</I><B></B><DD>
+Lancer la <I>commande</I> et revenir
+immédiatemment. Voir plus
+loin pour la syntaxe et la liste des commandes.
+<DT><B>-c </B><I>fichier</I><B></B><DD>
+Forcer <B>fcrondyn</B> à utiliser le fichier de configuration
+<I>fichier</I> à la place du fichier de
+configuration par défaut
+<I>/etc/fcron.conf</I>. Pour interagir
+avec un processus <B>fcron</B> existant, <B>fcrondyn</B> doit utiliser le
+même fichier de configuration que le processus. De cette manière,
+plusieurs processus <B>fcron</B> peuvent être exécutés simultanément
+sur un même système.
+<DT><B>-d</B><DD>
+Démarrer en mode débogage. Dans ce mode, beaucoup de messages
+d'informations seront produits en sortie afin de vérifier que
+tout se passe bien.
+<DT><B>-h</B><DD>
+Afficher une brève description des options.
+<DT><B>-V</B><DD>
+Afficher un message d'information à propos de <B>fcrondyn</B>
+qui inclut sa version et la licence sous laquelle il est
+distribué.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>DESCRIPTION DE LA COMMANDE</H2>
+
+<P>
+
+La syntaxe de la commande <B>fcrondyn</B> est la suivante~:
+<P>
+<DL COMPACT><DT><DD>
+<P>
+
+<B>commande</B> <I>arg1</I>
+<I>arg2</I> [...]
+</DL>
+
+<P>
+
+Un argument de la commande <B>fcrondyn</B> est d'un des types
+suivants~:
+<A NAME="lbAG">&nbsp;</A>
+<H3>TYPES D'ARGUMENT DES COMMANDES FCRONDYN</H3>
+
+<DL COMPACT>
+<DT><B>utilisateur</B><DD>
+Un nom valide d'utilisateur.
+<DT><B>jobid</B><DD>
+Un identifiant de tâche fourni par une des commandes
+<B>ls*</B> de <B>fcrondyn</B> (c.-à-d. un entier).
+<DT><B>sig</B><DD>
+Un numéro de signal, ou son nom. Par exemple,
+«~term~» ou «~15 ~».
+<DT><B>gentillesse</B><DD>
+Une valeur de priorité de tâche. Une
+<B>gentillesse</B> est un entier compris
+entre -20 (plus forte priorité) et 19 (plus faible priorité).
+Seul le super-utilisateur peut utiliser une valeur négative pour
+cette option.
+</DL>
+<P>
+
+Enfin et surtout, les commandes suivantes sont reconnues (les
+arguments optionnels sont entre [])~:
+<A NAME="lbAH">&nbsp;</A>
+<H3>COMMANDES FCRONDYN VALIDES</H3>
+
+<DL COMPACT>
+<DT><B>help</B><DD>
+<DT><B>h</B><DD>
+Afficher un message d'aide sur les commandes fcrondyn.
+<DT><B>quit</B><DD>
+<DT><B>q</B><DD>
+En mode interactif, quitter fcrondyn.
+<DT><B>ls [utilisateur]</B><DD>
+Afficher toutes les tâches de l'utilisateur. Lorsque
+<B>ls</B> est lancée par le superutilisateur, tous
+les utilisateurs sont affichés à moins qu'un utilisateur n'ait été
+fourni en argument. Voir plus loin pour plus
+d'explications à propos des champs utilisés par les commandes
+<B>ls*</B>.
+<DT><B>ls_lavgq [utilisateur]</B><DD>
+Identique à <B>ls</B>, mais afficher seulement
+les tâches qui sont dans la file d'attente«~charge
+système~» (Ndt~: load-average queue) (c.-à-d. celles qui
+attendent une charge système plus faible pour pouvoir être
+lancées).
+<DT><B>ls_serialq [utilisateur]</B><DD>
+Identique à <B>ls</B>, mais afficher seulement
+les tâches qui sont dans la file d'attente sérialisée (Ndt~:
+serial queue) (c.-à-d. celles qui attendent que d'autres tâches
+soient achevées).
+<DT><B>ls_exeq [utilisateur]</B><DD>
+Identique à <B>ls</B>, mais afficher seulement
+les tâches en cours d'exécution.
+<DT><B>detail jobid</B><DD>
+Afficher les détails d'une tâche.
+<B>jobid</B> est la valeur fournie par
+<B>ls</B>.
+<DT><B>runnow jobid</B><DD>
+Plutôt que d'attendre la date et heure de la prochaine
+exécution planifiée, lancer la tâche maintenant. La date et heure
+de la prochaine exécution sont modifiées comme si la tâche avait
+été lancée par l'ordonnanceur.
+<DT><B>run jobid</B><DD>
+Lancer la tâche maintenant. Ses date et heure de prochaine
+exécution ne sont pas modifiées.
+<DT><B>kill sig jobid</B><DD>
+Envoyer un signal à une tâche en cours d'exécution.
+<DT><B>renice gentillesse jobid</B><DD>
+Modifier la priorité d'une tâche en cours d'exécution.
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H3>CHAMPS UTILISÉS PAR LES COMMANDES DETAIL ET LS*</H3>
+
+<DL COMPACT>
+<DT><B>ID</B><DD>
+Numéro d'identification unique de la tâche.
+<DT><B>USER</B><DD>
+Utilisateur auquel appartient la tâche.
+<DT><B>PID</B><DD>
+Le pid de la tâche en cours d'exécution.
+<DT><B>INDEX</B><DD>
+Index de la tâche dans la file d'attente séquentielle (c.-à-d.
+qu'elle sera lancée lorsque toutes les tâches dont l'index a une
+valeur plus petite auront été lancées).
+<DT><B>R&amp;Q</B><DD>
+Indique le nombre d'instances de la tâche en cours ou en
+attente d'exécution dans la file d'attente «~série~»
+(Ndt~: serial queue) ou dans la file d'attente «~charge
+système~» (Ndt~: lavg queue).
+<DT><B>OPTIONS</B><DD>
+Indique les principales options positionnées de la tâche.
+L pour les tâches ne s'exécutant qu'en dessous d'une charge système
+donnée (Ndt~: L pour Load average), LO si une seule instance
+de la tâche peut se trouver dans dans la file d'attente
+«~charge système~» (Ndt~: LO pour Lavg Once), S pour
+les tâches s'exécutant séquentiellement (Ndt~: S pour Serial),
+SO pour les tâches qui ne seront exécutées séquentiellement que
+pour leur prochaine exécution (Ndt~: SO pour Serial Once), et
+ES pour les tâches dont plusieurs instances peuvent s'exécuter
+simultanément (Ndt~: ES pour «~allow the Execution of
+Several instances~»).
+<DT><B>LAVG</B><DD>
+Trois valeurs correspondant à la charge système moyennée sur
+1, 5 et 15 minutes (dans cet ordre) en dessous de laquelle la
+tâche sera exécutée, sinon elle sera placée en attente d'une
+charge système adéquate (voir l'option lavg).
+<DT><B>UNTIL</B><DD>
+Champ correspondant à l'option until.
+<DT><B>STRICT</B><DD>
+Champ correspondant à l'option strict. Y pour yes,
+N pour non.
+<DT><B>SCHEDULE</B><DD>
+Indique la date et l'heure prévues de la prochaine exécution
+de la tâche. Veuillez noter que l'heure indiquée est celle du
+système sur lequel tourne <B>fcron</B>, et non celle du fuseau horaire
+que l'utilisateur peut éventuellement définir avec l'option
+timezone de <B>fcrontab</B>).
+<DT><B>CMD</B><DD>
+La commande à exécuter.
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VALEURS RENVOYÉES</H2>
+
+<P>
+
+<B>Fcrondyn</B> renvoie 0 lorsqu'il quitte normalement, et
+1 en cas d'erreur.
+<A NAME="lbAK">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<P>
+
+Devrait être conforme aux spécifications POSIX.
+<A NAME="lbAL">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/etc/fcron.conf</I><DD>
+Fichier de configuration de <B>fcron</B>, <B>fcrontab</B> et <B>fcrondyn</B>~:
+contient les chemins (répertoire spool, fichier pid) et les
+programmes par défaut à utiliser (éditeur, shell, etc.). Voir
+<B><A HREF="/cgi-bin/man/man2html?5+fcron.conf">fcron.conf</A></B>(5) pour plus de
+détails.
+<DT><I>/etc/fcron.allow</I><DD>
+Utilisateurs autorisés à utiliser <B>fcrontab</B> et <B>fcrondyn</B>
+(un seul nom par ligne, le nom spécial «~all~»
+signifiant tout le monde).
+<DT><I>/etc/fcron.deny</I><DD>
+Utilisateurs qui ne sont pas autorisés à utiliser <B>fcrontab</B>
+et <B>fcrondyn</B> (même format que le fichier précédent).
+<DT><I>/etc/pam.d/fcron</I> (ou <I>/etc/pam.conf</I>)<DD>
+Fichier de configuration PAM pour
+<B>fcron</B>. Voir <B><A HREF="/cgi-bin/man/man2html?8+pam">pam</A></B>(8) pour plus de détails.
+</DL>
+<A NAME="lbAM">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+fcrontab">fcrontab</A></B>(1),
+<B><A HREF="/cgi-bin/man/man2html?1+fcrondyn">fcrondyn</A></B>(1),
+<B><A HREF="/cgi-bin/man/man2html?5+fcrontab">fcrontab</A></B>(5),
+<B><A HREF="/cgi-bin/man/man2html?5+fcron.conf">fcron.conf</A></B>(5),
+<B><A HREF="/cgi-bin/man/man2html?8+fcron">fcron</A></B>(8)
+<P>
+Si vous êtes en train d'apprendre à utiliser fcron, je vous
+suggère plutôt de lire la version HTML de la documentation (si ce n'est pas
+déjà ce que vous faites en ce moment~! :) )~: le contenu est le même, mais
+il est plus aisé de naviguer grâce aux hyperliens.
+<A NAME="lbAN">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<P>
+
+Thibault Godouet &lt;<A HREF="mailto:fcron@free.fr">fcron@free.fr</A>&gt;
+<A NAME="lbAO">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal AT univ-montp2 DOT fr&gt; le 6 février 2006.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document
+est toujours consultable via la commande~: «~<B>LANG=en
+man 1 fcrondyn</B>~».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas,
+toute erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">DESCRIPTION DE LA COMMANDE</A><DD>
+<DL>
+<DT><A HREF="#lbAG">TYPES D'ARGUMENT DES COMMANDES FCRONDYN</A><DD>
+<DT><A HREF="#lbAH">COMMANDES FCRONDYN VALIDES</A><DD>
+<DT><A HREF="#lbAI">CHAMPS UTILISÉS PAR LES COMMANDES DETAIL ET LS*</A><DD>
+</DL>
+<DT><A HREF="#lbAJ">VALEURS RENVOYÉES</A><DD>
+<DT><A HREF="#lbAK">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAL">FICHIERS</A><DD>
+<DT><A HREF="#lbAM">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAN">AUTEUR</A><DD>
+<DT><A HREF="#lbAO">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:48 GMT, February 11, 2014
+</BODY>
+</HTML>

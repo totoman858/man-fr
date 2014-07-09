@@ -1,0 +1,376 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of cupsd.conf</TITLE>
+</HEAD><BODY>
+<H1>cupsd.conf</H1>
+Section: «Easy (5)<BR>Updated: Common UNIX Printing System<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+cupsd.conf - Fichier de configuration du serveur CUPS
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le fichier <I>cupsd.conf</I> configure l'ordonnanceur CUPS, <I><A HREF="/cgi-bin/man/man2html?8+cupsd">cupsd</A>(8)</I>. Il est
+généralement situé dans le répertoire <I>/etc/cups</I>.
+<P>
+
+Chaque ligne de ce fichier est soit une directive de configuration, une ligne vide, ou
+un commentaire. Les lignes de commentaire commencent par le caractère #. Les directives
+de configuration sont volontairement similaires à celles utilisées par le serveur web
+Apache, et sont décrites ci-dessous.
+<A NAME="lbAD">&nbsp;</A>
+<H2>DIRECTIVES</H2>
+
+Les directives suivantes sont interprétées par <I>cupsd</I>. Veuillez vous reporter au 
+Manuel d'administration CUPS pour une description plus détaillée.
+<DL COMPACT>
+<DT>AccessLog<DD>
+<BR>
+
+Définit le fichier traçant les accès.
+<DT>Allow<DD>
+<BR>
+
+Permet l'accès à CUPS depuis des machines nommées ou des adresses IP.
+<DT>AuthClass<DD>
+<BR>
+
+Définit la classe d'identification (User, Group, System)
+<DT>AuthType<DD>
+<BR>
+
+Définit le type d'identification (None, Basic, Digest)
+<DT>AutoPurgeJobs<DD>
+<BR>
+
+Définit s'il faut purger automatiquement l'historique des travaux lorsque les données ne sont plus nécessaires pour l'application des quotas.
+<DT>BrowseAddress<DD>
+<BR>
+
+Définit une adresse où broadcaster les informations sur les imprimantes.
+<DT>BrowseAllow<DD>
+<BR>
+
+Accepte les paquets arrivant de machines nommées ou d'adresses IP.
+<DT>BrowseDeny<DD>
+<BR>
+
+Refuse les paquets de demande d'informations sur les imprimantes arrivant
+de machines nommées ou d'adresses IP.
+<DT>BrowseInterval<DD>
+<BR>
+
+Définit l'intervalle maximum entre les demandes d'information sur les
+imprimantes.
+<DT>BrowseOrder<DD>
+<BR>
+
+Définit le contrôle d'accès aux informations des imprimantes (allow,deny ou deny,allow).
+<DT>BrowsePoll<DD>
+<BR>
+
+Définit un serveur récupérant les informations sur les imprimantes.
+<DT>BrowsePort<DD>
+<BR>
+
+Définit le port utilisé pour les demandes d'informations sur les imprimantes.
+<DT>BrowseProtocols<DD>
+<BR>
+
+Définit les protocoles réseaux à utiliser pour la recherche d'imprimantes.
+<DT>BrowseRelay<DD>
+<BR>
+
+Les paquets de demande d'information peuvent être relayés depuis une machine ou
+un réseau vers un autre.
+<DT>BrowseShortNames<DD>
+<BR>
+
+Définit si les imprimantes distantes utilisent les noms abrégés («&nbsp;imprimante&nbsp;»)
+ou non («&nbsp;<A HREF="mailto:imprimante@serveur">imprimante@serveur</A>&nbsp;»). Cette option est ignorée si plus d'une imprimante
+distante a le même nom.
+<DT>BrowseTimeout<DD>
+<BR>
+
+Définit l'intervalle maximum de temps entre deux mises à jour d'informations
+des imprimantes distantes avant que celles-ci ne soient supprimées de la liste
+des imprimantes disponibles.
+<DT>Browsing<DD>
+<BR>
+
+Définit si la récupération des informations des imprimantes distantes doit être activée.
+<DT>Classification<DD>
+<BR>
+
+Définit le niveau de sécurité du serveur
+<DT>ClassifyOverride<DD>
+<BR>
+
+Définit s'il faut autoriser les utilisateurs à modifier la classification de leurs travaux d'impression.
+<DT>ConfigFilePerm<DD>
+<BR>
+
+Définit les permissions UNIX à utiliser pour les fichiers de configuration utilisés par l'ordonnanceur.
+<DT>DataDir<DD>
+<BR>
+
+Définit le répertoire où se trouvent les fichiers de données.
+<DT>DefaultCharset<DD>
+<BR>
+
+Définit le jeu de caractères par défaut à utiliser pour les textes.
+<DT>DefaultLanguage<DD>
+<BR>
+
+Définit la langue par défaut à utiliser pour les textes et le site web.
+<DT>Deny<DD>
+<BR>
+
+Interdit l'accès à une machine nommée ou à une adresse IP.
+<DT>DocumentRoot<DD>
+<BR>
+
+Définit le répertoire racine des documents du serveur web interne.
+<DT>Encryption<DD>
+<BR>
+
+Définit le niveau de cryptage nécessaire pour un lieu.
+<DT>ErrorLog<DD>
+<BR>
+
+Définit le nom du fichier traçant les erreurs.
+<DT>FilterLimit<DD>
+<BR>
+
+Définit le coût maximum des filtres lancés simultanément.
+<DT>FilterNice<DD>
+<BR>
+
+Définit la priorité (valeur «&nbsp;nice&nbsp;») des filtres exécutés pour une impression.
+<DT>FontPath<DD>
+<BR>
+
+Définit le chemin de recherche des polices.
+<DT>Group<DD>
+<BR>
+
+Définit le nom du groupe ou l'ID qui sera utilisé lors de l'exécution de 
+programmes externes.
+<DT>HideImplicitMembers<DD>
+<BR>
+
+Définit s'il faut cacher ou non les membres des classes implicites.
+<DT>HostNameLookups<DD>
+<BR>
+
+Définit s'il faut effectuer ou non des recherches de noms à partir des adresses
+des clients.
+<DT>ImplicitAnyClasses<DD>
+<BR>
+
+Définit s'il faut créer ou non des classes implicites pour les imprimantes
+locales et distantes (par exemple «&nbsp;UneImprimante&nbsp;» pour «&nbsp;Imprimante&nbsp;»,
+«&nbsp;<A HREF="mailto:Imprimante@serveur1">Imprimante@serveur1</A>&nbsp;» et «&nbsp;<A HREF="mailto:Imprimante@serveur2">Imprimante@serveur2</A>&nbsp;»).
+<DT>ImplicitClasses<DD>
+<BR>
+
+Définit s'il faut créer ou non une classe implicite pour les imprimants distantes
+identiques.
+<DT>KeepAlive<DD>
+<BR>
+
+Définit s'il faut utiliser HTTP-Keep-Alive.
+<DT>KeepAliveTimeout<DD>
+<BR>
+
+Définit le timeout pour HTTP-Keep-Alive.
+<DT>&lt;Limit methods&gt; ... &lt;/Limit&gt;<DD>
+<DT>&lt;LimitExcept methods&gt; ... &lt;/LimitExcept&gt;<DD>
+<BR>
+
+Définit les méthodes HTTP interdites pour un lieu donné.
+<DT>LimitRequestBody<DD>
+<BR>
+
+Définit la taille maximale des demandes de travaux d'impression.
+<DT>&lt;Location /path&gt; ... &lt;/Location&gt;<DD>
+<BR>
+
+Définit les contrôles d'accès à une destination donnée.
+<DT>LogFilePerm<DD>
+<BR>
+
+Définit les permissions UNIX des fichiers de trace écrits par l'ordonnanceur.
+<DT>LogLevel<DD>
+<BR>
+
+Définit le niveau de trace (none, warn, error, info, debug ou debug2).
+<DT>MaxClients<DD>
+<BR>
+
+Définit le nombre maximum de clients simultanés.
+<DT>MaxCopies<DD>
+<BR>
+
+Définit le nombre maximum de copies qu'un utilisateur peut effectuer pour un travail d'impression.
+<DT>MaxJobs<DD>
+<BR>
+
+Définit le nombre maximum de travaux simultanés.
+<DT>MaxJobsPerPrinter<DD>
+<BR>
+
+Définit le nombre maximum de travaux simultanés par imprimante.
+<DT>MaxJobsPerUser<DD>
+<BR>
+
+Définit le nombre maximum de travaux simultanés par utilisateur.
+<DT>MaxLogSize<DD>
+<BR>
+
+Définit la taille maximale des fichiers de trace. Au-delà de cette taille, les fichiers
+sont recyclés (on ne garde que les entrées les plus récentes pour supprimer les plus vieilles).
+Indiquer 0 pour supprimer la rotation des fichiers.
+<DT>MaxRequestSize<DD>
+<BR>
+
+Définit la taille maximale des fichiers et des requêtes à imprimer. La taille
+est exprimée en octets (0 indique qu'il n'y a pas de limite).
+<DT>Order<DD>
+<BR>
+
+Définit le contrôle d'accès HTTP (allow,deny ou deny,allow).
+<DT>PageLog<DD>
+<BR>
+
+Définit le fichier de trace des pages web visitées.
+<DT>Port<DD>
+<BR>
+
+Définit le numéro du port où écouter les requêtes HTTP.
+<DT>PreserveJobFiles<DD>
+<BR>
+
+Définit s'il faut conserver ou non les fichiers de travail après impression.
+<DT>PreserveJobHistory<DD>
+<BR>
+
+Définit s'il faut conserver ou non l'historique des demandes d'impression
+une fois qu'elles sont terminées.
+<DT>Printcap<DD>
+<BR>
+
+Définit l'emplacement du fichier printcap, contenant la liste des imprimantes,
+et qui est mis à jour automatiquement. Ce fichier est indispensable aux
+applications externes.
+<DT>PrintcapGUI<DD>
+<BR>
+
+Définit s'il faut générer ou non les fichiers du panneau d'options sur certains systèmes d'exploitation.
+<DT>RemoteRoot<DD>
+<BR>
+
+Définit le nom d'utilisateur associé aux accès root non identifié.
+<DT>RequestRoot<DD>
+<BR>
+
+Définit le répertoire où sont stockés les fichiers de travail et les données des requêtes HTTP.
+<DT>Require<DD>
+<BR>
+
+Définit qu'une identification par utilisateur ou par groupe est nécessaire.
+<DT>RIPCache<DD>
+<BR>
+
+Définit la taille maximale de mémoire à utiliser lors de la conversion d'images
+ou de fichiers PostScript en fichier bitmap pour une imprimante.
+<DT>RunAsUser<DD>
+<BR>
+
+Définit si l'ordonnanceur doit être lancé en tant qu'utilisateur, dont le nom doit être défini par la directive «&nbsp;User&nbsp;».
+<DT>Satisfy<DD>
+<BR>
+
+Définit si tout ou partie des limites définies pour un lieu donné doivent être satisfaites pour permettre l'accès.
+<DT>ServerAdmin<DD>
+<BR>
+
+Définit l'adresse électronique de l'administrateur du serveur.
+<DT>ServerBin<DD>
+<BR>
+
+Définit le répertoire où les applications frontales, les CGI, les démons et
+les filtres sont stockés.
+<DT>ServerCertificate<DD>
+<BR>
+
+Définit le certificat de cryptage à utiliser.
+<DT>ServerKey<DD>
+<BR>
+
+Définit la clé de cryptage à utiliser.
+<DT>ServerName<DD>
+<BR>
+
+Définit le nom complet du serveur.
+<DT>ServerRoot<DD>
+<BR>
+
+Définit le répertoire où les fichiers de configuration du serveur sont stockés.
+<DT>SystemGroup<DD>
+<BR>
+
+Définit le groupe à utiliser pour les identifications système.
+<DT>TempDir<DD>
+<BR>
+
+Définit le répertoire où les fichiers temporaires sont stockés.
+<DT>Timeout<DD>
+<BR>
+
+Définit le timeout des requêtes HTTP (en secondes).
+<DT>User<DD>
+<BR>
+
+Définit le nom ou l'identifiant de l'utilisateur utilisé lors du lancement de programmes externes.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?5+classes.conf">classes.conf</A>(5), <A HREF="/cgi-bin/man/man2html?8+cupsd">cupsd</A>(8), <A HREF="/cgi-bin/man/man2html?5+mime.convs">mime.convs</A>(5), <A HREF="/cgi-bin/man/man2html?5+mime.types">mime.types</A>(5), <A HREF="/cgi-bin/man/man2html?5+printers.conf">printers.conf</A>(5),
+CUPS Software Administrators Manual,
+<A HREF="http://localhost:631/documentation.html">http://localhost:631/documentation.html</A>
+<A NAME="lbAF">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright 1993-2003 Easy Software Products, Tous droits réservés.
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Gilles QUERRET &lt;<A HREF="mailto:gilles.querret@nerim.net">gilles.querret@nerim.net</A>&gt;
+
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">DIRECTIVES</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:53 GMT, February 11, 2014
+</BODY>
+</HTML>

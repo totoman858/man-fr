@@ -1,0 +1,129 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PIDOF</TITLE>
+</HEAD><BODY>
+<H1>PIDOF</H1>
+Section: Manuel de l'administrateur système Linux (8)<BR>Updated: 01 sep 1998<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+pidof -- affiche le PID d'un programme
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>pidof</B>
+
+[<B>-s</B>]
+
+[<B>-x</B>]
+
+[<B>-o</B>
+
+<I>omitpid</I>]
+
+[<B>-o</B>
+
+<I>omitpid..</I>]
+
+<B>program</B>
+
+[<B>program..</B>]
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>Pidof</B>
+
+cherche les numéros de processus (PID: Process ID) portant l'un des noms de
+programme indiqués. Il affiche ces numéros sur sa sortie standard. Ce
+programme est parfois utilisé dans les script changeant le niveau d'exécution
+d'init, en particulier pour les systèmes utilisant la structure <I>rc</I> de
+<I>System-V</I>. Dans ce cas, ces scripts sont situés dans /etc/rc?.d ou
+/etc/rc.d/rc?.d, où ? est le niveau d'exécution d'init. Si le système
+un programme
+a
+<B>start-stop-daemon</B>
+
+(8), celui-ci devrait être utilisé à la place.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT>-s<DD>
+Un seul coup - <I>pidof</I> ne renverra qu'un seul <I>pid</I>.
+<DT>-x<DD>
+Scripts également - <I>pidof</I> renverra également les PID des shells exécutant
+les scripts indiqués.
+<DT>-o<DD>
+Demande à <I>pidof</I> de ne pas tenir compte du pid indiqué. Le pid spécial
+<B>%PPID</B> peut décrire le processus parent du programme <I>pidof</I>,
+c'est-à-dire le shell ou le script appelant.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+<I>pidof</I> est un lien symbolique sur le programme <I>killall5</I> qui est
+généralement placé dans /sbin.
+<P>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUE</H2>
+
+Quand <I>pidof</I> est exécuté avec le chemin complet du programme dont il doit
+chercher le PID, son comportement est fiable. Dans le cas contraire, les PIDs
+renvoyés peuvent être ceux de processus portant le même nom mais qui sont en
+fait des programmes différents
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+shutdown">shutdown</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+init">init</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+halt">halt</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+reboot">reboot</A></B>(8)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Miquel van Smoorenburg &lt;<I><A HREF="mailto:miquels@cistron.nl">miquels@cistron.nl</A></I>&gt;
+
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 2000
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>AVERTISSEMENT SUR LA TRADUCTION</H2>
+
+Il est possible que cette traduction soit imparfaite ou périmée. En cas de
+doute, veuillez vous reporter au document original en langue anglaise fourni
+avec le programme.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">BOGUE</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">AUTEUR</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+<DT><A HREF="#lbAK">AVERTISSEMENT SUR LA TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

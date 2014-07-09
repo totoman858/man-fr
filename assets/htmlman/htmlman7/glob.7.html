@@ -1,0 +1,247 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GLOB</TITLE>
+</HEAD><BODY>
+<H1>GLOB</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+glob - Développement des noms de fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Il y a bien longtemps, dans Unix V6, existait un programme nommé
+<I>/etc/glob</I>
+
+qui permettait de développer les motifs génériques dans les noms de fichiers.
+Ce programme devint bientôt une routine interne du shell.
+<P>
+De nos jours, on trouve également une routine de bibliothèque nommée
+<B><A HREF="/cgi-bin/man/man2html?3+glob">glob</A></B>(3)
+
+qui effectue le même travail en étant invoquée par un programme utilisateur.
+<P>
+Les règles de développement sont les suivantes (POSIX 1003.2, 3.13).
+<A NAME="lbAD">&nbsp;</A>
+<H2>MOTIFS GÉNÉRIQUES</H2>
+
+Une chaîne est un motif générique si elle contient un ou plusieurs
+caractères parmi `?', `*' et `['. Le développement (globbing) est l'opération
+qui transforme un motif générique en une liste de noms de fichiers
+correspondant à ce motif.
+La correspondance est définie ainsi&nbsp;:
+<P>
+Un `?' (sans les apostrophes) correspond à n'importe quel caractère.
+<P>
+A `*' (sans les apostrophes) correspond à n'importe quelle chaîne, y compris
+la chaîne vide.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H3>Classes de caractères</H3>
+
+Une expression du type `[...]', dans laquelle le premier caractère après le `['
+n'est pas un `!' est mise en correspondance avec un seul des caractères contenus
+entre les crochets.
+L'ensemble des caractères cités ne peut pas être vide, ainsi, le crochet fermant `]'
+peut être présent dans l'ensemble, à la condition qu'il soit en première place.
+Par conséquent, la chaîne `[][!]' peut être mise en correspondance avec l'un des
+trois caractères `[', `]' et `!'.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H3>Intervalles</H3>
+
+Il existe une convention particulière, suivant laquelle deux caractères séparés par
+un tiret `-' indiquent un intervalle.
+Ainsi, `[A-Fa-f0-9]' équivaut à `[ABCDEFabcdef0123456789]'.
+Pour inclure un tiret au sens littéral, il suffit de l'utiliser en premier ou en dernier
+entre les crochets. `[]-]' correspond uniquement aux caractères `]' et `-',
+alors que `[--/]' correspond aux trois caractères `-', `.', `/'.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H3>Négation</H3>
+
+Une expression `[!...]' correspond à n'importe quel caractère qui ne puisse pas être
+mis en correspondance avec la chaîne obtenue en supprimant le `!' initial.
+(ainsi, `[!]a-]' correspond à tout caractère sauf `]', `a' et `-'.)
+<P>
+On peut désactiver le comportement spécial des caractères `?', `*' et `[' en
+les faisant précéder par un backslash '\', ou, dans le cas d'une ligne de commande
+shell, en les encadrant par des guillemets.
+Entre crochets, ces caractères ne prennent que leur signification littérale.
+Ainsi, `[[?*\]' correspond aux quatre caractères `[', `?', `*' et `\'.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>CHEMINS D'ACCÈS</H2>
+
+Le développement est appliqué a chaque composant du chemin d'accès
+séparément. Un `/' dans un chemin ne peut pas être mis en correspondance
+avec un `?' ou `*', ni par un intervalle tel que `[.-0]'.
+Un intervalle ne peut pas contenir explicitement un caractère `/'. Ceci
+déclencherait une erreur de syntaxe.
+<P>
+Si un nom de fichier commence par un `.', Ce caractère doit être mis en
+correspondance explicitement. (Ainsi, `rm *' ne supprimera pas .profile,
+et `tar c *' n'archivera pas tous les fichiers ; `tar c .' serait préférable.)
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>LISTES VIDES</H2>
+
+La définition simple et élégante fournie plus haut `transformer un motif générique
+en une liste de noms de fichiers correspondants' est la définition Unix
+originale. Elle autorisait la présence de motif se développant en listes
+vides, comme
+<BR>
+
+<PRE>
+        xv -wait 0 *.gif *.jpg
+</PRE>
+
+alors qu'il n'y a peut-être aucun fichier *.gif présent (et on ne
+peut pas considérer cela comme une erreur).
+Toutefois, POSIX réclame qu'un motif soit laissé inchangé s'il
+est syntaxiquement incorrect, ou si la liste des noms de fichiers
+correspondants est vide.
+On peut forcer
+<I>bash</I>
+
+à adopter le comportement classique en positionnant la variable
+d'environnement
+<I>allow_null_glob_expansion=true</I>.
+
+<P>
+(Des problèmes similaires se produisent ailleurs. Par exemple de vieux scripts avec
+<BR>
+
+<PRE>
+        rm `find . -name &quot;*~&quot;`
+</PRE>
+
+devraient être remplacés par des nouveaux scripts contenant
+<BR>
+
+<PRE>
+        rm -f nosuchfile `find . -name &quot;*~&quot;`
+</PRE>
+
+pour éviter les messages d'erreurs si
+<I>rm</I>
+
+est invoqué avec une liste vide d'arguments).
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>NOTES</H2>
+
+<A NAME="lbAK">&nbsp;</A>
+<H3>Expressions régulières</H3>
+
+Notez que les motifs génériques ne sont pas des expressions
+régulières bien qu'ils leur ressemblent. Tout d'abord, ils
+correspondent à des noms de fichiers, et pas à du texte, de plus
+les conventions ne sont pas identiques, par exemple, dans une
+expression régulière, `*' signifie zéro ou plusieurs copies
+de l'élément précédent.
+<P>
+Maintenant que les expressions régulières disposent de composants
+entre crochets où la négation est indiquée par un `^', POSIX
+a précisé que le motif générique `[^...]' a un effet indéfini.
+<P>
+<A NAME="lbAL">&nbsp;</A>
+<H3>Internationalisation et classes de caractères.</H3>
+
+Bien entendu, les intervalles ont été créés à l'origine en tant
+qu'intervalle ASCII où `[ -%]' signifie `[ !&quot;#$%]' et `[a-z]' correspond
+à &quot;tout caractère minuscule&quot;.
+Certaines implémentations Unix ont généralisé ceci de manière à ce que
+l'intervalle X-Y correspondent à l'ensemble des caractères dont les
+codes se trouvent entre ceux de X et de Y. Néanmoins, ceci signifie
+que l'utilisateur doit connaître le codage utilisé sur le système local.
+De plus ceci ne fonctionne pas si l'ordre de l'alphabet local n'est
+pas celui adopté pour le codage des caractères.
+POSIX a alors étendu grandement la notation des expressions entre crochets
+autant pour les motifs génériques que pour les expressions régulières.
+Nous avons vu précédemment 3 types d'éléments pouvant se trouver entre
+crochets. Plus précisément (i) une négation, (ii) des caractères explicites,
+et (iii) des intervalles. POSIX spécifie les intervalles d'une manière
+plus utile au niveau international, et ajoute trois nouveaux types&nbsp;:
+<P>
+(iii) Les intervalles X-Y comprenant tous les caractères se trouvant entre X
+et Y (inclus) dans l'ordre de l'alphabet décrit par la catégorie LC_COLLATE de 
+la localisation en cours.
+<P>
+(iv) Des classes de caractères comme
+<BR>
+
+<PRE>
+[:alnum:]  [:alpha:]  [:blank:]  [:cntrl:]
+[:digit:]  [:graph:]  [:lower:]  [:print:]
+[:punct:]  [:space:]  [:upper:]  [:xdigit:]
+</PRE>
+
+ainsi, on peut écrire `[[:lower:]]' à la place de `[a-z]', et que le
+comportement soit aussi valide au Danemark, où il existe 3 lettres
+postérieures au `z'.
+Ces classes de caractères sont définies par la catégorie LC_CTYPE 
+de la localisation en cours.
+<P>
+(v) Les symboles groupant plusieurs lettres comme `[.ch.]' ou `[.a-acute.]',
+dans lesquels les chaînes entre `[.' et `.]' sont un élément défini dans
+la localisation en cours. Il peut également s'agir de multi-caractères.
+<P>
+(vi) Des classes d'équivalence comme `[=a=]', où la chaîne entre `[=' et `=]'
+est un élément définissant une classe d'équivalence dans la localisation en cours
+par exemple `[[=a=]]' peut être équivalent à `[aáàäâ]' (Latin-1), c'est à dire
+`[a[.a-acute.][.a-grave.][.a-umlaut.][.a-circumflex.]]'.
+<P>
+<A NAME="lbAM">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+sh">sh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?3+glob">glob</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fnmatch">fnmatch</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?7+locale">locale</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+regex">regex</A></B>(7)
+
+<P>
+<A NAME="lbAN">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1998-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">MOTIFS GÉNÉRIQUES</A><DD>
+<DL>
+<DT><A HREF="#lbAE">Classes de caractères</A><DD>
+<DT><A HREF="#lbAF">Intervalles</A><DD>
+<DT><A HREF="#lbAG">Négation</A><DD>
+</DL>
+<DT><A HREF="#lbAH">CHEMINS D'ACCÈS</A><DD>
+<DT><A HREF="#lbAI">LISTES VIDES</A><DD>
+<DT><A HREF="#lbAJ">NOTES</A><DD>
+<DL>
+<DT><A HREF="#lbAK">Expressions régulières</A><DD>
+<DT><A HREF="#lbAL">Internationalisation et classes de caractères.</A><DD>
+</DL>
+<DT><A HREF="#lbAM">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAN">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:59 GMT, February 11, 2014
+</BODY>
+</HTML>

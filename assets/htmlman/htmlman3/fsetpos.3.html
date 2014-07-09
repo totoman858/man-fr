@@ -1,0 +1,251 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FSEEK</TITLE>
+</HEAD><BODY>
+<H1>FSEEK</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fseek, fgetpos, fsetpos, ftell, rewind - Accéder à la position courante d'un flux.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<P>
+<B>int fseek (FILE *</B><I>stream</I><B>, long </B><I>offset</I><B>, int </B><I>whence</I><B>);</B>
+
+<BR>
+
+<B>long ftell (FILE *</B><I>stream</I><B>);</B>
+
+<BR>
+
+<B>void rewind (FILE *</B><I>stream</I><B>);</B>
+
+<BR>
+
+<B>int fgetpos (FILE *</B><I>stream</I><B>, fpos_t *</B><I>pos</I><B>);</B>
+
+<BR>
+
+<B>int fsetpos (FILE *</B><I>stream</I><B>, fpos_t *</B><I>pos</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>fseek</B>
+
+fixe l'indicateur de position du flux pointé par
+<I>stream</I>.
+
+La nouvelle position, mesurée en octets, est obtenue en additionnant
+<I>offset</I>
+
+octets au point de départ indique par
+<I>whence</I>.
+
+Si
+<I>whence</I>
+
+vaut
+<B>SEEK_SET</B>,
+
+<B>SEEK_CUR</B>,
+
+ou
+<B>SEEK_END</B>,
+
+le point de départ correspond respectivement au début du fichier, à la
+position actuelle, ou à la fin du fichier.
+Un appel réussi à
+<B>fseek</B>
+
+efface l'indicateur de fin de fichier pour le flux, et annule les
+effets de toute fonction
+<B><A HREF="/cgi-bin/man/man2html?3+ungetc">ungetc</A></B>(3)
+
+précédente sur le même flux.
+<P>
+
+La fonction
+<B>ftell</B>
+
+lit la valeur de l'indicateur de position pour le flux pointé par
+<I>stream</I>.
+
+<P>
+
+La fonction
+<B>rewind</B>
+
+ramène l'indicateur de position du flux pointé par
+<I>stream</I>
+
+au début du fichier. C'est l'équivalent de :
+<P>
+
+<DL COMPACT><DT><DD>
+(void)fseek(stream, 0L, SEEK_SET)
+</DL>
+
+<P>
+
+sauf que l'indicateur d'erreur du flux est également effacé. (voir
+<B><A HREF="/cgi-bin/man/man2html?3+clearerr">clearerr</A></B>(3)).
+
+<P>
+
+Les fonctions
+<B>fgetpos</B>
+
+et
+<B>fsetpos</B>
+
+sont des alternatives à 
+<B>ftell</B>
+
+et
+<B>fseek</B>
+
+(avec <I>whence</I> valant
+<B>SEEK_SET</B>),
+
+en fixant, ou en mémorisant la valeur de l'indicateur de position du fichier
+dans l'objet référencé par
+<I>pos</I>.
+
+Sur certains systèmes non-UNIX, l'objet
+<B>fpos_t</B>
+
+peut être un objet complexe, et ces routines peuvent être les seules méthodes
+possibles pour repositionner un flux de texte de manière portable.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction
+<B>rewind</B>
+
+ne renvoie pas de valeur.
+Si elles réussissent totalement, 
+<B>fgetpos</B>,
+
+<B>fseek</B>,
+
+<B>fsetpos</B>
+
+renvoient 0,
+et
+<B>ftell</B>
+
+renvoie la position actuelle. Sinon, elles renvoient -1 et la variable globale
+errno contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+Le flux
+<I>stream</I>
+
+n'est pas positionnable.
+<DT><B>EINVAL</B>
+
+<DD>
+L'argument
+<I>whence</I>
+
+dans l'appel
+<B>fseek</B>
+
+n'était ni
+<B>SEEK_SET</B>,
+
+ni
+<B>SEEK_END</B>,
+
+ni
+<B>SEEK_CUR</B>.
+
+</DL>
+<P>
+
+Les fonctions
+<B>fgetpos</B>,
+
+<B>fseek</B>,
+
+<B>fsetpos</B>,
+
+et
+<B>ftell</B>
+
+peuvent également, en échec, positionner
+<I>errno</I>
+
+sur n'importe quelle erreur indiquée par les routines
+<B><A HREF="/cgi-bin/man/man2html?3+fflush">fflush</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fstat">fstat</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+lseek">lseek</A></B>(2),
+
+et
+<B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></B>(3).
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Les fonctions
+<B>fgetpos</B>,
+
+<B>fsetpos</B>,
+
+<B>fseek</B>,
+
+<B>ftell</B>,
+
+et
+<B>rewind</B>
+
+sont conformes a ANSI X3.159-1989 (``ANSI C'').
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+lseek">lseek</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fseeko">fseeko</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:27 GMT, February 11, 2014
+</BODY>
+</HTML>

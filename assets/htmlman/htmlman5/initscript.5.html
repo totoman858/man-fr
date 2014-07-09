@@ -1,0 +1,119 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of INITSCRIPT</TITLE>
+</HEAD><BODY>
+<H1>INITSCRIPT</H1>
+Section: Manuel de l'administrateur système de Linux (5)<BR>Updated: 10 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+initscript - script qui exécute les commandes incluses dans inittab
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+/bin/sh /etc/initscript id runlevels action process
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Quand le script shell <I>/etc/initscript</I> est présent, <B>init</B> 
+l'utilisera
+afin d'exécuter les commandes provenant de <I>inittab</I>.
+Ce script peut être utilisé pour paramétrer des valeurs par défaut
+telles que <B>ulimit</B> et <B>umask</B>.
+<A NAME="lbAE">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+Voici un exemple de script init, qui pourrait être installé
+sur votre système en tant que <B>/etc/initscript.sample</B>.
+<DL COMPACT><DT><DD>
+<P>
+<PRE>
+
+#
+#  initscript exécuté par <A HREF="/cgi-bin/man/man2html?8+init">init</A>(8) pour tout programme
+#            voulant apparaître ainsi&nbsp;:  
+#
+#     /bin/sh /etc/initscript &lt;id&gt; &lt;niveau d'exécution&gt; &lt;action&gt; &lt;processus&gt;
+#
+
+  # Paramétrer umask pour le safe level,
+  # et activer les core-dumps (sauvegardes d'image mémoire).
+  umask 022
+  ulimit -c 2097151
+  PATH=/bin:/sbin:/usr/bin:/usr/sbin
+  export PATH
+
+  # Augmenter la limite impérative des descripteurs de fichiers à 8192 pour tous les
+  # processus. La limite souple est encore 1024, mais tous les
+  # processus non privilégiés peuvent augmenter leur limite souple
+  # jusqu'à la limite impérative.
+  # avec &quot;ulimit -Sn xxx&quot; (nécessite un noyau linux 2.2.13 ou plus ).
+  ulimit -Hn 8192
+
+  # Exécuter le programme.
+  eval exec &quot;$4&quot;
+
+
+</DL>
+</PRE><A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Ce script ne prétend pas être un script de démarrage pour les démons ou 
+autres.
+Il n'a rien à voir avec les scripts du style <I>rc.local</I>.
+C'est juste un traitement pour ce qui est exécuté venant de 
+<B>/etc/inittab</B>.
+Faire des expériences avec initscript peut rendre impossible le 
+redémarrage de votre système.
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/etc/inittab,
+/etc/initscript.
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Miquel van Smoorenburg ,&lt;<A HREF="mailto:miquels@cistron.nl">miquels@cistron.nl</A>&gt;
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+carmie
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?8+init">init</A>(8), <A HREF="/cgi-bin/man/man2html?5+inittab">inittab</A>(5).
+<A NAME="lbAK">&nbsp;</A>
+<H2>AVERTISSEMENT SUR LA TRADUCTION</H2>
+
+Il est possible que cette traduction soit imparfaite ou périmée. En cas
+de doute, veuillez vous reporter au document original en langue anglaise
+fourni avec le programme.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">EXEMPLES</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">AUTEUR</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">AVERTISSEMENT SUR LA TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:55 GMT, February 11, 2014
+</BODY>
+</HTML>

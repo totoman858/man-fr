@@ -1,0 +1,271 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of EXECVE</TITLE>
+</HEAD><BODY>
+<H1>EXECVE</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+execve - Exécuter un programme.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int execve (const char *</B><I>fichier</I><B>, char * const </B><I>argv</I>
+
+<B>[], char * const </B><I>envp</I><B>[]);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>execve()</B> exécute le programme correspondant au <I>fichier</I>.
+Celui-ci doit être un exécutable binaire ou bien un script
+commençant par une ligne du type &quot;<B>#! </B><I>interpréteur </I>[arg]&quot;.
+Dans ce dernier cas, l'interpréteur doit être indiqué par un nom
+complet, avec son chemin d'accès, et qui sera invoqué sous la forme
+<B>interpréteur</B> [arg] <I>fichier</I>.
+<P>
+<I>argv</I>
+
+est un tableau de chaînes d'arguments passées au nouveau programme.
+<I>envp</I>
+
+est un tableau de chaînes, ayant par convention la forme 
+<B>cle=valeur</B>,
+
+qui sont passées au nouveau programme comme environnement.
+<I>argv</I>
+
+ainsi que
+<I>envp</I>
+
+doivent se terminer par un pointeur NULL. Les arguments et l'environnement
+sont accessibles par le nouveau programme dans sa fonction principale,
+lorsqu'elle est définie comme <B>int main (int argc, char * argv [], char * envp [])</B>.
+<P>
+En cas de réussite, <B>execve()</B> ne revient pas à l'appelant, et les
+segments de texte, de données, ainsi que la pile du processus appelant sont
+remplacés par ceux du programme chargé.
+Le programme invoqué hérite du PID du processus appelant, et de tous
+les descripteurs de fichiers qui ne possèdent pas le drapeau
+Close-on-Exec. Les signaux en attente destinés au processus parent sont
+effacés. Les signaux prêts à être intercepté par le processus
+appelant reprennent leur comportement par défaut.
+Le signal SIGCHLD (lorsqu'il est configuré sur SIG_IGN) peut ou non être
+réinitialisé à SIG_DFL.
+<P>
+Si l'on effectuait un 
+<I><A HREF="/cgi-bin/man/man2html?2+ptrace">ptrace</A></I>(2)
+
+sur le programme appelant, un signal
+<B>SIGTRAP</B> est envoyé après la réussite de <B>execve()</B>.
+<P>
+Si le bit Set-UID est positionné sur le <I>fichier</I> du programme, l'UID
+effectif du processus appelant est modifié pour prendre celui du propriétaire
+du fichier. De même, lorsque le bit Set-GID est positionné, le GID effectif
+est modifié pour correspondre à celui du groupe du fichier.
+<P>
+Si l'exécutable est un fichier binaire a.out lié dynamiquement, et contenant
+des appels aux bibliothèques partagées, le linker dynamique de Linux
+<B><A HREF="/cgi-bin/man/man2html?1+ld.so">ld.so</A></B>(1)
+
+est appelé avant l'exécution, afin de charger les bibliothèques partagées
+nécessaires en mémoire, et d'effectuer l'édition des liens de l'exécutable.
+<P>
+Si l'exécutable est au format ELF lié dynamiquement, l'interpréteur
+indiqué dans le segment PT_INTERP sera invoqué pour charger les bibliothèques
+partagées. Cet interpréteur est généralement
+<I>/lib/ld-linux.so.1</I> pour les fichiers binaires liés avec la libc Linux
+version 5, ou <I>/lib/ld-linux.so.2</I> pour ceux liés avec la
+GNU libc version 2.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+En cas de réussite, <B>execve()</B> ne revient pas, en cas d'échec il
+renvoie -1 et
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EACCES</B>
+
+<DD>
+Le <I>fichier</I> n'est pas un fichier régulier.
+<DT><B>EACCES</B>
+
+<DD>
+L'autorisation d'exécution est refusée pour le <I>fichier</I>, ou un script, ou un interpréteur ELF.
+<DT><B>EACCES</B>
+
+<DD>
+Le système de fichiers est monté avec l'option
+<I>noexec</I>.
+
+<DT><B>EPERM</B>
+
+<DD>
+Le système de fichiers est monté avec l'attribut 
+<I>nosuid</I>
+
+et le fichier a un bit Set-UID ou Set-GID positionné.
+<DT><B>EPERM</B>
+
+<DD>
+Le processus est suivi avec <B><A HREF="/cgi-bin/man/man2html?2+ptrace">ptrace</A></B>(2), l'utilisateur n'est pas
+le Super-User, et le fichier a un bit Set-UID ou Set-GID activé.
+<DT><B>E2BIG</B>
+
+<DD>
+La liste d'arguments est trop grande.
+<DT><B>ENOEXEC</B>
+
+<DD>
+Le fichier exécutable n'est pas dans le bon format, ou est destiné
+à une autre architecture.
+<DT><B>EFAULT</B>
+
+<DD>
+L'argument
+<I>fichier</I>
+
+pointe en dehors de l'espace d'adressage accessible.
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+La chaîne de caractères
+<I>fichier</I>
+
+est trop longue.
+<DT><B>ENOENT</B>
+
+<DD>
+Le 
+<I>fichier</I>
+
+ou un script ou un interpréteur ELF n'existe pas, ou une bibliothèque partagée
+nécessaire pour le fichier ou l'interpréteur n'est pas disponible.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour le noyau.
+<DT><B>ENOTDIR</B>
+
+<DD>
+Un élément du chemin d'accès n'est pas un répertoire.
+<DT><B>EACCES</B>
+
+<DD>
+L'accès à un élément du chemin n'est pas autorisé.
+<DT><B>ELOOP</B>
+
+<DD>
+Le chemin d'accès au
+<I>fichier </I>
+
+contient une référence circulaire (à travers un lien symbolique)
+<DT><B>ETXTBSY</B>
+
+<DD>
+Le <I>fichier</I> exécutable a été ouvert en écriture par un ou plusieurs
+processus.
+<DT><B>EIO</B>
+
+<DD>
+Une erreur d'entrée/sortie de bas-niveau s'est produite.
+<DT><B>ENFILE</B>
+
+<DD>
+Le nombre maximal de fichiers ouverts sur le système est atteint
+<DT><B>EMFILE</B>
+
+<DD>
+Le nombre maximal de fichiers ouverts par processus est atteint.
+<DT><B>EINVAL</B>
+
+<DD>
+Un exécutable ELF a plusieurs segments PT_INTERP (indique plusieurs
+interpréteurs).
+<DT><B>EISDIR</B>
+
+<DD>
+L'interpréteur ELF cité est un répertoire.
+<DT><B>ELIBBAD</B>
+
+<DD>
+L'interpréteur ELF mentionné n'est pas dans un format connu.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID, X/OPEN, BSD 4.3.  POSIX ne documente pas le comportement
+avec #! mais est néanmoins compatible. SVr4 décrit des erreurs supplémentaires
+EAGAIN, EINTR, ELIBACC, ENOLINK, EMULTIHOP; POSIX ne décrit pas les conditions
+d'erreur ETXTBSY, EPERM, EFAULT, ELOOP, EIO, ENFILE, EMFILE, EINVAL, EISDIR, ni
+ELIBBAD.
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les processus Set-UID et Set-GID ne peuvent pas être suivis par
+<B>ptrace()</B>.
+<P>
+Linux ignore les bits Set-UID et Set-GID sur les scripts.
+<P>
+Le résultat d'un montage de système de fichiers avec l'attribut
+<I>nosuid</I>
+
+peut varier suivant les versions de noyau&nbsp;: certaines refuseront l'exécution
+des fichiers SUID/SGID lorsque cela donnerait à l'appelant des privilèges
+qu'il n'a pas (et renverront l'erreur EPERM), d'autres ignoreront simplement
+les bits SUID/SGID mais accepteront d'effectuer l'appel execve.
+<P>
+La première ligne d'un shell script exécutable (#!) a une longueur
+maximale de 127 caractères.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+chmod">chmod</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+execl">execl</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+environ">environ</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ld.so">ld.so</A></B>(8).
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:57 GMT, February 11, 2014
+</BODY>
+</HTML>

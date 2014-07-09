@@ -1,0 +1,486 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SEMCTL</TITLE>
+</HEAD><BODY>
+<H1>SEMCTL</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+semctl - Opérations de contrôle sur les sémaphores.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/ipc.h">sys/ipc.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/sem.h">sys/sem.h</A>&gt;</B>
+
+<B>int semctl (int </B><I>semid</I><B>, int </B><I>semno</I><B>, int </B><I>cmd</I><B>, ...);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette fonction effectue l'opération de contrôle indiquée par
+<I>cmd</I>
+
+sur l'ensemble de sémaphores (ou sur le 
+<I>semno-ième</I>
+
+sémaphore de l'ensemble) identifié par
+<I>semid</I>,
+
+(les sémaphores sont numérotés à partir de zéro).
+<P>
+
+Cette fonction prend trois ou quatre arguments. Lorsqu'il y en a quatre,
+l'appel est
+<B>semctl</B><I>(</I><B>semid</B><I>,</I><B>semno</B><I>,</I><B>cmd</B><I>,</I><B>arg</B><I>);</I>
+
+où l'argument
+<I>arg</I>
+
+est de type
+<B>union semun</B>
+
+défini ainsi&nbsp;:
+<P>
+<PRE>
+#if defined(__GNU_LIBRARY__) &amp;&amp; !defined(_SEM_SEMUN_UNDEFINED)
+/* l'union semun est définie par l'inclusion de &lt;<A HREF="file:///usr/include/sys/sem.h">sys/sem.h</A>&gt; */
+#else
+/* d'après X/OPEN il faut la définir nous-mêmes */
+union semun {
+      int val;                  /* valeur pour SETVAL */
+      struct semid_ds *buf;     /* buffer pour IPC_STAT, IPC_SET */
+      unsigned short *array;    /* table  pour GETALL, SETALL */
+                                /* Spécificité Linux : */
+      struct seminfo *__buf;    /* buffer pour IPC_INFO */
+};
+#endif
+</PRE>
+
+<P>
+
+Les valeurs autorisées pour l'opération
+<I>cmd</I>
+
+sont :
+<DL COMPACT>
+<DT><B>IPC_STAT</B>
+
+<DD>
+copier dans la structure pointée par
+<I>arg</I><B>.buf</B>
+
+la structure de données concernant l'ensemble de sémaphores.
+L'argument
+<I>semno</I>
+
+est alors ignoré.
+Le processus appelant doit avoir des privilèges de lecture 
+sur le jeu de sémaphores
+<DT><B>IPC_SET</B>
+
+<DD>
+Fixer la valeur de certains champs de la structure
+<B>semid_ds</B>
+
+pointée par
+<I>arg</I><B>.buf</B>
+
+dans la structure de contrôle de l'ensemble de sémaphores, en mettant à jour
+son membre
+<B>sem_ctime.</B>
+
+Les champs de la structure
+<B>struct semid_ds</B>
+
+fournie dans 
+<I>arg</I><B>.buf</B>
+
+et copiés dans la structure de l'ensemble sont :
+<PRE>
+
+<B>        sem_perm.uid
+        sem_perm.gid
+        sem_perm.mode   </B>/* 9 bits poids faibles*/
+</PRE>
+
+
+<P>
+L'UID effectif du processus appelant doit être soit 
+celui du Super-User
+soit celui du créateur ou du propriétaire 
+du jeu de sémaphores.
+L'argument
+<I>semno</I>
+
+est ignoré.
+<DT><B>IPC_RMID</B>
+
+<DD>
+Supprimer immédiatement l'ensemble de sémaphores en réveillant 
+tous les processus  en attente. Ils obtiendront un code d'erreur, et
+<B>errno</B>
+
+aura la valeur
+<B>EIDRM.</B>
+
+L'UID effectif du processus appelant doit être soit celui 
+du Super-User
+soit celui du créateur ou du propriétaire du jeu de sémaphores.
+L'argument
+<I>semno</I>
+
+est ignoré.
+<DT><B>GETALL</B>
+
+<DD>
+Renvoyer la valeur
+<B>semval</B>
+
+de chaque sémaphore de l'ensemble dans le tableau
+<I>arg</I><B>.array</B><I></I>.
+
+L'argument
+<I>semno</I>
+
+est ignoré.
+Le processus appelant doit avoir des privilèges de lecture 
+sur le jeu de sémaphores.
+<DT><B>GETNCNT</B>
+
+<DD>
+Renvoyer la valeur de
+<B>semncnt</B>
+
+pour le
+<I>semno-ième</I>
+
+sémaphore de l'ensemble
+(i.e. le nombre de processus en attente d'une incrémentation du
+champ 
+<B>semval</B>
+
+du
+<I>semno-ième</I>
+
+sémaphore).
+Le processus appelant doit avoir des privilèges de lecture 
+sur le jeu de sémaphores.
+<DT><B>GETPID</B>
+
+<DD>
+Renvoyer la valeur de 
+<B>sempid</B>
+
+pour le
+<I>semno-ième</I>
+
+sémaphore de l'ensemble
+(i.e. le PID du processus ayant exécute le dernier appel
+système
+<B>semop</B>
+
+sur le
+<I>semno-ième</I>
+
+sémaphore).
+Le processus appelant doit avoir des privilèges de lecture 
+sur le jeu de sémaphores.
+<DT><B>GETVAL</B>
+
+<DD>
+Renvoyer la valeur du champ
+<B>semval</B>
+
+du
+<I>semno-ième</I>
+
+sémaphore de l'ensemble
+Le processus appelant doit avoir des privilèges de lecture 
+sur le jeu de sémaphores.
+<DT><B>GETZCNT</B>
+
+<DD>
+Renvoyer la valeur du champ
+<B>semzcnt</B>
+
+du
+<I>semno-ième</I>
+
+sémaphore de l'ensemble.
+(i.e. le nombre de processus attendant que le champ
+<B>semval</B>
+
+du 
+<I>semno-ième</I>
+
+sémaphore revienne à 0).
+Le processus appelant doit avoir des privilèges de lecture 
+sur le jeu de sémaphores.
+<DT><B>SETALL</B>
+
+<DD>
+Positionner le champ
+<B>semval</B>
+
+de tous les sémaphores de l'ensemble en utilisant le tableau
+<I>arg</I><B>.array</B>
+
+et en mettant à jour le champ
+<B>sem_ctime</B>
+
+de la structure
+<B>semid_ds</B>
+
+de contrôle du jeu de sémaphores.
+Les processus en attente sont réveillés si
+<B>semval</B>
+
+devient 0 ou augmente.
+L'argument
+<I>semno</I>
+
+est ignoré.
+Le processus appelant doit avoir des privilèges d'écriture
+sur le jeu de sémaphores.
+<DT><B>SETVAL</B>
+
+<DD>
+Placer la valeur
+<I>arg</I><B>.val</B>
+
+dans le champ
+<B>semval</B>
+
+du
+<I>semno-ième</I>
+
+sémaphore de l'ensemble en mettant à jour
+le champ
+<B>sem_ctime</B>
+
+dans la structure
+<B>semid_ds</B>
+
+associée au jeu de sémaphores.
+Le processus appelant doit avoir des privilèges d'écriture
+sur le jeu de sémaphores
+Les processus en attente sont réveillés si
+<B>semval</B>
+
+devient 0 ou augmente.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+En cas d'échec, l'appel-système renvoie
+<B>-1</B>
+
+et
+<B>errno</B>
+
+contient le code d'erreur.
+Autrement, l'appel-système renvoie une valeur non-négative
+dépendant de l'argument
+<I>cmd :</I>
+
+<DL COMPACT>
+<DT><B>GETNCNT</B>
+
+<DD>
+la valeur de
+<B>semncnt</B>.
+
+<DT><B>GETPID</B>
+
+<DD>
+La valeur 
+<B>sempid</B>.
+
+<DT><B>GETVAL</B>
+
+<DD>
+La valeur
+<B>semval</B>.
+
+<DT><B>GETZCNT</B>
+
+<DD>
+La valeur
+<B>semzcnt</B>.
+
+</DL>
+<P>
+
+Toutes les autres commandes
+<I>cmd</I>
+
+renvoient zéro en cas de réussite.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<B>EACCES</B>
+
+Le processus appelant n'a pas les privilèges nécessaires pour
+exécuter la commande
+<I>cmd</I>.
+
+<DL COMPACT>
+<DT><B>EFAULT</B>
+
+<DD>
+<I>arg</I><B>.buf</B>
+
+ou
+<I>arg</I><B>.array</B>
+
+pointent en dehors de l'espace d'adressage accessible.
+<DT><B>EIDRM</B>
+
+<DD>
+L'ensemble de sémaphores a été supprimé.
+<DT><B>EINVAL</B>
+
+<DD>
+<I>cmd</I>
+
+ou
+<I>semid</I>
+
+a une valeur illégale.
+<DT><B>EPERM</B>
+
+<DD>
+L'argument
+<I>cmd</I>
+
+réclame les commandes
+<B>IPC_SET</B>
+
+ou
+<B>IPC_RMID</B>
+
+mais l'UID effectif du processus appelant n'a pas
+les privilèges adéquats.
+<DT><B>ERANGE</B>
+
+<DD>
+l'argument
+<I>cmd</I>
+
+réclame les commandes
+<B>SETALL</B>
+
+ou
+<B>SETVAL</B>
+
+et la valeur de
+<B>semval</B>
+
+(pour l'ensemble ou pour certains sémaphores) est inférieure
+à 0 ou supérieur à la valeur
+<B>SEMVMX</B>.
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les appels-système
+<B>IPC_INFO</B>,
+
+<B>SEM_STAT</B>
+
+et
+<B>SEM_INFO</B>
+
+sont utilisés par le programme
+<B><A HREF="/cgi-bin/man/man2html?8+ipcs">ipcs</A></B>(8)
+
+pour fournir des informations sur les ressources allouées.
+Ceci peut changer dans le futur, en utilisant l'interface
+d'un système de fichiers proc.
+<P>
+
+Divers champs de la <I>struct semid_ds</I> étaient des shorts sous Linux 2.2
+et sont devenus longs sous Linux 2.4. Pour en tirer parti, une recompilation
+sous GlibC 2.1.91 ou ultérieure doit suffire.
+(Le noyau distingue les anciens et nouveaux appels par un drapeau IPC_64
+dans
+<I>cmd</I>.)
+
+<P>
+
+La limite suivante influe sur l'appel-système
+<B>semctl</B> :
+
+<DL COMPACT>
+<DT><B>SEMVMX</B>
+
+<DD>
+Valeur maximale pour
+<B>semval</B>
+
+dépendant de l'implémentation (généralement 32767).
+</DL>
+<P>
+
+Pour améliorer la portabilité, il vaut mieux invoquer toujours
+<B>semctl</B>
+
+avec quatre arguments.
+Sous Linux, la fonction
+<B>semctl</B>
+
+n'est pas un véritable appel-système, mais est implémentée au moyen de
+l'appel-système commun
+<B><A HREF="/cgi-bin/man/man2html?2+ipc">ipc</A></B>(2).
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID.  SVr4 documente des conditions d'erreurs supplémentaires
+EINVAL et EOVERFLOW.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+ipc">ipc</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+semget">semget</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+semop">semop</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?5+ipc">ipc</A></B>(5)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:54 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,150 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETSERVENT</TITLE>
+</HEAD><BODY>
+<H1>GETSERVENT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getservent, getservbyname, getservbyport, setservent, endservent - Accéder aux informations sur les services.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/netdb.h">netdb.h</A>&gt;</B>
+
+<B>struct servent *getservent (void);</B>
+
+<B>struct servent *getservbyname (const char *</B><I>name</I><B>, const char *</B><I>proto</I><B>);</B>
+
+<B>struct servent *getservbyport (int </B><I>port</I><B>, const char *</B><I>proto</I><B>);</B>
+
+<B>void setservent (int </B><I>stayopen</I><B>);</B>
+
+<B>void endservent (void);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>getservent()</B> lit l'enregistrement suivant du fichier
+<I>/etc/services</I> et renvoie une structure <I>servent</I> contenant les
+divers champs de l'enregistrement. Le fichier <I>/etc/services</I> est
+ouvert si besoin est.
+<P>
+
+La fonction <B>getservbyname()</B> renvoie une structure <I>servent</I>
+pour l'enregistrement du fichier <I>/etc/services</I> qui correspond au
+service nommé <I>name</I> et utilisant le protocole <I>proto</I>. Si <I>proto</I>
+est NULL, n'importe quel protocole sera accepté.
+<P>
+
+La fonction <B>getservbyport()</B> renvoie une structure <I>servent</I>
+pour l'enregistrement correspondant au <I>port</I> indiqué (dans l'ordre
+des octets du réseau) et utilisant le protocole <I>proto</I>. Si <I>proto</I>
+est NULL, n'importe quel protocole sera accepté. 
+<P>
+
+La fonction <B>setservent()</B> ouvre, et ramène au début le pointeur du
+fichier <I>/etc/services</I>. Si <I>stayopen</I> est vrai (valant 1), alors 
+le fichiers ne sera pas refermé entre les appels successifs à
+<B>getservbyname()</B> et <B>getservbyport()</B>.
+<P>
+
+la fonction <B>endservent()</B> ferme le fichier <I>/etc/services</I>.
+<P>
+
+La structure <I>servent</I> est définie dans <I>&lt;<A HREF="file:///usr/include/netdb.h">netdb.h</A>&gt;</I> ainsi :
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct servent {
+  char  *s_name;    /* Nom officiel du service */
+  char **s_aliases; /* Liste d'alias           */
+  int    s_port;    /* Numéro de port          */
+  char  *s_proto;   /* Protocole utilisé       */
+}
+
+</PRE>
+
+</DL>
+
+<P>
+
+Les membres de la structure <I>servent</I> sont :
+<DL COMPACT>
+<DT><I>s_name</I>
+
+<DD>
+Le nom officiel du service.
+<DT><I>s_aliases</I>
+
+<DD>
+Une liste terminée par zéro contenant d'autres noms utilisables pour le service.
+<DT><I>s_port</I>
+
+<DD>
+Le numéro de port, donné dans l'ordre des octets du réseau.
+<DT><I>s_proto</I>
+
+<DD>
+Le nom du protocole utilisé par ce service.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Les fonctions <B>getservent()</B>, <B>getservbyname()</B> et <B>getservbyport()</B>
+renvoient une structure <I>servent</I>, ou un pointeur NULL si une erreur se
+produit, ou si la fin du fichier est atteinte.
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/etc/services</I>
+
+<DD>
+Base de données des services.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.3
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+getprotoent">getprotoent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getnetent">getnetent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+services">services</A>(5)</B>
+
+<P>
+<B>SH</B>TRADUCTION
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:18 GMT, February 11, 2014
+</BODY>
+</HTML>

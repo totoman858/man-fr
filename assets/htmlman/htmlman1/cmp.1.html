@@ -1,0 +1,112 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CMP</TITLE>
+</HEAD><BODY>
+<H1>CMP</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+<B>cmp</B> - Comparer deux fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>cmp</B><I> [</I><B>-l</B>|<B>-s</B>] <I>fichier1</I> <I>fichier2</I>
+[<I>décal1</I>[<I>décal2</I>]]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+L'utilitaire
+<B>cmp</B>
+
+compare deux fichiers de type quelconque et écrit le résultat sur la sortie
+standard. Par défaut,
+<B>cmp</B>
+
+est silencieux si les fichiers sont identiques&nbsp;; s'ils diffèrent, les
+numéros d'octet et de ligne de la première différence détectée sont
+rapportés.
+<P>
+Les octets et les lignes sont numérotés en commençant à un.
+<P>
+Les options suivantes sont disponibles&nbsp;:
+<P>
+
+<DL COMPACT>
+<DT><B>-l</B>
+
+<DD>
+Afficher le numéro d'octet (en décimal) et les valeurs (octales) des
+octets pour chaque différence.
+<P>
+<DT><B>-s</B>
+
+<DD>
+Ne rien afficher pour les fichiers différents, retourner uniquement
+l'état de sortie.
+<P>
+<DT>Les arguments optionnels <I>décal1</I> et <I>décal2</I> sont les<DD>
+décalages d'octets par rapport au début de <I>fichier1</I> et de
+<I>fichier2</I> respectivement, où la comparaison commencera. Le
+décalage est décimal par défaut, mais peut être exprimé par une valeur
+hexadécimale ou octale en le préfixant par un «&nbsp;0x&nbsp;» ou un «&nbsp;0&nbsp;».
+<P>
+L'utilitaire <B>cmp</B> se termine par l'une des valeurs suivantes&nbsp;:
+<P>
+<DT>0<DD>
+Les fichiers sont identiques.
+<P>
+<DT>1<DD>
+Les fichiers sont différents&nbsp;; ceci inclut le cas où un fichier est
+identique à la première partie de l'autre.
+Dans ce dernier cas, si l'option
+-<B>s</B>
+
+n'a pas été spécifiée, <B>cmp</B> écrit sur la sortie standard que EOF
+a été atteint dans le fichier le plus court (avant qu'une seule
+différence ne soit trouvée).
+<P>
+<DT>&gt;1<DD>
+Une erreur s'est produite.
+<P>
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+diff">diff</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+diff3">diff3</A></B>(1)
+
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+L'utilitaire <B>cmp</B> est conçu pour être compatible à la norme IEEE
+1003.2 («&nbsp;POSIX.2&nbsp;»).
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Frédéric Delanoy &lt;<I>delanoy_f at yahoo.com</I>&gt;, 2000-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:48 GMT, February 11, 2014
+</BODY>
+</HTML>

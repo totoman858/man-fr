@@ -1,0 +1,160 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of KILL</TITLE>
+</HEAD><BODY>
+<H1>KILL</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+kill - Envoyer un signal à un processus.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/signal.h">signal.h</A>&gt;</B>
+
+<B>int kill(pid_t </B><I>pid</I><B>, int </B><I>sig</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+L'appel-système
+<B>kill</B>
+
+peut être utilisé pour envoyer n'importe quel signal à n'importe
+quel processus ou groupe de processus.
+<P>
+
+Si <I>pid</I> est positif, le signal <I>sig</I> est envoyé au processus <I>pid</I>.
+<P>
+
+Si <I>pid</I> vaut zéro, alors le signal <I>sig</I> est envoyé à tous les processus
+appartenant au même groupe que le processus appelant.
+<P>
+
+Si <I>pid</I> vaut -1, alors le signal <I>sig</I> est envoyé à tous les
+processus sauf celui de PID 1 (init), mais voir plus bas.
+<P>
+
+Si <I>pid</I> est inférieur à -1, alors le signal <I>sig</I>
+est envoyé à tous les processus du groupe <I>-pid</I>.
+<P>
+
+Si <I>sig</I> vaut 0, aucun signal n'est envoyé mais les conditions d'erreur
+sont vérifiées.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+En cas de réussite 0 est renvoyé,
+en cas d'échec -1 est renvoyé et
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+Numéro de signal invalide.
+<DT><B>ESRCH</B>
+
+<DD>
+Le processus ou le groupe de processus n'existe pas.
+Remarquez qu'un processus existant peut être un zombie,
+c'est à dire qu'il s'est déjà terminé mais que son père n'a pas 
+encore lu sa valeur de retour avec <B>wait()</B>.
+<DT><B>EPERM</B>
+
+<DD>
+Le processus appelant n'a pas l'autorisation d'envoyer un
+signal à l'un des processus concernés. Pour qu'un processus
+ait le droit d'envoyer un signal à un autre processus
+<I>pid</I>
+
+il doit avoir des privilèges de Super-Utilisateur,
+ou avoir un UID réel ou effectif égal à l'ID réel ou sauvegardé
+du processus récepteur. Dans le cas de SIGCONT, il suffit que les
+processus émetteur et récepteur appartiennent à la même session.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+On ne peut envoyer au processus numéro un (init) que des signaux pour
+lesquels il a expressément installé un gestionnaire.
+Ceci évite que le système soit arrêté accidentellement.
+<P>
+
+POSIX 1003.1-2001 réclame que <I>kill(-1,sig)</I> envoie <I>sig</I>
+à tous les processus accessibles par le processus appelant,
+sauf à certains processus système dépendant de l'implémentation.
+Linux autorise un processus à s'envoyer un signal à lui-même, mais
+l'appel <I>kill(-1,sig)</I> n'envoie pas le signal au processus appelant.
+<A NAME="lbAH">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Suivant les différentes versions du noyau, Linux a utilisé différentes règles
+pour les permissions nécessaires à un processus non-privilégié pour
+envoyer un signal a un autre processus.
+
+
+Dans les noyaus 1.0 à 1.2.2, un signal pouvait être envoyé si l'UID effectif
+de l'émetteur correspondait à celui du récepteur, ou si l'UID réel de
+l'émetteur correspondant à celui du récepteur.
+Dans les noyaux 1.2.3 à 1.3.77, un signal pouvait être envoyé si l'UID
+effectif de l'émetteur correspondait à UID effectif ou réel du récepteur.
+Les règles actueles, conformes à POSIX 1003.1-2001 ont été adoptées
+dans le noyau 1.3.78.
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, AT&amp;T, POSIX.1, X/OPEN, BSD 4.3
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+_exit">_exit</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+killpg">killpg</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+signal">signal</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+exit">exit</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?7+signal">signal</A></B>(7)
+
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:56 GMT, February 11, 2014
+</BODY>
+</HTML>

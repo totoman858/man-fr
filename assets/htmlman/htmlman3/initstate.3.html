@@ -1,0 +1,120 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of RANDOM</TITLE>
+</HEAD><BODY>
+<H1>RANDOM</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+random, srandom, initstate, setstate - Générateur de nombres aléatoires.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<B>long int random (void);</B>
+<B>void srandom (unsigned int </B><I>seed</I><B>);</B>
+<B>char *initstate (unsigned int </B><I>seed</I><B>, char *</B><I>state</I><B>, size_t </B><I>n</I><B>);</B>
+<B>char *setstate (char *</B><I>state</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>random()</B> utilise une fonction non-linéaire pour engendrer
+des nombres pseudo-aléatoires entre 0 et <B>RAND_MAX</B>.
+La période de ce générateur est très grande, approximativement
+16*((2**31)-1).
+<P>
+
+La fonction <B>srandom()</B> utilise son argument comme &quot;graine&quot; pour engendrer
+une nouvelle séquence de nombre pseudo-aléatoires qui seront fournis
+lors des appels à <B>random()</B>.
+Ces séquences sont reproductibles en invoquant <B>srandom()</B> avec la
+même graine. Si aucune graine n'est fournie, La fonction <B>random()</B>
+utilise automatiquement une graine originale de valeur 1.
+<P>
+
+La fonction <B>initstate()</B> permet d'initialiser une table d'états
+<I>state</I> pour l'utiliser avec <B>random()</B>.  La taille <I>n</I> de la
+table est utilisée par <B>initstate()</B> pour déterminer le
+niveau de sophistication du générateur de nombre aléatoires.
+Plus grande est la table d'état, meilleurs seront les nombres aléatoires.
+<I>seed</I> est la graine utilisée pour l'initialisation, indiquant un
+point de départ pour la séquence de nombres, et permet de redémarrer
+au même endroit.
+<P>
+
+La fonction <B>setstate()</B> modifie la table d'états utilisée par la
+fonction <B>random()</B>. La table d'état <I>state</I> est alors utilisée
+comme générateur de nombres aléatoires jusqu'au prochain appel de
+<B>initstate()</B> ou <B>setstate()</B>.
+<I>state</I> doit d'abord être initialisée avec <B>initstate()</B> ou être le
+résultat d'un appel précédent à <B>setstate()</B>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>random()</B> renvoie une valeur entre 0 et RAND_MAX.
+La fonction <B>srandom()</B> ne renvoie pas de valeur. Les fonctions
+<B>initstate()</B> et <B>setstate()</B> renvoient un pointeur sur
+la table d'états précédente, ou NULL en cas d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+Une table d'états plus courte que 8 octets a été fournie à
+<B>initstate()</B>.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Actuellement, les valeurs optimales <I>n</I>, pour la taille de la table d'états
+sont 8, 32, 64, 128, et 256 octets. Les autres valeurs seront arrondies
+à la taille la plus proche. Essayer d'utiliser moins de 8 octets déclenche
+une erreur.
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.3
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+rand">rand</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+srand">srand</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:13 GMT, February 11, 2014
+</BODY>
+</HTML>

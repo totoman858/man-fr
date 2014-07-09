@@ -1,0 +1,183 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SGMLDIFF</TITLE>
+</HEAD><BODY>
+<H1>SGMLDIFF</H1>
+Section:  (1)<BR>Updated: 11 February 2004<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<P>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+sgmldiff - Trouve les différences dans le marquage entre deux fichiers SGML
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<B>sgmldiff</B> [ <B>options </B><I> ...</I> ] <B></B><I>fichier1</I><B></B> <B></B><I>fichier2</I><B></B> [ <B>-a</B> | <B>--attributes</B>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;<B>-c&nbsp;&nbsp;[&nbsp;attributes&nbsp;|&nbsp;nesting&nbsp;|&nbsp;textpos&nbsp;]</B>&nbsp;|&nbsp;<B>--context&nbsp;&nbsp;[&nbsp;attributes&nbsp;|&nbsp;nesting&nbsp;|&nbsp;textpos&nbsp;]</B>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;<B>-s</B>&nbsp;|&nbsp;<B>--statistics</B>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;<B>-h</B>&nbsp;|&nbsp;<B>--help</B>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;<B>-v</B>&nbsp;|&nbsp;<B>--version</B>&nbsp;]
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+Ce script perl permet de déterminer les différences structurelles
+entre deux fichiers SGML. Il compare ces fichiers, sans se préoccuper
+de ce qui se trouve entre les balises, pour se concentrer uniquement
+sur le marquage. Sa sortie est similaire à <B><A HREF="/cgi-bin/man/man2html?1+diff">diff</A></B>(1).
+<P>
+
+L'utilisation typique de <B>sgmldiff</B> est de comparer un fichier
+SGML avec sa traduction dans une autre langue. Si la traduction a
+été faite proprement, <B>sgmldiff</B> sort sans trouver la moindre
+différence dans le marquage.
+<P>
+
+Un exemple d'invocation typique de sgmldiff est&nbsp;:
+<P>
+<PRE>
+      sgmldiff english.sgml italiano.sgml
+
+</PRE>
+
+<P>
+
+S'il y a des différences dans le marquage entre ces deux fichiers,
+<B>sgmldiff</B> produira en sortie une série de rapports de différence
+résumés dans des lignes de la forme&nbsp;:
+<DL COMPACT>
+<DT><B>169a164</B><DD>
+À la ligne 169 du premier fichier, la ligne 164 du second fichier
+a été ajoutée.
+<DT><B>8a12,15</B><DD>
+À la ligne 8 du premier fichier, les lignes 12 à 15 du second
+fichier ont été ajoutées.
+<DT><B>41d28</B><DD>
+La ligne 41 du premier fichier a été détruite, pour obtenir la
+ligne 28 du second fichier.
+<DT><B>63,66d61</B><DD>
+Les lignes 63 à 66 du premier fichier ont été détruites, pour
+obtenir la ligne 61 du second fichier.
+<DT><B>52c51</B><DD>
+La ligne 52 du premier fichier a été modifiée en la ligne 51
+du second fichier.
+<DT><B>5,7c8,10</B><DD>
+Les lignes 5 à 7 du premier fichier ont été modifiées en les
+lignes 8 à 10 du second fichier.
+En plus de ces récapitulatifs, les lignes du premier fichier sont
+montrées précédées par '&lt;' et les lignes du second fichier sont
+montrées précédées par '&gt;'.
+<P>
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<P>
+
+Voici la liste des actions qui peuvent être demandées à
+sgmldiff&nbsp;:
+<DL COMPACT>
+<DT><B>             [ -a | --attributes ]  </B><DD>
+Inclut les valeurs d'attribut dans les tests de différence.
+Ne pas fixer cette valeur si les attributs semblent devoir
+être traduits. Fixer cette valeur si les valeurs d'attribut
+ne doivent pas être modifiés entre les deux fichiers.
+L'action par défaut est de ne pas inclure les attributs
+dans les tests de différence.
+<DT><B>             [ -c  [ attributes | nesting | textpos ] | --context  [ attributes | nesting | textpos ] ]  </B><DD>
+Ajouter plus de contexte dans la différence. Puisque chaque test entre
+les balises est écarté avant de tester les différences, il est probable
+que <B>sgmldiff</B> se resynchronise au mauvais endroit, en pensant que
+l'emplacement dans les deux fichiers correspond, alors que ce n'est pas
+vrai. En ajoutant plus de contexte, un tel risque est atténué.
+<P>
+Les valeurs autorisées pour l'option <B>--context</B> sont&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>attributes</B><DD>
+Prendre en compte les <B>noms</B> d'attribut. Les <B>valeurs</B> d'attribut
+sont contrôlées par l'option <B>attributes</B>.
+<DT><B>nesting</B><DD>
+Prendre en compte le niveau d'imbrication de toutes les balises comparées.
+<DT><B>textpos</B><DD>
+Prendre en compte la position dans le texte.
+</DL>
+</DL>
+
+<DT><B>             [ -s | --statistics ]  </B><DD>
+Afficher quelques informations SGML à la fin.
+<DT><B>             [ -h | --help ]  </B><DD>
+Afficher un court message d'aide et quitter.
+<DT><B>             [ -v | --version ]  </B><DD>
+Afficher l'identificateur de version et quitter.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<P>
+
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<DL COMPACT>
+<DT><B>          Frederik Fouvry </B><DD>
+Développeur de <B>sgmldiff</B>.
+<P>
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal AT univ-montp2 DOT fr&gt; 12 février 2003 et révisée le
+19 novembre 2004.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=en&nbsp;man&nbsp;1&nbsp;sgmldiff</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<DL COMPACT>
+<DT><B>          <A HREF="/cgi-bin/man/man2html?1+jw">jw</A>(1) </B><DD>
+Conversion d'un fichier SGML vers d'autres formats.
+<DT><B>   <A HREF="/cgi-bin/man/man2html?1+nsgmls">nsgmls</A>(1) </B><DD>
+Un composant de base pour le moteur DSSSL <B>Jade</B>.
+<DT><B>   <A HREF="http://sources.redhat.com/docbook-tools/">http://sources.redhat.com/docbook-tools/</A> &lt;URL:<A HREF="http://sources.redhat.com/docbook-tools/">http://sources.redhat.com/docbook-tools/</A>&gt; </B><DD>
+La page d'accueil des outils DocBook, un recueil de tous les outils
+nécessaires au traitement des fichiers DocBook, incluant DocBook-utils
+<P>
+</DL>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:43 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,139 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DEBCONF-GETLANG.FR.1</TITLE>
+</HEAD><BODY>
+<H1>DEBCONF-GETLANG.FR.1</H1>
+Section: User Contributed Perl Documentation (1)<BR>Updated: 2003-02-14<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+<A NAME="ixAAC"></A>
+debconf-getlang - extrait une langue depuis un questionnaire
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<A NAME="ixAAD"></A>
+
+
+<PRE>
+ debconf-getlang lang master [traduction]
+ debconf-getlang --stats master traduction [...]
+
+</PRE>
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<A NAME="ixAAE"></A>
+Note&nbsp;: Cet utilitaire est mis de côté&nbsp;; vous devriez vous tourner
+vers l'utilisation du paquet po-debconf.
+<P>
+
+Ce programme aide à faire et à gérer les traductions des questions-modèles de
+debconf. À la base, il y a trois situations où ce programme peut être
+appelé&nbsp;:
+<DL COMPACT>
+<DT>Une traduction va commencer.<DD>
+<A NAME="ixAAF"></A>
+Vous voulez fournir au traducteur un fichier sur lequel il peut travailler et
+qui contienne les champs anglais de votre questionnaire et des champs vierges
+Field-ll pour la langue cible qu'il pourra remplir.
+
+
+<P>
+
+
+Pour faire ceci, exécutez le programme avec comme premier paramètre le code de
+la langue de la traduction et comme second paramètre le nom du questionnaire
+anglais.
+<DT>Un traduction qui est déjà en cours.<DD>
+<A NAME="ixAAG"></A>
+Vous avez changé quelques textes anglais, ou ajouté des éléments à votre
+questionnaire et vous voulez envoyer aux traducteurs un fichier avec le texte
+anglais plus les traductions actuelles (ou vous êtes le traducteur et vous
+voulez générer un tel fichier pour votre propre utilisation).
+
+
+<P>
+
+
+Pour accomplir ceci, exécutez le programme avec comme premier paramètre le code
+de la langue de la traduction, comme deuxième paramètre le nom du principal
+questionnaire anglais et comme troisième paramètre le nom du fichier traduit
+actuel.
+
+
+<P>
+
+
+Quand vous le lancez de cette manière, le programme est assez malin pour
+remarquer les traductions floues. Par exemple, une traduction floue sera sortie
+comme Description-&lt;lang&gt;-fuzzy et une nouvelle Description-&lt;lang&gt; vierge sera
+ajoutée. Les traducteurs doivent supprimer le champ -fuzzy lorsqu'ils 
+corrigent
+la traduction floue.
+<DT>Vérification du statut d'une traduction.<DD>
+<A NAME="ixAAH"></A>
+Pour vérifier l'état d'une traduction, utilisez le drapeau --status, et
+passez-lui le questionnaire anglais comme premier paramètre et toutes les
+autres question-modèles traduites après. Il affichera les statistiques pour
+chacun d'eux. Par exemple&nbsp;:
+
+
+<P>
+
+
+
+
+<PRE>
+  debconf-getlang --stats debian/question-modèles debian/question-modèles.*
+
+</PRE>
+
+
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTE</H2>
+
+<A NAME="ixAAI"></A>
+Remarquez que le texte généré dans la question-modèle peut être coupé par
+debconf.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A NAME="ixAAJ"></A>
+<I><A HREF="/cgi-bin/man/man2html?1+debconf-mergetemplate">debconf-mergetemplate</A></I>(1)
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<A NAME="ixAAK"></A>
+Joey Hess &lt;<A HREF="mailto:joeyh@debian.org">joeyh@debian.org</A>&gt;
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<A NAME="ixAAL"></A>
+Julien Louis &lt;<A HREF="mailto:leonptitlouis@ifrance.com">leonptitlouis@ifrance.com</A>&gt;
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTE</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:42 GMT, February 11, 2014
+</BODY>
+</HTML>

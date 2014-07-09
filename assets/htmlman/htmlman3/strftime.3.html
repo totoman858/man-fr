@@ -1,0 +1,352 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STRFTIME</TITLE>
+</HEAD><BODY>
+<H1>STRFTIME</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+strftime - Formater la date et l'heure.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/time.h">time.h</A>&gt;</B>
+
+<B>size_t strftime (char *</B><I>s</I><B>, size_t </B><I>max</I><B>, const char *</B><I>format</I><B>,</B>
+<B>                               const struct tm *</B><I>tm</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>strftime()</B> formate les divers champs de la<BR>
+structure <I>tm</I> en fonction de la chaîne de spécification <I>format</I>,
+puis place le résultat dans la chaîne <I>s</I> de taille <I>max</I>.
+<P>
+
+Les caractères ordinaires présents dans la chaîne <I>format</I> seront
+simplement copiés dans <I>s</I>. Les indicateurs de conversion sont
+introduits par le caractère `%' et sont remplacés, dans la chaîne <I>s</I>
+ainsi :
+<DL COMPACT>
+<DT><B>%a</B>
+
+<DD>
+Le nom abrégé du jour de la semaine, en fonction de la localisation en cours.
+<DT><B>%A</B>
+
+<DD>
+Le nom complet du jour de la semaine, en fonction de la localisation en cours.
+<DT><B>%b</B>
+
+<DD>
+Le nom abrégé du mois, en fonction de la localisation en cours.
+<DT><B>%B</B>
+
+<DD>
+Le nom complet du mois, en fonction de la localisation en cours.
+<DT><B>%c</B>
+
+<DD>
+La représentation classique de la date et de l'heure, suivant la
+localisation en cours.
+<DT><B>%C</B>
+
+<DD>
+Le siècle (année / 100) sous forme de nombre de deux chiffres. (SU)
+<DT><B>%d</B>
+
+<DD>
+Le quantième du mois sous forme de nombre décimal (entre 01 et 31).
+<DT><B>%D</B>
+
+<DD>
+Equivalent à  %m/%d/%y. Seulement pour les américains.
+Ces derniers doivent noter que les autres pays préfèrent le
+format %d/%m/%y. Dans un contexte international ce format est
+ambigu et doit être évité. (SU)
+<DT><B>%e</B>
+
+<DD>
+Comme %d, le quantième du mois sous forme décimal, mais l'éventuel
+zéro en tête est remplacé par un espace. (SU)
+<DT><B>%E</B>
+
+<DD>
+Modificateur : Utiliser un format de rechange. Voir plus bas. (SU)
+<DT><B>%F</B>
+
+<DD>
+Équivalent de %Y-%m-%d (Format de date ISO 8601). (C99)
+<DT><B>%G</B>
+
+<DD>
+L'année ISO 8601 avec le siècle comme nombre décimal. L'année sur quatre
+chiffres correspond au numéro de la semaine ISO (voir %V).
+C'est le même format que %y, sauf que si le numéro de semaine appartient
+à l'année suivante ou précédente, c'est celle-ci qui est affichée à la
+place. (TZ)
+<DT><B>%g</B>
+
+<DD>
+Comme %G sans le siècle, c'est à dire avec une année sur deux chiffres (00-99). (TZ)
+<DT><B>%h</B>
+
+<DD>
+Equivalent à %b. (SU)
+<DT><B>%H</B>
+
+<DD>
+L'heure, sur 24 heures, sous forme de nombre décimal (entre 00 et 23).
+<DT><B>%I</B>
+
+<DD>
+L'heure, sur 12 heures, sous forme de nombre décimal (entre 01 et 12).
+<DT><B>%j</B>
+
+<DD>
+Le numéro du jour dans l'année (entre 001 et 366).
+<DT><B>%k</B>
+
+<DD>
+L'heure (sur 24 heures) sous forme de nombre décimal (intervalle 0 à 23).
+Les chiffres uniques sont précédés d'un blanc (voir aussi %H). (TZ).
+<DT><B>%l</B>
+
+<DD>
+L'heure  (sur 12 heures) sous forme de nombre décimal (intervalle 1 à 12).
+Les chiffres uniques sont précédés d'un blanc (voir aussi %I). (TZ).
+<DT><B>%m</B>
+
+<DD>
+Le numéro du mois (entre 01 et 12).
+<DT><B>%M</B>
+
+<DD>
+La minute, sous forme de nombre décimal (00 à 59).
+<DT><B>%n</B>
+
+<DD>
+Un caractère saut-de-ligne. (SU)
+<DT><B>%O</B>
+
+<DD>
+Modificateur : Utiliser un format de rechange. Voir plus bas. (SU)
+<DT><B>%p</B>
+
+<DD>
+L'une des deux chaînes `AM' ou `PM' en fonction de l'heure, ou la traduction
+de ces chaînes en fonctions de la localisation en cours.
+Midi est traité comme `PM' et Minuit comme `AM'.
+<DT><B>%P</B>
+
+<DD>
+Comme %p mais en minuscule: `am' ou `pm' ou une chaîne locale équivalente. (GNU)
+<DT><B>%r</B>
+
+<DD>
+L'heure en notation a.m. ou p.m.
+Dans la localisation POSIX, c'est équivalent à `%I:%M:%S %p'. (SU)
+<DT><B>%R</B>
+
+<DD>
+L'heure en format 24 heures (%H:%M). (SU).
+Pour avoir les secondes voir %T.
+<DT><B>%s</B>
+
+<DD>
+Le nombre de secondes écoulées depuis le 1er Janvier 1970 à 00:00:00 UTC. (TZ).
+<DT><B>%S</B>
+
+<DD>
+La seconde, sous forme de nombre décimal. (00-61)
+<DT><B>%t</B>
+
+<DD>
+Un caractère Tab. (SU)
+<DT><B>%T</B>
+
+<DD>
+L'heure en notation 24 heures (%H:%M:%S). (SU)
+<DT><B>%u</B>
+
+<DD>
+Le jour de la semaine sous forme décimal, de 1 (Lundi) à 7.
+Voir aussi %w. (SU)
+<DT><B>%U</B>
+
+<DD>
+Le numéro de la semaine dans l'année, sous forme de nombre décimal (00-53),
+en commençant le comptage au premier Dimanche de l'année. Voir aussi %V et %W.
+<DT><B>%V</B>
+
+<DD>
+Le numéro de semaine ISO 8601:1988 de l'année en cours sous forme de nombre
+décimal dans l'intervalle 01-53, où la semaine 1 est la première ayant au
+moins 4 jours dans l'année en cours, et où Lundi est le premier jour de la
+semaine. Voir aussi %U et %W. (SU)
+<DT><B>%W</B>
+
+<DD>
+Le numéro de la semaine dans l'année, sous forme de nombre décimal (00-53), en
+commençant le comptage au premier Lundi de l'année.
+<DT><B>%w</B>
+
+<DD>
+Le numéro du jour de la semaine, sous forme décimale (0-6), Dimanche
+valant 0. Voir aussi %u.
+<DT><B>%x</B>
+
+<DD>
+La représentation usuelle de la date, sans l'heure, dans la localisation
+en cours.
+<DT><B>%X</B>
+
+<DD>
+La représentation usuelle de l'heure, sans la date, dans la localisation
+en cours.
+<DT><B>%y</B>
+
+<DD>
+L'année, sous forme de nombre décimal, sans le siècle (entre 00 et 99).
+<DT><B>%Y</B>
+
+<DD>
+L'année, sous forme de nombre décimal, incluant le siècle.
+<DT><B>%z</B>
+
+<DD>
+Le fuseau horaire sous forme de décalage GMT. Nécessaire pour crééer
+des dates conformes à la RFC 822
+(avec &quot;%a, %d %b %Y %H:%M:%S %z&quot;). (GNU)
+<DT><B>%Z</B>
+
+<DD>
+Le nom ou l'abréviation du fuseau horaire.
+<DT><B>%+</B>
+
+<DD>
+La date et l'heure au format <A HREF="/cgi-bin/man/man2html?1+date">date</A>(1). (TZ)
+<DT><B>%%</B>
+
+<DD>
+Un caractère `%'.
+</DL>
+<P>
+
+Certains indicateurs de conversion peuvent être modifiés en les faisant
+préceder par le modificateur E ou O pour indiquer un format de rechange.
+Si le format de rechange n'existe pas pour la localisation en cours, le
+comportement ne sera pas modifié.
+Les Spécifications Single Unix mentionnent  %Ec, %EC, %Ex, %EX,
+%Ry, %EY, %Od, %Oe, %OH, %OI, %Om, %OM, %OS, %Ou, %OU, %OV,
+%Ow, %OW, %Oy, 
+où l'action du modificateur O est d'utiliser un autre format numérique
+(par exemple des chiffres romains), et l'action de E est d'utiliser
+une représentaiton dépendant de la localisation.
+<P>
+
+Les champs de la structure <I>tm</I> sont définis dans <I>&lt;<A HREF="file:///usr/include/time.h">time.h</A>&gt;</I>.
+Voir aussi
+<B><A HREF="/cgi-bin/man/man2html?3+ctime">ctime</A></B>(3).
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>strftime()</B> renvoie le nombre de caractères écrits dans
+la table <I>s</I>, sans compter le caractère NUL final. Si la chaîne était
+trop courte, <B>strftime()</B> renvoie 0, et le contenu de la chaîne est
+indéfini. (Ceci, du moins, depuis la libc 4.4.4, des versions plus anciennes
+de la libc, comme la 4.4.1, renvoyaient <I>max</I> si la chaîne était trop
+courte)
+<P>
+Remarquez qu'une valeur de retour nulle n'indique pas toujours une erreur.
+Dans de nombreuses localisations, par exemple, %p renvoie une chaîne vide.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+Les variables d'environnement TZ et LC_TIME sont utilisées.
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ANSI C, SVID 3, ISO 9899.
+Il y a une inclusion stricte entre les jeux de conversions fournies
+par ANSI (sans marque), celles indiquées par les Spécifications Single
+Unix (marquées SU), celles fournies par le paquetage TimeZone d'Olson
+(marquées TZ), et celles de la glibc (marquées GNU), sauf pour %+
+qui n'est pas supporté par glibc2. D'un autre côté glibc2 offre
+plusieurs extensions.
+POSIX.1 ne traite que les conversions ANSI C. POSIX.2 décrit à propos de
+<B><A HREF="/cgi-bin/man/man2html?1+date">date</A></B>(1)
+
+plusieurs extensions applicables également à
+<B>strftime.</B>
+
+La conversion %F est dans C99 et POSIX 1003.1-2001.
+<A NAME="lbAH">&nbsp;</A>
+<H2>BUGS</H2>
+
+Certaines versions boguées de gcc se plaignent de l'utilisation de %c&nbsp;:
+<I>warning: `%c' yields only last 2 digits of year in some locales</I>.
+
+(Attention&nbsp;: ne donne que les deux derniers chiffres de l'année dans certaines
+localisations).
+Bien sûr, les programmeurs sont encouragés à utiliser %c, cela donne la
+représentation préférée de date et d'heure. Il y a eu des tas d'astuces
+bizarres pour éviter ce problème de gcc. Une relativement propre est
+d'utiliser une fonction intermédiaire&nbsp;:
+<DL COMPACT><DT><DD>
+size_t my_strftime(char *s, size_t max, const char *fmt,
+const struct tm *tm) {
+<BR>
+
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;strftime(s,&nbsp;max,&nbsp;fmt,&nbsp;tm);
+<BR>
+
+}
+</DL>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+date">date</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+time">time</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+ctime">ctime</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setlocale">setlocale</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+sprintf">sprintf</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">BUGS</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:36 GMT, February 11, 2014
+</BODY>
+</HTML>

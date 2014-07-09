@@ -1,0 +1,263 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SETBUF</TITLE>
+</HEAD><BODY>
+<H1>SETBUF</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+setbuf, setbuffer, setlinebuf, setvbuf - Agir sur les buffers d'un flux.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<P>
+<B>void setbuf (FILE *</B><I>stream</I><B>, char *</B><I>buf</I><B>);</B>
+
+<BR>
+
+<B>void setbuffer (FILE *</B><I>stream</I><B>, char *</B><I>buf</I><B>, size_t </B><I>size</I><B>);</B>
+
+<BR>
+
+<B>void setlinebuf (FILE *</B><I>stream</I><B>);</B>
+
+<BR>
+
+<B>int setvbuf (FILE *</B><I>stream</I><B>, char *</B><I>buf</I><B>, int </B><I>mode</I>
+
+<B>, size_t </B><I>size</I><B>);</B>
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les trois types de buffers disponibles sont les suivants :
+pas de buffers, buffers de blocs, et buffers de lignes.
+Quand un flux de
+sortie n'a pas de buffer, les données apparaissent dans le fichier destination,
+ou sur le terminal, dès qu'elles sont écrites.
+Avec les buffers par blocs, une certaine quantité de données est conservée
+avant d'être écrite en tant que bloc.
+Avec les buffers de lignes, les
+caractères sont conservés jusqu'à ce qu'un saut de ligne soit transmis,
+ou que l'on réclame une lecture sur un flux attaché au terminal (typiquement
+stdin).
+La fonction
+<B><A HREF="/cgi-bin/man/man2html?3+fflush">fflush</A></B>(3)
+
+peut être utilisée pour forcer l'écriture à n'importe quel moment.
+(Voir
+<B><A HREF="/cgi-bin/man/man2html?3+fclose">fclose</A></B>(3).)
+
+<P>
+Normalement tous les fichiers utilisent des buffers de blocs. Quand une première
+opération d'entrée/sortie se déroule sur un fichier,
+<B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></B>(3)
+
+est appelé, et un buffer est créé. Si le flux se rapporte à un terminal (comme
+<I>stdout</I>
+
+habituellement) il s'agit d'un buffer de ligne.
+Le flux standard de sortie d'erreur
+<I>stderr</I>
+
+n'a jamais de buffer par défaut.
+<P>
+
+La fonction
+<B>setvbuf</B>
+
+peut être utilisée sur n'importe quel flux ouvert pour modifier
+son type de buffer.
+La paramètre
+<I>mode</I>
+
+doit correspondre à l'une des constantes symboliques suivantes :
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>_IONBF</B>
+
+<DD>
+pas de buffer
+<DT><B>_IOLBF</B>
+
+<DD>
+buffer de ligne
+<DT><B>_IOFBF</B>
+
+<DD>
+buffer complet
+</DL>
+</DL>
+
+<P>
+
+A l'exception des fichiers sans buffers, l'argument
+<I>buf</I>
+
+doit pointer sur un buffer contenant au moins
+<I>size</I>
+
+octets. Ce nouveau buffer sera utilisé à la place de l'ancien.  Si l'argument
+<I>buf</I>
+
+est
+<B>NULL</B>,
+
+seul le mode est affecté. Un nouveau buffer sera alloué automatiquement lors
+de la prochaine opération de lecture ou d'écriture.
+La fonction
+<B>setvbuf</B>
+
+ne peut être utilisée qu'après l'ouverture du flux, et avant toute opération
+dessus.
+<P>
+
+Les trois autres appels sont, en fait, simplement des alias pour l'appel de
+<B>setvbuf</B>.
+
+la fonction
+<B>setbuf</B>
+
+est exactement équivalente à
+<P>
+
+<DL COMPACT><DT><DD>
+setvbuf(stream, buf, buf ? _IOFBF : _IONBF, BUFSIZ);
+</DL>
+
+<P>
+
+La fonction
+<B>setbuffer</B>
+
+est identique, sauf que la taille du buffer est indiquée par l'appelant plutôt
+que la valeur par défaut
+<B>BUFSIZ</B>.
+
+La fonction
+<B>setlinebuf</B>
+
+est exactement équivalente à&nbsp;: 
+<P>
+
+<DL COMPACT><DT><DD>
+setvbuf(stream, (char *)NULL, _IOLBF, 0);
+</DL>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction
+<B>setvbuf</B>
+
+renvoie zéro si elle réussit.
+Elle peut renvoyer n'importe quelle valeur en cas d'échec, mais toujours une valeur non-nulle si le
+<I>mode</I>
+
+est invalide, ou si la requête ne peut pas être honorée. Elle peut remplir
+<I>errno</I>
+
+en cas d'erreur.
+Les autres fonctions ne renvoient rien.
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Les fonctions
+<B>setbuf</B>
+
+et
+<B>setvbuf</B>
+
+sont conformes à ANSI X3.159-1989 (``ANSI C'').
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Les fonctions
+<B>setbuffer</B>
+
+et
+<B>setlinebuf</B>
+
+ne sont pas portables sur les systèmes BSD antérieurs à 4.2BSD, et sont
+isponibles sous Linux depuis la LibC 4.5.21. Sur les systèmes 4.2BSD et 4.3BSD,
+<B>setbuf</B>
+
+utilise toujours une taille de buffer non-optimale, et doit être évitée.
+<P>
+
+Il faut toujours s'assurer que
+<I>buf</I>
+
+et son contenu existent encore au moment de la fermeture du flux
+(qui se produit automatiquement à la fin du programme).
+<P>
+
+Par exemple, ceci est INCORRECT&nbsp;:
+<PRE>
+
+#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;
+
+int 
+main (void)
+{
+    char   buf [BUFSIZ];
+    
+    setbuf (stdin, buf);
+    printf (&quot;Hello, world!\n&quot;);
+    return (0);
+}
+</PRE>
+
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+fclose">fclose</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fflush">fflush</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fopen">fopen</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fread">fread</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+printf">printf</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+puts">puts</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:15 GMT, February 11, 2014
+</BODY>
+</HTML>

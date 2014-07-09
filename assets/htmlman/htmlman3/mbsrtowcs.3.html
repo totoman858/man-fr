@@ -1,0 +1,108 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MBSRTOWCS</TITLE>
+</HEAD><BODY>
+<H1>MBSRTOWCS</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mbsrtowcs - Convertir une séquence multi-octets en chaîne de caractères larges.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/wchar.h">wchar.h</A>&gt;</B>
+
+<B>size_t mbsrtowcs (wchar_t *</B><I>dest</I><B>, const char **</B><I>src</I><B>,</B>
+<B>                  size_t </B><I>len</I><B>, mbstate_t *</B><I>ps</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Si <I>dest</I> n'est pas un pointeur NULL, la fonction <B>mbsrtowcs</B> convertit la séquence multi-octets <I>*src</I>
+en une chaîne de caractères larges débutant en <I>dest</I>. Au maximum, <I>len</I> caractères larges seront écrits dans <I>dest</I>.
+L'état de conversion <I>*ps</I> est mis à jour. La conversion est en fait réalisée en invoquant à répétition
+mbrtowc(<I>dest</I>,<I>*src</I>,<I>n</I>,<I>ps</I>) où <I>n</I> est un nombre positif, aussi longtemps que cet appel réussit,
+en incrémentant chaque fois <I>dest</I> et en augmentant <I>src</I> du nombre d'octets lus. La conversion peut s'arrêter pour
+trois raisons :
+<P>
+
+1. Une séquence multi-octets invalide a été rencontrée. Dans ce cas, <I>*src</I> pointera sur la séquence invalide,
+et la fonction renvoie (size_t)(-1) en positionnant <B>errno</B> à la valeur <B>EILSEQ</B>.
+<P>
+
+2. <I>len</I> caractères larges différents de L'\0' ont été
+enregistrés en <I>dest</I>. Dans ce cas, <I>*src</I> pointe sur la séquence multi-octets suivante, et le nombre
+de caractères larges écrites dans <I>dest</I> est renvoyé.
+<P>
+
+3. La séquence multi-octets a été complètement convertie, y compris le L'\0' final (ce qui a pour effet de bord
+de ramener <I>*ps</I> à l'état initial). Dans ce cas, <I>*src</I> est mis à NULL, et le nombre de caractères écrits
+dans <I>dest</I>, sauf le L'\0' final, est renvoyé.
+<P>
+
+Si <I>dest</I> est NULL, alors <I>len</I> est ignoré, et la conversion se déroule comme précédemment, sauf que les
+caractères convertis ne sont pas écrits en mémoire, et qu'aucune limite de destination n'est prise en compte.
+<P>
+
+Dans tous les cas, si <I>ps</I> est un pointeur NULL, un état anonyme statique, réservé à la fonction
+mbsnrtowcs est utilisé à sa place.
+<P>
+
+Le programmeur doit s'assurer qu'il y assez de place pour au moins <I>len</I> caractères larges dans <I>dest</I>.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉÉ</H2>
+
+La fonction <B>mbsrtowcs</B> renvoie le nombre de caractères larges placés dans la zone convertie, sans
+compter le caractère nul final. Si une séquence multi-octets invalide est rencontrée, la fonction renvoie (size_t)(-1),
+et <B>errno</B> contient <B>EILSEQ</B>.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ISO/ANSI C, UNIX98
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+mbstowcs">mbstowcs</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+mbsnrtowcs">mbsnrtowcs</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+iconv">iconv</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le comportement de <B>mbsrtowcs</B> dépend de la catégorie LC_CTYPE de la localisation.
+<P>
+
+L'utilisation d'un pointeur NULL pour <I>ps</I> n'est pas sûr dans un contexte multithreads.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉÉ</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:18 GMT, February 11, 2014
+</BODY>
+</HTML>

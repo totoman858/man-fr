@@ -1,0 +1,187 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ALLOC_HUGEPAGES</TITLE>
+</HEAD><BODY>
+<H1>ALLOC_HUGEPAGES</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+alloc_hugepages, free_hugepages - Allouer ou libérer des pages immenses.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>void *alloc_hugepages(int </B><I>cle</I><B>, void *</B><I>adr</I><B>, size_t </B><I>lg</I><B>, int </B><I>prot</I><B>, int </B><I>attr</I><B>);</B>
+
+
+
+<P>
+<B>int free_hugepages(void *</B><I>adr</I><B>);</B>
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les appels-système
+<B>alloc_hugepages</B>
+
+et
+<B>free_hugepages</B>
+
+ont été introduits dans Linux 2.5.36 et retirés à nouveau dans le 2.5.54.
+Ils n'existent que sur i386 et ia64 (compilation avec l'option CONFIG_HUGETLB_PAGE).
+Dans Linux 2.4.20 le numéro d'appel-système existe, mais renvoie toujours ENOSYS.
+<P>
+
+Sur un i386, le mécanisme matériel de gestion mémoire manipule des pages ordinaires (4 Ko) et des
+pages immenses (2 à 4 Mo). De même l'ia64 connaît des pages immenses de diverses
+tailles. Ces appels-système servent à projeter ces pages immenses dans l'espace
+mémoire du processus ou à les libérer.
+Les pages immenses sont verrouillées en mémoire et jamais swappées.
+<P>
+
+Le paramètre
+<I>cle</I>
+
+est un identificateur. Lorsqu'il vaut zéro, les pages sont privées et non héritées
+par les processus descendants.
+Lorsqu'il est positif, les pages sont partagées avec les autres applications utilisant la même
+<I>cle</I>,
+
+et héritées par les processus enfants.
+<P>
+
+Le paramètre
+<I>adr</I>
+
+de
+<B>free_hugepages()</B>
+
+indique quelle page doit être libérée - il a été renvoyé lors de
+l'appel
+<B>alloc_hugepages()</B>.
+
+(La mémoire n'est véritablement libérée que lorsque tous ses utilisateurs la relâchent).
+Le paramètre
+<I>adr</I>
+
+de
+<B>alloc_hugepages()</B>
+
+est un désir que le noyau peut suivre ou non.
+Les adresses doivent être correctement alignées.
+<P>
+
+Le paramètre
+<I>lg</I>
+
+est la taille du segment désiré. Il doit s'agir d'un multiple
+de la taille d'une page immense.
+<P>
+
+Le paramètre
+<I>prot</I>
+
+indique le type de protection du segment. Il s'agit
+d'une association de PROT_READ, PROT_WRITE, PROT_EXEC.
+<P>
+
+Le paramètre
+<I>flag</I>
+
+est ignoré, sauf si
+<I>cle</I>
+
+est positive. Dans ce cas, si
+<I>flag</I>
+
+vaut IPC_CREAT, alors un nouveau segment de page énorme est créé si
+aucun n'existe avec cette clé. Sinon, l'erreur ENOENT est renvoyé
+si aucun segment correspondant à la clé n'existe.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+S'il réussit
+<B>alloc_hugepages</B>
+
+renvoie l'adresse du segment alloué, et
+<B>free_hugepages</B>
+
+renvoie zéro. En cas d'erreur, ils renvoient -1 et remplissent
+<I>errno</I>
+
+avec le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ENOSYS</B>
+
+<DD>
+L'appel-système n'est pas supporté par ce noyau.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Ces appels n'existent que dans les noyaux Linux 2.5.36 - 2.5.54.
+Ils sont spécifiques à Linux sur processeurs Intel, et ne doivent pas être
+employés sur des programmes conçus pour être protables. De plus, les numéros
+de ces appels-système ont été marqués comme libres, et les programme les
+utilisant risquent de se comporter de manière imprévisible dans l'avenir.
+<A NAME="lbAH">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/proc/sys/vm/nr_hugepages</I>
+
+Nombre de pages énormes configurées.
+Peut être lu ou écrit.
+<P>
+
+<I>/proc/meminfo</I>
+
+Indique le nombre de pages énormes configurés, et leurs tailles
+dans les trois variables HugePages_Total, HugePages_Free, Hugepagesize.
+<A NAME="lbAI">&nbsp;</A>
+<H2>NOTES</H2>
+
+Ces appels-système ont disparu. Maintenant, le système de fichiers hugetblfs peut
+être employé à leur place. La mémoire correspondant aux pages énormes (si le
+processeur les supportent) peut être obtenue par un mmap() des fichiers de
+ce système de fichiers virtuel.
+<P>
+
+Le nombre maximal de pages énormes peut être indiqué en utilisant l'argument
+<B>hugepages=</B>
+
+au boot.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">FICHIERS</A><DD>
+<DT><A HREF="#lbAI">NOTES</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:54 GMT, February 11, 2014
+</BODY>
+</HTML>

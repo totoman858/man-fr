@@ -1,0 +1,96 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SLEEP</TITLE>
+</HEAD><BODY>
+<H1>SLEEP</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+sleep - Endormir le processus pour une durée déterminée.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<B>unsigned int sleep (unsigned int </B><I>nb_sec</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>sleep()</B>
+
+endort le processus jusqu'à ce que
+<I>nb_sec</I>
+
+secondes se soient écoulées, ou jusqu'à ce qu'un signal non-ignoré soit reçu.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>sleep()</B> renvoie zéro si le temps prévu s'est écoulé, ou le nombre de
+secondes restantes si un signal a réveillé le processus.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX.1
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<B>sleep()</B>
+
+peut être implémenté en utilisant
+<B>SIGALRM</B> ;
+
+ainsi l'utilisation conjointe de
+<B>alarm()</B>
+
+et
+<B>sleep() </B>
+
+est une très mauvaise idée.
+<P>
+
+L'utilisation de
+<B>longjmp()</B>
+
+dans un gestionnaire de signaux, ou la modification du gestionnaire de
+<B>SIGALRM</B>
+
+pendant la période de sommeil conduiront à un comportement imprévisible.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+signal">signal</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+alarm">alarm</A></B>(2)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:24 GMT, February 11, 2014
+</BODY>
+</HTML>

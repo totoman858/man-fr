@@ -1,0 +1,88 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MBRLEN</TITLE>
+</HEAD><BODY>
+<H1>MBRLEN</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mbrlen - Calculer la longueur d'un caractère multi-octets.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/wchar.h">wchar.h</A>&gt;</B>
+
+<B>size_t mbrlen (const char *</B><I>s</I><B>, size_t </B><I>n</I><B>, mbstate_t *</B><I>ps</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>mbrlen</B> examine au maximum <I>n</I> octets de la séquence commençant
+en <I>s</I> et en extrait le caractère multi-octets complet suivant. Elle met à jour
+l'état de décalage <I>*ps</I>. Si le caractère multi-octets ne correspond pas au caractère
+large nul, elle renvoie le nombre d'octets qui ont été lus dans <I>s</I>. Si ce caractère
+correspond au caractère large nul, elle réinitialise l'état <I>*ps</I> et renvoie 0.
+<P>
+
+Si les <I>n</I> octets commençant en <I>s</I> ne contiennent pas un caractère multi-octets complet,
+<B>mbrlen</B> renvoie <I>(size_t)(-2)</I>. Ceci peut se produire même si <I>n</I> &gt;= <I>MB_CUR_MAX</I>,
+dans le cas où la séquence multi-octets contient des séquences de décalage redondantes.
+<P>
+
+Si la séquence multi-octets commençant en <I>s</I> contient une séquence invalide avant le prochain
+caractère complet, <B>mbrlen</B> renvoie <I>(size_t)(-1)</I> et place dans <B>errno</B> la valeur <B>EILSEQ</B>.
+Dans ce cas, les effets sur <I>*ps</I> sont indéfinis.
+<P>
+
+Si <I>ps</I> est un pointeur NULL, une zone de mémoire statique réservée à mbrlen est utilisée à sa place.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>mbrlen</B> renvoie le nombre d'octets balayés depuis la séquence commençant en <I>s</I>, si
+un caractère large non nul a été reconnu. Elle renvoie zéro si un caractère large nul est rencontré.
+Elle renvoie (size_t)(-1) et remplit <B>errno</B> avec <B>EILSEQ</B>, si une séquence invalide est trouvée.
+Elle renvoie (size_t)(-2) si elle n'a pas trouvé de caractère entier, et si <I>n</I> doit être augmenté.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ISO/ANSI C, UNIX98
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+mbrtowc">mbrtowc</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le comportement de <B>mbrlen</B> dépend de la catégorie LC_CTYPE de la localisation.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:18 GMT, February 11, 2014
+</BODY>
+</HTML>

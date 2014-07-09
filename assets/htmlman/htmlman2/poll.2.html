@@ -1,0 +1,200 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of POLL</TITLE>
+</HEAD><BODY>
+<H1>POLL</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+poll - Attendre un événement concernant un descripteur de fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/linux/asm/poll.h">linux/asm/poll.h</A>&gt;</B>
+
+<P>
+<B>int poll(struct pollfd *</B><I>ufds</I><B>, unsigned int </B><I>nfds</I><B>, int </B><I>délai</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>poll</B>
+
+est une variation sur le thème de
+<B><A HREF="/cgi-bin/man/man2html?2+select">select</A></B>(2).
+
+Il utilise une table de
+<I>nfds</I>
+
+structures du type
+<BR>
+
+<PRE>
+        struct pollfd {
+                int fd;         /* Descripteur de fichier */
+                short events;   /* Événements attendus    */
+                short revents;  /* Événements détectés    */
+        };
+</PRE>
+
+et un
+<I>délai</I>
+
+en millisecondes. Une valeur négative indique un délai infini.
+Le champ
+<I>fd</I>
+
+contient un descripteur de fichier ouvert.
+Le champ
+<I>events</I>
+
+est un paramètre d'entrée, un masque de bits indiquant les événements
+qui intéressent l'application.
+Le champ
+<I>revents</I>
+
+est un paramètre de sortie, rempli par le noyau avec les événements qui
+se sont effectivement produits, du type demandé, ou de l'une des valeurs
+<B>POLLERR</B>,
+
+<B>POLLHUP</B>
+
+ou
+<B>POLLNVAL</B>.
+
+(Ces trois bits n'ont pas de signification dans la demande
+<I>events</I>,
+
+et se trouvent positionnés dans la valeur de retour
+<I>revents</I>
+
+si l'une des conditions correspondantes se produit).
+<P>
+Si aucun événement attendu (ni aucune erreur) ne s'est déjà produit, le noyau
+attend leur occurrence pendant
+<I>timeout</I>
+
+millisecondes.
+Les bits possibles pour ces masques sont définis dans &lt;<A HREF="file:///usr/include/sys/poll.h">sys/poll.h</A>&gt;&nbsp;:
+<BR>
+
+<PRE>
+    #define POLLIN    0x0001  /* Données disponibles en lecture  */
+    #define POLLPRI   0x0002  /* Données urgentes disponibles    */
+    #define POLLOUT   0x0004  /* Une écriture ne bloquera pas    */
+    #define POLLERR   0x0008  /* Condition d'erreur              */
+    #define POLLHUP   0x0010  /* Déconnexion                     */
+    #define POLLNVAL  0x0020  /* Requête invalide, fd pas ouvert */
+</PRE>
+
+Pour un fichier source XPG4.2, on a aussi&nbsp;:
+<BR>
+
+<PRE>
+#ifdef _XOPEN_SOURCE
+    #define POLLRDNORM 0x0040 /* Données normales prêtes à lire */
+    #define POLLRDBAND 0x0080 /* Données prioritaires à lire    */
+    #define POLLWRNORM 0x0100 /* Écriture normale possible      */
+    #define POLLWRBAND 0x0200 /* Écriture prioritaire possible  */
+#endif
+</PRE>
+
+De plus, Linux connait une constante
+<BR>
+
+<PRE>
+#ifdef _GNU_SOURCE
+    #define POLLMSG   0x0400
+#endif
+</PRE>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+S'il réussit,
+<B>poll</B>
+
+renvoie une valeur positive représentant le nombre de structures
+ayant un champ
+<I>revents</I>
+
+non-nul. C'est à dire le nombre de structures pour lesquels un événement
+attendu, ou une erreur, s'est produit.
+Une valeur de retour nulle indique un dépassement du délai d'attente.
+S'il échoue,
+<B>poll</B>
+
+renvoie -1, et 
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+Un descripteur de fichier invalide est présent dans un ensemble.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour allouer la table des descripteurs de fichiers.
+<DT><B>EFAULT</B>
+
+<DD>
+La table fournie en argument n'est pas dans l'espace d'adressage du processus
+appelant.
+<DT><B>EINTR</B>
+
+<DD>
+Un signal a été reçu avant qu'un événement intéressant ne se produise.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+XPG4-UNIX
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+L'appel système <B>poll</B>() a été introduit dans la version 2.1.23
+du noyau Linux. La fonction de bibliothèque <B>poll</B>() est apparue
+dans la version 5.4.28 de la libc, et fournit une émulation basée sur
+l'appel système <B>select</B>() si le noyau n'a pas d'appel système <B>poll</B>().
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+select">select</A></B>(2)
+
+<B><A HREF="/cgi-bin/man/man2html?2+select_tut">select_tut</A></B>(2)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:58 GMT, February 11, 2014
+</BODY>
+</HTML>

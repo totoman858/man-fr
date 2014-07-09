@@ -1,0 +1,147 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DEB</TITLE>
+</HEAD><BODY>
+<H1>DEB</H1>
+Section: Debian (5)<BR>Updated: Janvier 2000<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM </H2>
+
+deb - Format des paquets binaires Debian
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<I>nom-du-fichier.deb</I>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le format
+<B>.deb</B>
+
+est le format de fichier des paquets binaires de Debian. Il est 
+compatible avec les versions 0.93.76 et ultérieures de dpkg, et est 
+généré par défaut par toutes les versions de dpkg depuis la 1.2.0 ainsi
+que toutes les versions i386/ELF depuis la 1.1.1elf.
+<P>
+
+Le format décrit ici est utilisé depuis la Debian 0.93&nbsp;; les détails concernant
+le vieux format sont consultables dans 
+<B><A HREF="/cgi-bin/man/man2html?5+deb-old">deb-old</A></B>(5).
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>FORMAT</H2>
+
+Le fichier est une archive
+<B>ar</B>
+
+avec un numéro magique de
+<B>!&lt;arch&gt;.</B>
+
+<P>
+
+Le premier membre est nommé
+<B>debian-binary</B>
+
+et contient une succession de lignes, séparées par des retours-chariot. Pour le
+moment, une seule ligne est présente&nbsp;: le numéro de version du format,
+<B>2.0</B>
+
+à l'heure où ce document a été écrit.
+Les programmes lisant des archives Debian récentes doivent être préparés à une
+augmentation du numéro de version mineur et à la présence de nouvelles lignes,
+ainsi qu'à les ignorer s'il le faut.
+<P>
+
+Si le numéro de version majeur a changé, cela signifie qu'une modification entraînant
+une incompatibilité entre les versions a été effectuée, et le programme doit alors
+s'arrêter. Si ce n'est pas le cas, le programme doit être en mesure de 
+continuer à traiter correctement le fichier, à moins qu'il ne rencontre un membre non 
+reconnu dans l'archive (excepté à la fin de cette dernière), comme décrit ci-dessous.
+<P>
+
+Le second membre requis est nommé
+<B>control.tar.gz .</B>
+
+Il s'agit d'une archive tar compressée grâce à gzip contenant les informations de
+contrôle du paquet, sous la forme d'une série de fichiers, parmi lesquels
+le fichier
+<B>control</B>
+
+est strictement requis et contient les principales informations de contrôle. Veuillez
+vous référer au
+<I>Manuel d'empaquetage Debian, section 2.2 </I>
+
+pour plus de détails
+concernant ces fichiers. Le tarball de contrôle peut éventuellement contenir une
+entrée pour 
+«&nbsp;.&nbsp;»,
+
+le répertoire courant.
+<P>
+
+Le troisième, et dernier membre requis se nomme
+<B>data.tar.gz.</B>
+
+Il contient les fichiers de données sous forme d'une archive tar compressée
+grâce à gzip.
+<P>
+
+Ces trois membres doivent apparaître dans cet ordre exact. Les implémentations
+actuelles devraient ignorer tout membre additionnel suivant
+<B>data.tar.gz.</B>
+
+D'autres membres seront éventuellement définis dans le futur, et (si possible)
+seront placés après ces trois derniers. Tout autre membre qui nécessitera d'être
+inséré avant
+<B>data.tar.gz</B>
+
+et qui pourra être ignoré sans problème par des programmes plus anciens, auront
+un nom commençant par un underscore,
+«&nbsp;_&nbsp;».
+
+<P>
+
+Les nouveaux membres qui ne pourront pas être ignorés sans conséquence seront
+insérés avant
+<B>data.tar.gz</B>
+
+avec des noms préfixés par quelque chose d'autre qu'un underscore, ou causeront
+(ce qui est plus probable) une incrémentation du numéro majeur de version.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+deb-old">deb-old</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?1+dpkg-deb">dpkg-deb</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?5+deb-control">deb-control</A></B>(5),
+
+<I>Manuel d'empaquetage Debian.</I>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Ariel VARDI &lt;<A HREF="mailto:ariel.vardi@freesbee.fr">ariel.vardi@freesbee.fr</A>&gt;, juillet 2002.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM </A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">FORMAT</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:54 GMT, February 11, 2014
+</BODY>
+</HTML>

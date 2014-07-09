@@ -1,0 +1,120 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FREXP</TITLE>
+</HEAD><BODY>
+<H1>FREXP</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+frexp, frexpf, frexpl - Conversion de réel en fraction normalisée.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/math.h">math.h</A>&gt;</B>
+
+<B>double frexp (double </B><I>x</I><B>, int *</B><I>exp</I><B>);</B>
+
+<B>float frexpf (float </B><I>x</I><B>, int *</B><I>exp</I><B>);</B>
+
+<B>long double frexpl (long double </B><I>x</I><B>, int *</B><I>exp</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>frexp()</B> est utilisée pour scinder le nombre <I>x</I> en une
+fraction normalisée et un exposant qui est stocké dans <I>exp</I>.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>frexp()</B> renvoie la fraction normalisée.
+<P>
+Si <I>x</I> est
+non nul, <I>x</I> est égale à la fraction renvoyée multiplié par 2^<I>exp</I>.
+La fraction est dans l'intervalle [1/2, 1[.
+<P>
+Si <I>x</I> est nul, la fraction normalisée vaut zéro et <I>exp</I> également.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+<P>
+<PRE>
+#include &lt;<A HREF="file:///usr/include/math.h">math.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;
+
+int
+main (void)
+{
+   float x, f;
+   int ex;
+   while (1) {
+      fscanf (stdin, &quot;%f&quot;, &amp; x);
+      f = frexp (x, &amp; ex);
+      fprintf (stdout,&quot;%f = %f x 2^%d\n&quot;, x, f, ex);
+   }
+   return (0);
+}
+
+$ ./a.out 
+
+0
+0.000000 = 0.000000 x 2^0
+1
+1.000000 = 0.500000 x 2^1
+2
+2.000000 = 0.500000 x 2^2
+3
+3.000000 = 0.750000 x 2^2
+4
+4.000000 = 0.500000 x 2^3
+5
+5.000000 = 0.625000 x 2^3
+
+$ 
+
+</PRE>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3, POSIX, BSD 4.3, ISO 9899
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+ldexp">ldexp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+modf">modf</A></B>(3)
+
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">EXEMPLE</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:39 GMT, February 11, 2014
+</BODY>
+</HTML>

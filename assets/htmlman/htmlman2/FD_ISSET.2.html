@@ -1,0 +1,518 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SELECT</TITLE>
+</HEAD><BODY>
+<H1>SELECT</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+select, pselect, FD_CLR, FD_ISSET, FD_SET, FD_ZERO - Multiplexage d'entrées/sorties synchrones.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+/* D'après Posix 1003.1-2001 */
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/select.h">sys/select.h</A>&gt;</B>
+
+<P>
+/* D'après les standards précédents */
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/time.h">sys/time.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int select(int </B><I>n</I><B>, fd_set *</B><I>readfds</I><B>,
+fd_set *</B><I>writefds</I><B>, fd_set *</B><I>exceptfds</I><B>,
+struct timeval *</B><I>timeout</I><B>);
+<P>
+int pselect(int </B><I>n</I><B>, fd_set *</B><I>readfds</I><B>,
+fd_set *</B><I>writefds</I><B>, fd_set *</B><I>exceptfds</I><B>,
+const struct timespec *</B><I>timeout</I><B>, const sigset_t * </B><I>sigmask</I><B>);
+<P>
+FD_CLR(int </B><I>fd</I><B>, fd_set *</B><I>set</I><B>);</B>
+
+<BR>
+
+<B>FD_ISSET(int </B><I>fd</I><B>, fd_set *</B><I>set</I><B>);</B>
+
+<BR>
+
+<B>FD_SET(int </B><I>fd</I><B>, fd_set *</B><I>set</I><B>);</B>
+
+<BR>
+
+<B>FD_ZERO(fd_set *</B><I>set</I><B>);</B>
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les fonctions
+<B>select</B>
+
+et
+<B>pselect</B>
+
+attendent des changements d'état sur plusieurs descripteurs de fichiers.
+<P>
+
+Elles ont un comportement identique, avec trois différences :
+<DL COMPACT>
+<DT>(i)<DD>
+La fonction
+<B>select</B>
+
+utilise un délai exprimé avec une
+<I>struct timeval</I>
+
+(secondes et microsecondes), alors que
+<B>pselect</B>
+
+utilise une
+<I>struct timespec</I>
+
+(secondes et nanosecondes).
+<DT>(ii)<DD>
+La fonction
+<B>select</B>
+
+peut modifier le paramètre
+<I>timeout</I>
+
+pour indiquer le temps restant. La fonction
+<B>pselect</B>
+
+ne change pas ce paramètre.
+<DT>(iii)<DD>
+La fonction
+<B>select</B>
+
+n'a pas de paramètre
+<I>sigmask</I>
+
+et se comporte comme
+<B>pselect</B>
+
+avec une valeur NULL pour
+<I>sigmask</I>
+
+</DL>
+<P>
+
+Il y a trois ensembles indépendants de descripteurs surveillés simultanément.
+Ceux de l'ensemble
+<I>readfds</I>
+
+seront surveillés pour vérifier si des caractères deviennent disponibles
+en lecture. Plus précisément, on vérifie si un appel-système de lecture
+ne bloquera pas - en particulier un descripteur en fin-de-fichier sera
+considéré comme prêt. Les descripteurs de l'ensemble
+<I>writefds</I>
+
+seront surveillés pour vérifier si une écriture ne bloquera pas. Ceux de
+<I>exceptfds</I>
+
+seront surveillés pour l'occurrence de conditions exceptionnelles. 
+En sortie, les ensembles sont modifiés pour indiquer les descripteurs
+qui ont changé de statut.
+<P>
+
+Quatre macros sont disponibles pour la manipulation des ensembles
+<B>FD_ZERO</B>
+
+efface un ensemble.
+<B>FD_SET</B>
+
+et
+<B>FD_CLR</B>
+
+ajoutent et suppriment un descripteur dans un ensemble.
+<B>FD_ISSET</B>
+
+vérifie si un descripteur est contenu dans un ensemble, principalement
+utile après le retour de
+<B>select.</B>
+
+<P>
+
+<I>n</I>
+
+est le numéro du plus grand descripteur des 3 ensembles, plus 1.
+<P>
+
+<I>timeout</I>
+
+est une limite supérieure au temps passé dans
+<B>select</B>
+
+avant son retour.
+Elle peut être nulle, ce qui conduit 
+<B>select </B>
+
+à revenir immédiatement. (Ce qui sert pour des surveillance en
+<I>polling</I>).
+
+Si le timeout est NULL (aucun),
+<B>select</B>
+
+peut bloquer indéfiniment.
+<P>
+
+<I>sigmask</I>
+
+est un pointeur sur un masque de signaux (voir
+<B><A HREF="/cgi-bin/man/man2html?2+sigprocmask">sigprocmask</A></B>(2)).
+
+S'il n'est pas NULL, alors 
+<B>pselect</B>
+
+remplace d'abord le masque de signaux en cours par celui indiqué dans
+<I>sigmask</I>,
+
+puis invoque la fonction `select', et enfin restaure le masque
+de signaux à nouveau.
+<P>
+
+L'idée derrière
+<B>pselect</B>
+
+est que pour l'attente d'un évènement, que ce soit un signal ou une condition
+sur un descripteur, un test atomique est nécessaire pour éviter les
+situations de concurrence. (Supposons que le gestionnaire de signaux active
+un drapeau global et revienne. Alors un test de ce drapeaux, suivi d'un appel
+<B>select</B>()
+
+peut bloquer indéfiniment si le signal arrive juste après le test mais avant
+l'appel. A l'inverse,
+<B>pselect</B>
+
+permet de bloquer le signal d'abord, traiter les signaux déjà reçus, puis
+invoquer
+<B>pselect</B>()
+
+avec le 
+<I>sigmask</I>,
+
+désiré, en évitant la situation de blocage).
+Comme Linux n'a pas encore d'appel-système
+<I>pselect</I>(),
+
+la routine de la bibliothèque GlibC 2 contient encore le défaut.
+<A NAME="lbAE">&nbsp;</A>
+<H3>Délai maximal</H3>
+
+Les structures temporelles concernées sont définies dans
+<I>&lt;<A HREF="file:///usr/include/sys/time.h">sys/time.h</A>&gt;</I>
+
+comme ceci&nbsp;:
+<DL COMPACT><DT><DD>
+<PRE>
+struct timeval {
+    long    tv_sec;         /* secondes      */
+    long    tv_usec;        /* microsecondes */
+};
+</PRE>
+
+</DL>
+
+<BR>&nbsp;
+et
+<BR>&nbsp;
+<DL COMPACT><DT><DD>
+<PRE>
+struct timespec {
+    long    tv_sec;         /* secondes     */
+    long    tv_nsec;        /* nanosecondes */
+};
+</PRE>
+
+</DL>
+
+<P>
+(However, see below on the POSIX 1003.1-2001 versions.)
+<P>
+
+Certaines applications appellent
+<B>select</B>
+
+nul, et un délai
+<I>timeout</I>
+
+non nul, afin d'endormir,
+de manière portable,
+le processus avec une précision plus fine que la seconde.
+<P>
+
+Sous Linux, la fonction
+<B>select</B>
+
+modifie
+<I>timeout</I>
+
+pour indiquer le temps restant mais la plupart des autres
+implémentations ne le font pas.
+Ceci pose des problèmes à la fois pour porter sur d'autres systèmes du 
+code développé sous Linux qui utilise cette valeur de 
+<I>timeout</I>
+
+modifiée, et pour porter sous Linux du code qui réutilise plusieurs
+fois la structure timeval sans la réinitialiser.
+La meilleure attitude à adopter est de considérer
+<I>timeout</I>
+
+comme indéfini après le retour de
+<B>select.</B>
+
+
+
+
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+En cas de réussite
+<B>select</B>
+
+et
+<B>pselect</B>
+
+renvoient le nombre de descripteurs dans les ensembles, qui peut être nul
+si le délai de timeout a expiré avant que quoi que ce soit d'intéressant
+ne se produise.
+Ils retournent -1 s'ils échouent, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAG">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+Un descripteur de fichier (dans l'un des ensembles) est invalide.
+<DT><B>EINTR </B>
+
+<DD>
+Un signal a été intercepté.
+<DT><B>EINVAL </B>
+
+<DD>
+<I>n</I>
+
+est négatif
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour le noyau.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+avec les trois ensembles vides, 
+<B>n</B>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+<PRE>
+#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/sys/time.h">sys/time.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;
+
+int
+main(void)
+{
+    fd_set rfds;
+    struct timeval tv;
+    int retval;
+
+    /* Surveiller stdin (fd 0) en attente d'entrées */
+    FD_ZERO(&amp;rfds);
+    FD_SET(0, &amp;rfds);
+    /* Pendant 5 secondes maxi */
+    tv.tv_sec = 5;
+    tv.tv_usec = 0;
+
+    retval = select(1, &amp;rfds, NULL, NULL, &amp;tv);
+    /* Considérer tv comme indéfini maintenant ! */
+
+    if (retval)
+        printf(&quot;Données disponibles maintenant\n&quot;);
+        /* FD_ISSET(0, &amp;rfds) est vrai */
+    else
+        printf(&quot;Pas de données depuis 5 secondes\n&quot;);
+
+    return (0);
+}
+</PRE>
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.4 (la fonction
+<B>select</B>
+
+est apparue dans BSD 4.2).  Généralement portable depuis ou vers des
+systèmes non-BSD supportant des clones de la couche sockets BSD (y compris
+les variantes du Système V).
+Néanmoins, sachez que les variantes du système V fixent une variable de
+timeout avant le retour alors que les variantes BSD ne le font pas.
+<P>
+
+La fonction
+<B>pselect</B>
+
+est définie dans IEEE Std 1003.1g-2000 (POSIX.1g) et pour partie dans
+POSIX 1003.1-2001.
+On la trouve dans GlibC 2.1 et ultérieure.
+Glibc2.0 a une fonction de ce nom, mais sans le paramètre
+<I>sigmask</I>.
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>NOTES</H2>
+
+Un ensemble fd_set est un buffer de taille fixe. Exécuter FD_CLR ou FD_SET avec
+<I>fd</I>
+
+négatif ou supérieur ou égal à FD_SETSIZE résultera en un comportement
+indéfini. Plus encore, POSIX demande que
+<I>fd</I>
+
+soit un descripteur de fichier valide.
+<P>
+En ce qui concerne les types impliqués, la situation classique est que
+les deux champs de la structure timeval soient des &quot;long&quot; (comme ci-dessous),
+et que la structure soit définie dans
+<I>&lt;<A HREF="file:///usr/include/sys/time.h">sys/time.h</A>&gt;</I>.
+
+La situation avec POSIX 1003.1-2001 est
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;
+<DL COMPACT><DT><DD>
+<PRE>
+struct timeval { 
+    time_t         tv_sec;     /* seconds */
+    suseconds_t    tv_usec;    /* microseconds */
+};  
+</PRE>
+
+</DL>
+
+<P>
+avec la structure définie dans
+<I>&lt;<A HREF="file:///usr/include/sys/select.h">sys/select.h</A>&gt;</I>
+
+et les types de données time_t et suseconds_t définis dans
+<I>&lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</I>.
+
+<P>
+
+Concernant les prototypes, on demande classiquement l'inclusion
+de
+<I>&lt;<A HREF="file:///usr/include/time.h">time.h</A>&gt;</I>
+
+pour
+<B>select</B>.
+
+Avec POSIX 1003.1-2001, on préfère inclure
+<I>&lt;<A HREF="file:///usr/include/sys/select.h">sys/select.h</A>&gt;</I>
+
+pour
+<B>select</B>
+
+et
+<B>pselect</B>.
+
+Les bibliothèques libc4 et libc5 n'avaient pas d'en-tête
+<I>&lt;<A HREF="file:///usr/include/sys/select.h">sys/select.h</A>&gt;</I>,
+
+mais avec les GlibC 2.0 et suivantes le fichier existe.
+Pour la GlibC 2.0, le prototype de 
+<B>pselect</B>
+
+est toujours erroné. Avec la
+GlibC 2.1-2.2.1 le prototype de
+<B>pselect</B>
+
+est fourni si la constante
+<B>_GNU_SOURCE</B>
+
+est définie avant l'inclusion. Avec GlibC 2.2.2-2.2.4,
+il faut que la constante
+<B>_XOPEN_SOURCE</B>
+
+soit définie avec une valeur supérieure ou égale à 600.
+Quoiqu'il en soit, depuis POSIX 1003.1-2001, le bon prototype devrait être
+défini par défaut.
+<A NAME="lbAL">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+Pour un tutoriel avec des exemples, voir
+<B><A HREF="/cgi-bin/man/man2html?2+select_tut">select_tut</A></B>(2).
+
+<P>
+
+D'autres pages ayant un vague rapport&nbsp;:
+<B><A HREF="/cgi-bin/man/man2html?2+accept">accept</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+poll">poll</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+recv">recv</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+send">send</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigprocmask">sigprocmask</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2)
+
+<A NAME="lbAM">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">Délai maximal</A><DD>
+</DL>
+<DT><A HREF="#lbAF">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAG">ERREURS</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">EXEMPLE</A><DD>
+<DT><A HREF="#lbAJ">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAK">NOTES</A><DD>
+<DT><A HREF="#lbAL">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAM">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:52 GMT, February 11, 2014
+</BODY>
+</HTML>

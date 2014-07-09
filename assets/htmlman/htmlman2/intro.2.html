@@ -1,0 +1,221 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of INTRO</TITLE>
+</HEAD><BODY>
+<H1>INTRO</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+intro - Introduction à la section des appels-système.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ce chapitre décrit les appels-système de Linux.
+Pour avoir une liste des appels-système disponibles dans Linux 2,
+voyez la page <A HREF="/cgi-bin/man/man2html?2+syscalls">syscalls</A>(2). 
+<A NAME="lbAD">&nbsp;</A>
+<H3>Appel Direct</H3>
+
+Dans la plupart des cas il n'est pas nécessaire d'invoquer directement
+un appel-système, mais il arrive parfois que la bibliothèque C standard
+n'implémente pas une fonction utile.
+<A NAME="lbAE">&nbsp;</A>
+<H3>Synopsis</H3>
+
+#include &lt;<A HREF="file:///usr/include/linux/unistd.h">linux/unistd.h</A>&gt;
+<P>
+une macro _syscall
+<P>
+L'appel système désiré
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H3>Setup</H3>
+
+La chose la plus importante à connaître concernant un appel-système est son
+prototype. Vous devez connaître le nombre d'arguments, leurs types, et le type
+de retour de la fonction. Il y a 6 macros simplifiant l'appel effectif au système.
+Elles ont la forme :
+<P>
+<DL COMPACT><DT><DD>
+_syscall<I>X</I>(<I>type</I>,<I>name</I>,<I>type1</I>,<I>arg1</I>,<I>type2</I>,<I>arg2</I>,...)
+
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>
+<DD>avec <I>X</I> dans l'intervalle 0-5, correspondant au nombre d'arguments
+de l'appel-système.
+<DT>
+<I>type</I> est le type de la valeur renvoyée par l'appel-système.
+<DT>
+<I>name</I> est le nom de l'appel-système.
+<DT>
+<I>typeN</I> est le type du Nième argument.
+<DT>
+<I>argN</I> est le nom du Nième argument.
+</DL>
+</DL>
+
+</DL>
+
+<P>
+<DD>Ces macros créent une fonction appelée <I>name</I> avec les arguments
+spécifiés. Une fois inclus le  _syscall() dans le fichier source,
+on effectue l'appel-système avec <I>name</I>.
+<A NAME="lbAG">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+<PRE>
+
+#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/linux/unistd.h">linux/unistd.h</A>&gt;       /* les macros _syscallX */
+#include &lt;<A HREF="file:///usr/include/linux/kernel.h">linux/kernel.h</A>&gt;       /* pour struct sysinfo  */
+
+_syscall1(int, sysinfo, struct sysinfo *, info);
+
+/* 
+ * Note : Si vous copiez directement depuis le source nroff
+ * de cette page,  n'oubliez pas d'enlever les backslashes
+ * supplémentaires dans les printf.
+ */
+
+int main(void)
+{
+        struct sysinfo s_info;
+        int error;
+
+        error = sysinfo(&amp;s_info);
+        printf(&quot;code d'erreur = %d\n&quot;, error);
+        printf(&quot;Uptime = %ds\nCharge: 1 min %d / 5 min %d / 15 min %d\n&quot;
+                &quot;RAM: totale %d / libre %d / partagee %d\n&quot;
+                &quot;Mémoire dans buffers = %d\nSwap: total %d / libre %d\n&quot;
+                &quot;Nombre de processus = %d\n&quot;,
+                s_info.uptime, s_info.loads[0],
+                s_info.loads[1], s_info.loads[2],
+                s_info.totalram, s_info.freeram,
+                s_info.sharedram, s_info.bufferram,
+                s_info.totalswap, s_info.freeswap,
+                s_info.procs);
+        return(0);
+}
+</PRE>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>EXEMPLE D'EXÉCUTION</H2>
+
+<PRE>
+code d'erreur = 0
+uptime = 502034s
+Charge: 1 min 13376 / 5 min 5504 / 15 min 1152
+RAM: totale 15343616 / libre 827392 / partagee 8237056
+Mémoire dans buffers = 5066752
+Swap: total 27881472 / libre 24698880
+Nombre de processus = 40
+</PRE>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>NOTES</H2>
+
+La macro _syscall() ne crée
+<B>pas</B>
+
+de prototype. Il faut le fournir vous-même, principalement en C++.
+<P>
+Les appels-système ne renvoient pas nécessairement des code d'erreurs tous
+positifs ou négatifs. Vous devez lire les sources pour vérifier le retour en
+erreur. Généralement, ce sont des codes d'erreur négatifs, par exemple
+-<B>EPERM</B>. La macro _syscall() renverra le résultat <I>r</I> de l'appel-système
+quand <I>r</I> est positif ou nul, mais renverra -1 sinon, en positionnant
+<I>errno</I>
+
+a -<I>r</I> quand  <I>r</I> est négatif.
+Pour les codes d'erreur, voir
+<B><A HREF="/cgi-bin/man/man2html?3+errno">errno</A></B>(3).
+
+<P>
+Certains appels-système, comme
+<B>mmap</B>,
+
+nécessitent plus de cinq arguments. Ceci est géré en plaçant les
+arguments sur la pile et en passant un pointeur sur le bloc d'arguments.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Dans ce paragraphe, des abréviations indiquent les variantes d'Unix,
+ou des standards dont les appels-système sont conformes à la description
+donnée dans ces pages de manuel. Il s'agit de :
+<DL COMPACT>
+<DT>SVr4<DD>
+System V Release 4 Unix, comme indiqué dans &quot;Programmer's Reference
+Manual: Operating System API (Intel processors)&quot; (Prentice-Hall
+1992, ISBN 0-13-951294-2)
+<DT>SVID<DD>
+System V Interface Definition, comme décrit dans &quot;The System V Interface
+Definition, Fourth Edition&quot;, disponible
+<A HREF="ftp://ftp.fpk.novell.com/pub/unix-standards/svid">ftp://ftp.fpk.novell.com/pub/unix-standards/svid</A> sous forme de fichier Postscript.
+<DT>POSIX.1<DD>
+IEEE 1003.1-1990 part 1, connu également sous le nom de
+ISO/IEC 9945-1:1990s, ou le nom &quot;IEEE Portable
+Operating System Interface for Computing Environments&quot;, comme indiqué dans
+Donald Lewine &quot;POSIX Programmer's Guide&quot; (O'Reilly &amp; Associates,
+Inc., 1991, ISBN 0-937175-73-0.
+<DT>POSIX.1b<DD>
+IEEE Std 1003.1b-1993 (POSIX.1b standard) décrivant les options temps-réel
+des systèmes d'exploitations portables, aussi connu sous le nom de
+ISO/IEC 9945-1:1996, indiqué dans
+&quot;Programming for the real world - POSIX.4&quot;
+de Bill O. Gallmeister (O'Reilly &amp; Associates, Inc. ISBN 1-56592-074-0).
+<DT>SUS, SUSv2<DD>
+Single Unix Specification.
+(Développées par X/Open et l'Open Group. Voir
+<A HREF="http://www.UNIX-systems.org/version2/">http://www.UNIX-systems.org/version2/</A> .)
+<DT>4.3BSD/4.4BSD<DD>
+Les distributions 4.3 et 4.4 de l'Unix Berkeley BSD était compatible
+avec 4.3.
+<DT>V7<DD>
+Version 7, l'Unix ancestral des Laboratoires Bell.
+</DL>
+<A NAME="lbAK">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/usr/include/linux/unistd.h</I>
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+errno">errno</A></B>(3)
+
+<A NAME="lbAM">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAD">Appel Direct</A><DD>
+<DT><A HREF="#lbAE">Synopsis</A><DD>
+<DT><A HREF="#lbAF">Setup</A><DD>
+</DL>
+<DT><A HREF="#lbAG">EXEMPLE</A><DD>
+<DT><A HREF="#lbAH">EXEMPLE D'EXÉCUTION</A><DD>
+<DT><A HREF="#lbAI">NOTES</A><DD>
+<DT><A HREF="#lbAJ">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAK">FICHIERS</A><DD>
+<DT><A HREF="#lbAL">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAM">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:02 GMT, February 11, 2014
+</BODY>
+</HTML>

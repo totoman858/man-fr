@@ -1,0 +1,376 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SHM_OPEN</TITLE>
+</HEAD><BODY>
+<H1>SHM_OPEN</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+shm_open, shm_unlink - Créer/ouvrir et supprimer des objets de mémoire partagés POSIX.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/mman.h">sys/mman.h</A>&gt;</B>
+
+<P>
+<B>int shm_open(const char *</B><I>nom</I><B>, int </B><I>oflag</I><B>, mode_t </B><I>mode</I><B>);</B>
+
+<P>
+<B>int shm_unlink(const char *</B><I>nom</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>shm_open</B>
+
+crée et ouvre un nouvel objet de mémoire partagé POSIX, ou ouvre un objet
+existant. Il s'agit d'un descripteur utilisable par d'autres processus avec
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2)
+
+pour projeter la même région mémoire. La fonction
+<B>shm_unlink</B>
+
+réalise l'opération complémentaire
+en supprimant l'objet créé précédement par
+<B>shm_open</B>.
+
+<P>
+
+Le fonctionnement de
+<B>shm_open</B>
+
+est analogue à celui de
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2).
+
+On indique le
+<I>nom</I>
+
+d'un segment mémoire à créer ou ouvrir.
+Pour un fonctionnement portable, le
+<I>nom</I>
+
+doit commencer par un slash (/) et ne pas en contenir d'autres.
+
+
+
+<P>
+
+<I>oflag</I>
+
+est un masque de bit associant l'une des deux constantes
+<B>O_RDONLY </B>
+
+ou
+<B>O_RWDR</B>
+
+et un ou plusieurs des attributs décrits ci-après.
+<DL COMPACT>
+<DT><B>O_RDONLY</B>
+
+<DD>
+Ouvrir l'objet en lecture seule. Un tel objet
+ne pourra être projeté en mémoire avec
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2)
+
+qu'avec l'accès (<B>PROT_READ</B>).
+<DT><B>O_RDWR</B>
+
+<DD>
+Ouvrir l'objet en lecture et écriture.
+<DT><B>O_CREAT</B>
+
+<DD>
+Créer l'objet de mémoire partagée s'il n'existe pas. L'utilisateur et le groupe
+propriétaires de l'objet sont fixés comme avec l'appel
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+et les bits de permission sont fixés en fonction des 9 bits de poids faible de
+<I>mode</I>,
+
+hormis les bits qui sont fixé dans
+le masque de création du processus (voir
+<B><A HREF="/cgi-bin/man/man2html?2+umask">umask</A></B>(2))
+
+et qui sont effacés.
+Un jeu de constantes utilisables pour définir le
+<I>mode</I>
+
+est décrit dans
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2).
+
+<P>
+Un nouvel objet de mémoire partagé a une taille initiale nulle - on la
+fixe en utilisant.
+<B><A HREF="/cgi-bin/man/man2html?2+ftruncate">ftruncate</A></B>(2).
+
+Les octets d'un objet mémoire partagé nouvellement créé
+sont automatiquement initialisés à zéro.
+<DT><B>O_EXCL</B>
+
+<DD>
+Si
+<B>O_CREAT</B>
+
+était précisé et si un objet de mémoire partagée avec le même
+<I>nom</I>
+
+existait déjà, renvoyer une erreur. La vérification et l'existence et
+la création éventuelle sont réalisées de manière atomique.
+<DT><B>O_TRUNC</B>
+
+<DD>
+Si l'objet de mémoire partagée existait, tronquer sa taille à zéro.
+</DL>
+<P>
+
+Si elle réussit, la fonction
+<B>shm_open</B>
+
+renvoie un nouveau descripteur décrivant l'objet de mémoire partagée.
+Le descripteur est assuré d'être le plus petit numéro disponible dans la table
+des descripteurs du processus.  
+L'attribut
+<B>FD_CLOEXEC</B>
+
+(voir
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2))
+
+sera activé sur le descripteur de fichier.
+<P>
+Le descripteur est utilisé normalement pour les appels ultérieurs
+à 
+<B><A HREF="/cgi-bin/man/man2html?2+ftruncate">ftruncate</A></B>(2)
+
+(pour un objet nouvellement créé) et
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2).
+
+Après un appel à
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2)
+
+le descripteur peut être fermé sans affecter la projection mémoire.
+<P>
+Le fonctionnement
+de 
+<B>shm_unlink</B>
+
+est analogue à celui de
+<B><A HREF="/cgi-bin/man/man2html?2+unlink">unlink</A></B>(2) :
+
+il supprime le nom d'un objet de mémoire partagée, et, une fois que tous les
+processus ont supprimé leur projection en mémoire, libère et détruit
+le contenu de la portion de mémoire.
+Après un appel réussi à
+<B>shm_unlink</B>,
+
+les tentatives d'appeler
+<B>shm_open </B>
+
+avec le même 
+<I>nom</I>
+
+échoueront (sauf si
+<B>O_CREAT</B>
+
+est spécifié, auquel cas un nouvel objet distinc est créé).
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+S'il réussit, l'appel
+<B>shm_open</B>
+
+renvoir un descripteur de fichier non-négatif. S'il échoue,
+<B>shm_open</B>
+
+renvoie -1.
+<B>shm_unlink</B>
+
+renvoie 0 s'il réussit ou -1 en cas d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Lors d'un échec,
+<I>errno</I>
+
+indique la cause de l'erreur. Les codes possibles dans 
+<I>errno</I>
+
+sont les suivants&nbsp;:
+<DL COMPACT>
+<DT><B>EACCES</B>
+
+<DD>
+<B>shm_open</B>
+
+refusé pour le
+<I>nom</I>
+
+dans le
+<I>mode</I>
+
+indiqué, ou 
+<B>O_TRUNC</B>
+
+a été réclamé et l'appelant n'a pas les permissions d'écriture sur l'objet.
+<DT><B>EACCES</B>
+
+<DD>
+Interdicton d'utiliser
+<B>shm_unlink</B>
+
+sur l'objet de mémoire partagée.
+<DT><B>EEXIST</B>
+
+<DD>
+<B>O_CREAT</B>
+
+et
+<B>O_EXCL </B>
+
+étaient réclamés dans
+<B>shm_open</B>
+
+et un objet de mémoire partagée du même
+<I>nom</I>
+
+existait déjà.
+<DT><B>EINVAL</B>
+
+<DD>
+L'argument
+<I>nom</I>
+
+dans le 
+<B>shm_open</B>
+
+était invalide.
+<DT><B>EMFILE</B>
+
+<DD>
+Le provessus a déjà ouvert son nombre maximal de fichiers.
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+La longueur du
+<I>nom</I>
+
+dépasse 
+<B>PATH_MAX</B>.
+
+<DT><B>ENFILE</B>
+
+<DD>
+La limite du nombre total de fichiers ouverts sur le système a été
+atteinte.
+<DT><B>ENOENT</B>
+
+<DD>
+Tentative d'ouvrir avec
+<B>shm_open</B>
+
+un
+<I>non </I>
+
+qui n'existe pas, sans
+attribut
+<B>O_CREAT</B>.
+
+<DT><B>ENOENT</B>
+
+<DD>
+Tentative d'utiliser
+<B>shm_unlink</B>
+
+sur un 
+<I>nom </I>
+
+qui n'existe pas.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Ces fonctions sont fournies depuis la GlibC 2.2. Les programmes qui les
+invoquent doivent fournir l'argument
+<B>-lrt</B>
+
+lors de la compilation avec
+<B>cc</B>
+
+afin d'avoir l'édition des liens avec la bibliothèque nécessaire (temps-réel).
+<P>
+
+POSIX ne précise pas le comportement de la combinaison
+<B>O_RDONLY</B>
+
+et
+<B>O_TRUNC</B>.
+
+Sous Linux, la troncature aura lieu- cela
+n'est pas nécessairement le cas sous d'autres Unix.
+<P>
+
+L'implémentation sous Linux 2.4 des objets de mémoire partagée POSIX utilise
+un système de fichiers dédiés, monté en principe
+sous
+<B>/dev/shm</B>.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX 1003.1 (2001).
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+close">close</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+ftruncate">ftruncate</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fstat">fstat</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fchown">fchown</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fchmod">fchmod</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+umask">umask</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:42 GMT, February 11, 2014
+</BODY>
+</HTML>

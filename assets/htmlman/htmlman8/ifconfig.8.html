@@ -1,0 +1,399 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of IFCONFIG</TITLE>
+</HEAD><BODY>
+<H1>IFCONFIG</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 30 juin 2005<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ifconfig - Configurer une interface réseau.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>ifconfig [-v] [-a] [-s] [interface]</B>
+
+<BR>
+
+<B>ifconfig [-v] interface [aftype] options | adresse ...</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>ifconfig</B>
+
+permet de configurer les interfaces réseau présentes dans le noyau.
+On peut les configurer lors du démarrage quand c'est nécessaire. Ensuite,
+on l'utilise généralement pour le débogage ou pour d'éventuels réglages.
+<P>
+
+Si aucun argument n'est donné,
+<B>ifconfig</B>
+
+affiche l'état des interfaces actives. Si seul le paramètre
+<B>interface</B>
+
+est donné, il affiche seulement l'état de l'interface correspondante&nbsp;;
+si seul le paramètre
+<B>-a</B>
+
+est fourni, il affiche l'état de toutes les interfaces, même celles
+qui sont inactives. Autrement, il permet de configurer une interface.
+<A NAME="lbAE">&nbsp;</A>
+<H2>Familles d'Adresses</H2>
+
+Si le premier argument après le nom d'interface est reconnu comme
+le nom d'une famille d'adresses prise en charge, alors cette famille
+d'adresses est utilisée pour décoder et afficher toutes les adresses
+du protocole. Les familles d'adresses actuellement prises en charge
+comprennent
+<B>inet</B>
+
+(TCP/IP, par défaut),
+<B>inet6</B>
+
+(IPv6),
+<B>ax25</B>
+
+(AMPR Packet Radio),
+<B>ddp</B>
+
+(Appletalk Phase 2),
+<B>ipx</B>
+
+(Novell IPX) et
+<B>netrom</B>
+
+(AMPR Packet Radio).
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-a</B>
+
+<DD>
+Afficher toutes les interfaces actuellement disponibles, même celles
+qui sont inactives.
+<DT><B>-s</B>
+
+<DD>
+Afficher un résumé (comme netstat -i).
+<DT><B>-v</B>
+
+<DD>
+Mode volubile pour certains types d'erreurs.
+<DT><B>interface</B>
+
+<DD>
+Correspond au nom de l'interface de réseau. C'est généralement un nom de
+pilote suivi d'un chiffre, comme
+<B>eth0</B>
+
+pour la première interface Ethernet. Si votre noyau accepte les alias
+d'interfaces, vous pouvez les spécifier avec
+<B>eth0:0</B>
+
+pour le premier alias de eth0. On peut les utiliser pour les affecter
+à une seconde adresse. Pour supprimer un alias d'interface, utilisez
+<B>ifconfig eth0:0 down</B>.
+
+Note&nbsp;: pour chaque groupe (un même noeud donné par une combinaison
+adresse/masque de réseau), si vous supprimez le premier alias (le
+principal), tous les alias sont supprimés.
+<DT><B>up</B>
+
+<DD>
+Activer l'interface donnée. Cette option est implicite si une adresse est
+affectée à l'interface.
+<DT><B>down</B>
+
+<DD>
+Désactiver le pilote pour l'interface donnée.
+<DT><B>[-]arp</B>
+
+<DD>
+Activer ou désactiver l'utilisation du protocole ARP sur une interface.
+<DT><B>[-]promisc</B>
+
+<DD>
+Activer ou désactiver le mode
+<B>promiscuous</B>.
+
+S'il est activé, tous les paquets circulant sur le réseau seront reçus
+par l'interface.
+<DT><B>[-]allmulti</B>
+
+<DD>
+Activer ou désactiver le mode
+<B>all-multicast</B>.
+
+S'il est activé, l'interface recevra tous les paquets de multidiffusion
+circulant sur le réseau.
+<DT><B>metric N</B>
+
+<DD>
+Définir la métrique de l'interface.
+<DT><B>mtu N</B>
+
+<DD>
+Définir l'unité de transfert maximum ou MTU («&nbsp;Maximum Transfer Unit&nbsp;»)
+d'une interface.
+<DT><B>dstaddr adresse</B>
+
+<DD>
+Définir l'adresse IP distante dans le cas d'un lien point-à-point
+(comme PPP). Cette option est obsolète&nbsp;; utilisez à la place l'option
+<B>pointopoint</B>.
+
+<DT><B>netmask adresse</B>
+
+<DD>
+Définir le masque de réseau IP pour cette interface. La valeur par
+défaut correspond au masque de réseau usuel pour les classes A, B ou C
+(déduite de l'adresse IP), mais une autre valeur peut être définie.
+<DT><B>add adresse/long_préfixe</B>
+
+<DD>
+Ajouter une adresse IPv6 à une interface.
+<DT><B>del adresse/long_préfixe</B>
+
+<DD>
+Supprimer une adresse IPv6 d'une interface.
+<DT><B>tunnel aa.bb.cc.dd</B>
+
+<DD>
+Créer un nouveau périphérique SIT (IPv6-dans-IPv4), fonctionnant en mode
+tunnel jusqu'à la destination donnée.
+<DT><B>irq adresse</B>
+
+<DD>
+Définir la ligne d'interruption utilisée par un périphérique.
+Certains périphériques ne sont pas capables de changer
+dynamiquement d'IRQ.
+<DT><B>io_addr adresse</B>
+
+<DD>
+Définir l'adresse de début dans l'espace d'entrée-sortie pour un
+périphérique.
+<DT><B>mem_start adresse</B>
+
+<DD>
+Définir l'adresse de début de la mémoire partagée utilisée par un
+périphérique. Peu de périphériques ont besoin de ce paramètre.
+<DT><B>media type</B>
+
+<DD>
+Définir le port physique ou le type de médium utilisé par le périphérique.
+Tous les périphériques ne peuvent pas changer cette configuration et les
+types acceptés varient de l'un à l'autre. Les valeurs habituelles du
+<B>type</B>
+
+sont
+<B>10base2</B>
+
+(Ethernet fin),
+<B>10baseT</B>
+
+(Ethernet 10Mbps en paire torsadée),
+<B>AUI</B>
+
+(émetteur-récepteur externe), etc. Le médium spécial de type
+<B>auto</B>
+
+permet d'indiquer au pilote de détecter automatiquement le médium utilisé.
+Une fois de plus, tous les pilotes n'acceptent pas cette option.
+<DT><B>[-]broadcast [adresse]</B>
+
+<DD>
+Si l'adresse est donnée, elle définit l'adresse de diffusion du
+protocole pour cette interface. Autrement, on arme
+(ou désarme) l'indicateur
+<B>IFF_BROADCAST</B>
+
+de l'interface.
+<DT><B>[-]pointopoint [adresse]</B>
+
+<DD>
+Valider le mode
+<B>point-à-point</B>
+
+d'une interface, signifiant qu'il existe un lien direct entre 2&nbsp;machines,
+sans que personne d'autre ne puisse être à l'écoute.
+<BR>
+
+Si l'adresse est également donnée, cela définit l'adresse de
+protocole de l'autre machine, de la même manière que l'option obsolète
+<B>dstaddr</B>.
+
+Autrement, il arme (ou désarme) l'indicateur 
+<B>IFF_POINTOPOINT</B>
+
+de l'interface.
+<DT><B>hw classe adresse</B>
+
+<DD>
+Définir l'adresse matérielle de l'interface, si le pilote du périphérique
+accepte cette opération. L'option doit être suivie du nom de la classe
+matérielle et de l'adresse matérielle en caractères ASCII affichables.
+Les classes matérielles actuellement prises en charge comprennent
+<B>ether</B>
+
+(Ethernet),
+<B>ax25</B>
+
+(AMPR AX.25),
+<B>ARCnet</B>
+
+et
+<B>netrom</B>
+
+(AMPR NET/ROM).
+<DT><B>multicast</B>
+
+<DD>
+Positionner l'indicateur de multidiffusion sur l'interface. Ce n'est
+généralement pas nécessaire puisque les pilotes positionnent correctement
+l'option eux-mêmes.
+<DT><B>adresse</B>
+
+<DD>
+Correspond à l'adresse IP affectée à cette interface.
+<DT><B>txqueuelen longueur</B>
+
+<DD>
+Définir la longueur de la file d'attente de transmission du périphérique.
+Il est utile de la fixer à des valeurs faibles pour les périphériques
+lents avec un temps d'attente important (modems, ISDN), pour empêcher
+d'être perturbé par de rapides transferts de masse issus des trafics
+interactifs, comme
+<B>telnet</B>.
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Depuis la version 2.2 du noyau, il n'y a plus de statistiques d'interface
+explicites pour les alias d'interfaces. Les statistiques affichées pour la
+véritable adresse sont partagées avec toutes les adresses d'alias du même
+périphérique. Pour avoir des statistiques par adresse, il faut ajouter
+des règles de comptabilité particulières pour l'adresse en utilisant
+la commande
+<B><A HREF="/cgi-bin/man/man2html?8+ipchains">ipchains</A></B>(8)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?8+iptables">iptables</A></B>(8).
+
+<P>
+
+Depuis net-tools 1.61,
+<B>ifconfig</B>
+
+affiche les compteurs d'octets et ceux lisibles par un utilisateur en
+unités IEC&nbsp;60027-2. Ainsi, 1&nbsp;KiB vaut 2^10 octets. Notez que les nombres
+sont tronqués à la première décimale (ce qui peut être une erreur importante
+si vous considérez que 0,1&nbsp;PiB vaut 112.589.990.684.262&nbsp;octets&nbsp;:)
+<P>
+
+Des problèmes d'interruption avec les pilotes de périphériques Ethernet
+apparaissent avec EAGAIN
+(<I>SIOCSIIFLAGS&nbsp;: Ressource temporairement indisponible</I>)
+il s'agit sûrement d'un conflit d'interruptions. Voir
+<I><A HREF="http://www.scyld.com/expert/irq-conflict.html">http://www.scyld.com/expert/irq-conflict.html</A></I>
+
+pour plus d'informations.
+<A NAME="lbAH">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/proc/net/socket</I>
+
+<BR>
+
+<I>/proc/net/dev</I>
+
+<BR>
+
+<I>/proc/net/if_inet6</I>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Même si les adresses appletalk DDP et IPX peuvent être affichées,
+elles ne peuvent être modifiées avec cette commande.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+route">route</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+netstat">netstat</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+arp">arp</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+rarp">rarp</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ipchains">ipchains</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+iptables">iptables</A></B>(8)
+
+<BR>
+
+<A HREF="http://physics.nist.gov/cuu/Units/binary.html">http://physics.nist.gov/cuu/Units/binary.html</A> - Préfixes
+pour les multiples binaires.
+<A NAME="lbAK">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Fred N. van Kempen, &lt;<A HREF="mailto:waltje@uwalt.nl.mugnet.org">waltje@uwalt.nl.mugnet.org</A>&gt;
+<BR>
+
+Alan Cox, &lt;<A HREF="mailto:Alan.Cox@linux.org">Alan.Cox@linux.org</A>&gt;
+<BR>
+
+Phil Blundell, &lt;<A HREF="mailto:Philip.Blundell@pobox.com">Philip.Blundell@pobox.com</A>&gt;
+<BR>
+
+Andi Kleen,
+<BR>
+
+Bernd Eckenfels, &lt;<A HREF="mailto:net-tools@lina.inka.de">net-tools@lina.inka.de</A>&gt;
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Jean Michel Vansteene
+&lt;vanstee&nbsp;AT&nbsp;worldnet&nbsp;DOT&nbsp;fr&gt; en août&nbsp;1997,
+mise à jour par Guillaume Audirac en août 2004
+et révisée le 17&nbsp;août&nbsp;2006.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;8&nbsp;ifconfig</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">Familles d'Adresses</A><DD>
+<DT><A HREF="#lbAF">OPTIONS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">FICHIERS</A><DD>
+<DT><A HREF="#lbAI">BOGUES</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">AUTEURS</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:00 GMT, February 11, 2014
+</BODY>
+</HTML>

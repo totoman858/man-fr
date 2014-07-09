@@ -1,0 +1,251 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TSEARCH</TITLE>
+</HEAD><BODY>
+<H1>TSEARCH</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+tsearch, tfind, tdelete, twalk - Manipulation d'arbre binaire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/search.h">search.h</A>&gt;</B>
+
+<B>void *tsearch (const void *</B><I>key</I><B>, void **</B><I>rootp</I><B>,</B>
+<B>                int (*</B><I>compar</I><B>)(const void *, const void *));</B>
+
+<B>void *tfind (const void *</B><I>key</I><B>, const void **</B><I>rootp</I><B>,</B>
+<B>                int (*</B><I>compar</I><B>)(const void *, const void *));</B>
+
+<B>void *tdelete (const void *</B><I>key</I><B>, void **</B><I>rootp</I><B>,</B>
+<B>                int (*</B><I>compar</I><B>)(const void *, const void *));</B>
+
+<B>void twalk (const void *</B><I>root</I><B>, void (*</B><I>action</I><B>) (const void *</B><I>nodep</I><B>,</B>
+<B>                                   const VISIT </B><I>which</I><B>,</B>
+<B>                                   const int </B><I>depth</I><B>));</B>
+
+<B>#define _GNU_SOURCE</B>
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/search.h">search.h</A>&gt;</B>
+
+<B>void tdestroy (void *</B><I>root</I><B>, void (*</B><I>free_node</I><B>)(void *</B><I>nodep</I><B>));</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>tsearch</B>, <B>tfind</B>, <B>twalk</B>, et <B>tdelete</B> permettent
+de manipuler un arbre binaire. Ces fonctions implémentent une généralisation
+de l'algorithme T de Knuth (6.2.2).
+Le premier membre de chaque noeud de l'arbre est un pointeur vers la donnée
+elle-même (le programme appelant doit prendre en charge le stockage de
+ces données). <I>compar</I> pointe sur une routine de comparaison prenant en
+argument deux pointeurs sur ces données. Elle doit renvoyer un entier négatif,
+nul, ou positif suivant que le premier élément est inférieur, égal ou supérieur
+au second.
+<P>
+
+<B>tsearch</B> recherche un élément dans l'arbre.  <I>key</I> pointe sur l'élément
+à chercher. Si l'arbre est vide, alors <I>rootp</I> doit pointer sur une variable
+pointant sur <B>NULL</B>.
+Si l'élément est trouvé dans l'arbre, <B>tsearch</B> renvoie un pointeur sur celui-ci.
+Sinon <B>tsearch</B> ajoute l'élément dans l'arbre et renvoie un pointeur sur lui.
+<P>
+
+<B>tfind</B> fonctionne comme <B>tsearch</B>, sauf que si l'élément n'est pas trouvé,
+alors la fonction <B>tfind</B> renvoie <B>NULL</B>.
+<P>
+
+<B>tdelete</B> supprime un élément de l'arbre. Ses arguments sont les mêmes que
+ceux de <B>tsearch</B>.  
+<P>
+
+<B>twalk</B> exécute un balayage en profondeur d'abord, de gauche à droite,
+de l'arbre binaire. <I>root</I> pointe sur le noeud de départ du balayage.
+S'il ne s'agit pas de la vraie racine de l'arbre, seule une partie de celui-ci
+sera balayée.
+<B>twalk</B> appelle la fonction <I>action</I> chaque fois qu'un noeud est
+rencontré (c'est à dire trois fois pour un noeud interne et une seule fois
+pour une feuille de l'arbre).
+<I>action</I>, doit accepter trois arguments.  Le premier est un pointeur sur
+le noeud rencontré. Le second est un entier prenant l'une des valeurs suivantes :
+<B>preorder</B>, <B>postorder</B>, et <B>endorder</B> suivant qu'il s'agisse de
+la première, deuxième ou troisième rencontre du noeud, ou encore <B>leaf</B>
+s'il s'agit d'un noeud feuille.
+(Ces symboles sont définis dans <I>&lt;<A HREF="file:///usr/include/search.h">search.h</A>&gt;</I>.)
+Le troisième argument est la profondeur du noeud dans l'arbre, zéro correspondant
+à la racine.
+<P>
+
+(Plus généralement, <B>preorder</B>, <B>postorder</B>, et <B>endorder</B>
+sont vus comme <B>preorder</B>, <B>inorder</B>, et <B>postorder</B>:
+avant de visiter le noeud fils, après le premier et avant le second, après avoir
+visité les enfants. Ainsi, le choix du nom <B>postorder</B>
+est un peu déroutant.)
+<P>
+
+<B>tdestroy</B> supprime tous l'arbre pointé par <I>root</I>,
+libérant toutes les ressources allouées par la fonction <B>tsearch</B>. Pour
+libérer les données de chaque noeud, la fonction <I>free_node</I> est invoquée.
+Le pointeur sur les données est passé en argument à cette fonction. Si
+aucune libération n'est nécessaire, <I>free_node</I> doit pointer vers une fonction
+ne faisant rien.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>tsearch</B> renvoie un pointeur sur un élément correspondant de l'arbre,
+sur l'élément nouvellement ajouté, ou <B>NULL</B> s'il n'y avait pas assez de mémoire
+pour ajouter le noeud.
+<B>tfind</B> renvoie un pointeur sur l'élément recherché ou <B>NULL</B> si aucune
+correspondance n'a été trouvée. Si plusieurs éléments correspondent à la clé,
+celui renvoyé n'est pas spécifié.
+<P>
+
+<B>tdelete</B> renvoie un pointeur sur le noeud père de celui détruit, ou
+<B>NULL</B> si l'élément n'a pas été trouvé.
+<P>
+
+<B>tsearch</B>, <B>tfind</B>, et <B>tdelete</B> renvoient également <B>NULL</B> si <I>rootp</I>
+valait <B>NULL</B>.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ATTENTION</H2>
+
+<B>twalk</B> utilise un pointeur sur la racine, alors que les autres fonctions utilisent
+un pointeur sur une variable pointant sur la racine.
+<P>
+
+Pour <B>twalk</B>, <B>postorder</B> signifie &quot;après le sous-arbre de gauche, mais
+avant le sous-arbre de droite&quot;. Certains préfèreraient appeler ceci &quot;inorder&quot;, et
+réserver &quot;postorder&quot; pour indiquer &quot;après les deux sous-arbres&quot;.
+<P>
+
+<B>tdelete</B> libère la mémoire nécessaire au stockage du noeud dans l'arbre.
+Le programme appelant est responsable de la libération de la mémoire occupée
+par l'élément de donnée correspondant.
+<P>
+
+Le programme d'exemple s'appuie sur le fait que <B>twalk</B> ne fait plus jamais
+référence à un noeud après avoir appelé la fonction utilisateur avec
+l'argument &quot;endorder&quot; ou &quot;leaf&quot;.  Ceci fonctionne avec l'implémentation de la
+bibliothèque GNU, mais n'est pas spécifié sous SysV.
+<A NAME="lbAG">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+Le programme suivant insère douze nombres aléatoires dans un arbre
+binaire, où les doublons sont regroupés, puis affiche les nombres classés.
+<P>
+<PRE>
+    #include &lt;<A HREF="file:///usr/include/search.h">search.h</A>&gt;
+    #include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;
+    #include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;
+    #include &lt;<A HREF="file:///usr/include/time.h">time.h</A>&gt;
+    
+    void *root=NULL;
+    
+    void *xmalloc(unsigned n)
+    {
+      void *p;
+      p = <A HREF="/cgi-bin/man/man2html?n+malloc">malloc</A>(n);
+      if(p) return p;
+      fprintf(stderr, &quot;pas assez de mémoire\n&quot;);
+      <A HREF="/cgi-bin/man/man2html?1+exit">exit</A>(1);
+    }
+    
+    int compare(const void *pa, const void *pb)
+    {
+      if(*(int *)pa &lt; *(int *)pb) return -1;
+      if(*(int *)pa &gt; *(int *)pb) return 1;
+      return 0;
+    }
+    
+    void action(const void *nodep, const VISIT which, const int depth)
+    {
+      int *datap;
+      void *val;
+    
+      switch(which)
+        {
+        case preorder:
+          break;
+        case postorder:
+          datap = *(int **)nodep;
+          printf(&quot;%6d\n&quot;, *datap);
+          break;
+        case endorder:
+          break;
+        case leaf:
+          datap = *(int **)nodep;
+          printf(&quot;%6d\n&quot;, *datap);
+          break;
+        }
+      return;
+    }
+    
+    int main()
+    {
+      int i, *ptr;
+      void *val;
+    
+      for (i = 0; i &lt; 12; i++)
+        {
+          ptr = (int *)xmalloc(sizeof(int));
+          *ptr = rand()&amp;0xff;
+          val = tsearch((void *)ptr, &amp;root, compare);
+          if(val == NULL) <A HREF="/cgi-bin/man/man2html?1+exit">exit</A>(1);
+        }
+      twalk(root, action);
+      return 0;
+    }
+</PRE>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID.
+La fonction
+<B>tdestroy()</B>
+
+est une extension GNU.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+qsort">qsort</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+bsearch">bsearch</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+hsearch">hsearch</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+lsearch">lsearch</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ATTENTION</A><DD>
+<DT><A HREF="#lbAG">EXEMPLE</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:47 GMT, February 11, 2014
+</BODY>
+</HTML>

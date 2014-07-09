@@ -1,0 +1,184 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of UNAME</TITLE>
+</HEAD><BODY>
+<H1>UNAME</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+uname - Obtenir des informations à propos du noyau.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/utsname.h">sys/utsname.h</A>&gt;</B>
+
+<P>
+<B>int uname(struct utsname *</B><I>buf</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>uname</B>
+
+renvoient les informations dans le buffer
+<I>buf</I>.
+
+la structure 
+<I>utsname </I>
+
+est définie dans
+<I>&lt;<A HREF="file:///usr/include/sys/utsname.h">sys/utsname.h</A>&gt;</I>
+
+comme suit :
+<DL COMPACT><DT><DD>
+<PRE>
+struct utsname {
+char sysname[];
+char nodename[];
+char release[];
+char version[];
+char machine[];
+#ifdef _GNU_SOURCE
+char domainname[];
+#endif
+};
+</PRE>
+
+</DL>
+
+La longueur des chaînes de la
+<I>struct utsname</I>
+
+n'est pas spécifiée, les champs se terminent par un caractère NUL.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>uname</B>
+
+renvoie 0 s'il réussit ou -1 s'il échoue auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EFAULT</B>
+
+<DD>
+<I>buf</I>
+
+pointe en dehors de l'espace d'adressage accessible
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID, POSIX, X/OPEN.
+Il n'y a pas d'appel
+<B>uname</B>
+
+dans BSD 4.3.
+<P>
+
+Le champ
+<I>domainname</I>
+
+(nom de domaine NIS ou YP) est une extension Gnu.
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Ceci est un appel système, et le système d'exploitation est supposé connaître
+son nom, et ses numéros de version et de mise à jour. Il connaît également le matériel
+sur lequel il tourne, ainsi les quatre premiers champs de la structures sont significatifs.
+En revanche, le champ <I>nodename</I> n'est pas significatif&nbsp;:
+il donne le nom de la machine dans un réseau non précisé, mais généralement
+les machines sont connectées à plusieurs réseaux et ont plusieurs noms.
+De plus, le noyau n'a pas de moyen de connaître ces informations, et on doit
+les lui fournir. Ceci est vrai aussi pour le champ supplémentaire
+<I>domainname</I>.
+<P>
+
+A cette fin, Linux utilise les appels système
+<B><A HREF="/cgi-bin/man/man2html?2+sethostname">sethostname</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+setdomainname">setdomainname</A></B>(2).
+
+Notez qu'aucun standard ne dit que le nom d'hôte fixé par
+<B><A HREF="/cgi-bin/man/man2html?2+sethostname">sethostname</A></B>(2)
+
+représente la même chaîne que le champ <I>nodename</I> de la structure
+renvoyée par uname,
+(de fait, certains systèmes autorise un nom d'hôte de 256 octets et un nom
+de noeud sur 8 octets), mais c'est le cas sous Linux.
+La même chose est vraie pour
+<B><A HREF="/cgi-bin/man/man2html?2+setdomainname">setdomainname</A></B>(2)
+
+et le champ <I>domainname</I>.
+<P>
+
+La longueur des champs de la structure varie. Certains systèmes d'exploitation
+ou bibliothèques utilise des valeurs en dur de 9, 33, 65, ou 257. D'autres systèmes
+utilisent SYS_NMLN, _SYS_NMLN, UTSLEN ou _UTSNAME_LENGTH.
+Clairement, il faut éviter d'utiliser ces constantes, employez plutôt sizeof(...).
+On choisit souvent la valeur 257 qui permet de stocker un nom d'hôte Internet entier.
+<P>
+
+Il y a eu trois appels système <I>uname</I> sous Linux. Le premier utilisait
+une longueur de 9, le second de 65 et le troisième utilise également 65
+mais ajoute le champ <I>domainname</I>.
+<P>
+
+Une partie des informations utsname est aussi accessible par
+<I>sysctl</I>
+
+et par
+<I>/proc/sys/kernel/</I>{<I>ostype</I>,
+
+<I>hostname</I>,
+
+<I>osrelease</I>,
+
+<I>version</I>,
+
+<I>domainname</I>}.
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+uname">uname</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getdomainname">getdomainname</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+gethostname">gethostname</A></B>(2)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:57 GMT, February 11, 2014
+</BODY>
+</HTML>

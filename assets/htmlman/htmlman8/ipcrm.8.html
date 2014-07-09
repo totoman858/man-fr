@@ -1,0 +1,214 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of IPCRM</TITLE>
+</HEAD><BODY>
+<H1>IPCRM</H1>
+Section: Manuel de l'utilisateur Linux (8)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ipcrm - Supprimer une file de messages, un jeu de sémaphore ou un segment de mémoire partagée.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>ipcrm</B>
+
+[
+<B>-M</B>
+
+<I>key</I>
+
+|
+<B>-m</B>
+
+<I>id</I>
+
+|
+<B>-Q</B>
+
+<I>key</I>
+
+|
+<B>-q</B>
+
+<I>id</I>
+
+|
+<B>-S</B>
+
+<I>key</I>
+
+|
+<B>-s</B>
+
+<I>id </I>
+
+] ...
+<P>
+utilisation déconseillée
+<P>
+<B>ipcrm</B>
+
+[
+<B>shm</B>
+
+|
+<B>msg</B>
+
+|
+<B>sem</B>
+
+]
+<I>id</I> ...
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>ipcrm</I>
+
+supprime des objets de communication entre processus (IPC) Système V et les
+structures de données associées définis sur le système.
+Afin de les détruire, vous devez être Super-Utilisateur, le créateur ou le
+propriétaire des objets.
+<P>
+Les objets IPC Système V sont de trois types&nbsp;: mémoire partagée, file de
+messages et sémaphores. La suppression d'une file de message ou d'un ensemble
+de sémaphores est imédiates (même s'il y a des processus qui
+disposent d'un identificateur
+sur l'objet).
+Un segment de mémoire partagée n'est seulement supprimé qu'après que
+tous les processus ont détaché
+(<B><A HREF="/cgi-bin/man/man2html?2+shmdt">shmdt</A></B>(2))
+
+l'objet de leur espace d'adressage virtuel.
+<P>
+Deus syntaxes sont supportées. L'ancienne syntaxe historique sous Linux utilise
+un mot-clé de trois lettre indqiuant la classe de l'objet à supprimer, suivi
+d'un ou plusieurs identificateur d'objet IPC de ce type.
+<P>
+La syntaxe compatible SUS autorise la spécification de zéro, un ou plusieurs
+objets des trois types en une seule ligne de commande&nbsp;; les objets étant 
+repérés par leurs clés ou leurs identificateurs. (Voir plus bas).
+Clés et identificateurs peuvent être spécifiés en décimal, hexadécimal
+(commençant par '0x' ou '0X'), ou octal (commençant
+par un '0').
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-M</B><I> clé_shm</I>
+
+<DD>
+Supprime le segment de mémoire partagée créé avec
+clé_shm
+après son dernier détachement.
+<DT><B>-m</B><I> id_shm</I>
+
+<DD>
+Supprime le segment de mémoire partagée identifié par
+<I>id_shm</I>
+
+après son dernier détachement.
+<DT><B>-Q</B><I> clé_msg</I>
+
+<DD>
+Supprimer la file de messages créée avec
+<I>clé_msg</I>.
+
+<DT><B>-q</B><I> id_msg</I>
+
+<DD>
+Supprimer la file de messages identifiée par
+<I>id_msg</I>.
+
+<DT><B>-S</B><I> clé_sem</I>
+
+<DD>
+Supprimer le jeu de sémaphores créé avec
+<I>clé_sem</I>.
+
+<DT><B>-s</B><I> id_sem</I>
+
+<DD>
+Supprimer le jeu de sémaphores identifié par
+<I>id_sem</I>.
+
+</DL>
+<P>
+
+Les détails des suppressions sont décrits dans
+<I><A HREF="/cgi-bin/man/man2html?2+msgctl">msgctl</A></I>(2),
+
+<I><A HREF="/cgi-bin/man/man2html?2+shmctl">shmctl</A></I>(2),
+
+et
+<I><A HREF="/cgi-bin/man/man2html?2+semctl">semctl</A></I>(2).
+
+Les identificateurs et clés sont visibles avec
+<I><A HREF="/cgi-bin/man/man2html?8+ipcs">ipcs</A></I>(8).
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Dans sa première implémentation sous Linux, ipcrm utilisait la syntaxe
+déconseillé que nous avons vue dans
+<B>SYNOPSIS</B>.
+
+Les focntionalités présentes dans d'autres implémentations Unix d'ipcrm ont
+été ajoutée depuis, par exemple la possibilité de supprimer une ressource par
+sa clé (et pas uniquement son identifieur) en gardant une compatibilité
+de la ligne de commande avec la précédente syntaxe.
+
+
+
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+ipcs">ipcs</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgctl">msgctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgget">msgget</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+semctl">semctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+semget">semget</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+shmctl">shmctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+shmdt">shmdt</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+shmget">shmget</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+ftok">ftok</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:03 GMT, February 11, 2014
+</BODY>
+</HTML>

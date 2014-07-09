@@ -1,0 +1,155 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FCRON.CONF</TITLE>
+</HEAD><BODY>
+<H1>FCRON.CONF</H1>
+Section:  (5)<BR>Updated: 6 février 2006<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<P>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fcron.conf - Fichier de configuration pour fcron et fcrontab.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+Cette page décrit la syntaxe utilisée dans le fichier de
+configuration de <B><A HREF="/cgi-bin/man/man2html?1+fcrontab">fcrontab</A></B>(1),
+<B><A HREF="/cgi-bin/man/man2html?1+fcrondyn">fcrondyn</A></B>(1) et
+<B><A HREF="/cgi-bin/man/man2html?8+fcron">fcron</A></B>(8).
+<P>
+
+Les lignes blanches, les lignes débutant par le symbole dièse
+«~#~» (qui sont considérées comme étant des commentaires),
+les espaces ou les tabulations placées en début de ligne sont ignorées.
+Chaque ligne d'un fichier de configuration <B>fcron.conf</B> est de la forme
+<P>
+<DL COMPACT><DT><DD>
+<P>
+
+nom = valeur
+</DL>
+
+où les espaces autour
+du signe d'égalité «~=~» sont ignorés et optionnels.
+Les espaces en fin de ligne sont également ignorées.
+<P>
+
+Les noms suivants sont reconnus (leur valeur par défaut est
+entre parenthèses)~:
+<P>
+
+&quot;VARIABLES VALIDES DANS UN FICHIER FCRON.CONF&quot;
+<DL COMPACT>
+<DT><B>fcrontabs=</B><I>répertoire</I> (<I>/var/spool/fcron</I>)<DD>
+Répertoire spool de <B>fcron</B>.
+<DT><B>pidfile=</B><I>chemin-fichier</I> (<I>/var/run/fcron.pid</I>)<DD>
+Emplacement du fichier pid de <B>fcron</B> (nécessaire au bon
+fonctionnement de <B>fcrontab</B>).
+<DT><B>fifofile=</B><I>chemin-fichier</I> (<I>/var/run/fcron.fifo</I>)<DD>
+Emplacement du fichier fifo de <B>fcron</B> (nécessaire à
+<B>fcrondyn</B> pour communiquer avec fcron).
+<DT><B>fcronallow=</B><I>chemin-fichier</I> (<I>/etc/fcron.allow</I>)<DD>
+Emplacement du fichier fcron.allow.
+<DT><B>fcrondeny=</B><I>chemin-fichier</I> (<I>/etc/fcron.deny</I>)<DD>
+Emplacement du fichier fcron.deny.
+<DT><B>shell=</B><I>chemin-fichier</I> (<I>/bin/sh</I>)<DD>
+Emplacement du shell par défaut appelé par <B>fcron</B> pour le
+lancement d'une tâche.
+<DT><B>sendmail=</B><I>chemin-fichier</I> (<I>/usr/lib/sendmail</I>)<DD>
+Emplacement du programme d'envoi des courriels appelé par
+<B>fcron</B> pour envoyer les sorties produites par la tâche.
+<DT><B>editor=</B><I>chemin-fichier</I> (<I>/usr/bin/vi</I>)<DD>
+Emplacement de l'éditeur de texte par défaut lors de
+l'invocation de la commande «~fcrontab -e~».
+Tous les chemins fichiers sont complets et absolus
+(c.-à-d. débutant par un «~/~»).
+</DL>
+<P>
+
+Pour exécuter simultanément plusieurs instances de <B>fcron</B> sur la
+même machine, vous devez utiliser un fichier de configuration différent
+pour chaque instance. Chaque instance doit avoir un
+fcrontabs, pidfile et
+fifofile différent. Ensuite, utiliser l'option
+<B>-c</B> de la ligne de commande de
+<B><A HREF="/cgi-bin/man/man2html?8+fcron">fcron</A></B>(8) pour indiquer à quel fichier de
+configuration (ou à quelle instance) se référer.
+<A NAME="lbAD">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/etc/fcron.conf</I><DD>
+Fichier de configuration de <B>fcron</B>, <B>fcrontab</B> et <B>fcrondyn</B>~:
+contient les chemins (répertoire spool, fichier pid) et les
+programmes par défaut à utiliser (éditeur, shell, etc.). Voir
+<B><A HREF="/cgi-bin/man/man2html?5+fcron.conf">fcron.conf</A></B>(5) pour plus
+de détails.
+<DT><I>/etc/fcron.allow</I><DD>
+Utilisateurs autorisés à utiliser <B>fcrontab</B> et <B>fcrondyn</B>
+(un seul nom par ligne, le nom spécial «~all~» signifiant
+tout le monde).
+<DT><I>/etc/fcron.deny</I><DD>
+Utilisateurs qui ne sont pas autorisés à utiliser
+<B>fcrontab</B> et <B>fcrondyn</B> (même format que le fichier précédent).
+<DT><I>/etc/pam.d/fcron</I> (ou <I>/etc/pam.conf</I>)<DD>
+Fichier de configuration PAM pour
+<B>fcron</B>. Voir <B><A HREF="/cgi-bin/man/man2html?8+pam">pam</A></B>(8) pour plus de détails.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+fcrontab">fcrontab</A></B>(1),
+<B><A HREF="/cgi-bin/man/man2html?1+fcrondyn">fcrondyn</A></B>(1),
+<B><A HREF="/cgi-bin/man/man2html?5+fcrontab">fcrontab</A></B>(5),
+<B><A HREF="/cgi-bin/man/man2html?5+fcron.conf">fcron.conf</A></B>(5),
+<B><A HREF="/cgi-bin/man/man2html?8+fcron">fcron</A></B>(8)
+<P>
+Si vous êtes en train d'apprendre à utiliser fcron, je vous
+suggère plutôt de lire la version HTML de la documentation (si ce n'est pas
+déjà ce que vous faites en ce moment~! :) )~: le contenu est le même, mais
+il est plus aisé de naviguer grâce aux hyperliens.
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<P>
+
+Thibault Godouet &lt;<A HREF="mailto:fcron@free.fr">fcron@free.fr</A>&gt;
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal AT univ-montp2 DOT fr&gt; le 6 février 2006.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document
+est toujours consultable via la commande~: «~<B>LANG=en
+man 5 fcron.conf</B>~».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas,
+toute erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">FICHIERS</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">AUTEUR</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:54 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,84 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DEBCLEAN</TITLE>
+</HEAD><BODY>
+<H1>DEBCLEAN</H1>
+Section: User Commands  (1)<BR>Updated: Debian Utilities<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+debclean - nettoie une arborescence de code source
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>debclean</B> [<B>--cleandebs</B>|<B>--nocleandebs</B>]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>debclean</B> parcourt l'arborescence des répertoires en commençant par 
+l'arborescence du répertoire d'où elle a été appelée, et exécute
+<I>debian/rules clean</I>
+
+pour chaque répertoire source Debian rencontré.
+<P>
+
+En outre, si l'option <B>--cleandebs</B> est donnée, alors dans chaque
+répertoire contenant une arborescence source Debian, tous les fichiers nommés *.deb,
+*.changes et *.dsc sont supprimés. Les fichiers .diff.gz et tar.gz 
+ne sont pas touchés de sorte que la version peut être reconstruite si nécessaire,
+et les fichiers .upload sont laissés de sorte que <B>debchange</B> fonctionne
+correctement. L'option <B>--nocleandebs</B> empêche ce comportement de nettoyage
+supplémentaire et l'option <B>--cleandebs</B> le force. Ceci
+peut également être réalisé en plaçant dans le fichier de configuration l'option 
+<B>DEBCLEAN_CLEANDEBS</B> à <I>oui</I>. Le comportement par défaut est de ne pas nettoyer 
+ces fichiers.
+<P>
+
+<B>debclean</B> utilises <B><A HREF="/cgi-bin/man/man2html?1+debuild">debuild</A></B>(1) pour nettoyer l'arborescence source.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VARIABLES DE CONFIGURATION</H2>
+
+Les deux fichiers de configuration <I>/etc/devscripts.conf</I> et
+<I>~/.devscripts</I> sont évalués dans cet ordre pour placer les variables 
+de configuration. Des options de ligne de commande peuvent être utilisées pour neutraliser les 
+paramètres des fichiers de configuration. Les paramètres des variables d'environnement sont ignorés 
+à cette fin. La variable actuellement identifiée est&nbsp;:
+<DL COMPACT>
+<DT><B>DEBCLEAN_CLEANDEBS</B>
+
+<DD>
+Si elle est positionnée à «&nbsp;<I>yes</I>&nbsp;», alors c'est comme si le paramètre de ligne de commande 
+<B>--cleandebs</B> était utilisé.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Christoph Lameter &lt;<A HREF="mailto:clameter@debian.org">clameter@debian.org</A>&gt;;
+modifications par Julian Gilbey &lt;<A HREF="mailto:jdg@debian.org">jdg@debian.org</A>&gt;.
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Laëtitia Groslong &lt;<A HREF="mailto:lgr@tartine.org">lgr@tartine.org</A>&gt;. 
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VARIABLES DE CONFIGURATION</A><DD>
+<DT><A HREF="#lbAF">AUTEUR</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:41 GMT, February 11, 2014
+</BODY>
+</HTML>

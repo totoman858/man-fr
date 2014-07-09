@@ -1,0 +1,408 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of IPV6</TITLE>
+</HEAD><BODY>
+<H1>IPV6</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ipv6, PF_INET6 - Implémentation Linux du protocole IPv6
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/netinet/in.h">netinet/in.h</A>&gt; </B>
+
+<P>
+<P>
+<I>tcp6_socket</I><B> = socket(PF_INET6, SOCK_STREAM, 0);</B>
+
+<BR>
+
+<I>raw6_socket</I><B> = socket(PF_INET6, SOCK_RAW, </B><I>protocol</I><B>);</B>
+
+<BR>
+
+<I>udp6_socket</I><B> = socket(PF_INET6, SOCK_DGRAM, </B><I>protocol</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Linux 2.2 implémente en option le protocole internet version 6 (IPv6).
+Cette page de manuel contient la description de l'API IPv6 de base, telle
+qu'implémentée dans le noyau Linux et la GlibC 2.1 L'interface est 
+basée sur l'interface des sockets BSD. Voir
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7).
+
+<P>
+
+L'API IPv6 est conçue pour être essentiellement compatible avec l'API
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7)
+
+v4. Seules les différences sont décrites dans cette page de manuel.
+<P>
+
+pour attacher une socket
+<I>AF_INET6</I>,
+
+l'adresse locale doit être copiée dans une variable
+<B>in6addr_any</B>
+
+qui a le
+type
+<I>in6_addr</I>.
+
+Dans les initialisations statiques,
+<B>IN6ADDR_ANY_INIT</B>
+
+peut servir aussi et se développe en une expression constante.
+Toutes les valeurs sont dans l'ordre des octets du réseau.
+<P>
+
+L'adresse de boucle IPv6 (::1) est disponible dans la variable globale
+<B>in6addr_loopback</B>.
+
+Pour les initialisation, on doit
+utiliser
+<B>IN6ADDR_LOOPBACK_INIT</B>.
+
+<P>
+
+Les connexions IPv4 peuvent être traitée avec l'API v6 en utilisant le type d'adresse
+v4-projeté-dans-v6. Ainsi un programme n'a qu'un seul type d'API à utiliser pour
+supporter les deux protocoles. Ceci est géré de manière transparente par les fonctions
+d'adressage de la LibC.
+<P>
+
+IPv4 et IPv6 partagent l'espace des ports locaux. Lorsqu'une connexion IPv4 ou un paquet 
+est obtenu sur une socket IPv6, son adresse source sera projetée
+en v6.
+<A NAME="lbAE">&nbsp;</A>
+<H2>FORMAT D'ADRESSE</H2>
+
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct sockaddr_in6 {
+    u_int16_t       sin6_family;/* AF_INET6 */
+    u_int16_t       sin6_port;/* numéro port */
+    u_int32_t       sin6_flowinfo;/* information flux IPv6 */
+    struct in6_addr sin6_addr;/* adresse IPv6 */
+    u_int32_t   sin6_scope_id;  /* Scope id (nouveauté 2.4) */ 
+};
+
+struct in6_addr {
+    unsigned char   s6_addr[16];/* adresse IPv6 */
+};
+
+</PRE>
+
+</DL>
+
+<P>
+<B>sin6_family </B>
+
+est toujours rempli avec 
+<B>AF_INET6</B> ;
+
+<B>sin6_port </B>
+
+est le port du protocole (voir
+<B>sin_port</B>
+
+dans
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7));
+
+<B>sin6_flowinfo</B>
+
+est l'identificateur de flux IPv6,
+<B>sin6_addr</B>
+
+est l'adresse IPv6 sur 128 bits.
+<B>sin6_scope_id </B>
+
+est un identificateur qui dépend de la portée de l'adresse. C'est une nouveauté Linux 2.4.
+Linux ne le supporte que pour les adresse ayant une portée liaison, dans ce cas
+<I>sin6_scope_id</I>
+
+contient le numéro d'interface (voir
+<B><A HREF="/cgi-bin/man/man2html?7+netdevice">netdevice</A></B>(7))
+
+<P>
+
+IPv6 supporte plusieurs types d'adresses : unicast pour représenter un hôte unique,
+multicast pour un groupe d'hôtes, anycast pour indiquer le membre le plus proche d'un
+groupe d'hôtes (non implémenté sous Linux), IPv4-on-IPv6 pour un hôte
+IPv4, et d'autres types d'adresse réservés.
+<P>
+
+La notation d'adresse pour l'IPv6 est un groupe de 16 nombres hexadécimaux sur 2 chiffres,
+séparés par un deux-points `:'. Un `::' représente une chaîne de zéros. Les adresses spéciales
+sont ::1 pour le bouclage loopback et ::FFFF:&lt;adresse IPv4&gt; pour les projections d'adresses IPv4
+sur l'IPv6.
+<P>
+
+L'espace des ports de l'IPv6 est partagé avec l'IPv4.
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS DES SOCKETS</H2>
+
+IPv6 supporte quelques options des sockets spécifiques du protocole, qui peuvent être fixées avec
+<B><A HREF="/cgi-bin/man/man2html?2+setsockopt">setsockopt</A></B>(2)
+
+et consultées avec
+<B><A HREF="/cgi-bin/man/man2html?2+getsockopt">getsockopt</A></B>(2).
+
+Le niveau d'option de socket pour l'IPv6 est
+<B>IPPROTO_IPV6</B>.
+
+Un entier booléen est faux quand il est nul et vrai sinon.
+<DL COMPACT>
+<DT><B>IPV6_UNICAST_HOPS</B>
+
+<DD>
+Fixe la limite du nombre de sauts (hops) unicast. L'argument est un pointeur sur un entier.
+La valeur -1 correspond à la valeur par défaut de routage, sinon il doit s'agir
+d'un entier entre 0 et 255.
+<DT><B>IPV6_MULTICAST_HOPS</B>
+
+<DD>
+Fixe la limite du nombre de sauts (hops) multicast. L'argument est un pointeur sur un entier.
+La valeur -1 correspond à la valeur par défaut de routage, sinon il doit s'agir
+d'un entier entre 0 et 255.
+<DT><B>IPV6_MULTICAST_IF</B>
+
+<DD>
+Fixe le périphérique pour les paquets multicasts sortants de la socket.
+Ceci n'est permis
+que pour les
+sockets
+<I>SOCK_DGRAM</I>
+
+et
+<I>SOCK_RAW</I>.
+
+L'argument est un pointeur sur un numéro d'interface (voir
+<B><A HREF="/cgi-bin/man/man2html?7+netdevice">netdevice</A></B>(7))
+
+dans un entier.
+<DT><B>IPV6_ADDRFORM</B>
+
+<DD>
+Transformer une socket
+<I>AF_INET6</I>
+
+en une socket d'une famille d'adresse différente. Seul
+<I>AF_INET</I>
+
+est actuellement supporté pour cela. Cela n'est autorisé que pour les sockets
+IPv6 connectées et attachées à une adresse v4-sur-v6. L'argument est un pointeur
+sur un entier contenant
+<B>AF_INET. </B>
+
+Cela est utile pour passer des sockets projetées en v4 comme descripteurs à des
+programmes ne sachant pas manipuler l'API IPv6.
+<DT><B>IPV6_PKTINFO</B>
+
+<DD>
+Fixe la distribution des messages de contrôle
+<B>IPV6_PKTINFO </B>
+
+des datagrammes entrants. Uniquement autorisé pour les sockets
+<B>SOCK_DGRAM</B>
+
+ou
+<B>SOCK_RAW</B>.
+
+L'argument est un pointeur sur une valeur booléenne dans un entier.
+<DT>
+<DD>
+<B>IPV6_RTHDR, IPV6_AUTHHDR, IPV6_DSTOPS, IPV6_HOPOPTS, IPV6_FLOWINFO, IPV6_HOPLIMIT</B>
+
+
+Fixe la distribution des messages de contrôle des datagrammes entrants contenant les
+en-têtes d'extensions.
+<I>IPV6_RTHDR</I>
+
+délivre l'en-tête de routage,
+<I>IPV6_AUTHHDR</I>
+
+délivre l'en-tête d'authentification,
+<I>IPV6_DSTOPTS</I>
+
+délivre les options de destination,
+<I>IPV6_HOPOPTS</I>
+
+délivre les options de saut,
+<I>IPV6_FLOWINFO</I>
+
+délivre un entier contenant l'identificateur de flux,
+<I>IPV6_HOPLIMIT</I>
+
+délivre un entier contenant le nombre de sauts du paquet.
+Les messages de contrôle ont le même type que l'option de socket. Toutes ces options
+d'en-tête peuvent aussi être fixées pour les paquets sortants en mettant le message
+de contrôle approprié dans le buffer de
+<B><A HREF="/cgi-bin/man/man2html?2+sendmsg">sendmsg</A></B>(2).
+
+Uniquement autorisé pour les sockets
+<B>SOCK_DGRAM</B>
+
+ou
+<B>SOCK_RAW</B>
+
+L'argument est un pointeur sur une valeur booléenne.
+<DT><B>IPV6_MULTICAST_LOOP</B>
+
+<DD>
+Détermine si la socket voit les paquets multicast qu'elle a elle-même émis.
+L'argument est un pointeur sur une valeur booléenne.
+<DT><B>IPV6_ADD_MEMBERSHIP, IPV6_DROP_MEMBERSHIP</B>
+
+<DD>
+Détermine l'appartenance aux groupes multicast. L'argument est un pointeur sur
+une structure
+<B>struct</B>ipv6_mreq<B>.</B>
+
+<DT><B>IPV6_MTU</B>
+
+<DD>
+Fixe le MTU à utiliser pour la socket. Le MTU est limité par celui du périphérique
+ou celui du chemin lorsque la recherche du MTU par chemin est activée.
+L'argument est un pointeur sur un entier.
+<DT><B>IPV6_MTU_DISCOVER</B>
+
+<DD>
+Commander la recherche du MTU par chemin sur la socket. Voir l'option
+<I>IP_MTU_DISCOVER</I>
+
+dans
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7)
+
+pour plus de précisions.
+<DT><B>IPV6_RECVERR</B>
+
+<DD>
+Commande la réception des erreurs asynchrones. Voir
+<I>IP_RECVERR</I>
+
+dans
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7)
+
+pour plus de précisions.
+L'argument est un pointeur sur un booléen.
+<DT><B>IPV6_ROUTER_ALERT</B>
+
+<DD>
+Passer sur cette socket tous les paquets redirigés (forwarded) contenant une option d'alerte du routeur.
+Uniquement autorisé pour les sockets datagrammes, et pour root. L'argument est un pointeur
+vers un booléen.
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VERSIONS</H2>
+
+L'ancienne implémentation IPv6 pour Linux basée sur
+<I>libinet6</I>
+
+de la LibC5 n'est pas décrite ici, et peut être légèrement
+différente.
+<P>
+
+Linux 2.4 rompt la compatibilité binaire pour la structure sockaddr_in6
+des hôtes sur 64 bits, en modifiant l'alignement de
+<I>in6_addr </I>
+
+et en ajoutant un champ
+<I>sin6_scope_id</I>
+
+supplémentaire. Les interfaces du noyau restent compatible, mais un programme contenant
+des sockaddr_in6 ou des in6_addr dans d'autres structures ne l'est peut être pas. Ce n'est
+pas un problème pour les hôtes sur 32 bits comme les i386.
+<P>
+
+Le champ
+<B>sin6_flowinfo</B>
+
+est une nouveauté Linux 2.4. Il est écrit/lu de manière transparente par le noyau
+quand la longueur de l'adresse passée le contient. Certains programmes qui passent
+un buffer d'adresse plus long et vérifient ensuite la longueur de l'adresse renvoyée peuvent échouer.
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES DE PORTABILITÉ</H2>
+
+La structure
+<B>sockaddr_in6</B>
+
+est plus grande que la structure
+<B>sockaddr</B>
+
+générique. Les programmes qui supposent que tous les types d'adresses peuvent être stockés dans une
+<B>struct sockaddr</B>
+
+doivent être modifiés pour utiliser
+<B>struct sockaddr_storage</B>
+
+à la place.
+<A NAME="lbAI">&nbsp;</A>
+<H2>BOGUES</H2>
+
+L'API IPv6 étendue, telle que dans la RFC 2292, n'est encore que partiellement implémentée.
+Bien que les noyaux 2.2 ont un support pratiquement complet pour les options de réception,
+les macros déclarant les options IPv6 manquent dans la GlibC 2.1.
+<P>
+
+Le support IPSec pour les en-têtes EH et AH est manquant.
+<P>
+
+La gestion des étiquettes de flux n'est pas complète, ni documentée ici.
+<P>
+
+Cette page de manuel n'est pas complète.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?3+cmsg">cmsg</A></B>(3)
+
+<P>
+
+RFC2553: API IPv6 de base, avec laquelle Linux essaye d'être compatible.
+<P>
+
+RFC2460: Spécifications IPv6
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2001-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">FORMAT D'ADRESSE</A><DD>
+<DT><A HREF="#lbAF">OPTIONS DES SOCKETS</A><DD>
+<DT><A HREF="#lbAG">VERSIONS</A><DD>
+<DT><A HREF="#lbAH">NOTES DE PORTABILITÉ</A><DD>
+<DT><A HREF="#lbAI">BOGUES</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:58 GMT, February 11, 2014
+</BODY>
+</HTML>

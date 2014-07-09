@@ -1,0 +1,133 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of EXIT</TITLE>
+</HEAD><BODY>
+<H1>EXIT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+exit - Fin normale d'un programme.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<B>void exit (int </B><I>status</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>exit()</B> termine normalement le programme en cours.
+La valeur <I>status &amp; 0377</I> est renvoyée au processus parent.
+(voir
+<B><A HREF="/cgi-bin/man/man2html?2+wait">wait</A></B>(2)).
+
+Toutes les fonctions enregistrées avec <B><A HREF="/cgi-bin/man/man2html?3+atexit">atexit</A></B>(3) et <B>on_exit()</B>
+sont invoquées dans l'ordre inverse de l'enregistrement, les flux ouverts
+sont vidés et fermés.
+Les fichiers créés par <B><A HREF="/cgi-bin/man/man2html?2+tmpfile">tmpfile</A></B>(2) sont supprimés.
+<P>
+
+Le standard C mentionne deux constantes symboliques <I>EXIT_SUCCESS</I> et
+<I>EXIT_FAILURE</I> qui peuvent être passée à <B>exit()</B> pour indiquer
+respectivement une terminaison en succès ou en échec.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>exit()</B> ne revient jamais.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3, POSIX, BSD 4.3, ISO 9899 (&quot;ANSI C&quot;)
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Durant le traitement de exit, il est possible d'enregistrer des
+fonctions supplémentaires avec <B>atexit()</B> et <B>on_exit()</B>.
+C'est toujours la dernière fonction enregistrée qui est extraite de
+leur liste et invoquée.
+Le comportement est indéfini si durant ce traitement, on invoque
+<B>exit()</B> ou <B>longjmp()</B>.
+<P>
+
+L'utilisation d'EXIT_SUCCESS et EXIT_FAILURE est légèrement plus portable
+(vers des environnements non-Unix) que celle de zéro et d'une valeur non-nulle
+comme 1 ou -1. En particulier, VMS utilise une convention différente.
+<P>
+
+BSD a tenté de standardiser les codes de sortie, voir le fichier
+<I>&lt;<A HREF="file:///usr/include/sysexits.h">sysexits.h</A>&gt;</I>.
+
+<P>
+
+Après un <B>exit()</B>, le code de retour doit être transmis au processus
+parent. Il y a trois cas. Si le parent a mentionné SA_NOCLDWAIT ou s'il
+a positionné le comportement de SIGCHLD à SIG_IGN, le status est ignoré.
+Si le père était en attente de la fin de son fils, il reçoit le status
+de retour. Dans ces deux cas, le fils meurt immédiatement.
+Si le parent n'est pas en attente, mais n'a pas indiqué qu'il
+désire ignorer le code de retour, le processus fils devient un &quot;zombie&quot;.
+Ce n'est rien d'autre qu'une coquille enveloppant le code de retour,
+que le processus père pourra consulter ultérieurement grâce à l'une des
+fonctions de la famille <I>wait()</I>.
+<P>
+
+Si l'implémentation supporte le signal SIGCHLD, celui-ci est envoyé au
+processus père. Si le père a mentionné SA_NOCLDWAIT, il n'est pas précisé
+si SIGCHLD est envoyé ou non.
+<P>
+
+Si le processus est un leader de session, et si son terminal de contrôle est
+le terminal de la session, alors chaque processus du groupe de processus en
+avant-plan su ce terminal reçoit un signal SIGHUP, et le terminal est
+dissocié de la session, lui permettant d'être réacquis par un nouveau processus
+de contrôle.
+<P>
+
+Si la fin du processus rend orphelin un groupe de processus, et si certain
+membres de ce groupe sont arrêtés, alors tous les processus du groupe vont recevoir
+SIGHUP suivi de SIGCONT.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+_exit">_exit</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+wait">wait</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+atexit">atexit</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+on_exit">on_exit</A></B>(3)
+
+<B><A HREF="/cgi-bin/man/man2html?3+tmpfile">tmpfile</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:27 GMT, February 11, 2014
+</BODY>
+</HTML>

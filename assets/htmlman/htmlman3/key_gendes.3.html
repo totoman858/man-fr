@@ -1,0 +1,123 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of KEY_SETSECRET</TITLE>
+</HEAD><BODY>
+<H1>KEY_SETSECRET</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+key_decryptsession, key_encryptsession, key_setsecret, key_gendes, key_secretkey_is_set - Interface pour le démon générateur de clé RPC.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/rpc/rpc.h">rpc/rpc.h</A>&gt;</B>
+
+<P>
+<B>int key_decryptsession(const char *</B><I>nom_distant</I><B>,</B>
+
+<B>des_block *</B><I>cle_des</I><B>);</B>
+
+<P>
+<B>int key_encryptsession(const char *</B><I>nom_distant</I><B>,</B>
+
+<B>des_block *</B><I>cle_des</I><B>);</B>
+
+<P>
+<B>int key_gendes(des_block *</B><I>cle_des</I><B>);</B>
+
+<P>
+<B>int key_setsecret(const char *</B><I>cle</I><B>);</B>
+
+<P>
+<B>int key_secretkey_is_set(void);</B>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ces fonctions sont utilisérs dans le mécanisme d'authentification des
+RPC sécurisées (AUTH_DES). Les programmes utilisateurs ne devraient
+pas en avoir besoin.
+<P>
+La fonction
+<B>key_decryptsession</B>()
+
+utilise le nom du serveur (distant) et effectue un décodage avec la
+clé DES transmise. Elle utilise la clé publique du serveur et la clé privée
+associée avec l'UID effectif du processus appelant.
+<P>
+La fonction
+<B>key_encryptsession</B>()
+
+est l'inverse de
+<B>key_decryptsession</B>().
+
+Elle crypte les clés DES avec la clé publique du serveur et la clé secrète
+associée à l'UID effectif du processus appelant.
+<P>
+La fonction
+<B>key_gendes</B>()
+
+est utilisée pour demander à un serveur une clé de session sécurisée.
+<P>
+La fonction
+<B>key_setsecret</B>()
+
+fixe la clé associée à l'UID effectif du processus appelant. 
+<P>
+La fonction
+<B>key_secretkey_is_set</B>()
+
+sert à savoir su une clé a été enregistrée pour
+l'UID effectif du processus appelant.   
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTE</H2>
+
+Notez bien qu'il y a deux types de cryptage ici&nbsp;: l'un est assymétrique, en
+utilisant une clé publique et une clé secrète. L'autre est symétrique, avec
+la clé DES 64-bits.
+<BR>
+
+Ces routines faisaient partie du project linux/doors, à présent abandonné.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Les fonctions renvoient 1 si elles réussissent et zéro si elles échouent.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+crypt">crypt</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTE</A><DD>
+<DT><A HREF="#lbAF">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:33 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,88 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of UPDWTMP</TITLE>
+</HEAD><BODY>
+<H1>UPDWTMP</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+updwtmp, logwtmp - Ajouter une entrée dans le fichier wtmp.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/utmp.h">utmp.h</A>&gt;</B>
+
+<B>void updwtmp(const char *</B><I>fichier_wtmp</I><B>, const struct utmp *</B><I>ut</I><B>);</B>
+<BR>
+<B>void logwtmp(const char *</B><I>ligne</I><B>, const char *</B><I>nom</I><B>, const char *</B><I>hote</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>updwtmp</B>() ajoute une structure utmp
+<I>ut</I>
+
+dans le fichier wtmp.
+<P>
+
+<B>logwtmp</B>() construit une structure utmp en utilisant les valeurs
+<I>ligne</I>, <I>nom</I>, <I>hote</I>,
+
+l'heure actuelle et le numéro de processus appelant.
+Ensuite, il appelle <B>updwtmp</B>() pour ajouter cette structure au fichier wtmp.
+<A NAME="lbAE">&nbsp;</A>
+<H2>DISPONIBILITÉ</H2>
+
+Ces deux fonctions sont disponibles dans la glibc2, mais pas dans l'ancienne
+libc5. Néanmoins, <B>logwtmp</B>() existait dans l'ancienne libbsd.
+De nos jours, la fonction
+<B>logwtmp</B>
+
+est incluse dans libutil (il faut donc ajouter
+<B>-lutil</B>
+
+sur la ligne de commande du compilateur).
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/var/log/wtmp</I>
+
+<DD>
+base de données des connexions passées.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+wtmp">wtmp</A></B>(5)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1998-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">DISPONIBILITÉ</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:18 GMT, February 11, 2014
+</BODY>
+</HTML>

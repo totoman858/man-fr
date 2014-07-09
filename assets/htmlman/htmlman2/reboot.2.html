@@ -1,0 +1,216 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of REBOOT</TITLE>
+</HEAD><BODY>
+<H1>REBOOT</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+reboot - Redémarrer la machine, ou activer/désactiver Ctrl-Alt-Suppr.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+Avec libc4 et libc5, la fonction de bibliothèque et l'appel système sont
+identiques, et depuis la version 2.1.30 du noyau, il existe des
+noms symboliques LINUX_REBOOT_* pour les constantes et un quatrième
+argument à l'appel :
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/linux/reboot.h">linux/reboot.h</A>&gt;</B>
+
+<P>
+<B>int reboot (int </B><I>magic</I><B>, int </B><I>magic2</I><B>, int </B><I>flag</I><B>, void *</B><I>arg</I><B>);</B>
+
+<P>
+Avec glibc, certaines des constantes concernées ont des noms symboliques
+RB_*, et la fonction de bibliothèque est une coquille à 1 argument
+encapsulant l'appel système à 3 arguments :
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/reboot.h">sys/reboot.h</A>&gt;</B>
+
+<P>
+<B>int reboot (int </B><I>flag</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+L'appel-système
+<B>reboot</B>
+
+fait redémarrer le système, ou active/désactive la séquence de 
+touches de redémarrage (Ctrl-Alt-Suppr par défaut mais cela peut
+être modifié en utilisant
+<B><A HREF="/cgi-bin/man/man2html?1+loadkeys">loadkeys</A></B>(1)).<B>Ces</B>touches<B>sont</B>abrégées<B>en</B>CAD<B>pour</B>Ctrl-Alt-Del.
+
+<P>
+
+Cet appel-système échouera (avec EINVAL) sauf si
+<I>magic </I>
+
+vaut LINUX_REBOOT_MAGIC1 (c'est à dire 0xfee1dead) et si
+<I>magic2</I>
+
+vaut LINUX_REBOOT_MAGIC2 (qui est 672274793).
+Toutefois, sont également autorisées pour
+<I>magic2</I>
+
+les valeurs LINUX_REBOOT_MAGIC2A
+(qui vaut 85072278) depuis la version 2.1.17 du noyau et
+LINUX_REBOOT_MAGIC2B (valant 369367448) depuis la version 2.1.97.
+Les valeurs hexadécimales de ces constantes ont un sens.
+L'argument
+<I>flag </I>
+
+peut prendre l'une des valeurs suivantes&nbsp;:
+<DL COMPACT>
+<DT><B>LINUX_REBOOT_CMD_RESTART</B>
+
+<DD>
+(RB_AUTOBOOT, 0x1234567).
+Le message 
+`Restarting system.' est affiché et un redémarrage
+est initialisé immédiatement.
+Si cet appel n'est pas précédé par un
+<B><A HREF="/cgi-bin/man/man2html?2+sync">sync</A></B>(2),
+
+des données seront perdues.
+<DT><B>LINUX_REBOOT_CMD_HALT</B>
+
+<DD>
+(RB_HALT_SYSTEM, 0xcdef0123; depuis 1.1.76).
+Le message
+`System halted.' est affiché et le système est arrêté.
+Le contrôle est transmis au moniteur en ROM s'il y en a un.
+Si cet appel n'est pas précédé par un
+<B><A HREF="/cgi-bin/man/man2html?2+sync">sync</A></B>(2),
+
+des données seront perdues.
+<DT><B>LINUX_REBOOT_CMD_POWER_OFF</B>
+
+<DD>
+(0x4321fedc; depuis 2.1.30).
+Le message
+`Power down.' est affiché, et tout le système est mis
+hors-tension si possible. 
+Si cet appel n'est pas précédé par un
+<B><A HREF="/cgi-bin/man/man2html?2+sync">sync</A></B>(2),
+
+des données seront perdues.
+<DT><B>LINUX_REBOOT_CMD_RESTART2</B>
+
+<DD>
+(0xa1b2c3d4; depuis 2.1.30).
+Le message `Restarting system with command '%s'' est affiché
+et un redémarrage (en utilisant la chaîne de commande fournie dans
+<I>arg</I>)
+
+est enclenché immédiatement.
+Si cet appel n'est pas précédé par un
+<B><A HREF="/cgi-bin/man/man2html?2+sync">sync</A></B>(2),
+
+des données seront perdues.
+<DT><B>LINUX_REBOOT_CMD_CAD_ON</B>
+
+<DD>
+(RB_ENABLE_CAD, 0x89abcdef).
+Les touches de redémarrage Ctrl-Alt-Suppr sont autorisée.
+Ceci signifie que la frappe de ces touches déclenchera l'action
+associée à LINUX_REBOOT_CMD_RESTART immédiatement.
+<DT><B>LINUX_REBOOT_CMD_CAD_OFF</B>
+
+<DD>
+(RB_DISABLE_CAD, 0).
+Les touches de redémarrage Ctrl-Alt-Suppr sont désactivées.
+Ceci signifie que la frappe de ces touches enverra un signal SIGINT
+au processus 1 (init). Celui-ci pourra alors décider de l'action
+appropriée à enclencher (généralement tuer tous les processus,
+démonter la plupart des systèmes de fichiers, sync, et redémarrer).
+</DL>
+<P>
+
+Évidemment, seul le Super-User peut utiliser cette fonction
+<P>
+
+L'effet exact des actions décrites ci-dessus dépend de l'architecture.
+Pour les i386, l'argument supplémentaire ne sert à rien à ce jour (2.1.22),
+mais le type de redémarrage peut être sélectionné par un argument
+en ligne de commande du noyau (`reboot=...') afin d'être un
+redémarrage à chaud, à froid, matériel ou par le bios.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>reboot</B>
+
+renvoie 0 s'il réussit, ou -1 s'il échoue, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL </B>
+
+<DD>
+Mauvais nombres <I>magiques</I> ou mauvaise valeur de <I>flag</I>.
+<DT><B>EPERM</B>
+
+<DD>
+<B>reboot</B>
+
+a été invoqué par un utilisateur normal (pas le Super-User).
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<B>reboot</B>
+
+est spécifique à Linux et ne doit pas être employé dans des programmes
+conçus pour être portables
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR  sync (2), </H2>
+
+<B><A HREF="/cgi-bin/man/man2html?7+bootparam">bootparam</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ctrlaltdel">ctrlaltdel</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+halt">halt</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+reboot">reboot</A></B>(8)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR  sync (2), </A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:00 GMT, February 11, 2014
+</BODY>
+</HTML>

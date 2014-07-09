@@ -1,0 +1,84 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ISWPRINT</TITLE>
+</HEAD><BODY>
+<H1>ISWPRINT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+iswprint - Vérifier si un caractère large est imprimable.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/wctype.h">wctype.h</A>&gt;</B>
+
+<B>int iswprint (wint_t </B><I>wc</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>iswprint</B> est l'équivalent pour les caractères larges de la
+fonction <B>isprint</B>. Elle teste si le caractère large <I>wc</I> appartient à
+la classe de caractères &quot;print&quot;.
+<P>
+
+La classe de caractères &quot;print&quot; est disjointe de la classe &quot;cntrl&quot;.
+<P>
+
+La classe &quot;print&quot; contient la classe &quot;graph&quot;.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>iswprint</B> renvoie une valeur non nulle si le caractère large
+<I>wc</I> appartient à la classe &quot;print&quot;. Sinon, 0 est renvoyé.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ISO/ANSI C, UNIX98
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+isprint">isprint</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+iswctype">iswctype</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le comportement de <B>iswprint</B> dépend de la valeur de la variable courante
+de localisation LC_CTYPE.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 2000
+
+<BR>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:51 GMT, February 11, 2014
+</BODY>
+</HTML>

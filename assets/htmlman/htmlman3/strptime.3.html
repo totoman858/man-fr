@@ -1,0 +1,475 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STRPTIME</TITLE>
+</HEAD><BODY>
+<H1>STRPTIME</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+strptime - Conversion d'une chaîne de date en une structure tm.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#define _XOPEN_SOURCE</B> /* Pour GlibC2 */
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/time.h">time.h</A>&gt;</B>
+
+<P>
+<B>char *strptime (char *</B><I>buf</I><B>, const char *</B><I>format</I><B>,</B>
+
+<B>const struct tm *</B><I>tm</I><B>);</B>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>strptime()</B>
+
+est complémentaire de la fonction
+<B>strftime()</B>.
+
+Elle convertit la chaîne de caractères pointée par
+<I>buf</I>
+
+en une valeur qui est stockée dans la structure
+<B>tm</B>
+
+pointée par l'argument
+<I>tm</I>,
+
+la conversion étant réalisée en suivant les indications contenues dans
+la chaîne
+<I>format</I>.
+
+Cette dernière contient des descripteurs de champs et du texte, rappelant
+<B><A HREF="/cgi-bin/man/man2html?3+scanf">scanf</A></B>(3).
+
+Chaque descripteur consiste en un caractère
+<B>%</B>
+
+suivi d'un second caractère indiquant le champ à interpréter.
+Tous les autres sont considérés comme du texte. Toutefois un espace blanc se trouvant
+dans la chaîne de format peut être mis en correspondance avec zéro ou plusieurs espaces.
+Il devrait toujours y avoir un espace ou un autre caractère alphanumérique entre
+deux descripteurs de champs.
+<P>
+
+La fonction
+<B>strptime</B>()
+
+traite la chaîne d'entrée de gauche à droite. Les trois types d'éléments d'entrée
+possibles (espace, caractère littéral, conversion) sont manipulés l'un après l'autre. Si l'entrée ne peut pas être mise en correspondance avec la chaîne de format,
+la fonction s'arrête. Le reste du format et de la chaîne d'entrée ne sont pas
+traités.
+<P>
+
+Les descripteurs applicables sont décrits ci-dessous. Dans le cas d'une
+chaîne de caractères (comme un nom de jour ou de mois), la comparaison
+ne tient pas compte des majuscules/minuscules. Dans le cas d'un nombre, les
+zéros au début sont autorisés mais pas obligatoires.
+<DL COMPACT>
+<DT><B>%%</B>
+
+<DD>
+Le caractère
+<B>%</B>
+
+<DT><B>%a</B> ou <B>%A</B>
+
+<DD>
+Le jour de la semaine en utilisant les noms correspondants à la localisation.
+Les noms abrégés ou entiers peuvent être utilisés.
+<DT><B>%b</B> ou <B>%B</B> ou <B>%h</B>
+
+<DD>
+Le mois en utilisant les noms correspondants à la localisation.
+Les noms abrégés ou entiers peuvent être utilisés.
+<DT><B>%c</B>
+
+<DD>
+La date et l'heure en utilisant le format de la localisation.
+<DT><B>%C</B>
+
+<DD>
+Le numéro de siècle (0-99).
+<DT><B>%d</B> ou <B>%e</B>
+
+<DD>
+Le jour du mois (1-31)
+<DT><B>%D</B>
+
+<DD>
+La date, ainsi : %m/%d/%y. C'est la date au format américain, très gênante pour
+les autres pays, notamment l'Europe qui utilise une notation %d/%m%y. Le format
+standard ISO 8601 est %Y-%m-%d.
+<DT><B>%H</B>
+
+<DD>
+L'heure (0-23)
+<DT><B>%I</B>
+
+<DD>
+L'heure (0-12)
+<DT><B>%j</B>
+
+<DD>
+Le numéro du jour dans l'année (001-366)
+<DT><B>%m</B>
+
+<DD>
+Le numéro du mois (1-12)
+<DT><B>%M</B>
+
+<DD>
+La minute (0-59)
+<DT><B>%n</B>
+
+<DD>
+Un espace blanc quelconque
+<DT><B>%p</B>
+
+<DD>
+Équivalent local de AM ou PM (éventuellement rien).
+<DT><B>%r</B>
+
+<DD>
+L'heure sur 12 heures avec l'équivalent local de AM ou PM. Dans la
+localisation POSIX, équivalent à %I:%M:%S %p. Si le champ <I>t_fmt_ampm</I> de
+la catégorie LC_TIME de la localisation est vide, le comportement est indéfini.
+<DT><B>%R</B>
+
+<DD>
+L'heure, ainsi : %H:%M
+<DT><B>%S</B>
+
+<DD>
+Les secondes (0-61, des secondes de rattrapages sont autorisées)
+<DT><B>%t</B>
+
+<DD>
+Un espace blanc quelconque
+<DT><B>%T</B>
+
+<DD>
+Équivalent de %H:%M:%S
+<DT><B>%U</B>
+
+<DD>
+Le numéro de semaine (0-53), le premier dimanche de janvier étant le premier
+jour de la semaine 1.
+<DT><B>%w</B>
+
+<DD>
+Le numéro du jour dans la semaine (0-6), en commençant le dimanche.
+<DT><B>%W</B>
+
+<DD>
+Le numéro de semaine (0-53), le premier lundi de janvier étant le premier
+jour de la semaine 1.
+<DT><B>%x</B>
+
+<DD>
+la date, en utilisant le format usuel de la localisation.
+<DT><B>%X</B>
+
+<DD>
+l'heure, en utilisant le format usuel de la localisation.
+<DT><B>%y</B>
+
+<DD>
+l'année sans le siècle (0-99; les zéros au début sont autorisés mais pas obligatoires). Lorsque le siècle n'est pas indiqué par une autre conversion, les années
+69 à 99 sont considérées comme étant du vingtième siècle (1969 à 1999), et les
+années 00-68 du vingt-et-unième siècle (2000-2068).
+<DT><B>%Y</B>
+
+<DD>
+L'année en incluant le siècle (par exemple, 1996)
+</DL>
+<P>
+
+Pour les noms des mois ou des jours de la semaine, les différences entre
+majuscules et minuscules sont ignorées.
+<P>
+
+Certains descripteurs peuvent être complétés par les caractères modificateurs
+E et O, indiquant qu'il faut employer un autre format ou une autre spécification.
+Si cet autre format, ou cette autre conversion n'est pas disponible dans la
+localisation en cours, le descripteur n'est pas modifié.
+<P>
+
+Le modificateur E indique que la chaîne d'entrée peut contenir des versions
+différentes de la date et l'heure, en fonction de la localisation :
+<DL COMPACT>
+<DT><B>%Ec</B>
+
+<DD>
+Une représentation différente de la date et l'heure.
+<DT><B>%EC</B>
+
+<DD>
+Le nom de l'année de base (période) dans la représentation locale
+alternative.
+<DT><B>%Ex</B>
+
+<DD>
+Une autre représentation de la date.
+<DT><B>%EX</B>
+
+<DD>
+Une autre représentation de l'heure.
+<DT><B>%Ey</B>
+
+<DD>
+Le décalage (en année) par rapport à l'année %EC dans la représentation
+locale alternative.
+<DT><B>%EY</B>
+
+<DD>
+La représentation complète de l'année.
+</DL>
+<P>
+
+Le modificateur O indique que les saisies numériques peuvent être effectuées
+dans un format différent, dépendant de la localisation.
+<DL COMPACT>
+<DT><B>%Od</B> or <B>%Oe</B>
+
+<DD>
+Le jour du mois. Les zéros en tête sont permis mais pas obligatoires.
+<DT><B>%OH</B>
+
+<DD>
+L'heure (sur 24 heures).
+<DT><B>%OI</B>
+
+<DD>
+L'heure (sur 12 heures).
+<DT><B>%Om</B>
+
+<DD>
+Le numéro du mois.
+<DT><B>%OM</B>
+
+<DD>
+Les minutes.
+<DT><B>%OS</B>
+
+<DD>
+Les secondes.
+<DT><B>%OU</B>
+
+<DD>
+Le numéro de la semaine.
+<DT><B>%Ow</B>
+
+<DD>
+Numéro du jour dans la semaine, le dimanche étant zéro.
+<DT><B>%OW</B>
+
+<DD>
+Le numéro du jour de la semaine, en commençant le lundi.
+<DT><B>%Oy</B>
+
+<DD>
+L'année (ou décalage par rapport à %C).
+</DL>
+<P>
+
+Les champs de la structure <I>tm</I> définie dans <I>&lt;<A HREF="file:///usr/include/time.h">time.h</A>&gt;</I> sont :
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct tm
+{
+  int  tm_sec;   /* secondes           */
+  int  tm_min;   /* minutes            */
+  int  tm_hour;  /* heures             */
+  int  tm_mday;  /* jour du mois       */
+  int  tm_mon;   /* mois               */
+  int  tm_year;  /* année              */
+  int  tm_wday;  /* jour de la semaine */
+  int  tm_yday;  /* jour de l'année    */
+  int  tm_isdst; /* décalage été/hiver */
+};
+
+</PRE>
+
+</DL>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>strptime()</B> renvoie un pointeur sur le premier caractère
+de la chaîne
+<I>buf</I>
+
+n'ayant pas été traité. Dans le cas où la chaîne de saisie est plus longue que
+ce que réclame le format, la valeur renvoyée pointe juste après le dernier
+caractère d'entrée ayant été analysé. Si toute la chaîne a été traitée,
+le pointeur est dirigé sur le caractère NUL en fin de chaîne.
+Si
+<B>strptime</B>()
+
+n'arrive pas à effectuer toutes les conversions, il renvoie <B>NULL</B>.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+XPG4, SUSv2, POSIX 1003.1-2001.
+<A NAME="lbAG">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+L'exemple suivant montre l'utilisation de <B>strptime()</B>
+et <B>strftime()</B>.
+<P>
+<PRE>
+
+#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/time.h">time.h</A>&gt;
+ 
+int main()
+{
+  struct tm tm;
+  char buf[255];
+ 
+  strptime(&quot;2001-11-12 18:31:01&quot;, &quot;%Y-%m-%d %H:%M:%S&quot;, &amp;tm);
+  strftime(buf, sizeof(buf), &quot;%d %b %Y %H:%M&quot;, &amp;tm);
+  puts(buf);
+  return 0;
+}
+
+</PRE>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>EXTENSIONS GNU</H2>
+
+Pour des raisons de symétrie, la GlibC essaye d'offrie pour
+<B>strptime</B>
+
+les mêmes caractères de formatage que ceux de
+<B>strftime.</B>
+
+(Dans la plupart des cas, les champs sont lus mais aucun membre de <I>tm</I>
+n'est modifié).
+Ceci conduit à&nbsp;:
+<DL COMPACT>
+<DT><B>%F</B>
+
+<DD>
+Équivalent à <B>%Y-%m-%d</B>, le format ISO 8601 pour la date.
+<DT><B>%g</B>
+
+<DD>
+L'année correspondant au numéro de semaine ISO, sans le siècle (0-99).
+<DT><B>%G</B>
+
+<DD>
+L'année correspondant au numéro de semaine ISO (par exemple 1991).
+<DT><B>%u</B>
+
+<DD>
+Le numéro du jour de la semaine (1-7, lundi valant 1).
+<DT><B>%V</B>
+
+<DD>
+Le numéro de semaine ISO 8601:1988 (1-53). Si la semaine (commençant lundi)
+contenant le 1er janvier a quatre jours ou plus de la nouvelle année, elle
+est comptée en semaine 1. Sinon elle est considérée comme dernière semaine
+de l'année précédente, et c'est la suivante qui est la semaine 1.
+<DT><B>%z</B>
+
+<DD>
+Spécification standard RFC-822/ISO 8601 pour le fuseau horaire.
+<DT><B>%Z</B>
+
+<DD>
+Le nom du fuseau horaire.
+</DL>
+<P>
+
+De même, à cause des extensions GNU de <I>strftime</I>,
+%k est accepté en synonyme de %H, et %l est accepté comme
+synonyme de %I, et %P en synonyme de %p.
+Enfin,
+<DL COMPACT>
+<DT><B>%s</B>
+
+<DD>
+Le nombre de secondes depuis le 1er janvier 1970 à Oh TU. Les secondes de
+rattrapage ne sont pas comptées sauf si un support spécifique est disponible.
+</DL>
+<P>
+
+L'implémentation de la GlibC n'impose pas la présence de caractères blancs
+entre deux descripteurs de champs.
+<A NAME="lbAI">&nbsp;</A>
+<H2>NOTES</H2>
+
+En principe cette fonction n'initialise pas <B>tm</B>, mais n'y stocke que
+les valeurs lues. Ceci signifie que le contenu de <B>tm</B> doit être initialisé
+avant l'appel. Les détails diffèrent suivant les systèmes Unix. L'implémentation
+de la bibliothèque C Gnu ne modifie pas les champs non mentionnés explicitement,
+sauf
+<I>tm_wday</I>,
+
+et
+<I>tm_yday</I>
+
+qui sont recalculés si un champ d'année, de mois ou de jour est modifié.
+<P>
+
+Cette fonction n'est disponible que dans les versions de bibliothèque
+depuis la 4.6.8. Les bibliothèques Linux libc4 et libc5 incluaient
+toujours le prototype de cette fonction, la bibliothèque GlibC 2 ne fournit
+le prototype que si les constantes _XOPEN_SOURCE ou _GNU_SOURCE sont définies.
+<P>
+
+Les caractères de modification locale E et O sont acceptés depuis la bibliothèque
+5.4.13. La conversion 'y' est toujours considérée comme appartenant au
+vingtième siècle dans les libc4 et libc5. Elle est prise dans l'intervalle
+1950-2049 par la GlibC 2.0, et 1969-2068 par la GlibC 2.1.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+time">time</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+scanf">scanf</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setlocale">setlocale</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strftime">strftime</A></B>(3)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">EXEMPLE</A><DD>
+<DT><A HREF="#lbAH">EXTENSIONS GNU</A><DD>
+<DT><A HREF="#lbAI">NOTES</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:51 GMT, February 11, 2014
+</BODY>
+</HTML>

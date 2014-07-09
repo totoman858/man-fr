@@ -1,0 +1,198 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of INSTALL-CATALOG</TITLE>
+</HEAD><BODY>
+<H1>INSTALL-CATALOG</H1>
+Section:  (8)<BR>Updated: 04 Août 2000<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+install-catalog - Gère un catalogue centralisé SGML ou XML
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<B>install-catalog</B> [ <B>option </B>]  <B>action </B><I> ...</I> [ <B> [ -d]  [ --delegate] </B>]  [ <B> [ -a </B><I>centralisé</I><B> </B><I>ordinaire</I><B>]  [ --add </B><I>centralisé</I><B> </B><I>ordinaire</I><B>]
+<P>
+<BR>&nbsp;[&nbsp;-r&nbsp;</B><I>centralisé</I><B>&nbsp;</B><I>ordinaire</I><B>]&nbsp;&nbsp;[&nbsp;--remove&nbsp;</B><I>centralisé</I><B>&nbsp;</B><I>ordinaire</I><B>]
+<P>
+<BR>&nbsp;[&nbsp;-h]&nbsp;&nbsp;[&nbsp;--help]&nbsp;
+<P>
+<BR>&nbsp;[&nbsp;-v]&nbsp;&nbsp;[&nbsp;--version]&nbsp;</B>]&nbsp;
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+<P>
+
+Ce script shell permet de traiter un catalogue centralisé référençant d'autres
+«&nbsp;Catalogues Ouverts&nbsp;» SGML ou XML.
+<P>
+<P>
+
+Un «&nbsp;<I>Catalogue Ouvert</I>&nbsp;» contient un ensemble de directives définies
+par OASIS, principalement utilisées pour définir des équivalences entre les
+identifiants publics formels (FPI&nbsp;: Formal Public Identifiers) et les noms de
+fichiers réels (voir TR9401:1997 à <A HREF="http://www.oasis-open.org">http://www.oasis-open.org</A>
+&lt;URL:<A HREF="http://www.oasis-open.org">http://www.oasis-open.org</A>&gt;). Les «&nbsp;Catalogues Ouverts&nbsp;» se situent
+généralement dans <I>/usr/share/sgml</I>.
+<P>
+<P>
+
+Un <I>catalogue centralisé</I> est un «&nbsp;Catalogue Ouvert&nbsp;» particulier
+qui inclut seulement des commentaires et des directives CATALOG pointant vers
+d'autres catalogues (ou des directives DELEGATE si elles sont gérées).
+Le catalogue centralisé peut être la clé de toutes les autres ressources SGML.
+Il réside généralement dans <I>/etc/sgml</I>.
+<P>
+<P>
+
+Le catalogue centralisé peut être édité manuellement ou à travers le script
+<B>install-catalog</B> pour ajouter ou retirer des références vers d'autres
+catalogues ordinaires. Ce script est principalement destiné aux scripts de
+post-installation des paquetages logiciels.
+<P>
+<P>
+
+Un exemple d'appel typique d'install-catalog est&nbsp;:
+<P>
+<PRE>
+      install-catalog --add \
+        /usr/share/sgml/docbook/dsssl-stylesheets-1.54/catalog \
+        /etc/sgml/sgml-docbook-4.0.cat
+
+</PRE>
+
+<P>
+
+Cet appel installera dans <I>/etc/sgml/sgml-docbook-4.0.cat</I> une référence
+vers <I>/usr/share/sgml/docbook/dsssl-stylesheets-1.54/catalog</I>.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<P>
+<P>
+
+Voici la liste des options qui peuvent influencer la façon de travailler
+d'<B>install-catalog</B>&nbsp;:
+<P>
+<BR>&nbsp;[&nbsp;<B>&nbsp;[&nbsp;-d]&nbsp;&nbsp;[&nbsp;--delegate]&nbsp;</B>]
+<P>
+<P>
+
+Utilise les directives DELEGATE au lieu de CATALOG pour spécifier un pointeur
+<A NAME="lbAF">&nbsp;</A>
+<H2>ACTIONS</H2>
+
+<P>
+
+Voici la liste des actions qui peuvent être demandées à <B>install-catalog</B>&nbsp;:
+<P>
+<BR>&nbsp;[&nbsp;<B>&nbsp;[&nbsp;-a&nbsp;</B><I>centralized</I><B>&nbsp;</B><I>ordinary</I><B>]&nbsp;&nbsp;[&nbsp;--add&nbsp;</B><I>centralized</I><B>&nbsp;</B><I>ordinary</I><B>]&nbsp;</B>]&nbsp;
+<P>
+<P>
+
+Déclare un nouveau paquetage SGML.
+<P>
+<BR>&nbsp;[&nbsp;<B>&nbsp;[&nbsp;-r&nbsp;</B><I>centralized</I><B>&nbsp;</B><I>ordinary</I><B>]&nbsp;&nbsp;[&nbsp;--remove&nbsp;</B><I>centralized</I><B>&nbsp;</B><I>ordinary</I><B>]&nbsp;</B>]&nbsp;
+<P>
+<P>
+
+Retire un paquetage SGML précédemment installé.
+<P>
+<BR>&nbsp;[&nbsp;<B>&nbsp;[&nbsp;-h]&nbsp;&nbsp;[&nbsp;--help]&nbsp;</B>]
+<P>
+<P>
+
+Affiche un court message d'aide et quitte.
+<P>
+<BR>&nbsp;[&nbsp;<B>&nbsp;[&nbsp;-v]&nbsp;&nbsp;[&nbsp;--version]&nbsp;</B>]
+<P>
+<P>
+
+Affiche l'identificateur de version et quitte.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/etc/sgml/*</I>
+<P>
+
+Les catalogues centralisés SGML
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Éric Bischoff &lt;<A HREF="mailto:ebisch@cybercable.tm.fr">ebisch@cybercable.tm.fr</A>&gt;
+<P>
+
+Développeur d'install-catalog.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+jw">jw</A></B>(1)
+<P>
+
+conversion de documents DocBook vers d'autres formats
+<P>
+<B></B>
+<P>
+<B><A HREF="/cgi-bin/man/man2html?1+nsgmls">nsgmls</A></B>(1)
+<P>
+
+un composant de base du moteur DSSSL <B>Jade</B>
+<P>
+<B></B>
+<P>
+<A HREF="http://sourceware.cygnus.com/docbook-tools/">http://sourceware.cygnus.com/docbook-tools/</A> &lt;URL:<A HREF="http://sourceware.cygnus.com/docbook-tools/">http://sourceware.cygnus.com/docbook-tools/</A>&gt;
+<P>
+
+La page d'accueil des outils DocBook, un recueil de tous les outils
+nécessaires au traitement des fichiers DocBook, incluant le matériel SGML-common.
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Alain Portal &lt;aportal AT univ-montp2 DOT fr&gt;, 30 avril 2004
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal AT univ-montp2 DOT fr&gt; le 30 avril 2004 et révisée
+le 18 novembre 2004.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=en&nbsp;man&nbsp;1&nbsp;install-catalog</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">ACTIONS</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">AUTEUR</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:03 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,181 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CHARMAP</TITLE>
+</HEAD><BODY>
+<H1>CHARMAP</H1>
+Section: Manuel de l administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+charmap - Noms symboliques définissant l'encodage des caractères.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Une description de table de caractères (charmap) définit une liste des
+caractères disponibles, et leur encodage. Tous les jeux de caractères
+doivent contenir, comme sous-ensemble, le 
+<B>jeu de caractères standards</B>.
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>SYNTAXE</H2>
+
+Le fichier de table de caractères commence par un en-tête contenant les
+mots-clés suivants&nbsp;:
+<DL COMPACT>
+<DT><I>&lt;codeset&gt;</I>
+
+<DD>
+suivi du nom du code de l'ensemble.
+<DT><I>&lt;mb_cur_max&gt;</I>
+
+<DD>
+suivi du nombre maximum d'octets pour un caractère multi-octets. Ces
+derniers ne sont pas encore supportés à l'heure actuelle. La valeur
+par défaut est 1.
+<DT><I>&lt;mb_cur_min&gt;</I>
+
+<DD>
+suivi du nombre minimum d'octets par caractère. Cette valeur est évidemment
+inférieure ou égale à 
+<B>mb_cur_max.</B>
+
+Par défaut elle est égale à ce dernier.
+<DT><I>&lt;escape_char&gt;</I>
+
+<DD>
+suivi d'un caractère qui sera interprété comme caractère d'échappement
+pour le reste du fichier, afin d'indiquer les caractères ayant une
+signification spéciale. Par défaut il s'agit du backslash (
+<B>\\  </B>
+
+).
+<DT><I>&lt;comment_char&gt;</I>
+
+<DD>
+suivi d'un caractère qui servira à introduire des commentaires dans le
+reste du fichier. Par défaut il s'agit du dièse (
+<B>#</B>
+
+).
+<P>
+</DL>
+<P>
+
+La définition de la table de caractères elle-même commence avec le mot-clé
+<B>CHARMAP</B>
+
+en colonne 1.
+<P>
+Les lignes suivantes peuvent prendre l'une des formes suivantes pour
+définir l'encodage du caractère :
+<DL COMPACT>
+<DT><I>&lt;nom-symbolique&gt; &lt;encodage&gt; &lt;commentaires&gt;</I>
+
+<DD>
+Ceci définit un seul caractère et son encodage.
+<P>
+<DT><I>&lt;nom-symbolique&gt;...&lt;nom-symbolique&gt; &lt;encodage&gt; &lt;commentaires&gt;</I>
+
+<DD>
+Ceci définit plusieurs caractères. Ce n'est utile qu'avec les caractères
+multi-octets, qui ne sont pas supportés à l'heure actuelle.
+<P>
+</DL>
+<P>
+
+La dernière ligne d'un fichier de table de caractères doit contenir
+<B>END CHARMAP.</B>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOMS SYMBOLIQUES</H2>
+
+Le
+<B>nom symbolique</B>
+
+d'un caractère ne doit contenir lui-même que des caractères du
+<B>jeu standard.</B>
+
+Le nom est encadré par &lt; et &gt;.
+Le caractère placé à la suite d'un caractère d'échappement
+<B>&lt;escape_char&gt; </B>
+
+prend sa valeur propre. Par exemple la chaîne
+<B>'&lt;\\\\\\&gt;&gt;'</B>
+
+représente le nom symbolique
+<B>'\\&gt;'</B>
+
+encadré par &lt; et &gt;.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ENCODAGE DES CARACTÈRES</H2>
+
+L'encodage peut rendre l'une des trois formes suivantes :
+<DL COMPACT>
+<DT><I>&lt;caractère_d_échappement&gt;d&lt;nombre_décimal&gt;</I>
+
+<DD>
+<DT><I>&lt;caractère_d_échappement&gt;x&lt;nombre_hexadécimal&gt;</I>
+
+<DD>
+<DT><I>&lt;caractère_d_échappement&gt;&lt;nombre_octal&gt;</I>
+
+<DD>
+<P>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/usr/share/i18n/charmaps/* </I>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Jochen Hein (<A HREF="mailto:jochen.hein@delphi.central.de">jochen.hein@delphi.central.de</A>)
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX.2
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+locale">locale</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+localedef">localedef</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setlocale">setlocale</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+localeconv">localeconv</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+locale">locale</A></B>(5)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">SYNTAXE</A><DD>
+<DT><A HREF="#lbAE">NOMS SYMBOLIQUES</A><DD>
+<DT><A HREF="#lbAF">ENCODAGE DES CARACTÈRES</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">AUTEUR</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:54 GMT, February 11, 2014
+</BODY>
+</HTML>

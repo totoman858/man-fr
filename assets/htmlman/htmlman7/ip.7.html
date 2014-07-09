@@ -1,0 +1,1269 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of IP</TITLE>
+</HEAD><BODY>
+<H1>IP</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ip - Implémentation Linux du protocole IPv4.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+
+<BR>
+
+
+
+<B>#include &lt;<A HREF="file:///usr/include/netinet/in.h">netinet/in.h</A>&gt;</B>
+
+<P>
+<I>tcp_socket</I><B> = socket(PF_INET, SOCK_STREAM, 0);</B>
+
+<BR>
+
+<I>raw_socket</I><B> = socket(PF_INET, SOCK_RAW, </B><I>protocol</I><B>);</B>
+
+<BR>
+
+<I>udp_socket</I><B> = socket(PF_INET, SOCK_DGRAM, </B><I>protocol</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION </H2>
+
+Linux implémente le Protocole Internet (IP) version 4, décrit dans les
+RFC 791 et RFC 1122.
+<B>ip </B>
+
+contient une implémentation du multicasting
+niveau 2 conforme à la RFC 1112. Elle contient aussi un routeur IP
+comprenant un filtre de paquets.
+
+<P>
+
+L'interface de programmation est compatible avec les sockets BSD.
+Pour plus de renseignements sur les sockets, voir
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7).
+
+<P>
+
+Une socket IP est créée par la fonction
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2)
+
+invoquée sous la forme
+<B>socket(PF_INET, type_socket, protocole)</B>.
+
+les types valides des sockets sont
+<B>SOCK_STREAM </B>
+
+pour ouvrir une socket
+<B><A HREF="/cgi-bin/man/man2html?7+tcp">tcp</A></B>(7),
+
+<B>SOCK_DGRAM</B>
+
+pour ouvrir 
+une socket
+<B><A HREF="/cgi-bin/man/man2html?7+udp">udp</A></B>(7),
+
+ou
+<B>SOCK_RAW</B>
+
+pour ouvrir une socket
+<B><A HREF="/cgi-bin/man/man2html?7+raw">raw</A></B>(7)
+
+permettant d'accéder directement au protocole IP. Le
+<I>protocole</I>
+
+indiqué est celui inscrit dans les en-têtes IP émis ou reçus. Les seules valeurs
+valides pour le 
+<I>protocole</I>
+
+sont
+<B>0</B>
+
+et
+<B>IPPROTO_TCP</B>
+
+pour les sockets TCP, et
+<B>0</B>
+
+et
+<B>IPPROTO_UDP </B>
+
+pour les sockets UDP. Pour les sockets
+<B>SOCK_RAW</B>
+
+on peut indiquer un protocole IP IANA valide dont la
+RFC 1700
+précise les numéros assignés.
+<P>
+
+
+
+Lorsqu'un processus veut recevoir de nouveaux paquets entrants ou connexions, il
+doit attacher une socket à une adresse d'interface locale en utilisant
+<B><A HREF="/cgi-bin/man/man2html?2+bind">bind</A></B>(2).
+
+Une seule socket IP peut être attachée à une paire (adresse, port) locale donnée.
+Lorsqu'on indique
+<B>INADDR_ANY </B>
+
+lors de l'attachement, la socket sera affectée à
+<I>toutes</I>
+
+les interfaces locales. Si on invoque
+<B><A HREF="/cgi-bin/man/man2html?2+listen">listen</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2)
+
+sur une socket non affectée, elle est automatiquement attachée à
+un port libre aléatoire, avec l'adresse locale fixée sur
+<B>INADDR_ANY</B>.
+
+<P>
+L'adresse locale d'une socket TCP qui a été attachée est indisponible pendant quelques instants
+après sa fermeture, à moins que l'attribut
+<B>SO_REUSEADDR</B>
+
+ait été activé. Il faut être prudent en utilisant ce drapeau, car il rend le
+protocole TCP moins fiable.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>FORMAT D'ADRESSE</H2>
+
+Une adresse de socket IP est définie comme la combinaison d'une adresse IP d'interface et
+d'un numéro de port. Le protocole IP de base ne fournit pas de numéro de port, ils sont
+implémentés par les protocoles de plus haut-niveau comme
+<B><A HREF="/cgi-bin/man/man2html?7+udp">udp</A></B>(7)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?7+tcp">tcp</A></B>(7).
+
+Sur les sockets raw, le champ
+<B>sin_port</B>
+
+contient le protocole IP.
+<P>
+<P>
+
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct sockaddr_in {
+    sa_family_t    sin_family; /* famille d'adresses : AF_INET      */
+    u_int16_t      sin_port;   /* port dans l'ordre d'octets réseau */
+    struct in_addr  sin_addr;   /* adresse Internet                  */
+};
+
+/* Adresse Internet */
+struct in_addr {
+    u_int32_t      s_addr;     /* Adresse dans l'ordre d'octets réseau */
+};
+
+</PRE>
+
+</DL>
+
+<P>
+
+<I>sin_family </I>
+
+est toujours rempli avec
+<B>AF_INET</B>.
+
+C'est indispensable. Sous Linux 2.2, la plupart des fonctions réseau renvoient
+<B>EINVAL</B>
+
+lorsque cette configuration manque.
+<I>sin_port</I>
+
+contient le numéro de port, dans l'ordre des octets du réseau. Les numéros de ports inférieures à 1024 sont dits
+<I>réservés</I>.
+
+Seuls les processus avec un UID effectif nul ou la capacité
+<B>CAP_NET_BIND_SERVICE </B>
+
+peuvent appeler
+<B><A HREF="/cgi-bin/man/man2html?2+bind">bind</A></B>(2)
+
+pour ces ports. Notez que le protocole IPv4 en tant que tel n'a pas de concept de ports,
+ils sont seulement implémentés par des protocoles de plus haut-niveau comme
+<B><A HREF="/cgi-bin/man/man2html?7+tcp">tcp</A></B>(7)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?7+udp">udp</A></B>(7).
+
+<P>
+
+<I>sin_addr </I>
+
+est l'adresse IP de l'hôte.
+le membre
+<I>addr</I>
+
+de la structure
+<B>struct in_addr</B>
+
+contient l'adresse de l'interface de l'hôte, dans l'ordre des octets du réseau.
+<B>in_addr </B>
+
+ne doit être manipulé qu'au travers des fonctions de bibliothèque
+<B><A HREF="/cgi-bin/man/man2html?3+inet_aton">inet_aton</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+inet_addr">inet_addr</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+inet_makeaddr">inet_makeaddr</A></B>(3)
+
+ou directement par le système de résolution des noms (voir
+<B><A HREF="/cgi-bin/man/man2html?3+gethostbyname">gethostbyname</A></B>(3)).
+
+Les adresses IPv4 sont divisées en adresses unicast, broadcast et
+multicast. Les adresses unicast décrivent une interface unique d'un hôte,
+les adresses broadcast correspondent à tous les hôtes d'un réseau, et les
+adresses multicast représentent tous les hôtes d'un groupe multicast. Les datagrammes vers des adresses broadcast 
+ne peuvent être émis et reçus que si l'attribut de socket
+<B>SO_BROADCAST</B>
+
+est activé.
+Dans l'implémentation actuelle, les sockets orientées connexion ne sont
+autorisées que sur des adresses unicast.
+
+<P>
+Remarquez que l'adresse et le port sont toujours stockés dans l'ordre des octets
+du réseau. Cela signifie qu'il faut invoquer
+<B><A HREF="/cgi-bin/man/man2html?3+htons">htons</A></B>(3)
+
+sur le numéro attribué à un port. Toutes les fonctions de manipulation d'adresse
+et port de la bibliothèque standard fonctionne dans l'ordre du réseau.
+<P>
+Il existe plusieurs adresses particulières :
+<B>INADDR_LOOPBACK</B>
+
+(127.0.0.1)
+correspond toujours à l'hôte local via le périphérique loopback ;
+<B>INADDR_ANY </B>
+
+(0.0.0.0)
+signifie un attachement à n'importe quelle adresse ;
+<B>INADDR_BROADCAST</B>
+
+(255.255.255.255)
+signifie n'importe quel hôte et à le même effet que
+<B>INADDR_ANY</B>
+
+pour des raisons historiques.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS DES SOCKETS</H2>
+
+<P>
+IP supporte quelques options des sockets spécifiques aux protocoles, fixées avec
+<B><A HREF="/cgi-bin/man/man2html?2+setsockopt">setsockopt</A></B>(2)
+
+et consultées avec
+<B><A HREF="/cgi-bin/man/man2html?2+getsockopt">getsockopt</A></B>(2).
+
+Le niveau d'option de socket pour IP est
+<B>SOL_IP</B>.
+
+Un attribut booléen en faux quand il est nul, et vrai sinon.
+<P>
+<DL COMPACT>
+<DT><B>IP_OPTIONS</B>
+
+<DD>
+Fixe ou lit les options IP à envoyer avec chaque paquet sur cette socket.
+Les arguments sont un pointeur sur un buffer contenant les options et la
+longueur des options.
+L'appel
+<B><A HREF="/cgi-bin/man/man2html?2+setsockopt">setsockopt</A></B>(2)
+
+fixe les options IP associées à une socket.
+La taille maximale des options pour IPv4 est 40 octets. Voir la RFC 791 pour
+les options autorisées. Lorsque le paquet de connexion initiale d'une socket
+<B>SOCK_STREAM</B>
+
+contient des options IP, celles-ci seront automatiquement attribué à
+la socket, avec les options de routage inversées.
+Les paquets entrants ne peuvent pas modifier les options après que la connexion
+est établie.
+Le traitement des options de routage des paquets entrant est désactivé par
+défaut, et peut être validé en utilisant la requête sysctl
+<B>accept_source_route</B>.
+
+Les autres options, comme l'horodatage sont toujours traitées.
+Pour les socket datagrammes, les options IP ne peuvent être fixées que par
+l'utilisateur local.
+L'appel de
+<B><A HREF="/cgi-bin/man/man2html?2+getsockopt">getsockopt</A></B>(2)
+
+avec
+<I>IP_OPTIONS</I>
+
+remplit le buffer fourni avec les options d'émission actuelles.
+<P>
+<DT><B>IP_PKTINFO</B>
+
+<DD>
+Fournit un message
+<I>IP_PKTINFO</I>
+
+de service, qui contient une structure
+<B>pktinfo </B>
+
+fournissant quelques informations à propos du paquet entrant.
+Ceci ne fonctionne que pour les sockets orientées datagrammes.
+L'argument est un drapeau indiquant à la socket sur le message IP_PKTINFO
+doit être passé ou non. Le message lui-même ne peut être écrit ou lu que
+comme message de contrôle avec un paquet, en utilisant
+<B><A HREF="/cgi-bin/man/man2html?2+recvmsg">recvmsg</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+sendmsg">sendmsg</A></B>(2).
+
+<P>
+<DT><DD>
+<DL COMPACT><DT><DD>
+
+
+<PRE>
+struct in_pktinfo {
+    unsigned int   ipi_ifindex;  /* Numéro d'interface  */
+    struct in_addr ipi_spec_dst; /* Adresse locale      */
+    struct in_addr ipi_addr;     /* Adresse destination */
+};
+</PRE>
+
+</DL>
+
+<DT><DD>
+
+<B>ipi_ifindex</B>
+
+est le numéro unique de l'interface sur laquelle le paquet a été reçu.
+<B>ipi_spec_dst</B>
+
+est l'adresse locale du paquet, et
+<B>ipi_addr</B>
+
+est l'adresse de destination dans l'en-tête du paquet.
+Si
+<I>IP_PKTINFO </I>
+
+est passé à
+<B><A HREF="/cgi-bin/man/man2html?2+sendmsg">sendmsg</A></B>(2)
+
+et si
+
+<B>ipi_spec_dest</B>
+
+est non nul, alors il sera utilisé comme adresse source pour la recherche dans
+la table de routage, et pour fixer les options de routage IP.
+Si
+<B>ipi_ifindex</B>
+
+est non nul, l'adresse local principale de l'interface indiquée par cet index
+écrase
+<B>ipi_spec_dst</B>
+
+pour a table de routage.
+<DT><B>IP_RECVTOS</B>
+
+<DD>
+Le message de service
+<I>IP_TOS </I>
+
+est passé avec les paquets entrants. Il contient un octet qui décrit
+le champ Type-Of-Service/Précédence de l'en-tête du paquet.
+Il s'agit d'un drapeau entier booléen.
+<P>
+<DT><B>IP_RECVTTL</B>
+
+<DD>
+Passer un message
+de contrôle
+<I>IP_RECVTTL </I>
+
+avec le champ Time-To-Live du paquet reçu
+comme argument sous forme d'octet. Non supporté pour les
+sockets
+<B>SOCK_STREAM</B>.
+
+<P>
+<DT><B>IP_RECVOPTS</B>
+
+<DD>
+Passer à l'utilisateur toutes les options IP entrantes dans un message de contrôle
+<I>IP_OPTIONS</I>.
+
+L'en-tête de routage et les autres options sont déjà remplies pour l'hôte local.
+Non supporté pour les
+sockets 
+<I>SOCK_STREAM</I>.
+
+<P>
+<DT><B>IP_RETOPTS</B>
+
+<DD>
+Comme
+<I>IP_RECVOPTS</I>
+
+mais renvoie les options non traitées, avec les options d'horodatage et de routage
+non remplies pour ce saut (hop).
+<P>
+<DT><B>IP_TOS</B>
+
+<DD>
+Fixe ou consulte le champs Type-Of-Service (TOS) envoyé avec chaque paquet IP
+sortant de cette socket. Il sert à gérer sur le réseau les priorités entre paquets.
+TOS est un octet. Quelques attributs TOS standards sont définis :
+<B>IPTOS_LOWDELAY </B>
+
+pour minimiser les délais en trafic interactif,
+<B>IPTOS_THROUGHPUT</B>
+
+pour optimiser le débit,
+<B>IPTOS_RELIABILITY</B>
+
+pour optimiser la fiabilité,
+<B>IPTOS_MINCOST</B>
+
+doit être utilisé pour les données de remplissage, quand la lenteur de transmission importe peu.
+Une de ces valeurs TOS au maximum peut être indiquée. Les autres bits sont invalides et doivent
+être effacés.
+Linux envoie d'abord des datagrammes 
+<B>IPTOS_LOWDELAY </B>
+
+par défaut,
+mais le comportement exact dépend de la politique configurée pour la file d'attente.
+
+Quelques niveaux de haute priorité peuvent réclamer un UID effectif nul, ou la
+capacité
+<B>CAP_NET_ADMIN</B>.
+
+La priorité peut aussi être indiquée d'une manière indépendante du protocole
+avec les options
+(<B>SOL_SOCKET, SO_PRIORITY</B>)
+
+de
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7).
+
+<P>
+<DT><B>IP_TTL</B>
+
+<DD>
+Fixer ou consulter le contenu actuel du champ Time-To-Live envoyé avec chaque
+paquet sortant de cette socket.
+<P>
+<DT><B>IP_HDRINCL</B>
+
+<DD>
+L'utilisateur doit fournir un en-tête ip
+avant les données proprement dites. 
+Uniquement valides pour les sockets
+<B>SOCK_RAW</B>.
+
+Voir
+<B><A HREF="/cgi-bin/man/man2html?7+raw">raw</A></B>(7)
+
+pour plus de détail. Lorsque cet attribut est activé, les valeurs fixées pour
+<I>IP_OPTIONS</I>,
+
+<I>IP_TTL</I>
+
+et
+<I>IP_TOS</I>
+
+sont ignorées.
+<P>
+<DT><B>IP_RECVERR</B> (défini dans &lt;<A HREF="file:///usr/include/linux/errqueue.h">linux/errqueue.h</A>&gt;)
+
+<DD>
+Active le passage amélioré des messages d'erreur.
+Lorsque cet attribut est activé sur une socket datagramme, les erreurs seront
+mémorisées dans une file particulière pour la socket. Quand l'utilisateur 
+détecte un échec d'une opération sur la socket, les erreurs peuvent
+être examinées en invoquant
+<B><A HREF="/cgi-bin/man/man2html?2+recvmsg">recvmsg</A></B>(2)
+
+avec l'attribut
+<B>MSG_ERRQUEUE</B>.
+
+La structure
+<B>sock_extended_err </B>
+
+décrivant l'erreur sera passé comme message de service ayant
+le type
+<I>IP_RECVERR </I>
+
+et le niveau
+<B>SOL_IP</B>.
+
+Ceci permet une gestion d'erreur fiable sur les sockets non connectées.
+La partie &quot;données reçues&quot; de la file d'erreurs
+contient le paquet ayant rencontré un problème. 
+<DT><DD>
+Le message de contrôle
+<I>IP_RECVERR </I>
+
+contient une
+structure
+<B>sock_extended_err</B> :
+
+<DT><DD>
+<DL COMPACT><DT><DD>
+
+<PRE>
+
+#define SO_EE_ORIGIN_NONE       0
+#define SO_EE_ORIGIN_LOCAL      1
+#define SO_EE_ORIGIN_ICMP       2
+#define SO_EE_ORIGIN_ICMP6      3
+
+struct sock_extended_err {
+    u_int32_t       ee_errno;   /* numéro d'erreur */
+    u_int8_t        ee_origin;  /* origine de l'erreur */ 
+    u_int8_t        ee_type;    /* type */
+    u_int8_t        ee_code;    /* code */
+    u_int8_t        ee_pad;
+    u_int32_t       ee_info;    /* autres informations */
+    u_int32_t       ee_data;    /* autres données */  
+    /* champs supplémentaires éventuels */ 
+};
+
+struct sockaddr *SOCK_EE_OFFENDER(struct sock_extended_err *);
+
+</PRE>
+
+</DL>
+
+<DT><DD>
+<B>ee_errno </B>
+
+contient le numéro de l'erreur mise en file.
+<B>ee_origin</B>
+
+est le code de l'origine de l'erreur.
+Les autres champs sont spécifiques au protocole. La macro
+<B>SOCK_EE_OFFENDER </B>
+
+renvoie un pointeur sur l'adresse d'un objet réseau d'où
+l'erreur provient, en prenant en argument un pointeur sur le message de service.
+Si cette adresse n'est pas disponible, le membre
+<I>sa_family </I>
+
+de la structure
+<B>sockaddr </B>
+
+contient
+<B>AF_UNSPEC</B>
+
+et les autres champs de
+<B>sockaddr </B>
+
+sont indéfinis.
+<DT><DD>
+IP utilise la structure
+<B>sock_extended_err</B>
+
+comme suit :
+<I>ee_origin </I>
+
+contient
+<B>SO_EE_ORIGIN_ICMP </B>
+
+pour les erreurs reçues sous forme de paquet ICMP, ou
+<B>SO_EE_ORIGIN_LOCAL </B>
+
+pour les erreurs locales. Les valeurs inconnues doivent être ignorées.
+<I>ee_type </I>
+
+et
+<I>ee_code </I>
+
+sont remplis avec les champs type et code de l'en-tête ICMP.
+<I>ee_info</I>
+
+contient le MTU déterminé pour les erreurs
+<B>EMSGSIZE</B>.
+
+Le message contient aussi l'adresse
+<I>sockaddr_in</I>
+
+du noeud ayant causé l'erreur,
+qui peut être obtenu avec la macro.
+<B>SOCK_EE_OFFENDER</B>.
+
+Le champ
+<I>sin_family</I>
+
+de l'adresse fournie par SOCK_EE_OFFENDER vaut
+<I>AF_UNSPEC</I>
+
+si la source était inconnue.
+Lorsque les erreurs proviennent du réseau, toutes les options IP
+(<I>IP_OPTIONS</I>, <I>IP_TTL</I>, 
+
+etc.) valides pour la socket, et contenues dans le paquet
+en erreur sont transmises comme messages de contrôle. Le contenu original du paquet
+causant l'erreur est renvoyé comme charge normale.
+
+
+
+
+
+
+
+
+
+
+
+
+Notez que TCP n'a pas de file d'erreurs ;
+<B>MSG_ERRQUEUE</B>
+
+est illégal sur
+les sockets
+<B>SOCK_STREAM</B>.
+
+Ainsi, toutes les erreurs sont renvoyées par les fonctions sur les sockets ou par
+<B>SO_ERROR</B>
+
+seulement. 
+<DT><DD>
+Pour les sockets raw,
+<I>IP_RECVERR </I>
+
+valide le passage de toutes les erreurs ICMP reçues à l'application,
+sinon les erreurs sont seulement renvoyées sur les sockets connectées.
+Il s'agit d'un attribut booléen entier.
+<I>IP_RECVERR</I>
+
+est désactivé par défaut. 
+<P>
+<DT><B>IP_PMTU_DISCOVER</B>
+
+<DD>
+Fixe ou consulte l'attribut de recherche du MTU du chemin (Path MTU - PMTU) pour une socket.
+Lorsqu'il est activé, Linux effectuer la recherche du MTU de chemin 
+comme défini dans la RFC 1191.
+L'attribut interdisant la fragmentation est alors activé sur tous les datagrammes sortants.
+La valeur par défaut est commandée au niveau système par le sysctl
+<B>ip_no_pmtu_disc </B>
+
+pour les sockets
+<B>SOCK_STREAM</B>,
+
+et désactivé pour toutes les autres. Pour les sockets autres que
+<B>SOCK_STREAM </B>
+
+il est de la responsabilité de l'utilisateur d'empaqueter les données dans 
+des blocs inférieurs au MTU et d'assurer la retransmission si besoin est.
+Le noyau rejettera les paquets qui sont plus gros que le MTU déterminé
+si cet attribut est activé (avec l'erreur
+<B>EMSGSIZE</B>
+
+). 
+<P>
+<TABLE>
+<TR VALIGN=top><TD ALIGN=center>Attribut MTU chemin</TD><TD>Signification<BR></TD></TR>
+<TR VALIGN=top><TD>IP_PMTUDISC_WANT</TD><TD>Utiliser une configuration par route.<BR></TD></TR>
+<TR VALIGN=top><TD>IP_PMTUDISC_DONT</TD><TD>Ne pas rechercher le MTU par chemin.<BR></TD></TR>
+<TR VALIGN=top><TD>IP_PMTUDISC_DO</TD><TD>Toujours rechercher le MTU par chemin.<BR></TD></TR>
+</TABLE>
+
+<P>
+<P>
+Lorsque la recherche du PMTU est active, le noyau garde automatiquement une trace
+des MTU des chemins par hôte destinataire.
+Lorsqu'il est connecté à un correspondant spécifique avec
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2),
+
+le MTU du chemin actuellement déterminé peut être consulté en utilisant l'option
+<B>IP_MTU </B>
+
+de la socket (par exemple si une erreur
+<B>EMSGSIZE </B>
+
+se produit). Cette valeur peut changer dans le temps.
+Pour les sockets sans connexions, avec plusieurs destinations, le nouveau MTU
+pour une destination donnée peut également être obtenu en utilisant la
+file d'erreur (voir
+<B>IP_RECVERR</B>).
+
+Une nouvelle erreur sera mise en file pour chaque mise à jour du MTU.
+<P>
+Durant la recherche du MTU, les paquets initiaux des sockets datagrammes
+peuvent être perdus. Les applications utilisant UDP devraient le savoir, et
+les éviter dans leur stratégie de retransmission.
+<P>
+Pour démarrer le processus de recherche du MTU par chemin sur les sockets non-connectées, il
+est possible de démarrer avec une grande taille de datagramme (jusqu'à 64 ko d'en-tête)
+et la diminuer au fur et à mesure des mises à jours du MTU du chemin.
+
+<P>
+Pour obtenir une estimation initiale du MTU d'un chemin
+connectez une socket datagramme à l'adresse de destination en utilisant
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2)
+
+et consultez le MTU en appelant
+<B><A HREF="/cgi-bin/man/man2html?2+getsockopt">getsockopt</A></B>(2)
+
+avec
+l'option
+<B>IP_MTU</B>.
+
+<P>
+<DT><B>IP_MTU</B>
+
+<DD>
+Renvoie le MTU du chemin actuellement déterminé pour la socket.
+Seulement valide quand la socket a été connectée. Renvoie un entier.
+Uniquement valide pour un
+<B><A HREF="/cgi-bin/man/man2html?2+getsockopt">getsockopt</A></B>(2).
+
+
+<DT><B>IP_ROUTER_ALERT</B>
+
+<DD>
+Passer tous les futurs paquets redirigés (forwarded) avec l'option
+IP Router Alert 
+activée sur cette socket.
+Uniquement valide pour les sockets raw. Ceci sert par exemple pour les démons
+RSVP de l'espace utilisateur. Les paquets enregistrés ne sont pas redirigés par le noyau,
+c'est la responsabilité de l'utilisateur de les renvoyer. L'attachement des sockets est ignoré,
+et de tels paquets ne sont filtrés que par le protocole.
+Il s'agit d'un attribut entier.
+
+<DT><B>IP_MULTICAST_TTL</B>
+
+<DD>
+Fixe ou consulte la valeur du champs Time-To-Live des paquets multicast sortant sur
+cette socket. Il est très importants pour les paquets multicast de fixer le
+TTL le plus petit possible. La valeur par défaut est 1, ce qui signifie
+que les paquet multicast ne quittent pas le réseau local à moins que
+le programme de l'utilisateur ne le réclame explicitement.
+L'argument est un entier.
+
+<DT><B>IP_MULTICAST_LOOP</B>
+
+<DD>
+Lit ou écrit un entier booléen indiquant si les paquets multicast doivent être
+renvoyés en boucle aux sockets locales concernées.
+
+<DT><B>IP_ADD_MEMBERSHIP</B>
+
+<DD>
+Rejoindre un groupe multicast. L'argument est une
+structure
+<B>struct ip_mreqn</B>.
+
+</DL>
+<P>
+
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct ip_mreqn {
+    struct in_addr imr_multiaddr; /* Adresse IP du groupe multicast */
+    struct in_addr imr_address;   /* Adresse IP de l'interface locale */
+    int            imr_ifindex;   /* Numéro d'interface */
+};
+</PRE>
+
+</DL>
+
+<DL COMPACT>
+<DT><DD>
+<I>imr_multiaddr</I>
+
+contient l'adresse du groupe multicast que l'application veut rejoindre ou quitter.
+Il doit s'agir d'une adresse multicast valide.
+<I>imr_address</I>
+
+est l'adresse de l'interface locale avec laquelle le système doit joindre le
+groupe multicast. Si elle est égale à
+<B>INADDR_ANY</B>,
+
+une interface appropriée est choisie par le système.
+<I>imr_ifindex</I>
+
+est le numéro de l'interface pour rejoindre ou quitter le groupe
+<I>imr_multiaddr</I>,
+
+ou zéro pour indiquer n'importe quelle interface.
+<DT><DD>
+Pour la compatibilité, l'ancienne structure
+<B>ip_mreq</B>
+
+est encore supportée. Elle diffère de
+<B>ip_mreqn </B>
+
+seulement par l'absence du
+membre
+<I>imr_ifindex</I>.
+
+Uniquement valide pour
+<B><A HREF="/cgi-bin/man/man2html?2+setsockopt">setsockopt</A></B>(2).
+
+
+<DT><B>IP_DROP_MEMBERSHIP</B>
+
+<DD>
+Quitter un groupe multicast. L'argument est une structure
+<B>ip_mreqn </B>
+
+ou
+<B>ip_mreq </B>
+
+comme pour
+<I>IP_ADD_MEMBERSHIP</I>.
+
+
+<DT><B>IP_MULTICAST_IF</B>
+
+<DD>
+Fixer le périphérique local pour une socket multicast. L'argument est une structure
+<B>ip_mreqn </B>
+
+ou
+<B>ip_mreq </B>
+
+comme pour
+<I>IP_ADD_MEMBERSHIP</I>.
+
+<DT><DD>
+Lorsqu'une option de socket invalide est fournie, 
+<B>ENOPROTOOPT</B>
+
+est renvoyée.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>SYSCTLS</H2>
+
+Le protocole IP support l'interface sysctl
+pour configurer certaines options globales. Les sysctl peuvent être
+réalisés en lisant ou écrivant dans les fichiers
+<B>/proc/sys/net/ipv4/* </B>
+
+ou en utilisant
+l'interface
+<B><A HREF="/cgi-bin/man/man2html?2+sysctl">sysctl</A></B>(2).
+
+
+<DL COMPACT>
+<DT><B>ip_default_ttl </B>
+
+<DD>
+Fixe la valeur par défaut du champ Time-To-Live des paquets sortants. Ceci peut
+être modifié individuellement pour
+chaque socket avec l'option
+<I>IP_TTL</I>.
+
+
+<DT><B>ip_forward</B>
+
+<DD>
+Active la redirection IP (forwarding) avec un attribut booléen. La redirection IP
+peut aussi être configurée interface par interface.
+
+<DT><B>ip_dynaddr</B>
+
+<DD>
+Active la réécriture dynamique des adresses de socket et du masquerading lors des
+changements d'adresse d'interface. Cela sert pour les liaisons par modem, avec des adresses
+IP variables. 0 signifie aucune réécriture, 1 les autorise, et 2 demande un mode volubile.
+
+<DT><B>ip_autoconfig</B>
+
+<DD>
+Non documenté.
+
+<DT><B>ip_local_port_range</B>
+
+<DD>
+Contient deux entiers qui définissent l'intervalle par défaut des ports locaux alloués aux
+sockets. L'allocation démarre avec le premier numéro et se termine avec le second. Notez
+que cela ne doit pas entrer en conflit avec les ports utilisés pour le masquerading (bien que
+cela soit traité). De même des choix arbitraires peuvent poser des problèmes avec certains firewalls
+de filtrage par paquet qui font des suppositions sur les ports locaux utilisés.
+Le premier nombre doit être au moins supérieur à 1024 et de préférence à 4096 pour éviter les
+collisions avec les ports officiels et minimiser les problèmes de firewall.
+
+<DT><B>ip_no_pmtu_disc</B>
+
+<DD>
+Désactiver la recherche par défaut des MTU par chemin pour les sockets TCP. La recherche du MTU par
+chemin peut échouer avec des firewalls mal configurés (qui rejettent tous les paquets ICMP) ou
+les interfaces mal configurées (par exemple lien point-à-point où les deux extrémités n'ont pas le
+même MTU). Il vaut mieux corriger le routeur défectueux que de supprimer globalement la
+recherche du MTU par chemin, car cette dernière option augmente les
+coûts du réseau.
+
+<DT><B>ipfrag_high_thresh, ipfrag_low_thresh </B>
+
+<DD>
+Si le nombre de fragments IP en file atteint
+<B>ipfrag_high_thresh ,</B>
+
+la file est restreinte à
+<B>ipfrag_low_thresh . </B>
+
+Contient un entier avec le nombre
+d'octets.
+<DT><B>ip_always_defrag</B>
+
+<DD>
+[Nouveauté des noyaux 2.2.13, dans les noyaux précédents c'était une option
+de compilation
+nommée
+<B>CONFIG_IP_ALWAYS_DEFRAG</B>]
+
+<P>
+Lorsque ce drapeau booléen et actif (différent de zéro), les fragments entrants 
+(morceaux de paquets IP obtenus car un hôte entre
+l'origine et la destination a décidé que les paquets
+étaient trop grands et les a coupé en morceaux) seront
+réassemblés (défragmentés) avant d'être traités, même s'ils doivent être
+redirigés (forwarded).
+<P>
+À utiliser uniquement pour un firewall qui est le seul lien d'entrée de votre
+réseau, ou un proxy transparent. Ne jamais activer pour un routeur normal
+ou un hôte. Sinon, les communications fragmentées peuvent être interrompues
+lorsque les fragments circulent par différents liens. La défragmentation a
+également un coût mémoire et CPU non négligeable.
+<P>
+Ceci est automatiquement activé lorsque le masquerading ou le proxy
+transparent est configuré.
+<DT><B>neigh/*</B>
+
+<DD>
+voir
+<B><A HREF="/cgi-bin/man/man2html?7+arp">arp</A></B>(7).
+
+
+
+
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>IOCTLS</H2>
+
+Toutes les ioctls décrites dans
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7)
+
+s'appliquent à la couche IP.
+<P>
+
+Les ioctls pour configurer les firewall sont documentés dans
+<B><A HREF="/cgi-bin/man/man2html?7+ipfw">ipfw</A></B>(7)
+
+provenant du
+paquetage
+<B>ipchains</B>.
+
+<P>
+
+Les ioctls pour configurer les paramètres génériques des périphériques sont décrits dans
+<B><A HREF="/cgi-bin/man/man2html?7+netdevice">netdevice</A></B>(7).
+
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>NOTES</H2>
+
+Soyez très prudents avec l'option
+<B>SO_BROADCAST</B>,
+
+elle n'est pas privilégiée sous Linux. Il est facile de surcharger un réseau avec des
+broadcast sans précaution. Pour les nouveaux protocoles applicatifs, il vaut mieux
+utiliser un groupe multicast plutôt que le broadcast. Ce dernier est
+déconseillé.
+<P>
+
+Certaines autres implémentations des sockets BSD fournissent les options de socket
+<I>IP_RCVDSTADDR </I>
+
+et
+<I>IP_RECVIF </I>
+
+pour obtenir l'adresse de destination et l'interface des
+datagrammes reçus. Linux à l'option
+<I>IP_PKTINFO</I>
+
+plus générale pour effectuer ce travail. 
+<P>
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>ERREURS</H2>
+
+
+
+<DL COMPACT>
+<DT><B>ENOTCONN</B>
+
+<DD>
+L'opération n'est définie que pour une socket connectée, mais la socket ne l'était
+pas.
+<DT><B>EINVAL</B>
+
+<DD>
+Un argument invalide a été transmis.
+Pour les émissions, cela peut être causé par un envoi vers une
+route
+<I>trou noir</I>.
+
+<DT><B>EMSGSIZE </B>
+
+<DD>
+Datagramme plus grand que le MTU du chemin, et ne peut pas être fragmenté.
+<DT><B>EACCES</B>
+
+<DD>
+L'utilisateur essaye de réaliser une opération sans avoir les permissions nécessaires.
+Cela inclut :
+L'envoi d'un paquet vers une adresse broadcast sans avoir activé
+l'attribut
+<B>SO_BROADCAST</B>.
+
+L'envoi d'un paquet vers une
+route
+<I>interdite</I>.
+
+Modification du paramétrage du firewall sans la capacité
+<B>CAP_NET_ADMIN</B>
+
+ou un UID effectif nul.
+Attachement à un port réservé sans la capacité
+<B>CAP_NET_BIND_SERVICE</B>
+
+ou un UID effectif nul.
+<P>
+<DT><B>EADDRINUSE</B>
+
+<DD>
+Tentative d'attachement à une adresse déjà utilisée.
+<DT><B>ENOPROTOOPT</B> et <B>EOPNOTSUPP</B>
+
+<DD>
+Passage d'une option de socket invalide.
+<DT><B>EPERM</B>
+
+<DD>
+L'utilisateur n'a pas la permission de fixer une priorité haute, de changer la configuration
+ou d'envoyer des signaux au groupe ou au processus demandé.
+<DT><B>EADDRNOTAVAIL</B>
+
+<DD>
+Une interface inexistante ou une adresse source non locale
+ont été réclamées.
+<DT><B>EAGAIN</B>
+
+<DD>
+L'opération sur une socket non-bloquante devrait bloquer.
+<DT><B>ESOCKTNOSUPPORT</B>
+
+<DD>
+La socket n'est pas configurée ou on a demandé un type de socket inconnu.
+<DT><B>EISCONN</B>
+
+<DD>
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2)
+
+a été appelé sur une socket déjà connectée.
+<DT><B>EALREADY</B>
+
+<DD>
+Une opération de connexion est déjà en cours sur une socket non-bloquante.
+<DT><B>ECONNABORTED</B>
+
+<DD>
+Une connexion a été fermée durant un
+<B><A HREF="/cgi-bin/man/man2html?2+accept">accept</A></B>(2).
+
+<DT><B>EPIPE</B>
+
+<DD>
+La connexion a été fermée prématurément ou terminée par le correspondant.
+<DT><B>ENOENT</B>
+
+<DD>
+<B>SIOCGSTAMP </B>
+
+a été appelé sur une socket sans qu'aucun paquet n'y soit disponible.
+<DT><B>EHOSTUNREACH</B>
+
+<DD>
+Aucune route valide dans la table ne correspond à l'adresse de destination. Cette erreur
+peut être due à un message ICMP d'un routeur distant ou à la table
+de routage interne.
+<DT><B>ENODEV </B>
+
+<DD>
+Le périphérique réseau n'est pas disponible ou est incapable d'envoyer de l'IP.
+<DT><B>ENOPKG </B>
+
+<DD>
+Un sous-système du noyau n'est pas configuré.
+<DT><B>ENOBUFS, ENOMEM</B>
+
+<DD>
+Pas assez de mémoire.
+Cela signifie souvent que l'allocation mémoire est contrainte par les limites du buffer
+de socket, pas par la mémoire système, mais ce n'est pas toujours sûr.
+</DL>
+<P>
+
+D'autres erreurs peuvent être déclenchées par les protocoles supérieurs. Voir
+<B><A HREF="/cgi-bin/man/man2html?7+tcp">tcp</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+raw">raw</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+udp">udp</A></B>(7)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7).
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>VERSIONS</H2>
+
+<I>IP_PKTINFO</I>,
+
+<I>IP_MTU</I>,
+
+<I>IP_PMTU_DISCOVER</I>,
+
+<I>IP_PKTINFO</I>,
+
+<I>IP_RECVERR</I>
+
+et
+<I>IP_ROUTER_ALERT</I>
+
+sont de nouvelles options de Linux 2.2.
+Elles sont aussi spécifiques à Linux et ne doivent pas servir dans des
+programmes destinés à être portables.
+<P>
+
+<B>struct ip_mreqn </B>
+
+est nouvelle dans Linux 2.2. Sous Linux 2.0, seule existait
+<B>ip_mreq</B>.
+
+<P>
+
+Les sysctls ont été introduits avec Linux 2.2.
+<A NAME="lbAL">&nbsp;</A>
+<H2>COMPATIBILITÉ</H2>
+
+Pour la compatibilité avec Linux 2.0, la syntaxe obsolète
+<B>socket(PF_INET, SOCK_RAW, protocole</B><I>)</I>
+
+est encore supportée pour ouvrir une
+socket
+<B><A HREF="/cgi-bin/man/man2html?7+packet">packet</A></B>(7).
+
+Cela est déconseillé, et doit être remplacé par un
+<B>socket(PF_PACKET, SOCK_RAW, protocole</B><I>)</I>
+
+La principale différence est la nouvelle
+structure d'adresse
+<B>sockaddr_ll </B>
+
+pour les informations génériques du niveau liaison à la place de l'ancienne
+<B>sockaddr_pkt</B>.
+
+<A NAME="lbAM">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Il y a trop de valeurs d'erreurs hétérogènes.
+<P>
+
+Les ioctls pour configurer les options d'interface spécifiques IP et les tables ARP
+ne sont pas décrites.
+<P>
+
+Certaines version de la GlibC oublient la déclaration
+<I>in_pktinfo.</I>
+
+Le remède est de recopier dans votre programme la description de cette page de manuel.
+<P>
+
+La réception de l'adresse de destination originale avec
+<B>MSG_ERRQUEUE</B>
+
+dans
+<I>msg_name</I>
+
+par
+<B><A HREF="/cgi-bin/man/man2html?2+recvmsg">recvmsg</A></B>(2)
+
+ne fonctionne pas dans certains noyaux 2.2.
+<A NAME="lbAN">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Cette page de manuel a été écrite par Andi Kleen. 
+<A NAME="lbAO">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+sendmsg">sendmsg</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+recvmsg">recvmsg</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+netlink">netlink</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+tcp">tcp</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+udp">udp</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+raw">raw</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+ipfw">ipfw</A></B>(7).
+
+<P>
+
+RFC 791 pour les spécifications IP d'origine.
+<BR>
+
+RFC 1122 pour les nécessités IPv4 des hôtes.
+<BR>
+
+RFC 1812 pour les nécessités IPv4 des routeurs.
+<A NAME="lbAP">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2001-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION </A><DD>
+<DT><A HREF="#lbAE">FORMAT D'ADRESSE</A><DD>
+<DT><A HREF="#lbAF">OPTIONS DES SOCKETS</A><DD>
+<DT><A HREF="#lbAG">SYSCTLS</A><DD>
+<DT><A HREF="#lbAH">IOCTLS</A><DD>
+<DT><A HREF="#lbAI">NOTES</A><DD>
+<DT><A HREF="#lbAJ">ERREURS</A><DD>
+<DT><A HREF="#lbAK">VERSIONS</A><DD>
+<DT><A HREF="#lbAL">COMPATIBILITÉ</A><DD>
+<DT><A HREF="#lbAM">BOGUES</A><DD>
+<DT><A HREF="#lbAN">AUTEURS</A><DD>
+<DT><A HREF="#lbAO">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAP">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:58 GMT, February 11, 2014
+</BODY>
+</HTML>

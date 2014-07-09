@@ -1,0 +1,261 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ZMORE</TITLE>
+</HEAD><BODY>
+<H1>ZMORE</H1>
+Section: User Commands  (1)<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+zmore - filtre de visualisation crt de texte compacté.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>zmore</B>
+
+[ nom ...  ]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>zmore</I>
+
+est un filtre qui permet l'examen de fichiers texte, compactés ou non, un
+écran à la fois sur un terminal «&nbsp;soft-copy&nbsp;» (NdT&nbsp;: ?).
+<I>zmore</I>
+
+fonctionne avec les fichiers compactés par
+<I>compress</I>, <I>pack</I>
+
+ou
+<B>gzip</B>,
+
+et également avec les fichiers non compactés. Si un fichier n'existe pas,
+<I>zmore</I>
+
+recherche un fichier du même nom possédant l'extension «&nbsp;.gz&nbsp;», «&nbsp;.z&nbsp;»
+ou «&nbsp;.Z&nbsp;».
+<P>
+
+<I>zmore</I>
+
+s'arrête normalement après chaque écran, en affichant --More-- en bas de
+l'écran. Si l'utilisateur tape ensuite un retour-chariot, une ligne de plus
+est affichée&nbsp;; si l'utilisateur tape sur la barre d'espacement, un autre
+écran est affiché. D'autres possibilités sont énumérées plus loin.
+<P>
+
+<I>zmore</I>
+
+examine le fichier
+<I>/etc/termcap</I>
+
+pour déterminer les caractéristiques du terminal, et la taille de fenêtre
+par défaut. Sur un terminal capable d'afficher 24 lignes, la taille de
+fenêtre par défaut est de 22 lignes. Pour utiliser un autre paginateur que
+le
+<I>more</I>
+
+par défaut, fixez la variable d'environnement PAGER au nom du programme
+désiré, comme
+<I>less</I>.
+
+<P>
+
+Voici d'autres séquences qui peuvent être tapées quand
+<B>zmore</B>
+
+s'arrête, et leurs effets (<I>i</I> est un argument entier optionnel, valant
+1 par défaut)&nbsp;:
+<P>
+
+<DL COMPACT>
+<DT><I>i</I>&lt;espace&gt;<DD>
+afficher
+<I>i</I>
+
+lignes de plus (ou un autre écran si aucun argument n'est fourni)
+</DL>
+<P>
+
+<DL COMPACT>
+<DT>^D<DD>
+afficher 11 lignes de plus (un «&nbsp;défilement&nbsp;»). Si
+<I>i</I>
+
+est fourni, il indique la taille du défilement.
+</DL>
+<P>
+
+<DL COMPACT>
+<DT>d<DD>
+comme ^D (contrôle-D)
+</DL>
+<P>
+
+<DL COMPACT>
+<DT><I>i</I>z<DD>
+la même chose que taper espace sauf que <I>i</I>, s'il est présent, devient
+la nouvelle taille de fenêtre. Notez que la taille de fenêtre revient à la
+valeur par défaut à la fin du fichier courant.
+</DL>
+<P>
+
+<DL COMPACT>
+<DT><I>i</I>s<DD>
+passer <I>i</I> lignes et afficher un écran complet
+</DL>
+<P>
+
+<DL COMPACT>
+<DT><I>i</I>f<DD>
+passer <I>i</I> écrans et afficher un écran complet
+</DL>
+<P>
+
+<DL COMPACT>
+<DT>q ou Q<DD>
+arrêter la lecture du fichier courant&nbsp;; passer au fichier suivant (s'il y
+en a un)
+</DL>
+<P>
+
+<DL COMPACT>
+<DT>e ou q<DD>
+Quand l'invite --More--(Next file: 
+<I>fichier</I>)
+
+est affichée, cette commande indique à zmore de se terminer.
+</DL>
+<P>
+
+<DL COMPACT>
+<DT>s<DD>
+Quand l'invite --More--(Next file: 
+<I>fichier</I>)
+
+est affichée, cette commande indique à zmore de passer le fichier suivant
+et de continuer.
+</DL>
+<P>
+
+<DL COMPACT>
+<DT>=<DD>
+Afficher le numéro de ligne courant.
+</DL>
+<P>
+
+<DL COMPACT>
+<DT><I>i</I>/expr<DD>
+recherche la <I>i</I>ème occurrence de l'expression rationnelle <I>expr</I>.
+Si le motif n'est pas trouvé,
+<I>zmore</I>
+
+continue la recherche dans le fichier suivant (s'il y en a un). Sinon, un
+écran complet est affiché, débutant deux lignes avant l'endroit où
+l'expression a été trouvée. Les caractères d'effacement et de suppression
+(kill) peuvent être entrés par l'utilisateur pour éditer l'expression
+rationnelle. L'appui sur la touche d'effacement arrière en-deçà de la
+première colonne permet d'annuler la commande de recherche.
+</DL>
+<P>
+
+<DL COMPACT>
+<DT><I>i</I>n<DD>
+Rechercher la <I>i</I>ème occurrence de la dernière expression rationnelle
+entrée.
+</DL>
+<P>
+
+<DL COMPACT>
+<DT>!commande<DD>
+invoquer un shell avec la <I>commande</I>. Le caractère «&nbsp;!&nbsp;» dans
+«&nbsp;commande&nbsp;» est remplacé par la dernière commande shell. La séquence
+«&nbsp;\!&nbsp;» est remplacée par «&nbsp;!&nbsp;».
+</DL>
+<P>
+
+<DL COMPACT>
+<DT>:q ou :Q<DD>
+arrêter la lecture du fichier courant&nbsp;; passer au fichier suivant (s'il y
+en a un). Comme q ou Q.
+</DL>
+<P>
+
+<DL COMPACT>
+<DT>.<DD>
+(point) répéter la commande précédente
+</DL>
+<P>
+
+La commande prend effet immédiatement, c.-à-d. qu'il n'est pas nécessaire
+d'appuyer sur Entrée. Avant que l'utilisateur n'entre le caractère de
+commande, il peut entrer le caractère de suppression de ligne pour annuler
+l'argument numérique en cours de formation. De plus, l'utilisateur peut
+taper sur la touche d'effacement pour réafficher le message --More--.
+<P>
+
+À&nbsp;tout moment de l'envoi de la sortie sur le terminal, l'utilisateur peut
+taper sur la touche de sortie (normalement control-\).
+<I>zmore</I>
+
+arrêtera de produire quoi que ce soit en sortie, et affichera l'invite
+--More-- habituelle. L'utilisateur peut alors entrer l'une des commandes
+précitées de la manière normale. Malheureusement, une partie de la sortie
+est perdue quand cela est fait, car les caractères se trouvant dans la file
+d'attente de sortie du terminal sont évacués quand le signal de fin arrive.
+<P>
+
+Le terminal est mis en mode
+<I>noecho</I>
+
+(pas d'écho) par ce programme afin que la sortie puisse être continue. Ce
+que vous tapez ne sera donc pas affiché sur votre terminal, sauf dans le
+cas des commandes «&nbsp;/&nbsp;» et «&nbsp;!&nbsp;».
+<P>
+
+Si la sortie standard n'est pas un télétype, alors
+<I>zmore</I>
+
+se comporte exactement comme
+<I>zcat</I>,
+
+mis à part qu'un en-tête est affiché avant chaque fichier.
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT>/etc/termcap<DD>
+Base de données des terminaux
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+zmore">zmore</A>(1), <A HREF="/cgi-bin/man/man2html?1+gzip">gzip</A>(1), <A HREF="/cgi-bin/man/man2html?1+zdiff">zdiff</A>(1), <A HREF="/cgi-bin/man/man2html?1+zgrep">zgrep</A>(1), <A HREF="/cgi-bin/man/man2html?1+znew">znew</A>(1), <A HREF="/cgi-bin/man/man2html?1+zforce">zforce</A>(1), <A HREF="/cgi-bin/man/man2html?1+gzexe">gzexe</A>(1)
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Frédéric Delanoy, 2001.
+<P>
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:48 GMT, February 11, 2014
+</BODY>
+</HTML>

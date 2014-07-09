@@ -1,0 +1,163 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LP</TITLE>
+</HEAD><BODY>
+<H1>LP</H1>
+Section: Manuel du programmeur Linux (4)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+lp - Imprimantes parallèles.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+#include &lt;<A HREF="file:///usr/include/linux/lp.h">linux/lp.h</A>&gt;
+<A NAME="lbAD">&nbsp;</A>
+<H2>CONFIGURATION</H2>
+
+<B>lp</B>[0-2] sont des périphériques caractères pour les imprimantes à
+liaison parallèle. Ils ont un numéro majeur 6 et un numéro mineur 0-2.  
+Le numéro mineur correspond aux ports d'imprimantes d'adresse de base
+0x03bc, 0x0378 et 0x0278.
+Habituellement ils ont un mode d'accès 220 et un propriétaire root.lp.
+<P>
+On peut utiliser les ports parallèles soit en scrutation (polling) soit
+en interruption. L'utilisation en interruption est surtout recommandée
+avec un haut trafic (ex : imprimante laser). Pour les imprimantes
+matricielles classiques, la scrutation suffira. Par défaut le système
+utilise la scrutation.
+<A NAME="lbAE">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les appels-système
+<I><A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A></I>(2)
+
+suivants sont supportés :
+<DL COMPACT>
+<DT><B>int ioctl(int </B><I>fd</I><B>, LPTIME, int </B><I>arg</I><B>)</B><DD>
+fixe la durée pendant laquelle le driver s'endort avant de revérifier
+l'état de l'imprimante après que le buffer ait été rempli. 
+Avec une imprimante rapide on peut diminuer ce délai, avec une imprimante
+lente on peut l'augmenter.
+La durée est indiquée dans <I>arg</I>, en centièmes de secondes. La valeur
+par défaut est 2 (soit 0,02 seconde). Cela n'influe que sur le driver
+en scrutation.
+<P>
+<DT><B>int ioctl(int </B><I>fd</I><B>, LPCHAR, int </B><I>arg</I><B>)</B><DD>
+indique le nombre maximum d'itérations d'attente active que le driver
+en scrutation effectue alors qu'il attend que l'imprimante soit prête.
+Si l'impression est trop lente, augmenter cette valeur, si le système
+ralentit trop, la diminuer.
+Le nombre est indiqué dans <I>arg</I>, la valeur par défaut est 1000. Cela
+n'influe que sur le driver en scrutation.
+<P>
+<DT><B>int ioctl(int </B><I>fd</I><B>, LPABORT, int </B><I>arg</I><B>)</B><DD>
+Si <I>arg</I> vaut 0, le driver réessaiera en cas d'erreur d'impression,
+sinon il abandonnera. La valeur par défaut est 0.
+<P>
+<DT><B>int ioctl(int </B><I>fd</I><B>, LPABORTOPEN, int </B><I>arg</I><B>)</B><DD>
+Si <I>arg</I> vaut 0,
+<I><A HREF="/cgi-bin/man/man2html?2+open">open</A></I>(2)
+
+sera annulé en cas d'erreur, sinon l'erreur sera ignorée. Par défaut elle
+est ignorée.
+<P>
+<DT><B>int ioctl(int </B><I>fd</I><B>, LPCAREFUL, int </B><I>arg</I><B>)</B><DD>
+Si <I>arg</I> vaut 0, on bloquera l'écriture sur le port parallèle au cas
+où les broches <I>erreur</I>,  <I>plus-de-papier</I>, ou <I>imprimante-hors-ligne</I>
+sont validées. Sinon ces signaux seront ignorés. Par défaut
+ils sont ignorés.
+<P>
+<DT><B>int ioctl(int </B><I>fd</I><B>, LPWAIT, int </B><I>arg</I><B>)</B><DD>
+Indique le nombre d'itérations d'attente active à effectuer avant d'activer
+la broche STROBE pour que l'imprimante accepte le caractère écrit,
+et le nombre d'itérations à effectuer avant d'éteindre à nouveau la
+broche STROBE.
+Les spécifications indique que ce délai devrait être de 0,5 micro-secondes,
+mais l'expérience a montré que le délai induit par le code du driver
+est suffisant. La valeur est indiquée dans <I>arg</I>, elle vaut 0
+par défaut. Ceci concerne autant le gestionnaire en interruption que
+celui en scrutation.
+<P>
+<DT><B>int ioctl(int </B><I>fd</I><B>, LPSETIRQ, int </B><I>arg</I><B>)</B><DD>
+Cet ioctl() nécessite des privilèges Super-User. Son argument est une
+nouvelle IRQ pour l'imprimante. Comme effet de bords, l'imprimante est
+réinitialisée. Si <I>arg</I> vaut 0, le gestionnaire en scrutation sera
+utilisé, ce qui est le comportement par défaut.
+<P>
+<DT><B>int ioctl(int </B><I>fd</I><B>, LPGETIRQ, int *</B><I>arg</I><B>)</B><DD>
+Stocke la valeur actuelle d'IRQ dans <I>arg</I>.
+<P>
+<DT><B>int ioctl(int </B><I>fd</I><B>, LPGETSTATUS, int *</B><I>arg</I><B>)</B><DD>
+Stocke le statut actuel du port dans <I>arg</I>.  Les bits ont les significations
+suivantes :
+<P>
+<TABLE>
+<TR VALIGN=top><TD>LP_PBUSY</TD><TD>Entrée OCCUPÉE inversée, active à 1<BR></TD></TR>
+<TR VALIGN=top><TD>LP_PACK</TD><TD>Entrée ACQUITTEMENT, active à 0<BR></TD></TR>
+<TR VALIGN=top><TD>LP_POUTPA</TD><TD>Entrée PLUS-DE-PAPIER, active à 1<BR></TD></TR>
+<TR VALIGN=top><TD>LP_PSELECD</TD><TD>Entrée SELECT, active à 1<BR></TD></TR>
+<TR VALIGN=top><TD>LP_PERRORP</TD><TD>Entrée ERREUR, active à 0<BR></TD></TR>
+</TABLE>
+
+<P>
+Référez vous au manuel de votre imprimante pour la signification de ces
+signaux. Des bits non documentés peuvent également être présents,
+suivant le type d'imprimante.
+<P>
+<DT><B>int ioctl(int </B><I>fd</I><B>, LPRESET)</B><DD>
+Réinitialise l'imprimante.  Pas d'argument.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/dev/lp*
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Le driver d'imprimante a été écrit à l'origine par Jim Weigand et Linus
+Torvalds.  Il fut ensuite amélioré par Michael K. Johnson.  Le code
+d'interruption a été écrit par by Nigel Gamble.  Alan Cox l'a modularisé.
+LPCAREFUL, LPABORT, LPGETSTATUS ont été ajoutés par Chris Metcalf.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+mknod">mknod</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+chown">chown</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+chmod">chmod</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+tunelp">tunelp</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+lpcntl">lpcntl</A></B>(8)
+
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">CONFIGURATION</A><DD>
+<DT><A HREF="#lbAE">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">AUTEURS</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:52 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,136 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MSYNC</TITLE>
+</HEAD><BODY>
+<H1>MSYNC</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+msync - Synchroniser un fichier et une projection en mémoire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/mman.h">sys/mman.h</A>&gt;</B>
+
+<P>
+<B>#ifdef _POSIX_MAPPED_FILES</B>
+
+<BR>
+
+<B>#ifdef _POSIX_SYNCHRONIZED_IO</B>
+
+<P>
+<B>int msync(const void *</B><I>start</I><B>, size_t </B><I>length</I><B>, int </B><I>flags</I><B>);</B>
+
+<P>
+<B>#endif</B>
+
+<BR>
+
+<B>#endif</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>msync</B>
+
+écrit sur le disque les modifications qui ont été effectuées sur
+la copie d'un fichier qui est projeté en mémoire par
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2).
+
+Si l'on utilise pas cette fonction, rien ne garantit que les
+changements soient écrits avant la suppression de la projection  par
+<B><A HREF="/cgi-bin/man/man2html?2+munmap">munmap</A></B>(2).
+
+Pour être plus précis, la portion du fichier correspondant à
+la zone mémoire commençant en
+<I>start</I>
+
+et ayant une longueur de 
+<I>length</I>
+
+est mise a jour.
+L'argument
+<I>flags</I>
+
+comprend les bits MS_ASYNC, MS_SYNC et MS_INVALIDATE.
+M_ASYNC et M_SYNC ne peuvent pas être utilisés conjointement.
+l'appel système revient immédiatement.
+MS_SYNC demande une mise à jour immédiate, et attend qu'elle
+se termine avant de revenir.
+MS_INVALIDATE demande la désactivation de toutes les autres
+projections du même fichier, afin qu'elles soient toutes remises
+à jour avec les nouvelles données écrites.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>msync</B>
+
+renvoie 0 s'il réussit, ou -1 s'il échoue, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+<I>start</I>
+
+n'est pas aligné sur une frontière de page, ou d'autres 
+bits que MS_ASYNC | MS_INVALIDATE | MS_SYNC sont à 1
+dans
+<I>flags.</I>
+
+<DT><B>EFAULT</B>
+
+<DD>
+La zone mémoire indiquée (ou une partie de cette zone) n'est
+pas une projection.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX 1.b (anciennement POSIX.4).
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2),
+
+B.O. Gallmeister, POSIX.4, O'Reilly, pp. 128-129 and 389-391.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:01 GMT, February 11, 2014
+</BODY>
+</HTML>

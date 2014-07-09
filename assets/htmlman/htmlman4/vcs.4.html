@@ -1,0 +1,147 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of VCS</TITLE>
+</HEAD><BODY>
+<H1>VCS</H1>
+Section: Manuel du programmeur Linux (4)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+vcs, vcsa - Mémoires des consoles virtuelles.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>/dev/vcs0</B> est un périphérique caractères de numéro majeur 7 et
+de numéro mineur 0, avec les permissions 0644 et un propriétaire root.tty.
+<P>
+Il correspond à la mémoire d'affichage de la console virtuelle en
+cours d'utilisation.
+<P>
+
+<B>/dev/vcs[1-63]</B> sont des périphériques caractères représentant
+la mémoire d'affichage des consoles virtuelles. 
+Ils ont un numéro majeur 7 et des numéros mineurs 1 à 63.
+Ils ont généralement un mode d'accès 0644 et un propriétaire root.tty.
+<P>
+Les <B>/dev/vcsa[0-63]</B> sont équivalents mais incluent en plus les
+attributs, et sont préfixés avec 4 octets indiquant les dimensions
+de l'écran et la position du curseur :
+<I>lines</I>, <I>columns</I>, <I>x</I>, <I>y</I>.
+(<I>x</I> = <I>y</I> = 0 en haut à gauche de l'écran.)
+<P>
+
+Ceci remplace les
+<I>ioctl</I>s
+
+&quot;screendump&quot; de <B><A HREF="/cgi-bin/man/man2html?4+console">console</A></B>(4), ainsi
+l'administrateur peut contrôler les accès en utilisant les
+permissions du système de fichiers.
+<P>
+
+Les périphériques pour les 8 premières consoles virtuelles peuvent
+être créés ainsi :
+<P>
+<PRE>
+        for x in 0 1 2 3 4 5 6 7 8; do 
+                mknod -m 644 /dev/vcs$x c 7 $x;
+                mknod -m 644 /dev/vcsa$x c 7 $[$x+128];
+        done
+        chown root:tty /dev/vcs*
+</PRE>
+
+<P>
+Aucune requête
+<I>ioctl</I>()
+
+n'est supportée.
+<A NAME="lbAD">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+On peut faire un screendump de la console vt3 en basculant sur
+vt1 et en tapant <I>cat /dev/vcs3 &gt;foo</I>. 
+Notez que la sortie ne contient pas de caractères de retour-chariot,
+aussi quelques manipulations peuvent être nécessaires comme
+<I>fold -w 81 /dev/vcs3 | lpr</I> ou (horrible !)
+<I>setterm -dump 3 -file /proc/self/fd/1</I>.
+<P>
+Ce programme affiche le caractère et l'attribut d'écran sous le curseur
+de la seconde console virtuelle, puis y change la couleur de fond :
+<P>
+<PRE>
+        #include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;
+        #include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;
+        #include &lt;<A HREF="file:///usr/include/fcntl.h">fcntl.h</A>&gt;
+
+        int main ()
+        {       int fd;
+                struct {char lines, cols, x, y;} scrn;
+                char ch, attrib;
+
+                fd = open(&quot;/dev/vcsa2&quot;, O_RDWR);
+                (void)read(fd, &amp;scrn, 4);
+                (void)lseek(fd, 4 + 2*(scrn.y*scrn.cols + scrn.x), 0);
+                (void)read(fd, &amp;ch, 1);
+                (void)read(fd, &amp;attrib, 1);
+                printf(&quot;ch='%c' attrib=0x%02x\n&quot;, ch, attrib);
+                attrib ^= 0x10;
+                (void)lseek(fd, -1, 1);
+                (void)write(fd, &amp;attrib, 1);
+        }
+</PRE>
+
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/dev/vcs[0-63]
+<BR>
+
+/dev/vcsa[0-63]
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Andries Brouwer &lt;<A HREF="mailto:aeb@cwi.nl">aeb@cwi.nl</A>&gt;
+<A NAME="lbAG">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Introduits dans la version 1.1.92 du noyau Linux.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?4+console">console</A></B>(4),
+
+<B><A HREF="/cgi-bin/man/man2html?4+tty">tty</A></B>(4),
+
+<B><A HREF="/cgi-bin/man/man2html?4+ttys">ttys</A></B>(4),
+
+<B><A HREF="/cgi-bin/man/man2html?1+selection">selection</A></B>(1)
+
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">EXEMPLES</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">AUTEUR</A><DD>
+<DT><A HREF="#lbAG">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:53 GMT, February 11, 2014
+</BODY>
+</HTML>

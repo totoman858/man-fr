@@ -1,0 +1,586 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of QUEUE</TITLE>
+</HEAD><BODY>
+<H1>QUEUE</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+LIST_ENTRY, LIST_HEAD, LIST_INIT, LIST_INSERT_AFTER, LIST_INSERT_HEAD, LIST_REMOVE, TAILQ_ENTRY, TAILQ_HEAD, TAILQ_INIT, TAILQ_INSERT_AFTER, TAILQ_INSERT_HEAD, TAILQ_INSERT_TAIL, TAILQ_REMOVE, CIRCLEQ_ENTRY, CIRCLEQ_HEAD, CIRCLEQ_INIT, CIRCLEQ_INSERT_AFTER, CIRCLEQ_INSERT_BEFORE, CIRCLEQ_INSERT_HEAD, CIRCLEQ_INSERT_TAIL, CIRCLEQ_REMOVE - Implémentation des listes, files linéaires et circulaires.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/queue.h">sys/queue.h</A>&gt;</B>
+
+<BR>
+
+<B>LIST_ENTRY (</B><I>TYPE</I><B>);</B>
+
+<P>
+<B>LIST_HEAD (</B><I>HEADNAME</I><B>, </B><I>TYPE</I><B>);</B>
+
+<P>
+<B>LIST_INIT (</B><I>LIST_HEAD * head </I><B>);</B>
+
+<P>
+<B>LIST_INSERT_AFTER (</B><I>LIST_ENTRY *listelm </I><B>, </B><I>TYPE *elm</I><B>, </B><I>LIST_ENTRY  NAME</I><B>);</B>
+
+<P>
+<B>LIST_INSERT_HEAD (</B><I>LIST_HEAD *head</I><B>, </B><I>TYPE *elm</I><B>, </B><I>LIST_ENTRY NAME</I><B>);</B>
+
+<P>
+<B>LIST_REMOVE (</B><I>TYPE *elm</I><B>, </B><I>LIST_ENTRY NAME</I><B>);</B>
+
+<P>
+<B>TAILQ_ENTRY (</B><I>TYPE</I><B>);</B>
+
+<P>
+<B>TAILQ_HEAD ( HEADNAME TYPE );</B>
+
+<P>
+<B>TAILQ_INIT (</B><I>TAILQ_HEAD *head</I><B>);</B>
+
+<P>
+<B>TAILQ_INSERT_AFTER (</B><I>TAILQ_HEAD *head</I><B>, </B><I>TYPE *listelm</I><B>, </B><I>TYPE *elm</I><B>, </B><I>TAILQ_ENTRY NAME</I><B>);</B>
+
+<P>
+<B>TAILQ_INSERT_HEAD (</B><I>TAILQ_HEAD *head</I><B>, </B><I>TYPE *elm</I><B>, </B><I>TAILQ_ENTRY NAME</I><B>);</B>
+
+<P>
+<B>TAILQ_INSERT_TAIL (</B><I>TAILQ_HEAD *head</I><B>, </B><I>TYPE *elm</I><B>, </B><I>TAILQ_ENTRY NAME</I><B>);</B>
+
+<P>
+<B>TAILQ_REMOVE (</B><I>TAILQ_HEAD *head</I><B>, </B><I>TYPE *elm</I><B>, </B><I>TAILQ_ENTRY NAME</I><B>);</B>
+
+<P>
+<B>CIRCLEQ_ENTRY (</B><I>TYPE</I><B>);</B>
+
+<P>
+<B>CIRCLEQ_REMOVE (</B><I>CIRCLEQ_HEAD *head</I><B>, </B><I>TYPE *elm</I><B>, </B><I>CIRCLEQ_ENTRY NAME</I><B>);</B>
+
+<P>
+<B>CIRCLEQ_INIT (</B><I>CIRCLEQ_HEAD *head</I><B>);</B>
+
+<P>
+<B>CIRCLEQ_INSERT_AFTER (</B><I>CIRCLEQ_HEAD *head</I><B>, </B><I>TYPE *listelm</I><B>, </B><I>TYPE *elm</I><B>CIRCLEQ_ENTRY NAME</B><I>);</I>
+
+<P>
+<B>CIRCLEQ_INSERT_BEFORE (</B><I>CIRCLEQ_HEAD *head</I><B>, </B><I>TYPE *listelm</I><B>, </B><I>TYPE *elm</I><B>CIRCLEQ_ENTRY NAME</B><I>);</I>
+
+<P>
+<B>CIRCLEQ_INSERT_HEAD (</B><I>CIRCLEQ_HEAD *head</I><B>, </B><I>TYPE *elm</I><B>, </B><I>CIRCLEQ_ENTRY NAME</I><B>);</B>
+
+<P>
+<B>CIRCLEQ_INSERT_TAIL (</B><I>CIRCLEQ_HEAD *head</I><B>, </B><I>TYPE *elm</I><B>, </B><I>CIRCLEQ_ENTRY NAME</I><B>);</B>
+
+<P>
+<B>CIRCLEQ_REMOVE (</B><I>CIRCLEQ_HEAD *head</I><B>, </B><I>TYPE *elm</I><B>, </B><I>CIRCLEQ_ENTRY NAME</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ces macros définissent et manipulent trois types de structures de données&nbsp;:
+les listes simples, les listes doubles et les listes circulaires.
+Ces trois structures supportent les fonctionnalités suivantes&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>Insertion d'un élément en tête de liste&nbsp;;<DD>
+<DT>Insertion d'un élément après n'importe quel élément existant&nbsp;;<DD>
+<DT>Suppression de n'importe quel élément&nbsp;;<DD>
+<DT>Traversée séquentielle de la liste.<DD>
+</DL>
+</DL>
+
+Les listes simples ne supportent
+que les fonctionnalités ci-dessus.
+<P>
+
+Les listes doubles ajoutent les fonctionnalités suivantes&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>Un élément peut être ajouté en fin de liste&nbsp;;<DD>
+</DL>
+</DL>
+
+Toutefois&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>Toutes les insertions et suppressions doivent mentionner la tête de la liste&nbsp;;<DD>
+<DT>L'élement de tête nécessite deux pointeurs au lieu d'un seul&nbsp;;<DD>
+<DT>La taille du code est environ 15% plus grande, et l'exécution environ<DD>
+20% plus lente que les listes.
+</DL>
+</DL>
+
+<P>
+
+Les listes ciculaires ajoutent les fonctionnalités suivantes&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>Un élément peut être ajouté à la fin de la liste&nbsp;;<DD>
+<DT>Un élément peut être ajouté avant n'importe quel autre élément&nbsp;;<DD>
+<DT>On peut parcourir la file en sens inverse.<DD>
+</DL>
+</DL>
+
+Toutefois&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>Toutes les insertions et suppressions doivent indiquer la tête de la liste&nbsp;;<DD>
+<DT>L'élément de tête nécessite deux pointeurs au lieu d'un seul&nbsp;;<DD>
+<DT>La condition de terminaison pour le parcours est plus compliquée&nbsp;;<DD>
+<DT>La taille du code est environ 40% plus grande et l'exécution 45% plus lente<DD>
+que les listes simples.
+<DL COMPACT><DT><DD>
+<P>
+
+Dans les définitions de macros,
+<I>TYPE</I>
+
+est le nom d'une structure définie par l'utilisateur,
+qui doit contenir un champ de type
+<B>LIST_ENTRY</B>,
+
+<B>TAILQ_ENTRY</B>,
+
+ou
+<B>CIRCLEQ_ENTRY</B>,
+
+nommé
+<I>NAME</I>.
+
+L'argument
+<I>HEADNAME</I>
+
+est le nom d'une structure définie par l'utilisateur qui doit être déclarée
+en utilisant les macros
+<B>LIST_HEAD</B>,
+
+<B>TAILQ_HEAD</B>,
+
+ou
+<B>CIRCLEQ_HEAD</B>.
+
+Voir les exemples plus bas pour une explication sur l'utilisation
+de ces macros.
+</DL>
+</DL>
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>LISTES SIMPLES</H2>
+
+Une liste débute par une structure définie par la
+macro
+<B>LIST_HEAD</B>.
+
+Cette structure contient un pointeur simple sur le premier
+élément de la liste.
+Les éléments sont doublement chaînés afin qu'un élément puisse être supprimé
+sans parcourir toute la liste.
+Des éléments peuvent être ajoutés après un élément existant ou en tête de
+liste.
+Une structure
+<B>LIST_HEAD</B>
+
+est déclarée ainsi&nbsp;:
+<PRE>
+<B>LIST_HEAD(</B><I>HEADNAME</I><B>, </B><I>TYPE</I><B>) </B><I>head</I><B>;</B>
+</PRE>
+
+où
+<I>HEADNAME</I>
+
+est le nom de la structure à définir, et
+<I>TYPE</I>
+
+le type d'élément à lier dans la liste.
+Un pointeur sur la tête de la liste peut ensuite être déclaré ainsi&nbsp;:
+<PRE>
+<B>struct HEADNAME *</B><I>headp</I><B>;</B>
+</PRE>
+
+<P>
+
+(Les noms
+<B>head</B>
+
+et
+<B>headp</B>
+
+sont choisis par l'utilisateur).
+<P>
+
+La macro 
+<B>LIST_ENTRY</B>
+
+déclare une structure qui connecte les éléments dans
+la liste.
+<P>
+
+La macro
+<B>LIST_INIT</B>
+
+initialise la liste référencée par
+<I>head</I>.
+
+<P>
+
+La macro
+<B>LIST_INSERT_HEAD</B>
+
+insère le nouvel élément
+<I>elm</I>
+
+à la tête de la liste.
+<P>
+
+La macro
+<B>LIST_INSERT_AFTER</B>
+
+insère le nouvel élément
+<I>elm</I>
+
+après l'élément
+<I>listelm .</I>
+
+<P>
+
+La macro
+<B>LIST_REMOVE</B>
+
+supprime l'élément
+<I>elm</I>
+
+de la liste.
+<A NAME="lbAF">&nbsp;</A>
+<H3>EXEMPLE DE LISTE SIMPLE</H3>
+
+<PRE>
+LIST_HEAD(listhead, entry) head;
+struct listhead *headp;         /* tête de la liste */
+struct entry {
+        ...
+        LIST_ENTRY(entry) entries;      /* liste */
+        ...
+} *n1, *n2, *np;
+
+LIST_INIT(&amp;head);                       /* Initialisatoin de liste */
+
+n1 = malloc(sizeof(struct entry));      /* Insertion en tête. */
+LIST_INSERT_HEAD(&amp;head, n1, entries);
+
+n2 = malloc(sizeof(struct entry));      /* Insertion après. */
+LIST_INSERT_AFTER(n1, n2, entries);
+                                        /* Traversée. */
+for (np = head.lh_first; np != NULL; np = np-&gt;entries.le_next)
+        np-&gt; ...
+
+while (head.lh_first != NULL)           /* Suppression */
+        LIST_REMOVE(head.lh_first, entries);
+</PRE>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>LISTES DOUBLES</H2>
+
+La tête d'une liste double est désignée par une structure
+définie par la macro
+<B>TAILQ_HEAD</B>.
+
+Cette structure contient deux pointeurs,
+l'un sur le premier élément et l'autre sur le 
+dernier élément.
+Les éléments sont doublement chaînés, ainsi un élément quelconque
+peut être supprimé sans reparcourir toute la liste.
+Les nouveaux éléments peuvent être ajoutés après un élément existant,
+en tête ou en queue de liste.
+Une structure 
+
+est déclarée ainsi&nbsp;:
+<PRE>
+<B>TAILQ_HEAD(</B><I>HEADNAME</I><B>, </B><I>TYPE</I><B>) </B><I>head</I><B>;</B>
+</PRE>
+
+où
+<I>HEADNAME</I>
+
+est le nom de la structure à définir, et
+<B>TYPE</B>
+
+représente le type des éléments à lier dans la liste.
+Un pointeur sur la tête de la liste peut être déclaré ainsi&nbsp;:
+<PRE>
+<B>struct HEADNAME *</B><I>headp</I><B>;</B>
+</PRE>
+
+<P>
+
+(Les noms
+<I>head</I>
+
+et
+<I>headp</I>
+
+sont choisis par l'utilisateur).
+<P>
+
+La macro
+<B>TAILQ_ENTRY</B>
+
+déclare une structure qui connecte les éléments dans
+la liste double.
+<P>
+
+La macro
+<B>TAILQ_INIT</B>
+
+initialise la liste double référencée par
+<I>head</I>.
+
+<P>
+
+La macro
+<B>TAILQ_INSERT_HEAD</B>
+
+insère le nouvel élement
+<I>elm</I>
+
+à la fin de la liste double.
+<P>
+
+La macro
+<B>TAILQ_INSERT_TAIL</B>
+
+insère le nouvel élément
+<I>elm</I>
+
+à la fin de la liste double.
+<P>
+
+La macro
+<B>TAILQ_INSERT_AFTER</B>
+
+inssère le nouvel élément
+<I>elm</I>
+
+après l'élément
+<I>listelm</I>.
+
+<P>
+
+La macro
+<B>TAILQ_REMOVE</B>
+
+supprime l'élément
+<I>elm</I>
+
+de la liste double.
+<A NAME="lbAH">&nbsp;</A>
+<H2>EXEMPLE DE LISTE DOUBLE</H2>
+
+<PRE>
+TAILQ_HEAD(tailhead, entry) head;
+struct tailhead *headp;         /* Tête de liste double */
+struct entry {
+        ...
+        TAILQ_ENTRY(entry) entries;     /* Liste double */
+        ...
+} *n1, *n2, *np;
+
+TAILQ_INIT(&amp;head);                      /* Initialisation liste. */
+
+n1 = malloc(sizeof(struct entry));      /* Insertion au début. */
+TAILQ_INSERT_HEAD(&amp;head, n1, entries);
+
+n1 = malloc(sizeof(struct entry));      /* Insertion à la fin. */
+TAILQ_INSERT_TAIL(&amp;head, n1, entries);
+
+n2 = malloc(sizeof(struct entry));      /* Insertion après. */
+TAILQ_INSERT_AFTER(&amp;head, n1, n2, entries);
+                                        /* Parcours en avant. */
+for (np = head.tqh_first; np != NULL; np = np-&gt;entries.tqe_next)
+        np-&gt; ...
+                                        /* Suppression. */
+while (head.tqh_first != NULL)
+        TAILQ_REMOVE(&amp;head, head.tqh_first, entries);
+</PRE>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>LISTE CIRCULAIRE</H2>
+
+La tête d'une liste circulaire est désignée par une
+structur définie par la macro
+<B>CIRCLEQ_HEAD</B>.
+
+Cette structure contient une paire de pointeurs, l'un
+sur le premier élément de la liste circulaire et l'autre
+sur le dernier élément.
+Les éléments sont doublement chaînés, afin de pouvoir supprimer un
+élément quelconque sans reparcourir toute la liste.
+De nouveaux éléments peuvent être ajoutés avant ou après un élément
+existant, au début ou à la fin de la liste.
+Une structure
+<B>CIRCLEQ_HEAD</B>
+
+est déclarée ainsi&nbsp;:
+<PRE>
+<B>CIRCLEQ_HEAD(</B><I>HEADNAME</I><B>, </B><I>TYPE</I><B>) </B><I>head</I><B>;</B>
+</PRE>
+
+où
+<I>HEADNAME</I>
+
+est le nom de la structure à définir, et
+<I>TYPE</I>
+
+est le type de l'élement à lier dans la liste circulaire.
+Un pointeur sur la tête de la liste circulaire peut être déclaré ainsi&nbsp;:
+<PRE>
+<B>struct HEADNAME *</B><I>headp</I><B>;</B>
+</PRE>
+
+(Les noms
+<B>head</B>
+
+et
+<B>headp</B>
+
+sont choisis par l'utilisateur).
+<P>
+
+La macro
+<B>CIRCLEQ_ENTRY</B>
+
+déclare une structure qui connecte les éléments dans la
+liste circulaire.
+<P>
+
+La macro
+<B>CIRCLEQ_INIT</B>
+
+initialise la liste circulaire référencée par
+<I>head</I>.
+
+<P>
+
+La macro
+<B>CIRCLEQ_INSERT_HEAD</B>
+
+insère le nouvel élément
+<I>elm</I>
+
+au début de la liste circulaire.
+<P>
+
+La macro
+<B>CIRCLEQ_INSERT_TAIL</B>
+
+insère le nouvel élément
+<I>elm</I>
+
+à la fin de la liste circulaire.
+<P>
+
+La macro
+<B>CIRCLEQ_INSERT_AFTER</B>
+
+insère le nouvel élément
+<I>elm</I>
+
+après l'élément
+<I>listelm</I>.
+
+<P>
+
+La macro
+<B>CIRCLEQ_INSERT_BEFORE</B>
+
+insère le nouvel élément
+<I>elm</I>
+
+avant l'élément
+<I>listelm</I>.
+
+<P>
+
+La macro
+<B>CIRCLEQ_REMOVE</B>
+
+supprime l'élément
+<I>elm</I>
+
+de la liste circulaire.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>EXEMPLE DE LISTE CIRCULAIRE</H2>
+
+<PRE>
+CIRCLEQ_HEAD(circleq, entry) head;
+struct circleq *headp;                  /* tête de liste. */
+struct entry {
+        ...
+        CIRCLEQ_ENTRY(entry) entries;           /* liste circulaire */
+        ...
+} *n1, *n2, *np;
+
+CIRCLEQ_INIT(&amp;head);                    /* initialisation liste */
+
+n1 = malloc(sizeof(struct entry));      /* insertion au début */
+CIRCLEQ_INSERT_HEAD(&amp;head, n1, entries);
+
+n1 = malloc(sizeof(struct entry));      /* insertion à la fin */
+CIRCLEQ_INSERT_TAIL(&amp;head, n1, entries);
+
+n2 = malloc(sizeof(struct entry));      /* insertion après */
+CIRCLEQ_INSERT_AFTER(&amp;head, n1, n2, entries);
+
+n2 = malloc(sizeof(struct entry));      /* insertion avant */
+CIRCLEQ_INSERT_BEFORE(&amp;head, n1, n2, entries);
+                                        /* parcours en avant */
+for (np = head.cqh_first; np != (void *)&amp;head; np = np-&gt;entries.cqe_next)
+        np-&gt; ...
+                                        /*parcours en arrière */
+for (np = head.cqh_last; np != (void *)&amp;head; np = np-&gt;entries.cqe_prev)
+        np-&gt; ...
+                                        /* suppression */
+while (head.cqh_first != (void *)&amp;head)
+        CIRCLEQ_REMOVE(&amp;head, head.cqh_first, entries);
+</PRE>
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Les fonctions de liste sont apparues dans BSD 4.4
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">LISTES SIMPLES</A><DD>
+<DL>
+<DT><A HREF="#lbAF">EXEMPLE DE LISTE SIMPLE</A><DD>
+</DL>
+<DT><A HREF="#lbAG">LISTES DOUBLES</A><DD>
+<DT><A HREF="#lbAH">EXEMPLE DE LISTE DOUBLE</A><DD>
+<DT><A HREF="#lbAI">LISTE CIRCULAIRE</A><DD>
+<DT><A HREF="#lbAJ">EXEMPLE DE LISTE CIRCULAIRE</A><DD>
+<DT><A HREF="#lbAK">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:11 GMT, February 11, 2014
+</BODY>
+</HTML>

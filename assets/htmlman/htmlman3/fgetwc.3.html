@@ -1,0 +1,113 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FGETWC</TITLE>
+</HEAD><BODY>
+<H1>FGETWC</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fgetwc, getwc - Lire une chaîne de caractères larges dans un flux.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/wchar.h">wchar.h</A>&gt;</B>
+
+<B>wint_t fgetwc (FILE * </B><I>flux</I><B>);</B>
+<B>wint_t getwc (FILE * </B><I>flux</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>fgetwc</B> est l'équivalent pour les caractères larges de la
+fonction <B>fgetc</B>. Elle lit un caractère large depuis le <I>flux</I> et le
+renvoie. Si la fin du fichier est rencontrée, elle retourne WEOF. Si une erreur
+se produit lors de la conversion du caractère large, <B>errno</B> est positionnée
+à <B>EILSEQ</B> et WEOF est retourné. 
+<P>
+
+La fonction<B>getwc</B> fonctionne de manière identique à
+<B>fgetwc</B>. Elle peut être implémentée sous forme de macro, et peut évaluer
+ses arguments plus d'une fois. Il n'existe plus aucune raison de l'utiliser.
+<P>
+
+Pour des versions de ces fonctions ignorant les verrouillages, voir
+<B><A HREF="/cgi-bin/man/man2html?3+unlocked_stdio">unlocked_stdio</A></B>(3).
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>fgetwc</B> renvoie le caractère large suivant du flux ou
+WEOF.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Hormis les erreurs habituelles, on peut rencontrer&nbsp;:
+<DL COMPACT>
+<DT><B>EILSEQ</B>
+
+<DD>
+Les données lues depuis le flux d'entrée ne forment pas des caractères
+corrects.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ISO/ANSI C, UNIX98.
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le comportement de <B>fgetwc</B> dépend de la catégorie LC_CTYPE de la localisation
+courante.
+<P>
+
+En l'absence d'informations supplémentaires passées à l'appel fopen, il est
+normal de présumer que <B>fgetwc</B> va lire une séquence multi-caractères du
+flux puis la convertir en une chaîne à caractères larges.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+fputwc">fputwc</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fgetws">fgetws</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+ungetwc">ungetwc</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+unlocked_stdio">unlocked_stdio</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud, 1999
+<BR>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:46 GMT, February 11, 2014
+</BODY>
+</HTML>

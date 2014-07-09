@@ -1,0 +1,245 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETSOCKOPT</TITLE>
+</HEAD><BODY>
+<H1>GETSOCKOPT</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getsockopt, setsockopt - Lire / écrire les options d'une socket.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+
+<P>
+<B>int getsockopt(int </B><I>s</I><B>, int </B><I>level</I><B>, int </B><I>optname</I><B>,</B>
+
+<B>void *</B><I>optval</I><B>, socklen_t *</B><I>optlen</I><B>);</B>
+
+<P>
+<B>int setsockopt(int </B><I>s</I><B>, int </B><I>level</I><B>, int </B><I>optname</I><B>,</B>
+
+<B>const void *</B><I>optval</I><B>, socklen_t </B><I>optlen</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>Getsockopt</B>
+
+et
+<B>setsockopt</B>
+
+manipulent les
+<I>options</I>
+
+associées à une socket. Ces options peuvent exister
+aux divers niveaux du protocole, et sont toujours présentes
+au niveau
+<B>socket</B>
+
+le plus élevé.
+<P>
+Quand on manipule une option d'une socket, il faut préciser
+le niveau où elle s'applique, et le nom de l'option.
+Au niveau socket,
+<I>level</I>
+
+prend la valeur
+<B>SOL_SOCKET.</B>
+
+Pour tous les autres niveaux, il faut fournir le numéro de
+protocole approprié.
+Par exemple, pour une option interprétée par le niveau de protocole
+<B>TCP</B>,
+
+<I>level</I>
+
+prendra le numéro de protocole
+<B>TCP.</B>
+
+Voir
+<B><A HREF="/cgi-bin/man/man2html?3+getprotoent">getprotoent</A></B>(3).
+
+<P>
+Les paramètres
+<I>optval</I>
+
+et
+<I>optlen</I>
+
+sont utilisés pour déterminer les options pour
+<B>setsockopt.</B>
+
+Pour
+<B>getsockopt</B>
+
+ils identifient un buffer dans lequel la valeur de
+l'option désirée doit être renvoyée.
+Pour
+<B>getsockopt,</B>
+
+<I>optlen</I>
+
+est un paramètre résultat, contenant initialement la taille
+du buffer pointé par
+<I>optval,</I>
+
+et rempli en retour pour indiquer la taille effective des
+valeurs renvoyées. Si aucune option n'est fournie ou
+renvoyée, 
+<I>optval</I>
+
+peut être NULL.
+<P>
+<I>optname</I>
+
+et toute autre option sont passés sans interprétation au protocole
+approprié, pour qu'il l'interprète lui-même.
+Le fichier d'en-tête
+<I>sys/socket.h</I>
+
+contient les définitions pour le niveau socket.
+Les options pour les autres niveaux de protocole, peuvent varier
+tant en format qu'en nom, consulter les pages de manuel de la
+section 7 pour plus d'informations.
+<P>
+La plupart des options au niveau socket utilisent un paramètre de type
+<I>int</I>
+
+pour
+<I>optval</I>.
+
+Pour
+<B>setsockopt</B>,
+
+un paramètre non nul valide une option booléenne, et zéro l'invalide.
+<P>
+
+Pour une description des options disponibles voir
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7)
+
+et les pages correspondant au protocole concerné.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>getsockopt</B> et <B>setsockopt</B>
+
+renvoient 0 s'ils réussissent, ou -1 s'ils échouent, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+L'argument
+<I>s</I>
+
+n'est pas un descripteur valide.
+<DT><B>ENOTSOCK</B>
+
+<DD>
+L'argument
+<I>s</I>
+
+est un fichier, pas une socket.
+<DT><B>ENOPROTOOPT</B>
+
+<DD>
+L'option est inconnue pour ce protocole.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>optval</I>
+
+pointe en dehors de l'espace d'adressage accessible.
+Avec
+<B>getsockopt</B>,
+
+ceci peut s'appliquer également à
+<I>optlen</I>.
+
+<P>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, 4.4BSD (Ces appels systèmes sont apparus dans 4.2BSD).
+SVr4 présente des codes d'erreurs supplémentaires ENOMEM et ENOSR, mais ne
+documente pas les options
+<B>SO_SNDLOWAT</B>, <B>SO_RCVLOWAT</B>, <B>SO_SNDTIMEO</B>, <B>SO_RCVTIMEO</B>.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTE</H2>
+
+Le cinquième argument de
+<B>getsockopt</B> et <B>setsockopt</B>
+
+est en fait un int (et c'est ce qu'utilisent BSD 4.*, libc4 et libc5).
+Une certaine confusion POSIX résulte du &quot;socklen_t&quot; actuel. Les propositions
+de standard n'ont pas encore été adoptées, mais glibc2 les suit déjà et
+utilise socklen_t. Pour plus de détails voir
+<B><A HREF="/cgi-bin/man/man2html?2+accept">accept</A></B>(2).
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Plusieurs options sur les sockets devraient être gérées à un
+niveau plus bas par le système.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getprotoent">getprotoent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+protocols">protocols</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+unix">unix</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+tcp">tcp</A></B>(7)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTE</A><DD>
+<DT><A HREF="#lbAI">BOGUES</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:52 GMT, February 11, 2014
+</BODY>
+</HTML>

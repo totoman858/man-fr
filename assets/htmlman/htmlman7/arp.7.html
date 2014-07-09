@@ -1,0 +1,355 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ARP</TITLE>
+</HEAD><BODY>
+<H1>ARP</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+arp - Module ARP du noyau Linux.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ce module du noyau implémente le protocole de résolution d'adresse
+ARP tel qu'il est décrit dans le document RFC 826.
+Il sert à la conversion entre les adresses matérielles de niveau 2 et
+les adresses du protocole IPv4 sur les réseaux connectés en direct.
+L'utilisateur n'a normalement pas d'interactions avec ce module sauf
+pour le configurer. En fait ce module fournit des services aux autres
+protocoles du noyau.
+<P>
+Un processus utilisateur peut recevoir les paquets ARP en utilisant
+les sockets de type
+<B><A HREF="/cgi-bin/man/man2html?7+packet">packet</A></B>(7).
+
+Il y a aussi un mécanisme pour gérer le cache ARP dans l'espace
+utilisateur avec des sockets
+<B><A HREF="/cgi-bin/man/man2html?7+netlink">netlink</A></B>(7).
+
+La table ARP peut être contrôlée par le biais d'un
+<B>ioctl (2) </B>
+
+sur n'importe quelle socket
+<B>PF_INET</B>.
+
+<P>
+Le module ARP maintient un cache des correspondances entre les adresses
+matérielles et les adresses logiques. Le cache a une taille limitée, ainsi
+les entrées anciennes et utilisées moins fréquemment sont récupérées.
+Les entrées qui sont marquées comme permanentes ne sont jamais effacées.
+Le cache peut être manipulé directement par l'intermédiaire des <B>ioctl</B>s et
+son comportement peut être ajusté à l'aide des <B>sysctl</B>s décrits plus bas.
+<P>
+Lorsqu'il n'y a pas de retour positif pour une correspondance existante après
+un certain temps (voir les <B>sysctl</B>s ci dessous), l'entrée est considérée
+comme gelée. Un retour positif peut être obtenu d'un niveau supérieur, par
+exemple un ACK TCP réussi. D'autres protocoles peuvent signaler des avancées
+en utilisant l'attribut 
+<B>MSG_CONFIRM</B>
+
+de 
+<B><A HREF="/cgi-bin/man/man2html?2+sendmsg">sendmsg</A></B>(2).
+
+Pour envoyer à nouveau des données à cette cible, l'ARP essaye
+d'abord d'interroger un démon arp local au maximum
+<B>app_solicit </B>
+
+fois, afin d'obtenir une adresse MAC à jour. Si ceci échoue, et si une
+ancienne adresse MAC est connue, une tentative unicast est envoyée
+<B>ucast_solicit</B>
+
+fois. Si on échoue encore, il enverra une requête ARP en broadcast sur le
+réseau. Les requêtes ne sont envoyées que s'il y a des données en attente
+d'émission.
+<P>
+Linux ajoutera automatiquement une entrée arp proxy non-permanente lorsqu'il
+reçoit une requête pour une adresse à laquelle il envoie des données, et si
+l'arp proxy est validé sur l'interface réceptrice. Aucune entrée n'est
+ajoutée s'il y a une route de rejet.
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>IOCTLS</H2>
+
+Trois ioctls sont disponibles pour les sockets
+<B>PF_INET</B>.
+
+Elles prennent un pointeur 
+sur une
+<B>struct arpreq</B>
+
+comme paramètre.
+<P>
+<PRE>
+
+struct arpreq
+{
+    struct sockaddr   arp_pa;       /* adresse protocole          */
+    struct sockaddr   arp_ha;       /* adresse matérielle         */ 
+    int               arp_flags;    /* attributs                  */
+    struct sockaddr   arp_netmask;  /* masque réseau du protocole */
+    char              arp_dev[16];
+};
+</PRE>
+
+<P>
+<B>SIOCSARP</B>, <B>SIOCDARP</B> et <B>SIOCGARP</B>
+
+ajoute, supprime, et consulte respectivement une correspondance ARP.
+L'ajout et la suppression de correspondance ARP sont des opérations
+privilégiées ne pouvant être réalisés que par un processus avec la capacité
+<B>CAP_NET_ADMIN</B>
+
+ou un UID effectif nul.
+<P>
+<I>arp_pa</I>
+
+doit être une socket
+<B>AF_INET</B>
+
+et
+<I>arp_ha</I>
+
+doit être du même type que le périphérique indiqué dans
+<I>arp_dev</I>.
+
+<I>arp_dev</I>
+
+est une chaîne terminée par un caractère nul, contenant le nom d'un périphérique.
+<P>
+<TABLE BORDER>
+<TR VALIGN=top><TD ALIGN=center COLSPAN=2><I>arp_flags</I><BR></TD></TR>
+<TR VALIGN=top><TD>attribut</TD><TD>signification<BR></TD></TR>
+<TR VALIGN=top><TD>ATF_COM</TD><TD>Recherche complète<BR></TD></TR>
+<TR VALIGN=top><TD>ATF_PERM</TD><TD>Entrée permanente<BR></TD></TR>
+<TR VALIGN=top><TD>ATF_PUBL</TD><TD>Entrée publique<BR></TD></TR>
+<TR VALIGN=top><TD>ATF_USETRAILERS</TD><TD>Demande trailer<BR></TD></TR>
+<TR VALIGN=top><TD>ATF_NETMASK</TD><TD>Utiliser le masque réseau<BR></TD></TR>
+<TR VALIGN=top><TD>ATF_DONTPUB</TD><TD>Ne pas répondre<BR></TD></TR>
+</TABLE>
+
+<P>
+<P>
+
+Si l'attribut
+<B>ATF_NETMASK</B>
+
+est activé, alors le membre
+<I>arp_netmask</I>
+
+doit être valide.
+Linux 2.2 ne supporte pas les entrées ARP proxy réseau, ainsi il doit
+être configuré avec 0xFFFFFFFF ou 0 pour supprimer une entrée arp proxy existante.
+<B>ATF_USETRAILERS</B>
+
+est obsolète et ne doit pas être utilisé
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>SYSCTLS</H2>
+
+ARP supporte une interface <B>sysctl</B> pour configurer les paramètres
+sur une base globale ou interface par interface.
+Les sysctls peuvent être accessibles en lisant ou en écrivant dans le fichier
+<B>/proc/sys/net/ipv4/neigh/*/*</B>
+
+ou en utilisant l'interface
+<B><A HREF="/cgi-bin/man/man2html?2+sysctl">sysctl</A></B>(2).
+
+Chaque interface dans le système a son propre répertoire dans
+/proc/sys/net/ipv4/neigh/.
+La configuration dans le répertoire <B>default</B> sert pour tous les nouveaux
+périphériques. Sauf mention contraire, les durées sont en secondes.
+<DL COMPACT>
+<DT><B>anycast_delay</B>
+
+<DD>
+Le nombre maximum de jiffies à attendre avant de répondre à un message de
+sollicitation IPv6 du voisinage.
+Le support Anycast n'est pas encore implémenté.
+Par défaut, le délai est 1 seconde.
+<DT><B>app_solicit</B>
+
+<DD>
+Le nombre maximum d'essai d'envoi au démon ARP de l'espace utilisateur par
+netlink avant de basculer en tentatives multicast (voir
+<I>mcast_solicit</I>).
+
+La valeur par défaut est 0.
+<DT><B>base_reachable_time</B>
+
+<DD>
+Une fois qu'un voisin a été trouvé, l'entrée est considérée comme valide
+pendant, au moins, une durée aléatoire entre
+<I>base_reachable_time</I>/2 et 3*<I>base_reachable_time</I>/2.
+
+La validité d'une entrée sera étendue si on reçoit un retour positif
+des protocoles de plus haut niveau.
+La valeur par défaut est 30 secondes.
+<DT><B>delay_first_probe_time</B>
+
+<DD>
+Délai avant la première tentative multicast après avoir décidé qu'un
+voisin est gelé.
+Par défaut 5 secondes.
+<DT><B>gc_interval</B>
+
+<DD>
+Fréquence avec laquelle on
+vérifie les entrées valides. Par défaut
+30 secondes.
+<DT><B>gc_stale_time</B>
+
+<DD>
+Fréquence avec laquelle on vérifie une entrée de voisinage gelée. Lorsqu'une
+correspondance est considérée comme gelée, elle sera à nouveau
+redéterminée avant d'y envoyer des données.
+Par défaut la durée est de 60 secondes.
+<DT><B>gc_thresh1</B>
+
+<DD>
+Le nombre minimal d'entrées à conserver dans le cache ARP. Le récupérateur
+ne sera pas déclenché
+si il y a moins d'entrées que cette valeur
+(par défaut 128).
+<DT><B>gc_thresh2</B>
+
+<DD>
+La limite maximale souple d'entrées à conserver dans le cache ARP. Le récupérateur
+autorisera un dépassement de cette valeur pendant 5 secondes avant de lancer une
+véritable récupération.
+Par défaut 512 entrées.
+<DT><B>gc_thresh3</B>
+
+<DD>
+La limite maximale d'entrées à conserver dans le cache ARP. Le récupérateur
+sera immédiatement déclenché
+si cette valeur est dépassée
+(par défaut 1024).
+<DT><B>locktime</B>
+
+<DD>
+Le nombre minimum de jiffies pendant lesquels on conserve une entrée ARP
+dans le cache. Ceci évite la dégradation du cache si il y a plusieurs
+correspondances possibles (généralement à cause d'une mauvaise configuration
+du réseau). Par défaut 1 seconde.
+<DT><B>mcast_solicit</B>
+
+<DD>
+Le nombre maximal de tentatives de résolution d'une adresse par le multicast et
+le broadcast avant de marquer l'entrée comme inaccessible.
+Par défaut 3.
+<DT><B>proxy_delay</B>
+
+<DD>
+Lorsqu'une requête arrive pour une adresse proxy-ARP, on attend 
+<I>proxy_delay</I>
+
+jiffies avant de répondre.
+Ceci permet d'éviter des saturations du réseau dans certains cas. La
+valeur par défaut correspond à 0.8 secondes.
+<DT><B>proxy_qlen</B>
+
+<DD>
+Le nombre maximal de paquets qui peuvent être conservés pour des adresses
+proxy-ARP. Par défaut 64.
+<DT><B>retrans_time</B>
+
+<DD>
+Le nombre de jiffies à attendre avant de retransmettre une requête. Par
+défaut 1 seconde.
+<DT><B>ucast_solicit</B>
+
+<DD>
+Le nombre maximal de tentatives d'envoi unicast avant d'interroger le
+démon ARP (voir
+<I>app_solicit</I>).
+
+Par défaut 3.
+<DT><B>unres_qlen</B>
+
+<DD>
+Le nombre maximal de paquets conservés pour chaque adresse non résolue
+par les autres couches réseau.
+Par défaut 3.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Certaines temporisations sont exprimées en jiffies qui dépendent de l'architecture.
+Sur Alpha, un jiffy correspond à 1/1024 seconde, sur la plupart des autres
+il correspond à 1/100 seconde.
+<P>
+Il n'y a pas de moyen d'envoyer une réponse positive de l'espace utilisateur.
+Ceci signifie que les protocoles orientés connexion implémentés dans l'espace
+utilisateur engendreront un trafic ARP excessif, car ndisc revérifiera
+régulièrement les adresses MAC. Le même problème se pose pour certains
+protocoles du noyau (par exemple NFS sur UDP).
+Cette page de manuel mélange les spécificités IPv4 et les fonctionnalités
+communes à IPv4 et IPv6.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VERSIONS</H2>
+
+La structure
+<B>arpreq</B>
+
+a changé dans Linux 2.0 pour inclure le membre
+<I>arp_dev</I>
+
+et les numéros d'ioctl ont changé en même temps.
+Le support pour les anciens ioctl a été abandonné dans Linux 2.2.
+<P>
+Le support pour les entrées proxy ARP concernant des réseaux
+(netmask différent de 0xFFFFFFF) a été supprimé de Linux 2.2.
+Il est remplacé par une configuration proxy ARP automatique dans le
+noyau pour tous les hôtes accessibles sur les autres interfaces
+(lorsque l'on fait du forwarding et que le proxy ARP est activé sur l'interface).
+<P>
+Les requêtes sysctl neigh/* n'existaient pas avant Linux 2.2.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7)
+
+<P>
+
+RFC826 pour une description de l'ARP.
+<BR>
+
+RFC2461 pour une description de l'exploration du voisinage IPv6 et des
+algorithmes de base employés.
+<P>
+
+L'ARP IPv4 de Linux 2.2 et ultérieurs emploie l'algorithme IPv6 si possible.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">IOCTLS</A><DD>
+<DT><A HREF="#lbAE">SYSCTLS</A><DD>
+<DT><A HREF="#lbAF">BOGUES</A><DD>
+<DT><A HREF="#lbAG">VERSIONS</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:57 GMT, February 11, 2014
+</BODY>
+</HTML>

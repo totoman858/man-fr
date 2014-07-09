@@ -1,0 +1,155 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SETARCH</TITLE>
+</HEAD><BODY>
+<H1>SETARCH</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 1er juin 2007<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+setarch - Modifier l'architecture signalée dans un nouvel environnement de programme
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>setarch</B> &lt;<I>arch</I>&gt; [<B>options</B>] [<I>programme</I> [<B>arguments</B>]]
+<P>
+<I>arch</I> [<B>options</B>] [<I>programme</I> [<B>arguments</B>]]
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>setarch</B>
+
+n'affecte actuellement que la sortie de
+<B>uname -m</B>.
+
+Par exemple, sur un système AMD64, exécuter «&nbsp;setarch i386 programme&nbsp;»
+fera que «&nbsp;programme&nbsp;» verra
+<I>i686</I>
+
+(ou une autre architecture pertinente) à la place d'une machine de type
+<I>x86_64</I>.
+
+Il permet aussi de définir diverses options de personnalité.
+Le
+<B>programme</B>
+
+par défaut est /bin/sh.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-v</B>
+
+<DD>
+Mode volubile.
+<DT><B>-h</B>, <B>--help</B>
+
+<DD>
+Afficher l'aide (celle-ci est également affichée si
+<B>setarch</B>
+
+n'a pas d'argument.
+<DT><B>-3</B>, <B>--3gb</B>
+
+<DD>
+Indiquer que les processus ne peuvent utiliser qu'un maximum de 3Go
+d'espace d'adressage sur les systèmes qui le prennent en charge (ADDR_LIMIT_3GB).
+<DT><B>-B</B>
+
+<DD>
+Activer ADDR_LIMIT_32BIT.
+<DT><B>-F</B>
+
+<DD>
+Les pointeurs de fonctions en espace utilisateur pointent
+vers des descripteurs (activer FDPIC_FUNCPTRS).
+<DT><B>-I</B>
+
+<DD>
+Activer SHORT_INODE.
+<DT><B>-L</B>
+
+<DD>
+Modifier la manière dont est allouée la mémoire virtuelle
+(activer ADDR_COMPAT_LAYOUT).
+<DT><B>-R</B>
+
+<DD>
+Déactiver le caractère aléatoire de l'espace d'adresse virtuelle
+(activer ADDR_NO_RANDOMIZE).
+<DT><B>-S</B>
+
+<DD>
+Activer WHOLE_SECONDS.
+<DT><B>-T</B>
+
+<DD>
+Activer STICKY_TIMEOUTS.
+<DT><B>-X</B>
+
+<DD>
+Activer READ_IMPLIES_EXEC.
+<DT><B>-Z</B>
+
+<DD>
+Activer MMAP_PAGE_ZERO.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+setarch ppc32 rpmbuild --target=ppc --rebuild foo.src.rpm
+<BR>
+
+setarch ppc32 -v -vL3 rpmbuild --target=ppc --rebuild bar.src.rpm
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Elliot Lee &lt;<A HREF="mailto:sopwith@redhat.com">sopwith@redhat.com</A>&gt;
+<BR>
+
+Jindrich Novy &lt;<A HREF="mailto:jnovy@redhat.com">jnovy@redhat.com</A>&gt;
+<A NAME="lbAH">&nbsp;</A>
+<H2>DISPONIBILITÉ</H2>
+
+La commande
+<B>setarch</B>
+
+fait partie du paquetage util-linux-ng et est disponible à l'adresse
+<A HREF="ftp://ftp.kernel.org/pub/linux/utils/util-linux-ng/.">ftp://ftp.kernel.org/pub/linux/utils/util-linux-ng/.</A>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal&nbsp;AT&nbsp;univ-montp2&nbsp;DOT&nbsp;fr&gt; le 26&nbsp;mai&nbsp;2008.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;8&nbsp;setarch</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">EXEMPLE</A><DD>
+<DT><A HREF="#lbAG">AUTEURS</A><DD>
+<DT><A HREF="#lbAH">DISPONIBILITÉ</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:00 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,1035 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MAN</TITLE>
+</HEAD><BODY>
+<H1>MAN</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+man - Macros pour la mise en forme des pages de manuel.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>groff -Tascii -man</B>
+
+<I>fichier</I>
+
+...
+<P>
+
+<B>groff -Tps -man</B>
+
+<I>fichier</I>
+
+...
+<P>
+
+<B>man</B>
+
+[<I>section</I>]
+
+<I>titre</I>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel explique le contenu du paquetage
+<B>groff tmac.an</B>
+
+(souvent appelé paquetage
+<B>man</B>).
+
+Ce paquetage doit être utilisé par les développeurs pour écrire ou porter des
+pages de manuels pour Linux. Il est largement compatible avec d'autres
+versions de ce paquetage, donc le portage de pages pour Linux ne devrait pas
+poser de problèmes (sauf pour NET-2 BSD qui utilise un paquetage complètement
+différent appelé mdoc, voir
+<B><A HREF="/cgi-bin/man/man2html?7+mdoc">mdoc</A></B>(7)).
+
+<P>
+
+Notez que les pages de manuel NET-2 BSD peuvent être visualisées avec
+<B>groff</B>
+
+simplement en spécifiant l'option
+<B>-mdoc</B>
+
+à la place de l'option
+<B>-man</B>.
+
+L'utilisation de l'option
+<B>-mandoc</B>
+
+est néanmoins recommandée puisqu'il détectera automatiquement le paquetage
+utilisé.
+<A NAME="lbAE">&nbsp;</A>
+<H2>PRÉAMBULE</H2>
+
+La première commande d'une page de manuel doit être
+<DL COMPACT><DT><DD>
+<P>
+<B>.TH</B>
+
+<I>titre section date source manuel</I>,
+
+<P>
+</DL>
+
+avec&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><I>titre</I>
+
+<DD>
+Le titre de la page de manuel (par exemple
+<I>MAN</I>).
+
+<DT><I>section</I>
+
+<DD>
+Le numéro de section dans laquelle placer la page (par exemple
+<I>7</I>).
+
+<DT><I>date</I>
+
+<DD>
+La date de la dernière modification. Pensez à modifier cette date à
+chaque changement dans la page, car c'est la manière la plus courante
+d'avoir un contrôle de version.
+<DT><I>source</I>
+
+<DD>
+La source de la commande
+<P>
+Pour les exécutables, utilisez quelque chose comme
+<I>GNU</I>, <I>NET-2</I>, <I>SLS Distribution</I>, <I>MCC Distribution</I>.
+
+<P>
+Pour les appels-système, vous pouvez indiquer la version du noyau que vous
+utilisez&nbsp;:
+<I>Linux 2.4.19</I>.
+
+<P>
+Pour les fonctions de bibliothèque, utilisez la source de la fonction&nbsp;:
+<I>GNU</I>, <I>BSD 4.3</I>, <I>Linux DLL 4.4.1</I>.
+
+<DT><I>manuel</I>
+
+<DD>
+Le titre du manuel (par exemple
+<I>Manuel du programmeur Linux</I>).
+
+</DL>
+</DL>
+
+<P>
+
+Notez que les pages BSD formatées avec mdoc commencent avec la commande
+<B>Dd</B>
+
+et non pas
+<B>TH</B>.
+
+<P>
+
+Les sections du manuel sont traditionnellement réparties ainsi&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>1 Commandes</B>
+
+<DD>
+Les commandes qui peuvent être invoquées par l'utilisateur depuis le shell.
+<DT><B>2 Appel systèmes</B>
+
+<DD>
+Les fonctions fournies par le noyau.
+<DT><B>3 Fonctions de bibliothèques</B>
+
+<DD>
+La plupart des fonctions de la 
+<I>bibliothèque C</I>
+
+telles que
+<B><A HREF="/cgi-bin/man/man2html?3+qsort">qsort</A></B>(3))
+
+<DT><B>4 Périphériques</B>
+
+<DD>
+Fichiers spéciaux trouvés dans
+<I>/dev</I>)
+
+<DT><B>5 Formats de fichiers et conventions</B>
+
+<DD>
+Le format de
+<I>/etc/passwd</I>
+
+et d'autres fichiers lisibles par un humain.
+<DT><B>6 Jeux</B>
+
+<DD>
+<DT><B>7 Ensembles de macros et de standards</B>
+
+<DD>
+Une description du système de fichiers standard, cette
+page de manuel, des jeux de caractères, entre autres...
+<DT><B>8 Commandes d'administration système.</B>
+
+<DD>
+Les commandes comme
+<B><A HREF="/cgi-bin/man/man2html?8+mount">mount</A></B>(8),
+
+que seul
+<I>root</I>
+
+peut exécuter.
+<DT><B>9 Routines du noyau</B>
+
+<DD>
+Il s'agit d'une section obsolète.
+On a jadis pensé qu'il serait bon de documenter le noyau Linux ici, mais en
+fait très peu de documentation a été réalisé, et celle qui existe est déjà
+dépassée. Il existe de bien meilleures sources d'information pour les
+développeurs du noyau.
+</DL>
+</DL>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>SECTIONS (PARAGRAPHES)</H2>
+
+Les sections commencent par
+<B>.SH</B>
+
+suivies de leurs titres. Si le titre contient des espaces, l'encadrer
+par des guillemets.
+Les titres traditionnels sont :
+NOM, SYNOPSIS, DESCRIPTION, VALEUR RENVOYÉE, CODE DE RETOUR,
+ERREURS, OPTIONS, FICHIERS, EXEMPLE, VOIR AUSSI, DIAGNOSTIQUE, BOGUES,
+ENVIRONNEMENT, SÉCURITÉ, CONFORMITÉ, AUTEUR, VOIR AUSSI, et
+TRADUCTION.
+Utilisez de préférence ces titres s'il vous plaît&nbsp;; cette cohérence
+rend les pages de manuel plus faciles à comprendre. Maintenant, créez
+vos propres titres si vous pensez que c'est nécessaire.
+<BR>&nbsp;Le&nbsp;seul&nbsp;titre&nbsp;indispensable&nbsp;est
+<I>NOM</I>,
+
+qui doit être suivi sur la ligne suivante par une courte description du
+programme :
+<DL COMPACT><DT><DD>
+<P>
+.SH NOM
+<BR>
+
+chess \- Jeu d'échecs
+<P>
+</DL>
+
+Il est très important que ce format soit respecté, et qu'il se trouve un
+backslash avant le tiret suivant le nom du programme. Il est important que
+toute la description soit placée sur une seule ligne. Cette syntaxe
+est utilisée par le programme
+<B><A HREF="/cgi-bin/man/man2html?8+makewhatis">makewhatis</A></B>(8)
+
+pour créer la base de données des descriptions pour les commandes
+<B><A HREF="/cgi-bin/man/man2html?1+whatis">whatis</A></B>(1)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?1+apropos">apropos</A></B>(1).
+
+<P>
+NDT : Vous vous doutez bien que la version de distribution de 
+<B><A HREF="/cgi-bin/man/man2html?8+makewhatis">makewhatis</A></B>(8)
+
+ne reconnaît pas la section 'NOM' mais la section 'NAME'. Pour que
+les commandes
+<B><A HREF="/cgi-bin/man/man2html?1+whatis">whatis</A></B>(1) et <B><A HREF="/cgi-bin/man/man2html?1+apropos">apropos</A></B>(1)
+
+fonctionnent, il faut modifier le script
+<B><A HREF="/cgi-bin/man/man2html?8+makewhatis">makewhatis</A></B>(8).
+
+la modification à apporter est décrite dans le fichier
+<I>LISEZ_MOI</I>,
+
+qui est livré avec l'archive des pages de manuel en français.
+<P>
+<P>
+
+Les autres sections contiennent habituellement les éléments suivants&nbsp;:
+<DL COMPACT>
+<DT><B>SYNOPSIS</B>
+
+<DD>
+indique brièvement l'interface de la commande ou de la fonction.
+Pour les commandes, ce paragraphe montre sa syntaxe et ses arguments.
+Les caractères gras marquent le texte invariable et l'italique indique les
+arguments remplaçables. Les crochets ([]) encadrent les arguments optionnels,
+les barres verticales (|) séparent les alternatives, et les ellipses
+(...) signalent les répétitions.
+Pour les fonctions, on trouve toutes les déclarations et directives
+<B>#include</B>,
+
+suivies de la déclaration de fonction.
+<DT><B>DESCRIPTION</B>
+
+<DD>
+fournit une explication sur ce que la commande, la fonction ou le format
+représente. Décrit les interactions avec les fichiers et l'entrée standard,
+ou ce qui est produit sur la sortie standard ou d'erreur.
+Ne contient pas les détails d'implémentation internes, sauf s'ils sont
+critique pour comprendre l'interface.
+Décrit le cas principal, pour les détails sur les options, on utilise
+le paragraphe
+<B>OPTIONS</B>.
+
+S'il y a une sorte de grammaire d'entrée, ou un jeu de sous-commandes,
+on peut les placer dans un paragraphe
+<B>UTILISATION</B>
+
+supplémentaire (juste après la section
+<B>DESCRIPTION</B>).
+
+<DT><B>VALEUR RENVOYÉE</B>
+
+<DD>
+donne une liste des valeurs qu'une
+routine de librairie renverra à l'appelant et les conditions
+qui provoquent ces retours.
+<DT><B>CODE DE RETOUR</B>
+
+<DD>
+indique les codes de retour d'un programme et les
+conditions associées.
+<DT><B>OPTIONS</B>
+
+<DD>
+décrit les options acceptées par le programme et comment son
+comportement se modifie.
+<DT><B>UITILISATION</B>
+
+<DD>
+décrit la grammaire du tout sous-langage implémenté.
+<DT><B>EXEMPLES</B>
+
+<DD>
+donne un ou plusieurs exemples d'utilisation de la fonction, du fichier
+ou de la commande.
+<DT><B>FICHIERS</B>
+
+<DD>
+liste les fichiers utilisés par le programme ou la fonction, tels que
+fichiers de configuration, de démarrage, et les fichiers
+manipulés directement par le programme.
+Il faut donne le chemin d'accès complet des fichiers et utiliser le
+mécanisme d'installation pour modifier le préfixe.
+Pour la plupart des programmes, l'installation par défaut est
+/usr/local.
+<DT><B>ENVIRONNEMENT</B>
+
+<DD>
+décrit toutes les variables d'environnement qui affecte le programme
+ou la fonction, ainsi que leurs effets.
+<DT><B>DIAGNOSTIQUE</B>
+
+<DD>
+fournit un survol des messages d'erreurs usuels et comment les considérer.
+Il n'est pas nécessaire d'indiquer les messages d'erreur système ou les
+signaux fatals qui peuvent apparaître durant l'exécution du programme,
+sauf s'ils sont traités spécialement.
+<DT><B>SECURITÉ</B>
+
+<DD>
+concerne les problèmes de sécurité et leurs implications.
+Doit contenir les avertissements à propos des configurations ou des
+environnements à éviter, les commandes ayant des répercussions au niveau
+sécurité, etc. surtout s'ils ne sont pas évidents.
+Il n'est pas obligatoire de faire un paragraphe spécifique sur la
+sécurité. Si l'intelligibilité est améliorée, on peut placer ces informations
+dans les autres sections (telles que
+<B>DESCRIPTION</B>
+
+ou
+<B>UTILISATION ).</B>
+
+Néanmoins, il est important de placer les informations de sécurité quelque
+part.
+<DT><B>CONFORMITÉ</B>
+
+<DD>
+décrit les standards ou les conventions suivis par l'implémentation.
+<DT><B>NOTES</B>
+
+<DD>
+contient des notes diverses.
+<DT><B>BOGUES</B>
+
+<DD>
+liste les limitations ou les défauts recensés, ainsi que les sujets
+à débat.
+<DT><B>AUTEUR</B>
+
+<DD>
+liste les auteurs de la documentation ou du programme afin de pouvoir
+leur envoyer les rapports de bogue.
+<DT><B>VOIR AUSSI</B>
+
+<DD>
+fournit une liste des pages de manuel ayany un rapport, dans l'ordre
+alphabétiques, suivies des autres documents éventuels.
+<DT><B>TRADUCTION</B>
+
+<DD>
+le nom du traducteur. Si son adresse mail n'est pas fournie, vous la trouverez
+dans le fichier LISEZ_MOI fournit avec les pages de manuel en français.
+Le paragraphe &quot;TRADUCTION&quot; n'est pas destinée à flatter
+l'ego du traducteur, mais à savoir à qui s'adresser si vous relevez une
+erreur&nbsp;!
+<P>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>FONTES</H2>
+
+Bien qu'il y ait de nombreuses conventions arbitraires concernant les
+pages de manuel pour UNIX, l'existence de plusieurs centaines de pages
+spécifiques à Linux définit nos propres standards :
+<DL COMPACT>
+<DT><DD>
+Pour les fonctions, les arguments sont toujours indiqués en italique,
+<I>même dans le paragraphe SYNOPSIS</I>,
+
+où le reste de la fonction est en caractères gras:
+<DL COMPACT><DT><DD>
+<B>int mafonction(int </B><I>argc</I><B>, char **</B><I>argv</I><B>);</B>
+
+</DL>
+
+<DT><DD>
+Les noms de fichiers sont toujours en italique (par exemple
+<I>/usr/include/stdio.h</I>),
+
+sauf dans le paragraphe SYNOPSIS, ou les fichiers inclus sont en gras (par exemple
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>).
+
+<DT><DD>
+Les macros, généralement en majuscules, sont en gras (par exemple
+<B>MAXINT</B>).
+
+<DT><DD>
+Dans l'énumération d'une liste de code d'erreurs, les codes sont en gras, et
+la liste utilise normalement la macro
+<B>.TP</B>.
+
+<DT><DD>
+Toute référence à une autre page de manuel, ou au sujet principal de la
+page en cours, est en gras. Si le numéro de section de manuel est donné,
+il est en Roman, sans espace (par exemple
+<B><A HREF="/cgi-bin/man/man2html?7+man">man</A></B>(7)).
+
+<P>
+Les commandes pour sélectionner les fontes sont les suivantes&nbsp;:
+<DT><B>.B</B>
+
+<DD>
+Gras
+<DT><B>.BI</B>
+
+<DD>
+Gras alterné avec Italique
+(surtout pour les spécifications de fonctions)
+<DT><B>.BR</B>
+
+<DD>
+Gras alterné avec Roman
+(surtout pour les références aux autres pages de manuel)
+<DT><B>.I</B>
+
+<DD>
+Italique
+<DT><B>.IB</B>
+
+<DD>
+Italique alterné avec Gras
+<DT><B>.IR</B>
+
+<DD>
+Italique alterné avec Roman
+<DT><B>.RB</B>
+
+<DD>
+Roman alterné avec Gras
+<DT><B>.RI</B>
+
+<DD>
+Roman alterné avec Italique
+<DT><B>.SB</B>
+
+<DD>
+Petit alterné avec Gras
+<DT><B>.SM</B>
+
+<DD>
+Petit (utile pour les acronymes)
+</DL>
+<P>
+
+Traditionnellement, chaque commande peut avoir jusqu'à six arguments, mais
+les versions GNU semblent éliminer cette contrainte.
+Les arguments sont délimités par des espaces. Des guillemets sont utilisés
+pour encadrer un argument qui contient des espaces.
+Tous les arguments seront imprimés les uns après les autres sans
+intercaler d'espace, ainsi la commande
+<B>.BR</B>
+
+peut être utilisée pour indiquer un mot en Gras suivi par un signe de
+ponctuation en Roman.
+Si aucun argument n'est fourni, la commande s'applique à la ligne suivante.
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTRES MACROS ET CHAÎNES</H2>
+
+<P>
+
+Ci-dessous se trouvent les macros et chaînes prédéfinies. Sauf indication
+contraire, toutes les macros déclenche un saut de ligne.
+La plupart de ces macros utilisent ou modifient l'indentation courante.
+Celle-ci est fixée par toute macro avec le paramètre
+<I>i</I>
+
+ci-dessous&nbsp;; les macros peuvent omettre le
+<I>i</I>
+
+auquel cas l'indentation courante est utilisée.
+En conséquence, les paragraphes sucessifs peuvent utiliser la même indentation
+sans la répéter.
+Un paragraphe normal, non-indenté, replace l'indentation courante à sa valeur
+par défaut (0.5 pouces).
+Par défaut, les indentations sont mesurées en ens (largeur d'une lettre &quot;n&quot;)
+ou ems (&quot;m&quot;). Ainsi les largeurs s'ajustent automatiquement en cas de
+changement de police.
+Les principales macros disponibles sont&nbsp;:
+<A NAME="lbAI">&nbsp;</A>
+<H3>Paragraphes normaux</H3>
+
+<DL COMPACT>
+<DT><B>.LP</B>
+
+<DD>
+Comme
+<B>.PP</B>
+
+(débute un nouveau paragraphe).
+<DT><B>.P</B>
+
+<DD>
+Comme
+<B>.PP</B>
+
+(débute un nouveau paragraphe).
+<DT><B>.PP</B>
+
+<DD>
+Débute un nouveau paragraphe et réinitialise l'indentation courante.
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H3>Indentation Relative</H3>
+
+<DL COMPACT>
+<DT><B>.RS</B><I> i</I>
+
+<DD>
+Débute une indentation relative - déplace la marge gauche de
+<I>i</I>
+
+vers la droite (si
+<I>i</I>
+
+est absent, la valeur d'indentation courante est utilisée).
+Une nouvelle valeur d'indentation est placée à 0.5 pouces.
+En conséquence, tous les paragraphes suivants seront indentés jusqu'au
+<B>RE</B>
+
+correspondant.
+<DT><B>.RE</B>
+
+<DD>
+Terminer une indentation relative et restituer les valeurs précédentes
+d'indentation courante.
+</DL>
+<A NAME="lbAK">&nbsp;</A>
+<H3>Macros d'indentation de paragraphe</H3>
+
+<DL COMPACT>
+<DT><B>.HP</B><I> i</I>
+
+<DD>
+Débute un paragraphe avec une indentation d'accroche (la première ligne du
+paragraphe est le long de la marge gauche, et les autres lignes sont indentées).
+<DT><B>.IP</B><I> x i</I>
+
+<DD>
+Paragraphe indenté avec une balise d'accroche éventuelle.
+Si la balise
+<I>x</I>
+
+est omise, tout le paragraphe est indenté de
+<I>i</I>.
+
+Si la balise
+<I>x</I>
+
+est fournie, elle est accrochée le long de la marge gauche, avant le
+paragraphe indenté
+(C'est comme
+<B>.TP</B>
+
+sauf que la balise est incluse avec la commande elle-même plutôt que d'être
+sur la ligne suivante).
+Si la balise est trop longue, le texte sera transposé à la ligne suivante
+(le texte ne sera ni perdu ni tronqué).
+Pour les listes à puces, utilisez cette macro avec \(bu (rond) ou
+\(em (tiret) comme balise, et pour les listes numérotées utilisez 
+le numéro ou la lettre suivi par un point. Ceci simplifie la traduction
+dans d'autres formats.
+<DT><B>.TP</B><I> i</I>
+
+<DD>
+Début d'un paragraphe avec une balise d'accroche. La balise est donnée sur
+la ligne suivante, mais le résultat est identique à celui de la commande
+<B>.IP</B>.
+
+</DL>
+<A NAME="lbAL">&nbsp;</A>
+<H3>Macros de liens hypertextes</H3>
+
+<DL COMPACT>
+<DT><B>.UR</B><I> u</I>
+
+<DD>
+Débute un lien hypertexte vers l'URI (URL)
+<I>u</I>;
+
+il se terminera avec la commande
+<B>UE</B>
+
+coorrespondante.
+Lors d'une conversion en HTML, cela se traduit par les commandes HTML
+<B>&lt;A HREF=&quot;</B><I>u</I><B>&quot;&gt;</B>.
+Il y a une exception&nbsp;: si
+<I>u</I>
+
+a la valeur spéciale &quot;:&quot;, aucun lien hypertext ne sera créé après le
+<B>UE</B>
+
+de fermeture. Ceci permet de désactiver les liens dans des phrases comme
+
+<A HREF="/cgi-bin/man/man2html?1+LALR">LALR</A>(1)
+
+lorsqu'ils ne seraient pas appropriés).
+Les macros d'insertion de liens hypertextes sont nouvelles, et de nombreux
+outils n'en feront rien. Mais, comme de nombreux outils (y compris troff)
+les ignoreront simplement (ou au pire écriront leur texte), on peut les
+utiliser sans souci.
+<DT><B>.UE</B>
+
+<DD>
+Fin de la commande
+<B>UR</B>
+
+correspondante&nbsp;; lors de la génération HTML, ceci se traduit par
+<B>&lt;/A&gt;</B>.
+<DT><B>.UN</B><I> u</I>
+
+<DD>
+Crée une cible hypertexte nommée
+<I>u</I>&nbsp;;
+
+ne contient pas de commande
+<B>UE</B>
+
+correspondante.
+Lors de la génération de code HTML, ceci devrait se traduire en balise
+<B>&lt;A NAME=&quot;</B><I>u</I><B>&quot; id=&quot;</B><I>u</I><B>&quot;&gt;&amp;nbsp;&lt;/A&gt;</B>
+(le &amp;nbsp; est optionnel si le support pour Mosaic n'est pas nécessaire).
+</DL>
+<A NAME="lbAM">&nbsp;</A>
+<H3>Macros diverses</H3>
+
+<DL COMPACT>
+<DT><B>.DT</B>
+
+<DD>
+Réinitialiser les tabulations à leurs valeurs par défaut, tous les 0.5&nbsp;pouces
+sans déclencher de saut de ligne.
+<DT><B>.PD</B><I> d</I>
+
+<DD>
+Fixer la distance verticale entre paragraphes à la valeur d
+(si absent, d=0.4v).
+Ne provoque pas de saut de ligne.
+<DT><B>.SS</B><I> t</I>
+
+<DD>
+Sous-chapitre
+<I>t</I>
+
+(comme
+<B>.SH</B>,
+
+mais pour les sous-sections au sein d'une section).
+</DL>
+<A NAME="lbAN">&nbsp;</A>
+<H3>Chaînes prédéfinies</H3>
+
+Le paquetage
+<B>man</B>
+
+contient les chaînes prédéfinies suivantes&nbsp;:
+<DL COMPACT>
+<DT>\*R<DD>
+Symbole d'enregistrement&nbsp;: &#174;
+<DT>\*S<DD>
+Taille de police par défaut.
+<DT>\*(Tm<DD>
+Symbole marque déposée&nbsp;: 
+<DT>\*(lq<DD>
+Guillemets en chevrons droits&nbsp;: ``
+<DT>\*(rq<DD>
+Guillemets en chevrons gauches&nbsp;: ''
+</DL>
+<A NAME="lbAO">&nbsp;</A>
+<H2>Ensemble de commandes sûres</H2>
+
+Bien que techniquement
+<B>man</B>
+
+soit un paquetage de macros troff, en réalité un grand nombre d'autres outils
+traitent les fichiers des pages de manuel, sans implémenter toutes les
+possibilités de troff. Il vaut donc mieux éviter certaines fonctionnalités
+exotiques de troff.
+Evitez d'utiliser les préprocesseurs de troff (s'il le faut, utilisez
+<B><A HREF="/cgi-bin/man/man2html?1+tbl">tbl</A></B>(1),
+
+mais essayez d'employer plutôt les commandes
+<B>IP</B>
+
+et
+<B>TP</B>
+
+pour les tableaux à deux colonnes).
+Evitez d'utiliser les calculs, la plupart des autres outils ne les réalisent
+pas. Utilisez des commandes simples facile à traduire dans d'autres formats.
+Les macros suivantes sont reconnues comme sûres (même si elles sont
+parfois ignorés par les traducteurs)&nbsp;:
+<B>\ ,</B>
+
+<B>.</B>,
+
+<B>ad</B>,
+
+<B>bp</B>,
+
+<B>br</B>,
+
+<B>ce</B>,
+
+<B>de</B>,
+
+<B>ds</B>,
+
+<B>el</B>,
+
+<B>ie</B>,
+
+<B>if</B>,
+
+<B>fi</B>,
+
+<B>ft</B>,
+
+<B>hy</B>,
+
+<B>ig</B>,
+
+<B>in</B>,
+
+<B>na</B>,
+
+<B>ne</B>,
+
+<B>nf</B>,
+
+<B>nh</B>,
+
+<B>ps</B>,
+
+<B>so</B>,
+
+<B>sp</B>,
+
+<B>ti</B>,
+
+<B>tr</B>.
+
+<P>
+
+Vous pouvez aussi employer les séquences d'échappement de troff (celles qui
+commencent par \).
+Si vou devez insérer un backslash comme du texte normal, utilisez \e.
+Les autres séquences que vous pouvez utiliser, x et xx étant des caractères
+quelconques, et N un chiffre, sont&nbsp;:
+<B>\'</B>,
+
+<B>\`</B>,
+
+<B>\-</B>,
+
+<B>\.</B>,
+
+<B>\ ,</B>
+
+<B>\%</B>,
+
+<B>\*x</B>,
+
+<B>\*(xx</B>,
+
+<B>\(xx</B>,
+
+<B>\$N</B>,
+
+<B>\nx</B>,
+
+<B>\n(xx</B>,
+
+<B>\fx</B>,
+
+et
+<B>\f(xx</B>.
+
+Evitez d'utiliser des séquences d'échappement pour dessiner des graphiques.
+<P>
+
+N'utilisez pas les paramètres optionnels pour
+<B>bp</B>
+
+(break page).
+Utilisez seulement des valeurs positives pour
+<B>sp</B>
+
+(vertical space).
+Ne définissez pas de macro
+(<B>de</B>)
+
+avec le même nom qu'une macro dans ce paquetage ou dans celui de mdoc avec
+une signification différente, il est probable que la définition en serait
+ignorée.
+Tout indentation positive
+(<B>in</B>)
+
+devrait être appariée avec une indentation négative identique.
+(bien que vous devriez plutôt utiliser les macros
+<B>RS</B>
+
+et 
+<B>RE</B>
+
+à la place).
+Les tests
+(<B>if,ie</B>)
+
+ne devrait avoir que 't' ou 'n' comme condition.
+Seules les traductions
+(<B>tr</B>)
+
+qui peuvent être ignorées devraient être utilisées.
+Les changement de fontes
+(<B>ft</B>
+
+et les séquences d'échappement <B>\f</B>)
+ne doivent prendre comme valeurs que 1, 2, 3, 4, R, I, B, P, ou CW
+(la commande ft peut aussi n'avoir aucun paramètre).
+<P>
+
+Si vous utilisez d'autres fonctionnalités que celles-ci, vérifiez le
+résultat soigneusement sur divers outils.
+Une fois que vous avez confirmation que la nouvelle fonctionnalité est sûre,
+faites-le savoir au mainteneur de cette page.
+<A NAME="lbAP">&nbsp;</A>
+<H2>NOTES</H2>
+
+<P>
+
+Insérez les URLs complets dans le texte lui-même, certains outils comme
+<B><A HREF="/cgi-bin/man/man2html?1+man2html">man2html</A></B>(1)
+
+peuvent les transformer automatiquement en liens hypertextes.
+Vous pouvez aussi utiliser la nouvelle macro
+<B>UR</B>
+
+pour associer les liens aux informations correspondantes.
+Si vous insérer des URLs, utilisez des URL complets (par exemple
+&lt;<A HREF="http://www.kernelnotes.org">http://www.kernelnotes.org</A>&gt;) pour s'assurer que les outils les
+trouveront automatiquement.
+<P>
+
+Les outils traitant ces fichiers devront les ouvrir et examiner le premier
+caractère non-blanc. Un point ou un apostrophe simple au début d'une ligne
+indiquent un fichier troff (comme man ou mdoc).
+Un angle gauche (&lt;) indique un document SGML/XML comme (HTML ou Docbook).
+Tout autre caractère correspond a un texte ASCII simple (par exemple une
+sortie &quot;catman&quot;).
+<P>
+
+Plusieurs pages commencent avec '\&quot; suivi d'un espace et d'une liste de
+caractères indiquant comment la page doit être pré-traitée.
+Pour améliorer la portabilité vers des traducteurs non-troff, nous vous
+recommandons d'éviter d'utiliser autre chose que
+<B><A HREF="/cgi-bin/man/man2html?1+tbl">tbl</A></B>(1).
+
+Sous Linux la détection en est automatique.
+Nénamoins, vous pouvez inclure cette information pour que votre page de
+manuel puisse être traitée par d'autres systèmes (moins capables).
+Voici la définition des préprocesseurs invoqués par ces caractères&nbsp;:
+<DL COMPACT>
+<DT><B>e</B>
+
+<DD>
+<A HREF="/cgi-bin/man/man2html?1+eqn">eqn</A>(1)
+<DT><B>g</B>
+
+<DD>
+<A HREF="/cgi-bin/man/man2html?1+grap">grap</A>(1)
+<DT><B>p</B>
+
+<DD>
+<A HREF="/cgi-bin/man/man2html?1+pic">pic</A>(1)
+<DT><B>r</B>
+
+<DD>
+<A HREF="/cgi-bin/man/man2html?1+refer">refer</A>(1)
+<DT><B>t</B>
+
+<DD>
+<A HREF="/cgi-bin/man/man2html?1+tbl">tbl</A>(1)
+<DT><B>v</B>
+
+<DD>
+<A HREF="/cgi-bin/man/man2html?1+vgrind">vgrind</A>(1)
+<P>
+</DL>
+<P>
+
+[NdT] En français, nous utilisons plus fréquement les 'espaces insécables'
+que les anglo-saxons. Pour transformer un espace normal en espace insécable,
+il suffit de le préfixer par '\'. Si vous traduisez des pages, essayez
+de placer ces espaces insécables avant les points-virgules, deux-points,
+point d'exclamation et d'interrogation, et entre les nombres et les unités
+(par exemple 1024&nbsp;ko, s'écrira 1024\&nbsp;ko).
+<P>
+<A NAME="lbAQ">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/usr/share/groff/ [*/] tmac/tmac.an</I>
+
+<BR>
+
+<I>/usr/man/whatis</I>
+
+<A NAME="lbAR">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<P>
+
+La plupart des macros décrivent la mise en forme (police, espacement...) au
+lieu de marquer le contenu sémantique (par exemple référence vers une autre
+page) comme le font des formats comme mdoc ou DocBook (même l'HTML a des
+balises plus sémantiques).
+Cette situation rend le format
+<B>man</B>
+
+difficile à traduire sur différents supports.
+En se limitant au sous-ensemble de macros décrites plus haut, il devrait
+être plus facile de basculer automatiquement vers un autre format de
+page de référence dans l'avenir.
+<P>
+
+La macro Sun
+<B>TX</B>
+
+n'est pas implémentée.
+<A NAME="lbAS">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+<DL COMPACT>
+<DT>---<DD>
+James Clark (<A HREF="mailto:jjc@jclark.com">jjc@jclark.com</A>) a écrit l'implémentation du paquetage de macros.
+<DT>---<DD>
+Rickard E. Faith (<A HREF="mailto:faith@cs.unc.edu">faith@cs.unc.edu</A>) a écrit la version initiale de cette page
+de manuel.
+<DT>---<DD>
+Jens Schweikhardt (<A HREF="mailto:schweikh@noc.fdn.de">schweikh@noc.fdn.de</A>) a écrit le mini HOWTO Linux-man-page.
+(qui a influencé cette page de manuel).
+<DT>---<DD>
+David A. Wheeler (<A HREF="mailto:dwheeler@ida.org">dwheeler@ida.org</A>) a largement modifié cette page, en
+ajoutant des détails sur les sections et les macros.
+<P>
+</DL>
+<A NAME="lbAT">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+apropos">apropos</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+groff">groff</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+man">man</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+man2html">man2html</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?7+mdoc">mdoc</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+mdoc.samples">mdoc.samples</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?1+whatis">whatis</A></B>(1)
+
+<P>
+<A NAME="lbAU">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">PRÉAMBULE</A><DD>
+<DT><A HREF="#lbAF">SECTIONS (PARAGRAPHES)</A><DD>
+<DT><A HREF="#lbAG">FONTES</A><DD>
+<DT><A HREF="#lbAH">AUTRES MACROS ET CHAÎNES</A><DD>
+<DL>
+<DT><A HREF="#lbAI">Paragraphes normaux</A><DD>
+<DT><A HREF="#lbAJ">Indentation Relative</A><DD>
+<DT><A HREF="#lbAK">Macros d'indentation de paragraphe</A><DD>
+<DT><A HREF="#lbAL">Macros de liens hypertextes</A><DD>
+<DT><A HREF="#lbAM">Macros diverses</A><DD>
+<DT><A HREF="#lbAN">Chaînes prédéfinies</A><DD>
+</DL>
+<DT><A HREF="#lbAO">Ensemble de commandes sûres</A><DD>
+<DT><A HREF="#lbAP">NOTES</A><DD>
+<DT><A HREF="#lbAQ">FICHIERS</A><DD>
+<DT><A HREF="#lbAR">BOGUES</A><DD>
+<DT><A HREF="#lbAS">AUTEURS</A><DD>
+<DT><A HREF="#lbAT">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAU">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:56 GMT, February 11, 2014
+</BODY>
+</HTML>

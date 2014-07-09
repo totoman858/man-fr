@@ -1,0 +1,164 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETDENTS</TITLE>
+</HEAD><BODY>
+<H1>GETDENTS</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getdents - Obtenir les points d'entrée d'un répertoire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/linux/types.h">linux/types.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/linux/dirent.h">linux/dirent.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/linux/unistd.h">linux/unistd.h</A>&gt;</B>
+
+<B>_syscall3(int, getdents, uint, fd, struct dirent *, dirp, uint, count);</B>
+
+<B>int getdents(unsigned int </B><I>fd</I><B>, struct dirent *</B><I>dirp</I><B>, unsigned int </B><I>count</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>getdents</B>
+
+lit plusieurs structures
+<I>dirent</I>
+
+depuis un répertoire pointé
+par le descripteur de fichier
+<I>fd</I>
+
+et les place dans la zone de mémoire pointée par
+<I>dirp</I>.
+
+Le paramètre
+<I>count</I>
+
+est la taille de la zone mémoire.
+<P>
+
+La structure 
+<I>dirent</I>
+
+est déclarée ainsi :
+<P>
+
+<DL COMPACT><DT><DD>
+<PRE>
+struct dirent
+{
+    long d_ino;                 /* numéro d'i-noeud            */
+    off_t d_off;                /* distance au prochain dirent */
+    unsigned short d_reclen;    /* longueur de ce dirent       */
+    char d_name [NAME_MAX+1];   /* nom de fichier (fini par 0) */
+}
+</PRE>
+
+</DL>
+
+<P>
+
+<I>d_ino</I>
+
+est un numéro d'i-noeud.
+<I>d_off</I>
+
+est la distance entre le début du répertoire et le début de la prochaine structure
+<I>dirent</I>.
+
+<I>d_reclen</I>
+
+est la taille complète de
+<I>dirent</I>.
+
+<I>d_name</I>
+
+est le nom de fichier terminé par un caractère nul.
+<P>
+
+Cette fonction remplace
+<B><A HREF="/cgi-bin/man/man2html?2+readdir">readdir</A></B>(2).
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>getdents</B>
+
+renvoie le nombre d'octets lus s'il réussit (0 en fin de répertoire),
+ou -1 s'il échoue, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.  
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+<I>fd</I>
+
+n'est pas un descripteur de fichier valide.
+<DT><B>EFAULT</B>
+
+<DD>
+L'argument pointe en dehors de l'espace d'adressage disponible.
+<DT><B>EINVAL</B>
+
+<DD>
+Le buffer de résultat est trop petit.
+<DT><B>ENOENT</B>
+
+<DD>
+Répertoire inexistant.
+<DT><B>ENOTDIR</B>
+
+<DD>
+Le descripteur de fichier ne pointe pas sur un répertoire.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID.  SVr4 documente les erreurs supplémentaires
+ENOLINK, et EIO.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+readdir">readdir</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+readdir">readdir</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:55 GMT, February 11, 2014
+</BODY>
+</HTML>

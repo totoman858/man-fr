@@ -1,0 +1,138 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of RANDOM</TITLE>
+</HEAD><BODY>
+<H1>RANDOM</H1>
+Section: Manuel du programmeur Linux (4)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+random, urandom - Périphériques générateurs aléatoires du noyau.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les fichiers spéciaux caractères <B>/dev/random</B> et <B>/dev/urandom</B>
+(existants depuis Linux 1.3.30) fournissent une interface avec le générateur
+de nombres aléatoires du noyau.
+<P>
+Le fichier <B>/dev/random</B> a un numéro de périphérique majeur égal à 1, et
+un numéro mineur égal à 8. Les numéros du périphérique <B>/dev/urandom</B> 
+sont 1 pour le majeur, et 9 pour le mineur.
+<P>
+
+Le générateur de nombres aléatoires regroupe du bruit provenant de son
+environnement par l'intermédiaire des pilotes de périphériques et d'autres
+sources, et le stocke dans un réservoir d'entropie.
+Le générateur mémorise également une estimation du nombre de bits de bruit
+dans son réservoir d'entropie, et utilise son contenu pour créer des nombres
+aléatoires.
+<P>
+
+Lors d'une lecture, le périphérique <B>/dev/random</B> sera limité au nombre de
+bits de bruit contenus dans le réservoir d'entropie.
+<P>
+<B>/dev/random</B> est particulièrement adapté pour des cas où l'on a ponctuellement
+besoin de nombres hautement aléatoires (création de clés par exemple).
+Lorsque le réservoir d'entropie est vide, les lectures depuis le périphérique
+<B>/dev/random</B> seront bloquantes jusqu'à l'obtention de suffisamment de bruits
+en provenance de l'environnement.
+<P>
+
+Lors d'une lecture, <B>/dev/urandom</B> renverra autant d'octets qu'on en demande.
+Toutefois, s'il n'y a plus assez de bits disponibles dans le réservoir d'entropie,
+les valeurs renvoyées pourraient être théoriquement vulnérables à une cryptanalyse
+basée sur l'algorithme employé par le pilote.
+Il n'existe pas de documentation sur ce type d'attaque dans la littérature publique
+actuelle, mais cela n'élimine pas le risque théorique.
+Si ce risque est important pour votre application, utilisez plutôt <B>/dev/random</B>
+à la place.
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>CONFIGURATION</H2>
+
+Si votre système ne dispose pas des fichiers <B>/dev/random</B> et <B>/dev/urandom</B>
+vous pouvez les créer avec les commandes suivantes :
+<P>
+<PRE>
+        mknod -m 644 /dev/random c 1 8
+        mknod -m 644 /dev/urandom c 1 9
+        chown root:root /dev/random /dev/urandom
+</PRE>
+
+<P>
+Lorsqu'un système Linux démarre sans interaction avec un opérateur humain,
+le réservoir d'entropie peut se trouver dans un état relativement prédictible. 
+La véritable quantité de bruit dans le réservoir d'entropie est donc en-dessous
+de son estimation. Afin de contrer ce problème, il est utile de sauvegarder
+l'état du réservoir entropique lors des arrêts et redémarrages du système.
+Il est possible ainsi d'ajouter les lignes suivantes dans les scripts 
+de démarrage appropriés :
+<P>
+<PRE>
+        echo &quot;Initialisation du générateur de nombre aléatoires&quot;
+        # Initialiser le générateur de nombre aléatoire avec une racine
+        # mémorisée lors du dernier arrêt (ou redémarrage) du système
+        # On charge jusqu'à 512 octets (taille du réservoir d'entropie).
+        if [ -f /var/random-seed ]; then
+                cat /var/random-seed &gt;/dev/urandom
+        fi
+        dd if=/dev/urandom of=/var/random-seed count=1
+</PRE>
+
+<P>
+Également, il faut ajouter les lignes suivantes dans un script exécuté
+lors de l'arrêt du système.
+<BR>&nbsp;
+<PRE>
+        # Sauver une racine aléatoire pour pouvoir redémarrer le
+        # générateur au prochain boot. On sauve 512 octets.
+        echo &quot;Sauvegarde de la racine du générateur aléatoire...&quot;
+        dd if=/dev/urandom of=/var/random-seed count=1
+</PRE>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/dev/random
+<BR>
+
+/dev/urandom
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Le générateur de nombre aléatoires du noyau a été écrit par
+Theodore Ts'o (<A HREF="mailto:tytso@athena.mit.edu">tytso@athena.mit.edu</A>).
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+mknod (1)
+<BR>
+
+RFC 1750, &quot;Randomness Recommendations for Security&quot;
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1998-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">CONFIGURATION</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">AUTEUR</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:52 GMT, February 11, 2014
+</BODY>
+</HTML>

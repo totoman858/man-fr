@@ -1,0 +1,115 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of READAHEAD</TITLE>
+</HEAD><BODY>
+<H1>READAHEAD</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+readahead - Lire d'avance une ou plusieurs pages en mémoire cache.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+
+
+<P>
+#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;
+<P>
+<DL COMPACT>
+<DT>
+<DD>ssize_t&nbsp;<B>sys_readahead</B>&nbsp;(int&nbsp;<I>fd</I>, loff_t&nbsp;<I>offset</I>, size_t&nbsp;<I>nb</I>);
+
+
+<P>
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+<P>
+
+<B>readahead</B>()
+
+lit et place
+<I>nb</I>
+
+pages dans le cache.
+Si une page n'est pas dans le cache elle y est ajoutée.
+<P>
+<P>
+
+<I>fd</I>
+
+est le descripteur du fichier à lire.
+<I>offset</I>
+
+est l'emplacement où débute la lecture.
+Une page dans le cache est identifié par l'i-noeud et le positionnement
+dans le fichier.
+<I>fd</I> et <I>offset</I>
+
+sont utilisés pour identifier les pages dans le cache.
+<P>
+<P>
+
+La position est incrémentée jusqu'à lire
+<I>nb</I>
+
+pages.
+Si le nombre dépasse la taille du fichier, on ne lit que
+jusqu'à la fin du fichier.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<P>
+<P>
+
+<B>readahead</B>
+
+renvoie zéro s'il réussit, sinon il renvoie une erreur décrite ci-dessous.
+Si la position indiquée est plus grande que la longueur du fichier,
+rien n'est lu, et l'appel renvoie zéro.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<P>
+<DL COMPACT>
+<DT>EBADF<DD>
+<B>readahead</B>
+
+n'a pas pu accéder au fichier.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Joy Latten.
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:52 GMT, February 11, 2014
+</BODY>
+</HTML>

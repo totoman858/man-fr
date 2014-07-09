@@ -1,0 +1,276 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CHMOD</TITLE>
+</HEAD><BODY>
+<H1>CHMOD</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM </H2>
+
+chmod, fchmod - Modifier les permissions d'accès à un fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/stat.h">sys/stat.h</A>&gt;</B>
+
+<P>
+<B>int chmod(const char *</B><I>pathname</I><B>, mode_t </B><I>mode</I><B>);</B>
+
+<BR>
+
+<B>int fchmod(int </B><I>fildes</I><B>, mode_t </B><I>mode</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>chmod</B>
+
+change le mode d'accès du fichier
+<I>pathname.</I>
+
+<BR>
+
+<B>fchmod</B>
+
+change le mode d'accès du fichier associé au descripteur
+<I>fildes.</I>
+
+<P>
+Le mode est spécifié par un
+<I>OU</I>
+
+binaire ( | ) entre les éléments suivants (les nombres sont en octal) :
+<DL COMPACT><DT><DD>
+<P>
+<DL COMPACT>
+<DT>S_ISUID<DD>
+04000
+modification du numéro d'utilisateur (UID) à l'exécution.
+<DT>S_ISGID<DD>
+02000
+modification du numéro de groupe (GID) à l'exécution.
+<DT>S_ISVTX<DD>
+01000
+positionner le sticky bit pour conserver le code
+du programme en mémoire après exécution.
+<DT>S_IRUSR (S_IREAD)<DD>
+00400 
+accès en lecture pour le propriétaire
+<DT>S_IWUSR (S_IWRITE)<DD>
+00200 
+accès en écriture pour le propriétaire
+<DT>S_IXUSR (S_IEXEC)<DD>
+00100 
+accès en exécution/parcours par le propriétaire
+<DT>S_IRGRP<DD>
+00040 
+accès en lecture pour le groupe
+<DT>S_IWGRP<DD>
+00020 
+accès en écriture pour le groupe
+<DT>S_IXGRP<DD>
+00010 
+accès en exécution/parcours pour le groupe
+<DT>S_IROTH<DD>
+00004 
+accès en lecture pour les autres
+<DT>S_IWOTH<DD>
+00002 
+accès en écriture pour les autres
+<DT>S_IXOTH<DD>
+00001 
+accès en exécution/parcours pour les autres
+<P>
+</DL>
+</DL>
+
+<P>
+L'UID effectif du processus doit être nul (root) ou doit correspondre à celui  
+du propriétaire du fichier.
+<P>
+Si l'UID effectif du processus n'est pas nul, et si le groupe du fichier
+ne correspond ni au GID effectif du processus, ni à l'un de ses éventuels
+groupes supplémentaires, le bit S_ISGID sera désactivé, mais cela ne créera
+pas d'erreur.
+<P>
+Suivant le type de système de fichiers, les bits Set-UID et Set-GID peuvent
+être effacés si un fichier est écrit. Sur certains systèmes de fichiers,
+seul le Super-User peut positionner le Sticky-Bit, lequel peut avoir une
+signification spécifique. Pour la signification du Sticky-Bit et du bit
+Set-GID sur les répertoires, voir
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2).
+
+<P>
+Sur les systèmes de fichiers NFS, une restriction des autorisations d'accès
+aura un effet immédiat y compris sur les fichiers déjà ouverts, car les
+contrôles d'accès sont effectués sur le serveur, mais les fichiers sont
+maintenus ouverts sur le client. Par contre, un élargissement des autorisations
+peut ne pas être immédiat, si le client dispose d'un cache.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>chmod</B> et <B>fchmod</B>
+
+renvoient 0 s'ils réussissent, ou -1 en cas d'échec, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Suivant le type de système de fichiers, différentes erreurs peuvent
+être renvoyées. Les plus courantes pour
+<B>chmod</B>
+
+sont :
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+L'UID effectif ne correspond pas au propriétaire du fichier, et n'est pas nul.
+<DT><B>EROFS</B>
+
+<DD>
+Le fichier se trouve sur un système de fichiers en lecture seule.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>pathname</I>
+
+pointe en dehors de l'espace d'adressage accessible.
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+<I>pathname</I>
+
+est trop long.
+<DT><B>ENOENT</B>
+
+<DD>
+Le fichier n'existe pas.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour le noyau.      
+<DT><B>ENOTDIR</B>
+
+<DD>
+Un élément du chemin d'accès n'est pas un répertoire.
+<DT><B>EACCES</B>
+
+<DD>
+Le parcours d'un élément du chemin de recherche est interdit.
+<DT><B>ELOOP</B>
+
+<DD>
+<I>pathname</I>
+
+contient une référence circulaire (à travers un lien symbolique)
+<DT><B>EIO</B>
+
+<DD>
+Une erreur d'entrée / sortie bas-niveau s'est produite durant la
+modification de l'i-noeud.
+</DL>
+<P>
+
+Les erreurs les plus courantes pour
+<B>fchmod</B>
+
+sont :
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+Le descripteur de fichier
+<I>fildes</I>
+
+est invalide.
+<DT><B>EROFS</B>
+
+<DD>
+Voir plus haut.
+<DT><B>EPERM</B>
+
+<DD>
+Voir plus haut.
+<DT><B>EIO</B>
+
+<DD>
+Voir plus haut.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+L'appel
+<B>chmod</B>
+
+est conforme a SVr4, SVID, POSIX, X/OPEN, 4.4BSD, 
+SVr4 décrit les erreurs EINTR,  ENOLINK  et  EMULTIHOP, mais pas ENOMEM.
+POSIX.1  ne documente ni les erreurs EFAULT, ENOMEM, ELOOP et EIO,
+ni les macros S_IREAD, S_IWRITE et S_IEXEC.
+<P>
+
+L'appel
+<B>fchmod</B>
+
+est conforme à 4.4BSD et SVr4.
+SVr4 décrit les erreurs supplémentaires EINTR et ENOLINK.
+POSIX réclame l'existence de la fonction
+<B>fchmod</B>
+
+si au moins une des
+deux constantes
+<B>_POSIX_MAPPED_FILES</B>
+
+et
+<B>_POSIX_SHARED_MEMORY_OBJECTS</B>
+
+est définie,
+et décrit les conditions d'erreur supplémentaires ENOSYS et EINVAL
+mais pas EIO.
+<P>
+
+POSIX et X/OPEN ne documentent pas le Sticky Bit.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+chown">chown</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM </A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:03 GMT, February 11, 2014
+</BODY>
+</HTML>

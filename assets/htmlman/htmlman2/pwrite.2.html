@@ -1,0 +1,143 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PREAD</TITLE>
+</HEAD><BODY>
+<H1>PREAD</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+pread, pwrite - Lire ou écrire à une position donnée d'un descripteur de fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#define _XOPEN_SOURCE 500</B>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>ssize_t pread(int </B><I>fd</I><B>, void *</B><I>buf</I><B>, size_t </B><I>nombre</I><B>, off_t </B><I>position</I><B>);</B>
+
+<P>
+<B>ssize_t pwrite(int </B><I>fd</I><B>, const void *</B><I>buf</I><B>, size_t </B><I>nombre</I><B>, off_t </B><I>position</I><B>);</B>
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>pread()</B>
+
+lit au maximum le
+<I>nombre</I>
+
+indiqué d'octets depuis le descripteur
+<I>fd</I>,
+
+à la
+<I>position</I>
+
+mesurée depuis le début du fichier, et les place dans la zone commençant à l'adresse
+<I>buf</I>.
+
+La position de la tête de lecture du fichier n'est pas modifiée par cet appel-système.
+<P>
+
+<B>pwrite()</B>
+
+lit au maximum le
+<I>nombre</I>
+
+indiqué d'octets dans la zone mémoire pointée par
+<I>buf</I>,
+
+et les écrit à la
+<I>position</I>
+
+(mesurée depuis le début du fichier)
+dans le descripteur
+<I>fd</I>.
+
+La position de la tête d'écriture du fichier n'est pas modifiée.
+<P>
+
+Dans les deux cas, le fichier décrit par
+<I>fd</I>
+
+doit permettre le positionnement.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+S'ils réussissent, ces appels systèmes renvoient le nombre d'octets lus
+ou écrits (0 indiquant que rien n'a été écrit dans le cas de <B>pwrite</B>, ou
+la fin du fichier dans le cas de <B>pread</B>).
+En cas d'échec, ils renvoient -1, et remplissent la variable globale
+<I>errno</I>
+
+en conséquence.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<B>pread</B>
+
+peut échouer et fournir dans
+<I>errno</I>
+
+n'importe quelle erreur indiquée par <B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2) ou <B><A HREF="/cgi-bin/man/man2html?2+lseek">lseek</A></B>(2).
+<B>pwrite</B>
+
+peut échouer et fournir dans
+<I>errno</I>
+
+n'importe quelle erreur indiquée par <B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2) ou <B><A HREF="/cgi-bin/man/man2html?2+lseek">lseek</A></B>(2).
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Unix98
+<A NAME="lbAH">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Les appels systèmes <B>pread</B> et <B>pwrite</B> ont été ajoutés dans le
+noyau Linux 2.1.60. Les points d'entrée dans la table des appels i386
+furent instaurés dans la version 2.1.69. Le support par la bibliothèque C,
+y compris l'émulation sur les anciens noyaux sans ces appels systèmes, fut
+ajouté dans la GlibC 2.1.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+lseek">lseek</A></B>(2)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:59 GMT, February 11, 2014
+</BODY>
+</HTML>

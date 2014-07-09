@@ -1,0 +1,330 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of INSTALL</TITLE>
+</HEAD><BODY>
+<H1>INSTALL</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+install - Copier des fichiers et positionner leurs attributs.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>install</B>
+
+<B>[</B><I>options</I><B>]</B>
+
+<B>[-s] [--strip]</B>
+
+<I>source dest</I>
+
+<BR>
+
+<B>install</B>
+
+<B>[</B><I>options</I><B>]</B>
+
+<B>[-s] [--strip]</B>
+
+<I>source... répertoire</I>
+
+<BR>
+
+<B>install</B>
+
+<B>[</B><I>options</I><B>]</B>
+
+<B>[-d,--directory]</B>
+
+<I>répertoire...</I>
+
+<P>
+Options (version courte):
+<BR>
+
+<B>[-b]</B>
+
+<B>[-c]</B>
+
+<B>[-D]</B>
+
+<B>[-g </B><I>groupe</I><B>]</B>
+
+<B>[-m </B><I>mode</I><B>]</B>
+
+<B>[-o </B><I>propriétaire</I><B>]</B>
+
+<B>[-S </B><I>SUFFIXE</I><B>]</B>
+
+<B>[-V {numbered,existing,simple}]</B>
+
+<B>[--help] [--version] [--]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>install</B>
+
+copie des fichiers tout en positionnant les modes d'accès et si possible
+le propriétaire et le groupe.
+<P>
+
+Dans sa première forme, le fichier
+<I>source</I>
+
+est copié dans le fichier
+<I>dest</I>.
+
+Dans la seconde, chaque fichier
+<I>source</I>
+
+est copié dans le
+<I>répertoire</I>
+
+destination.
+Dans la dernière forme, chaque
+<I>répertoire</I>
+
+(ainsi que tout répertoire parent inexistant) est créé.
+<P>
+
+<B>install</B>
+
+est similaire à
+<B>cp</B>,
+
+mais vous permet de contrôler les attributs des fichiers destinations.
+Il est typiquement utilisé dans les fichiers Makefiles, pour copier
+les programmes dans leurs répertoires définitifs.
+Il refuse de copier un fichier sur lui-même.
+<P>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-c</B>
+
+<DD>
+Ignoré. Pour compatibilité avec de vieilles versions Unix d'<B>install</B>.
+<DT><B>-d, --directory</B>
+
+<DD>
+Créer chaque répertoire indiqué ainsi que les répertoires parents manquants,
+en fixant le propriétaire, le groupe et le mode comme indiqué sur la
+ligne de commande, ou avec les valeurs par défaut.
+Donner ces attributs aux répertoires parents créés (ce qui diffère de
+SunOS 4.x où
+<B>install</B>,
+
+donne les attributs par défaut aux répertoires parents créés.)
+<DT><B>-D</B>
+
+<DD>
+Créer tous les répertoires parents de
+<I>dest</I>
+
+sauf le dernier, puis copier
+<I>source</I>
+
+dans
+<I>dest</I>.
+
+Cette option est utile avec le premier format ci-dessus.
+(Nouveauté dans fileutils-4.0).
+<DT><B>-g </B><I>groupe</I><B>, --group=</B><I>groupe</I>
+
+<DD>
+Donner aux fichiers installés et aux répertoires crées le
+<I>groupe</I>
+
+indiqué.
+La valeur par défaut est le groupe du processus appelant.
+Le
+<I>groupe</I>
+
+peut être mentionné sous forme numérique ou par son nom.
+<DT><B>-m </B><I>mode</I><B>, --mode=</B><I>mode</I>
+
+<DD>
+Donner aux fichiers installés et aux répertoires crées le
+<I>mode</I>
+
+indiqué. Celui-ci peut être fournit sous forme de nombre octal,
+ou sous forme de mode symbolique comme avec
+<B>chmod</B>,
+
+en utilisant 0 comme point de départ. Le mode par défaut est 0755,
+lecture, écriture, exécution pour le propriétaire, lecture et exécution
+pour le groupe et les autres.
+<DT><B>-o </B><I>propriétaire</I><B>, --owner=</B><I>propriétaire</I>
+
+<DD>
+Si
+<B>install</B>
+
+est invoqué avec les privilèges appropriés (exécuté sous root), il donne
+aux fichiers installés et aux répertoires créés le
+<I>propriétaire</I>
+
+indiqué. La valeur par défaut est `root'.
+Le
+<I>propriétaire</I>
+
+peut être mentionné sous forme numérique ou par son nom.
+<DT><B>-s, --strip</B>
+
+<DD>
+Réduire la table des symboles des exécutables binaires installés.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS DE SAUVEGARDE GNU</H2>
+
+Les versions GNU des programmes comme
+<B>cp</B>,
+
+<B>mv</B>,
+
+<B>ln</B>,
+
+<B>install</B>
+
+et
+<B>patch </B>
+
+créeront au besoin une copie de sauvegarde des fichiers à écraser,
+à modifier ou à détruire.
+On demande une copie de sauvegarde à l'aide de l'option -b,
+on indique la nomenclature à adopter avec l'option -V, et si
+la sauvegarde se fait avec un suffixe, celui-ci est précisé avec l'option -S.
+<DL COMPACT>
+<DT><B>-b, --backup</B>
+
+<DD>
+Créer une copie de sauvegarde des fichiers à écraser ou à détruire.
+<DT><B>-S </B><I>SUFFIXE</I><B>, --suffix=</B><I>SUFFIXE</I>
+
+<DD>
+Ajouter le
+<I>SUFFIXE</I>
+
+indiqué à chaque fichier de sauvegarde créé.
+Si cette option n'est pas indiquée, on utilisera la valeur de la variable
+d'environnement
+<B>SIMPLE_BACKUP_SUFFIX</B>.
+
+Si la variable
+<B>SIMPLE_BACKUP_SUFFIX</B>
+
+n'existe pas, la valeur par défaut est `~'.
+<DT><B>-V </B><I>MÉTHODE</I><B>, --version-control=</B><I>MÉTHODE</I>
+
+<DD>
+<DL COMPACT><DT><DD>
+Préciser la nomenclature des fichiers de sauvegarde
+La
+<I>MÉTHODE</I>
+
+indiquée peut être `numbered' (`t'), `existing' (`nil'), ou `never' (`simple').
+Si cette option n'est pas indiquée, la valeur de la variable
+d'environnement
+<B>VERSION_CONTROL</B>
+
+est utilisée, et si la variable
+<B>VERSION_CONTROL</B>
+
+n'existe pas, la valeur par défaut est `existing'.
+<P>
+
+Cette option correspond à la variable `version-control' sous Emacs.
+Les 
+<I>MÉTHODES</I>
+
+valides (les abréviations non-ambiguës sont acceptées) sont :
+<DL COMPACT>
+<DT><B>t</B>, <B>numbered</B>
+
+<DD>
+Toujours faire une sauvegarde numérotée.
+<DT><B>nil</B>, <B>existing</B>
+
+<DD>
+Faire une sauvegarde numérotée des fichiers en ayant déjà une précédente, et
+une sauvegarde simple pour les autres.
+<DT><B>never</B>, <B>simple</B>
+
+<DD>
+Faire toujours une sauvegarde simple.
+</DL>
+</DL>
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>OPTIONS STANDARDS GNU</H2>
+
+<DL COMPACT>
+<DT><B>--help</B>
+
+<DD>
+Afficher un message d'aide sur la sortie standard, et se terminer correctement.
+<DT><B>--version</B>
+
+<DD>
+Afficher un numéro de version sur la sortie standard, et se terminer
+correctement.
+<DT><B>--</B>
+
+<DD>
+Fin de la liste d'options.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+Les variables LANG, LC_ALL, LC_CTYPE et LC_MESSAGES
+ont leurs significations habituelles. Pour la version GNU, les variables
+SIMPLE_BACKUP_PREFIX et VERSION_CONTROL modifient les noms des fichiers
+de sauvegarde, comme décrit ci-dessus.
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.2 (qui dispose des options -c, -m, -o, -g et -s).
+<A NAME="lbAJ">&nbsp;</A>
+<H2>NOTES</H2>
+
+Cette page décrit la version de
+<B>install</B>
+
+se trouvant dans le paquetage fileutils-4.0.
+D'autres versions peuvent différer légèrement.
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1998-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">OPTIONS DE SAUVEGARDE GNU</A><DD>
+<DT><A HREF="#lbAG">OPTIONS STANDARDS GNU</A><DD>
+<DT><A HREF="#lbAH">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">NOTES</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:47 GMT, February 11, 2014
+</BODY>
+</HTML>

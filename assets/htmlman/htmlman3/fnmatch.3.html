@@ -1,0 +1,145 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FNMATCH</TITLE>
+</HEAD><BODY>
+<H1>FNMATCH</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fnmatch - Correspondance de noms de fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/fnmatch.h">fnmatch.h</A>&gt;</B>
+
+<B>int fnmatch (const char *</B><I>pattern</I><B>, const char *</B><I>string</I><B>, int flags</B><I>);</I>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>fnmatch</B>()
+
+vérifie si l'argument
+<I>string</I>
+
+correspond avec le motif
+<I>pattern</I>,
+
+qui peut contenir des caractères génériques.
+<P>
+
+L'argument 
+<I>flags</I>
+
+modifie le comportement de la fonction. C'est un <I>OU</I> binaire entre
+zéro ou plus des arguments suivants :
+<DL COMPACT>
+<DT><B>FNM_NOESCAPE</B>
+
+<DD>
+Traiter le backslash (\) comme un caractère ordinaire, et non pas un
+caractère d'échappement.
+<DT><B>FNM_PATHNAME</B>
+
+<DD>
+Ne faire correspondre un slash (/) dans
+<I>string</I>
+
+qu'avec un slash dans
+<I>pattern</I>,
+
+et pas par exemple avec une séquence [] contenant un slash.
+<DT><B>FNM_PERIOD</B>
+
+<DD>
+Un point en tête de
+<I>string</I>
+
+doit correspondre avec un point dans
+<I>pattern</I>.
+
+Un point est considéré comme en-tête de chaîne, s'il est le premier
+caractère de
+<I>string</I>,
+
+ou si 
+<B>FNM_PATHNAME </B>
+
+est choisi, et si le point suit immédiatement un slash.
+<DT><B>FNM_FILE_NAME</B>
+
+<DD>
+Il s'agit d'un synonyme GNU de <B>FNM_PATHNAME</B>.
+<DT><B>FNM_LEADING_DIR</B>
+
+<DD>
+(Extension GNU), la correspondance est considérée comme correcte si
+le motif correspond à un segment initial de la chaine suivi d'un slash.
+Cette option est réservée pour un usage interne dans la GlibC, et
+n'est pas toujours implémentée.
+<DT><B>FNM_CASEFOLD</B>
+
+<DD>
+(Extension GNU) Mise en correspondance sans différenciation des majuscules
+et minuscules.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Zéro si la chaîne
+<I>string</I>
+
+correspond au motif
+<I>pattern</I>,
+
+<B>FNM_NOMATCH</B>
+
+s'il n'y a pas correspondance, et une autre valeur non-nulle s'il y a erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ISO/IEC 9945-2: 1993 (POSIX.2).
+Les attributs
+<B>FNM_FILE_NAME</B>, <B>FNM_LEADING_DIR</B>, et <B>FNM_CASEFOLD</B>
+
+sont des extensions GNU
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+sh">sh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?3+glob">glob</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?7+glob">glob</A></B>(7)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:14 GMT, February 11, 2014
+</BODY>
+</HTML>

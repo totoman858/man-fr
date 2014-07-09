@@ -1,0 +1,168 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of UTIME</TITLE>
+</HEAD><BODY>
+<H1>UTIME</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+utime, utimes - Changer la date d'accès ou de modification d'un i-noeud.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/utime.h">utime.h</A>&gt;</B>
+
+<P>
+<B>int utime(const char *</B><I>filename</I><B>, struct utimbuf *</B><I>buf</I><B>);</B>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/sys/time.h">sys/time.h</A>&gt;</B>
+
+<P>
+<B>int utimes(char *</B><I>filename</I><B>, struct timeval *</B><I>tvp</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>utime</B>
+
+change les dates d'accès et de modification de l'i-noeud indiqué par
+<I>filename</I>
+
+pour les valeurs contenues respectivement dans les champs
+<I>actime</I> et <I>modtime</I>
+
+de
+<I>buf</I>
+
+Si
+<I>buf</I>
+
+est
+<B>NULL</B>,
+
+les dates d'accès et de modification sont mises à la date actuelle.
+la structure
+<I>utimbuf</I>
+
+est la suivante :
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+struct utimbuf {
+        time_t actime;  /* access time */
+        time_t modtime; /* modification time */
+};
+</PRE>
+
+</DL>
+
+<P>
+Dans la bibliothèque DLL Linux 4.4.1
+<B>utimes</B>
+
+est juste un recouvrement de
+<B>utime</B> :
+
+<I>tvp</I>[0].<I>tv_sec</I>
+
+est égal à
+<I>actime</I>,
+
+et
+<I>tvp</I>[1].<I>tv_sec</I>
+
+est égal à
+<I>modtime</I>.
+
+La structure
+<I>timeval</I>
+
+est la suivante&nbsp;:
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+struct timeval {
+        long    tv_sec;         /* secondes      */
+        long    tv_usec;        /* microsecondes */
+};
+</PRE>
+
+</DL>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>utime</B> et <B>utimes</B>
+
+renvoient 0 s'ils réussissent ou -1 s'ils échouent auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Plusieurs erreurs peuvent se produire, les plus courantes étant&nbsp;:
+<DL COMPACT>
+<DT><B>EACCES</B>
+
+<DD>
+L'accès en écriture au fichier est interdit.
+<DT><B>ENOENT</B>
+
+<DD>
+<I>filename</I>
+
+n'existe pas.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<B>utime</B> :
+
+SVr4, SVID, POSIX. SVr4 mentionne les conditions d'erreur supplémentaires
+EFAULT, EINTR, ELOOP, EMULTIHOP, ENAMETOOLONG, ENOLINK, ENOTDIR, EPERM, EROFS.
+<BR>
+
+<B>utimes</B> :
+
+BSD 4.3
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:57 GMT, February 11, 2014
+</BODY>
+</HTML>

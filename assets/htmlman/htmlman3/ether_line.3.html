@@ -1,0 +1,145 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ETHER_ATON</TITLE>
+</HEAD><BODY>
+<H1>ETHER_ATON</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ether_aton, ether_ntoa, ether_ntohost, ether_hosttonn, ether_line, ether_ntoa_r, ether_aton_r - Routines de manipulation d'adresses Ethernet.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/netinet/ether.h">netinet/ether.h</A>&gt;</B>
+
+<B>char *</B>
+<B>ether_ntoa(const struct ether_addr *</B><I>addr</I><B>);</B>
+
+<B>struct ether_addr *</B>
+<B>ether_aton(const char *</B><I>asc</I><B>);</B>
+
+<B>int</B>
+<B>ether_ntohost(char *</B><I>hostname</I><B>, const struct ether_addr *</B><I>addr</I><B>);</B>
+
+<B>int</B>
+<B>ether_hostton(const char *</B><I>hostname</I><B>, struct ether_addr *</B><I>addr</I><B>);</B>
+
+<B>int</B>
+<B>ether_line(const char *</B><I>line</I><B>, struct ether_addr *</B><I>addr</I><B>,</B>
+<B>    char *</B><I>hostname</I><B>);</B>
+
+/* extensions GNU */
+<BR>
+<B>char *</B>
+<B>ether_ntoa_r(const struct ether_addr *</B><I>addr</I><B>, char *</B><I>buf</I><B>);</B>
+
+<B>struct ether_addr *</B>
+<B>ether_aton_r(const char *</B><I>asc</I><B>, struct ether_addr *</B><I>addr</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>ether_aton()</B> convertit une adresse d'hôte Ethernet sur 48-bits <I>asc</I>
+de la notation standard hexadécimal et séparateurs deux-points en données
+binaire dans l'ordre des octets du réseau et renvoie un pointeur dans un buffer
+alloué de manière statique, que les appels ultérieurs écraseront. <B>ether_aton</B>
+renvoie NULL si l'adresse est invalide.
+<P>
+
+La fonction <B>ether_ntoa()</B> convertit l'adresse d'hôte Etherne binaire
+<I>addr</I> dans l'ordre des octets du réseau en une chaîne dans la notation
+standard hexadécimal et deux-points, en omettant les zéros en tête.
+La chaîne est renvoyée dans un buffer alloué de manière statique,
+que les appels ultérieurs écraseront.
+<P>
+
+La fonction <B>ether_ntohost()</B> met en correspondance une adresse Ethernet
+en un nom d'hôte trouvé dans
+<B>/etc/ethers</B>
+
+et renvoie une valeur non-nulle si elle ne trouve pas.
+<P>
+
+La fonction <B>ether_ntohost()</B> met en correspondance un nom d'hôte et
+une adresse Ethernet dans
+<B>/etc/ethers</B>
+
+et renvoie une valeur non-nulle si elle ne trouve pas.
+<P>
+
+La fonction <B>ether_line()</B> examine une ligne dans le format de
+<B>/etc/ethers</B>
+
+(adresse Ethernet suivi de blancs et d'un nom d'hôte&nbsp;; '#' introduit un
+commentaire) et renvoie une paire adresse / nom d'hôte, ou une valeur
+non-nulle si elle ne trouve pas.
+Le buffer pointé par
+<I>hostname</I>
+
+doit être assez grand, par exemple avoir la même longueur que la ligne
+<I>line</I>.
+
+<P>
+
+Les fonctions <B>ether_ntoa_r</B> et <B>ether_aton_r</B> sont des versions
+réentrantes et sûres en multi-threads de <B>ether_ntoa</B> et <B>ether_aton</B>
+respectivement, et n'utilisent pas de buffers statiques.
+<P>
+
+La structure <I>ether_addr</I> est définie dans <I>net/ethernet.h</I> ainsi&nbsp;:
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct ether_addr {
+  u_int8_t ether_addr_octet[6];
+}
+
+</PRE>
+
+</DL>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>BOGUES</H2>
+
+L'implémentation de ether_line() dans la GlibC 2.2.5 est erronée.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.3, SunOS
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+ethers">ethers</A></B>(5)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTIONS</H2>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">BOGUES</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTIONS</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:13 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,182 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETPWNAM</TITLE>
+</HEAD><BODY>
+<H1>GETPWNAM</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getpwnam, getpwuid - Lire un enregistrement du fichier des mots de passe.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/pwd.h">pwd.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<B>struct passwd *getpwnam (const char * </B><I>name</I><B>);</B>
+
+<B>struct passwd *getpwuid (uid_t </B><I>uid</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>getpwnam()</B> renvoie un pointeur sur une structure contenant
+les divers champs de l'enregistrement de <I>/etc/passwd</I> correspondant au
+nom d'utilisateur <I>name</I>.
+<P>
+
+La fonction <B>getpwuid()</B> renvoie un pointeur sur une structure contenant
+les divers champs de l'enregistrement de <I>/etc/passwd</I> correspondant au
+à l'ID d'utilisateur <I>uid</I>.
+<P>
+
+La structure <I>passwd</I> est définie dans <I>&lt;<A HREF="file:///usr/include/pwd.h">pwd.h</A>&gt;</I> ainsi :
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct passwd {
+  char   *pw_name;   /* Nom d'utilisateur             */
+  char   *pw_passwd; /* Mot de passe                  */
+  uid_t   pw_uid;    /* ID de l'utilisateur           */
+  gid_t   pw_gid;    /* ID du groupe de l'utilisateur */
+  char   *pw_gecos;  /* Nom réel de l'utilisateur     */
+  char   *pw_dir;    /* Répertoire de connexion       */
+  char   *pw_shell;  /* Programme Shell de connexion  */
+};
+
+</PRE>
+
+</DL>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Les fonctions <B>getpwnam()</B> et <B>getpwuid()</B> renvoient un pointeur sur
+une structure passwd, ou NULL si une erreur se produit, ou si l'enregistrement correspondant
+n'est pas trouvé. En cas d'erreur,
+<I>errno</I>
+
+est rempli.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>0</B> ou <B>ENOENT</B> ou <B>ESRCH</B> ou <B>EBADF</B> ou <B>EPERM</B> ou ... 
+
+<DD>
+Le nom
+<I>name</I>
+
+ou l'identifiant
+<I>uid</I>
+
+n'ont pas été trouvés.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour allouer la structure passwd.
+
+<DT><B>EIO</B>
+
+<DD>
+Erreur d'entrée/sortie.
+<DT><B>EINTR</B>
+
+<DD>
+Un signal a été capturé.
+<DT><B>EMFILE</B>
+
+<DD>
+Le nombre maximal (OPEN_MAX) de fichiers ouverts pour le processus est atteint.
+<DT><B>ENFILE</B>
+
+<DD>
+Le nombre maximal de fichiers ouverts sur le système est atteint.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/etc/passwd</I>
+
+<DD>
+Base de données des mots de passe.
+
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3, POSIX, BSD 4.3
+<A NAME="lbAI">&nbsp;</A>
+<H2>NOTES</H2>
+
+La description &quot;VALEUR RENVOYÉE&quot; ci-dessu vient de Posix.1-2001. Elle ne
+considère pas le cas &quot;non trouvé&quot; commme une erreur, et ne spécifie pas
+<I>errno</I>
+
+dans ce cas. Cela rend la détection d'erreur impossible. On peut dire que
+d'après Posix,
+<I>errno</I>
+
+est inchangé dans le cas où aucune entrée n'est trouvée. Des essais sur
+de nombreux systèmes Unix ont fait apparaître différentes valeurs dans ce
+cas&nbsp;: 0, ENOENT, EBADF, ESRCH, EWOULDBLOCK, EPERM et probablement d'autres.
+
+
+
+
+
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+fgetpwent">fgetpwent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getgrnam">getgrnam</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getpwent">getpwent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setpwent">setpwent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+endpwent">endpwent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getpw">getpw</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+putpwent">putpwent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+passwd">passwd</A></B>(5)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">NOTES</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:26 GMT, February 11, 2014
+</BODY>
+</HTML>

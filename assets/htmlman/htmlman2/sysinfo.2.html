@@ -1,0 +1,139 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SYSINFO</TITLE>
+</HEAD><BODY>
+<H1>SYSINFO</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+sysinfo - Obtenir des informations statistiques sur le système.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/sysinfo.h">sys/sysinfo.h</A>&gt;</B>
+
+<P>
+<B>int sysinfo(struct sysinfo *</B><I>info</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Jusqu'au noyau 2.3.16,
+<B>sysinfo</B>
+
+renvoyait les informations dans la structure suivante&nbsp;:
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+struct sysinfo {
+  long uptime;             /* Secondes écoulées depuis le boot.*/
+  unsigned long loads[3];  /* Charges depuis 1, 5, et 15 mn.   */
+  unsigned long totalram;  /* Mémoire totale du système.       */
+  unsigned long freeram;   /* Mémoire disponible.              */
+  unsigned long sharedram; /* Mémoire partagée.                */
+  unsigned long bufferram; /* Mémoire utilisée par les buffers */
+  unsigned long totalswap; /* Taille totale du swap.           */
+  unsigned long freeswap;  /* Espace disponible dans le swap.  */
+  unsigned short procs;    /* Nombre de processus actuels.     */
+  char          _f[22];    /* Remplissage jusqu'à 64 octets.   */
+};
+</PRE>
+
+</DL>
+
+<P>
+et les tailles étaient fournies en octets. Depuis le noyau 2.3.23 (i386) et
+2.3.48 (toutes architectures), la structure est devenue :
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+struct sysinfo {
+  long uptime;             /* Secondes écoulées depuis le boot.*/
+  unsigned long loads[3];  /* Charges depuis 1, 5, et 15 mn.   */
+  unsigned long totalram;  /* Mémoire totale du système.       */
+  unsigned long freeram;   /* Mémoire disponible.              */
+  unsigned long sharedram; /* Mémoire partagée.                */
+  unsigned long bufferram; /* Mémoire utilisée par les buffers */
+  unsigned long totalswap; /* Taille totale du swap.           */
+  unsigned long freeswap;  /* Espace disponible dans le swap.  */
+  unsigned short procs;    /* Nombre de processus actuels.     */
+  unsigned long totalhigh; /* Taille totale mémoire haute.     */
+  unsigned long freehigh;  /* Taille mémoire haute libre.      */
+  usigned int   mem_unit;  /* Taille de bloc mémoire en octets */
+  char _f [20 - 2*sizeof(long) - sizeof(int)];  /* remplissage */
+};
+</PRE>
+
+</DL>
+
+<P>
+et les tailles sont indiqués sous forme de multiples de <I>mem_unit</I>.
+<P>
+<B>sysinfo</B>
+
+permet d'obtenir facilement des statistiques systèmes. C'est
+plus portable que la lecture de <I>/dev/kmem</I>.
+Pour avoir un exemple d'utilisation, reportez-vous à
+<B><A HREF="/cgi-bin/man/man2html?2+intro">intro</A></B>(2).
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>sysinfo</B>
+
+renvoie 0 s'il réussit et -1 s'il échoue auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EFAULT</B>
+
+<DD>
+<I>struct&nbsp;sysinfo</I> pointe en dehors de l'espace d'adressage accessible.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Cette fonction est spécifique Linux et ne doit pas être employée dans des
+programmes destinés à être portables.
+<P>
+Le noyau Linux dispose d'un appel-système <B>sysinfo</B> depuis la version
+0.98pl6. La bibliothèque libc de Linux contient une routine <B>sysinfo</B>()
+depuis la version 5.3.5, et la bibliothèque glibc depuis 1.90.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+proc">proc</A></B>(5)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:01 GMT, February 11, 2014
+</BODY>
+</HTML>

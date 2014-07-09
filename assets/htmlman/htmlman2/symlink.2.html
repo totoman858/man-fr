@@ -1,0 +1,215 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SYMLINK</TITLE>
+</HEAD><BODY>
+<H1>SYMLINK</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+symlink - Créer un nouveau nom pour un fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int symlink(const char *</B><I>cible</I><B>, const char *</B><I>nom</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>symlink</B>
+
+crée un lien symbolique avec le
+<I>nom</I>
+
+indiqué, et qui pointe sur la
+<I>cible</I>.
+
+<P>
+Les liens sont interprétés à l'exécution, comme si le contenu du
+lien était remplacé par le chemin d'accès pour trouver un fichier ou
+un répertoire.
+<P>
+Les liens symboliques peuvent contenir les composants
+<B>.</B> et <B>..</B>
+
+pour le chemin, qui (s'ils sont utilisés au début du lien) se
+réfèrent au répertoire où le lien réside et à son répertoire parent.
+<P>
+Un lien symbolique (aussi nomme soft link) peut pointer vers un fichier
+existant ou sur un fichier non-existant.
+<P>
+Les permissions d'accès à un lien symbolique sont sans importance,
+le propriétaire est ignoré lorsque l'on suit le lien, il n'est
+vérifié que pour supprimer ou renommer le lien si celui ci se
+trouve dans un répertoire avec le Sticky-Bit positionné.
+<P>
+Si le
+<I>nom</I>
+
+existe il ne sera 
+<I>pas</I>
+
+écrasé.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>symlink</B>
+
+renvoie zéro s'il réussit ou -1 s'il échoue auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+le système de fichier contenant le
+<I>nom</I>
+
+ne permet pas la création de liens symboliques.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>oldpath</I> ou <I>newpath</I> pointent en dehors de l'espace d'adressage accessible.
+
+<DT><B>EACCES</B>
+
+<DD>
+L'écriture dans le répertoire du
+<I>nom</I>
+
+est interdite
+pour l'UID effectif du processus, ou l'un des répertoire composant le
+<I>nom</I>
+
+ne permet pas l'exécution.
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+<I>cible</I> ou <I>nom</I> est trop long.
+
+<DT><B>ENOENT</B>
+
+<DD>
+Un répertoire dans le chemin
+<I>nom</I>
+
+n'existe pas ou est un lien symbolique pointant nulle part. Ou encore
+<I>cible</I>
+
+est une chaîne vide.
+<DT><B>ENOTDIR</B>
+
+<DD>
+Un composant du chemin d'accès
+<I>nom</I>
+
+n'est pas un répertoire.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour le noyau.
+<DT><B>EROFS</B>
+
+<DD>
+Le fichier est sur un système de fichiers en lecture seule.
+<DT><B>EEXIST</B>
+
+<DD>
+Le
+<I>nom</I>
+
+existe déjà.
+<DT><B>ELOOP</B>
+
+<DD>
+Le
+<I>nom</I>
+
+contient une référence circulaire (à travers un lien symbolique).
+<DT><B>ENOSPC</B>
+
+<DD>
+Le périphérique n'a plus assez de place pour une entrée de répertoire.
+<DT><B>EIO</B>
+
+<DD>
+Une erreur d'entrée/sortie bas-niveau s'est produite.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Il n'y a pas de vérification de l'existence de la
+<I>cible</I>.
+
+<P>
+Effacer le nom référençant un lien symbolique effacera effectivement
+le fichier (à moins qu'il ait d'autres liens matériels). Si ce 
+comportement est indésirable, utiliser
+<B>link</B>.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID, POSIX, BSD 4.3. SVr4 mentionne des codes d'erreur supplémentaires
+EDQUOT, et ENOSYS.
+<A NAME="lbAI">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Voir
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2)
+
+concernant les multiples fichiers avec le même nom, et NFS.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+link">link</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+readlink">readlink</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+unlink">unlink</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+rename">rename</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+lstat">lstat</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?1+ln">ln</A>(1).</B>
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">BOGUES</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:51 GMT, February 11, 2014
+</BODY>
+</HTML>

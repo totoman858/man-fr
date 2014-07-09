@@ -1,0 +1,419 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ERRNO</TITLE>
+</HEAD><BODY>
+<H1>ERRNO</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+errno - Code de la dernière erreur.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+#include &lt;<A HREF="file:///usr/include/errno.h">errno.h</A>&gt;
+<P>
+<B>extern int </B><I>errno</I><B>;</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La variable entière
+<B>errno</B>
+
+est renseignée par les appels systèmes (et quelques fonctions de bibliothèque)
+pour expliquer les conditions d'erreurs. Sa valeur n'est significative que
+lorsque l'appel système a échoué (généralement en renvoyant -1), car même en
+cas de réussite une fonction de bibliothèque peut modifier
+<B>errno</B>.
+
+<P>
+Parfois, si -1 est une valeur de retour légale, il faut positionner
+<B>errno</B>
+
+à 0 avant d'effectuer l'appel système, de manière à détecter une erreur
+éventuelle. C'est le cas par exemple de <B><A HREF="/cgi-bin/man/man2html?2+getpriority">getpriority</A></B>(2).
+<P>
+<B>errno</B>
+
+est définie par le standard ISO C comme une <I>lvalue modifiable</I>,
+de type <B>int</B>, et n'a pas besoin d'être définie explicitement.
+<B>errno</B>
+
+peut être une macro.
+<B>errno </B>
+
+est locale à un thread ; lui affecter une valeur dans
+un thread ne modifie pas sa valeur dans les autres threads.
+<P>
+Les codes d'erreurs valides sont tous non-nuls.
+<B>errno</B>
+
+n'est jamais mis à zéro par une fonction de la bibliothèque.
+Toutes les erreurs détaillées dans POSIX.1 doivent avoir des
+valeurs différents.
+<P>
+<P>
+POSIX.1 (édition 2001) définit les noms symboliques ci-dessous
+pour les codes d'erreurs. Parmi eux, <B>EDOM</B> et <B>ERANGE</B>
+sont également dans le standard C ISO. L'amendement 1 au standard
+C ISO définit également le code d'erreur <B>EILSEQ</B> pour les
+erreurs de codage dans les caractères étendus, ou multi-octets.
+<P>
+<DL COMPACT>
+<DT><B>E2BIG</B>
+
+<DD>
+Liste d'arguments trop longue.
+<DT><B>EACCES</B>
+
+<DD>
+Interdiction d'accès.
+<DT><B>EADDRINUSE</B>
+
+<DD>
+Adresse déjà en cours d'utilisation.
+<DT><B>EADDRNOTAVAIL</B>
+
+<DD>
+Adresse non disponible.
+<DT><B>EAFNOSUPPORT</B>
+
+<DD>
+Famille d'adresses non supportée.
+<DT><B>EAGAIN</B>
+
+<DD>
+Ressource indisponible temporairement
+<DT><B>EALREADY</B>
+
+<DD>
+Connexion déjà en cours.
+<DT><B>EBADF</B>
+
+<DD>
+Mauvais descripteur de fichier.
+<DT><B>EBADMSG</B>
+
+<DD>
+Mauvais message.
+<DT><B>EBUSY</B>
+
+<DD>
+Ressource occupée.
+<DT><B>ECANCELED</B>
+
+<DD>
+Opération annulée.
+<DT><B>ECHILD</B>
+
+<DD>
+Pas de processus fils.
+<DT><B>ECONNABORTED</B>
+
+<DD>
+Connexion abandonnée.
+<DT><B>ECONNREFUSED</B>
+
+<DD>
+Connexion refusée.
+<DT><B>ECONNRESET</B>
+
+<DD>
+Connexion réinitialisée.
+<DT><B>EDEADLK</B>
+
+<DD>
+Blocage d'une ressource évité.
+<DT><B>EDESTADDRREQ</B>
+
+<DD>
+Adresse de destination nécessaire.
+<DT><B>EDOM</B>
+
+<DD>
+Erreur de domaine.
+<DT><B>EDQUOT</B>
+
+<DD>
+Réservé
+<DT><B>EEXIST</B>
+
+<DD>
+Fichier existant.
+<DT><B>EFAULT</B>
+
+<DD>
+Mauvais adresse.
+<DT><B>EFBIG</B>
+
+<DD>
+Fichier trop grand.
+<DT><B>EHOSTUNREACH</B>
+
+<DD>
+Hôte non accessible.
+<DT><B>EIDRM</B>
+
+<DD>
+Identificateur de ressource supprimé.
+<DT><B>EILSEQ</B>
+
+<DD>
+Séquence d'octets illégale.
+<DT><B>EINPROGRESS</B>
+
+<DD>
+Opération en cours.
+<DT><B>EINTR</B>
+
+<DD>
+Appel système interrompu.
+<DT><B>EINVAL</B>
+
+<DD>
+Argument invalide.
+<DT><B>EIO</B>
+
+<DD>
+Erreur d'entrée/sortie.
+<DT><B>EISCONN</B>
+
+<DD>
+La socket est connectée.
+<DT><B>EISDIR</B>
+
+<DD>
+Est un répertoire.
+<DT><B>ELOOP</B>
+
+<DD>
+Trop de liens symboliques rencontrés.
+<DT><B>EMFILE</B>
+
+<DD>
+Trop de fichiers ouverts.
+<DT><B>EMLINK</B>
+
+<DD>
+Trop de liens symboliques.
+<DT><B>EMSGSIZE</B>
+
+<DD>
+Longueur du buffer de message inappropriée.
+<DT><B>EMULTIHOP</B>
+
+<DD>
+Réservé.
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+Nom de fichier trop long.
+<DT><B>ENETDOWN</B>
+
+<DD>
+Le réseau est désactivé.
+<DT><B>ENETRESET</B>
+
+<DD>
+Connexion annulée par le réseau.
+<DT><B>ENETUNREACH</B>
+
+<DD>
+Réseau inaccessible.
+<DT><B>ENFILE</B>
+
+<DD>
+Trop de fichiers ouverts sur le système.
+<DT><B>ENOBUFS</B>
+
+<DD>
+Plus de buffers disponibles.
+
+<DT><B>ENODATA</B>
+
+<DD>
+Pas de message disponible dans la file STREAM.
+<DT><B>ENODEV</B>
+
+<DD>
+Périphérique inexistant.
+<DT><B>ENOENT</B>
+
+<DD>
+Fichier ou répertoire inexistant.
+<DT><B>ENOEXEC</B>
+
+<DD>
+Exécution impossible.
+<DT><B>ENOLCK</B>
+
+<DD>
+Pas de verrou disponible.
+<DT><B>ENOLINK</B>
+
+<DD>
+Réservé.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire.
+<DT><B>ENOMSG</B>
+
+<DD>
+Pas de message du type attendu.
+<DT><B>ENOTPROTOOPT</B>
+
+<DD>
+Protocole indisponible.
+<DT><B>ENOSPC</B>
+
+<DD>
+Plus de place sur le périphérique.
+
+<DT><B>ENOSR</B>
+
+<DD>
+Pas de ressource STREAM.
+
+<DT><B>ENOSTR</B>
+
+<DD>
+Pas un STREAM.
+<DT><B>ENOSYS</B>
+
+<DD>
+Fonction non implémentée.
+<DT><B>ENOTCON</B>
+
+<DD>
+La socket n'est pas connectée.
+<DT><B>ENOTDIR</B>
+
+<DD>
+Pas un répertoire.
+<DT><B>ENOTEMPTY</B>
+
+<DD>
+Répertoire non vide.
+<DT><B>ENOTSOCK</B>
+
+<DD>
+Pas une socket.
+<DT><B>ENOTSUP</B>
+
+<DD>
+Opération non supportée.
+<DT><B>ENOTTY</B>
+
+<DD>
+Opération de contrôle d'Entrée/Sortie invalide.
+<DT><B>ENXIO</B>
+
+<DD>
+Périphérique ou adresse inexistant.
+<DT><B>EOPNOTSUPP</B>
+
+<DD>
+Opération non supportée par la socket.
+<DT><B>EOVERFLOW</B>
+
+<DD>
+Valeur trop grande pour le type de donnée.
+<DT><B>EPERM</B>
+
+<DD>
+Opération interdite.
+<DT><B>EPIPE</B>
+
+<DD>
+Tube sans lecteur.
+<DT><B>EPROTO</B>
+
+<DD>
+Erreur de protocole.
+<DT><B>EPROTONOSUPPORT</B>
+
+<DD>
+Protocole non supporté.
+<DT><B>EPROTOTYPE</B>
+
+<DD>
+Mauvais type de protocole pour la socket.
+<DT><B>ERANGE</B>
+
+<DD>
+Résultat trop grand.
+<DT><B>EROFS</B>
+
+<DD>
+Système de fichiers en lecture-seule.
+<DT><B>ESPIPE</B>
+
+<DD>
+Recherche invalide.
+<DT><B>ESRCH</B>
+
+<DD>
+Processus inexistant.
+<DT><B>ESTALE</B>
+
+<DD>
+Réservé.
+
+<DT><B>ETIME</B>
+
+<DD>
+Dépassement du délai ioctl() STREAM.
+<DT><B>ETIMEDOUT</B>
+
+<DD>
+Délai maximal écoulé.
+<DT><B>ETXTBSY</B>
+
+<DD>
+Fichier exécutable occupé.
+<DT><B>EWOULDBLOCK</B>
+
+<DD>
+L'opération serait bloquant (même valeur que
+<B>EAGAIN</B>)
+
+<DT><B>EXDEV</B>
+
+<DD>
+Lien inapproprié.
+<P>
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+perror">perror</A></B>(3)
+
+<B><A HREF="/cgi-bin/man/man2html?3+strerror">strerror</A></B>(3)
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:07 GMT, February 11, 2014
+</BODY>
+</HTML>

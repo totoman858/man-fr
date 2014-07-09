@@ -1,0 +1,145 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STRING</TITLE>
+</HEAD><BODY>
+<H1>STRING</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+string, strcasecmp, strcat, strchr, strcmp, strcoll, strcpy, strcspn, strdup, strfry, strlen, strncat, strncmp, strncpy, strncasecmp, strpbrk, strrchr, strsep, strspn, strstr, strtok, strxfrm, index, rindex - Opérations sur les chaînes de caractères.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/strings.h">strings.h</A>&gt;</B>
+
+<B>int strcasecmp (const char *</B><I>s1</I><B>, const char *</B><I>s2</I><B>);</B>
+
+<B>int strncasecmp (const char *</B><I>s1, const char *</I><B>s2</B><I>, size_t </I><B>n</B><I>);</I>
+
+<B>char * index (const char *</B><I>s</I><B>, int </B><I>c</I><B>);</B>
+
+<B>char *rindex (const char *</B><I>s</I><B>, int </B><I>c</I><B>);</B>
+
+<B>#include &lt;<A HREF="file:///usr/include/string.h">string.h</A>&gt;</B>
+
+<B>char *strcat (char *</B><I>dest</I><B>, const char *</B><I>src</I><B>);</B>
+
+<B>char *strchr (const char *</B><I>s</I><B>, int </B><I>c</I><B>);</B>
+
+<B>int strcmp (const char *</B><I>s1</I><B>, const char *</B><I>s2</I><B>);</B>
+
+<B>int strcoll (const char *</B><I>s1</I><B>, const char *</B><I>s2</I><B>);</B>
+
+<B>char *strcpy (char *</B><I>dest</I><B>, const char *</B><I>src</I><B>);</B>
+
+<B>size_t strcspn (const char *</B><I>s</I><B>, const char *</B><I>reject</I><B>);</B>
+
+<B>char *strdup (const char *</B><I>s</I><B>);</B>
+
+<B>char *strfry (char *</B><I>string</I><B>);</B>
+
+<B>size_t strlen (const char *</B><I>s</I><B>);</B>
+
+<B>char *strncat (char *</B><I>dest</I><B>, const char *</B><I>src</I><B>, size_t </B><I>n</I><B>);</B>
+
+<B>int strncmp (const char *</B><I>s1</I><B>, const char *</B><I>s2</I><B>, size_t </B><I>n</I><B>);</B>
+
+<B>char *strncpy (char *</B><I>dest</I><B>, const char *</B><I>src</I><B>, size_t </B><I>n</I><B>);</B>
+
+<B>char *strpbrk (const char *</B><I>s</I><B>, const char *</B><I>accept</I><B>);</B>
+
+<B>char *strrchr (const char *</B><I>s</I><B>, int </B><I>c</I><B>);</B>
+
+<B>char *strsep (char **</B><I>stringp</I><B>, const char *</B><I>delim</I><B>);</B>
+
+<B>size_t strspn (const char *</B><I>s</I><B>, const char *</B><I>accept</I><B>);</B>
+
+<B>char *strstr (const char *</B><I>haystack</I><B>, const char *</B><I>needle</I><B>);</B>
+
+<B>char *strtok (char *</B><I>s</I><B>, const char *</B><I>delim</I><B>);</B>
+
+<B>size_t strxfrm (char *</B><I>dest</I><B>, const char *</B><I>src</I><B>, size_t </B><I>n</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ces fonctions effectuent diverses opérations sur des chaînes
+de caractères se terminant par un caractère nul. Voyez les pages
+de manuel individuelles pour plus de détails.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+index">index</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+rindex">rindex</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strcasecmp">strcasecmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strcat">strcat</A>(3),</B>
+
+<B><A HREF="/cgi-bin/man/man2html?3+strchr">strchr</A></B>(3)
+
+<B><A HREF="/cgi-bin/man/man2html?3+strcmp">strcmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strcoll">strcoll</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strcpy">strcpy</A>(3),</B>
+
+<B><A HREF="/cgi-bin/man/man2html?3+strcspn">strcspn</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strdup">strdup</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strfry">strfry</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strlen">strlen</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strncat">strncat</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strncmp">strncmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strncpy">strncpy</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strncasecmp">strncasecmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strpbrk">strpbrk</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strrchr">strrchr</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strsep">strsep</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strspn">strspn</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strstr">strstr</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strtok">strtok</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strxfrm">strxfrm</A></B>(3)
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:19 GMT, February 11, 2014
+</BODY>
+</HTML>

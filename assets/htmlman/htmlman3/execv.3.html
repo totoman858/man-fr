@@ -1,0 +1,305 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of EXEC</TITLE>
+</HEAD><BODY>
+<H1>EXEC</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+execl, execlp, execle, execv, execvp - Exécuter un programme.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>extern char **environ;</B>
+
+<P>
+<B>int execl (const char *</B><I>path</I><B>, const char *</B><I>arg</I><B>, ...);</B>
+
+<BR>
+
+<B>int execlp (const char *</B><I>file</I><B>, const char *</B><I>arg</I><B>, ...);</B>
+
+<BR>
+
+<B>int execle (const char *</B><I>path</I><B>, const char *</B><I>arg</I>
+
+<B>, ..., char * const </B><I>envp</I><B>[]);</B>
+
+<BR>
+
+<B>int execv (const char *</B><I>path</I><B>, char *const </B><I>argv</I><B>[]);</B>
+
+<BR>
+
+<B>int execvp (const char *</B><I>file</I><B>, char *const </B><I>argv</I><B>[]);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La famille de fonctions
+<B>exec</B>
+
+remplace l'image mémoire du processus en cours par un nouveau processus.
+Les fonctions décrites dans cette page sont en réalité des frontaux pour
+l'appel système
+<B><A HREF="/cgi-bin/man/man2html?2+execve">execve</A></B>(2).
+
+(Voir la page de
+<B>execve</B>
+
+pour des informations détaillées sur le remplacement du processus en cours.)
+<P>
+
+L'argument initial de toutes ces fonctions est le chemin d'accès du fichier
+à exécuter.
+<P>
+
+Les arguments
+<I>const char *arg</I>
+
+ainsi que les points de suspension des fonctions
+<B>execl</B>,
+
+<B>execlp</B>,
+
+et
+<B>execle</B>
+
+peuvent être vues comme des
+<I>arg0</I>,
+
+<I>arg1</I>,
+
+...,
+<I>argn</I>.
+
+Ensemble ils décrivent une liste d'un ou plusieurs pointeurs sur des
+chaînes de caractères terminées par des caractères nuls, qui constituent les
+arguments disponibles pour le programme à exécuter. 
+Par convention le premier argument doit pointer sur le nom du fichier associé 
+au programme à exécuter. La liste des arguments
+<I>doit</I>
+
+se terminer par un pointeur
+<B>NULL</B>.
+
+<P>
+
+Les fonctions
+<B>execv</B>
+
+et
+<B>execvp</B>
+
+utilisent un tableau de pointeurs sur des chaînes de caractères terminées
+par des caractères nuls, qui constituent les
+arguments disponibles pour le programme à exécuter. 
+Par convention le premier argument doit pointer sur le nom du fichier associé
+au programme à exécuter. Le tableau de pointeur
+<I>doit</I>
+
+se terminer par un pointeur
+<B>NULL</B>.
+
+<P>
+
+La fonction
+<B>execle</B>
+
+peut également indiquer l'environnement du processus à exécuter en faisant
+suivre le pointeur
+<B>NULL</B>
+
+qui termine la liste d'arguments, ou le pointeur
+<B>NULL</B>
+
+de la table par  un paramètre supplémentaire.
+Ce paramètre est un tableau de pointeurs sur des chaînes de caractères terminées
+par des caractères nuls, qui 
+<I>doit</I>
+
+se terminer par un pointeur
+<B>NULL</B>.
+
+Les autres fonctions fournissent au nouveau processus l'environnement
+constitué par la variable externe
+<I>environ</I>.
+
+<P>
+
+Certaines de ces fonctions ont une sémantique spécifique.
+<P>
+
+Les fonctions
+<B>execlp</B>
+
+et
+<B>execvp</B>
+
+agiront comme le shell dans la recherche du fichier exécutable si
+le nom fourni ne contient pas de slash (/).  Le chemin de recherche
+est spécifié dans la variable d'environnement
+<B>PATH</B>.
+
+Si cette variable n'est pas définie, le chemin par défaut sera
+``/bin:/usr/bin:''.  De plus certaines
+erreurs sont traitées de manière spécifique.
+<P>
+
+Si la permission d'accès au fichier est refusée
+(<B>execve</B>
+
+renvoie
+<B>EACCES</B>),
+
+ces fonctions continueront à parcourir le reste du chemin de recherche. Si
+aucun fichier n'est trouvé, elle reviendront, et 
+<I>errno</I>
+
+contiendra le code d'erreur
+<B>EACCES</B>.
+
+<P>
+
+Si l'en-tête d'un fichier n'est pas reconnu
+(<B>execve</B>
+
+renvoie
+<B>ENOEXEC</B>),
+
+ces fonctions exécuteront un shell avec le chemin d'accès au fichier
+en tant que premier argument. Si ceci échoue, aucune recherche supplémentaire
+n'est effectuée.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Si l'une quelconque des fonctions
+<B>exec</B>
+
+revient à l'appelant, c'est qu'une erreur a eu lieu. La valeur de retour est
+-1, et 
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/bin/sh</I>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Toutes ces fonctions
+peuvent échouer et positionner
+<I>errno</I>
+
+sur n'importe quelle erreur décrite dans la fonction
+<B><A HREF="/cgi-bin/man/man2html?2+execve">execve</A></B>(2).
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+sh">sh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+execve">execve</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?5+environ">environ</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?2+ptrace">ptrace</A></B>(2)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>COMPATIBILITÉ</H2>
+
+Sur certains systèmes, le chemin de recherche par défaut (employé si l'environnement ne contient
+pas la variable <B>PATH</B>) contient
+le répertoire courant à la suite de
+<I>/bin</I>
+
+et
+<I>/usr/bin</I>,
+
+afin d'éviter les chevaux de Troie. Linux utilise
+encore le répertoire courant en premier dans ce chemin de recherche par défaut.
+<P>
+
+Le comportement de
+<B>execlp</B>
+
+et
+<B>execvp</B>
+
+lorsqu'une erreur se produit est une pratique historique mais n'a
+traditionnellement jamais été documenté, ni spécifié dans le standard
+POSIX.
+Lorsque l'erreur ETXTBSY se déclenche (fichier exécutable ouvert en
+écriture par un autre processus), BSD (et peut-être d'autres systèmes)
+endorment le processus appelant puis réiterent l'opération. Linux
+considère cette situation comme une erreur grave, et revient immédiatement.
+<P>
+
+Habituellement, les fonctions
+<B>execlp</B>
+
+et
+<B>execvp</B>
+
+ignoraient toutes les erreurs sauf celles décrites ci-dessus, 
+<B>ENOMEM</B>
+
+et
+<B>E2BIG</B>.
+
+Désormais, elles reviennent à l'appelant si une autre erreur que celles-ci
+se produit.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<B>execl</B>,
+
+<B>execv</B>,
+
+<B>execle</B>,
+
+<B>execlp</B>
+
+et
+<B>execvp</B>
+
+sont conformes à IEEE Std1003.1-88 (``POSIX.1'').
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">ERREURS</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">COMPATIBILITÉ</A><DD>
+<DT><A HREF="#lbAJ">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:30 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,80 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of EXPM1</TITLE>
+</HEAD><BODY>
+<H1>EXPM1</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+expm1, expm1f, expm1l - Exponentielle moins 1.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/math.h">math.h</A>&gt;</B>
+
+<B>double expm1 ( double </B><I>x</I><B>);</B>
+
+<B>float expm1 ( float </B><I>x</I><B>);</B>
+
+<B>long double expm1 ( long double </B><I>x</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>expm1(</B><I>x</I><B>)</B>
+
+renvoie la valeur équivalente à `exp (<I>x</I>) - 1'. Elle est calculée de
+telle manière que la précision est conservée même lorsque <I>x</I> est
+proche de zéro, alors que `exp (<I>x</I>) - 1' serait imprécise car les
+deux nombres sont trop proches.
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+Pour utiliser les fonctions de la bibliothèque mathématique, il ne faut
+pas oublier d'ajouter l'argument <I>-lm</I> sur la ligne de commande de
+<B><A HREF="/cgi-bin/man/man2html?1+cc">cc</A></B>(1) ou <B><A HREF="/cgi-bin/man/man2html?1+ld">ld</A></B>(1), lors de l'édition des liens.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD, C99.
+Les variantes float et long double sont des demandes C99.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+exp">exp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+log">log</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+log1p">log1p</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:09 GMT, February 11, 2014
+</BODY>
+</HTML>

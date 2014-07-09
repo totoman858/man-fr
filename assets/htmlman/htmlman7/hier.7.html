@@ -1,0 +1,642 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of HIER</TITLE>
+</HEAD><BODY>
+<H1>HIER</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+hier - Description de la hiérarchie du système de fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Un système Linux typique contient, entre autres, les répertoires suivants :
+<DL COMPACT>
+<DT><I>/</I>
+
+<DD>
+Le répertoire racine (root). Le point de départ de toute l'arborescence.
+<DT><I>/bin</I>
+
+<DD>
+Ce répertoire contient les programmes exécutables nécessaires en
+mode mono-utilisateur pour démarrer ou réparer le système.
+<DT><I>/boot</I>
+
+<DD>
+Contient les fichiers statiques utilisés par le chargeur du système. Ce répertoire
+ne contient que les fichiers nécessaires pour le chargeur. Les fichiers de
+configuration pour l'installation du chargeur doivent résider dans
+<I>/sbin</I>
+
+et
+<I>/etc</I>.
+
+<DT><I>/dev</I>
+
+<DD>
+Fichiers spéciaux se rapportant à des périphériques physique. Voir
+<B><A HREF="/cgi-bin/man/man2html?1+mknod">mknod</A></B>(1).
+
+<DT><I>/dos</I>
+
+<DD>
+Si Linux et MS-DOS sont utilisés conjointement sur le même ordinateur,
+c'est le point de montage classique du système de fichiers DOS.
+<DT><I>/etc</I>
+
+<DD>
+Contient les fichiers de configuration spécifiques à la machine.
+Certains ensembles de programmes volumineux, comme X11, peuvent
+disposer de leurs propres sous-répertoires dans
+<I>/etc</I>.
+
+Les fichiers de configuration relatifs au site entier devraient se trouver dans
+<I>/usr/etc</I>.
+
+Néanmoins, les programmes doivent toujours les chercher dans
+<I>/etc</I>
+
+et l'on peut avoir des liens en direction des fichiers de
+<I>/usr/etc</I>.
+
+<DT><I>/etc/opt</I>
+
+<DD>
+Fichiers de configuration spécifiques à l'hôte, pour les applications installées
+dans
+<I>/opt</I>.
+
+<DT><I>/etc/sgml</I>
+
+<DD>
+Ce répertoire contient les fichiers de configuration pour SGML et XML (facultatif).
+<DT><I>/etc/skel</I>
+
+<DD>
+Quand un nouveau compte utilisateur est créé, les fichiers de ce répertoire sont
+habituellement copiés dans le répertoire personnel du nouveau compte.
+<DT><I>/etc/X11</I>
+
+<DD>
+Fichiers de configuration pour le système X-Window.
+<DT><I>/home</I>
+
+<DD>
+Sur les machines offrant des répertoires personnels pour les utilisateur, ils
+sont généralement placés sous ce répertoire, directement ou avec une arborescence
+définie par l'administration locale.
+<DT><I>/lib</I>
+
+<DD>
+Ce répertoire doit contenir les bibliothèques partagées nécessaires pour
+démarrer le système et utiliser les commandes de la partition racine.
+<DT><I>/mnt</I>
+
+<DD>
+Contient des points de montage pour les systèmes de fichiers temporaires.
+<DT><I>/opt</I>
+
+<DD>
+Ce répertoire peut contenir les paquetages additionnels.
+<DT><I>/proc</I>
+
+<DD>
+est le point de montage pour le système de fichiers
+<I>proc</I>,
+
+qui fournit des informations sur les processus en cours et sur le noyau.
+Ce pseudo-système de fichiers est décrit dans
+<I><A HREF="/cgi-bin/man/man2html?5+proc">proc</A></I>(5).
+
+<DT><I>/root</I>
+
+<DD>
+Ce répertoire est habituellement celui personnel de l'utilisateur root.
+<DT><I>/sbin</I>
+
+<DD>
+Comme
+<I>/bin</I>,
+
+ce répertoire contient les commandes nécessaires au démarrage du système,
+mais qui ne sont pas exécutées par des utilisateurs normaux.
+<DT><I>/tmp</I>
+
+<DD>
+Ce répertoire sert à contenir des fichiers temporaires que l'on peut
+détruire régulièrement, par un script périodique, ou au démarrage du système.
+<DT><I>/usr</I>
+
+<DD>
+Ce répertoire est généralement monté depuis une partition séparée.
+Il ne devrait contenir que des données partageables, en lecture-seule,
+afin d'être monté par plusieurs machines utilisant Linux.
+<DT><I>/usr/X11R6</I>
+
+<DD>
+Le système X-Window, version 11 release 6.
+<DT><I>/usr/X11R6/bin</I>
+
+<DD>
+Les exécutables appartenant au système X-Window. Souvent il existe un
+lien symbolique depuis 
+<I>/usr/bin/X11</I>
+
+vers ce répertoire.
+<DT><I>/usr/X11R6/lib</I>
+
+<DD>
+Les fichiers de données associés au système X-Window.
+<DT><I>/usr/X11R6/lib/X11</I>
+
+<DD>
+Ce répertoire contient divers fichiers nécessaire pour exécuter X.
+Il y a souvent un lien symbolique depuis
+<I>/usr/lib/X11</I>
+
+pointant sur ce répertoire.
+<DT><I>/usr/X11R6/include/X11</I>
+
+<DD>
+contient les fichiers d'en-tête nécessaires pour compiler des
+programmes utilisant X11. Il existe souvent un lien symbolique depuis
+<I>/usr/include/X11</I>
+
+vers ce répertoire.
+<DT><I>/usr/bin</I>
+
+<DD>
+Il s'agit du répertoire principal pour les programmes exécutables.
+La plupart des programmes nécessaires aux utilisateurs, et pas
+indispensables pour démarrer ou réparer le système sont placés
+ici, à l'exception des programmes installés uniquement sur cette machine.
+<DT><I>/usr/bin/X11</I>
+
+<DD>
+est un emplacement tradition pour les exécutables X11. Sous Linux
+il s'agit généralement d'un lien symbolique vers
+<I>/usr/X11R6/bin</I>.
+
+<DT><I>/usr/dict</I>
+
+<DD>
+Remplacé par
+<I>/usr/share/dict</I>.
+
+<DT><I>/usr/doc</I>
+
+<DD>
+Remplacé par
+<I>/usr/share/doc</I>.
+
+<DT><I>/usr/etc</I>
+
+<DD>
+Les fichiers de configuration à partager entre plusieurs machines
+d'un site donne doivent être stockés dans ce répertoire. Néanmoins,
+les programmes devraient toujours faire référence aux fichiers dans
+<I>/etc</I>.
+
+On construit alors des liens symboliques depuis
+<I>/etc</I>
+
+vers les fichiers appropriés de 
+<I>/usr/etc</I>.
+
+<DT><I>/usr/games</I>
+
+<DD>
+Fichiers exécutables des jeux et programmes éducatifs (facultatif).
+<DT><I>/usr/include</I>
+
+<DD>
+Fichiers d'en-tête pour le compilateur C.
+<DT><I>/usr/include/X11</I>
+
+<DD>
+Fichiers d'en-tête pour le compilateur C et le système X-Window.
+C'est généralement un lien symbolique vers
+<I>/usr/X11R6/include/X11</I>.
+
+<DT><I>/usr/include/asm</I>
+
+<DD>
+Les fichiers d'en-tête déclarant des fonctions en assembleur. Il
+s'agit généralement d'un lien vers
+<I>/usr/src/linux/include/asm</I>.
+
+<DT><I>/usr/include/linux</I>
+
+<DD>
+Contient les informations qui peuvent changer suivant la version
+de noyau. C'est souvent un lien symbolique vers
+<I>/usr/src/linux/include/linux,</I>
+
+qui permet d'accéder aux informations spécifique à la version en cours du noyau.
+<P>
+Notez qu'il faut placer ici les fichiers d'en-tête corrects pour la
+bibliothèque C. Toutefois les sources du noyau Linux ne sont pas prévues pour
+être utilisées dans les programmes utilisateurs, et ne connaissent pas
+la bibliothèque C utilisée. Il est probable que des problèmes se produiront
+si on laisse
+<I>/usr/include/asm</I>
+
+ou 
+<I>/usr/include/linux</I>
+
+pointer vers n'importe quelle version des sources du noyau. Les systèmes Debian
+ne fonctionnent pas ainsi, et utilisent les en-têtes provenant d'une version
+bien connue du noyau, fournir dans le paquetage libc*-dev.
+<DT><I>/usr/include/g++</I>
+
+<DD>
+Les fichiers d'en-tête utilisés avec le compilateur GNU C++ compiler.
+<DT><I>/usr/lib</I>
+
+<DD>
+Contient les bibliothèques, y compris les bibliothèques dynamiques,  ainsi que
+quelques exécutables qu'on n'invoque normalement pas directement. Des applications
+complexes peuvent disposer de leurs propres sous-répertoires ici.
+<DT><I>/usr/lib/X11</I>
+
+<DD>
+L'emplacement habituel pour les fichiers de données associés aux
+programmes X11, ainsi que les fichiers de configuration du système
+X lui-même. Sous Linux il s'agit souvent d'un lien symbolique vers
+<I>/usr/X11R6/lib/X11</I>.
+
+<DT><I>/usr/lib/gcc-lib</I>
+
+<DD>
+contient des fichiers de bibliothèques associés au compilateur GNU C,
+<B><A HREF="/cgi-bin/man/man2html?1+gcc">gcc</A></B>(1).
+
+<DT><I>/usr/lib/groff</I>
+
+<DD>
+Fichiers pour le système de mise en forme de documents GNU groff.
+<DT><I>/usr/lib/uucp</I>
+
+<DD>
+Fichiers pour
+<B><A HREF="/cgi-bin/man/man2html?1+uucp">uucp</A></B>(1).
+
+<DT><I>/usr/local</I>
+
+<DD>
+Emplacement habituel pour les programmes spécifiques à la machine ou au site.
+<DT><I>/usr/local/bin</I>
+
+<DD>
+Contient les programmes exécutables spécifiques au site.
+<DT><I>/usr/local/doc</I>
+
+<DD>
+Contient la documentation locale.
+<DT><I>/usr/local/etc</I>
+
+<DD>
+Contient les fichiers de configuration de programmes installés localement.
+<DT><I>/usr/local/games</I>
+
+<DD>
+Fichiers exécutables des jeux installé localement.
+<DT><I>/usr/local/lib</I>
+
+<DD>
+Contient les fichiers associés aux programmes installés localement.
+<DT><I>/usr/local/include</I>
+
+<DD>
+Fichiers d'en-tête personnalisés pour le compilateur C.
+<DT><I>/usr/local/info</I>
+
+<DD>
+Pages d'informations associées aux programmes installés localement.
+<DT><I>/usr/local/man</I>
+
+<DD>
+Pages de manuel des applications installées localement.
+<DT><I>/usr/local/sbin</I>
+
+<DD>
+Programmes d'administration installés localement.
+<DT><I>/usr/local/share</I>
+
+<DD>
+Données des applications installées localement, qui peuvent être partagées
+entre différentes architectures fonctionnant avec le même OS.
+<DT><I>/usr/local/src</I>
+
+<DD>
+Fichiers sources des applications développées ou installées localement.
+<DT><I>/usr/man</I>
+
+<DD>
+Remplacé par
+<I>/usr/share/man</I>.
+
+<DT><I>/usr/sbin</I>
+
+<DD>
+contient les programmes d'administration du système qui ne sont pas
+indispensables pour le démarrage, pour monter
+<I>/usr</I>,
+
+ou pour les réparations du système de fichiers.
+<DT><I>/usr/share</I>
+
+<DD>
+contient des sous-répertoires avec les données des applications, susceptibles
+d'être partagées entre différentes architectures avec le même système
+d'exploitation. On trouve souvent ici des choses qui se trouvaient auparavant dans
+<I>/usr/doc</I>
+
+ou
+<I>/usr/lib</I>
+
+ou encore
+<I>/usr/man</I>.
+
+<DT><I>/usr/share/dict</I>
+
+<DD>
+Ce répertoire regroupe les fichiers contenant les listes de mots utilisées par
+les vérificateurs orthographiques. [NDT] On peut y trouver des sous-répertoires
+en fonction de la langue utilisée.
+<DT><I>/usr/share/doc</I>
+
+<DD>
+Documentation à propos des programmes installés.
+<DT><I>/usr/share/games</I>
+
+<DD>
+Données statiques pour les jeux de
+<I>/usr/games</I>.
+
+<DT><I>/usr/share/info</I>
+
+<DD>
+Pages de la commande info.
+<DT><I>/usr/share/locale</I>
+
+<DD>
+Informations pour l'internationalisation.
+<DT><I>/usr/share/man</I>
+
+<DD>
+Les pages de manuel placées dans des sous-répertoires en fonction de la section.
+<DT><I>/usr/share/man/&lt;locale&gt;/man[1-9]</I>
+
+<DD>
+Ces répertoires contiennent les pages de manuel des localisations indiquées sous
+forme de code source. Les systèmes n'utilisant qu'un seul langage
+pour toutes les pages de manuel peuvent ignorer la chaîne &lt;locale&gt;.
+<DT><I>/usr/share/misc</I>
+
+<DD>
+Données diverses partageables entre différentes architectures pour le
+même système d'exploitation.
+<DT><I>/usr/share/nls</I>
+
+<DD>
+Catalogues de messages pour le support de l'internationalisation.
+<DT><I>/usr/share/sgml</I>
+
+<DD>
+Fichiers pour SGML et XML.
+<DT><I>/usr/share/terminfo</I>
+
+<DD>
+Base de données pour terminfo.
+<DT><I>/usr/share/tmac</I>
+
+<DD>
+Macros troff non distribuées avec groff.
+<DT><I>/usr/share/zoneinfo</I>
+
+<DD>
+Fichiers d'information sur les fuseaux horaires.
+<DT><I>/usr/src</I>
+
+<DD>
+Fichiers sources de différentes parties du système, inclus à titre de référence
+dans certains paquetages. Ne pas placer ici de projets personnels, car les
+fichiers se trouvant dans /usr doivent être considérés comme uniquement
+accessibles en lecture, sauf durant l'installation de nouveaux logiciels.
+<DT><I>/usr/src/linux</I>
+
+<DD>
+Emplacement traditionnel des sources du noyau. Ceci est important sur les systèmes
+où /usr/include/linux est un lien symbolique pointant dans ce répertoire.
+Si on doit construire un nouveau noyau, il vaut mieux utiliser un autre répertoire.
+<DT><I>/usr/tmp</I>
+
+<DD>
+Obsolète, ce doit être
+un lien symbolique vers
+<I>/var/tmp</I>,
+
+Présent pour des raisons de compatibilité, ne devrait jamais être utilisé.
+<DT><I>/var</I>
+
+<DD>
+Ce répertoire contient des fichiers qui peuvent changer régulièrement
+comme les fichiers des files d'attente, ou les fichiers de journalisation.
+<DT><I>/var/adm</I>
+
+<DD>
+Ce répertoire est maintenant remplacé par
+<I>/var/log</I>
+
+et devrait donc être un lien symbolique vers ce dernier.
+<DT><I>/var/backups</I>
+
+<DD>
+Réservé pour des raisons historiques.
+<DT><I>/var/cache</I>
+
+<DD>
+Données de cache de divers programmes.
+<DT><I>/var/catman/cat[1-9]  ou  /var/cache/man/cat[1-9]</I>
+
+<DD>
+Ces répertoires contiennent les pages de manuel préformatées des sections
+correspondantes. L'utilisation des pages de manuel préformatées tombe en désuétude.
+<DT><I>/var/cron</I>
+
+<DD>
+Réservé pour des raisons historiques
+<DT><I>/var/lib</I>
+
+<DD>
+Données variables pour divers programmes.
+<DT><I>/var/local</I>
+
+<DD>
+Données variables pour
+<I>/usr/local</I>.
+
+<DT><I>/var/lock</I>
+
+<DD>
+Les fichiers de verrouillage sont placés dans ce répertoire. La
+convention de noms pour ces fichiers est
+<I>LCK..&lt;périphérique&gt;</I>
+
+où
+<I>&lt;périphérique&gt;</I>
+
+est le nom du périphérique dans le système de fichiers.
+Le format utilisé est celui des fichiers de verrouillage HDU UUCP 
+(ils contiennent un PID sous forme de nombre ASCII décimal de 10 chiffres,
+suivi d'un caractère de Retour-Chariot).
+<DT><I>/var/log</I>
+
+<DD>
+Divers fichiers de journalisation.
+<DT><I>/var/opt</I>
+
+<DD>
+Données variables pour
+<I>/opt</I>.
+
+<DT><I>/var/mail</I>
+
+<DD>
+Boîtes à lettres des utilisateurs. Remplace
+<I>/var/spool/mail</I>.
+
+<DT><I>/var/msgs</I>
+
+<DD>
+Réservé pour des raisons historiques.
+<DT><I>/var/preserve</I>
+
+<DD>
+Réservé pour des raisons historiques.
+<DT><I>/var/run</I>
+
+<DD>
+Fichiers de variables à l'exécution, comme les fichiers de verrouillage
+contenant le PID, ainsi que la journalisation des connexions
+<I>(utmp)</I>.
+
+Ces fichiers sont normalement effacés lors du démarrage.
+<DT><I>/var/spool</I>
+
+<DD>
+Contient les fichiers spool ou files pour divers programmes.
+<DT><I>/var/spool/at</I>
+
+<DD>
+Contient les jobs programmés pour
+<B><A HREF="/cgi-bin/man/man2html?1+at">at</A></B>(1).
+
+<DT><I>/var/spool/cron</I>
+
+<DD>
+Contient les jobs programmés pour
+<B><A HREF="/cgi-bin/man/man2html?1+cron">cron</A></B>(1).
+
+<DT><I>/var/spool/lpd</I>
+
+<DD>
+Contient les fichiers en attente d'impression.
+<DT><I>/var/spool/mail</I>
+
+<DD>
+Remplacé par
+<I>/var/mail</I>.
+
+<DT><I>/var/spool/mqueue</I>
+
+<DD>
+Courriers en attente d'émission.
+<DT><I>/var/spool/news</I>
+
+<DD>
+Répertoire d'attente pour les News.
+<DT><I>/var/spool/rwho</I>
+
+<DD>
+Fichier en attente pour
+<B><A HREF="/cgi-bin/man/man2html?8+rwhod">rwhod</A></B>(8).
+
+<DT><I>/var/spool/smail</I>
+
+<DD>
+Contient les fichiers en attente pour le programme
+<B><A HREF="/cgi-bin/man/man2html?1+smail">smail</A></B>(1)
+
+de distribution du courrier.
+<DT><I>/var/spool/uucp</I>
+
+<DD>
+contient les fichiers en attente pour
+<B><A HREF="/cgi-bin/man/man2html?1+uucp">uucp</A></B>(1).
+
+<DT><I>/var/tmp</I>
+
+<DD>
+Comme
+<I>/tmp,</I>
+
+ce répertoire contient des fichiers temporaires stockés pour une durée indéterminée.
+<DT><I>/var/yp</I>
+
+<DD>
+Base de données pour NIS.
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Standard du système de fichiers Linux, FHS version 2.2
+&lt;<A HREF="http://www.pathname.com/fhs/">http://www.pathname.com/fhs/</A>&gt;
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Cette liste n'est pas exhaustive, certains systèmes peuvent être configurés
+différemment.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+find">find</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+ln">ln</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+mount">mount</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?5+proc">proc</A></B>(5),
+
+The Linux Filesystem Hierarchy Standard.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAE">BOGUES</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:58 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,186 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SCANDIR</TITLE>
+</HEAD><BODY>
+<H1>SCANDIR</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+scandir, alphasort, versionsort - Sélectionner des éléments d'un répertoire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/dirent.h">dirent.h</A>&gt;</B>
+
+<B>int scandir (const char * </B><I>dir</I><B>, struct dirent ***</B><I>namelist</I><B>,</B>
+<DL COMPACT><DT><DD><B>int (*</B><I>select</I><B>)(const struct diren t *),</B>
+<B>int (*</B><I>compar</I><B>)(const struct dirent **, const struct dirent **));</B>
+</DL>
+
+<B>int alphasort (const void *</B><I>a</I><B>, const void * </B><I>b</I><B>);</B>
+<BR>
+<B>int versionsort (const void *</B><I>a</I><B>, const void * </B><I>b</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>scandir()</B> examine le répertoire <I>dir</I>, en appelant
+<I>select()</I> pour chaque élément rencontré. Les entrées pour lesquelles
+<I>select()</I> renvoie une valeur non-nulle sont stockées dans une table
+allouée avec <B>malloc()</B>, triée avec <B>qsort()</B> en utilisant la
+fonction de comparaison <I>compar()</I>, puis regroupées dans une table
+<I>namelist</I> allouée avec <B>malloc()</B>.
+Si <I>select</I> est NULL, toutes les entrées sont sélectionnées.
+<P>
+
+Les fonctions
+<B>alphasort()</B>
+
+et
+<B>versionsort ()</B>
+
+peuvent être utilisées comme fonction de comparaison
+dans la fonction <B>scandir()</B>.
+La première trie les entrées du répertoire en
+ordre alphabétique en utilisant
+<B><A HREF="/cgi-bin/man/man2html?3+strcoll">strcoll</A></B>(3),
+
+la seconde en utilisant
+<B><A HREF="/cgi-bin/man/man2html?3+strverscmp">strverscmp</A></B>(3)
+
+sur les chaînes <I>(*a)-&gt;d_name</I> et <I>(*b)-&gt;d_name</I>.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>scandir()</B> renvoie le nombre d'entrées de repertoire
+selectionnées ou -1 en cas d'erreur.
+<P>
+
+Les fonctions
+<B>alphasort()</B>
+
+et
+<B>versionsort ()</B>
+
+renvoient un entier négatif, nul, ou positif
+si le premier argument est respectivement inférieur, égal ou
+supérieur au second.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Aucune de ces fonctions n'est décrite par POSIX.
+Les fonctions
+<B>scandir()</B>
+
+et
+<B>alphasort()</B>
+
+proviennent de BSD 4.3 et sont disponibles sous Linux depuis libc4.
+Les bibliothèques libc4 et libc5 utilisent le prototype plus précis
+<P>
+<PRE>
+<B>int alphasort(const struct dirent **</B><I>a</I><B>, const struct dirent **</B><I>b</I><B>);</B>
+</PRE>
+
+<P>
+mais la GlibC 2.0 est revenue au prototype BSD imprécis.
+<P>
+
+La fonction
+<B>versionsort()</B>
+
+est une extension GNU, disponible depuis la GlibC 2.1.
+Depuis la GlibC 2.1, la fonction
+<B>alphasort()</B>
+
+invoque
+<B><A HREF="/cgi-bin/man/man2html?3+strcoll">strcoll</A></B>(3);
+
+alors qu'auparavant elle employait
+<B><A HREF="/cgi-bin/man/man2html?3+strcmp">strcmp</A></B>(3).
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+<PRE>
+/* Afficher le contenu du répertoire en ordre inverse */
+#include &lt;<A HREF="file:///usr/include/dirent.h">dirent.h</A>&gt;
+main(){
+    struct dirent **namelist;
+    int n;
+
+    n = scandir(&quot;.&quot;, &amp;namelist, 0, alphasort);
+    if (n &lt; 0)
+        perror(&quot;scandir&quot;);
+    else {
+        while(n--) {
+            printf(&quot;%s\n&quot;, namelist[n]-&gt;d_name);
+            free (namelist [n]);
+        }
+        free (namelist);
+    }
+}
+</PRE>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+opendir">opendir</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+readdir">readdir</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+closedir">closedir</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+rewinddir">rewinddir</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+seekdir">seekdir</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strcmp">strcmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strcoll">strcoll</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strverscmp">strverscmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+telldir">telldir</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">EXEMPLE</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:17 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,164 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PPPOE-SNIFF</TITLE>
+</HEAD><BODY>
+<H1>PPPOE-SNIFF</H1>
+Section: Maintenance Commands (8)<BR>Updated: 3 juillet 2000<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+pppoe-sniff - examine le réseau pour des trames PPPoE non normalisées.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>pppoe-sniff </B>[<I>options</I>]
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>pppoe-sniff</B> se met à l'écoute de paquets ressemblant à des paquets de
+découverte «&nbsp;Requête&nbsp;» PADR PPPoE et de trames de sessions et en déduit les
+options supplémentaires requises au fonctionnement de <B><A HREF="/cgi-bin/man/man2html?8+pppoe">pppoe</A></B>(8).
+<P>
+Certains fournisseurs DSL semblent utiliser des types de trame non normalisés
+pour les trames PPPoE, et/ou requièrent une certaine valeur dans le champ
+Nom-Service. Il est souvent plus facile de renifler ces valeurs à partir d'une
+machine qui peut être connectée avec succès plutôt qu'essayer de fouiller auprès
+du fournisseur DSL.
+<P>
+Pour utiliser <B>pppoe-sniff</B>, vous avez besoin de deux ordinateurs, d'un
+modem DSL et d'un concentrateur Ethernet (<I>pas</I> un commutateur Ethernet).
+<P>
+Si le modem DSL est normalement connecté directement à la carte Ethernet de
+votre ordinateur, connectez-le sur le port «&nbsp;ascendant&nbsp;» du concentrateur
+Ethernet. Connectez les deux ordinateurs sur des ports normaux du
+concentrateur. Sur un des ordinateurs, lancez n'importe lequel des logiciels
+que le fournisseur DSL vous a donnés sur n'importe lequel des systèmes
+d'exploitation que le fournisseur DSL supporte. Sur l'autre ordinateur, lancez
+Linux et identifiez-vous comme super-utilisateur.
+<P>
+Sur la machine Linux, mettez l'interface Ethernet en mode espion et lancez
+<B>pppoe-sniff</B>. Si l'interface Ethernet est <I>eth0</I>, par exemple, tapez
+ces commandes&nbsp;:
+<P>
+<PRE>
+        ifconfig eth0 promisc
+        pppoe-sniff -I eth0
+</PRE>
+
+<P>
+Sur l'autre machine, démarrez votre connexion DSL comme d'habitude. Après un
+court instant, <B>pppoe-sniff</B> devrait afficher des recommandations pour la
+valeur de <B>PPPOE_EXTRA</B>. Réglez cette valeur dans <B>/etc/ppp/pppoe.conf</B>.
+Si <B>pppoe-sniff</B> indique que quelque chose de particulier est requis par
+<B>PPPOE_EXTRA</B>, SVP envoyez-le par courrier électronique à
+<B><A HREF="mailto:pppoe@roaringpenguin.com">pppoe@roaringpenguin.com</A></B> accompagné par le nom de votre FAI ainsi que le
+fabricant et le numéro du modèle de votre modem DSL. Cette information sera
+collectée et fournie sur la page web PPPoE pour les utilisateurs qui n'ont pas
+deux ordinateurs.
+<P>
+Après que <B>pppoe-sniff</B> ait fini (ou que vous l'ayez arrêté car il vous
+semblait suspendu), n'oubliez pas de désactiver le mode espion&nbsp;:
+<P>
+<PRE>
+        ifconfig eth0 -promisc
+</PRE>
+
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-I </B><I>interface</I>
+
+<DD>
+L'option <B>-I</B> spécifie l'interface Ethernet à utiliser. Sous Linux,
+celle-ci est typiquement <I>eth0</I> ou <I>eth1</I>. L'interface devrait être
+«&nbsp;montée&nbsp;» et configurée dans le mode espion avant que vous ne lanciez
+<B>pppoe-sniff</B>.
+<P>
+<DT><B>-V</B>
+
+<DD>
+L'option <B>-V</B> provoque l'affichage du numéro de version et la sortie de
+<B>pppoe-sniff</B>.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<B>pppoe-sniff</B> fonctionne seulement sous Linux.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<B>pppoe-sniff</B> a été écrit par David F. Skoll &lt;<A HREF="mailto:dfs@roaringpenguin.com">dfs@roaringpenguin.com</A>&gt;.
+<P>
+La page d'accueil <B>pppoe</B> est <I><A HREF="http://www.roaringpenguin.com/pppoe/">http://www.roaringpenguin.com/pppoe/</A></I>.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal AT univ-montp2 DOT fr&gt; le 3&nbsp;février&nbsp;2003
+et révisée le 18&nbsp;janvier&nbsp;2006.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=en&nbsp;man&nbsp;8&nbsp;pppoe-sniff</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-start">pppoe-start</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-stop">pppoe-stop</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-connect">pppoe-connect</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppd">pppd</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?5+pppoe.conf">pppoe.conf</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe">pppoe</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-setup">pppoe-setup</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-status">pppoe-status</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-server">pppoe-server</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-relay">pppoe-relay</A></B>(8)
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">BOGUES</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

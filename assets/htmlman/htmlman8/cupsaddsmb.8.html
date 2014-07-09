@@ -1,0 +1,192 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of cupsaddsmb</TITLE>
+</HEAD><BODY>
+<H1>cupsaddsmb</H1>
+Section: Easy Software Products (8)<BR>Updated: Common UNIX Printing System<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+cupsaddsmb - Exportation d'imprimantes vers Samba pour les clients Windows
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>cupsaddsmb</B>
+
+[ -a ] [ -U
+<I>utilisateur</I>
+
+] [ -v ]
+<BR>
+
+<B>cupsaddsmb</B>
+
+[ -u
+<I>utilisateur</I>
+
+] [ -v ] [ imprimante1 ... imprimanteN ]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>cupsaddsmb</I> permet l'export d'imprimantes vers SAMBA (version 2.2.0
+ou supérieure) pour l'utilisation par des clients Windows. Suivant
+la configuration de SAMBA, il est possible qu'un mot de passe soit
+demandé pour l'export. Ce programme requiert les fichiers du driver
+d'imprimante Adobe PostScript ou CUPS, comme indiqué plus bas.
+<P>
+
+L'option <I>-a</I> exporte toutes les imprimantes connues. Sinon,
+seules les imprimantes fournies dans la ligne de commande sont
+exportées.
+<P>
+
+L'option <I>-U</I> spécifie le nom d'utilisateur de l'administrateur
+d'impression. C'est par défaut votre nom d'utilisateur.
+<P>
+
+L'option <I>-v</I> spécifie que des informations détaillées doivent
+être affichées. Ceci peut être utile pour le débogage des configurations
+de SAMBA.
+<A NAME="lbAE">&nbsp;</A>
+<H2>CONFIGURATION DE SAMBA</H2>
+
+<I>cupsaddsmb</I> utilise le nouveau mode d'impression RPC de
+SAMBA pour fournir aux clients Windows les drivers d'impression et les
+fichiers PPD. Pour utiliser cette fonctionnalité, vous devez configurer
+SAMBA (via le fichier smb.conf) pour qu'il utilise l'impression via CUPS, et
+fournir un driver à télécharger. Ceci est fait de la manière suivante&nbsp;:
+<PRE>
+
+    [global]
+        load printers = yes
+        printing = cups
+        printcap name = cups
+
+    [printers]
+        comment = All Printers
+        path = /var/spool/samba
+        browseable = no
+        public = yes
+        guest ok = yes
+        writable = no
+        printable = yes
+        printer admin = root
+
+    [print$]
+        comment = Printer Drivers
+        path = /etc/samba/drivers
+        browseable = yes
+        guest ok = no
+        read only = yes
+        write list = root
+</PRE>
+
+<P>
+
+Cette configuration suppose une installation de SAMBA conforme au
+standard FHS. Modifiez les chemins dans [printers] et [print$] suivant
+votre installation.
+<A NAME="lbAF">&nbsp;</A>
+<H2>PILOTES POSTSCRIPT CUPS POUR WINDOWS</H2>
+
+<I>cupsaddsmb</I> peut utiliser les pilotes d'impression CUPS PostScript pour
+Windows, disponibles sur le site Internet de CUPS.
+<P>
+
+Il est recommandé d'utiliser ces pilotes CUPS car ils permettent le comptage
+du nombre de pages, les pages de garde et les labels sur tous les types
+d'imprimantes. Ces pilotes ne sont cependant disponibles que pour les
+plates-formes Windows NT, 2000 et XP. Pour des plates-formes Windows 95, 98 et Me,
+il est nécessaire d'utiliser les pilotes Adobe.
+<P>
+
+Après décompression des fichiers, créer un répertoire «&nbsp;drivers&nbsp;» dans le
+répertoire de données de CUPS (habituellement /usr/share/cups) et copiez
+les fichiers CUPS en utilisant des noms de fichiers en MINUSCULES, comme
+ci-dessous&nbsp;:
+<PRE>
+    [Windows NT, 2000, and XP]
+    cups.hlp
+    cupsdrvr.dll
+    cupsui.dll
+</PRE>
+
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>LES PILOTES ADOBE POSTSCRIPT POUR WINDOWS</H2>
+
+<I>cupsaddsmb</I> peut utiliser les pilotes Adobe PostScript pour Windows,
+disponibles en téléchargement sur le site web d'Adobe (<A HREF="http://www.adobe.com).">http://www.adobe.com).</A>
+<P>
+
+Il est recommandé d'utiliser ces pilotes CUPS car ils permettent le comptage
+du nombre de pages, les pages de garde et les labels sur tous les types
+d'imprimantes. Ces pilotes ne sont cependant disponibles que pour les
+plates-formes Windows NT, 2000 et XP. Pour des plates-formes Windows 95, 98 et Me,
+il est nécessaire d'utiliser les pilotes Adobe.
+<P>
+
+Une fois les fichiers décompressés, créez un répertoire «&nbsp;drivers&nbsp;» dans
+le répertoire de données de CUPS (habituellement /usr/share/cups) et
+copiez les fichiers Adobe en utilisant des noms de fichiers en MAJUSCULES,
+comme ci-dessous&nbsp;:
+<PRE>
+
+    [Windows 95, 98, and Me]
+    ADFONTS.MFM
+    ADOBEPS4.DRV
+    ADOBEPS4.HLP
+    DEFPRTR2.PPD
+    ICONLIB.DLL
+    PSMON.DLL
+    
+    [Windows NT, 2000, and XP]
+    cups.hlp
+    cupsdrvr.dll
+    cupsui.dll
+</PRE>
+
+<P>
+
+Les deux jeux de pilotes sont utilisables indépendemment.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+CUPS Software Administrators Manual,
+<A HREF="http://localhost:631/documentation.html">http://localhost:631/documentation.html</A>
+<A NAME="lbAI">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright 1993-2003 Easy Software Products, Tous droits réservés.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Gilles QUERRET &lt;<A HREF="mailto:gilles.querret@nerim.net">gilles.querret@nerim.net</A>&gt;
+
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">CONFIGURATION DE SAMBA</A><DD>
+<DT><A HREF="#lbAF">PILOTES POSTSCRIPT CUPS POUR WINDOWS</A><DD>
+<DT><A HREF="#lbAG">LES PILOTES ADOBE POSTSCRIPT POUR WINDOWS</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:00 GMT, February 11, 2014
+</BODY>
+</HTML>

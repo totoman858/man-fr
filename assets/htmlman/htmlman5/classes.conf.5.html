@@ -1,0 +1,93 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of classes.conf</TITLE>
+</HEAD><BODY>
+<H1>classes.conf</H1>
+Section: Easy Software Products (5)<BR>Updated: Common UNIX Printing System<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+classes.conf - Fichier de configuration des classes de CUPS
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le fichier <I>classes.conf</I> définit les classes d'imprimantes disponibles. Il est
+habituellement situé dans le répertoire <I>/etc/cups</I> et est généré automatiquement
+par le programme <I><A HREF="/cgi-bin/man/man2html?8+cupsd">cupsd</A>(8)</I> lorsque des classes d'imprimantes sont créées ou
+supprimées.
+<P>
+
+Chaque ligne de ce fichier est une directive de configuration, une ligne vide ou
+un commentaire. Les commentaires commencent par le symbole #.
+<A NAME="lbAD">&nbsp;</A>
+<H2>DIRECTIVES</H2>
+
+<DL COMPACT>
+<DT>&lt;Class name&gt; ... &lt;/Class&gt;<DD>
+<BR>
+
+Définit une classe d'imprimantes.
+<DT>Accepting<DD>
+<BR>
+
+Définit si la classe d'imprimante accepte les travaux d'impression ou non.
+<DT>Info<DD>
+<BR>
+
+Définit une information à destination des utilisateurs pour la classe d'imprimantes.
+<DT>Location<DD>
+<BR>
+
+Définit la localisation physique de la classe d'imprimantes à destination des utilisateurs.
+<DT>Printer<DD>
+<BR>
+
+Associe une imprimante à une classe.
+<DT>State<DD>
+<BR>
+
+Définit l'état initial de la classe d'imprimante (Idle ou Stopped).
+<DT>StateMessage<DD>
+<BR>
+
+Définit le message associé à l'état.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?8+cupsd">cupsd</A>(8), <A HREF="/cgi-bin/man/man2html?5+cupsd.conf">cupsd.conf</A>(5), <A HREF="/cgi-bin/man/man2html?5+mime.convs">mime.convs</A>(5), <A HREF="/cgi-bin/man/man2html?5+mime.types">mime.types</A>(5), <A HREF="/cgi-bin/man/man2html?5+printers.conf">printers.conf</A>(5),
+CUPS Software Administrators Manual,
+<A HREF="http://localhost:631/documentation.html">http://localhost:631/documentation.html</A>
+<A NAME="lbAF">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright 1993-2003 Easy Software Products, Tous droits réservés.
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Gilles QUERRET &lt;<A HREF="mailto:gilles.querret@nerim.net">gilles.querret@nerim.net</A>&gt;
+
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">DIRECTIVES</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:55 GMT, February 11, 2014
+</BODY>
+</HTML>

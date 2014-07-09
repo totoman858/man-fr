@@ -1,0 +1,188 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MAKEWHATIS</TITLE>
+</HEAD><BODY>
+<H1>MAKEWHATIS</H1>
+Section: Maintenance Commands (8)<BR>Updated: 19 septembre 2005<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+makewhatis - Crée la base de données whatis
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>makewhatis [-u] [-v] [-w] [-s </B><I>sections</I><B> ] [-c [</B><I>catpath</I><B>]] [</B><I>manpath</I><B>]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>makewhatis</B>
+
+lit toutes les pages de manuels contenues dans les sections
+<I>sections</I>
+
+du répertoire
+<I>manpath</I>
+
+ou les pages préformatées contenues dans les sections
+<I>sections</I>
+
+du répertoire
+<I>catpath</I>.
+
+Pour chacune des pages,
+<B>makewhatis</B>
+
+écrit une ligne dans la base de données whatis&nbsp;; chaque ligne est constituée
+du nom de la page de manuel et d'une courte description de celle-ci, séparés
+par un trait. La description est extraite du contenu de la section NAME de la
+page de manuel.
+<P>
+
+Du fait que d'autres langues utilisent un terme différent pour la section NAME,
+<B>makewhatis</B>
+
+reconnaît les termes équivalents en allemand, espagnol, finnois, français,
+italien et tchèque.
+<P>
+
+Si aucun argument
+<I>manpath</I>
+
+n'est fourni, la valeur par défaut est
+<I>/usr/man</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-u</B>
+
+<DD>
+Mettre à jour la base de données avec de nouvelles pages.
+<DT><B>-v</B>
+
+<DD>
+Sortie bavarde.
+<DT><B>-w</B>
+
+<DD>
+Utiliser le chemin de recherche
+<I>manpath</I>
+
+obtenu par la commande «&nbsp;man --path&nbsp;».
+<DT><B>-s</B><I> sections</I>
+
+<DD>
+Chercher dans les sections
+<I>sections</I>
+
+de
+<I>manpath</I> ou <I>catpath</I>.
+
+Si cette option est absente, sa valeur est
+<I> </I>'<I>1 2 3 4 5 6 7 8 9 n l'</I>
+
+<DT><B>-c</B><I> catpath</I>
+
+<DD>
+Les pages préformatées de manuel situées dans
+<I>catpath</I>
+
+sont scrutées. Si l'argument n'est pas fourni, il est supposé être le premier
+des deux répertoires existant entre
+<I>/usr/man/preformat</I> et <I>/usr/man</I>.
+
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+<P>
+
+Pour reconstruire seulement les bases de données
+<I>/usr/X11R6/man/whatis</I> et <I>/usr/local/man/whatis</I>
+
+<DL COMPACT>
+<DT><DD>
+makewhatis /usr/X11R6/man /usr/local/man
+</DL>
+<P>
+
+Pour reconstruire toutes les bases de données en incluant les traductions
+finnoise, française et italienne
+<DL COMPACT>
+<DT><DD>
+LANGUAGE=fi:fr:it makewhatis -w
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<B>makewhatis</B>
+
+peut ne pas très bien gérer les pages de manuels qui ont été écrites avec
+des macros troff non standard, comme les pages Tcl/Tk.
+<P>
+
+<B>makewhatis</B>
+
+ne fonctionne pas avec les traductions préformatées.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+John W. Eaton est l'auteur historique de
+<B>man</B>.
+
+Federico Lucifredi &lt;<A HREF="mailto:flucifredi@acm.org">flucifredi@acm.org</A>&gt; en assure aujourd'hui la maintenance.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+apropos">apropos</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+man">man</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+whatis">whatis</A></B>(1)
+
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal AT univ-montp2 DOT fr&gt; le 1er juin 2005 et mise à jour
+le 2 novembre 2005.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=en&nbsp;man&nbsp;8&nbsp;makewhatis</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">EXEMPLES</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">AUTEUR</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:49 GMT, February 11, 2014
+</BODY>
+</HTML>

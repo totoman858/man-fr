@@ -1,0 +1,101 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of IOPERM</TITLE>
+</HEAD><BODY>
+<H1>IOPERM</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ioperm - Positionner les autorisations d'entrée/sortie sur les ports.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+/* pour libc5 */
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/io.h">sys/io.h</A>&gt;</B>
+
+/* pour glibc */
+<P>
+<B>int ioperm(unsigned long </B><I>from</I><B>, unsigned long </B><I>num</I><B>, int </B><I>turn_on</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>Ioperm</B> positionne les bits de permission d'accès du processus
+aux ports commençant à l'adresse <B>from</B> étalés sur <I>num</I> 
+octets à la valeur <B>turn_on</B>.  
+L'utilisation de <B>ioperm</B> nécessite les privilèges de Super-User.
+<P>
+Seuls les 0x3ff premiers ports d'entrée/sortie peuvent être indiques de
+cette manière. Pour d'autres ports, il faut utiliser la fonction
+<B>iopl</B>.
+
+<P>
+Les permission ne sont pas héritées par le processus fils durant un fork, 
+par contre elles le sont lors d'un exec.
+Ceci permet de donner des autorisations d'accès à des tâches non-privilégiées.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>ioperm</B>
+
+renvoie 0 s'il réussit, ou -1 s'il échoue, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<B>ioperm</B> est spécifique a Linux et ne doit pas être utilisé dans
+des programmes conçus pour être portables.
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Libc5 considère qu'il s'agit d'un appel-système et fournit le prototype
+dans
+<I>&lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</I>.
+
+Glibc1 n'offre pas de prototype. Glibc2 fournit un prototype à la fois dans
+<I>&lt;<A HREF="file:///usr/include/sys/io.h">sys/io.h</A>&gt;</I>
+
+et dans
+<I>&lt;<A HREF="file:///usr/include/sys/perm.h">sys/perm.h</A>&gt;</I>.
+
+Évitez ce dernier, il n'est disponible que sur les i386.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+iopl">iopl</A></B>(2)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:58 GMT, February 11, 2014
+</BODY>
+</HTML>

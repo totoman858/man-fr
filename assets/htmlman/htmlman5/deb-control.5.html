@@ -1,0 +1,317 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DEB-CONTROL</TITLE>
+</HEAD><BODY>
+<H1>DEB-CONTROL</H1>
+Section: Utilitaires de dpkg (5)<BR>Updated: January 2000<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+deb-control - Format du fichier principal de contrôle dans les paquets
+Debian
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+contrôle
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Chaque paquet Debian possède un fichier principal de contrôle qui contient
+un certain nombre de champs. Chaque champ commence par une étiquette,
+telle que
+<B>Package</B>
+
+ou
+<B>Version</B>
+
+(la casse n'importe pas), suivie d'un «&nbsp;:&nbsp;», et du contenu du champ.
+Les champs sont séparés seulement par des étiquettes de champ. En d'autres
+termes, le contenu d'un champ peut s'étendre sur plusieurs lignes, mais
+les outils d'installation joindront en général les lignes pendant le
+traitement du contenu du champ (sauf pour le champ
+<B>Description,</B>
+
+voyez ci-dessous).
+<A NAME="lbAE">&nbsp;</A>
+<H2>LES CHAMPS EXIGÉS</H2>
+
+<DL COMPACT>
+<DT><B>Package: </B>&lt;nom du paquet&gt;
+
+<DD>
+La valeur de ce champ donne le nom du paquet, et la plupart des outils 
+d'installation s'en servent pour produire les noms des paquets.
+<DT><B>Version: </B>&lt;chaîne pour la version&gt;
+
+<DD>
+C'est classiquement le numéro de version du paquet original dans la forme
+choisie par l'auteur du programme.
+Il peut y avoir aussi un numéro de révision Debian
+(pour les paquets qui ne sont pas de pure souche Debian). Quand les numéros de
+version et de révision sont présents, on les sépare par un trait d'union 
+« - ». C'est pour cette raison qu'il ne peut y avoir de trait d'union dans le 
+numéro de la version originale.
+<DT><B>Maintainer: </B>&lt;nom adresse&gt;
+
+<DD>
+Le format de ce champ sera «&nbsp;Jean Dupont &lt;<A HREF="mailto:jdupont@foo.com">jdupont@foo.com</A>&gt;&nbsp;»&nbsp;; et c'est bien 
+sûr le créateur du paquet, par opposition à l'auteur du programme mis en 
+paquet.
+<DT><B>Description: </B>&lt;description courte&gt;
+
+<DD>
+<B> </B>&lt;description longue&gt;
+
+<BR>
+
+Le format de la description du paquet est un résumé bref sur la 
+première ligne (après le champ «&nbsp;Description&nbsp;»).
+Les lignes suivantes peuvent servir à une description plus longue et plus
+détaillée. Chaque ligne de cette description longue doit être précédée
+d'un espace ; quand c'est une ligne blanche elle doit contenir un seul 
+«&nbsp;.&nbsp;» avant cet espace.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>CHAMPS OPTIONNELS</H2>
+
+<DL COMPACT>
+<DT><B>Section: </B>&lt;section&gt;
+
+<DD>
+C'est un champ général qui indique la catégorie d'un paquet ; cette
+catégorie est fondée sur le programme que ce paquet installe. «&nbsp;Utils&nbsp;»,
+«&nbsp;net&nbsp;», «&nbsp;mail&nbsp;», «&nbsp;text&nbsp;», «&nbsp;x11&nbsp;» etc. représentent quelques
+catégories habituelles.
+<DT><B>Priority: </B>&lt;priorité&gt;
+
+<DD>
+Définit l'importance du paquet à l'intérieur du système général.
+«&nbsp;Required&nbsp;», «&nbsp;standard&nbsp;», «&nbsp;optional&nbsp;», «&nbsp;extra&nbsp;» etc. représentent
+des priorités habituelles.
+</DL>
+<P>
+
+Les champs 
+<B>Section</B>
+
+and
+<B>Priority</B>
+
+possèdent un ensemble défini de valeurs acceptées, tiré de la Charte Debian 
+(«&nbsp;Policy manual&nbsp;»). Ces valeurs permettent la répartition des paquets dans 
+l'archive. On peut en trouver une liste dans la version la plus récente du 
+paquet 
+<B>debian-policy.</B>
+
+<DL COMPACT>
+<DT><B>Essential: </B>&lt;yes|no&gt;
+
+<DD>
+On se sert habituellement de ce champ uniquement si la réponse est «&nbsp;yes&nbsp;». 
+Il signifie que ce paquet est exigé pour un fonctionnement correct du
+système. Dpkg et tout autre outil d'installation interdisent la suppression 
+d'un paquet  
+<B>Essential</B>
+
+(du moins tant qu'une des options de forçage n'est pas utilisée).
+<DT><B>Architecture: </B>&lt;arch|all&gt;
+
+<DD>
+L'architecture précise pour quel type de matériel le paquet a été compilé.
+Voici quelques architectures habituelles : «&nbsp;i386&nbsp;», «&nbsp;m68k&nbsp;», 
+«&nbsp;sparc&nbsp;», «&nbsp;alpha&nbsp;», «&nbsp;powerpc&nbsp;» etc. Remarquez que l'option
+<B>all</B>
+
+signifie que le paquet est indépendant de toute architecture. Les scripts
+shell ou Perl, ainsi que la documentation sont dans ce cas.
+<DT><B>Source: </B>&lt;nom du source&gt;
+
+<DD>
+Le nom du paquet source d'où provient le paquet binaire, s'il y a une 
+différence entre les deux noms. 
+<DT><B>Depends: </B>&lt;liste de paquet&gt;
+
+<DD>
+C'est la liste des paquets exigés pour que ce paquet arrive à fonctionner de
+manière non-triviale. Le programme de maintenance des paquets interdit
+l'installation d'un paquet quand les paquets répertoriés dans le champ
+<B>Depends</B>
+
+ne sont pas installés (du moins tant qu'une option de forçage n'est pas 
+utilisée)&nbsp;; il lance les scripts «&nbsp;postinst&nbsp;» des paquets répertoriés dans 
+les champs «&nbsp;Depends:&nbsp;» avant les scripts «&nbsp;postinst&nbsp;» des paquets qui 
+dépendent d'eux, et lance avant les scripts «&nbsp;prerm&nbsp;».
+<DT><B>Pre-Depends: </B>&lt;liste de paquet&gt;
+
+<DD>
+C'est la liste des paquets qui doivent être installés
+<B>et</B>
+
+configurés avant que ce paquet puisse être installé. Habituellement, on 
+utilise ce champ quand un paquet a besoin d'un autre paquet pour lancer son
+script «&nbsp;preinst&nbsp;».
+<DT><B>Recommends: </B>&lt;liste de paquet&gt;
+
+<DD>
+C'est la liste des paquets qu'on trouverait avec ce paquet dans toute 
+installation standard. Le programme de maintenance des paquets
+avertit l'utilisateur  quand il installe un paquet sans installer les paquets
+répertoriés dans le champ
+<B>Recommends.</B>
+
+<DT><B>Suggests: </B>&lt;liste de paquet&gt;
+
+<DD>
+C'est la liste des paquets qui, associés avec ce paquet, peuvent améliorer 
+son utilité&nbsp;; néanmoins, une installation sans ces paquets est parfaitement
+raisonnable.
+</DL>
+<P>
+
+La syntaxe des champs
+<B>Depends,</B>
+
+<B>Pre-Depends,</B>
+
+<B>Recommends,</B>
+
+et
+<B>Suggests</B>
+
+est une liste de groupes contenant des paquets successifs.  Chaque groupe
+est une liste de paquets séparés par une barre verticale (le symbole du
+tube) «&nbsp;|&nbsp;». Les groupes sont séparés par des virgules. Une virgule
+représente un « ET » logique et une barre verticale représente un «&nbsp;OU&nbsp;»
+logique&nbsp;; (le tube représente un lien plus fort). Chaque élément
+est le nom d'un paquet suivi de façon optionnelle par un numéro de version
+entre parenthèses.
+<P>
+
+Un numéro de version peut commencer par «&nbsp;&gt;&gt;&nbsp;», et dans ce cas toute version
+supérieure correspondra, et il peut indiquer (ou pas) le numéro de
+révision pour le paquet debian (les deux numéros étant séparés par un
+trait d'union). Voici les relations acceptées pour les versions&nbsp;:
+«&nbsp;&gt;&gt;&nbsp;» pour supérieur à, «&nbsp;&lt;&lt;&nbsp;» pour inférieur à, «&nbsp;&gt;=&nbsp;» pour supérieur ou
+égal, «&nbsp;&lt;=&nbsp;» pour inférieur ou égal, et «&nbsp;=&nbsp;» pour égal à.
+<DL COMPACT>
+<DT><B>Conflicts: </B>&lt;liste de paquets&gt;
+
+<DD>
+C'est une liste de paquets qui sont en conflit avec ce paquet&nbsp;; ils 
+contiennent par exemple des fichiers qui ont le même nom.
+Le programme de maintenance des paquets interdit l'installation
+simultanée de paquets en conflit. Deux paquets en conflit renseigneront
+une ligne
+<B>Conflicts</B>
+
+avec le nom de l'autre paquet.
+<DT><B>Replaces: </B>&lt;liste de paquets&gt;
+
+<DD>
+C'est une liste de paquets que ce paquet remplace. Il peut ainsi
+remplacer les fichiers de ces autres paquets&nbsp;; on se sert pour cela
+du champ
+<B>Conflicts</B>
+
+pour forcer la suppression des autres paquets, si celui-là possède
+aussi les mêmes fichiers que le paquet en conflit.
+<DT><B>Provides: </B> &lt;liste de paquets&gt;
+
+<DD>
+C'est une liste de paquets virtuels que ce paquet «&nbsp;remplit&nbsp;». On s'en sert
+habituellement pour des paquets qui offrent le même service. Par exemple,
+sendmail et exim sont des serveurs de courrier, et donc ils «&nbsp;remplissent&nbsp;»
+chacun le paquet «&nbsp;mail-transport-agent&nbsp;»&nbsp;; ainsi les autres paquets
+peuvent dépendre de ce paquet virtuel. Sendmail et exim peuvent ainsi
+chacun satisfaire la dépendance. Les paquets qui dépendent d'un serveur de
+courrier n'ont pas à connaître les noms de tous les serveurs de courrier 
+et n'ont pas à utiliser «&nbsp;|&nbsp;» comme séparateur de liste.
+</DL>
+<P>
+
+La syntaxe des champs
+<B>Conflicts,</B>
+
+<B>Replaces</B>
+
+et
+<B>Provides</B>
+
+est une liste de noms de paquet, séparés par des virgules (et des espaces
+facultatifs).
+Dans le champ
+<B>Conflicts,</B>
+
+la virgule sera lue comme un «&nbsp;OU&nbsp;». On peut donner une version optionnelle
+de la même façon que ci-dessus dans les champs
+<B>Conflicts</B>
+
+et
+<B>Replaces.</B>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+
+<PRE>
+Package: grep
+Essential: yes
+Priority: required
+Section: base
+Maintainer: Wichert Akkerman &lt;<A HREF="mailto:wakkerma@debian.org">wakkerma@debian.org</A>&gt;
+Architecture: sparc
+Version: 2.4-1
+Pre-Depends: libc6 (&gt;= 2.0.105)
+Provides: rgrep
+Conflicts: rgrep
+Description: GNU grep, egrep and fgrep.
+ Il se peut que le grep de la famille GNU des utilitaires grep soit le plus
+ rapide de l'ouest ! Le grep de GNU est fondé sur un mécanisme rapide de mise 
+ en correspondance déterministe d'états simples (environ deux fois plus rapide
+ que le «&nbsp;egrep&nbsp;» standard d'Unix), modifié par une recherche de type
+ Boyer-Moore-Gosper qui cherche une chaîne donnée en empêchant que les textes
+ impossibles soient analysés par le mécanisme de mise en correspondance 
+ d'expressions régulières et sans avoir nécessairement besoin de voir chaque
+ caractère. C'est beaucoup plus rapide que les «&nbsp;grep&nbsp;» ou «&nbsp;egrep&nbsp;» d'Unix.
+ (Des expressions régulières contenant des références circulaires ralentissent
+ cependant le programme.)
+</PRE>
+
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+deb">deb</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+dpkg">dpkg</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?1+dpkg-deb">dpkg-deb</A></B>(1).
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Philippe Batailler, Dec 2000.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">LES CHAMPS EXIGÉS</A><DD>
+<DT><A HREF="#lbAF">CHAMPS OPTIONNELS</A><DD>
+<DT><A HREF="#lbAG">EXEMPLE</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:56 GMT, February 11, 2014
+</BODY>
+</HTML>

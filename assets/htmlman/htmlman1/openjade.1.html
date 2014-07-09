@@ -1,0 +1,519 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of OPENJADE</TITLE>
+</HEAD><BODY>
+<H1>OPENJADE</H1>
+Section:  (1)<BR>Updated: Janvier 2002<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+openjade - applique une feuille de style DSSSL à un document SGML ou XML
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<PRE>
+<B>openjade</B> [<B>-vCegG2s</B>] [<B>-b </B><I>encodage</I>] [<B>-f </B><I>fichier_erreur</I>]
+         [<B>-c </B><I>catalog_sysid</I>] [<B>-D </B><I>répertoire</I>] [<B>-a </B><I>type_lien</I>]
+         [<B>-A </B><I>arch</I>] [<B>-E </B><I>erreurs_max</I>] [<B>-i </B><I>entité</I>]
+         [<B>-w </B><I>type_avertissement</I>] [<B>-d </B><I>dsssl_spec</I>] [<B>-V </B><I>variable</I><B>=</B><I>valeur</I>]
+         [<B>-t </B><I>type_sortie</I>] [<B>-o </B><I>fichier_sortie</I>] [<B></B><I>sysid</I>...]
+        
+</PRE>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+<P>
+
+<B>openjade</B> est une implémentation du langage DSSSL défini par la norme ISO/IEC 10179:1996. Le moteur DSSSL reçoit en entrée un document SGML ou XML et le transforme en des formats tels que :
+<P>
+<P>
+
+* la représentation, en XML, du graphe d'objets flux,
+<P>
+<P>
+
+* le format RTF, qui peut être rendu et imprimé avec le logiciel gratuit « Word Viewer 97 » de Microsoft,
+<P>
+<P>
+
+* le format TeX
+<P>
+<P>
+
+* le format MIF, qui peut être rendu et imprimé avec Framemaker,
+<P>
+<P>
+
+* le format SGML ou XML. Il est utilisé conjointement avec des classes d'objets flux non-standards pour générer du SGML, permettant ainsi à <B>openjade</B> d'être utilisé pour des transformations SGML/XML.
+<P>
+<P>
+
+L'identifiant système du document à traiter est spécifié comme argument à <B>openjade</B>. Si celui-ci est omis, l'entrée standard sera lue.
+<P>
+<P>
+
+<B>openjade</B> détermine l'identifiant système pour la spécification DSSSL de la façon suivante :
+<P>
+<P>
+
+1. Si l'option -d est spécifiée, il utilisera l'argument comme identifiant système.
+<P>
+<P>
+
+2. Autrement, il cherchera les instructions de traitement dans le prologue du document. Deux sortes d'instructions de traitement sont reconnues :
+<P>
+<P>
+
+&lt;?stylesheet href=&quot;sysid&quot; type=&quot;text/dsssl&quot;&gt;
+<P>
+<P>
+
+La composante système de l'instruction de traitement est analysée comme une balise ouvrante SGML. Elle sera analysée selon la syntaxe concrète de référence, quelle que soit la syntaxe concrète réelle du document. Le nom qui démarre l'instruction de traitement peut être « stylesheet », « xml-stylesheet » ou « xml:stylesheet ». L'instruction de traitement sera ignorée à moins que la valeur de l'attribut « type » ne soit « text/dsssl », « text/x-dsssl », « application/dsssl », ou bien « application/x-dsssl ». La valeur de l'attribut « href » est l'identifiant système de la spécification DSSSL.
+<P>
+<P>
+
+&lt;?dsssl sysid&gt;
+<P>
+<P>
+
+L'identifiant système est la partie de la composante système de l'instruction de traitement suivant le premier nom et l'espace.
+<P>
+<P>
+
+Bien que l'instruction de traitement ne soit seulement reconnue que dans le prologue, il n'est pas nécessaire qu'elle apparaisse dans l'entité document. Par exemple, elle peut se trouver dans une DTD. L'identifiant système sera interprété relativement à l'endroit où l'instruction de traitement apparaît.
+<P>
+<P>
+
+3. Autrement, il utilisera l'identifiant système du document avec son extension changée en <I>.dsl</I>.
+<P>
+<P>
+
+Un document de spécification DSSSL peut contenir plus d'une spécification de style. Si l'identifiant système de la spécification DSSSL est suivi par « #id », alors <B>openjade</B> utilisera la spécification de style dont l'identifiant unique est « #id ». Ceci est autorisé simultanément avec l'option <B>-d</B> et les instructions de traitement.
+<P>
+<P>
+
+La spécification DSSSL doit être un document SGML conforme à l'architecture DSSSL. Pour un exemple, voir <I>dsssl/demo.dsl</I>.
+<P>
+<P>
+
+<B>openjade</B> accepte les options suivantes en plus des options OpenSP (voir <B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>) régulières (notez que toutes les options sont sensibles à la casse, c.-à-d. que <B>-g</B> et <B>-G</B> sont des options différentes) :
+<P>
+<DL COMPACT>
+<DT><B>-d </B><I>dsssl_spec</I><DD>
+Elle spécifie que <I>dsssl_spec</I> est l'identifiant système de la spécification DSSSL à utiliser.
+<P>
+<DT><B>-G</B><DD>
+Mode débogage. Lorsqu'une erreur survient dans l'évaluation d'une expression, <B>openjade</B> affiche le contenu de la pile d'appels. Notez que cela désactive l'optimisation des appels récursifs terminaux.
+<P>
+<DT><B>-c </B><I>catalog_sysid</I><DD>
+Les arguments <I>catalog_sysid</I> spécifient les fichiers catalogues plutôt que l'entité document. L'entité document est spécifiée par la première entrée DOCUMENT dans les fichiers catalogues.
+<P>
+<DT><B>-s</B><DD>
+Mode de stricte conformité. Actuellement, le seul effet est que jade n'utilise ni nom de caractères prédéfinis, ni table de correspondance pour les entités « sdata », ni caractères de noms. Cela est utile pour vérifier que votre feuille de style est portable vers d'autres implémentations DSSSL et qu'elle est strictement conforme aux spécifications DSSSL.
+<P>
+<DT><B>-t </B><I>type_sortie</I><DD>
+<I>type_sortie</I> spécifie le type de sortie comme suit :
+<P>
+<B>fot</B> Une représentation XML du graphe d'objets flux
+<P>
+<B>rtf</B> <B>rtf-95</B> RTF (utilisée pour des transformations de SGML/XML vers RTF) Rich Text Format de Microsoft. rtf-95 produit une sortie optimisée pour Word 95 plutôt que Word 97.
+<P>
+<B>tex</B> TeX (utilisée pour des transformations de SGML/XML vers TeX)
+<P>
+<B>sgml</B> <B>sgml-raw</B> SGML (utilisée pour des transformations de SGML/XML vers SGML). <B>sgml-raw</B> n'insère pas de sauts de ligne à l'intérieur des balises.
+<P>
+<B>xml</B> <B>xml-raw</B> XML (utilisée pour des transformations de SGML/XML vers XML). <B>xml-raw</B> n'insère pas de sauts de ligne à l'intérieur des balises.
+<P>
+<B>html</B> HTML (utilisée pour des transformations de SGML/XML vers HTML)
+<P>
+<B>mif</B> MIF (utilisée pour des transformations de SGML/XML vers MIF)
+<P>
+<DT><B>-o </B><I>fichier_sortie</I><DD>
+Écrit la sortie dans <I>fichier_sortie</I> plutôt que dans la sortie par défaut. Le nom de fichier par défaut est le nom du dernier fichier d'entrée avec son extension remplacée par le nom du type de sortie. S'il n'y a pas de nom de fichier d'entrée, alors l'extension est ajoutée à jade-out.
+<P>
+<DT><B>-V </B><I>variable</I><DD>
+Ceci est équivalent à faire (define variable #t), excepté que cette définition aura priorité sur toute autre définition de « variable » dans une feuille de style.
+<P>
+<DT><B>-V </B><I>variable=valeur</I><DD>
+Ceci est équivalent à faire (define <I>variable</I> &quot;<I>value</I>&quot;), excepté que cette définition aura priorité sur toute autre définition de « variable » dans une feuille de style.
+<P>
+<DT><B>-V (define </B><I>variable</I> valeur)<DD>
+Ceci est équivalent à faire (define variable valeur), excepté que cette définition aura priorité sur toute autre définition de « variable » dans une feuille de style. Notez que vous devrez probablement utiliser un mécanisme d'échappement des espaces pour que l'expression entière, en langage scheme, soit analysée comme un seul argument de la ligne de commande.
+<P>
+<DT><B>-w</B><I>type_avertissement</I><DD>
+Contrôle les avertissements et les erreurs. Plusieurs options <B>-w</B> sont autorisées. Les valeurs suivantes de <I>type</I> activent les avertissements :
+<P>
+<B>xml</B> Avertissement sur les constructions non permises par XML.
+<P>
+<B>mixed</B> Avertissement sur les modèles de contenu mixte qui ne permettent nulle part « #pcdata ».
+<P>
+<B>sgmldecl</B> Avertissement sur différentes constructions douteuses dans la déclaration SGML.
+<P>
+<B>should</B> Avertissement sur différentes recommandations faites dans l'ISO 8879 avec lesquelles le document n'est pas conforme. (Les recommandations sont exprimées avec « should », ce qui est distinct des exigences qui sont généralement exprimées avec « shall »).
+<P>
+<B>default</B> Avertissement sur les références manquantes.
+<P>
+<B>duplicate</B> Avertissement sur les déclarations d'entité doubles.
+<P>
+<B>undefined</B> Avertissement sur les éléments non définis : éléments utilisés dans la DTD mais non définis.
+<P>
+<B>unclosed</B> Avertissement sur les balises ouvrantes et fermantes non appareillées.
+<P>
+<B>empty</B> Avertissement sur les balises ouvrantes et fermantes vides.
+<P>
+<B>net</B> Avertissement sur les balises ouvrantes rendant possible les balises fermantes nulles et sur les balises fermantes nulles (NdT : net=<B>n</B>ull <B>e</B>nd <B>t</B>ag).
+<P>
+<B>min-tag</B> Avertissement sur les balises ouvrantes et fermantes minimisées. Équivalent à une combinaison des avertissements <B>unclosed</B>, <B>empty</B> et <B>net</B>.
+<P>
+<B>unused-map</B> Avertissement sur la non utilisation d'assignations d'appels abrégés (NdT : short reference map) : ces assignations sont déclarées dans une déclaration d'assignation d'appels abrégés, mais jamais utilisées dans une déclaration d'utilisation d'appels abrégés dans la DTD. (NdT : pour plus d'informations sur les appels abrégés, vous pouvez consulter la page, en anglais, <A HREF="http://www.sgml.u-net.com/book/sgml-7.htm#SHORTREF)">http://www.sgml.u-net.com/book/sgml-7.htm#SHORTREF)</A>
+<P>
+<B>unused-param</B> Avertissement sur les entités paramètres définies mais non utilisées dans une DTD. Les entités paramètres internes non utilisées, dont le texte est INCLUDE ou IGNORE, ne produisent pas d'avertissement.
+<P>
+<B>notation-sysid</B> Avertissement sur les notations pour lesquelles aucun identifiant système ne peut être généré.
+<P>
+<B>all</B> Avertissement sur les conditions qui pourraient être évitées (de l'avis de l'auteur). Équivalent à : <B>mixed</B>, <B>should</B>, <B>default</B>, <B>undefined</B>, <B>sgmldecl</B>, <B>unused-map</B>, <B>unused-param</B>, <B>empty</B> et <B>unclosed</B>.
+<P>
+Un avertissement peut être désactivé en utilisant son nom préfixé par «&nbsp;no-&nbsp;». Ainsi <B>-wall</B> <B>-wno-duplicate</B> activent tous les avertissements exceptés ceux concernant les déclarations d'entités dupliquées.
+<P>
+Les valeurs suivantes de <I>type_avertissement</I> désactivent les erreurs :
+<P>
+<B>no-idref</B> Ne pas signaler d'erreur lorqu'on fait une référence à un identifiant, alors qu'aucun élément n'a cet identifiant. L'effet en est que chaque attribut déclaré comme une référence à un identifiant se comporte comme un nom ordinaire.
+<P>
+<B>no-significant</B> Ne pas produire d'erreur lorsqu'un caractère, qui n'est pas un caractère significatif dans la syntaxe concrète de référence, apparaît dans un nom de la déclaration SGML. Cela peut être pratique conjointement avec des suites logicielles de test.
+<P>
+<B>no-valid</B> Ne nécessite pas que le document soit de type valide. Cela a pour effet de modifier la déclaration SGML pour spécifier VALIDITY NOASSERT et IMPLYDEF ATTLIST YES ELEMENT YES. Une option <B>-wvalid</B> a pour effet de modifier la déclaration SGML pour spécifier VALIDITY TYPE et IMPLYDEF ATTLIST NO ELEMENT NO. Si ni <B>-wvalid</B> ni <B>-wno-valid</B> ne sont spécifiées, alors VALIDITY et IMPLYDEF, spécifiées dans la déclaration SGML, seront utilisées.
+<P>
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+<P>
+<P>
+
+OpenJade ignore les variables d'environnement SP_CHARSET_FIXED et SP_SYSTEM_CHARSET et utilise toujours Unicode comme jeu de caractères interne, comme si SP_CHARSET_FIXED vallait 1 et SP_SYSTEM_CHARSET n'était pas fixée. Par conséquent, seule la variable d'environnement SP_ENCODING joue un rôle dans la gestion des jeux de caractères de OpenJade.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXTENSIONS OPENJADE</H2>
+
+<P>
+<P>
+
+Les procédures externes suivantes sont disponibles. Ces procédures externes sont définies par un prototype de la même manière que dans la norme. Pour utiliser l'une de ces procédures externes, vous devez utiliser la procédure standard « external-procedure », utilisant un identifiant public &quot;UNREGISTERED::James Clark//Procedure::name&quot; où « name » est le nom donné ici, typiquement en incluant ce qui suit dans la spécification DSSSL :
+<P>
+<P>
+
+(define name (external-procedure &quot;UNREGISTERED::James Clark//Procedure::name&quot;))
+<P>
+<P>
+
+Notez que « external-procedure » retourne « #f » si elle ne connaît pas l'identifiant public spécifié (NdT : dans la syntaxe DSSSL, « #f » signifie « false »). Vous pouvez utiliser ceci pour permettre à vos spécifications DSSSL de travailler gracieusement avec d'autres implémentations qui ne supportent pas ces extensions.
+<P>
+<P>
+
+Pour les procédures externes ajoutées par l'équipe d'OpenJade, utilisez un identifiant public de la forme &quot;UNREGISTERED::OpenJade//Procedure::name&quot;.
+<P>
+<P>
+
+Un moyen facile pour accéder à toutes les procédures externes est d'utiliser la spécification de style dsssl/extensions.dsl#procedures. Le fichier <I>dsssl/extensions.dsl</I> contient également des spécifications de style qui rendent les classes d'objets flux non-standards et les caractéristiques héritées supportables, de manière pratique, par les backends disponibles.
+<P>
+<P>
+
+<B>Débogage</B>
+<P>
+<P>
+
+(debug obj)
+<P>
+<P>
+
+Génère un message incluant la valeur de « obj » et ensuite retourne « obj ».
+<P>
+<P>
+
+<B>Contrôle en-tête/pied de page d'une séquence « Simple-page-sequence »</B>
+<P>
+<P>
+
+(if-first-page sosofo1 sosofo2)
+<P>
+<P>
+
+Ceci ne peut être utilisé que dans la spécification de la valeur de l'une des caractéristiques en-tête/pied de page d'une séquence « simple-page-sequence ». Une séquence « sosofo » est retournée, qui sera rendue en tant que « sosofo1 » si la page est la première page d'une séquence « simple-page-sequence » et « sosofo2 » autrement. (NdT : dans le jargon DSSSL, « sosofo » signifie « <B>s</B>pecification <B>o</B>f a <B>s</B>equence <B>o</B>f <B>f</B>low <B>o</B>bjects »
+<P>
+<P>
+
+(if-front-page sosofo1 sosofo2)
+<P>
+<P>
+
+Ceci ne peut être utilisé que dans la spécification de la valeur de l'une des caractéristiques en-tête/pied de page d'une séquence « simple-page-sequence ». Une séquence « sosofo » est retournée, qui sera rendue en tant que « sosofo1 » si la page est une page de face (c.-à-d. recto, impaire) et « sosofo2 » si c'est une page de dos (c.-à-d. verso, paire).
+<P>
+<P>
+
+<B>Numérotage</B>
+<P>
+<P>
+
+(all-element-number)
+<P>
+<P>
+
+(all-element-number osnl)
+<P>
+<P>
+
+C'est la même chose que « element-number », excepté qu'il compte les éléments avec un identifiant générique. Si « osnl » n'est pas un élément, il retourne #f, autrement il retourne 1 plus le nombre d'éléments qui ont commencé avant « osnl ». Cela fournit un moyen efficace pour créer un identifiant unique pour tous les éléments d'un document.
+<P>
+<P>
+
+<B>Accès aux entités externes</B>
+<P>
+<P>
+
+(read-entity string)
+<P>
+<P>
+
+Elle retourne une chaîne composée du contenu de l'entité externe avec la chaine identifiant système. Ceci ne peut être utilisé qu'avec des entités texte (CDATA et SDATA), pas avec des entités binaires (NDATA).
+<P>
+<P>
+
+<B>Accès aux locales POSIX</B>
+<P>
+<P>
+
+(language lang country)
+<P>
+<P>
+
+Cette procédure retourne un objet de type langue, si le système supporte la langue spécifiée. « lang » est une chaîne de caractères ou un symbole donnant les deux lettres du code de la langue. « country » est une chaîne de caractères ou un symbole donnant les deux lettres du code du pays.
+<P>
+<P>
+
+Cette procédure utilise les locales POSIX. C'est un ajout OpenJade. Ceci n'est pas supporté par tous les systèmes d'exploitation.
+<P>
+<P>
+
+<B>Procédures standards étendues</B>
+<P>
+<P>
+
+(sgml-parse sysid #!key active: parent: architecture:)
+<P>
+<P>
+
+Cela vous permet de spécifier une architecture SGML en respect de laquelle le document doit être analysé. C'est un ajout OpenJade.
+<P>
+<P>
+
+(expt q k)
+<P>
+<P>
+
+Cela vous permet d'élever une quantité à une puissance entière. C'est un ajout OpenJade.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>LIMITATIONS</H2>
+
+<P>
+<P>
+
+Cette section décrit les limitations de l'interface d'entrée (le moteur DSSSL universel) ; chaque interface de sortie a également ses propres limitations.
+<P>
+<P>
+
+<B>openjade</B> ne permet pas de définitions internes au début des corps et dans la variante (test =&gt; destinataire) des clauses conditionnelles.
+<P>
+<P>
+
+<B>openjade</B> accepte seulement un unique plan « bosquet » fixé qui comprend les modules suivants (NdT : un « bosquet » est un ensemble d'« arbres » de propriétés DSSSL ; la phrase originale cite « a single, fixed grove plan », où grove est l'acronyme de <B>G</B>raph <B>R</B>epresentation of <B>P</B>roperty <B>V</B>alu<B>E</B>s) :
+<P>
+<P>
+
+* baseabs
+<P>
+<P>
+
+* prlgabs0
+<P>
+<P>
+
+* prlgabs1
+<P>
+<P>
+
+* instabs
+<P>
+<P>
+
+* basesds0
+<P>
+<P>
+
+* instsds0
+<P>
+<P>
+
+* subdcabs
+<P>
+<P>
+
+Il n'implémente pas les parties suivantes de SDQL : support HyTime (NdT : Hypermedia/Time-based Structuring Language), analyse auxiliaire, expressions régulières de noeud.
+<P>
+<P>
+
+Règles d'interrogation, synchronisation « sosofo », « sosofos » indirectes, valeurs de référence, zones de décoration et propriétés de polices de caractères ne sont pas supportées.
+<P>
+<P>
+
+Veuillez noter que seules les caractéristiques héritées, applicables à des objets flux supportés, peuvent être spécifiées.
+<P>
+<P>
+
+<B>Gestion des caractères et des glyphes</B>
+<P>
+<P>
+
+Il gère seulement un répertoire unique de caractères prédéfinis. Un nom de caractère de la forme U-XXXX, où XXXX sont quatre caractères alphanumériques hexadécimaux majuscules, est reconnu comme se référant au caractère Unicode du code concerné. Pour bien des caractères, il est également possible d'utiliser le nom « ISO/IEC 10646 » en minuscule avec des mots séparés par des traits d'union.
+<P>
+<P>
+
+Certains noms courants d'entités SDATA du jeu d'entités ISO sont reconnus et assignés à des caractères. De plus, un nom d'entité SDATA de la forme U-XXXX, où XXXX sont quatre caractères alphanumériques hexadécimaux majuscules, est assigné au caractère Unicode avec ce code.
+<P>
+<P>
+
+OpenJade accepte maintenant les formes de déclarations d'éléments « standard-chars », « map-sdata-entity », « add-name-chars », « add-separator-chars » et « char-repertoire », permettant à une feuille de style de définir des noms de caractères, des assignations d'entités « sdata », des caractères de noms (c.-à-d. des caractères autorisés dans les identifiants) et des caractères séparateurs supplémentaires. Actuellement, le seul répertoire de caractères reconnu est le répertoire intégré. Il a un identifiant public &quot;UNREGISTERED::OpenJade//Character Repertoire::OpenJade&quot;.
+<P>
+<P>
+
+<B>Validation</B>
+<P>
+<P>
+
+Plusieurs choses qu'il aurait été souhaitable de vérifier ne le sont pas :
+<P>
+<P>
+
+* Quand la valeur autorisée d'une caractéristique héritée est un symbole, OpenJade vérifie seulement que la valeur est un symbole autorisé comme la valeur d'une caractéristique ; #t et #f sont traités, dans ce cas, comme une sorte spéciale de symbole.
+<P>
+<P>
+
+* OpenJade ne vérifie pas si un objet flux apparaît dans un contexte où il est autorisé.
+<P>
+<P>
+
+* OpenJade n'empêche pas des objets flux d'être attachés au port principal d'un objet quand l'objet flux ne devrait pas avoir de port principal.
+<P>
+<P>
+
+* La plupart des vérifications de type sont faites à l'exécution, pas à la compilation.
+<P>
+<P>
+
+* OpenJade n'effectue pas de vérifications sur les caractéristiques non héritées qui nécessitent d'être spécifiées.
+<P>
+<P>
+
+* Il ne vérifie pas si les fonctionnalités optionelles, qui doivent être utilisées, sont déclarées dans la forme des fonctionnalités.
+<P>
+<P>
+
+<B>Autres limitations</B>
+<P>
+<P>
+
+Les primitives suivantes ne sont que des squelettes :
+<P>
+<P>
+
+<B>char-script-case</B> Retourne toujours le dernier argument.
+<P>
+<P>
+
+<B>address-visited?</B> Retourne toujours #f.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+<P>
+<P>
+
+Pour un fichier SGML <B>file.sgml</B> donné, utiliser la feuille de style <B>file.dsl</B> et le publier au format rtf.
+<P>
+<P>
+
+openjade -t rtf file.sgml
+<P>
+<P>
+
+Utiliser une feuille de style différente :
+<P>
+<P>
+
+openjade -t rtf -d docbook.dsl file.sgml
+<P>
+<P>
+
+Utiliser la spécification de style <B>print</B> contenue dans la feuille de style
+<P>
+<P>
+
+openjade -t rtf -d docbook.dsl#print file.sgml
+<P>
+<P>
+
+Et utiliser la spécification html de la feuille de style pour convertir vers html
+<P>
+<P>
+
+openjade -t sgml -i html -d docbook.dsl#html file.sgml
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<P>
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+James Clark, Ian Castle &lt;<A HREF="mailto:ian.castle@looksystems.co.uk">ian.castle@looksystems.co.uk</A>&gt;.
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Alain PORTAL &lt;aportal AT univ-montp2 DOT fr&gt;, 20 janvier 2004.
+<P>
+
+Je remercie infiniment Éric Bischoff sans lequel cette traduction aurait eu du mal à voir le jour.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAF">EXTENSIONS OPENJADE</A><DD>
+<DT><A HREF="#lbAG">LIMITATIONS</A><DD>
+<DT><A HREF="#lbAH">EXEMPLES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">AUTEURS</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:49 GMT, February 11, 2014
+</BODY>
+</HTML>

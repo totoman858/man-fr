@@ -1,0 +1,119 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of BRK</TITLE>
+</HEAD><BODY>
+<H1>BRK</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+brk, sbrk - Modifier la taille du segment de données.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int brk(void *</B><I>fin_segment_donnée</I><B>);</B>
+
+<BR>
+
+<B>void *sbrk(ptrdiff_t </B><I>incrément</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>brk</B>
+
+positionne la fin du segment de données (le premier mot mémoire hors
+de la zone accessible) à l'adresse spécifiée par
+<I>fin_segment_donnée.</I>
+
+Cette valeur doit être raisonnable, le système doit avoir suffisamment
+de mémoire, et le processus ne doit pas dépasser sa taille maximale de
+segment de données (voir
+<B><A HREF="/cgi-bin/man/man2html?2+setrlimit">setrlimit</A></B>(2)).
+
+<P>
+<B>sbrk</B>
+
+incrémente l'espace de données du programme de
+<I>incrément</I>
+
+octets. 
+<B>sbrk</B>
+
+n'est pas un appel système, juste une fonction de la bibliothèque C.
+Appeler
+<B>sbrk</B>
+
+avec un incrément nul permet d'obtenir l'emplacement de la limite
+actuelle.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>brk</B>
+
+renvoie 0 s'il réussit.
+<B>sbrk</B>
+
+retourne un pointeur sur le début de la nouvelle zone de données. 
+En cas d'échec -1 est renvoyé, et
+<I>errno</I>
+
+contient le code d'erreur
+<B>ENOMEM</B>.
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ   </H2>
+
+BSD 4.3
+<P>
+<B>brk</B> et <B>sbrk</B>
+
+ne sont pas définis dans le C Standard, et sont volontairement exclus
+des standards POSIX.1 (paragraphes B.1.1.1.3 et B.8.3.3).
+
+
+
+
+
+
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+execve">execve</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getrlimit">getrlimit</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></B>(3).
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ   </A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:55 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,1698 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PROC</TITLE>
+</HEAD><BODY>
+<H1>PROC</H1>
+Section: Manuel de l administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+proc - Pseudo-système de fichiers d'informations sur les processus.
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+/proc est un pseudo-système de fichiers qui est utilisé comme interface
+avec les structures de données du noyau pour éviter d'avoir à interpréter
+/dev/kmem.
+La plupart des fichiers sont en lecture seule, mais quelques uns permettent
+la modification de variables du noyau.
+<P>
+
+La description suivante fournit un aperçu de la hiérarchie /proc.
+<P>
+
+
+
+
+<DL COMPACT>
+<DT><I>[nombre]</I>
+
+<DD>
+Il existe un sous-répertoire pour chaque processus en cours. Le sous-répertoire
+prend comme nom le PID du processus. Chaque sous-répertoire contient les
+pseudo-fichiers et pseudo-répertoires suivants.
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><I>cmdline</I>
+
+<DD>
+Ce fichier contient la ligne de commande complète du processus, sauf si le
+processus a été swappé, ou s'il s'agit d'un zombie. Dans ces deux derniers
+cas il n'y a rien dans le fichier : une lecture reviendra après avoir
+lu 0 caractères. 
+Les arguments de la ligne de commande apparaîssent comme un ensemble de
+chaînes séparées de caractères NUL, avec un octet NUL supplémentaire après le dernier argument.
+<DT><I>cwd</I>
+
+<DD>
+(Current Working Directory) il s'agit d'un lien sur le répertoire de travail
+courant du processus. Pour obtenir le cwd du processus 20 par exemple, vous
+pouvez-faire ceci&nbsp;: 
+<BR>
+
+<PRE>
+cd /proc/20/cwd; /bin/pwd
+</PRE>
+
+
+<P>
+Notez que la commande directe <B>pwd</B> est souvent une commande interne du
+shell, et qu'elle risque de ne pas fonctionner correctement. Avec Bash, utilisez pwd -P.
+<DT><I>environ</I>
+
+<DD>
+Ce fichier contient l'environnement du processus. Les entrées sont séparées
+par des caractères nuls, et il devrait y en avoir un à la fin du fichier.
+Ainsi, pour afficher l'environnement du processus numéro 1, utilisez&nbsp;:
+<BR>
+
+<PRE>
+(cat /proc/1/environ; echo) | tr &quot;\000&quot; &quot;\n&quot;
+</PRE>
+
+
+<P>
+(Pour savoir à quoi cela peut bien servir, voyez
+<B><A HREF="/cgi-bin/man/man2html?8+lilo">lilo</A></B>(8).)
+
+<DT><I>exe</I>
+
+<DD>
+Sous Linux 2.2 et 2.4
+<I>exe</I>
+
+est un lien symbolique représentant le chemin réel de la commande en cours d'exécution.
+Le lien
+<I>exe</I>
+
+peut être déréférencé normalement, en ouvrant
+<I>exe</I>
+
+on ouvrira le fichier exécutable. Vous pouvez même taper
+<I>/proc/[pid]/exe</I>
+
+pour lancer une copie du même processus que celui du pid indiqué.
+Sous Linux 2.0 et précédents,
+<I>exe</I>
+
+était un pointeur sur le fichier binaire exécuté, qui apparaîssait sous forme
+de lien symbolique.
+Un appel-système
+<I><A HREF="/cgi-bin/man/man2html?2+readlink">readlink</A></I>(2)
+
+sur le fichier spécial 
+<I>exe</I>
+
+renvoyait une chaîne de la forme:
+<P>
+[périphérique]:inoeud
+<P>
+Par exemple, [0301]:1502 correspond à l'i-noeud 1502 sur le périphérique
+de numéro majeur 03 (disque IDE, MFM, etc.) et mineur 01 (première partition du premier disque).
+On peut utiliser
+<B><A HREF="/cgi-bin/man/man2html?1+find">find</A></B>(1)
+
+avec l'option -inum pour retrouver le fichier exécutable à partir du numéro d'i-noeud.
+<DT><I>fd</I>
+
+<DD>
+Il s'agit d'un sous-répertoire contenant une entrée pour chaque fichier
+que le processus a ouvert. Chaque entrée a le descripteur du fichier
+pour nom, et est représentée par un lien symbolique sur le vrai fichier
+(de la même manière que l'entrée exe). Ainsi, 0 correspond à l'entrée
+standard, 1 à la sortie standard, 2 à la sortie d'erreur, etc... 
+<P>
+Les programmes qui prennent un nom de fichier d'entrée mais qui ne lisent
+pas l'entrée standard, ou qui écrivent dans un fichier sans écrire
+sur la sortie standard peuvent être trompés ainsi (on suppose que
+l'option -e indique le nom du fichier d'entrée et l'option -s le
+nom du fichier de sortie)&nbsp;:
+<BR>
+
+<PRE>
+<TT>foobar -e /proc/self/fd/0 -s /proc/self/fd/1 ...</TT> 
+</PRE>
+
+<BR>
+
+Ceci transforme le programme en filtre. Toutefois cela ne fonctionne
+pas avec les programmes qui effectuent des positionnements (avec
+<I><A HREF="/cgi-bin/man/man2html?2+lseek">lseek</A></I>(2))
+
+dans leurs fichiers. On ne peut pas faire de positionnement sur
+les fichiers du répertoire fd.
+<P>
+/proc/self/fd/N est approximativement la même chose que /dev/fd/N
+dans certains systèmes UNIX et pseudo-UNIX. D'ailleurs la plupart des scripts
+MAKEDEV de Linux lient symboliquement /dev/fd sur [..]/proc/self/fd.
+<DT><I>maps</I>
+
+<DD>
+Un fichier contenant les régions mémoire actuellement projetées et
+leurs autorisations d'accès.
+Le format est&nbsp;:
+<PRE>
+adresses          perm. décalage périph i-noeud  chemin d'accès
+08048000-08056000 r-xp 00000000 03:0c 64593      /usr/sbin/gpm
+08056000-08058000 rw-p 0000d000 03:0c 64593      /usr/sbin/gpm
+08058000-0805b000 rwxp 00000000 00:00 0
+40000000-40013000 r-xp 00000000 03:0c 4165       /lib/ld-2.2.4.so
+40013000-40015000 rw-p 00012000 03:0c 4165       /lib/ld-2.2.4.so
+4001f000-40135000 r-xp 00000000 03:0c 45494      /lib/libc-2.2.4.so
+40135000-4013e000 rw-p 00115000 03:0c 45494      /lib/libc-2.2.4.so
+4013e000-40142000 rw-p 00000000 00:00 0
+bffff000-c0000000 rwxp 00000000 00:00 0
+</PRE>
+
+
+Où <I>adresses</I> correspond à l'espace d'adressage du processus qui l'occupe,
+<I>perm</I> est un ensemble d'autorisations&nbsp;:
+<PRE>
+r = lecture
+w = écriture
+x = exécution
+s = partage
+p = privé (copie si écriture)
+</PRE>
+
+
+<P>
+Le <I>décalage</I> se mesure dans le fichier, <I>périph</I> correspond
+à la paire (majeur:mineur), et l'<I>i-noeud</I> se trouve sur ce périphérique.
+0 signifie qu'aucun i-noeud n'est associé avec cette zone mémoire, comme
+c'est le cas avec bss. 
+<P>
+Sous Linux 2.0, il n'y a pas de champ indiquant le chemin d'accès.
+<DT>Par l'intermédiaire du fichier<DD>
+<I>mem</I>,
+
+on peut accéder à la mémoire d'un processus, au travers des appels
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2),
+
+<BR>&nbsp;et
+<B><A HREF="/cgi-bin/man/man2html?3+fseek">fseek</A>(3).</B>
+
+<DT><I>root</I>
+
+<DD>
+Linux, et Unix en général, supporte une notion de racine du système de fichiers pour
+chaque processus, configurable avec l'appel système
+<I><A HREF="/cgi-bin/man/man2html?2+chroot">chroot</A></I>(2).
+
+Le fichier root pointe sur la racine du système de fichiers, et se comporte comme exe, fd/*...
+<DT><I>stat</I>
+
+<DD>
+Informations sur l'état du processus. Ceci est utilisé par
+<B><A HREF="/cgi-bin/man/man2html?1+ps">ps</A></B>(1).
+
+La définition se trouve dans
+<I>/usr/src/linux/fs/proc/array.c</I>.
+
+<P>
+Les champs sont, dans l'ordre, et avec leurs formats de type
+<I><A HREF="/cgi-bin/man/man2html?3+scanf">scanf</A></I>(3) :
+
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><I>pid</I> %d<DD>
+L'ID du processus
+<DT><I>comm</I> %s<DD>
+Le nom du fichier exécutable entre parenthèses, que l'exécutable soit swappé ou non.
+<DT><I>state</I> %c<DD>
+Un caractère parmi &quot;RSDZTW&quot; indiquant si le processus est en cours d'exécution (R running),
+endormi dans un état interruptible (S sleeping), endormi de manière ininterruptible (D), zombie (Z), suivi pour débogage ou arrêté par un signal (T traced) ou swappé (W).
+<DT><I>ppid</I> %d<DD>
+Le PID du processus parent.
+<DT><I>pgrp</I> %d<DD>
+L'ID du groupe de processus.
+<DT><I>session</I> %d<DD>
+L'ID de session du processus.
+<DT>
+<DD>
+<I>tty_nr</I> %d
+Le tty que le processus utilise.
+<DT><I>tpgid</I> %d<DD>
+L'ID de groupe du processus contrôlant le terminal auquel le processus
+est connecté.
+<DT><I>flags</I> %u<DD>
+Attributs du processus. 
+Le bit math est 4 (décimal), et le bit de suivi est 10 (décimal) [NDT ?]
+<DT><I>minflt</I> %u<DD>
+Le nombre de fautes mineures que le processus a déclenchées - celles qui n'ont
+pas nécessité de chargement de page depuis le disque.
+<DT><I>cminflt</I> %u<DD>
+Le nombre de fautes mineures commises par le processus et ses descendants.
+<DT><I>majflt</I> %u<DD>
+Le nombre de fautes majeures que le processus a déclenchées - celles qui ont
+nécessité un chargement de page depuis le disque.
+<DT><I>cmajflt</I> %u<DD>
+Le nombre de fautes majeures commises par le processus et ses descendants.
+<DT><I>utime</I> %d<DD>
+Le temps passé (nombre de jiffies) en mode utilisateur par le processus.
+<DT><I>stime</I> %d<DD>
+Le temps passé en mode noyau par le processus.
+<DT><I>cutime</I> %d<DD>
+Le temps passé en mode utilisateur par le processus et ses descendants.
+<DT><I>cstime</I> %d<DD>
+Le temps passé en mode noyau par le processus et ses descendants.
+<DT><I>priority</I> %d<DD>
+La valeur de courtoisie standard&nbsp;; jamais négative
+dans le noyau.
+<DT><I>nice</I> %ld<DD>
+La valeur de courtoisie dans l'intervalle 19 (courtois) à -19 (agressif).
+<DT>
+<DD>
+
+
+
+
+
+
+
+<I>0</I> %ld
+La valeur zéro codée en dur remplace un champ supprimé ici.
+<DT><I>itrealvalue</I> %u<DD>
+La durée (en nombre de jiffies) avant le prochain signal SIGALRM envoyé
+au processus par un timer.
+<DT><I>starttime</I> %d<DD>
+Temps (en jiffies) auquel le processus a démarré depuis le boot du système.
+<DT><I>vsize</I> %u<DD>
+Taille de la mémoire virtuelle en octets.
+<DT><I>rss</I> %u<DD>
+RSS. Taille de l'ensemble résident : nombre de pages dont le processus dispose en
+mémoire réelle, moins 3 pour des raisons administratives. Il s'agit juste
+des pages contenant les espaces de code, donnée et pile. Ceci n'inclue ni
+les pages en attente de chargement ni celles qui ont été swappées.
+<DT><I>rlim</I> %u<DD>
+Limite actuelle en octets du RSS du processus (classiquement
+2,147,483,647).
+<DT><I>startcode</I> %u<DD>
+Adresse au-dessus de laquelle le code du programme peut s'exécuter.
+<DT><I>endcode</I> %u<DD>
+Adresse en-dessous de laquelle le code du programme peut s'exécuter.
+<DT><I>startstack</I> %u<DD>
+Adresse de début de la pile.
+<DT><I>kstkesp</I> %u<DD>
+Valeur actuelle du pointeur de pile 32 bits ESP, telle qu'on la trouve
+dans la page de pile du noyau pour ce processus.
+<DT><I>kstkeip</I> %u<DD>
+EIP actuel (Pointeur d'instructions 32 bits).
+<DT><I>signal</I> %d<DD>
+Masque des signaux en attente (habituellement 0).
+<DT><I>blocked</I> %d<DD>
+Masque des signaux bloqués (souvent 0, 2 pour certains shells).
+<DT><I>sigignore</I> %d<DD>
+Masque des signaux ignorés.
+<DT><I>sigcatch</I> %d<DD>
+Masque des signaux interceptés.
+<DT><I>wchan</I> %u<DD>
+Il s'agit du &quot;canal&quot; sur lequel le processus attend. C'est l'adresse
+d'un appel système, dont on peut retrouver le nom dans une table si
+besoin (il faut avoir un fichier /etc/psdatabase à jour, et essayer
+<I>ps -l</I> pour voir le champs WCHAN).
+<DT><I>nswap</I> %lu<DD>
+Nom de pages swappée (non maintenu).
+<DT><I>cnswap</I> %lu<DD>
+Champ <I>nswap</I> cumulé avec les processus enfants.
+<DT><I>exit_signal</I> %d<DD>
+Signal à envoyer au parent lors de la mort du processus.
+<DT><I>processor</I> %d<DD>
+Numéro du processeur utilisé lors de la dernière exécution.
+</DL>
+</DL>
+
+<DT><I>statm</I>
+
+<DD>
+Founit des informations sur l'état des pages mémoire. Les colonnes sont&nbsp;:
+<BR>&nbsp;size&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;taille&nbsp;totale&nbsp;du&nbsp;programme
+<BR>&nbsp;resident&nbsp;&nbsp;&nbsp;taille&nbsp;résidant&nbsp;en&nbsp;mémoire
+<BR>&nbsp;share&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pages&nbsp;partagées
+<BR>&nbsp;trs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;taille&nbsp;du&nbsp;code&nbsp;(segment&nbsp;text)
+<BR>&nbsp;drs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;données&nbsp;et&nbsp;pile
+<BR>&nbsp;lrs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bibliothèques
+<BR>&nbsp;dt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pages&nbsp;touchées&nbsp;(marquées&nbsp;dirty)
+<DT><I>status</I>
+
+<DD>
+Fournit l'essentiel des informations de
+<I>stat</I>
+
+et
+<I>statm</I>
+
+dans un format plus facile à lire pour les humains.
+</DL>
+</DL>
+
+<DT><I>apm</I>
+
+<DD>
+La version du système de gestion de puissance APM et les informations sur l'état de
+la batterie si la constante CONFIG_APM était définie à la compilation du noyau.
+<DT><I>bus</I>
+
+<DD>
+Contient des sous-répertoires pour les bus installés.
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><I>pccard</I>
+
+<DD>
+Répoertoire pour les périphériques Pcmcia si la constante CONFIG_PCMCIA était
+définie à la compilation du noyau.
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><I>drivers</I>
+
+<DD>
+</DL>
+</DL>
+
+</DL>
+</DL>
+
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><I>pci</I>
+
+<DD>
+Contient divers sous-répertoires de bus, et des pseudo-fichiers
+recélant des informations sur les bus pci, les périphériques installés
+et leurs pilotes. Certains de ces fichiers ne sont pas en Ascii pur.
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><I>devices</I>
+
+<DD>
+Informations sur les périphériques pci. Peut-être consulté grâce à
+<B><A HREF="/cgi-bin/man/man2html?8+lspci">lspci</A></B>(8)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?8+setpci">setpci</A></B>(8).
+
+</DL>
+</DL>
+
+</DL>
+</DL>
+
+<DT><I>cmdline</I>
+
+<DD>
+Arguments passés au noyau Linux lors du boot. Généralement par
+l'intermédiaire d'un gestionnaire de boot comme
+<B><A HREF="/cgi-bin/man/man2html?1+lilo">lilo</A></B>(1).
+
+<DT><I>cpuinfo</I>
+
+<DD>
+Il s'agit d'informations dépendantes de l'architecture et du processeur
+utilisé. Les deux seules entrées toujours présentes sont <I>processor</I>
+qui donne le nombre de processeurs et <I>bogomips</I>, une constante système
+calculée pendant l'initialisation du noyau. Les machines SMP ont une
+ligne d'information pour chaque processeur.
+<DT><I>devices</I>
+
+<DD>
+Liste littérale des groupes de périphériques et des numéros majeurs. Ceci
+peut servir dans les scripts MAKEDEV pour rester cohérent avec le noyau.
+<DT><I>dma</I>
+
+<DD>
+Il s'agit d'une liste des canaux DMA (Direct Memory Acess) <I>ISA</I>
+en cours d'utilisation.
+<DT><I>driver</I>
+
+<DD>
+Répertoire vide
+<DT><I>execdomains</I>
+
+<DD>
+Liste des domaines d'exécution (personnalités).
+<DT><I>fb</I>
+
+<DD>
+Information sur la mémoire d'écran Frame Buffer, lorsque la constante
+CONFIG_FB a été définie lors de la compilation du noyau.
+<DT><I>filesystems</I>
+
+<DD>
+Une liste des systèmes de fichiers qui ont été compilés dans le noyau.
+Par exemple ceci sert à
+<I><A HREF="/cgi-bin/man/man2html?1+mount">mount</A>(1)</I>
+
+à essayer les différents systèmes de fichiers si on ne lui précise rien.
+<DT><I>fs</I>
+
+<DD>
+Sous-répertoire vide.
+<DT><I>ide</I>
+
+<DD>
+Le répertoire
+<I>ide</I>
+
+existe sur les systèmes ayant un bus ide. Il y a des sous-répertoires pour
+chaque canal ide et les périphériques attachés. Les fichiers contiennent&nbsp;:
+<PRE>
+cache              taille du buffer en ko
+capacity           nombre de secteurs
+driver             version du pilote
+geometry           géométries physique et logique
+identify           identification en hexadécimal
+media              type de support
+model              numéro de fabricant
+settings           configuration du pilote
+smart_thresholds   seuils en hexadécimal
+smart_values       paramètres in hexadécimal
+</PRE>
+
+<P>
+L'utilitaire
+<B><A HREF="/cgi-bin/man/man2html?8+hdparm">hdparm</A></B>(8)
+
+fournit un accès convivial à ces informations.
+<DT><I>interrupts</I>
+
+<DD>
+Il s'agit du nombre d'interruptions reçues pour chaque IRQ sur les
+architectures i386 (au moins). Format facile à lire, en Ascii
+<DT><I>iomem</I>
+
+<DD>
+projection des entrées-sorties en mémoire, depuis Linux 2.4.
+<DT><I>ioports</I>
+
+<DD>
+Il s'agit d'une liste des régions d'entrée-sortie en cours d'utilisation.
+<DT><I>kcore</I>
+
+<DD>
+Ce fichier représente la mémoire physique du système sous forme de fichier ELF core.
+A l'aide de ce pseudo-fichier et d'un binaire du noyau non <I>strip</I>é
+(/usr/src/linux/vmlinux), GDB peut servir à inspecter l'état de n'importe
+quelle structure de données du noyau.
+<P>
+La longueur totale de ce fichier est la taille de la mémoire RAM physique
+plus 4 Ko.
+<DT><I>kmsg</I>
+
+<DD>
+Ce fichier peut être utilisé à la place de l'appel-système
+<B><A HREF="/cgi-bin/man/man2html?2+syslog">syslog</A></B>(2)
+
+pour journaliser les messages du noyau. Un processus doit avoir les
+privilèges Super-Utilisateur pour lire ce fichier, et un seul processus
+à la fois peut le lire. On NE DOIT PAS lire ce fichier si un processus
+syslogd tourne et utilise l'appel-système
+<B><A HREF="/cgi-bin/man/man2html?2+syslog">syslog</A></B>(2)
+
+pour journaliser les messages du noyau.
+<P>
+Les informations de ce fichier sont consultés par le programme
+<B><A HREF="/cgi-bin/man/man2html?8+dmesg">dmesg</A></B>(8).
+
+<DT><I>ksyms</I>
+
+<DD>
+Ce fichier contient les symboles exportés par le noyau et
+utilisés par les outils des
+<I>modules</I>(X)
+
+pour assurer l'édition dynamique des liens des modules chargeables. 
+<DT><I>loadavg</I>
+
+<DD>
+Ce fichier indique les charges système (nombre de jobs en attente
+d'exécution) moyennées sur 1, 5, et 15 minutes.
+Suivent le nombre d'utilisateurs connectés séparé par un slash
+du nombre de processus en cours. On trouve enfin le nombre de processus
+s'étant exécutés depuis le démarrage du système.
+Il s'agit des informations fournies par exemple par le programme
+<I><A HREF="/cgi-bin/man/man2html?1+uptime">uptime</A></I>(1).
+
+<DT><I>locks</I>
+
+<DD>
+Ce fichier montre les verrouillages actuels des fichiers.
+(<B><A HREF="/cgi-bin/man/man2html?2+flock">flock</A></B>(2) et  <B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2)).
+
+<DT><I>malloc</I>
+
+<DD>
+Ce fichier n'est présent que si CONFIGDEBUGMALLOC a été défini lors de
+la compilation du noyau.
+<DT><I>meminfo</I>
+
+<DD>
+Sert au programme
+<B><A HREF="/cgi-bin/man/man2html?1+free">free</A></B>(1)
+
+pour indiquer les quantités de mémoires (physique et swap) libres
+et utilisées, ainsi que la mémoire partagée et les buffers utilisés
+par le noyau. 
+<P>
+Ce fichier se présente sous la même forme que
+<B><A HREF="/cgi-bin/man/man2html?1+free">free</A></B>(1)
+
+mais en octets et non pas en Ko.
+<DT><I>mounts</I>
+
+<DD>
+Il s'agit d'une liste de tous les systèmes de fichiers actuellement montés
+sur le système. Le format de ce fichier est documenté dans
+<I><A HREF="/cgi-bin/man/man2html?5+fstab">fstab</A></I>(5).
+
+<DT><I>modules</I>
+
+<DD>
+Une liste littérale des modules qui ont été chargés par le système.
+Voir
+<B>lsmod (8).</B>
+
+<DT><I>mtrr</I>
+
+<DD>
+Memory Type Range Registers.
+Voir
+<I>/usr/src/linux/Documentation/mtrr.txt</I>
+
+pour des détails.
+<DT><I>net</I>
+
+<DD>
+Ce répertoire regroupe divers pseudo-fichiers relatifs aux
+fonctionnalités réseau. Chaque fichier fournit des informations
+concernant une couche particulière.
+Ces fichiers sont en ASCII et sont donc lisible grâce à
+<I><A HREF="/cgi-bin/man/man2html?1+cat">cat</A></I>(1),
+
+mais le programme standard
+<B><A HREF="/cgi-bin/man/man2html?8+netstat">netstat</A></B>(8)
+
+fournit un accès plus propre à ces données.
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><I>arp</I>
+
+<DD>
+Ce fichier contient un affichage ASCII lisible des tables ARP du
+noyau servant à la résolution d'adresse. Il indique à la fois
+les entrées apprises dynamiquement et celles pré-programmées.
+Le format est le suivant :
+<PRE>
+Adresse IP    Matériel  Attribut   Adresse matérieuue Masque  Périph.
+192.168.0.50   0x1       0x2       00:50:BF:25:68:F3   *      eth0
+192.168.0.250  0x1       0xc       00:00:00:00:00:00   *      eth0
+</PRE>
+
+
+</DL>
+<P>
+
+Où l'adresse IPv4 est celle de la machine, le type de matériel est issu
+de la RFC 826. L'attribut est le champs <I>arp_flags</I> interne de la
+structure ARP (définie dans /usr/include/linux/if_arp.h) et l'adresse
+matérielle est celle de la couche physique de l'adaptateur correspondant
+à l'adresse IP (si elle est connue).
+<DL COMPACT>
+<DT><I>dev</I>
+
+<DD>
+Ce pseudo-fichier contient des informations d'état sur les périphériques
+réseau. On y trouve les nombres de paquets émis et reçus, le nombre d'erreurs
+et de collisions, ainsi que d'autres données statistiques. Ce fichier est
+utilisé par le programme
+<A HREF="/cgi-bin/man/man2html?8+ifconfig">ifconfig</A><B>(8).</B>
+
+Le format est le suivant&nbsp;:
+<PRE>
+Inter-|   Receive                                                |  Transmit
+ face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
+    lo: 2776770   11307    0    0    0     0          0         0  2776770   11307    0    0    0     0       0          0
+  eth0: 1215645    2751    0    0    0     0          0         0  1782404    4324    0    0    0   427       0          0
+  ppp0: 1622270    5552    1    0    0     0          0         0   354130    5669    0    0    0     0       0          0
+  tap0:    7714      81    0    0    0     0          0         0     7714      81    0    0    0     0       0          0
+</PRE>
+
+
+
+
+
+
+
+<DT><I>dev_mcast</I>
+
+<DD>
+Définie dans
+<I>/usr/src/linux/net/core/dev_mcast.c</I> :
+
+<PRE>
+indx ifterface_name  dmi_u dmi_g dmi_address
+2    eth0            1     0     01005e000001
+3    eth1            1     0     01005e000001
+4    eth2            1     0     01005e000001
+</PRE>
+
+<DT><I>igmp</I>
+
+<DD>
+Protocole Internet Group Management Protocol.  Défini dans
+<I>/usr/src/linux/net/core/igmp.c</I>.
+
+<P>
+<DT><I>rarp</I>
+
+<DD>
+Ce fichier emploie le même format que le fichier
+<I>arp</I>,
+
+et contient la projection inverse de la base de données utilisée
+pour fournir les services de recherche inversée de
+<B><A HREF="/cgi-bin/man/man2html?8+rarp">rarp</A></B>(8).
+
+Si RARP n'est pas configuré dans le noyau, ce fichier est absent.
+<DT><I>raw</I>
+
+<DD>
+Fournit une copie de la table des sockets RAW (brutes). La plupart des informations
+ne sert que pour le débogage. La valeur &quot;sl&quot; est l'emplacement de la socket
+dans la table de hachage du noyau. Le champ &quot;local_address&quot; contient l'adresse locale
+ainsi que le numéro du protocole utilisé. &quot;St&quot; est l'état interne de la socket.
+Les &quot;tx_queue&quot; et &quot;rx_queue&quot; représentent les files d'attente en émission et en
+réception, en terme d'utilisation mémoire par le noyau. Les champs &quot;tr&quot;, &quot;tr-&gt;when&quot;
+et &quot;rexmits&quot; ne sont pas utilisés par RAW. Le champ uid contient l'identificateur
+EUID du créateur de la socket.
+
+
+
+
+<DT><I>snmp</I>
+
+<DD>
+Ce fichier contient les données ASCII nécessaires pour les bases d'information
+d'un agent SNMP pour la gestion de IP, ICMP, TCP et UDP.
+<DT><I>tcp</I>
+
+<DD>
+Contient une copie de la table des socket TCP. La plupart des informations
+ne sert que pour le débogage. La valeur &quot;sl&quot; est l'emplacement de la socket
+dans la table de hachage du noyau. Le champ &quot;local_address&quot; contient l'adresse locale
+ainsi que le numéro de port. Le champ &quot;remote_address&quot; contient l'adresse distante
+et le numéro de port (si la socket est connectée). &quot;St&quot; est l'état interne de la socket.
+Les &quot;tx_queue&quot; et &quot;rx_queue&quot; représentent les files d'attente en émission et en
+réception, en terme d'utilisation mémoire par le noyau. Les champs &quot;tr&quot;, &quot;tr-&gt;when&quot;
+et &quot;rexmits&quot; contiennent des données internes au noyau ne servant qu'au débogage.
+Le champ uid contient l'identificateur EUID du créateur de la socket.
+<DT><I>udp</I>
+
+<DD>
+Contient une copie de la table des socket UDP. La plupart des informations
+ne sert que pour le débogage. La valeur &quot;sl&quot; est l'emplacement de la socket
+dans la table de hachage du noyau. Le champ &quot;local_address&quot; contient l'adresse locale
+ainsi que le numéro de port. Le champ 'remote_address' contient l'adresse distante
+et le numéro de port (si la socket est connectée). &quot;St&quot; est l'état interne de la socket.
+Les &quot;tx_queue&quot; et &quot;rx_queue&quot; représentent les files d'attente en émission et en
+réception, en terme d'utilisation mémoire par le noyau. Les champs &quot;tr&quot;, &quot;tr-&gt;when&quot;
+et &quot;rexmits&quot; ne sont pas utilisés par UDP. 
+Le champ uid contient l'identificateur EUID du créateur de la socket.
+Le format est&nbsp;:
+<PRE>
+sl  local_address rem_address   st tx_queue rx_queue tr rexmits  tm-&gt;when uid
+ 1: 01642C89:0201 0C642C89:03FF 01 00000000:00000001 01:000071BA 00000000 0
+ 1: 00000000:0801 00000000:0000 0A 00000000:00000000 00:00000000 6F000100 0
+ 1: 00000000:0201 00000000:0000 0A 00000000:00000000 00:00000000 00000000 0
+</PRE>
+
+<DT><I>unix</I>
+
+<DD>
+Liste des sockets dans le domaine UNIX présentes sur le système, et
+leurs états. Le format est :
+<PRE>
+
+Num RefCount Protocol Flags    Type St Path
+ 0: 00000002 00000000 00000000 0001 03
+ 1: 00000001 00000000 00010000 0001 01 /dev/printer
+
+</PRE>
+
+</DL>
+<P>
+
+Où 'Num' est l'emplacement dans la table du noyau. 'Refcount' est le nombre
+d'utilisateurs de la socket. 'Protocol' est toujours 0 pour le moment. 'Flags' représente
+un attribut interne du noyau correspondant à l'état
+de la socket. Le type est toujours 1 pour le moment (Les sockets de datagrammes
+dans le domaine Unix ne sont pas encore supporté par le noyau). 'St' est
+un état interne de la socket, et Path correspond à l'éventuel chemin d'accès de
+la socket.
+</DL>
+
+<DT><I>partitions</I>
+
+<DD>
+Contient les numéros majeur et mineur de chaque partition, ainsi que le nombre de
+blocs et le nom de la partition.
+<DT><I>pci</I>
+
+<DD>
+Il s'agit d'une liste de tous les périphériques PCI détectés pendant
+l'initialisation ainsi que leur configuration.
+<DT><I>scsi</I>
+
+<DD>
+Un répertoire regroupant les pseudo-fichiers du niveau SCSI intermédiaire, et
+divers sous-répertoires pour les pilotes SCSI bas-niveau, qui contiennent
+un fichier pour chaque hôte SCSI du système. Tout cet ensemble fournit une
+partie de l'état du sous-système d'entrée/sortie SCSI.
+Les fichiers contiennent des structures sous forme ASCII, et sont donc
+lisibles avec <B><A HREF="/cgi-bin/man/man2html?1+cat">cat</A></B>(1).
+<P>
+On peut également écrire dans certains fichiers pour reconfigurer le sous-système
+SCSI, ou activer/désactiver certaines fonctionnalités.
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><I>scsi</I>
+
+<DD>
+Il s'agit d'une liste de tous les périphériques SCSI reconnus par le noyau.
+Cette liste est la même que celle affichée durant le démarrage.
+Le sous-système SCSI n'accepte pour le moment que la commande <I>add-single-device</I>
+qui permet au Super-Utilisateur d'ajouter un périphérique branché à chaud à
+la liste des périphériques connus.
+<P>
+Un
+<B>echo 'scsi add-single-device 1 0 5 0' &gt; /proc/scsi/scsi </B>
+
+fera examiner le canal SCSI 0 par l'hôte scsi1, à la recherche d'un périphérique
+identifié ID 5 LUN 0. S'il y a déjà un périphérique à cette adresse ou si
+l'adresse est inconnue, une erreur sera renvoyée.
+<DT><I>nom_de_driver</I>
+
+<DD>
+Le <I>nom_de_driver</I> peut être actuellement : NCR53c7xx, aha152x, aha1542, aha1740, 
+aic7xxx, buslogic, eata_dma, eata_pio, fdomain, in2000, pas16, qlogic, 
+scsi_debug, seagate, t128, u15-24f, ultrastore ou wd7000. 
+Ces répertoires correspondent à chaque drivers qui pilotent au moins un HBA SCSI.
+Chaque répertoire contient un fichier par hôte enregistré. Chaque fichier hôte est
+baptisé avec le numéro assigné à l'hôte durant l'initialisation.
+<P>
+La lecture de ces fichiers montrera en général la configuration de l'hôte et du
+pilote, des statistiques, etc.
+<P>
+L'écriture dans ces fichiers permettra différentes choses suivant les hôtes. Par
+exemple, avec les commandes <I>latency</I> et <I>nolatency</I>, le Super-utilisateur
+peut activer ou inhiber le code de mesure de latence des commandes dans le driver
+eata_dma. Avec les commandes <I>lockup</I> et <I>unlock</I>, il peut contrôler
+les verrouillages de bus simulés par le driver scsi_debug.
+</DL>
+</DL>
+
+<DT><I>self</I>
+
+<DD>
+Ce répertoire se rapporte au processus accédant au système de fichier /proc,
+et est identique au sous-répertoire de /proc ayant pour nom le PID du
+processus appelant.
+<DT><I>slabinfo</I>
+
+<DD>
+Informations a propose des mémoires caches du noyau. Les colonnes sont&nbsp;:
+<PRE>
+nom-du-cache
+nombre-d'objets-actifs
+nombre-total-d'objets
+taille-d-'objet
+nombre-de-buffers-actifs
+nombre-total-de-buffers
+nombre-de-pages-par-buffer
+</PRE>
+
+Voir
+<B><A HREF="/cgi-bin/man/man2html?5+slabinfo">slabinfo</A></B>(5)
+
+pour des détails.
+<DT><I>stat</I>
+
+<DD>
+Statistiques du noyau, et du système. Varie avec l'architecture, les entrées
+communes sont&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><I>cpu  3357 0 4313 1362393</I><DD>
+Le nombre de jiffies (centièmes de seconde) que le système a passé en
+mode utilisateur, en mode utilisateur avec une priorité basse (gentil), en
+mode système, et le temps d'inactivité. La dernière valeur devrait correspondre
+à 100 fois la deuxième entrée du pseudo-fichier uptime.
+<DT><I>page 5741 1808</I><DD>
+Le nombre de pages que le système a paginé en entrée et en sortie.
+<DT><I>swap 1 0</I><DD>
+Le nombre de pages de swap que le système a échangé en entrée et en sortie.
+<DT><I>intr 1462898</I><DD>
+Le nombre d'interruption reçues depuis le démarrage du système.
+<DT><I>disk_io: (2,0):(31,30,5764,1,2) (3,0):</I>...<DD>
+(majeur,mineur):(noinfo, read_io_ops, blks_read, write_io_ops, blks_written)
+<DT><I>ctxt 115315</I><DD>
+Le nombre de changements de contexte effectués par le système.
+<DT><I>btime 769041601</I><DD>
+La date de démarrage du système en secondes écoulées depuis le 1er Janvier 1970.
+<DT><I>processes 23664</I><DD>
+Le nombre de processus exécutés sur le système depuis le démarrage.
+</DL>
+</DL>
+
+<DT><I>swap</I>
+
+<DD>
+Les zones de swap utilisées. Voir aussi
+<B><A HREF="/cgi-bin/man/man2html?8+swapon">swapon</A></B>(8).
+
+<DT><I>sys</I>
+
+<DD>
+Ce répertoire (présent depuis le noyau 1.3.57) contient un ensemble de
+fichiers et de sous-répertoires correspondant à des variables internes
+du noyau. Celles-ci peuvent être lues et parfois modifiées en utilisant
+le pseudo-système de fichiers <I>proc</I>, et en utilisant l'appel-système
+<I><A HREF="/cgi-bin/man/man2html?2+sysctl">sysctl</A></I>(2).
+
+Actuellement, il existe les sous-répertoires
+<I>abi</I>, <I>debug</I>, <I>dev</I>, <I>fs</I>, <I>kernel</I>, <I>net</I>, <I>proc</I>, <I>sunrpc</I> et <I>vm</I>
+
+qui contiennent chacun des fichiers et d'autres sous-répertoires.
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><I>abi</I>
+
+<DD>
+Ce répertoire peut être vide. Sur certains systèmes, il est même absent.
+<DT><I>debug</I>
+
+<DD>
+Ce répertoire peut être vide.
+<DT><I>dev</I>
+
+<DD>
+Ce répertoire contient des informations spécifiques sur les périphériques (par ex. dev/cdrom/info). Sur
+certains systèmes, il peut être vide.
+<DT><I>fs</I>
+
+<DD>
+Ici se trouvent le sous-répertoire
+<I>binfmt_misc</I>
+
+et les fichiers
+<I>dentry-state</I>, <I>dir-notify-enable</I>, <I>dquot-nr</I>, <I>file-max</I>, 
+
+<I>file-nr</I>, <I>inode-max</I>, <I>inode-nr</I>, <I>inode-state</I>, 
+
+<I>lease-break-time</I>, <I>leases-enable</I>, <I>overflowgid</I>, <I>overflowuid</I>
+
+<I>super-max</I> et <I>super-nr</I>
+
+dont les noms sont assez explicites.
+</DL>
+<P>
+
+La documentation des fichiers dans
+<I>/proc/sys/binfmt_misc</I>
+
+se trouve dans les sources du noyau, dans
+<I>Documentation/binfmt_misc.txt</I>.
+
+<P>
+
+Le fichier
+<I>dentry-state</I>
+
+contient sis nombres
+<I>nr_dentry</I>, <I>nr_unused</I>, <I>age_limit</I> (age en secondes), <I>want_pages</I>
+
+(pages réclammées par le système) et deux valeurs inutiles.
+nr_dentry semble être toujours à zéro.
+nr_unused semble être le nombre d'entrées de répertoire libres.
+age_limit est l'âge en seconde après lequel les entrées dcache peuvent être
+réclamées quand la mémoire libre diminue et que want_page est non-nul.
+<P>
+
+Le fichier
+<I>dir-notify-enable</I>
+
+peut être utilisé pour activer ou inhiber l'interface
+<I>dnotify</I>
+
+décrite dans
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2)
+
+au niveau système
+Une valeur nulle inhibe cette interface, et
+la valeur 1 l'active.
+<P>
+
+Le fichier
+<I>dquot-max</I>
+
+montre le nombre maximal d'entrée de quota de disque en cache.
+Sur certains systèmes (2.4), il est absent. 
+Si le nombre de quotas de disque libres est très bas, et si vous
+avez un nombre important d'utilisateurs simultanés, vous pouvez augmenter
+cette valeur.
+<P>
+
+Le fichier
+<I>dquot-nr</I>
+
+montre le nombre d'entrées de quota de disque allouées et le nombre d'entrées libres.
+<P>
+
+Le fichier
+<I>file-max</I>
+
+est la limite système du nombre de fichiers ouverts par un processus.
+(Voir aussi
+<B><A HREF="/cgi-bin/man/man2html?2+setrlimit">setrlimit</A></B>(2)
+
+qui peut servir à fixer la limite par processus,
+<B>RLIMIT_NOFILE</B>).
+
+Si vous avez beaucoup de messages d'erreurs indiquant un manque de descripteurs de fichiers,
+essayez d'augmenter cette valeur.
+<BR>
+
+<P>
+<BR>
+
+<PRE>
+echo 100000 &gt; /proc/sys/fs/file-max
+</PRE>
+
+
+<P>
+
+La constante
+<I>NR_OPEN</I>
+
+du noyau impose une limite supérieure à la valeur que l'on peut placer dans
+<I>file-max</I>.
+
+<P>
+
+Si vous augmentez
+<I>file-max</I>,
+
+assurez-vous d'augmenter
+<I>inode-max</I>
+
+jusqu'à 3 à 4 fois la nouvelle valeur de
+<I>file-max</I>,
+
+ou vous serez à court d'i-noeuds.
+<P>
+
+Le fichier
+<I>file-nr</I>
+
+(en lecture seule) donne le nombre de fichiers actuellement ouverts.
+Il contient trois nombres : les descripteurs de fichiers allouées, les
+descripteurs de fichiers libres, et le maximum de descripteurs de fichiers.
+Le noyau alloue les descripteurs dynamiquement, mais il ne les libére pas.
+Si le nombre de descripteurs alloués est proche du maximum, vous pouvez
+envisager d'augmenter le maximum.
+Quand le nombre de descripteurs libres est très grand, vous avez rencontré
+dans le passé un pic d'utilisation et n'avez probablement pas besoin d'augmenter le maximum.
+<P>
+
+Le fichier
+<I>inode-max </I>
+
+contient le nombre maximal d'i-noeuds en mémoire. Sur certains systèmes (2.4)
+il peut être absent. Cette valeur devrait être 3 à 4 fois plus grande que le
+nombre file-max, car les descripteurs stdin, stdout, et les socket réseau
+nécessitent aussi un i-noeud. Lorsque vous manquez régulièrement d'i-noeud,
+augmentez cette valeur.
+<P>
+
+Le fichier
+<I>inode-nr</I>
+
+contient les deux premières valeurs de inode-state.
+<P>
+
+Le fichier
+<I>inode-state</I>
+
+contient sept nombres&nbsp;: nr_inodes, nr_free_inodes, preshrink et quatre valeurs inutiles.
+nr_inodes est le nombre d'i-noeuds alloués par le système. Il peut être légèrement plus grand
+que inode-max, car Linux les alloue par page complète.
+nr_free_inodes représente le nombre d'i-noeuds libres.
+preshrink est non-nulle quand nr_inodes &gt; inode-max et que le système doit purger la liste d'i-noeuds
+plutôt qu'en allouer plus.
+<P>
+
+Le fichier
+<I>lease-break-time</I>
+
+indique le délai de grâce que le noyau accorde à un processus
+détenant un blocage de fichier (file lease, voir
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2))
+
+après qu'il lui a envoyé un signal indiquant qu'un autre processus
+attend pour ouvrir le fichier.
+Si, durant le délai de grâce, le détenteur du blocage ne le supprime
+pas, en n'en diminue pas la portée, le noyau éliminera de force le blocage.
+<P>
+
+Le fichier
+<I>leases-enable</I>
+
+permet d'activer ou d'inhiber les blocages de fichiers (file lease, voir
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2))
+
+pour tout le système.
+Si ce fichier contient la valeur 0, les blocages sont désactivés, une valeur
+non-nulle les active.
+<P>
+
+Les fichiers
+<I>overflowgid</I> et 
+
+<I>overflowuid</I>
+
+contiennent des valeurs de GID et UID de débordement, par défaut 65534.
+Certains systèmes de fichiers ne supportent que des UID et GID sur 16 bits, bien que le noyau
+Linux les gère sur 32 bits. Lorsque l'un de ces systèmes de fichiers est monté en lecture-écriture,
+tout UID ou GID dépassant 65535 est remplacé par la valeur de débordement avant l'écriture sur le disque.
+<P>
+
+Le fichier
+<I>super-max </I>
+
+indique le nombre maximal de superblocs, et donc le nombre maximal de systèmes de fichiers que
+le noyau peut monter. Vous n'avez besoin d'augmenter cette valeur que si vous désirez monter plus
+de systèmes de fichiers que le maximal actuel.
+<P>
+
+Le fichier
+<I>super-nr</I>
+
+contient le nombre de systèmes de fichiers montés actuellement.
+<DL COMPACT>
+<DT><I>kernel</I>
+
+<DD>
+On y trouve les fichiers
+<I>acct</I>, <I>cad_pid</I>, <I>cap-bound</I>, 
+
+<I>core_pattern</I>, <I>core_uses_pid</I>, 
+
+<I>ctrl-alt-del</I>, <I>dentry-state</I>, <I>domainname</I>, 
+
+<I>hotplug</I>, <I>hostname</I>, 
+
+<I>htab-reclaim</I> (PowerPC), 
+
+<I>java-appletviewer</I> (binfmt_java, obsolète), 
+
+<I>java-interpreter</I> (binfmt_java, obsolète), <I>l2cr</I> (PowerPC), 
+
+<I>modprobe</I>, <I>msgmax</I>, <I>msgmnb</I>, 
+
+<I>msgmni</I>, <I>osrelease</I>, <I>ostype</I>, <I>overflowgid</I>, <I>overflowuid</I>, 
+
+<I>panic</I>, <I>panic_on_oops</I>, <I>pid_max</I>, 
+
+<I>powersave-nap</I> (PowerPC seulement), <I>printk</I>, <I>random</I>, 
+
+<I>real-root-dev</I>, <I>reboot-cmd</I> (SPARC seulement), <I>rtsig-max</I>, 
+
+<I>rtsig-nr</I>, <I>sem</I>, <I>sg-big-buff</I>, 
+
+<I>shmall</I>, <I>shmmax</I>, <I>shmmni</I>, <I>sysrq</I>, <I>tainted</I>, <I>threads-max</I>, 
+
+<I>version</I> et <I>zero-paged</I> (PowerPC seulement) 
+
+dont les noms sont assez explicites.
+</DL>
+<P>
+
+Le fichier
+<I>acct</I>
+
+contient trois nombres : un seuil haut, un seuil bas et une période.
+Si la comptabilité des processus à la manière BSD est activée, ses valeurs détermine son comportement.
+Si l'espace disque sur le système de fichiers accueillant les statistiques descend sous le seuil bas,
+(en pourcentage), la comptabilité est suspendue. Si l'espace remonte au-dessus du seuil haut, elle reprend.
+La période (en seconde) est celle avec laquelle le noyau vérifie l'espace disque disponible.
+Les valeurs par défaut sont 4, 2 et 30. Cela signifie que la comptabilité est suspendue en-dessous
+de 2% d'espace libre, elle reprend à 4% et la vérification a lieu toutes les 30 secondes.
+<P>
+
+Le fichier
+<I>cap-bound</I>
+
+conserve la valeur de 
+<I>l'ensemble des capacités limites</I>
+
+du noyau (exprimée comme un nombre décimal signé).
+Cet ensemble est filtré par un ET binaire avec les capacité du processus
+lors d'un exec.
+<P>
+
+Le fichier
+<I>core_pattern</I>
+
+(nouveauté Linux 2.5) fournit un contrôle sur le nom employé pour
+les fichiers core, plus fin que le fichier
+<I>core_uses_pid</I>
+
+obsolète décrit plus bas.
+Le nom d'un fichier core est contrôlé par un motif défini dans
+<I>core_pattern</I>.
+
+Le motif peut contenir des inficateurs % qui sont remplacés par les
+valeurs suivantes lors de la création d'un fichier core&nbsp;:
+<PRE>
+
+  %%  Un caractère %
+  %p  Le PID du processus
+  %u  L'UID réel du processus
+  %g  Le GID réel du processus
+  %s  Le numéro du signal provoquant le core
+  %t  L'heure (secs depuis 01/01/1970, 00:00)
+  %h  Le nom d'hôte ('nodename' de <B><A HREF="/cgi-bin/man/man2html?2+uname">uname</A></B>(2))
+  %e  Nom du fichier exécutable
+
+</PRE>
+
+Un % seul à la fin du motif est éliminé du nom du fichier,
+comme un % suivi d'un autre caractère que ceux de
+la liste ci-dessus.
+Tous les autres caractères dans le motif gardent leur
+valeur littérale dans le nom du fichier core.
+La taille maximal du nom est de 64 octets.
+La valeur par défaut de ce fichier est &quot;core&quot;.
+Pour assurer une compatibilité ascendante, si
+<I>core_pattern</I>
+
+ne contient pas &quot;%p&quot; et si
+<I>core_uses_pid</I>
+
+est non-nul, alors .PID est ajouté au nom de fichier core.
+<P>
+
+Le fichier
+<I>core_uses_pid</I>
+
+permet de configurer le nom des fichiers core sous Linux 2.4. Si ce fichier
+contient la valeur zéro, l'image mémoire écrite sur le disque est simplement nommée
+<I>core</I>.
+
+S'il contient une valeur non-nulle, le fichier core contient également le numéro du
+PID du processus, avec la forme
+<I>core.PID</I>.
+
+<P>
+
+Le fichier
+<I>ctrl-alt-del</I>
+
+contrôle la gestion de la séquence Ctrl-Alt-Suppr du clavier.
+S'il contient la valeur zéro, Ctrl-Alt-Del est capturé et envoyé au
+programme 
+<B><A HREF="/cgi-bin/man/man2html?1+init">init</A></B>(1)
+
+pour relancer le système correctement.
+Si la valeur est supérieure à zéro, la réaction de Linux à ce
+Coup-de-pied Au C.. est un redémarrage immédiat, sans même écrire
+le contenu des buffers en attente.
+Note : lorsqu'un programme (comme dosemu) utilise le clavier en mode 'raw' (brut),
+la séquence ctl-alt-suppr est intercepté par le programma avant même d'atteindre
+le gestionnaire de console du noyau, et c'est à ce programme de décider qu'en faire.
+<P>
+
+Le fichier
+<I>hotplug </I>
+
+contient le chemin de l'agent du mécanisme de branchement à chaud.
+La valeur par défaut est &quot;/sbin/hotplug&quot;.
+<P>
+
+Les fichiers
+<I>domainname</I> et 
+
+<I>hostname</I>
+
+servent à indiquer les noms NIS/YP de domaine et d'hôte, exactement de la même
+manière que les commandes domainname et hostname. Par exemple&nbsp;:
+<BR>
+
+<P>
+<BR>
+
+# echo &quot;darkstar&quot; &gt; /proc/sys/kernel/hostname
+<BR>
+
+# echo &quot;mydomain&quot; &gt; /proc/sys/kernel/domainname
+<BR>
+
+<P>
+<BR>
+
+a exactement le même effet que
+<BR>
+
+<P>
+<BR>
+
+# hostname &quot;darkstar&quot;
+<BR>
+
+# domainname &quot;mydomain&quot;
+<BR>
+
+<P>
+<BR>
+
+Notez toutefois, que le classique darkstar.frop.org a le nom d'hôte
+darkstar et de le nom de domaine DNS (Internet Domain Name Server)
+&quot;frop.org&quot;, à ne pas confondre ave le nom de domains NIS (Network
+Information Service) ou YP (Yellow Pages). Ces noms de domaines sont
+généralement différents. Pour plus de détail, voyez la page
+<B><A HREF="/cgi-bin/man/man2html?1+hostname">hostname</A></B>(1).
+
+LP
+Si le fichier
+<I>htab-reclaim</I>
+
+(PowerPC seulement) contient une valeur non-nulle,
+la htab du PowerPC
+(voir le fichier Documentation/powerpc/ppc_htab.txt du noyau) est parcourue
+chaque fois que le système atteint la boucle d'inactivité.
+<P>
+
+Le fichier
+<I>l2cr</I>
+
+(PowerPC seulement) contient un indicateur commandant le cache L2 des cartes processeurs G3.
+Le cache est désactivé si la valeur est nulle, activé sinon.
+<P>
+
+Le fichier
+<I>modprobe</I>
+
+est décrit dans le fichier des sources du noyau Documentation/kmod.txt.
+<P>
+
+Le fichier
+<I>msgmax</I>
+
+est une limite pour l'ensemble du système précisant le nombre maximal d'octets par message
+écrit dans une file de message Système V.
+<P>
+
+Le fichier
+<I>msgmni</I>
+
+définit la limite pour le système du nombre d'identificateurs de files de messages.
+(Ce fichier n'existe que depuis Linux 2.4).
+<P>
+
+Le fichier
+<I>msgmnb</I>
+
+est un paramètre au niveau du système pour initialiser la valeur
+<I>msg_qbytes</I>
+
+lors de la création ultérieure de files de messages.
+La valeur
+<I>msg_qbytes</I>
+
+indique le nombre maximal d'octets que peut contenir une file de messages.
+<P>
+
+Les fichiers
+<I>ostype</I>
+
+et 
+<I>osrelease</I>
+
+donnent des sous-chaînes de
+<I>/proc/version</I>.
+
+<P>
+
+Les fichiers
+<I>overflowgid</I>
+
+et
+<I>overflowuid</I>
+
+remplissent le même rôle que
+<I>/proc/sys/fs/overflowgid</I>
+
+et
+<I>/proc/sys/fs/overflowuid</I>.
+
+<P>
+
+Le fichier
+<I>panic</I>
+
+donne un accès en lecture et écriture à la variable
+<I>panic_timeout</I>
+
+du noyau. Si elle vaut zéro, le noyau se mettra en boucle en cas de
+panique, sinon elle contient le nombre de secondes après lequel le
+noyau devra redémarrer. Si vous utilisez le pilote de surveillance watchdog logiciel, la
+valeur recommandée est 60.
+<P>
+
+Le fichier
+<I>panic_on_oops</I>
+
+(nouveauté Linux 2.5) contrôle le comportement du noyaj lorsqu'un Oops (défaut)
+ou un bogue est rencontré. Si ce fichier contient 0, alors le système tente
+de continuer à travailler. S'il contient 1, alors le système attend quelques
+secondes (pour laisser à klogd le temps d'enregistrer la sortie du Oops)
+puis déclenche une panique.
+Si le fichier
+<I>panic</I>
+
+est également non nulle alors la machine redémarrera.
+<P>
+
+Le fichier
+<I>pid_max</I>
+
+(nouveauté Linux 2.5)
+indique la valeur à partir de laquelle les PIDs vont reprendre au début.
+(la valeur dans ce fichier est celle du PID maximum plus un).
+La valeur par défaut est 32768,
+ce qui correspond à la même plage de PIDs que sur les noyaux antérieurs.
+La valeur peut être augmentée jusqu'à 2^22
+(PID_MAX_LIMIT, approximativement 4 millions).
+<P>
+
+Le fichier
+<I>powersave-nap</I> (PowerPC seulement)
+
+contient un indicateur. S'il est non-nul, Linux-PPC utilisera le mode 'nap' d'économie d'énergie,
+sinon il utilisera le mode 'doze'.
+<P>
+
+Les quatre valeurs dans le fichier
+<I>printk</I>
+
+sont nommées console_loglevel, default_message_loglevel, minimum_console_level et
+default_console_loglevel.
+Ces valeurs influencent le comportement de printk() lors de l'affichage ou de la journalisation de
+message d'erreurs. Voir
+<B><A HREF="/cgi-bin/man/man2html?2+syslog">syslog</A></B>(2)
+
+pour plus d'information sur les différents niveaux.
+Les messages avec une priorité plus élevée que 
+console_loglevel seront affichés sur la console.
+Les messages sans priorité explicite utiliseront la
+priorité default_message_level.
+minimum_console_loglevel est la valeur maximale à laquelle
+console_loglevel puisse être élevédefault_console_loglevel est la valeur par défaut pour console_loglevel.
+<P>
+
+Le répertoire
+<I>random</I>
+
+contient divers paramètre contrôlant le fonctionnement du fichier
+<I>/dev/random</I>.
+
+<P>
+
+Le fichier
+<I>real-root-dev</I>
+
+est documenté dans le fichier Documentation/initrd.txt des sources du noyau.
+<P>
+
+Le fichier
+<I>reboot-cmd</I> (Sparc seulement) 
+
+permet apparement de fournir un argument au chargeur de boot ROM/Flash Sparc.
+Peut-être indique-t-il que faire après redémarage ?
+<P>
+
+Le fichier
+<I>rtsig-max</I>
+
+permet d'indiquer le nombre maximal de signaux Posix temps-réel en attente
+sur le système.
+<P>
+
+Le fichier
+<I>rtsig-nr</I>
+
+donne le nombre de signaux POSIX temps-réel actuellement en attente.
+<P>
+
+Le fichier
+<I>sem</I>
+
+(disponible depuis Linux 2.4)
+contient 4 limites pour les sémaphores Système V.
+Ces valeurs sont respectivement&nbsp;:
+<DL COMPACT>
+<DT>SEMMSL<DD>
+Le nombre maximal de sémaphores par ensemble.
+<DT>SEMMNS<DD>
+Une limite générale au système pour le noombre de sémaphore dans tous
+les ensembles.
+<DT>SEMOPM<DD>
+Le nombre maximal d'opération que l'on peut indiquer dans un appel
+<B><A HREF="/cgi-bin/man/man2html?2+semop">semop</A></B>(2).
+
+<DT>SEMNI<DD>
+Une limite générale sur le nombre maximal d'identifiants de sémaphores.
+</DL>
+<P>
+
+Le fichier
+<I>sg-big-buff</I>
+
+montre la taille du buffer pour le pilote SCSI générique (sg).
+Vous ne pourrez pas y écrire pour le moment, mais vous pouvez
+changer sa valeur à la compilation en éditant include/scsi/sg.h et
+en modifiant SG_BIG_BUFF. Toutefois, il ne devrait y avoir aucune
+raison de le modifier.
+<P>
+
+Le fichier
+<I>shmall</I>
+
+contient le nombre maximal de pages de mémoire partagées (IPC système
+V) au niveau du système.
+<P>
+
+Le fichier
+<I>shmmax</I>
+
+permet de lire ou modifier la taille maximale des segments de mémoire
+partagée (IPC Système V) que l'on peut créer.
+Les segments de mémoire jusqu'à 1Go sont à présents autorisés par le
+noyau. La valeur par défaut est SHMMAX.
+<P>
+
+Le fichier
+<I>shmmni</I>
+
+(disponible depuis Linux 2.4)
+indique le nombre maximal de segment de mémoire partagée que l'on
+peut créer.
+<P>
+
+Le fichier
+<I>version</I>
+
+contient une chaîne du type&nbsp;:
+<BR>
+
+<P>
+<BR>
+
+#5 Wed Feb 25 21:49:24 MET 1998.TP
+<BR>
+
+<P>
+<BR>
+
+Le champ '#5' indique que c'est la cinquième compilation du noyau
+depuis ces sources, et la date correspond à celle de la compilation.
+<P>
+
+Le fichier
+<I>zero-paged</I> (PowerPC seulement) 
+
+contient un drapeau. S'il est activé (non-nul), Linux-PPC effacera
+les pages dans sa boucle d'inactivité, accélérant éventuellement
+dd
+<DL COMPACT>
+<DT><BR>&nbsp;net<DD>
+Ce répertoire contient des informations concernant le réseau.
+<DT><I>proc</I>
+
+<DD>
+Ce répertoire peut être vide.
+<DT><I>sunrpc</I>
+
+<DD>
+Ce répertoire correspond aux appels de procédures à distance (RPC)
+sur un système de fichiers NFS. Sur certains système, il est absent.
+<DT><I>vm</I>
+
+<DD>
+Ce répertoire contient des fichiers de paramétrage de la gestion
+de mémoire, des buffers, et du cache.
+</DL>
+</DL>
+
+<DT><I>sysvipc</I>
+
+<DD>
+Sous-répertoire contenant les pseudo-fichiers
+<I>msg</I>, <I>sem</I> and <I>shm</I>.
+
+Ces fichiers listent les objets d'IPC Système V (respectivement les
+files de messages, les sémaphores, et la mémoire partagée) existant
+sur le système. Les informations sont les mêmes que celles fournies
+par la commande
+<B><A HREF="/cgi-bin/man/man2html?1+ipcs">ipcs</A></B>(1).
+
+Ces fichiers ont un en-tête, et sont formatés pour être lus facilement.
+La page
+<B><A HREF="/cgi-bin/man/man2html?5+ipc">ipc</A></B>(5)
+
+explique certaines informations fournies par ces fichiers.
+<DT><I>tty</I>
+
+<DD>
+Sous-répertoire contenant les pseudo-fichiers et sous-répertoires pour
+les pilotes de tty et la gestion de la ligne.
+<DT><I>uptime</I>
+
+<DD>
+
+Ce fichier contient deux valeurs : la durée de fonctionnement (uptime) en
+secondes, et le temps écoulé à ne rien faire (idle), en secondes également.
+<DT><I>version</I>
+
+<DD>
+Cette chaîne identifie la version du noyau en cours d'exécution.
+Elle inclue le contenu de /proc/sys/ostype, /proc/sys/osrelease et
+/proc/sys/version. Par exemple&nbsp;:
+<PRE>
+Linux version 2.4.19 (<A HREF="mailto:ccb@venux">ccb@venux</A>) (gcc version 2.96 20000731 (Red Hat Linux 7.3 2.96-110)) #13 sam nov 9 09:04:36 CET 2002
+</PRE>
+
+<P>
+
+
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+cat">cat</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+find">find</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+free">free</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+mount">mount</A>(1),</B>
+
+<B><A HREF="/cgi-bin/man/man2html?1+ps">ps</A>(1),</B>
+
+<B><A HREF="/cgi-bin/man/man2html?1+tr">tr</A>(1),</B>
+
+<B><A HREF="/cgi-bin/man/man2html?1+uptime">uptime</A>(1),</B>
+
+<B><A HREF="/cgi-bin/man/man2html?2+chroot">chroot</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A>(2),</B>
+
+<B><A HREF="/cgi-bin/man/man2html?2+readlink">readlink</A>(2),</B>
+
+<B><A HREF="/cgi-bin/man/man2html?2+syslog">syslog</A>(2),</B>
+
+<B><A HREF="/cgi-bin/man/man2html?5+slabinfo">slabinfo</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?7+hier">hier</A>(7),</B>
+
+<B><A HREF="/cgi-bin/man/man2html?8+arp">arp</A>(8),</B>
+
+<B><A HREF="/cgi-bin/man/man2html?8+dmesg">dmesg</A>(8),</B>
+
+<B><A HREF="/cgi-bin/man/man2html?8+hdparm">hdparm</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ifconfig">ifconfig</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+lsmod">lsmod</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+lspci">lspci</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+netstat">netstat</A>(8),</B>
+
+<B><A HREF="/cgi-bin/man/man2html?8+procinfo">procinfo</A>(8),</B>
+
+<B><A HREF="/cgi-bin/man/man2html?8+route">route</A>(8)</B>
+
+<B>/usr/src/linux/Documentation/filesystems/proc.txt</B>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+A peu près conforme au noyau 2.4.17.
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Remarquez que certaines chaînes (de l'environnement et de la ligne de commande)
+sont parfois affichées dans un format interne, terminées par un caractère nul.
+Il est parfois plus lisible d'utiliser
+<I>od -c</I> ou <I>tr &quot;\000&quot; &quot;\n&quot;</I> pour les lire.
+Autrement <I>echo `cat &lt;file&gt;`</I> marche bien.
+<P>
+Cette page de manuel est incomplète, incertaine, et devrait être mise à jour
+très souvent.
+<A NAME="lbAG">&nbsp;</A>
+<H2>REERCIEMENTS</H2>
+
+La documentation de /proc/sys/fs et /proc/sys/kernel est largement construite
+à partir des fichiers de documentation du noyau écrits par Rik van Riel.
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAE">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">REERCIEMENTS</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:54 GMT, February 11, 2014
+</BODY>
+</HTML>

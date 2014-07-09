@@ -1,0 +1,334 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of NFS</TITLE>
+</HEAD><BODY>
+<H1>NFS</H1>
+Section: Manuel de l'administrateur Linux (5)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+nfs - Format et options de la fstab pour les entrées NFS.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>/etc/fstab</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le fichier
+<I>fstab</I>
+
+contient les informations à propos des systèmes de fichiers à monter, et des 
+points de montage à utiliser.
+Pour le montage d'un système de fichiers NFS,  il contient le nom du serveur 
+et le répertoire exporté de ce serveur, ainsi que le répertoire local à 
+utiliser comme point de montage. 
+De plus il contient des options spécifiques à NFS, pour contrôler la manière 
+de faire le montage.
+<P>
+
+Voici un extrait d'un fichier <I>/etc/fstab</I> concernant un montage NFS.
+<P>
+<PRE>
+
+server:/usr/local/pub  /pub  nfs  rsize=8192,wsize=8192,timeo=14,intr
+</PRE>
+
+
+<A NAME="lbAE">&nbsp;</A>
+<H3>Options</H3>
+
+<DL COMPACT>
+<DT><I>rsize=n</I>
+
+<DD>
+Le nombre d'octets qu'NFS utilise en lecture de fichiers depuis un serveur NFS.
+La valeur par défaut, actuellement 1024 octets, dépend du noyau.
+Il est possible d'améliorer les performances du trafic en utilisant 
+<I>rsize=8192</I>.
+
+<DT><I>wsize=n</I>
+
+<DD>
+Le nombre d'octets qu'NFS utilise en écriture de fichiers sur un serveur NFS.
+La valeur par défaut, actuellement 1024 octets, dépend du noyau.
+Il est possible d'améliorer les performances du trafic en utilisant 
+<I>wsize=8192</I>.
+
+<DT><I>timeo=n</I>
+
+<DD>
+La valeur, en dixièmes de secondes, du délai avant de déclencher la première 
+retransmission d'une RPC.
+La valeur par défaut est 7/10 de seconde. Après une première expiration, le 
+délai est doublé et l'on recommence les retransmissions jusqu'à ce que le 
+délai atteigne la valeur maximale de 60 secondes, ou que le nombre maximal 
+de retransmission soit dépassé, auquel cas se produit une erreur d'expiration
+majeure. Si le système est monté &quot;en dur&quot;, les retransmissions  reprendront à
+nouveau indéfiniment en doublant les délais à chaque retransmission.
+Le délai maximal reste 60 secondes.
+On peut améliorer les performances en augmentant le délai sur un  réseau chargé,
+si le serveur est un peu lent, ou si l'on traverse plusieurs routeurs ou 
+passerelles.
+<DT><I>retrans=n</I>
+
+<DD>
+Le nombre d'expirations mineures et de retransmissions avant de déclencher une
+expiration majeure. La valeur par défaut est 3 expirations mineures. Quand une
+erreur d'expiration majeure se produit, soit l'opération est  abandonnée, soit
+un message &quot;server not responding&quot; est affiché sur la console.
+<DT><I>acregmin=n</I>
+
+<DD>
+Durée minimale (en secondes) pendant laquelle les attributs d'un fichier régulier
+sont cachés en mémoire avant de réclamer des informations fraîches au serveur.
+La valeur par défaut est 3 secondes.
+<DT><I>acregmax=n</I>
+
+<DD>
+Durée maximale (en secondes) pendant laquelle les attributs d'un fichier régulier
+sont cachés en mémoire avant de réclamer des informations fraîches au serveur.
+La valeur par défaut est 60 secondes.
+<DT><I>acdirmin=n</I>
+
+<DD>
+Durée minimale (en secondes) pendant laquelle les attributs d'un répertoire
+sont cachés en mémoire avant de réclamer des informations fraîches au serveur.
+La valeur par défaut est 30 secondes.
+<DT><I>acdirmax=n</I>
+
+<DD>
+Durée maximale (en secondes) pendant laquelle les attributs d'un répertoire
+sont cachés en mémoire avant de réclamer des informations fraîches au serveur.
+La valeur par défaut est 60 secondes.
+<DT><I>actimeo=n</I>
+
+<DD>
+L'utilisation de actimeo remplit toutes les durées
+<I>acregmin,</I>
+
+<I>acregmax,</I>
+
+<I>acdirmin,</I>
+
+et
+<I>acdirmax</I>
+
+avec la même valeur.
+Il n'y a pas de valeur par défaut.
+<DT><I>retry=n</I>
+
+<DD>
+Nombre d'essais effectués pour un montage NFS en arrière-plan
+avant d'abandonner.
+La valeur par défaut est 10 000 essais, soit en gros une semaine.
+<DT><I>namlen=n</I>
+
+<DD>
+Quand un serveur NFS ne supporte pas la version 2 du protocole RPC de montage,
+cette option peut être utilisée pour indiquer la longueur maximale des noms
+de fichiers sur le système distant.
+Ceci permet de supporter les fonctions POSIX pathconf.
+La valeur par défaut est 255 caractères.
+<DT><I>port=n</I>
+
+<DD>
+La valeur numérique du port utilisé pour se connecter sur le serveur NFS.
+Si cette valeur vaut zéro (par défaut) alors on interroge le gestionnaire
+de ports (portmapper) de l'hôte distant pour connaître le numéro de port
+à utiliser. Si le démon NFS de l'hôte distant n'est pas enregistré dans le
+gestionnaire de ports, la valeur standard utilisée à la place pour le port
+NFS est 2049.
+<DT><I>mountport=n</I>
+
+<DD>
+La valeur numérique
+du port
+<B>mountd</B>.
+
+<DT><I>mounthost=name</I>
+
+<DD>
+Le nom de l'hôte où s'exécute
+<B>mountd</B>.
+
+<DT><I>mountprog=n</I>
+
+<DD>
+Utiliser un autre numéro de programme RPC pour contacter le démon de montage
+de l'hôte distant. Cette option est utilisée pour les hôtes qui exécutent
+simultanément plusieurs serveurs NFS.
+La valeur par défaut est 100 005 qui est le numéro standard de programme RPC
+pour le démon de montage.
+<DT><I>mountvers=n</I>
+
+<DD>
+Utiliser un autre numéro de version RPC pour contacter le démon de montage 
+de l'hôte distant. Cette option est utilisée pour les hôtes qui exécutent 
+simultanément plusieurs serveurs NFS.
+La valeur par défaut est 1.
+<DT><I>nfsprog=n</I>
+
+<DD>
+Utiliser un autre numéro de programme RPC pour contacter le démon NFS
+de l'hôte distant. Cette option est utilisée pour les hôtes qui exécutent
+simultanément plusieurs serveurs NFS.
+La valeur par défaut est 100 003 qui est le numéro standard de programme RPC
+pour le démon NFS.
+<DT><I>nfsvers=n</I>
+
+<DD>
+Utiliser un autre numéro de version RPC pour contacter le démon NFS
+de l'hôte distant. Cette option est utilisée pour les hôtes qui exécutent 
+simultanément plusieurs serveurs NFS.
+La valeur par défaut est 2.
+<DT><I>nolock</I>
+
+<DD>
+Désactiver le verrouillage NFS. Ne pas démarrer lockd.
+Ceci est utile avec d'anciens serveurs NFS qui
+ne supportent pas le verrouillage.
+<DT><I>bg</I>
+
+<DD>
+Si le délai pour premier essai de montage expire, continuer à essayer le
+montage en arrière-plan. Après avoir lancé une opération de montage
+en arrière-plan, tous les montages ultérieurs sur le même serveur NFS
+seront mis en arrière-plan immédiatement, sans essayer le montage direct.
+Un point de montage absent est considéré
+comme une expiration, ce qui permet
+des montages NFS imbriqués.
+<DT><I>fg</I>
+
+<DD>
+Si la première tentative de montage échoue, réessayer à
+l'avant-plan.
+C'est le complément de
+<I>bg</I>
+
+et le comportement par défaut.
+<DT><I>soft</I>
+
+<DD>
+Si une opération sur un fichier NFS arrive à une expiration majeure de délai,
+alors renvoyer une erreur au programme appelant. L'attitude par défaut est de
+réessayer les opérations sur les fichiers NFS indéfiniment.
+<DT><I>hard</I>
+
+<DD>
+Si une opération sur un fichier NFS arrive à une expiration majeure de délai,
+alors afficher un message &quot;server not responding&quot; sur la console, et
+réessayer indéfiniment.  C'est l'attitude par défaut.
+<DT><I>intr</I>
+
+<DD>
+Si une opération sur fichier NFS obtient une expiration majeure de délai, et s'il
+est monté en dur (hard), alors autoriser les signaux à interrompre l'opération,
+et renvoyer EINTR au programme appelant. L'attitude par défaut est de ne pas
+permettre l'interruption des opérations sur les fichiers NFS par des signaux.
+<DT><I>posix</I>
+
+<DD>
+Monter le système de fichiers NFS en utilisant la sémantique POSIX.
+Ceci permet au système de fichiers de supporter correctement la commande POSIX
+pathconf, en interrogeant le serveur à propos de la longueur maximale des noms
+de fichiers.
+Pour cela, l'hôte distant doit supporter la version 2 du protocole RPC de
+montage. Beaucoup de serveur NFS n'en supportent que la version 1.
+<DT><I>nocto</I>
+
+<DD>
+Ne pas récupérer les nouveaux attributs lors de la création d'un 
+fichier.
+<DT><I>noac</I>
+
+<DD>
+Désactiver toutes formes de cache en mémoire pour les attributs. Ceci induit
+une pénalisation des performances du serveur, mais permet toutefois à deux 
+clients NFS d'obtenir des résultats raisonnablement bons quand les deux clients
+écrivent sur le système de fichiers du serveur.
+<DT><I>tcp</I>
+
+<DD>
+Monter le système de fichiers NFS en utilisant le protocole TCP plutôt que
+UDP (par défaut). Beaucoup de serveurs NFS ne supporte que UDP.
+<DT><I>udp</I>
+
+<DD>
+Monter le système de fichiers en utilisant le protocole UDP. C'est l'attitude
+par défaut.
+</DL>
+<P>
+
+Toutes les options sans valeur disposent d'une option inverse de la forme
+nooption. Par exemple 
+<I>nointr</I>
+
+indique de ne pas autoriser l'interruption des opérations NFS par les signaux.
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/etc/fstab</I>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+fstab">fstab</A></B>(5), <B><A HREF="/cgi-bin/man/man2html?8+mount">mount</A></B>(8), <B><A HREF="/cgi-bin/man/man2html?8+umount">umount</A></B>(8), <B><A HREF="/cgi-bin/man/man2html?5+exports">exports</A></B>(5)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+&quot;Rick Sladkey&quot; &lt;<A HREF="mailto:jrs@world.std.com">jrs@world.std.com</A>&gt;
+<A NAME="lbAI">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Les options 
+<I>posix</I> et <I>nocto</I>
+
+sont lues mais ignorées silencieusement au montage.
+<P>
+
+Les options
+<I>tcp</I>, et <I>namlen</I>
+
+sont implémentées mais pas encore supportée par le noyau Linux (0.99.11). 
+<P>
+
+La commande 
+<B>umount</B>
+
+devrait notifier le serveur que le système de fichiers NFS est démonté.
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">Options</A><DD>
+</DL>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">AUTEUR</A><DD>
+<DT><A HREF="#lbAI">BOGUES</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:54 GMT, February 11, 2014
+</BODY>
+</HTML>

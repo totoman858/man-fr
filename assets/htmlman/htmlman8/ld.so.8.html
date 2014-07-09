@@ -1,0 +1,376 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ld.so</TITLE>
+</HEAD><BODY>
+<H1>ld.so</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ld.so, ld-linux.so* - Chargeur et éditeur de liens dynamique.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les programmes
+<B>ld.so</B>
+
+et
+<B>ld-linux.so*</B>
+
+trouvent et chargent les bibliothèques partagées nécessaires pour un
+programme, préparent son démarrage, et le lancent.
+<P>
+
+Les binaires Linux nécessitent une édition de liens dynamique (au démarrage)
+sauf si l'option
+<B>-static</B>
+
+a été indiquée sur la ligne de commande de
+<B>ld</B>
+
+durant la compilation.
+<P>
+
+Le programme
+<B>ld.so</B>
+
+traite les binaires a.out, un format utilisé il y a bien longtemps&nbsp;;
+<B>ld-linux.so*</B>
+
+traitent les fichiers ELF (<B>/lib/ld-linux.so.1</B> for libc5, <B>/lib/ld-linux.so.2</B> pour GlibC2),
+que tout le monde utilise depuis des années. Autrement les deux programmes
+ont le même comportement et utilisent les fichiers et programmes
+<B><A HREF="/cgi-bin/man/man2html?1+ldd">ldd</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ldconfig">ldconfig</A></B>(8)
+
+et
+<I>/etc/ld.so.conf</I>.
+
+<P>
+
+Les bibliothèques partagées nécessaire à un programme sont recherchées dans
+différents endroits&nbsp;:
+<DL COMPACT>
+<DT>o<DD>
+(ELF seul) En utilisant l'attribut de section dynamique DT_RPATH du fichier
+binaire s'il est présent, et l'attribut DT_RUNPATH sinon.
+L'utilisation de DT_RPATH est déconseillée.
+<DT>o<DD>
+En utilisant la variable d'environnement
+<B>LD_LIBRARY_PATH</B>.
+
+Sauf si l'exécutable est un binaire Set-UID ou Set-GID auquel cas elle est
+ignorée.
+<DT>o<DD>
+(ELF seul) En utilisant l'attribut de section dynamique DT_RUNPATH
+du fichier binaire s'il est présent.
+<DT>o<DD>
+Depuis le fichier cache
+<B>/etc/ld.so.cache</B>
+
+qui contient une liste compilée de bibliothèques précédement trouvées
+dans des chemins pas défaut. Si, toutefois, le fichier binaire
+a été lié avec l'option
+<B>-z nodeflib</B>
+
+de l'éditeur de liens, les chemins par défaut sont ignorées.
+<DT>o<DD>
+Dans le répertoire par défaut
+<B>/lib</B>,
+
+puis
+<B>/usr/lib</B>.
+
+Si le binaire a été lié avec l'option
+<B>-z nodeflib</B>
+
+de l'éditeur de lien, cette étape est sautée.
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+L'éditeur de lien dynamique peut être lançé indirectement en démarrant un
+programme lié dynamiquement ou une bibliothèque (dans ce cas, aucune option
+en ligne de commande ne peut être transmise, et avec ELF, l'éditeur
+indiqué dans la section
+<B>.interp</B>
+
+du programme est exécuté), ou directement en lançant&nbsp;:
+<P>
+
+<B>/lib/ld-linux.so.*</B>
+
+[OPTIONS] [PROGRAMME [ARGUMENTS]]
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS EN LIGNE DE COMMANDE</H2>
+
+<DL COMPACT>
+<DT><B>--list</B>
+
+<DD>
+Liste les dépendances et leurs résolutions.
+<DT><B>--verify</B>
+
+<DD>
+Vérifie que le programme est lié dynamiquement et que l'éditeur de liens
+peut le traiter.
+<DT><B>--library-path PATH</B>
+
+<DD>
+Surcharge la variable d'environnement
+<B>LD_LIBRARY_PATH</B>
+
+(voir plus bas).
+<DT><B>--ignore-rpath LISTE</B>
+
+<DD>
+Ignorer les informations RPATH and RUNPATH dans les objets de la LISTE.
+Cette oprtion a été supportée par la GlibC2 pendant environ une heure.
+Puis elle a été renommée en&nbsp;:
+<DT><B>--inhibit-rpath LISTE</B>
+
+<DD>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+Il y a quatre variables d'environnement importantes.
+<DL COMPACT>
+<DT><B>LD_LIBRARY_PATH</B>
+
+<DD>
+Une liste de répertoires séparés par des points-virgules, dans lesquels
+les bibliothèques sont recherchées au démarrage.
+Comme la variable
+d'environnement
+<B>PATH</B>.
+
+<DT><B>LD_PRELOAD</B>
+
+<DD>
+Une liste séparée par des blancs de bibliothèques ELF spécifiques à
+l'utilisateur, a charger avant les autres bibliothèques.
+Ceci permet de surcharger sélectivement les fonctions des autres
+bibliothèques partagées. Pour les binaires ELF Set-UID, Set-GID, seules
+les bibliothèques Set-UID des répertoires standards seront chargées.
+<DT><B>LD_BIND_NOW</B>
+
+<DD>
+(libC 5 ; GibC depuis 2.1.1)
+Si la chaîne est non-vide, l'éditeur de lien résoudra tous les symboles 
+au démarrage du programme plutôt que repousser la résolution des noms
+de fonctions au moment où elles sont référencées en premier.
+Ceci est utile dans un débogueur.
+<DT><B>LD_TRACE_LOADED_OBJECTS</B>
+
+<DD>
+(ELF seul)
+Si la chaine est non-vide, le programme liste ses dépendances dynamiques
+comme s'il était lancé par
+<B><A HREF="/cgi-bin/man/man2html?1+ldd">ldd</A></B>(1),
+
+au lieu du lancement normal.
+</DL>
+<P>
+
+Il existe de nombreuses autres variables plus ou moins obscures,
+certaines obsolètes, ou résevées pour un usage interne.
+<DL COMPACT>
+<DT><B>LD_WARN</B>
+
+<DD>
+(ELF seul)(GlibC depuis 2.1.3)
+Si la chaîne est non-vide, avertir si un symbole n'est pas résolu.
+<DT><B>LD_NOWARN</B>
+
+<DD>
+(a.out seul)(libC5)
+Supprimer les avertissement à propos des bibliothèques a.out incompatibles
+avec les versions antérieure
+<DT><B>LD_BIND_NOT</B>
+
+<DD>
+(GlibC depuis 2.1.95)
+Ne pas mettre à jour les tables GOT (global offset table) et PLT
+(procedure linkage table) après résolution d'un symbole.
+<DT><B>LD_DEBUG</B>
+
+<DD>
+(GlibC depuis 2.1)
+Afficher de nombreuses informations de débogage de l'éditeur dynamique.
+Si elle contient
+<B>all</B>
+
+afficher tous les message d'information, si elle contient
+<B>help</B>
+
+afficher un message d'aide à propos des catégories de messages pour cette
+variable d'environnement.
+<DT><B>LD_DEBUG_OUTPUT</B>
+
+<DD>
+(GlibC depuis 2.1)
+Fichier où la sortie de
+<B>LD_DEBUG</B>
+
+devrait être envcoyée. Par défaut c'est la sortie standard.
+LD_DEBUG_OUTPUT est ignorée pour les binaires Set-UID / Set-GID.
+<DT><B>LD_VERBOSE</B>
+
+<DD>
+(GlibC depuis 2.1)
+S'il s'agit d'une chaîne non vide, afficher les informations sur la version
+des objets sur on demande des informations sur le programme (si
+<B>LD_TRACE_LOADED_OBJECTS</B>
+
+a été configuré, ou si les options
+<B>--list</B>
+
+ou
+<B>--verify</B>
+
+ont été données à l'éditeur de liens dynamiques).
+<DT><B>LD_PROFILE</B>
+
+<DD>
+(GlicC depuis 2.1)
+Activer le suivi des objets partagés.
+<DT><B>LD_PROFILE_OUTPUT</B>
+
+<DD>
+(GlibC depuis 2.1)
+Fichier où la sortie de
+<B>LD_PROFILE</B>
+
+est envoyée. Par défaut la sortie standard.
+LD_DEBUG_OUTPUT est ignoré pour les binaires Set-UID/Set-GID.
+<DT><B>LD_AOUT_LIBRARY_PATH</B>
+
+<DD>
+(LibC5)
+Version de LD_LIBRARY_PATH pour les binaire a.out seulement.
+Les anciennes versions de ld-linux.so.1 supportent LD_ELF_LIBRARY_PATH.
+<DT><B>LD_AOUT_PRELOAD</B>
+
+<DD>
+(LibC5)
+Version de LD_PRELOAD pour les binaires a.out seulement.
+Les anciennes versions de ld-linux.so.1 supportent LD_ELF_PRELOAD.
+<DT><B>LD_SHOW_AUXV</B>
+
+<DD>
+(GlibC depuis 2.1)
+Afficher les tables auxiliaires passées au noyau.
+<DT><B>LD_HWCAP_MASK</B>
+
+<DD>
+(GlibC depuis 2.1)
+Masque des capacités matérielles.
+<DT><B>LD_ORIGIN_PATH</B>
+
+<DD>
+(GlibC depuis 2.1)
+Chemin du fichier binaire (pour les programmes non Set-UID).
+<DT><B>LD_DYNAMIC_WEAK</B>
+
+<DD>
+(GlibC depuis 2.1.91)
+Autorise la surcharge des symboles faibles (retour à l'ancien comportement).
+<DT><B>LD_KEEPDIR</B>
+
+<DD>
+(a.out seul)(LibC5)
+Ne pas ignorer le répertoire dans les noms de bibliothèques a.out.
+Cette option est très déconseillée.
+<DT><B>LDD_ARGV0</B>
+
+<DD>
+(LibC5)
+<I>argv</I>[0]
+
+à utiliser par
+<B><A HREF="/cgi-bin/man/man2html?1+ldd">ldd</A></B>(1)
+
+si aucun n'est présent.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+
+<DL COMPACT>
+<DT><B>/lib/ld.so</B>
+
+<DD>
+le chargeur/éditeur de lien a.out.
+<DT><B>/lib/ld-linux.so.</B>{<B>1</B>,<B>2</B>}
+
+<DD>
+Le chargeur/éditeur de liens ELF.
+<DT><B>/etc/ld.so.cache</B>
+
+<DD>
+Fichier contenant la liste compilées des répertoires où des bibliothèques
+se trouvent.
+<DT><B>/etc/ld.so.preload</B>
+
+<DD>
+Fichier contenant une liste de librairie ELF, séparées par des espaces, à
+charger avant de démarrer le programme.
+<DT><B>lib*.so*</B>
+
+<DD>
+Bibliothèques partagées.
+
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les fonctionnalités
+<B>ld.so</B>
+
+sont disponibles pour les exécutables compilés à partir de la LibC version
+4.4.3 et ultérieures.
+Les fonctionnalités ELF sont disponibles depuis 1.1.52 et la LibC5.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+ldd">ldd</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ldconfig">ldconfig</A></B>(8)
+
+
+
+
+
+
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAE">OPTIONS EN LIGNE DE COMMANDE</A><DD>
+<DT><A HREF="#lbAF">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:00 GMT, February 11, 2014
+</BODY>
+</HTML>

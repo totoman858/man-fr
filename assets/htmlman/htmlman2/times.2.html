@@ -1,0 +1,210 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TIMES</TITLE>
+</HEAD><BODY>
+<H1>TIMES</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+times - Obtenir les statistiques temporelles du processus.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/times.h">sys/times.h</A>&gt;</B>
+
+<P>
+<B>clock_t times(struct tms *</B><I>buf</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>times</B>()
+
+stocke les durées statistiques du processus en cours dans la structure
+<B>struct tms</B>
+
+pointée par
+<I>buf</I>.
+
+La structure
+<I>struct tms</I>
+
+est définie ainsi dans
+<I>/usr/include/sys/times.h</I>:
+
+<P>
+<PRE>
+struct  tms  {
+<DL COMPACT><DT><DD>clock_t tms_utime;  /* durée utilisateur          */
+clock_t tms_stime;  /* durée système              */
+clock_t tms_cutime; /* durée utilisateur des fils */
+clock_t tms_cstime; /* durée système des fils     */
+</DL>
+};
+</PRE>
+
+<P>
+
+Le champ 
+<I>tms_utime</I>
+
+contient le temps CPU écoulé en exécutant les instructions du processus
+appelant.
+Le champ
+<I>tms_stime</I>
+
+contient le temps CPU passé dans les fonctions système exécutées pour le
+compte du processus appelant.
+Le champ
+<I>tms_cutime</I>
+
+contient la somme des valeurs de
+<I>tms_utime</I>
+
+et
+<I>tms_cutime</I>
+
+pour tous les processus fils terminés ayant été attendus.
+Le champ
+<I>tms_cstime</I>
+
+contient la somme des valeurs de
+<I>tms_stime</I>
+
+et
+<I>tms_cstime</I>
+
+pour tous les processus fils terminés ayant été attendus.
+<P>
+
+Les durées des processus fils terminés (et de leurs descendants) sont
+ajoutées au moment où 
+<B><A HREF="/cgi-bin/man/man2html?2+wait">wait</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+waitpid">waitpid</A>(2)</B>
+
+renvoient leur numéro de PID. En particulier, les durées des petits-fils
+que le fils n'a pas attendu ne sont jamais vues.
+<P>
+
+Toutes les durées sont exprimées en ticks d'horloge.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>times</B>
+
+renvoie le nombre de tops d'horloge écoulés depuis un instant arbitraire dans
+le passé. Sous Linux, il s'agit du démarrage du système.  Cette valeur peut
+déborder de l'intervalle contenu dans un clock_t.
+En cas d'erreur (clock_t) -1 est renvoyé et
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le nombre de ticks d'horloge par seconde peut être obtenu en consultant
+<DL COMPACT><DT><DD>
+sysconf(_SC_CLK_TCK);
+</DL>
+
+Dans POSIX-1996, le symbole CLK_TCK (défini dans
+<I>&lt;<A HREF="file:///usr/include/time.h">time.h</A>&gt;</I>)
+
+est indiqué en voie d'obsolescence. Il est désormais obsolète.
+<P>
+
+Sous Linux, si le traitement de SIGCHLD est configuré avec
+<B>SIG_IGN</B>
+
+alors les durées des enfants terminés sont automatiquement
+incluses dans les champs
+<I>tms_cstime</I>
+
+et
+<I>tms_cutime</I>,
+
+bien que POSIX 1003.1-2001 précise que ceci ne doit se produire
+que si le processus appelant a fait un
+<B>wait</B>()
+
+pour ses enfants.
+
+
+
+<P>
+
+Notez que
+<B><A HREF="/cgi-bin/man/man2html?3+clock">clock</A></B>(3)
+
+renvoie des valeurs de types clock_t qui ne sont pas mesurées en ticks
+d'horloges mais en CLOCKS_PER_SEC.
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID, POSIX, X/OPEN, BSD 4.3
+<A NAME="lbAH">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+SVr1-3 renvoit un
+<B>long</B>
+
+et les membres de la structure sont de type
+<B>time_t</B>
+
+bien qu'ils stockent des ticks et pas des secondes depuis le 1er janvier 1970.
+V7 utilisait des
+<B>long</B>
+
+pour les membres des structures, car il n'avait pas encore de type
+<B>time_t</B>.
+
+<P>
+
+Sur les anciens systèmes, le nombre de ticks d'horloge par seconde est donné
+par la variable HZ.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+time">time</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getrusage">getrusage</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+wait">wait</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+clock">clock</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+sysconf">sysconf</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:54 GMT, February 11, 2014
+</BODY>
+</HTML>

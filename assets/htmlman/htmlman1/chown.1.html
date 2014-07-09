@@ -1,0 +1,193 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CHOWN</TITLE>
+</HEAD><BODY>
+<H1>CHOWN</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+chown - Modifier le propriétaire et le groupe d'un fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>chown [</B><I>options</I><B>] </B><I>propriétaire</I><B>[:</B><I>groupe</I><B>] </B><I>fichier...</I>
+
+<P>
+Options POSIX :
+<B>[-R] [--]</B>
+
+<P>
+Options GNU (forme courte):
+<B>[-cfhvR] [--dereference]</B>
+
+<B>[--reference=</B><I>rfile</I><B>]</B>
+
+<B>[--help] [--version] [--]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+([NDT] <B>chown</B> = Change Owner).
+<P>
+<B>chown</B>
+
+modifie l'utilisateur et/ou le groupe propriétaire de chacun des
+fichiers indiqués, en fonction du premier argument rencontré sur
+la ligne de commande, et qui ne soit pas
+une option.
+<P>
+Si l'on indique uniquement un nom d'utilisateur (ou un UID numérique),
+celui-ci devient le propriétaire des fichiers donnés, mais les
+groupes de ces fichiers ne sont pas modifiés.
+<P>
+Si le nom d'utilisateur est suivi d'un deux-points, et d'un
+nom de groupe (ou d'un GID numérique), les fichiers changent également
+de groupe.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>SPÉCIFICITÉS GNU</H2>
+
+La version GNU de
+<B>chown</B>
+
+accepte également un point pour séparer le nom d'utilisateur de celui du groupe.
+Posix réclame un double-point car il autorise l'utilisation du point comme
+caractère d'un nom d'utilisateur.
+<P>
+Si le nom d'utilisateur est suivi d'un double-point,
+sans nom de groupe, les fichiers appartiendront au groupe de l'utilisateur
+mentionné.
+<P>
+Si l'on fournit un nom de groupe, précédé d'un double-point, mais
+sans préciser de nom d'utilisateur, seul l'appartenance au groupe est modifiée.
+<P>
+<B>chown</B>
+
+a les mêmes effets que
+<B>chgrp</B>.
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS POSIX</H2>
+
+<DL COMPACT>
+<DT><B>-R</B>
+
+<DD>
+Modifier récursivement l'appartenance des répertoires et de leurs contenus.
+<DT><B>--</B>
+
+<DD>
+Indique la fin explicite de la liste des options.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>OPTIONS GNU</H2>
+
+<DL COMPACT>
+<DT><B>-c, --changes</B>
+
+<DD>
+Ne décrire que les fichiers dont l'appartenance est modifiée.
+<DT><B>-f, --silent, --quiet</B>
+
+<DD>
+Ne pas afficher de message d'erreur concernant les fichiers dont
+l'appartenance n'a pas pu être modifiée.
+<DT><B>-h, --no-dereference</B>
+
+<DD>
+Agir sur un lien symbolique lui-même et non pas sur la cible vers laquelle
+il pointe. Ceci n'est possible que si l'appel système
+<B>lchown</B>
+
+est disponible dans le noyau.
+<DT><B>-v, --verbose</B>
+
+<DD>
+Décrire les changements de propriétés.
+<DT><B>-R, --recursive</B>
+
+<DD>
+Modifier récursivement l'appartenance des répertoires et de leurs contenus.
+I.TP
+<B>--dereference</B>
+
+Changer l'appartenant de la cible d'un lien symbolique plutôt que du
+lien symbolique lui-même
+(Nouveaute fileutils-4.0).
+<DT><B>--reference=</B><I>rfile</I>
+
+<DD>
+(Nouveauté fileutils 4.0.)
+Changer l'appartenance des fichiers
+de manière identique à
+<I>rfile</I>.
+
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>OPTIONS STANDARDS GNU</H2>
+
+<DL COMPACT>
+<DT><B>--help</B>
+
+<DD>
+Afficher un message d'aide sur la sortie standard, et terminer normalement.
+<DT><B>--version</B>
+
+<DD>
+Afficher le numéro de version sur la sortie standard, et terminer normalement.
+<DT><B>--</B>
+
+<DD>
+Termine la liste des options.
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+LANG, LC_ALL, LC_CTYPE et LC_MESSAGES ont leurs significations habituelles.
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX 1003.2 n'autorise pas l'utilisation du point comme séparateur de
+nom d'utilisateur et de groupe.
+<A NAME="lbAK">&nbsp;</A>
+<H2>NOTES</H2>
+
+Cette page décrit
+<B>chown</B>
+
+tel qu'on le rencontre dans le paquetage fileutils-4.0&nbsp;;
+d'autre versions peuvent se comporter légèrement différement.
+<P>
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">SPÉCIFICITÉS GNU</A><DD>
+<DT><A HREF="#lbAF">OPTIONS POSIX</A><DD>
+<DT><A HREF="#lbAG">OPTIONS GNU</A><DD>
+<DT><A HREF="#lbAH">OPTIONS STANDARDS GNU</A><DD>
+<DT><A HREF="#lbAI">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAJ">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAK">NOTES</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:42 GMT, February 11, 2014
+</BODY>
+</HTML>

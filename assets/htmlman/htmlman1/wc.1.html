@@ -1,0 +1,115 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of WC</TITLE>
+</HEAD><BODY>
+<H1>WC</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+wc - Afficher le nombre d'octets, de mots et de lignes d'un fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>wc</B>
+
+[-clLmw] [--bytes] [--chars] [--lines] [--max-line-length] [--words]
+[--help] [--version] [fichier...]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>wc</B>
+
+([NDT] <B>wc</B> = Word Count).
+<P>
+<B>wc</B>
+
+compte le nombre d'octets, de mots séparés par des blancs, et de
+sauts de lignes (NewLines) dans chacun des fichiers indiqués.
+<P>
+Si aucun fichier n'est fourni, ou si le nom `-' est mentionné, la
+lecture se fait depuis l'entrée standard.
+<P>
+Une ligne de statistiques est affichée pour chaque fichier, précédée
+du nom du fichier s'il a été indiqué en argument.
+<P>
+Si plusieurs fichiers sont mentionnés, 
+<B>wc</B>
+
+ajoute une ligne finale de statistiques, contenant le cumul des valeurs, précédé
+du nom `total'. Les statistiques sont affichées dans l'ordre suivant :
+nombre de lignes, de mots, et d'octets.
+<P>
+
+Par défaut
+<B>wc</B>
+
+affiche les trois valeurs. Les options permettent de n'en afficher que certaines
+d'entre elles. Les options ne se surchargent pas, mais cumulent leurs effets,
+ainsi
+<B>wc</B><I> --bytes --words</I>
+
+affiche à la fois le nombre d'octets et de mots.
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><I>-c, --bytes</I>
+
+<DD>
+Afficher uniquement le nombre d'octets.
+<DT><I>-m, --chars</I>
+
+<DD>
+Afficher uniquement le nombre de caractères.
+<DT><I>-w, --words</I>
+
+<DD>
+Afficher uniquement le nombre de mots
+<DT><I>-l, --lines</I>
+
+<DD>
+Afficher uniquement le nombre de sauts de lignes
+<DT><I>-L, --max-line-lengthé</I>
+
+<DD>
+Afficher uniquement la longueur de la plus grande ligne.
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard, et se terminer normalement.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard, et se terminer
+normalement.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:47 GMT, February 11, 2014
+</BODY>
+</HTML>

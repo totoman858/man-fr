@@ -1,0 +1,79 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CATANH</TITLE>
+</HEAD><BODY>
+<H1>CATANH</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+catanh, catanhf, catanhl - Fonctions arguments tangentes hyperboliques complexes.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/complex.h">complex.h</A>&gt;</B>
+
+<P>
+<B>double complex catanh(double complex </B><I>z</I><B>);</B>
+
+<P>
+<B>float complex catanhf(float complex double </B><I>z</I><B>);</B>
+
+<P>
+<B>long double complex catanhl(long double complex </B><I>z</I><B>);</B>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>catanh</B>()
+
+calcule la version complexe de
+<B>atanh</B>().
+
+Si y&nbsp;=&nbsp;catanh(z), alors z&nbsp;=&nbsp;ctanh(y).
+La partie imaginaire de y est choisie dans l'intervalle [-pi/2*i,pi/2*i].
+<P>
+
+On a catanh(z)&nbsp;=&nbsp;0.5*clog((1+z)/(1-z)).
+<A NAME="lbAE">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+C99
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+cabs">cabs</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+cimag">cimag</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+atanh">atanh</A></B>(3)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:27 GMT, February 11, 2014
+</BODY>
+</HTML>

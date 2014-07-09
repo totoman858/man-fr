@@ -1,0 +1,595 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FIND</TITLE>
+</HEAD><BODY>
+<H1>FIND</H1>
+Section: Manuel de l'utilisateur Linux (1L)<BR>Updated: 15 janvier 1997<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+find - Rechercher des fichiers dans une hiérarchie de répertoires.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>find</B>
+
+[chemin...] [expression]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>find</B>.
+
+<B>find</B>
+
+parcourt les arborescences de répertoires commençant
+en chacun des <I>chemins</I> mentionnés, en évaluant les
+expressions fournies pour chaque fichier rencontré.
+L'évaluation de l'expression se fait de gauche à droite,
+en suivant des règles de priorité décrites dans la section
+OPÉRATEURS, jusqu'à ce que le résultat soit connu (par exemple
+la partie gauche vraie pour un opérateur <I>OU</I> ou fausse
+pour un opérateur <I>ET</I>).
+<P>
+
+Le premier argument commençant par `-', `(', `)', `,', ou `!' 
+est considéré comme le début de l'expression, tous les arguments
+précédents sont des chemins à parcourir. Tous les arguments ultérieurs
+sont considérés comme le reste de l'expression rationnelle.
+de point de départ. Si aucune <I>expression</I> n'est fournie, <B>find</B>
+utilise l'expression `-print' par défaut.
+<P>
+
+<B>find</B>
+
+se termine avec le code de retour 0 si tous les fichiers ont pu être
+examinés correctement, et supérieur à 0 si une erreur s'est produite.
+<A NAME="lbAE">&nbsp;</A>
+<H2>EXPRESSIONS</H2>
+
+<P>
+
+L'expression est constituée d'<B>options</B> (affectant l'ensemble des opérations
+plutôt que le traitement d'un fichier particulier, et renvoyant toujours
+vrai), de <B>tests</B> (renvoyant une valeur vraie ou fausse), et d'<B>actions</B>
+(ayant des effets de bords et renvoyant une valeur vraie ou fausse),
+tous ces éléments étant séparés par des opérateurs.
+Quand un opérateur est manquant, l'opération par défaut -and est
+appliquée. Si l'expression ne contient pas d'action autre que -prune,
+<B>find</B> applique l'action -print par défaut sur tous les fichiers
+pour lesquels l'expression est vraie.
+<A NAME="lbAF">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<P>
+
+Toutes les options renvoient toujours la valeur vraie. Elles ont
+toujours un effet global, plutôt que de s'appliquer uniquement à
+leur emplacement dans l'expression.
+Néanmoins, pour améliorer la lisibilité, il est préférable de les
+placer au début de l'expression.
+<DL COMPACT>
+<DT>-daystart<DD>
+Mesurer les temps (avec -amin, -atime, -cmin, -ctime, -mmin, et -mtime)
+depuis le début de la journée plutôt que depuis 24 heures.
+<DT>-depth<DD>
+Traiter d'abord les sous-répertoires avant le répertoire lui-même.
+<DT>-follow<DD>
+Déréférencer les liens symboliques pour accéder aux fichiers vers lesquels
+ils pointent. Ceci implique l'option -noleaf.
+<DT>-help, --help<DD>
+Afficher un message d'aide sur la  sortie  standard et se terminer normalement.
+<DT>-maxdepth <I>n</I><DD>
+Descendre au plus <I>n</I> niveaux (<I>n</I> étant un entier positif ou nul),
+dans les répertoires parcourus. `-maxdepth 0' signifie que les tests
+et les actions ne s'appliquent qu'aux arguments de la ligne de commande.
+<DT>-mindepth <I>n</I><DD>
+Ne pas appliquer les tests ou les actions à des niveaux de profondeur
+inférieurs à <I>n</I>. <I>n</I> est un entier positif ou nul.
+`-mindepth 1' signifie que les tests et les actions s'appliquent à tous
+les fichiers sauf aux arguments de la ligne de commande.
+<DT>-mount<DD>
+Ne pas parcourir les répertoires situés sur d'autres systèmes de fichiers.
+Il s'agit d'une alternative à l'option -xdev, assurant la compatibilité
+avec d'anciennes versions de
+<B>find</B>.
+
+<DT>-noleaf<DD>
+Ne pas faire d'optimisation en supposant que les répertoires contiennent
+deux sous-répertoires de moins que leurs nombres de liens physiques.
+Cette option est nécessaire lorsque l'on parcourt des systèmes de
+fichiers ne suivant pas les conventions Unix sur les liens de répertoires,
+comme les systèmes MS-DOS, les CD-ROM ou les points de montage de
+volumes AFS.
+Chaque répertoire sur un système de fichiers Unix dispose au moins
+de deux liens physiques, son nom et `.'. De plus chaque sous-répertoire
+a également un lien `..' vers le répertoire parent.
+Quand
+<B>find</B>
+
+examine un répertoire, il sait qu'il y a deux sous-répertoires de moins
+que de liens vers le répertoire. Une fois qu'il a rencontré le
+nombre prévu de sous-répertoires, il est donc sûr que le reste des
+entrées est constitué de fichiers autres que des sous-répertoires.
+Ces fichiers sont des feuilles ([NDT] `leaf') dans l'arborescence des 
+répertoires.
+S'il n'y a que les noms de fichiers à examiner, il n'a plus besoin de
+vérifier leur nature, et ceci fournit une augmentation notable de
+la vitesse de traitement.
+<DT>-version, --version<DD>
+Afficher un numéro de version sur la sortie standard et se terminer
+normalement.
+<DT>-xdev<DD>
+Ne pas parcourir les répertoires situés sur d'autres systèmes de fichiers.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H3>TESTS</H3>
+
+<P>
+
+Les arguments numériques peuvent être indiqués comme suit&nbsp;:
+<DL COMPACT>
+<DT><I>+n</I><DD>
+supérieur à
+<I>n</I>,
+
+<DT><I>-n</I><DD>
+inférieur à
+<I>n</I>,
+
+<DT><I>n</I><DD>
+égal à
+<I>n</I>.
+
+<DT>-amin <I>n</I><DD>
+dernier accès au fichier il y a <I>n</I> minutes.
+<DT>-anewer <I>fichier</I><DD>
+dernier accès au fichier plus récent que la dernière modification de
+<I>fichier</I>.
+Le comportement de l'option -anewer est modifié par l'option -follow 
+uniquement si celle-ci la précède sur la ligne de commande.
+<DT>-atime <I>n</I><DD>
+dernier accès au fichier il y a <I>n</I>*24 heures.
+<DT>-cmin <I>n</I><DD>
+dernière modification du statut du fichier il y a <I>n</I> minutes.
+<DT>-cnewer <I>fichier</I><DD>
+dernière modification du statut du fichier plus récente que la dernière
+modification du fichier <I>fichier</I>.
+Le comportement de l'option -cnewer est modifié par l'option -follow
+uniquement si celle-ci la précède sur la ligne de commande.
+<DT>-ctime <I>n</I><DD>
+dernière modification du statut du fichier il y a <I>n</I>*24 heures.
+<DT>-empty<DD>
+fichier vide. De plus ce fichier doit être régulier ou être un répertoire.
+<DT>-false<DD>
+toujours faux.
+<DT>-fstype <I>type</I><DD>
+fichier se trouvant sur un système de fichiers du <I>type</I> indiqué.
+Les types de systèmes de fichiers dépendent de la version d'Unix. Une
+liste non exhaustive des systèmes acceptés sur certaines versions d'Unix
+sont : ufs, 4.2, 4.3, nfs, tmp, mfs, S51K, S52K.  Vous pouvez utiliser
+-printf avec la directive %F pour examiner les types de vos systèmes de
+fichiers.
+<DT>-gid <I>n</I><DD>
+Fichier de GID numérique valant <I>n</I>.
+<DT>-group <I>nom_groupe</I><DD>
+fichier appartenant au groupe <I>nom_groupe</I> (éventuellement ID numérique).
+<DT>-ilname <I>motif</I><DD>
+identique à -lname, mais sans différencier les majuscules et les minuscules.
+<DT>-iname <I>motif</I><DD>
+identique à -name, mais sans différencier les majuscules et les minuscules. Par
+exemple les motifs `fo*' et `F??' correspondent aux noms de fichiers `Foo',
+`FOO', `foo', `fOo', etc...
+<DT>-inum <I>n</I><DD>
+fichier dont le numéro d'i-noeud est <I>n</I>.
+<DT>-ipath <I>motif</I><DD>
+identique à -path, mais sans différencier les majuscules et les minuscules.
+<DT>-iregex <I>motif</I><DD>
+identique à -regex, mais sans différencier les majuscules et les minuscules.
+<DT>-links <I>n</I><DD>
+fichier ayant <I>n</I> liens.
+<DT>-lname <I>motif</I><DD>
+fichier représentant un lien symbolique, dont le contenu correspond au
+<I>motif</I> indiqué. Lors du développement des méta-caractères, `/' et `.'
+ne sont pas traités différemment des autres caractères (voir l'exemple dans
+la description de l'option -path).
+<DT>-mmin <I>n</I><DD>
+Fichier dont les données ont été modifiées il y a <I>n</I> minutes.
+<DT>-mtime <I>n</I><DD>
+Fichier dont les données ont été modifiées il y a <I>n</I>*24 heures.
+<DT>-name <I>motif</I><DD>
+Fichier dont le nom de base (sans les répertoires du chemin d'accès),
+correspond au <I>motif</I> du shell.  Les méta-caractères (`*', `?',
+et `[]') ne sont jamais mis en correspondance avec un point `.' 
+au début du nom.  Pour ignorer un répertoire, ainsi que tous ses
+sous-répertoires, utiliser l'option -prune&nbsp;; vous trouverez un exemple dans
+la description de l'option -path.
+<DT>-newer <I>fichier</I><DD>
+Fichier modifié plus récemment que le <I>fichier</I> indiqué.
+L'option -newer n'est affectée par l'option -follow que si celle-ci la
+précède sur la ligne de commande.
+<DT>-nouser<DD>
+Fichier dont l'U-ID numérique ne correspond à aucun utilisateur.
+<DT>-nogroup<DD>
+Fichier dont le G-ID numérique ne correspond à aucun groupe d'utilisateurs.
+<DT>-path <I>motif</I><DD>
+Fichier dont le nom complet correspond au <I>motif</I> fourni. Lors du développement des méta-caractères, `/' et `.'
+ne sont pas traités différemment des autres caractères, ainsi par exemple :
+<BR>
+
+
+find . -path './sr*sc'
+<BR>
+
+
+affichera l'élément de répertoire intitulé './src/misc' (s'il en existe un).
+Pour ignorer une arborescence complète de répertoires, utilisez l'option
+-prune plutôt que de vérifier chaque fichier de l'arbre. Par exemple, pour
+ignorer le répertoire `src/emacs' et tous ses sous-répertoires, tout en
+affichant le nom de tous les autres fichiers, faites quelque chose comme :
+<BR>
+
+
+find . -path './src/emacs' -prune -o -print
+<BR>
+
+
+<DT>-perm <I>mode</I><DD>
+Fichier dont les autorisations d'accès sont fixées exactement au <I>mode</I> 
+indiqué (en notation symbolique ou octale). La notation symbolique utilise
+le mode 0 comme point de départ.
+<DT>-perm -<I>mode</I><DD>
+Fichier ayant au moins toutes les autorisations indiquées dans le <I>mode</I>.
+<DT>-perm +<I>mode</I><DD>
+Fichier ayant certaines des autorisations indiquées dans le <I>mode</I>.
+<DT>-regex <I>motif</I><DD>
+Nom de fichier correspondant à l'expression rationnelle <I>motif</I>.
+Il s'agit d'une correspondance sur le nom de fichier complet, pas d'une
+recherche. Par exemple, pour mettre en correspondance un fichier nommé
+`./fubar3', vous pouvez utiliser les expressions rationnelles `.*bar.' ou `.*b.*3',
+mais pas `b.*r3'.
+<DT>-size <I>n</I>[bckw]<DD>
+Fichier utilisant <I>n</I> unités d'espace.  Les unités sont des blocs de 512
+octets par défaut (ou si un suffixe `b' suit le nombre <I>n</I>), 
+des octets si un suffixe `c' suit <I>n</I>, des kilo-octets si un suffixe `k'
+est utilisé, ou des mots de 2 octets si un `w' suit le nombre <I>n</I>.
+La taille ne prend pas en compte les blocs indirects, mais elle comptabilise
+les blocs des fichiers éparpillés pas encore alloués.
+<DT>-true<DD>
+Toujours vrai.
+<DT>-type <I>c</I><DD>
+Fichier du type <I>c</I>&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>b<DD>
+fichier spécial en mode bloc (avec tampon)
+<DT>c<DD>
+fichier spécial en mode caractère (sans tampon)
+<DT>d<DD>
+répertoire
+<DT>p<DD>
+tube nommé (FIFO)
+<DT>f<DD>
+fichier régulier
+<DT>l<DD>
+liens symbolique
+<DT>s<DD>
+socket
+<DT>D<DD>
+door (Solaris)
+</DL>
+</DL>
+
+<DT>-uid <I>n</I><DD>
+Fichier dont l'U-ID numérique vaut <I>n</I>.
+<DT>-used <I>n</I><DD>
+fichier dont le dernier accès date de <I>n</I> jours après la dernière modification
+de son statut.
+<DT>-user <I>utilisateur</I><DD>
+fichier appartenant à l'<I>utilisateur</I> indiqué (U-ID numérique éventuellement)
+<DT>-xtype <I>c</I><DD>
+comme -type sauf si le fichier est un lien symbolique. Dans ce cas,
+si l'option -follow n'a pas été fournie, le test est vrai si le fichier
+destination du lien est de type <I>c</I>&nbsp;; si l'option -follow a été réclamée,
+le test est vrai si <I>c</I> vaut `l'.
+Autrement dit, pour les liens symboliques, -xtype vérifie le type des fichiers
+que l'option -type ne vérifie pas.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H3>ACTIONS</H3>
+
+<DL COMPACT>
+<DT>-exec <I>commande</I> ;<DD>
+Exécute la <I>commande</I>&nbsp;; vrai si le code de retour 0 est renvoyé. Tous les arguments
+suivants de 
+<B>find</B>
+
+sont considérés comme des arguments pour la ligne de commande, jusqu'à ce qu'on
+rencontre un `;'. La chaîne `{}' est remplacée par le nom du fichier en cours de
+traitement, et ceci dans toutes ses occurrences, pas seulement aux endroits où elle
+est isolée, comme c'est le cas avec d'autres versions de
+<B>find</B>.
+
+Ces deux chaînes peuvent avoir besoin d'être protégées du développement de la ligne
+de commande par le shell, en utilisant le caractère d'échappement (`\') ou une
+protection par des apostrophes. La commande est exécutée depuis le répertoire
+de départ.
+<DT>-fls <I>fichier</I><DD>
+vrai&nbsp;; comme -ls mais écrit dans le <I>fichier</I> comme le fait -fprint.
+<DT>-fprint <I>fichier</I><DD>
+vrai&nbsp;; écrit le nom complet dans le <I>fichier</I>.  Si <I>fichier</I>
+n'existe pas au démarrage de <B>find</B>, il est créé. S'il existe, il
+est écrasé. Les noms de fichiers ``/dev/stdout'' et ``/dev/stderr''
+sont traités de manière spécifique, ils correspondent respectivement 
+à la sortie standard, et à la sortie des erreurs.
+<DT>-fprint0 <I>fichier</I><DD>
+vrai&nbsp;; comme -print0 mais écrit dans le <I>fichier</I> comme le fait -fprint.
+<DT>-fprintf <I>fichier</I> <I>format</I><DD>
+vrai&nbsp;; comme -printf mais écrit dans le <I>fichier</I> comme le fait -fprint.
+<DT>-ok <I>commande</I> ;<DD>
+comme -exec mais interroge d'abord l'utilisateur (en utilisant l'entrée standard).
+Si la réponse ne commence pas par `y' ou `Y', la commande n'est pas exécutée, et
+le test devient faux.
+<DT>-print<DD>
+vrai&nbsp;; affiche le nom complet du fichier sur la sortie standard, suivi d'un saut de
+ligne.
+<DT>-print0<DD>
+vrai&nbsp;; affiche le nom complet du fichier sur la sortie standard, suivi d'un caractère
+nul. Ceci permet aux fichiers dont le nom contient un saut de ligne, d'être correctement
+interprétés par les programmes utilisant les données en sortie de <B>find</B>.
+<DT>-printf <I>format</I><DD>
+vrai&nbsp;; affiche le <I>format</I> indiqué sur la sortie standard, en interprétant les
+séquences d'échappement `\' et les directives`%'.
+La largeur et la précision des champs peuvent être spécifiés comme dans
+la fonction <B><A HREF="/cgi-bin/man/man2html?3+printf">printf</A></B>(3) du langage C.
+Contrairement à -print, -printf n'ajoute pas de saut de ligne à la fin
+de la chaîne. Les séquences d'échappement et les directives % sont les
+suivantes&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>\a<DD>
+Sonnerie.
+<DT>\b<DD>
+Effacement Arrière (Backspace)
+<DT>\c<DD>
+Arrêter immédiatement l'impression du format et vider le flux de sortie.
+<DT>\f<DD>
+Saut de page
+<DT>\n<DD>
+Saut de ligne
+<DT>\r<DD>
+Retour Chariot
+<DT>\t<DD>
+Tabulation horizontale
+<DT>\v<DD>
+Tabulation Verticale
+<DT>\\<DD>
+Un caractère `Backslash' littéral (`\').
+</DL>
+<P>
+
+Un `\' suivi de n'importe quel autre caractère est
+traité comme un caractère ordinaire&nbsp;; ils sont donc
+affichés tous les deux.
+<DL COMPACT>
+<DT>%%<DD>
+Un caractère pourcentage littéral (%)
+<DT>%a<DD>
+Date du dernier accès au fichier, dans le format renvoyé par la
+fonction C <B><A HREF="/cgi-bin/man/man2html?3+ctime">ctime</A></B>(3).
+<DT>%A<I>k</I><DD>
+Date du dernier accès au fichier, dans le format spécifié par <I>k</I>,
+qui doit être soit un `@', soit une directive pour la fonction C
+<B><A HREF="/cgi-bin/man/man2html?3+strftime">strftime</A></B>(3).  Les valeurs possibles pour <I>k</I> sont indiquées
+ci-dessous, certaines d'entre-elles ne sont pas disponibles sur tous
+les systèmes, à cause des différences entre les fonctions <B><A HREF="/cgi-bin/man/man2html?3+strftime">strftime</A></B>(3) existantes.
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>@<DD>
+secondes écoulées depuis le 1er Janvier 1970 à 00h 00 GMT.
+</DL>
+<P>
+
+Champs horaires :
+<DL COMPACT>
+<DT>H<DD>
+heure (00..23)
+<DT>I<DD>
+heure (01..12)
+<DT>k<DD>
+heure ( 0..23)
+<DT>l<DD>
+heure ( 1..12)
+<DT>M<DD>
+minute (00..59)
+<DT>p<DD>
+AM ou PM, avec la désignation locale
+<DT>r<DD>
+heure, sur un cadran de 12 heures (hh:mm:ss [AP]M)
+<DT>S<DD>
+secondes (00..61)
+<DT>T<DD>
+heure, sur un cadran de 24 heures (hh:mm:ss)
+<DT>X<DD>
+représentation locale de l'heure (H:M:S)
+<DT>Z<DD>
+fuseau horaire (par exemple MET), ou rien si le fuseau horaire
+est indéterminé.
+</DL>
+<P>
+
+Champs de date :
+<DL COMPACT>
+<DT>a<DD>
+abréviation locale du jour de la semaine (Dim .. Sam)
+<DT>A<DD>
+nom local entier du jour de la semaine, de longueur variable (Dimanche .. Samedi)
+<DT>b<DD>
+abréviation locale du mois (Jan..Dec)
+<DT>B<DD>
+nom local entier du mois, de longueur variable (Janvier .. Décembre)
+<DT>c<DD>
+date et heure locales (Sam Nov 04 12:02:33 EST 1989)
+<DT>d<DD>
+quantième du mois (01..31)
+<DT>D<DD>
+date (mm/jj/aa)
+<DT>h<DD>
+comme b
+<DT>j<DD>
+jour de l'année (001..366)
+<DT>m<DD>
+mois (01..12)
+<DT>U<DD>
+numéro de la semaine dans l'année, les semaines commençant le Dimanche (00..53)
+<DT>w<DD>
+jour de la semaine (0..6), 0 correspond à Dimanche
+<DT>W<DD>
+numéro de la semaine dans l'année, les semaines commençant le Lundi (00..53)
+<DT>x<DD>
+représentation locale de la date (mm/jj/aa)
+<DT>y<DD>
+les deux dernier chiffres de l'année
+<BR>&nbsp;(00..99)
+<DT>Y<DD>
+année (1970...)
+</DL>
+</DL>
+
+<DT>%b<DD>
+Taille du fichier en nombre de blocs de 512 octets (arrondi par excès).
+<DT>%c<DD>
+Date de dernière modification du statut du fichier, dans le format
+renvoyé par la fonction C <B><A HREF="/cgi-bin/man/man2html?3+ctime">ctime</A></B>(3).
+<DT>%C<I>k</I><DD>
+Date de dernière modification du statut du fichier, dans le format
+spécifié par <I>k</I>, comme pour la directive %A.
+<DT>%d<DD>
+Profondeur du fichier dans l'arborescence des répertoires, 0 signifiant
+que le fichier est un argument de la ligne de commande.
+<DT>%f<DD>
+Nom du fichier, sans nom de répertoire.
+<DT>%F<DD>
+Type de système de fichiers sur lequel se trouve le fichier. Cette
+valeur peut être utilisée pour l'option -fstype.
+<DT>%g<DD>
+Nom du groupe propriétaire du fichier, ou G-ID numérique si le groupe n'a pas de
+nom.
+<DT>%G<DD>
+G-ID numérique du fichier.
+<DT>%h<DD>
+Répertoires en tête du nom de fichier (tout sauf le dernier nom).
+<DT>%H<DD>
+Argument de la ligne de commande à partir duquel le fichier a été
+trouvé.
+<DT>%i<DD>
+Numéro d'i-noeud du fichier (en décimal).
+<DT>%k<DD>
+Taille du fichier, en nombre de blocs de 1 Kilo-Octet, arrondi par excès.
+<DT>%l<DD>
+Destination du lien symbolique (vide si le fichier n'est pas un lien symbolique).
+<DT>%m<DD>
+Bits d'autorisation d'accès au fichier (en octal).
+<DT>%n<DD>
+Nombre de liens physiques sur le fichier.
+<DT>%p<DD>
+Nom du fichier.
+<DT>%P<DD>
+Nom du fichier, ainsi que le nom de l'argument de ligne de commande
+à partir duquel le fichier a été trouvé.
+<DT>%s<DD>
+Taille du fichier en octets.
+<DT>%t<DD>
+Date de dernière modification du fichier, dans le format
+renvoyé par la fonction C <B><A HREF="/cgi-bin/man/man2html?3+ctime">ctime</A></B>(3).
+<DT>%T<I>k</I><DD>
+Date de dernière modification du fichier, dans le format
+spécifié par <I>k</I>, comme pour la directive %A.
+<DT>%u<DD>
+Nom du propriétaire du fichier, ou U-ID numérique si 
+l'utilisateur n'a pas de nom.
+<DT>%U<DD>
+U-ID numérique du propriétaire du fichier.
+</DL>
+<P>
+
+Un caractère `%' suivi de tout autre caractère est éliminé (mais le
+second caractère est affiché).
+</DL>
+
+<DT>-prune<DD>
+vrai si l'option -depth n'est pas fournie&nbsp;; ne pas descendre dans l'arborescence
+du répertoire en cours.
+<BR>
+
+faux si l'option -depth est fournie, et sans effet.
+<DT>-ls<DD>
+vrai, affiche le nom du fichier en cours dans le format `ls -dils' sur la sortie standard.
+La taille est comptée en blocs de 1 Ko, à moins que la variable d'environnement
+POSIXLY_CORRECT soit positionnée, auquel cas la taille est calculée en blocs de 512 octets.
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H3>OPÉRATEURS</H3>
+
+<P>
+
+Dans l'ordre de priorité décroissante :
+<DL COMPACT>
+<DT>( <I>expr</I> )<DD>
+Force la priorité.
+<DT>! <I>expr</I><DD>
+Vrai si <I>expr</I> est fausse.
+<DT>-not <I>expr</I><DD>
+Comme ! <I>expr</I>.
+<DT><I>expr1 expr2</I><DD>
+ET (implicite)&nbsp;; <I>expr2</I> n'est pas évaluée si <I>expr1</I> est fausse.
+<DT><I>expr1</I> -a <I>expr2</I><DD>
+Comme <I>expr1 expr2</I>.
+<DT><I>expr1</I> -and <I>expr2</I><DD>
+Comme <I>expr1 expr2</I>.
+<DT><I>expr1</I> -o <I>expr2</I><DD>
+OU&nbsp;; <I>expr2</I> n'est pas évaluée si <I>expr1</I> est vraie.
+<DT><I>expr1</I> -or <I>expr2</I><DD>
+Comme <I>expr1</I> -o <I>expr2</I>.
+<DT><I>expr1</I> , <I>expr2</I><DD>
+Liste&nbsp;; <I>expr1</I> et <I>expr2</I> sont toujours évaluées toutes les deux.
+La valeur de <I>expr1</I> est ignorée&nbsp;; la valeur de la liste est celle de
+<I>expr2</I>.
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1L+locate">locate</A></B>(1L), <B><A HREF="/cgi-bin/man/man2html?5L+locatedb">locatedb</A></B>(5L), <B><A HREF="/cgi-bin/man/man2html?1L+updatedb">updatedb</A></B>(1L), <B><A HREF="/cgi-bin/man/man2html?1L+xargs">xargs</A></B>(1L)
+<B>Finding Files</B> (en ligne dans Info, ou en version imprimée)
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">EXPRESSIONS</A><DD>
+<DL>
+<DT><A HREF="#lbAF">OPTIONS</A><DD>
+<DT><A HREF="#lbAG">TESTS</A><DD>
+<DT><A HREF="#lbAH">ACTIONS</A><DD>
+<DT><A HREF="#lbAI">OPÉRATEURS</A><DD>
+</DL>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:42 GMT, February 11, 2014
+</BODY>
+</HTML>

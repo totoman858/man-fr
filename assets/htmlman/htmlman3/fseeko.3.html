@@ -1,0 +1,90 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FSEEKO</TITLE>
+</HEAD><BODY>
+<H1>FSEEKO</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fseeko, ftello - Fixer ou consulter la position courante d'un flux.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<B>int fseeko(FILE *</B><I>stream</I><B>, off_t </B><I>offset</I><B>, int </B><I>whence</I><B>);</B>
+
+<B>off_t ftello(FILE *</B><I>stream</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les fonctions <B>fseeko()</B> et <B>ftello()</B> sont respectivement identiques à
+<B>fseek()</B> et <B>ftell()</B> (voir
+<B><A HREF="/cgi-bin/man/man2html?3+fseek">fseek</A></B>(3)),
+
+<BR>&nbsp;si&nbsp;ce&nbsp;n'est&nbsp;que&nbsp;l'argument&nbsp;<I>offset</I>&nbsp;de&nbsp;<B>fseeko()</B>
+et le code de retour de <B>ftello()</B> sont de type <B>off_t</B> 
+au lieu de <B>long</B>.
+<P>
+
+Sur de nombreuses architectures, <B>off_t</B> tout comme <B>long</B> sont des types 32 bits,
+mais une compilation avec la directive
+<DL COMPACT><DT><DD>
+<PRE>
+#define _FILE_OFFSET_BITS 64
+</PRE>
+
+</DL>
+
+changera <B>off_t</B> en type 64 bits.
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+Ces fonctions apparaissent dans les systèmes SysV et apparentés.
+Elles ne sont pas présentes dans la libc4, libc5 ou glibc 2.0 mais sont disponibles depuis la glibc 2.1.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Les fonctions
+<B>fseeko</B>
+
+et
+<B>ftello</B>
+
+sont conformes à SUSv2.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+fseek">fseek</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Stéphan Rafin, 2002.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:15 GMT, February 11, 2014
+</BODY>
+</HTML>

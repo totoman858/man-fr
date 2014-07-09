@@ -1,0 +1,182 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LSUSB</TITLE>
+</HEAD><BODY>
+<H1>LSUSB</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 23 octobre 2007<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="ixAAB"></A>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+lsusb - Afficher les périphériques USB
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>lsusb</B>
+
+[
+<I>options</I>
+
+]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>lsusb</B>
+
+est un utilitaire qui vous permet d'afficher des informations relatives
+aux bus USB du système et aux périphériques qui y sont connectés.
+<P>
+Pour pouvoir utiliser toutes les fonctionnalités de ce programme,
+vous devez avoir un noyau Linux qui prenne en charge l'interface
+<I>/proc/bus/usb</I>
+
+(par exemple, le noyau&nbsp;2.3.15 ou plus récent).
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-v</B>, <B>--verbose</B>
+
+<DD>
+Demander à
+<B>lsusb</B>
+
+d'être volubile et d'afficher des informations détaillées sur les
+périphériques.
+Cela inclut les descripteurs de configuration pour la vitesse actuelle
+des périphériques.
+Lorsqu'ils sont disponibles, les descripteurs de classe sont également
+affichés pour les classes de périphériques USB tels que les hubs,
+les périphériques audio, HID, de communications et les cartes à puce.
+<DT><B>-s</B> [[<I>bus</I>]<B>:</B>][<I>devnum</I>]<DD>
+N'afficher que les périphériques indiqués par
+<I>bus</I>
+
+et/ou
+<I>devnum</I>.
+
+Les deux identifiants doivent être fournis sous forme décimale
+et peuvent être omis.
+<DT><B>-d</B> [<I>vendor</I>]<B>:</B>[<I>product</I>]<DD>
+N'afficher que les périphériques dont on indique les identifiants
+du vendeur et du produit.
+Les deux identifiants doivent être fournis sous forme hexadécimale.
+<DT><B>-D </B><I>device</I>
+
+<DD>
+Ne pas balayer le répertoire
+<I>/proc/bus/usb</I>,
+
+afficher plutôt seulement les informations du périphérique dont
+on a indiqué le nom de fichier de périphérique.
+Le fichier de périphérique devrait être quelque chose comme
+<I>/proc/bus/usb/001/001</I>.
+
+Cette option permet d'afficher des informations détaillées
+comme avec l'option
+<B>-v</B>&nbsp;;
+
+vous devez être le superutilisateur pour pouvoir l'utiliser.
+<DT><B>-t</B>
+
+<DD>
+Demander à
+<B>lsusb</B>
+
+d'afficher la hiérarchie physique des périphériques USB sous forme
+d'arbre.
+<DT><B>-V, --version</B>
+
+<DD>
+Afficher les informations de version et quitter.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>DIAGNOSTICS</H2>
+
+<DL COMPACT>
+<DT>cannot open /proc/bus/usb/<I>nnn</I>/<I>nnn</I>, Permission denied (13)<DD>
+Pour obtenir des informations détaillées,
+<B>lsusb</B>
+
+doit ouvrir les fichiers dans
+<I>/proc/bus/usb</I>
+
+en lecture/écriture.
+Vous devez donc être le superutilisateur pour pouvoir le faire.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Si le périphérique indiqué n'est pas trouvé, un code de sortie non nul
+est renvoyé.
+<A NAME="lbAH">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/usr/share/usb.ids</I>
+
+<DD>
+Une liste de tous les identifiants USB connus (vendeurs, produits,
+classes, sous-classes et protocoles).
+<DT><I>/proc/bus/usb</I>
+
+<DD>
+Une interface vers les périphériques USB fournie par les noyaux Linux
+postérieurs à la version&nbsp;2.3.15.
+Elle contient un sous-répertoire par bus qui contient un fichier
+par périphérique et un fichier
+<I>devices</I>
+
+qui contient certains descripteurs pour chaque périphérique USB.
+Cette interface est également prise en charge par certains noyaux
+Linux&nbsp;2.2.
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+lspci">lspci</A></B>(8)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Thomas Sailer, &lt;<A HREF="mailto:sailer@ife.ee.ethz.ch">sailer@ife.ee.ethz.ch</A>&gt;.
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal&nbsp;AT&nbsp;univ-montp2&nbsp;DOT&nbsp;fr&gt; le 6&nbsp;juin&nbsp;2008.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;8&nbsp;lsusb</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">DIAGNOSTICS</A><DD>
+<DT><A HREF="#lbAG">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAH">FICHIERS</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">AUTEUR</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:04 GMT, February 11, 2014
+</BODY>
+</HTML>

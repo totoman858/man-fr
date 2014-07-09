@@ -1,0 +1,110 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MBRTOWC</TITLE>
+</HEAD><BODY>
+<H1>MBRTOWC</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mbrtowc - Convertir une séquence multi-octets en caractère large.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/wchar.h">wchar.h</A>&gt;</B>
+
+<B>size_t mbrtowc (wchar_t *</B><I>pwc</I><B>, const char *</B><I>s</I><B>, size_t </B><I>n</I><B>, mbstate_t *</B><I>ps</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+L'usage principal de cette fonction est celui avec <I>s</I> non-NULL et <I>pwc</I> non-NULL.
+Dans ce cas, la fonction <B>mbrtowc</B> examine au plus <I>n</I> octets de la séquence commençant en <I>s</I>,
+en extrait le prochain caractère multi-octets complet, et le place en <I>*pwc</I>.
+Elle met à jour l'état de décalage <I>*ps</I>. Si le caractère large obtenu n'est pas L'\0', elle renvoie
+le nombre d'octets lus depuis <I>s</I>. Si le caractère large obtenu est L'\0', elle réinitialise
+l'état de décalage <I>*ps</I> et renvoie zéro.
+<P>
+
+Si les <I>n</I> octets commençant en <I>s</I> ne contiennent pas de caractère large complet, <B>mbrtowc</B>
+renvoie <I>(size_t)(-2)</I>. Cela peut se produire même si <I>n</I> &gt;= <I>MB_CUR_MAX</I>, lorsque la séquence multi-octets
+contient des séquences de décalage redondantes.
+<P>
+
+Si la séquence multi-octets commençant en <I>s</I> contient une séquence invalide avant le prochain
+caractère complet, <B>mbrtowc</B> renvoie <I>(size_t)(-1)</I> et place dans <B>errno</B> la valeur <B>EILSEQ</B>.
+Dans ce cas, les effets sur <I>*ps</I> sont indéfinis.
+<P>
+
+Une autre situation est possible, si <I>s</I> est non-NULL, mais <I>pwc</I> est NULL. Dans ce cas, <B>mbrtowc</B>
+se comporte comme précédemment, mais n'enregistre pas le caractère large obtenu.
+<P>
+
+Un troisième cas se présente si <I>s</I> est NULL. Alors, <I>pwc</I> et <I>n</I> sont
+ignorés. Si l'état de conversion représenté par <I>*ps</I> indique une conversion
+multi-octets incomplète, la fonction <B>mbrtowc</B> renvboie
+<I>(size_t)(-1)</I>, remplie <B>errno</B> avec <B>EILSEQ</B>, et
+laisse <I>*ps</I> dans un état indéfini. Sinon, la fonction <B>mbrtowc</B> function
+remet <I>*ps</I> dans l'état initial et renvoie 0.
+<P>
+
+Dans tous ces cas, si <I>ps</I> est un pointeur NULL, une zone de mémoire statique
+propre à mbrtowc() est utilisé à sa place.
+Sinon, <I>*ps</I> doit être un objet <B>mbstate_t</B> valide.
+Un tel objet <B>mbstate_t</B> noté <I>a</I> peut être initialisé
+en le mettant à zéro, par exemple ainsi&nbsp;:
+<P>
+<DL COMPACT><DT><DD>
+memset(&amp;a, 0, sizeof(a));
+</DL>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>mbrtowc</B> renvoie le nombre d'octets balayés depuis la séquence commençant en <I>s</I>, si
+un caractère large non nul a été reconnu. Elle renvoie zéro si un caractère large nul est rencontré.
+Elle renvoie (size_t)(-1) et remplit <B>errno</B> avec <B>EILSEQ</B>, si une séquence invalide est trouvée.
+Elle renvoie (size_t)(-2) si elle n'a pas trouvé de caractère entier, et si <I>n</I> doit être augmenté.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ISO/ANSI C, UNIX98
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+mbsrtowcs">mbsrtowcs</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le comportement de <B>mbrtowc</B> dépend de la catégorie LC_CTYPE de la localisation.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:40 GMT, February 11, 2014
+</BODY>
+</HTML>

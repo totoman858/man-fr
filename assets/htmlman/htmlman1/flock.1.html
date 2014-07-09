@@ -1,0 +1,184 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FLOCK</TITLE>
+</HEAD><BODY>
+<H1>FLOCK</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 4 février 2006<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+flock - Gérer des verrous à partir de scripts shell
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>flock</B> [<B>-sxon</B>] [<B>-w</B> <I>délai</I>] <I>fichier_verrou</I> [<B>-c</B>] <I>commande...</I>
+<P>
+
+<B>flock</B> [<B>-sxun</B>] [<B>-w</B> <I>délai</I>] <I>fd</I>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cet utilitaire gère des verrous
+<B><A HREF="/cgi-bin/man/man2html?2+flock">flock</A></B>(2)
+
+à partir de scripts shell ou de la ligne de commande.
+<P>
+
+La première forme enveloppe le verrou autour de l'exécution d'une commande
+à la manière de
+<B><A HREF="/cgi-bin/man/man2html?1+su">su</A></B>(1)
+
+ou de
+<B><A HREF="/cgi-bin/man/man2html?1+newgrp">newgrp</A></B>(1).
+
+Il verrouille le fichier indiqué, qui est créé (en supposant que vous ayez
+les permissions appropriées) s'il n'existe pas déjà.
+<P>
+
+La seconde forme est pratique dans les scripts shell et est généralement
+utilisée de la manière suivante&nbsp;:
+<P>
+
+(
+<BR>
+
+<BR>&nbsp;&nbsp;flock&nbsp;-s&nbsp;200
+<BR>
+
+<BR>&nbsp;&nbsp;#&nbsp;...&nbsp;commandes&nbsp;exécutées&nbsp;sous&nbsp;verrous&nbsp;...
+<BR>
+
+) 200&gt;/var/lock/mylockfile
+<P>
+
+Le mode utilisé pour ouvrir le fichier importe peu à
+<B>flock</B>&nbsp;:
+
+l'utilisation de &gt; ou &gt;&gt; permet la création du fichier verrou
+s'il n'existe pas déjà, à condition d'avoir la permission en écriture&nbsp;;
+l'utilisation de &lt; nécessite que le fichier existe déjà, mais seule
+la permission en lecture est nécessaire.
+<P>
+
+Par défaut, si le verrou ne peut pas être obtenu immédiatement,
+<B>flock</B>
+
+attendra jusqu'à ce que le verrou soit disponible.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-s</B>, <B>--shared</B>
+
+<DD>
+Obtenir un verrou partagé, parfois appelé verrou en lecture.
+<DT><B>-x</B>, <B>-e</B>, <B>--exclusive</B>
+
+<DD>
+Obtenir un verrou exclusif, parfois appelé verrou en écriture.
+C'est l'option par défaut.
+<DT><B>-u</B>, <B>--unlock</B>
+
+<DD>
+Lever le verrou. Ce n'est généralement pas nécessaire puisqu'un verrou
+est automatiquement levé lorsque le fichier est fermé.
+Toutefois, cela peut être nécessaire dans des cas particuliers comme
+par exemple si le groupe de commandes enveloppé a dupliqué un processus
+en arrière-plan qui ne peut pas tenir le verrou.
+<DT><B>-n</B>, <B>--nb</B>, <B>--nonblock</B>
+
+<DD>
+Échouer (avec un code de retour de 1) plutôt que d'attendre
+si le verrou ne peut pas être obtenu immédiatement.
+<DT><B>-w</B>, <B>--wait</B>, <B>--timeout</B> <I>délai</I><DD>
+Échouer (avec un code de retour de 1)
+si le verrou ne peut pas être obtenu dans les.
+<I>délai</I>
+
+secondes.
+Les valeurs décimales fractionnaires sont permises.
+<DT><B>-o</B>, <B>--close</B>
+
+<DD>
+Fermer le descripteur de fichiers sur lequel le verrou est tenu
+avant d'exécuter la
+<I>commande</I>.
+
+Cela est utile si la
+<I>commande</I>
+
+pond un processus fils qui ne peut tenir le verrou.
+<DT><B>-c</B>, <B>--command</B> <I>commande</I><DD>
+Passer une simple
+<I>commande</I>
+
+au shell avec
+<B>-c</B>.
+
+<DT><B>-h</B>, <B>--help</B>
+
+<DD>
+Afficher un message d'aide.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Écrit par H. Peter Anvin &lt;<A HREF="mailto:hpa@zytor.com">hpa@zytor.com</A>&gt;.
+<A NAME="lbAG">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright &#169; 2003-2006 H. Peter Anvin.
+<BR>
+
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+flock">flock</A></B>(2)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>DISPONIBILITÉ</H2>
+
+La commande
+<B>flock</B>
+
+fait partie du paquetage util-linux-ng et est disponible à l'adresse
+<A HREF="ftp://ftp.kernel.org/pub/linux/utils/util-linux-ng/.">ftp://ftp.kernel.org/pub/linux/utils/util-linux-ng/.</A>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal&nbsp;AT&nbsp;univ-montp2&nbsp;DOT&nbsp;fr&gt; le 26&nbsp;mai&nbsp;2008.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;1&nbsp;flock</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">AUTEUR</A><DD>
+<DT><A HREF="#lbAG">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">DISPONIBILITÉ</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:41 GMT, February 11, 2014
+</BODY>
+</HTML>

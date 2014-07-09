@@ -1,0 +1,138 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MKFIFO</TITLE>
+</HEAD><BODY>
+<H1>MKFIFO</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mkfifo - Créer un fichier spécial FIFO.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/stat.h">sys/stat.h</A>&gt;</B>
+
+<B>int mkfifo ( const char *</B><I>pathname</I><B>, mode_t </B><I>mode</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>mkfifo</B> crée un fichier spécial FIFO (tube nommé)
+à l'emplacement <I>pathname</I>.
+<I>mode</I> indique les permissions d'accès. Ces permissions sont modifiées
+par la valeur d'<B>umask</B> du processus : les permissions d'accès effectivement
+adoptées sont <B>(</B><I>mode</I><B> &amp; ~umask)</B>.
+<P>
+
+Un fichier spécial FIFO est semblable à un tube (pipe), sauf qu'il est
+créé différement. Plutot qu'un canal de communication anonyme, un fichier
+FIFO est inséré dans le système de fichiers en appelant <B>mkfifo</B>.
+<P>
+
+Une fois qu'un fichier FIFO est créé, n'importe quel processus peut
+l'ouvrir en lecture ou écriture, comme tout fichier ordinaire.
+En fait, il faut ouvrir les deux extrémités simultanément avant de
+pouvoir effectuer une opération d'écriture ou de lecture. L'ouverture
+d'un FIFO en lecture est généralement bloquante, jusqu'à ce qu'un
+autre processus ouvre le même FIFO en écriture, et inversement. Voir
+<B><A HREF="/cgi-bin/man/man2html?4+fifo">fifo</A></B>(4)
+
+pour la gestion non-bloquante d'une FIFO.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La valeur renvoyée par <I>mkfifo</I> est <B>0</B> s'il réussit, ou -1 s'il
+échoue, auquel cas <I>errno</I> contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EACCES</B>
+
+<DD>
+L'un des répertoires dans <I>pathname</I> ne permet pas la recherche (exécution).
+<DT><B>EEXIST</B>
+
+<DD>
+<I>pathname</I> existe déjà.
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+Soit la longueur totale de <I>pathname</I> est supérieure à <B>PATH_MAX</B>,
+soit un élément de <I>pathname</I> a une longueur plus grande que <B>NAME_MAX</B>.
+Sur les systèmes GNU il n'y a pas de limite absolue à la longueur du nom d'un
+fichier, mais certains autres systèmes en ont une.
+<DT><B>ENOENT</B>
+
+<DD>
+L'un des répertoire de <I>pathname</I> n'existe pas, ou est un lien symbolique
+pointant nulle part.
+<DT><B>ENOSPC</B>
+
+<DD>
+Le répertoire, ou le système de fichiers, n'a pas assez de place
+pour un nouveau fichier.
+<DT><B>ENOTDIR</B>
+
+<DD>
+Un élément de <I>pathname</I> n'est pas un répertoire.
+<DT><B>EROFS</B>
+
+<DD>
+<I>pathname</I> est sur un système de fichiers en lecture-seule.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX.1
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+mkfifo">mkfifo</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+close">close</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+umask">umask</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?4+fifo">fifo</A></B>(4)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:04 GMT, February 11, 2014
+</BODY>
+</HTML>

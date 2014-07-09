@@ -1,0 +1,86 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of BYTEORDER</TITLE>
+</HEAD><BODY>
+<H1>BYTEORDER</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+byteorder, htonl, htons, ntohl, ntohs - Conversions d'ordre des octets entre un hôte et un réseau.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/netinet/in.h">netinet/in.h</A>&gt;</B>
+
+<B>uint32_t htonl (uint32_t </B><I>hostlong</I><B>);</B>
+
+<B>uint16_t htons (uint16_t </B><I>hostshort</I><B>);</B>
+
+<B>uint32_t ntohl (uint32_t </B><I>netlong</I><B>);</B>
+
+<B>uint16_t ntohs (uint16_t </B><I>netshort</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>htonl()</B> convertit un entier non-signé <I>hostlong</I> depuis
+l'ordre des octets de l'hôte vers celui du réseau.
+<P>
+
+La fonction <B>htons()</B> convertit un entier court non-signé <I>hostshort</I> depuis
+l'ordre des octets de l'hôte vers celui du réseau.
+<P>
+
+La fonction <B>ntohl()</B> convertit un entier non-signé <I>netlong</I> depuis
+l'ordre des octets du réseau vers celui de l'hôte.
+<P>
+
+La fonction <B>ntohs()</B> convertit un entier court non-signé <I>netshort</I> depuis
+l'ordre des octets du réseau vers celui de l'hôte.
+<P>
+
+Sur les i80x86, l'ordre des octets de l'hôte est LSB (Least Significant Byte
+first), c'est à dire octet de poids faible en premier, alors que sur
+les réseaux, notamment l'Internet, l'ordre est MSB (Most
+Significant Byte first) octet de poids fort en premier.
+<A NAME="lbAE">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.3
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+gethostbyname">gethostbyname</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getservent">getservent</A></B>(3)
+
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:26 GMT, February 11, 2014
+</BODY>
+</HTML>

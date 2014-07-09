@@ -1,0 +1,117 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FTIME</TITLE>
+</HEAD><BODY>
+<H1>FTIME</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ftime - Obtenir la date et l'heure.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/timeb.h">sys/timeb.h</A>&gt;</B>
+
+<P>
+<B>int ftime (struct timeb *</B><I>tp</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>ftime</B> mémorise la date et l'heure dans une structure
+<I>tp</I>,
+
+déclarée ainsi&nbsp;:
+<P>
+
+<PRE>
+struct timeb {
+        time_t   time;
+        unsigned short millitm;
+        short    timezone;
+        short    dstflag;
+};
+</PRE>
+
+
+<P>
+
+Ici, <I>time</I> est le temps écoulé en secondes depuis le 1er Janvier 1970
+à 0h00, <I>millitm</I> contient jusqu'à 1000 millisecondes depuis <I>time</I>,
+<I>timezone</I> est le fuseau horaire local (mesuré en minutes de temps à l'Ouest de Greenwich)
+et <I>dstflag</I> est un drapeau indiquant, s'il est non-nul que le décallage horaire d'été
+s'applique.
+<P>
+
+De nos jours, le contenu de <I>timezone</I> et <I>dstflag</I> est indéfini.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Cette fonction renvoie toujours 0.
+<A NAME="lbAF">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Cette fonction est obsolète. Ne l'utilisez pas. Si la précision de la seconde
+vous suffit, utilisez
+<B><A HREF="/cgi-bin/man/man2html?2+time">time</A></B>(2).
+
+Sinon
+<B><A HREF="/cgi-bin/man/man2html?2+gettimeofday">gettimeofday</A></B>(2)
+
+fournit des microsecondes, et
+<B><A HREF="/cgi-bin/man/man2html?3+clock_gettime">clock_gettime</A></B>(3)
+
+des nanosecondes, mais n'est pas disponible partout.
+<P>
+
+Sous LibC 4 et LibC 5, le champ millitm est sans signification.
+Les premières GlibC 2 étaient buggées, et renvoyaient toujours 0 dans ce champ. La
+GlibC 2.1.1 est correcte.
+<A NAME="lbAG">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+La fonction
+<B>ftime()</B>
+
+est apparue sur 4.2BSD.
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.2, POSIX 1003.1-2001.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+gettimeofday">gettimeofday</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+time">time</A></B>(2)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">BOGUES</A><DD>
+<DT><A HREF="#lbAG">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:16 GMT, February 11, 2014
+</BODY>
+</HTML>

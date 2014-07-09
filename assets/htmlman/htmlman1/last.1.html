@@ -1,0 +1,150 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LAST</TITLE>
+</HEAD><BODY>
+<H1>LAST</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 9 Juin 1997<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+last, lastb - Afficher une liste des utilisateurs dernièrement connectés.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>last</B>
+
+[<B>-R</B>]
+
+[<B>-</B><I>num</I>]
+
+[ -<B>n</B> <I>num</I> ]
+
+[<B>-adx</B>]
+
+[ -<B>f</B> <I>fichier</I> ]
+
+[<I>nom...</I>]
+
+[<I>tty...</I>]
+
+<BR>
+
+<B>lastb</B>
+
+[<B>-R</B>]
+
+[<B>-</B><I>num</I>]
+
+[ -<B>n</B> <I>num</I> ]
+
+[ -<B>f</B> <I>fichier</I> ]
+
+[<B>-adx</B>]
+
+[<I>nom...</I>]
+
+[<I>tty...</I>]
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>Last</B>
+
+parcourt le fichier <B>/var/log/wtmp</B> (ou le fichier indiqué par
+l'option <B>-f</B>) pour présenter une liste de toutes les connexions
+et déconnexions des utilisateurs, depuis la création du fichier.
+<P>
+Des noms d'utilisateurs ou de terminaux peuvent être spécifiés, afin que
+<B>last</B> ne montre que les connexions/déconnexions correspondant
+à ces arguments. Le nom des terminaux peuvent être abrégés, ainsi
+<B>last 0</B> est équivalent à <B>last tty0</B>.
+<P>
+Quand <B>last</B> reçoit un signal <FONT SIZE="-2">SIGINT</FONT> (engendré par la touche
+d'interruption, généralement Controle-C) ou un signal <FONT SIZE="-2">SIGQUIT</FONT>
+(déclenché par la touche Quit, généralement Controle-\), il
+indiquera le point où il est arrivé dans le fichier, et dans le cas
+de <FONT SIZE="-2">SIGINT</FONT>, <B>last</B> se terminera.
+<P>
+
+Le pseudo-utilisateur <B>reboot</B> est enregistré à chaque redémarrage
+du système, ainsi <B>last reboot</B> affichera une liste de toutes les
+réinitialisations depuis la création du fichier de journalisation.
+<P>
+
+<B>Lastb</B> se comporte comme <B>last</B>, mais il utilise le fichier
+<B>/var/log/btmp</B> qui journalise toutes les tentatives infructueuses de
+connexion.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-</B><I>num</I><DD>
+Cet argument indique à <B>last</B> le nombre de lignes d'enregistrement à
+afficher.
+<DT><B>-n</B> <I>num</I><DD>
+est équivalent à <B>-</B><I>num</I>.
+<DT><B>-R</B><DD>
+Cet argument empêche l'affichage du champ <B>hostname</B>.
+<DT><B>-a</B><DD>
+Demande à <B>last</B> d'afficher le nom d'hôte en dernière colonne. 
+Principalement utile en combinaison avec l'option suivante.
+<DT><B>-d</B><DD>
+Pour les connexions non-locales, Linux journalise le nom d'hôte ainsi
+que son adresse IP. Avec cette option, l'adresse IP est à nouveau
+reconvertie en nom d'hôte.
+<DT><B>-x</B><DD>
+Afficher également les arrêts du système et les modifications de
+niveau d'exécution (run level).
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les fichiers <I>wtmp</I> et <I>btmp</I> sont parfois absents.
+Le système ne journalise les informations que si les fichiers sont
+deja présents, mais ne les crée pas de lui-même.
+<P>
+Il s'agit d'un choix local de configuration. Si vous désirez utiliser
+ces journalisations, vous pouvez créer les fichiers avec une simple
+commande <B>touch</B> (par exemple, <I>touch /var/log/wtmp</I>).
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Miquel van Smoorenburg, <A HREF="mailto:miquels@cistron.nl">miquels@cistron.nl</A>
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+shutdown">shutdown</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?1+login">login</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+init">init</A></B>(8).
+
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:48 GMT, February 11, 2014
+</BODY>
+</HTML>

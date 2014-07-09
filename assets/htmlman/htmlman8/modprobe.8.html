@@ -1,0 +1,431 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MODPROBE</TITLE>
+</HEAD><BODY>
+<H1>MODPROBE</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+modprobe - Manipulations haut niveau de modules chargeables.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+
+<B>modprobe</B>
+
+[-adnqv]&nbsp;[-C&nbsp;<I>config</I>]&nbsp;module&nbsp;[symbole=valeur&nbsp;... ]
+<BR>
+
+<B>modprobe</B>
+
+[-adnqv] [-C&nbsp;<I>config</I>] [-t&nbsp;<I>type</I>] pattern
+<BR>
+
+<B>modprobe</B>
+
+-l [-C&nbsp;<I>config</I>] [-t&nbsp;<I>type</I>] pattern
+<BR>
+
+<B>modprobe</B>
+
+-c [-C&nbsp;<I>config</I>]
+<BR>
+
+<B>modprobe</B>
+
+-r [-dnv ] [-C&nbsp;<I>config</I>] [ module ...]
+<BR>
+
+<B>modprobe</B>
+
+-Vh
+<A NAME="lbAD">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-a</B>, <B>--all</B>
+
+<DD>
+Charge <B>tous</B>
+les modules au lieu de s'arrêter après le premier chargement réussi.
+<DT><B>-c</B>, <B>--showconfig</B>
+
+<DD>
+Affiche la configuration courante.
+<DT><B>-C</B>,&nbsp;<B>--config</B>&nbsp;<I>config</I><DD>
+Utilise le fichier de configuration <I>configfile</I> plutôt que (le facultatif)
+<I>/etc/modules.conf</I> pour le paramétrage.
+La variable d'environnement <B>MODULECONF</B> peut être aussi utilisée pour
+sélectionner (et surcharger) un fichier de configuration différent du fichier
+par défaut <I>/etc/modules.conf</I>, ou 
+<I>/etc/conf.modules</I> (à éviter).
+</DL>
+<P>
+
+Quand la variable d'environnement
+<B>UNAME_MACHINE</B>
+
+est remplie, modutils l'utilisera à la place du champ &quot;machine&quot; de
+l'appel-système uname(). Ceci est surtout utile si vous compilez des modules
+64 bits dans un espace utilisateur 32 bits ou
+inversement&nbsp;; remplissez
+<B>UNAME_MACHINE</B>
+
+avec le type de modules construits.
+La version actuelle de modutils ne supporte pas la construction croisée complète
+de modules, elle est limitée au choix entre 32 et 64 bits de l'architecture
+hôte.
+<DL COMPACT>
+<DT><B>-d</B>, <B>--debug</B>
+
+<DD>
+Affiche des informations sur la représentationt interne de la pile de modules.
+<DT><B>-h</B>, <B>--help</B>
+
+<DD>
+Affiche une page d'aide et se termine.
+<DT><B>-k</B>, <B>--autoclean</B>
+
+<DD>
+Marque les modules pour auto-nettoyage. Utilisé par le noyau quand il appelle
+<B>modprobe</B>
+
+pour satisfaire les dépendances manquantes.
+L'option <B>-q</B> est impliquée par <B>-k</B>.
+Ces options seront directement transmises à <B>insmod</B>.
+<DT><B>-l</B>, <B>--list</B>
+
+<DD>
+Affiche les modules chargeables. 
+<DT><B>-n</B>, <B>--show</B>
+
+<DD>
+Ne rien faire en réalité, indiquer juste ce qui serait fait.
+<DT><B>-q</B>, <B>--quiet</B>
+
+<DD>
+Ne se plaint pas si <B>insmod</B> échoue au chargement d'un module. Continue
+en silence à essayer d'autres possibilités.
+Cette option sera directement transmise à <B>insmod</B>.
+<DT><B>-r</B>, <B>--remove</B>
+
+<DD>
+Enlève le module (ou la pile) ou exécute un auto-nettoyage suivant s'il 
+y a des modules indiqués ou non sur la ligne de commande.
+<DT><B>-s</B>, <B>--syslog</B>
+
+<DD>
+Envoyer les messages à syslog plutôt que sur la sortie d'erreur.
+Cette option sera directement transmise à <B>insmod</B>.
+<DT><B>-t</B>&nbsp;<I>moduletype</I>;&nbsp;<B>--type</B>&nbsp;<I>moduletype</I><DD>
+Ne considère que les modules du type indiqué. modprobe ne s'occupera que des
+modules dont le répertoire inclut exactement &quot;<I>/moduletype/</I>&quot;. Il peut
+contenir plusieurs noms&nbsp;; par exemple  &quot;<B>-t</B>&nbsp;<I>drivers/net</I>&quot; listera
+tous les modules dans <I>xxx/drivers/net/</I> et ses sous-répertoires.
+<DT><B>-v</B>, <B>--verbose</B>
+
+<DD>
+Affiche les commandes au fur et à mesure qu'elles sont exécutées.
+<DT><B>-V, --version</B>
+
+<DD>
+Affiche le numéro de version de modprobe.
+<DT><B>Note&nbsp;:</B>
+
+<DD>
+Les noms de modules ne contenir ni chemin d'accès (pas de '/'), ni de suffixe
+
+<B>modprobe</B>,
+
+/lib/modules/2.4.21/kernel/char/lp ou lp.o sont invalides. Ceci concerne la
+ligne de commande et les entrées dans les fichiers de configuration.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les utilitaires <B>modprobe</B> et <B>depmod</B> rendent un noyau Linux modulaire
+plus facilement gérable pour tous les utilisateurs, administrateurs et les
+développeurs de distribution.
+<P>
+
+<B>modprobe</B> utilise un fichier de type &quot;Makefile&quot; pour les dépendances,
+créé par <B>depmod</B>, pour charger automatiquement les modules corrects depuis
+l'ensemble des modules disponibles dans les répertoires prédéfinis.
+<P>
+
+<B>modprobe</B> sert à charger un seul module, la pile de modules dépendants, ou
+tous les modules marqués par une étiquette spécifique.
+<P>
+
+<B>modprobe</B>
+
+chargera automatiquement la base de modules nécessaire à un ensemble, comme décrit dans le fichier de dépendances modules.dep.
+Si un chargement échoue, la totalité des modules chargés par la commande sera déchargée automatiquement.
+<P>
+
+<B>modprobe</B>
+
+a deux façons pour charger des modules. La première (le mode d'essai) essaiera de charger un module de la liste (définie par
+<I>pattern</I>).
+
+<B>modprobe</B>
+
+arrête le chargement dès qu'un modules est chargé avec succès.
+Cela peut être utilisé pour charger automatiquement un pilote de carte ethernet parmi d'autres.
+<BR>
+
+Sinon,
+<B>modprobe</B>
+
+peut charger
+<B>tous</B>
+
+les modules d'une liste.
+Voir les
+<B>EXEMPLES</B>
+
+ci dessous.
+<P>
+
+Avec l'option
+<B>-r,</B>
+
+modprobe déchargera automatiquement l'ensemble des modules, de la même façon qu'en utilisant
+<B>rmmod -r</B>.
+
+On peut noter que
+<B>modprobe -r</B>
+
+seul fera le ménage parmi les modules inutilisés et lancera les commandes de pré- et de post-enlèvement
+dans le fichier de configuration /etc/modules.conf.
+<P>
+
+Avec l'option
+<I>-l</I>
+
+combinée avec l'option
+<I>-t</I>
+
+une liste de tous les modules disponibles d'un type donné sera affichée.
+<P>
+
+L'option
+<I>-c</I>
+
+affichera la configuration courante (par défaut et le fichier de configuration).
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFIGURATION</H2>
+
+Le comportement de 
+<B>modprobe</B>
+
+(et de
+<B>depmod</B>)
+
+peut être modifié par le fichier (optionnel) de configuration
+<B>/etc/modules.conf</B>.
+
+<BR>
+
+Pour une description plus détaillée de ce que peut contenir ce fichier,
+ainsi que la configuration par défaut de
+<B>depmod</B>
+
+et de
+<B>modprobe,</B>
+
+voir
+<I><A HREF="/cgi-bin/man/man2html?5+modules.conf">modules.conf</A></I>(5).
+
+<P>
+
+Note : les commandes de pré- et de post-enlèvement ne seront <B>pas</B> exécutées si un module
+est déchargé (car ce module est marqué 'autoclean') par kerneld&nbsp;!
+Voir plutôt le support des données persistantes.
+<BR>
+
+Si vous voulez utiliser les caractéristiques de pré et de post-installation, vous devez enlever
+l'option 'autoclean' pour kerneld et plutôt mettre une commande dans votre &quot;crontab&quot;
+(c'est utilisé par les systèmes kmod); pour effectuer un rafraîchissement toutes les deux minutes&nbsp;:
+<BR>
+
+<BR>&nbsp;*/2&nbsp;*&nbsp;*&nbsp;*&nbsp;*&nbsp;test&nbsp;-f&nbsp;/proc/modules&nbsp;&amp;&amp;&nbsp;/sbin/modprobe&nbsp;-r
+<A NAME="lbAG">&nbsp;</A>
+<H2>STRATÉGIE</H2>
+
+L'idée est que
+<B>modprobe</B>
+
+regardera en premier dans le répertoire contenant les modules compilés pour la version spécifique du noyau en cours d'exécution
+(/lib/modules/2.2.12-20/ par exemple).
+Si le module n'est pas trouvé ici,
+<B>modprobe</B>
+
+ira dans le répertoire commun de la version du noyau (ex. 2.0, 2.2).
+<P>
+
+Quand vous installez un nouveau noyau, les modules sont déplacés dans le répertoire relatif à la version spécifique
+(et à la version générale) du noyau que vous installez.
+Alors vous devez créer un lien symbolique de ce répertoire vers le répertoire par défaut.
+<P>
+
+Chaque fois que vous compilez un nouveau noyau, la commande
+<B>make modules_install</B>
+
+créera un nouveau répertoire, mais ne change pas le lien par défaut.
+<P>
+
+Quand vous avez un module non relié à la distribution du noyau vous devez le mettre dans un 
+des répertoires indépendants de la version sous /lib/modules.
+<P>
+
+C'est la stratégie par défaut. On peut passer outre avec /etc/modules.conf.
+<A NAME="lbAH">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+<DL COMPACT>
+<DT>modprobe -t net<DD>
+Charge un des modules qui sont stockés dans le répertoire étiqueté &quot;net&quot;.
+Chaque module est essayé jusqu'à réussite.
+<DT>modprobe -a -t boot<DD>
+Tous les modules qui sont dans les répertoires étiquetés
+<B>boot</B>
+
+seront chargés.
+<DT>modprobe slip<DD>
+Cela tentera de charger le module slhc.o si il n'a pas déjà été chargé,
+car le module slip a besoin de fonctionnalités du module slhc.
+Cette dépendance est décrite dans le fichier &quot;modules.dep&quot; qui est créé automatiquement par
+<B>depmod</B>
+
+<DT>modprobe -r slip<DD>
+déchargera le module slip.
+Il enlèvera aussi le module slhc automatiquement,
+s'il n'est pas utilisé par d'autres modules bien sûr (comme ppp).
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<PRE>
+/etc/modules.conf, (aussi mais à éviter: /etc/conf.modules)
+/lib/modules/*/modules.dep,
+/lib/modules/*
+</PRE>
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+depmod">depmod</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+lsmod">lsmod</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+kerneld">kerneld</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ksyms">ksyms</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+rmmod">rmmod</A></B>(8)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>MODE DE SÉCURITÉ RENFORCÉE</H2>
+
+Si l'UID effectif n'est pas égal à l'UID réel, alors <B>modprobe</B> traite ses
+entrées avec suspicion. Le dernier paramètre est toujours considéré comme un
+nom de module, même s'il débute par '-'. Il ne peut y avoir qu'un nom de module,
+et les options de la type &quot;variable=valeur&quot; sont interdites. Le nom de
+module est toujours traité comme une chaîne, et aucun développement n'est
+réalisé en mode de sécurité renforcé. Toutefois les développements sont toujours
+appliqués aux données lues dans le fichier de configuration.
+<P>
+
+L'UID effectif peut être différent de l'UID quand modprobe est invoqué par le
+noyau, depuis le 2.4.0-test11. Dans un monde idéal, <B>modprobe</B> pourrait
+faire confiance au noyau pour ne lui fournir que des paramètres valides.
+Malheureusement, il y a eu au moins une attaque basée sur le passage de
+paramètres non-vérifiés par du code de haut-niveau du noyau.
+Depuis modprobe ne fait plus confiance au noyau.
+<P>
+
+
+<B>modprobe</B> bascule automatiquement en mode de sécurité renforcé quand
+l'environnement n'est constitué que de ces chaînes&nbsp;:
+<PRE>
+ HOME=/
+ TERM=linux
+ PATH=/sbin:/usr/sbin:/bin:/usr/bin
+</PRE>
+
+Ceci correspond à l'exécution de modprobe par le noyau depuis le 2.2 jusqu'au
+2.4.0-test11, même si UID == E-UID, ce qui se produisait sur les noyaux
+anciens.
+<A NAME="lbAL">&nbsp;</A>
+<H2>COMMANDES DE JOURNALISATION</H2>
+
+Si le répertoire <I>/var/log/ksymoops</I> existe et si <B>modprobe</B> est lancé
+avec un option de chargement ou déchargement de module, alors modprobe 
+journalisera ses actions et codes de retour dans
+<I>/var/log/ksymoops/`date&nbsp;+%Y%m%d.log`</I>.
+Il n'y a pas d'option pour désactiver cet enregistrement automatique. Si vous
+voulez l'éviter, ne créez pas <I>/var/log/ksymoops</I>. Lorsque ce répertoire
+existe, il doit appartenir à root, avoir le mode 644 ou 600 et il faudrait
+lancer le script <B>insmod_ksymoops_clean</B> quotidiennement.
+<A NAME="lbAM">&nbsp;</A>
+<H2>UTILITAIRES NÉCESSAIRES</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+depmod">depmod</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+insmod">insmod</A></B>(8).
+
+<A NAME="lbAN">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le motif
+<I>pattern</I>
+
+fourni à modprobe aura souvent besoin d'être protégé pour s'assurer qu'il
+sera correctement interprété.
+<A NAME="lbAO">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Jacques Gelinas (<A HREF="mailto:jack@solucorp.qc.ca">jack@solucorp.qc.ca</A>)
+<BR>
+
+Bjorn Ekwall (<A HREF="mailto:bj0rn@blox.se">bj0rn@blox.se</A>)
+<A NAME="lbAP">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Jérome Signouret, 2000.
+<BR>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">OPTIONS</A><DD>
+<DT><A HREF="#lbAE">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAF">CONFIGURATION</A><DD>
+<DT><A HREF="#lbAG">STRATÉGIE</A><DD>
+<DT><A HREF="#lbAH">EXEMPLES</A><DD>
+<DT><A HREF="#lbAI">FICHIERS</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">MODE DE SÉCURITÉ RENFORCÉE</A><DD>
+<DT><A HREF="#lbAL">COMMANDES DE JOURNALISATION</A><DD>
+<DT><A HREF="#lbAM">UTILITAIRES NÉCESSAIRES</A><DD>
+<DT><A HREF="#lbAN">NOTES</A><DD>
+<DT><A HREF="#lbAO">AUTEURS</A><DD>
+<DT><A HREF="#lbAP">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:02 GMT, February 11, 2014
+</BODY>
+</HTML>

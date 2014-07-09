@@ -1,0 +1,157 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of INET_PTON</TITLE>
+</HEAD><BODY>
+<H1>INET_PTON</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+inet_pton - Créer une structure d'adresse réseau.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/arpa/inet.h">arpa/inet.h</A>&gt;</B>
+
+<B>int inet_pton(int </B><I>af</I><B>, const char * </B><I>src</I><B>, void * </B><I>dst</I><B>);</B>
+</PRE><A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette fonction convertit la chaîne de caractères
+<I>src</I>
+
+en une structure d'adresse réseau de la famille
+<I>af</I>,
+
+puis copie cette structure dans
+<I>dst</I>.
+
+<P>
+
+La fonction
+<B><A HREF="/cgi-bin/man/man2html?3+inet_pton">inet_pton</A></B>(3)
+
+étend les possibilités de la fonction
+<B><A HREF="/cgi-bin/man/man2html?3+inet_addr">inet_addr</A></B>(3)
+
+pour supporter de multiples familles d'adresses. L'utilisation de
+<B><A HREF="/cgi-bin/man/man2html?3+inet_addr">inet_addr</A></B>(3)
+
+est désormais déconseillée, au profit de la fonction
+<B><A HREF="/cgi-bin/man/man2html?3+inet_pton">inet_pton</A></B>(3).
+
+Les familles d'adresses suivantes sont dès à présent supportées :
+<DL COMPACT>
+<DT><B>AF_INET</B>
+
+<DD>
+<I>src</I>
+
+doit pointer sur une chaîne de caractère contenant une adresse réseau IPv4
+au format décimal pointé &quot;<I>ddd.ddd.ddd.ddd</I>&quot;.
+L'adresse est alors convertie 
+en une structure
+<I>struct in_addr</I>
+
+et copiée dans
+<I>dst,</I>
+
+qui doit donc contenir au minimum
+<I>sizeof(struct in_addr)</I>
+
+octets.
+<DT><B>AF_INET6</B>
+
+<DD>
+<I>src</I>
+
+pointe sur une chaîne de caractères contenant une adresse réseau IPv6 dans un
+format IPv6 autorisé.
+L'adresse est convertie en une
+structure
+<I>struct in6_addr</I>
+
+et copiée dans
+<I>dst,</I>
+
+qui doit donc contenir au moins
+<I>sizeof(struct in6_addr)</I>
+
+octets.
+</DL>
+<P>
+
+Certains formats hexadécimaux ou octaux légitimes pour les adresses
+<B>AF_INET</B>
+
+ne sont pas supportés par
+<I>inet_pton</I>,
+
+qui les rejettera.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>inet_pton</B>
+
+renvoie une valeur négative et remplit
+<I>errno</I>
+
+avec la valeur
+<B>EAFNOSUPPORT</B>
+
+si 
+<I>af</I>
+
+ne contient pas une famille d'adresse valide.
+Elle renvoie une valeur nulle si
+<I>src</I>
+
+ne contient pas une adresse réseau valide
+pour la famille indiquée.
+Enfin, une valeur positive est renvoyée si la conversion a eu lieu 
+avec succès.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+inet_ntop">inet_ntop</A></B>(3)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<B>AF_INET6</B>
+
+ne reconnait pas les adresses IPv4.
+Il faut dans ce cas fournir dans
+<I>src</I>
+
+une adresse IPv4 projetée dans l'espace IPv6
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:40 GMT, February 11, 2014
+</BODY>
+</HTML>

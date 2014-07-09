@@ -1,0 +1,173 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of WHEREIS</TITLE>
+</HEAD><BODY>
+<H1>WHEREIS</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+whereis - Rechercher les fichiers exécutables, les sources et les pages de manuel d'une commande.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>whereis</B> [<B>-bmsu</B>] [<B>-BMS</B> <I>répertoire</I> ... <B>-f</B>]
+<I>nom</I> ...
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>whereis</B> recherche les fichiers exécutables, les sources et les pages
+de manuel des fichiers spécifiés.
+Les noms des fichiers sont obtenus en supprimant le chemin d'accès et les
+extensions éventuelles de la forme <I>.ext</I>, par exemple <B>.c</B>.
+Les préfixes de la forme <B>s.</B> utilisés pour la gestion du code source
+sont également pris en charge.
+<B>whereis</B> recherche alors le programme demandé dans une liste de
+répertoires standards sous Linux.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-b<DD>
+Recherche seulement les exécutables.
+<DT>-m</B>
+
+<DD>
+Recherche seulement les pages de manuel.
+<DT><B>-s</B>
+
+<DD>
+Recherche seulement les fichiers source.
+<DT><B>-u</B>
+
+<DD>
+Recherche les fichiers anormaux. Un fichier est anormal s'il manque
+l'exécutable ou le fichier source ou la page de manuel. Par exemple,
+`<B>whereis&nbsp;&nbsp;-m&nbsp;&nbsp;-u&nbsp;&nbsp;*</B>'
+
+recherche les fichiers du répertoire courant qui n'ont pas de page de
+manuel.
+<DT><B>-B</B>
+
+<DD>
+Modifie ou limite les répertoires où <B>whereis</B> cherche les exécutables.
+<DT><B>-M</B>
+
+<DD>
+Modifie ou limite les répertoires où <B>whereis</B> cherche les page de manuel.
+<DT><B>-S</B>
+
+<DD>
+Modifie ou limite les répertoires où <B>whereis</B> cherche les fichiers source.
+<DT><B>-f</B>
+
+<DD>
+Marque la fin de la liste des répertoires et le début des noms de fichiers.
+L'usage de cette option est obligatoire quand l'une des options
+<B>-B</B>,
+
+<B>-M</B>,
+
+ou
+<B>-S</B>
+
+est utilisée.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+Trouver tous les fichiers dans
+<B>/usr/bin</B>
+
+non documentés dans
+<B>/usr/man/man1</B>
+
+et ayant leur source dans
+<B>/usr/src</B> :
+
+<DL COMPACT>
+<DT><DD>
+<PRE>
+<B>example% cd /usr/bin
+example% whereis -u -M /usr/man/man1 -S /usr/src -f *
+</B></PRE>
+
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+
+<DL COMPACT>
+<DT><B>/{bin,sbin,etc}</B>
+
+<DD>
+<DT><B>/usr/{lib,bin,old,new,local,games,include,etc,src,man,sbin,</B>
+
+<DD>
+<B>X386,TeX,g++-include}</B>
+
+<DT><B>/usr/local/{X386,TeX,X11,include,lib,man,etc,bin,games,</B>
+
+<DD>
+<B>emacs}</B>
+
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2V+chdir">chdir</A></B>(2V)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Comme
+<B>whereis</B>
+
+utilise
+<B><A HREF="/cgi-bin/man/man2html?2V+chdir">chdir</A></B>(2V)
+
+pour aller plus vite,les chemins donnés avec
+<B>-M</B>,
+
+<B>-S</B>,
+
+ou
+<B>-B</B>
+
+doivent être complets c'est-à-dire commencer par un
+`<B>/</B>'.
+
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Michel Quercia, 1997.
+<BR>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">EXEMPLE</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">BOGUES</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:46 GMT, February 11, 2014
+</BODY>
+</HTML>

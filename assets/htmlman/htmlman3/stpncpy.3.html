@@ -1,0 +1,87 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STPNCPY</TITLE>
+</HEAD><BODY>
+<H1>STPNCPY</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+stpncpy - Copier une chaîne et pointer sur sa fin.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/string.h">string.h</A>&gt;</B>
+
+<B>char *stpncpy (char *</B><I>dest</I><B>, const char *</B><I>src</I><B>, size_t </B><I>n</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>stpncpy</B> copie au plus <I>n</I> caractères depuis la chaîne
+pointée par <I>src</I>, y compris le caractère final '\0' dans le tableau
+pointé par <I>dest</I>.  <I>n</I> caractères exactement sont écrits dans
+<I>dest</I>. Si la longueur <I>strlen(src)</I> est plus petite que <I>n</I>, les
+caractères restant dans le tableau pointé par <I>dest</I> sont mis à zéro. Si la
+longueur <I>strlen(src)</I> est plus grande que <I>n</I>, la chaîne pointée par
+<I>dest</I> ne sera
+<B>pas</B>
+
+terminée par un caractère nul final.
+<P>
+
+Les chaînes ne doivent
+<B>pas</B>
+
+se recouvrir.
+<P>
+
+Le programmeur doit s'assurer qu'il a réservé assez de mémoire pour au moins
+<I>n</I> caractères.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>stpncpy</B> renvoie un pointeur sur le caractère nul final dans
+<I>dest</I>, ou si <I>dest</I> n'est pas un caractère nul final, <I>dest + n</I>.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Cette fonction est une extension GNU.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+strncpy">strncpy</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 1999
+
+<BR>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:39 GMT, February 11, 2014
+</BODY>
+</HTML>

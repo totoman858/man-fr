@@ -1,0 +1,217 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of REALPATH</TITLE>
+</HEAD><BODY>
+<H1>REALPATH</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+realpath - Renvoie le chemin d'accès absolu.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/param.h">sys/param.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<B>char *realpath (char *</B><I>path</I><B>, char </B><I>resolved_path[]</I><B>);</B>
+</PRE><A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>realpath</B>
+
+développe tous les liens symboliques, et résout les références à
+<I>'/./'</I>, <I>'/../'</I>
+
+ainsi que les caractères
+<I>'/' </I>
+
+supplémentaires dans la chaîne, terminée par un caractere nul, pointée par
+<I>path</I>
+
+et stocke le résultat dans le buffer de taille
+<B>MAXPATHLEN</B>
+
+pointé par
+<I>resolved_path</I>.
+
+Le chemin résultant ne traversera plus de liens symboliques, et ne contiendra
+plus d'éléments
+<I>'/./'</I>
+
+ou
+<I>'/../'</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+S'il n'y a pas d'erreur, <B>realpath()</B> renvoie un pointeur sur
+<I>resolved_path</I>.
+
+<P>
+Sinon elle renvoie NULL, et
+<I>resolved_path  </I>
+
+contient le chemin d'accès absolu vers l'élément de
+<I>path </I>
+
+qui ne peut pas être résolu, et
+<I>errno </I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EACCES</B>
+
+<DD>
+La permission de recherche n'est pas accordée pour un composant du chemin d'accès.
+<DT><B>EINVAL</B>
+
+<DD>
+Soit
+<I>path</I>
+
+soit
+<I>resolv_path</I>
+
+est NULL (Dans la libc5 cela déclenchait une faute de segmentation).
+<DT><B>EIO</B>
+
+<DD>
+Une erreur d'entrée/sortie s'est produite sur le système de fichiers.
+<DT><B>ELOOP</B>
+
+<DD>
+Trop de liens symboliques rencontrés.
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+Un élément du chemin d'accès dépasse
+<B>NAME_MAX</B>
+
+caractères de long, ou le chemin d'accès complet dépasse
+<B>PATH_MAX</B>
+
+caractères.
+<DT><B>ENOENT</B>
+
+<DD>
+Le fichier indiqué n'existe pas.
+<DT><B>ENOTDIR</B>
+
+<DD>
+Un élément du chemin d'accès n'est pas un répertoire.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+N'utilisez jamais cette fonction. Son design est erroné cae elle ne permet
+pas de connaître la taille nécessaire pour le buffer de sortie.
+D'après POSIX un buffer de taille PATH_MAX suffit, mais PATH_MAX n'est pas
+nécessaire une constante définie et peut être obtenue
+avec
+<I>pathconf()</I>.
+
+En outre, interroger
+<I>pathconf()</I>
+
+n'aide pas vraiment, car d'une part POSIX prévient que 
+les résultats de
+<I>pathconf()</I>
+
+peuvent être immenses et inappropriés pour allouer de la mémoire et
+d'autre part
+<I>pathconf()</I>
+
+peut renvoyer -1 indiquant que PATH_MAX est illimité.
+<P>
+
+Les implémentations dans les libc4 et libc5 contenaient un débordement de buffer
+(corrigé dans la libc-5.4.13).
+Ainsi, les programmes Set-UID, comme mount ont besoin d'une version privée de 
+cette routine.
+<A NAME="lbAH">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+La fonction
+<B>realpath</B>
+
+est apparue dans BSD 4.4, due à Jan-Simon Pendry.
+Sous Linux, cette fonction est apparue dans la libc 4.5.21.
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Dans BSD 4.4 et Solaris la limite de longueur du chemin est MAXPATHLEN
+(dans &lt;<A HREF="file:///usr/include/sys/param.h">sys/param.h</A>&gt;). SUSv2 conseille PATH_MAX et
+NAME_MAX, dans &lt;<A HREF="file:///usr/include/limits.h">limits.h</A>&gt; ou fournis par
+<I>pathconf()</I>.
+
+Un fragmen de code typique serait
+<P>
+
+<DL COMPACT><DT><DD>
+<PRE>
+#ifdef PATH_MAX
+  path_max = PATH_MAX;
+#else
+  path_max = pathconf (path, _PC_PATH_MAX);
+  if (path_max &lt;= 0)
+    path_max = 4096;
+#endif
+</PRE>
+
+</DL>
+
+(Mais voir quand même la section BOGUES plus haut).
+<P>
+
+Les versions BSD 4.4, Linux et SUSv2 renvoient toujous un chemin absolu.
+Solaris peut renvoyer un chemin relatif si l'argument
+<I>path</I>
+
+est relatif.
+Le prototype de
+<B>realpath</B>
+
+est donné dans &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt; dans les libc4 et libc5,
+mais dans &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt; partout ailleurs.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+readlink">readlink</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getcwd">getcwd</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+pathconf">pathconf</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+sysconf">sysconf</A></B>(3)
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:18 GMT, February 11, 2014
+</BODY>
+</HTML>

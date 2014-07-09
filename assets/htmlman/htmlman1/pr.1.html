@@ -1,0 +1,186 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PR</TITLE>
+</HEAD><BODY>
+<H1>PR</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+pr - Mettre en forme des fichiers de texte pour l'impression.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>pr</B>
+
+[+PAGE] [-COLONNE] [-abcdfFmrtv] [-e[caractère_tab_entrée[largeur_tabulation]]]
+[-h en-tête] [-i[caractère_tab_sortie[largeur_tabulation]]] [-l longueur_page]
+[-n[séparateur[nb_chiffres]]] [-o marge_gauche]
+[-s[séparateur_colonnes]] [-w largeur_page] [--help] [--version] [file...]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>pr</B>.
+
+<P>
+<B>pr</B>
+
+affiche sur la sortie standard une copie des fichiers d'entrée indiqués,
+après les avoir paginés et éventuellement mis sur plusieurs colonnes.
+<P>
+Si aucun fichier n'est fourni, ou si le nom `-' est mentionné,
+la lecture se fait depuis l'entrée standard.
+<P>
+Des caractères Saut de Page (FormFeed) dans les fichiers
+d'entrée se traduiront par des sauts en sortie.
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><I>+N</I>
+
+<DD>
+Commencer l'affichage à la page numéro <I>N</I>.
+<DT><I>-C</I>
+
+<DD>
+Produire une sortie sur <I>C</I> colonnes. Les colonnes sont remplies
+de haut en bas. La largeur des colonnes est
+automatiquement réduite au fur et à mesure que <I>C</I> augmente. A moins
+d'utiliser l'option <I>-w</I> pour augmenter la largeur des pages, cette
+option peut tronquer certaines colonnes.
+<DT><I>-a</I>
+
+<DD>
+Remplir les colonnes de gauche à droite plutôt que de haut en bas.
+<DT><I>-b</I>
+
+<DD>
+Équilibrer les colonnes sur la dernière page.
+<DT><I>-c</I>
+
+<DD>
+Afficher les caractères de contrôle en utilisant la notation avec
+l'accent circonflexe (par exemple, `^G'). Afficher les autres caractères
+non-imprimables en octal, précédés d'un BackSlash.
+<DT><I>-d</I>
+
+<DD>
+Double espacement en sortie.
+<DT><I>-e[caractère_tab_entrée[largeur_tabulation]]</I>
+
+<DD>
+Développer les tabulations en espaces. L'argument optionnel
+<I>caractère_tab_entrée</I> représente le caractère de tabulation dans
+les fichiers d'entrée. L'argument optionnel <I>largeur_tabulation</I>
+correspond au nombre d'espaces représentés par une tabulation en entrée.
+Sa valeur par défaut est 8.
+<DT><I>-F, -f</I>
+
+<DD>
+Utiliser un Saut de Page (FormFeed) à la place d'une série de
+Sauts de Lignes (NewLine) pour séparer les pages.
+<DT><I>-h chaîne</I>
+
+<DD>
+Remplacer le nom du fichier dans l'en-tête par la <I>chaîne</I> indiquée.
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et se terminer normalement.
+<DT><I>-i[caractère_tab_sortie[largeur_tabulation]]</I>
+
+<DD>
+Remplacer les espaces par des tabulations. L'argument optionnel
+<I>caractère_tab_sortie</I> représente le caractère de tabulation à utiliser
+en sortie. L'argument optionnel <I>largeur_tabulation</I>
+correspond au nombre d'espaces représentés par une tabulation de sortie.
+Sa valeur par défaut est 8.
+<DT><I>-l n</I>
+
+<DD>
+Fixer la longueur de page à <I>n</I> lignes. La valeur par défaut est 66.
+Si <I>n</I> est inférieur à 10, les en-têtes et pieds de pages sont
+supprimés, comme avec l'option <I>-t</I>.
+<DT><I>-m</I>
+
+<DD>
+Afficher les fichiers en parallèle, chacun dans une colonne.
+<DT><I>-n[séparateur[nb_chiffres]]</I>
+
+<DD>
+Précéder chaque colonne avec un numéro de ligne. Lors de l'affichage
+de plusieurs fichiers en parallèle, précéder chaque ligne de son
+numéro. Un argument optionnel permet d'indiquer le caractère à utiliser
+comme <I>séparateur</I> entre le numéro et le corps de la ligne. Par
+défaut ce <I>séparateur</I> est une tabulation.
+L'argument <I>nb_chiffres</I> permet de préciser la largeur du numéro
+de ligne, sa valeur par défaut est de 5 chiffres. 
+<DT><I>-o marge_gauche</I>
+
+<DD>
+Décaler chaque ligne d'un nombre d'espace égal à <I>marge_gauche</I>.
+La largeur totale de la page est donc égale à la somme de ce décalage
+et de la largeur précisée par l'option <I>-w</I>.
+<DT><I>-r</I>
+
+<DD>
+Ne pas afficher de message d'avertissement lorsqu'un fichier d'entrée
+ne peut pas être ouvert. Toutefois, le code de retour ne sera
+pas égal a 0.
+<DT><I>-s[séparateur_colonnes]</I>
+
+<DD>
+Insérer entre les colonnes le caractère <I>séparateur_colonnes</I>, 
+par défaut la tabulation. Si cette option n'est pas mentionnée,
+des espaces sont utilisés.
+<DT><I>-t</I>
+
+<DD>
+Ne pas imprimer l'en-tête et le pied de page. Ceux-ci, hauts de
+5 lignes chacun, sont normalement imprimés sur chaque page.
+De plus le bas des pages n'est pas rempli par des lignes blanches
+ou un saut de page.
+<DT><I>-v</I>
+
+<DD>
+Afficher les caractères non-imprimables en octal, précédés d'un BackSlash.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et se terminer normalement.
+<DT><I>-w largeur_de_page</I>
+
+<DD>
+Utiliser la <I>largeur_de_page</I> indiquée. Par défaut cette valeur correspond
+à 72 colonnes.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:40 GMT, February 11, 2014
+</BODY>
+</HTML>

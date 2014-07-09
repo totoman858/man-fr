@@ -1,0 +1,265 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FD</TITLE>
+</HEAD><BODY>
+<H1>FD</H1>
+Section: Manuel du programmeur Linux (4)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fd - Lecteurs de disquettes
+<A NAME="lbAC">&nbsp;</A>
+<H2>CONFIGURATION</H2>
+
+Les lecteurs de disquettes sont des périphériques bloc ayant un numéro
+majeur 2. Typiquement ils sont la propriété de root.floppy (c'est à dire
+l'utilisateur root, et le groupe floppy) et ont la
+permission d'accès 0660 (accès par le groupe) ou 0666 (accès pour tous).
+Le numéro mineur contient le type de périphérique, le numéro de lecteur
+et le numéro de contrôleur. Pour chaque type de périphérique (c'est à
+dire les combinaisons de densité et de nombre de pistes), il existe
+un numéro mineur de base. A ce numéro de base s'ajoute le numéro du
+lecteur (sur son contrôleur), et la valeur 128 si le lecteur est sur le
+second contrôleur.
+Dans les tables de périphériques indiquées ci-dessous <I>n</I> représente le
+numéro de lecteur.
+<P>
+
+<B>Attention : Si vous utilisez un format disposant d'un nombre plus élevé
+de pistes que celles effectivement gérées par votre lecteur, vous pouvez
+l'endommager physiquement.</B>  
+Essayer une seule fois de voir si le lecteur supporte plus que les 40/80 pistes
+habituelles ne devrait pas l'endommager, mais aucune garantie n'en est fournie.
+Ne créez pas de fichiers spéciaux de périphériques pour ces formats
+si vous n'êtes pas sûrs de vous.
+<P>
+
+Fichier de périphérique indépendant du lecteur, détectant automatiquement
+le format et la capacité :
+<P>
+
+<TABLE>
+<TR VALIGN=top><TD>Nom</TD><TD>Num base mineure<BR></TD></TR>
+<TR VALIGN=top><TD COLSPAN=2><HR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I></TD><TD>0<BR></TD></TR>
+</TABLE>
+
+<P>
+
+Fichiers de périphérique 5.25&quot; double densité :
+<P>
+
+<TABLE>
+<TR VALIGN=top><TD>Nom</TD><TD>Capac.</TD><TD>Cyl.</TD><TD>Sect.</TD><TD>Têtes</TD><TD>Num mineur base<BR></TD></TR>
+<TR VALIGN=top><TD COLSPAN=6><HR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>d360</B></TD><TD>360K</TD><TD>40</TD><TD>9</TD><TD>2</TD><TD>4<BR></TD></TR>
+</TABLE>
+
+<P>
+
+Fichiers de périphériques 5.25&quot; haute densité :
+<P>
+
+<TABLE>
+<TR VALIGN=top><TD>Nom</TD><TD>Capac.</TD><TD>Cyl.</TD><TD>Sect.</TD><TD>Têtes</TD><TD>Num mineur base<BR></TD></TR>
+<TR VALIGN=top><TD COLSPAN=6><HR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>h360</B></TD><TD>360K</TD><TD>40</TD><TD>9</TD><TD>2</TD><TD>20<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>h410</B></TD><TD>410K</TD><TD>41</TD><TD>10</TD><TD>2</TD><TD>48<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>h420</B></TD><TD>420K</TD><TD>42</TD><TD>10</TD><TD>2</TD><TD>64<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>h720</B></TD><TD>720K</TD><TD>80</TD><TD>9</TD><TD>2</TD><TD>24<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>h880</B></TD><TD>880K</TD><TD>80</TD><TD>11</TD><TD>2</TD><TD>80<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>h1200</B></TD><TD>1200K</TD><TD>80</TD><TD>15</TD><TD>2</TD><TD>8<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>h1440</B></TD><TD>1440K</TD><TD>80</TD><TD>18</TD><TD>2</TD><TD>40<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>h1476</B></TD><TD>1476K</TD><TD>82</TD><TD>18</TD><TD>2</TD><TD>56<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>h1494</B></TD><TD>1494K</TD><TD>83</TD><TD>18</TD><TD>2</TD><TD>72<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>h1600</B></TD><TD>1600K</TD><TD>80</TD><TD>20</TD><TD>2</TD><TD>92<BR></TD></TR>
+</TABLE>
+
+<P>
+
+Fichiers de périphériques 3.5&quot; double densité :
+<P>
+
+<TABLE>
+<TR VALIGN=top><TD>Nom</TD><TD>Capac.</TD><TD>Cyl.</TD><TD>Sect.</TD><TD>Têtes</TD><TD>Num mineur base<BR></TD></TR>
+<TR VALIGN=top><TD COLSPAN=6><HR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>D360</B></TD><TD>360K</TD><TD>80</TD><TD>9</TD><TD>1</TD><TD>12<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>D720</B></TD><TD>720K</TD><TD>80</TD><TD>9</TD><TD>2</TD><TD>16<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>D800</B></TD><TD>800K</TD><TD>80</TD><TD>10</TD><TD>2</TD><TD>120<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>D1040</B></TD><TD>1040K</TD><TD>80</TD><TD>13</TD><TD>2</TD><TD>84<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>D1120</B></TD><TD>1120K</TD><TD>80</TD><TD>14</TD><TD>2</TD><TD>88<BR></TD></TR>
+</TABLE>
+
+<P>
+
+Fichiers de périphériques 3.5&quot; haute densité :
+<P>
+
+<TABLE>
+<TR VALIGN=top><TD>Nom</TD><TD>Capac.</TD><TD>Cyl.</TD><TD>Sect.</TD><TD>Têtes</TD><TD>Num mineur base<BR></TD></TR>
+<TR VALIGN=top><TD COLSPAN=6><HR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>H360</B></TD><TD>360K</TD><TD>40</TD><TD>9</TD><TD>2</TD><TD>12<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>H720</B></TD><TD>720K</TD><TD>80</TD><TD>9</TD><TD>2</TD><TD>16<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>H820</B></TD><TD>820K</TD><TD>82</TD><TD>10</TD><TD>2</TD><TD>52<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>H830</B></TD><TD>830K</TD><TD>83</TD><TD>10</TD><TD>2</TD><TD>68<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>H1440</B></TD><TD>1440K</TD><TD>80</TD><TD>18</TD><TD>2</TD><TD>28<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>H1600</B></TD><TD>1600K</TD><TD>80</TD><TD>20</TD><TD>2</TD><TD>124<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>H1680</B></TD><TD>1680K</TD><TD>80</TD><TD>21</TD><TD>2</TD><TD>44<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>H1722</B></TD><TD>1722K</TD><TD>82</TD><TD>21</TD><TD>2</TD><TD>60<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>H1743</B></TD><TD>1743K</TD><TD>83</TD><TD>21</TD><TD>2</TD><TD>76<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>H1760</B></TD><TD>1760K</TD><TD>80</TD><TD>22</TD><TD>2</TD><TD>96<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>H1840</B></TD><TD>1840K</TD><TD>80</TD><TD>23</TD><TD>2</TD><TD>116<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>H1920</B></TD><TD>1920K</TD><TD>80</TD><TD>24</TD><TD>2</TD><TD>100<BR></TD></TR>
+</TABLE>
+
+<P>
+
+Fichiers de périphériques 3.5&quot; extra densité
+<P>
+
+<TABLE>
+<TR VALIGN=top><TD>Nom</TD><TD>Capac.</TD><TD>Cyl.</TD><TD>Sect.</TD><TD>Têtes</TD><TD>Num mineur base<BR></TD></TR>
+<TR VALIGN=top><TD COLSPAN=6><HR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>E2880</B></TD><TD>2880K</TD><TD>80</TD><TD>36</TD><TD>2</TD><TD>32<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>CompaQ</B></TD><TD>2880K</TD><TD>80</TD><TD>36</TD><TD>2</TD><TD>36<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>E3200</B></TD><TD>3200K</TD><TD>80</TD><TD>40</TD><TD>2</TD><TD>104<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>E3520</B></TD><TD>3520K</TD><TD>80</TD><TD>44</TD><TD>2</TD><TD>108<BR></TD></TR>
+<TR VALIGN=top><TD><B>fd</B><I>n</I><B>E3840</B></TD><TD>3840K</TD><TD>80</TD><TD>48</TD><TD>2</TD><TD>112<BR></TD></TR>
+</TABLE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les fichiers <B>fd</B> accèdent aux disquettes en mode direct.
+Les appels
+<I><A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A></I>(2)
+
+suivants sont supportés par les périphériques <B>fd</B> :
+<DL COMPACT>
+<DT><B>FDCLRPRM</B><DD>
+efface les informations sur le médium (la géométrie du disque dans le lecteur).
+<DT><B>FDSETPRM</B><DD>
+fixe les informations sur le médium (la géométrie du disque dans le lecteur).
+Ces informations seront perdues au changement de disquette.
+<DT><B>FDDEFPRM</B><DD>
+fixe les informations sur le médium (la géométrie du disque dans le lecteur).
+Ces informations seront conservées lors du changement de disquette. Cela
+désactive l'auto-détection. Pour la réactiver, il faut effectuer 
+un appel <B>FDCLRPRM</B> .
+<DT><B>FDGETDRVTYP</B><DD>
+renvoie le type de lecteur (nom). Pour les formats qui fonctionnent
+avec plusieurs types de lecteurs, <B>FDGETDRVTYP</B> renverra le
+nom du plus ancien type de lecteur supportant le format.
+<DT><B>FDFLUSH</B><DD>
+désactiver le buffer cache pour le lecteur.
+<DT><B>FDSETMAXERRS</B><DD>
+fixe le seuil d'erreur pour les rapports d'erreurs, les abandons,
+le recalibrage, la réinitialisation, et la lecture secteur par
+secteur.
+<DT><B>FDSETMAXERRS</B><DD>
+récupère le seuil d'erreur actuel.
+<DT><B>FDGETDRVTYP</B><DD>
+récupère le nom interne du lecteur.
+<DT><B>FDWERRORCLR</B><DD>
+efface les statistiques sur les erreurs d'écriture.
+<DT><B>FDWERRORGET</B><DD>
+récupère les statistiques sur les erreurs d'écriture. Celles-ci 
+incluent le nombre total d'erreurs d'écriture, l'emplacement
+et le disque de la première erreur, et l'emplacement et le disque
+de la dernière. Les disques sont identifiés par un numéro qui
+augmente à (presque) chaque changement de disquette.
+<DT><B>FDTWADDLE</B><DD>
+éteint pendant quelques micro-secondes le moteur du lecteur. Ceci
+peut être nécessaire pour accéder à un disque dont les secteurs
+sont trop rapprochés.
+<DT><B>FDSETDRVPRM</B><DD>
+fixe plusieurs paramètres du lecteur.
+<DT><B>FDGETDRVPRM</B><DD>
+récupère ces mêmes paramètres.
+<DT><B>FDGETDRVSTAT</B><DD>
+récupère l'état caché du lecteur (disque changé, protection écriture,..) 
+<DT><B>FDPOLLDRVSTAT</B><DD>
+récupère l'état réel du lecteur (disque changé, protection écriture,..) 
+<DT><B>FDGETFDCSTAT</B><DD>
+récupère l'état du contrôleur.
+<DT><B>FDRESET</B><DD>
+réinitialise le contrôleur sous certaines conditions.
+<DT><B>FDRAWCMD</B><DD>
+envoie une commande directe au contrôleur.
+</DL>
+<P>
+
+Pour plus d'informations, consulter aussi les fichier d'en-tête
+&lt;<A HREF="file:///usr/include/linux/fd.h">linux/fd.h</A>&gt; et &lt;<A HREF="file:///usr/include/linux/fdreg.h">linux/fdreg.h</A>&gt; ainsi que
+<B><A HREF="/cgi-bin/man/man2html?1+floppycontrol">floppycontrol</A></B>(1).
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les divers formats permettent la lecture et l'écriture sur de nombreux disques.
+Néanmoins si le disque est formaté avec un espace entre secteurs trop petit,
+les performances peuvent diminuer, nécessitant plusieurs secondes pour accéder
+à une piste entière.
+Pour éviter ceci, utiliser des formats entrelacés.
+<P>
+Il n'est pas possible de lire des disquettes formatées en GCR (group code recording),
+utilisées par l'Apple ][ et les MacIntosh (disquettes 800 Ko).
+<P>
+La lecture des disques avec sectorisation matérielle (un trou par secteur, avec un
+trou d'index légèrement décalé) n'est par supportée. Ceci était surtout utilisé
+avec les vieilles disquettes 8&quot;.
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/dev/fd*
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Alain Knaff (<A HREF="mailto:Alain.Knaff@imag.fr">Alain.Knaff@imag.fr</A>), David Niemi
+(<A HREF="mailto:niemidc@clark.net">niemidc@clark.net</A>), Bill Broadhurst (<A HREF="mailto:bbroad@netcom.com">bbroad@netcom.com</A>).
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+floppycontrol">floppycontrol</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+mknod">mknod</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+chown">chown</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+getfdprm">getfdprm</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+superformat">superformat</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+mount">mount</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+setfdprm">setfdprm</A></B>(8)
+
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">CONFIGURATION</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">AUTEURS</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:52 GMT, February 11, 2014
+</BODY>
+</HTML>

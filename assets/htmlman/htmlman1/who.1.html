@@ -1,0 +1,148 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of WHO</TITLE>
+</HEAD><BODY>
+<H1>WHO</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+who - Montrer qui est connecté.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>who</B>
+
+[-imqsuwHT] [--count] [--idle] [--heading] [--help]
+[--message] [--mesg] [--version] [--writable] [fichier] [am i]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>who</B>.
+
+<P>
+Si aucun argument n'est fourni, hormis d'éventuelles options,
+<B>who</B>
+
+affiche les informations suivantes pour chaque utilisateur connecté :
+<DL COMPACT><DT><DD>
+<PRE>
+
+nom de connexion
+terminal
+heure de connexion
+nom d'hôte distant, ou numéro de terminal X
+</PRE>
+
+</DL>
+
+<P>
+
+Si un argument est fourni qui ne soit pas une option,
+<B>who</B>
+
+l'utilise à la place de /etc/utmp comme nom de fichier contenant les
+enregistrements des connexions. /etc/wtmp est souvent utilisé comme
+argument lors de l'appel de
+<B>who</B>
+
+pour voir qui s'est connecté précédemment.
+<P>
+
+Si deux arguments ne représentant pas des options sont fournis,
+<B>who</B>
+
+affiche seulement les informations concernant l'utilisateur qui l'a
+invoqué (ceci étant déterminé grâce à son entrée standard), précédé
+du nom d'hôte.
+Traditionnellement, les deux arguments sont `am i', comme dans
+`who am i'.
+([NDT] Mais ça marche aussi très bien avec `who suis je' ;-)
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><I>-m</I>
+
+<DD>
+Identique `who am i'.
+<DT><I>-q, --count</I>
+
+<DD>
+Affiche uniquement les noms d'utilisateurs et le nombre de personnes
+connectées. Ceci a priorité sur toutes les autres options.
+<DT><I>-s</I>
+
+<DD>
+Sans effet - uniquement pour assurer la compatibilité
+avec d'autres versions de
+<B>who</B>.
+
+<DT><I>-i, -u, --idle</I>
+
+<DD>
+Après l'heure de connexion, affiche le nombre d'heures et de minutes
+d'inactivité (idle) de l'utilisateur. 
+`.' signifie que l'utilisateur a été actif durant la dernière minute.
+`old' signifie que l'utilisateur a été inactif pendant plus de 24 heures.
+<DT><I>-H, --heading</I>
+
+<DD>
+Afficher une ligne de libellé pour les colonnes.
+<DT><I>-w, -T, --mesg, --message, --writable</I>
+
+<DD>
+Comme
+<I>-s</I>,
+
+mais ajoute après le nom de connexion un caractère indiquant le
+statut de l'utilisateur vis-à-vis des messages :
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>+<DD>
+les messages émis par <B>write</B> sont autorisés
+<DT>-<DD>
+les messages émis par <B>write</B> ne sont pas autorisés
+<DT>?<DD>
+impossible de trouver le périphérique du terminal
+</DL>
+</DL>
+
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et se terminer normalement.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et se terminer normalement.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:50 GMT, February 11, 2014
+</BODY>
+</HTML>

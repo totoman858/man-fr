@@ -1,0 +1,65 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ZFORCE</TITLE>
+</HEAD><BODY>
+<H1>ZFORCE</H1>
+Section: User Commands  (1)<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<P>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+zforce - imposer une extension «&nbsp;.gz&nbsp;» à tous les fichiers gzippés.
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>zforce</B>
+
+[ nom ...  ]
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>zforce</I>
+
+impose une extension .gz à tous les fichiers gzippés afin que
+<I>gzip</I>
+
+ne les compacte pas deux fois. Cela peut être utile pour des fichiers dont
+le nom a été tronqué après un transfert de fichier. Sur les systèmes où la
+longueur maximale des noms de fichiers est fixée à 14, le nom original est
+tronqué pour faire de la place pour le suffixe «&nbsp;.gz&nbsp;». Par exemple,
+12345678901234 est renommé en 12345678901.gz. Un nom de fichier comme
+foo.tgz est laissé inchangé.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+gzip">gzip</A>(1), <A HREF="/cgi-bin/man/man2html?1+znew">znew</A>(1), <A HREF="/cgi-bin/man/man2html?1+zmore">zmore</A>(1), <A HREF="/cgi-bin/man/man2html?1+zgrep">zgrep</A>(1), <A HREF="/cgi-bin/man/man2html?1+zdiff">zdiff</A>(1), <A HREF="/cgi-bin/man/man2html?1+gzexe">gzexe</A>(1)
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Frédéric Delanoy, 2001.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:43 GMT, February 11, 2014
+</BODY>
+</HTML>

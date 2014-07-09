@@ -1,0 +1,355 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETHOSTBYNAME</TITLE>
+</HEAD><BODY>
+<H1>GETHOSTBYNAME</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+gethostbyname, gethostbyaddr, sethostent, endhostent, herror, hstrerror - Obtenir des informations concernant le réseau. 
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/netdb.h">netdb.h</A>&gt;</B>
+<B>extern int h_errno;</B>
+
+<B>struct hostent *gethostbyname(const char *</B><I>name</I><B>);</B>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;     /* pour avoir AF_INET */</B>
+<B>struct hostent *gethostbyaddr(const char *</B><I>addr</I><B>,</B>
+<B>  int </B><I>len</I><B>, int </B><I>type</I><B>);</B>
+
+<B>void sethostent(int </B><I>stayopen</I><B>);</B>
+
+<B>void endhostent(void);</B>
+
+<B>void herror(const char *</B><I>s</I><B>);</B>
+
+<B>const char * hstrerror(int </B><I>err</I><B>);</B>
+
+/* extensions GNU */
+<BR>
+<B>struct hostent *gethostbyname2(const char *</B><I>name</I><B>, int </B><I>af</I><B>);</B>
+
+<B>int gethostbyname_r (const char *</B><I>name</I><B>,</B>
+<B>  struct hostent *</B><I>ret</I><B>, char *</B><I>buf</I><B>, size_t </B><I>buflen</I><B>,</B>
+<B>  struct hostent **</B><I>result</I><B>, int *</B><I>h_errnop</I><B>);</B>
+
+<B>int gethostbyname2_r (const char *</B><I>name</I><B>, int </B><I>af,</I>
+<B>  struct hostent *</B><I>ret</I><B>, char *</B><I>buf</I><B>, size_t </B><I>buflen</I><B>,</B>
+<B>  struct hostent **</B><I>result</I><B>, int *</B><I>h_errnop</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>gethostbyname()</B> renvoie une structure de type <I>hostent</I>
+pour l'hôte <I>name</I>. La chaîne <I>name</I> est soit un nom d'hôte, soit
+une adresse IPv4 en notation pointée standard, soit une adresse IPv6
+avec la notation points-virgules et points (Cf RFC 1884 pour la description
+des adresses IPv6).
+Si
+<I>name</I>
+
+est une adresse IPv4 ou IPv6, aucune recherche supplémentaire n'a lieu et
+<B>gethostbyname</B>()
+
+copie simplement la chaine
+<I>name</I>
+
+dans le champ
+<I>h_name</I>
+
+et le champs équivalent
+<I>struct in_addr</I>
+
+dans le champs
+<I>h_addr_list[0]</I>
+
+de la structure
+<I>hostent</I>
+
+renvoyée.
+<P>
+Si <I>name</I> ne se termine pas par un point, et si la variable d'environnement
+<B>HOSTALIASES</B> est configurée, le fichier d'alias indiqué par
+<B>HOSTALIASES</B> sera d'abord parcouru à la recherche de <I>name</I>
+(voir
+<B><A HREF="/cgi-bin/man/man2html?7+hostname">hostname</A></B>(7)
+
+pour le format du fichier).
+Le domaine courant et ses parents sont parcourus si <I>name</I> ne se termine
+pas par un point.
+<P>
+
+La fonction <B>gethostbyaddr()</B> renvoie une structure du type <I>hostent</I>
+pour l'hôte d'adresse <I>addr</I>. Cette adresse est de longueur <I>len</I> et
+du <I>type</I> donné.  Le seul type d'adresse valide est actuellement
+<B>AF_INET</B>.
+
+<P>
+
+La fonction <B>sethostent()</B> indique, si <I>stayopen</I> est vrai (vaut 1), 
+qu'une socket TCP connectée doit être utilisée pour interroger le serveur de
+noms et que la connexion doit rester ouverte durant les demandes successives.
+Sinon l'interrogation utilisera des datagrammes UDP.
+<P>
+
+La fonction <B>endhostent()</B> ferme la socket TCP connectée utilisée pour
+interroger le serveur de noms du domaine.
+<P>
+
+La fonction (obsolète) <B>herror()</B> affiche le message d'erreur associé avec la valeur
+courante de <I>h_errno</I> sur la sortie standard stderr.
+<P>
+
+La fonction (obsolète) <B>herror()</B> reçoit un numéro d'erreur en argument
+(typiquement <I>h_errno</I>) et renvoit la chaîne de message d'erreur.
+<P>
+
+Les interrogations du serveur de noms effectuées par <B>gethostbyname()</B> et
+<B>gethostbyaddr()</B> utilisent les éléments suivants : le serveur de noms
+<B><A HREF="/cgi-bin/man/man2html?8+named">named</A></B>(8), les lignes de <I>/etc/hosts</I>, et l'annuaire Network
+Information Service (NIS ou YP), suivant le contenu de la ligne
+<I>order</I> du fichier <I>/etc/host.conf</I>.  (Voir
+<B>resolv+</B>(8)).
+
+L'action par défaut consiste à interroger <B><A HREF="/cgi-bin/man/man2html?8+named">named</A></B>(8), puis
+<I>/etc/hosts</I>.
+<P>
+
+La structure <I>hostent</I> est définie ainsi dans <I>&lt;<A HREF="file:///usr/include/netdb.h">netdb.h</A>&gt;</I> :
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct hostent {
+   char    *h_name;       /* Nom officiel de l'hôte.   */
+   char   **h_aliases;    /* Liste d'alias.            */
+   int      h_addrtype;   /* Type d'adresse de l'hôte. */
+   int      h_length;     /* Longueur de l'adresse.    */
+   char   **h_addr_list;  /* Liste d'adresses.         */
+}
+#define h_addr  h_addr_list[0] /* pour compatibilité.  */
+
+</PRE>
+
+</DL>
+
+<P>
+
+Les membres de la structure <I>hostent</I> sont :
+<DL COMPACT>
+<DT><I>h_name</I>
+
+<DD>
+Nom officiel de l'hôte.
+<DT><I>h_aliases</I>
+
+<DD>
+Une table, terminée par zéro, d'alternatives au nom officiel de l'hôte.
+<DT><I>h_addrtype</I>
+
+<DD>
+Le type d'adresse (actuellement, toujours 
+<B>AF_INET</B>).
+
+<P>
+<DT><I>h_length</I>
+
+<DD>
+La longueur, en octets, de l'adresse.
+<DT><I>h_addr_list</I>
+
+<DD>
+Une table, terminée par zéro, d'adresses réseau pour l'hôte, avec l'ordre
+des octets du réseau.
+<DT><I>h_addr</I>
+
+<DD>
+La première adresse dans <I>h_addr_list</I> pour respecter la compatibilite ascendante.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Les fonctions <B>gethostbyname()</B> et <B>gethostbyaddr()</B> renvoient un
+pointeur sur la structure <I>hostent</I>, ou bien un pointeur NULL si une
+erreur se produit, auquel cas <I>h_errno</I> contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+La variable <I>h_errno</I> peut prendre les valeurs suivantes :
+<DL COMPACT>
+<DT><B>HOST_NOT_FOUND</B>
+
+<DD>
+L'hôte indiqué est inconnu.
+<DT><B>NO_ADDRESS</B> ou <B>NO_DATA</B>
+
+<DD>
+Le nom est valide mais ne possède pas d'adresse IP.
+<DT><B>NO_RECOVERY</B>
+
+<DD>
+Une erreur fatale du serveur de noms est apparue.
+<DT><B>TRY_AGAIN</B>
+
+<DD>
+Une erreur temporaire du serveur de noms est apparue, essayez un peu plus tard.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/etc/host.conf</I>
+
+<DD>
+Fichier de configuration de la résolution de noms.
+<DT><I>/etc/hosts</I>
+
+<DD>
+Base de données des hôtes.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.3
+<A NAME="lbAI">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les spécifications SUS-v2 déclarent - à tort - le paramètre
+<I>len</I>
+
+de
+<B>gethostbyaddr()</B>
+
+de type
+<I>size_t</I>.
+
+(Ceci est erroné car il doit obligatoirement être un
+<I>int</I>,
+
+ce que
+<I>size_t</I>
+
+n'est pas toujours. POSIX 1003.1-2001 le déclare
+<I>socklen_t</I>,
+
+ce qui est correct).
+<P>
+
+Les fonctions
+<B>gethostbyname</B>()
+
+et
+<B>gethostbyaddr</B>()
+
+peuvent renvoyer des pointeurs sur des données statiques susceptibles d'être
+écrasées d'un appel à l'autre. Copier la structure
+<I>struct hostent</I>
+
+ne suffit pas car elle contient elle-même des pointeurs. Une copie en
+profondeur est indispensable.
+<P>
+
+La GlibC 2 propose aussi une fonction
+<B>gethostbyname2()</B>
+
+qui agit comme
+<B>gethostbyname()</B>,
+
+qui permet de préciser la famille à laquelle l'adresse doit appartenir.
+<P>
+
+La GlibC 2 propose aussi les versions réentrantes
+<B>gethostbyname_r()</B>
+
+et
+<B>gethostbyname2_r()</B>.
+
+Elles renvoient zéro si elles réussissent et une valeur non-nulle en cas d'erreur.
+Le résultat de l'appel est stocké dans la structure d'adresse
+<I>ret</I>.
+
+Après l'appel,
+*<I>result</I>
+
+vaudra NULL en cas d'erreur, ou pointera sur le résultat.
+Des données auxiliaires seront stockées dans le buffer
+<I>buf</I>
+
+de longueur
+<I>buflen</I>.
+
+(Si le buffer est trop petit, ces fonctions renverront
+<B>ERANGE</B>).
+
+La variable
+<I>h_errno</I>
+
+n'est pas modifiée, mais l'adresse d'une variable où stocker le code d'erreur
+est transmis dans
+<I>h_errnop</I>.
+
+<P>
+
+POSIX 1003.1-2001 indique
+<B>gethostbyaddr()</B>
+
+et 
+<B>gethostbyname()</B>
+
+comme légaux, et introduit
+<P>
+<PRE>
+<B>struct hostent * getipnodebyaddr (const void * restrict </B><I>addr</I><B>,</B>
+<B>  socklen_t </B><I>len</I><B>, int </B><I>type</I><B>, int * restrict </B><I>error_num</I><B>);</B>
+
+<B>struct hostent *getipnodebyname (const char * </B><I>name</I><B>,</B>
+<B>  int </B><I>type</I><B>, int </B><I>flags</I><B>, int * </B><I>error_num</I><B>);</B>
+</PRE><A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+resolver">resolver</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+hosts">hosts</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?7+hostname">hostname</A></B>(7),
+
+<B>resolv+</B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+named">named</A></B>(8).
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">NOTES</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:47 GMT, February 11, 2014
+</BODY>
+</HTML>

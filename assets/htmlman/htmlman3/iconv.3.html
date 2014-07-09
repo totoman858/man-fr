@@ -1,0 +1,136 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ICONV</TITLE>
+</HEAD><BODY>
+<H1>ICONV</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+iconv - Conversion de caractères larges.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/iconv.h">iconv.h</A>&gt;</B>
+
+<B>size_t iconv (iconv_t </B><I>cd</I><B>,</B>
+<B>              char ** </B><I>inbuf</I><B>, size_t * inbytesleft</B><I>,</I>
+<B>              char ** </B><I>outbuf</I><B>, size_t * outbytesleft</B><I>);</I>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+L'argument <I>cd</I> doit être un descripteur de conversion fourni par la fonction <B>iconv_open</B>.
+<P>
+
+L'utilisation principale de cette routine est avec <I>inbuf</I> non NULL et <I>*inbuf</I> non NULL.
+Dans ce cas, <B>iconv</B> convertit la séquence multi-octets débutant en <I>*inbuf</I> en une
+séquence multi-octets commençant en <I>*outbuf</I>.
+Au plus <I>*inbytesleft</I> octets seront lus, en partant de <I>*inbuf</I>.
+Au plus <I>*outbytesleft</I> octets seront écrits en commençant en <I>*outbuf</I>.
+<P>
+
+La fonction <B>iconv</B> convertit un caractère multi-octets à la fois, et pour chaque conversion
+elle augmente <I>*inbuf</I> et diminue <I>*inbytesleft</I> du nombre d'octets d'entrée convertis, et
+elle augmente <I>*outbuf</I> et diminue <I>*outbytesleft</I> du nombre d'octets de sortie écrits.
+Elle met à jour l'état de conversion contenu au sein de <I>cd</I>.
+La conversion peut s'arrêter pour quatre raisons :
+<P>
+
+1. Une séquence multi-octets invalide a été trouvée en entrée. Dans ce cas la fonction
+renvoie (size_t)(-1) après avoir mis <B>EILSEQ</B> dans <B>errno</B>. Ensuite <I>*inbuf</I>
+pointera sur le début de la séquence multi-octets invalide.
+<P>
+
+2. La séquence d'entrée a été convertie entièrement, c'est à dire que <I>*inbytesleft</I>
+est descendu jusqu'à zéro. Dans ce cas <B>iconv</B> renvoie le nombre de conversions irréversibles
+réalisées durant l'appel.
+<P>
+
+3. Une séquence multi-octets incomplète a été trouvée alors que la séquence d'entrée se terminait.
+Dans ce cas la fonction renvoie (size_t)(-1) après avoir mis <B>EINVAL</B> dans <B>errno</B>.
+Ensuite <I>*inbuf</I> pointera sur le début de la séquence multi-octets incomplète.
+<P>
+
+4. Le buffer de sortie n'a plus de place pour stocker le prochain caractère converti. Dans ce
+cas <B>errno</B> contiendra <B>E2BIG</B> et la fonction renverra (size_t)(-1).
+<P>
+
+Une autre possibilité se présente quand <I>inbuf</I> ou <I>*inbuf</I> sont NULL, mais ni
+<I>outbuf</I>, ni <I>*outbuf</I> ne sont NULL. Dans ce cas la fonction <B>iconv</B> essaye
+de mettre l'état de conversion de <I>cd</I> dans l'état initial, et de mémoriser la
+séquence de décalage correspondante dans <I>*outbuf</I>.
+Au maximum <I>*outbytesleft</I> octets seront écrits en commençant en <I>*outbuf</I>.
+Si le buffer de sortie ne contient pas assez de place  pour réinitialiser la séquence, la fonction
+renvoie (size_t)(-1) après avoir mis <B>E2BIG</B> dans <B>errno</B>. Sinon elle augmente
+<I>*outbuf</I> et dimininue <I>*outbytesleft</I> du nombre d'octets écrits.
+<P>
+
+Un troisième cas est possible, si <I>inbuf</I> ou <I>*inbuf</I> sont NULL, et <I>outbuf</I> 
+ou <I>*outbuf</I> sont NULL. Alors, la fonction <B>iconv</B> replace <I>cd</I> dans l'état
+de conversion initial.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>iconv</B> renvoie le nombre de caractères convertis de manière irréversible
+durant l'appel. Les conversions réversibles ne sont pas prises en compte. En cas d'erreur
+la fonction remplit <B>errno</B> et renvoie (iconv_t)(-1).
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Les erreurs suivantes peuvent se produire, entre autres :
+<DL COMPACT>
+<DT><B>E2BIG</B>
+
+<DD>
+Il n'y a pas assez de place dans <I>*outbuf</I>.
+<DT><B>EILSEQ</B>
+
+<DD>
+Une séquence multi-octets invalide a été trouvée en entrée.
+<DT><B>EINVAL</B>
+
+<DD>
+Une séquence multi-octets incomplète a été trouvée en entrée.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+UNIX98
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+iconv_open">iconv_open</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+iconv_close">iconv_close</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:43 GMT, February 11, 2014
+</BODY>
+</HTML>

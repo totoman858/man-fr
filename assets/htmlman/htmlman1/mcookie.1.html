@@ -1,0 +1,132 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MCOOKIE</TITLE>
+</HEAD><BODY>
+<H1>MCOOKIE</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 25 septembre 1995<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mcookie - Générer des coockies magiques pour xauth
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>mcookie [-v] [-f </B><I>fichier</I><B> ]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>mcookie</B>
+
+génère un nombre hexadécimal aléatoire sur 128&nbsp;bits à utiliser
+avec le système d'autorisation X.
+Son utilisation typique est&nbsp;:
+<P>
+<DL COMPACT><DT><DD>
+xauth add :0 . `mcookie`
+</DL>
+
+<P>
+
+Le nombre «&nbsp;aléatoire&nbsp;» généré est en fait le condensé du message MD5
+nourrit avec d'autres informations aléatoires&nbsp;: l'heure actuelle, le PID,
+le PPID, le contenu d'un fichier d'entrée (si l'option
+<B>-f</B>
+
+a été indiquée), et plusieurs octets d'informations du premier des périphériques
+suivant qui soient trouvés&nbsp;:
+<I>/dev/random</I>,
+
+<I>/dev/urandom</I>,
+
+fichiers dans
+<I>/proc</I>,
+
+<I>/dev/audio</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>BOGUES</H2>
+
+L'entropie du nombre 128&nbsp;bit généré est probablement faible (et donc
+vunérable aux attaques) à moins qu'un générateur de nombre
+non pseudo-aléatoire ne soit utilisé (par exemple,
+<I>/dev/random</I>
+
+sous Linux).
+<P>
+
+On suppose qu'aucun de ces périphériques ouverts ne bloquera.
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/dev/random</I>
+
+<BR>
+
+<I>/dev/urandom</I>
+
+<BR>
+
+<I>/dev/audio</I>
+
+<BR>
+
+<I>/proc/stat</I>
+
+<BR>
+
+<I>/proc/loadavg</I>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+X">X</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+xauth">xauth</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+md5sum">md5sum</A></B>(1)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>DISPONIBILITÉ</H2>
+
+La commande
+<B>mcookie</B>
+
+fait partie du paquetage util-linux-ng et est disponible à l'adresse
+<A HREF="ftp://ftp.kernel.org/pub/linux/utils/util-linux-ng/.">ftp://ftp.kernel.org/pub/linux/utils/util-linux-ng/.</A>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal&nbsp;AT&nbsp;univ-montp2&nbsp;DOT&nbsp;fr&gt; le 26&nbsp;mai&nbsp;2008.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;1&nbsp;mcookie</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">BOGUES</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">DISPONIBILITÉ</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:49 GMT, February 11, 2014
+</BODY>
+</HTML>

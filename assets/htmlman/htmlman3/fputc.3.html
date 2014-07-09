@@ -1,0 +1,172 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PUTS</TITLE>
+</HEAD><BODY>
+<H1>PUTS</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+puts, fputc, fputs, putc, putchar - Ecriture de caractères et de chaînes.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<B>int fputc (int </B><I>c</I><B>, FILE *</B><I>stream</I><B>);</B>
+<B>int fputs (const char *</B><I>s</I><B>, FILE *</B><I>stream</I><B>);</B>
+<B>int putc (int </B><I>c</I><B>, FILE *</B><I>stream</I><B>);</B>
+<B>int putchar (int </B><I>c</I><B>);</B>
+<B>int puts (const char * </B><I>s</I><B>);</B>
+</PRE><A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>fputc()</B>
+
+écrit le caractère
+<I>c</I>,
+
+transformé en
+<B>unsigned char</B>,
+
+dans le flux
+<I>stream</I>.
+
+<P>
+
+<B>fputs()</B>
+
+écrit la chaîne de caractères
+<I>s</I>
+
+dans le flux
+<I>stream</I>,
+
+sans écrire le
+<B>'\0'</B>
+
+final.
+<P>
+
+<B>putc()</B>
+
+est équivalent à
+<B>fputc()</B>
+
+sauf qu'il peut être implémenté comme une macro évaluant plusieurs fois
+son argument
+<I>stream</I>.
+
+<P>
+
+<B>putchar(</B><I>c</I><B>);</B>
+
+est équivalent à
+<B>putc(</B><I>c</I><B>,</B><I>stdout</I><B>).</B>
+
+<P>
+
+<B>puts()</B>
+
+écrit la chaîne de caractères
+<I>s</I>
+
+et un retour-chariot final sur
+<I>stdout</I>.
+
+<P>
+
+Les appels de ces fonctions peuvent être utilisés conjointement, ainsi qu'avec
+les autres fonctions d'écriture de la bibliotheque
+<B>stdio</B>.
+
+<P>
+
+Pour des versions de ces fonctions ignorant les verrouillages, voir
+<B><A HREF="/cgi-bin/man/man2html?3+unlocked_stdio">unlocked_stdio</A></B>(3).
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>fputc()</B>,<B> putc() </B>et<B> putchar()</B>
+
+renvoient le caractère écrit en tant qu'<B>unsigned char</B>, converti en
+<B>int</B>
+
+ou
+<B>EOF</B>
+
+en cas d'erreur.
+<P>
+
+<B>puts()</B> et <B>fputs()</B>
+
+renvoient un nombre non négatif s'ils réussissent et
+<B>EOF</B>
+
+s'ils échouent.
+<P>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ANSI - C, POSIX.1
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Il est fortement déconseillé de mêler les fonctions d'écriture de
+<B>stdio</B>
+
+avec les appels bas-niveau
+<B>write()</B>
+
+sur le descripteur du fichier associé au flux. Les résultats sont imprévisibles.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+ferror">ferror</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fopen">fopen</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fseek">fseek</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fwrite">fwrite</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+gets">gets</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+scanf">scanf</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+unlocked_stdio">unlocked_stdio</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:25 GMT, February 11, 2014
+</BODY>
+</HTML>

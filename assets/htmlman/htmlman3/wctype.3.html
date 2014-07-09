@@ -1,0 +1,92 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of WCTYPE</TITLE>
+</HEAD><BODY>
+<H1>WCTYPE</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+wctype - Classification des caractères larges.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/wctype.h">wctype.h</A>&gt;</B>
+
+<B>wctype_t wctype (const char *</B><I>nom</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le type <B>wctype_t</B> représente une propriété qu'un caractère large peut avoir ou non. En d'autres
+termes, il représente une classe de caractères larges. La nature exacte de ce type dépend de l'implémentation,
+mais la valeur spéciale <I>(wctype_t)0</I> correspond à une propriété invalide.
+Un <B>wctype_t</B> non nul peut être transmis à la fonction <B>iswctype</B> pour vérifier si un caractère large
+a ou non la propriété correspondante.
+<P>
+
+La fonction <B>wctype</B> renvoie une propriété à partir de son nom. Les noms valides dépendent de la catégorie
+LC_CTYPE de la localisation, mais les noms suivants sont toujours valides quelque soit la localisation.
+<PRE>
+  &quot;alnum&quot; - correspond à la fonction de classification <B>isalnum</B>
+  &quot;alpha&quot; - correspond à la fonction de classification <B>isalpha</B>
+  &quot;blank&quot; - correspond à la fonction de classification <B>isblank</B>
+  &quot;cntrl&quot; - correspond à la fonction de classification <B>iscntrl</B>
+  &quot;digit&quot; - correspond à la fonction de classification <B>isdigit</B>
+  &quot;graph&quot; - correspond à la fonction de classification <B>isgraph</B>
+  &quot;lower&quot; - correspond à la fonction de classification <B>islower</B>
+  &quot;print&quot; - correspond à la fonction de classification <B>isprint</B>
+  &quot;punct&quot; - correspond à la fonction de classification <B>ispunct</B>
+  &quot;space&quot; - correspond à la fonction de classification <B>isspace</B>
+  &quot;upper&quot; - correspond à la fonction de classification <B>isupper</B>
+  &quot;xdigit&quot; - correspond à la fonction de classification <B>isxdigit</B>
+</PRE>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>wctype</B> renvoie un descripteur de propriété si le <I>nom</I> est valide. Sinon elle
+renvoie <I>(wctype_t)0</I>.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ISO/ANSI C, UNIX98
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+iswctype">iswctype</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le comportement de la fonction <B>wctype</B> dépend de la catégorie LC_CTYPE de la localisation.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:42 GMT, February 11, 2014
+</BODY>
+</HTML>

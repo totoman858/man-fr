@@ -1,0 +1,108 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ASSERT_PERROR</TITLE>
+</HEAD><BODY>
+<H1>ASSERT_PERROR</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+assert_perror - Vérifie un code d'erreur et arrête le programme.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/assert.h">assert.h</A>&gt;</B>
+
+<B>void assert_perror(int </B><I>code_erreur</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Si la macro
+<B>NDEBUG</B>
+
+est définie lors de la dernière inclusion de
+<B>&lt;<A HREF="file:///usr/include/assert.h">assert.h</A>&gt;</B>,
+
+la macro
+<B>assert_perror()</B>
+
+ne génère aucun code, et donc n'a aucun effet.
+Sinon, la macro
+<B>assert_perror()</B>
+
+affiche un message d'erreur sur la sortie standard et termine le
+programme en apellant
+<B>abort()</B>
+
+si
+<I>code_erreur</I>
+
+est non nul. Le message contient le nom du fichier, le nom de la
+fonction et le numéro de ligne de l'appel de la macro, ainsi que le
+résultat de
+<I>strerror(code_erreur)</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Aucune valeur n'est renvoyée.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORME À</H2>
+
+Ceci est une extension GNU.
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Le but des macros d'assertion est d'aider le programmeur à trouver les
+bogues dans son application, bogues résultant d'erreur de programmation.
+Cependant, avec les fonctions ou les appels système, la situation est
+différente et un retour en erreur peut (et va), et doit donc être testé.
+Non pas par une assertion dont le test disparaitrait quand NDEBUG est
+définie, mais en écrivant correctement un gestionnaire d'erreur.
+N'utilisez jamais cette macro.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+exit">exit</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+abort">abort</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+assert">assert</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strerror">strerror</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 2002
+
+<BR>
+
+Christophe Blaess, 2003
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORME À</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:05 GMT, February 11, 2014
+</BODY>
+</HTML>

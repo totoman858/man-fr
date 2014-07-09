@@ -1,0 +1,276 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SERVICES</TITLE>
+</HEAD><BODY>
+<H1>SERVICES</H1>
+Section: Manuel de l administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+services - Liste des services internet.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>services</B>
+
+est un fichier de texte ASCII fournissant une correspondance entre un nom 
+intelligible décrivant un service internet et l'ensemble 
+numéro de port / protocole utilisé.
+Chaque programme réseau devrait consulter ce fichier pour obtenir le numéro de 
+port et le protocole sous-jacent au service qu'il fournit.
+Les fonctions de la bibliothèque C
+<B><A HREF="/cgi-bin/man/man2html?3+getservent">getservent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getservbyname">getservbyname</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getservbyport">getservbyport</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setservent">setservent</A></B>(3),
+
+et
+<B><A HREF="/cgi-bin/man/man2html?3+endservent">endservent</A></B>(3)
+
+permettent d'interroger ce fichier depuis un programme.
+<P>
+<P>
+Les numéros de ports sont affectés par le IANA (Internet Assigned Numbers
+Authority), et leur politique actuelle consiste à assigner à la fois les
+protocoles TCP et UDP à chaque numéro de port.
+Ainsi la plupart des services auront deux entrées, même si elles n'utilisent
+que le protocole TCP.
+<P>
+Les numéros de ports en-dessous de 1024 ne peuvent être assignés à une
+socket que par un programme Super-User (voir
+<B><A HREF="/cgi-bin/man/man2html?2+bind">bind</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?7+tcp">tcp</A></B>(7),
+
+et
+<B><A HREF="/cgi-bin/man/man2html?7+udp">udp</A></B>(7).
+
+C'est ainsi que les clients se connectant sur ces ports de petits numéros
+peuvent être sûrs que le service correspondant est une implémentation
+standard et non pas le bricolage d'un utilisateur.
+Normalement les ports biens connus (well-known) affectés par le IANA se
+situent dans cet espace réservé au Super-User.
+<P>
+La présence d'une ligne indiquant un service dans le fichier
+<B>services</B>
+
+ne signifie pas nécessairement que le service en question est disponible
+sur la machine. Voir
+<B><A HREF="/cgi-bin/man/man2html?5+inetd.conf">inetd.conf</A></B>(5)
+
+pour la configuration des services Internet offerts. Notez que tous les
+services réseau ne sont pas obligatoirement lancés par
+<B><A HREF="/cgi-bin/man/man2html?8+inetd">inetd</A></B>(8),
+
+et n'apparaîtront donc pas toujours dans
+<B><A HREF="/cgi-bin/man/man2html?5+inetd.conf">inetd.conf</A></B>(5).
+
+En particulier les serveurs de News (NNTP) et de courrier (SMTP) sont souvent
+initialisés par le système dans les scripts de démarrage.
+<P>
+L'emplacement du fichier
+<B>services</B>
+
+est défini par la constante
+<B>_PATH_SERVICES</B>
+
+dans
+<I>/usr/include/netdb.h</I>.
+
+C'est généralement
+<I>/etc/services</I>.
+
+<P>
+Chaque ligne décrivant un service est de la forme
+<DL COMPACT>
+<DT><DD>
+<I>service-name&nbsp;&nbsp;&nbsp;port</I><B>/</B><I>protocole&nbsp;&nbsp;&nbsp;</I>[<I>alias ...</I>]
+<DT>où :<DD>
+<DT><I>service-name</I>
+
+<DD>
+est le nom intelligible du service. La différence majuscule/minuscule est
+importante. Souvent le programme client possède un nom rappelant celui du
+service.
+<DT><I>port</I>
+
+<DD>
+est le numéro de port (en décimal) utilisé pour ce service.
+<DT><I>protocol</I>
+
+<DD>
+est le type de protocole utilisé, il doit s'agir d'un nom déclaré dans le 
+fichier
+<B><A HREF="/cgi-bin/man/man2html?5+protocols">protocols</A></B>(5).
+
+Les protocoles les plus courants sont
+<B>tcp</B>
+
+et
+<B>udp</B>.
+
+<DT><I>alias</I>
+
+<DD>
+est une liste éventuelle d'autres noms se référant au même service, séparés par
+des espaces ou des tabulations (voir section BOGUES plus bas).
+Encore une fois, la différence majuscule/minuscule est importante.
+</DL>
+<P>
+
+<P>
+Les différents champs sont séparés par des espaces ou des tabulations.
+<P>
+Un signe # débute un commentaire, qui s'étendra jusqu'à la fin de la ligne.
+Les lignes blanches sont ignorées.
+<P>
+Le champ
+<I>service-name</I>
+
+doit débuter à la première colonne du fichier, car les espaces en tête de ligne
+ne sont pas éliminés.
+<I>service-name</I>
+
+peut contenir n'importe quel caractère imprimable, sauf espace et tabulation.
+Il est néanmoins déconseille d'utiliser d'autres caractères que a-z, 0-9, et
+le tiret (-).
+<P>
+Les lignes ne se conformant pas à ce format sont ignorées silencieusement par
+<B><A HREF="/cgi-bin/man/man2html?3+getservent">getservent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getservbyname">getservbyname</A></B>(3),
+
+et
+<B><A HREF="/cgi-bin/man/man2html?3+getservbyport">getservbyport</A></B>(3),
+
+mais ce comportement peut changer.
+<P>
+A titre de compatibilité avec les versions précédentes, le slash (/) entre le
+numéro de
+<I>port</I>
+
+et le nom du
+<I>protocole</I>
+
+peut être également remplacé par une virgule, mais c'est déconseillé.
+<P>
+Ce fichier peut être diffusé sur le réseau en utilisant des services comme
+<B>Yellow Pages/NIS</B>
+
+ou
+<B>BIND/Hesiod</B>.
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+<PRE>
+$ ls -l /etc/services
+-rw-r--r--   1 root   root   3432 Feb 16  1996 /etc/services
+$ cat /etc/services
+   ...
+netstat         15/tcp
+qotd            17/tcp          quote
+msp             18/tcp          # message send protocol
+msp             18/udp          # message send protocol
+chargen         19/tcp          ttytst source
+chargen         19/udp          ttytst source
+ftp             21/tcp
+# 22 - unassigned
+telnet          23/tcp
+   ...
+$
+</PRE>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Il y a un maximum de 35 alias par service à cause des limitations de
+<B><A HREF="/cgi-bin/man/man2html?3+getservent">getservent</A></B>(3).
+
+<P>
+Les lignes plus longues que
+<B>BUFSIZ</B>
+
+(actuellement 1024) sont ignorées par
+<B><A HREF="/cgi-bin/man/man2html?3+getservent">getservent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getservbyname">getservbyname</A></B>(3),
+
+et
+<B><A HREF="/cgi-bin/man/man2html?3+getservbyport">getservbyport</A></B>(3).
+
+De plus la ligne suivante sera mal interprétée.
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/etc/services</I>
+
+<DD>
+La liste des services internet.
+<DT><I>/usr/include/netdb.h</I>
+
+<DD>
+Définition de 
+<B>_PATH_SERVICES</B>.
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+getservent">getservent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getservbyname">getservbyname</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getservbyport">getservbyport</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setservent">setservent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+endservent">endservent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+protocols">protocols</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?2+listen">listen</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?5+inetd.conf">inetd.conf</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+inetd">inetd</A></B>(8)
+
+<P>
+RFC &quot;Assigned Numbers&quot;, actuellement RFC 1700, (AKA STD0002)
+<P>
+Guide to Yellow Pages Service
+<P>
+Guide to BIND/Hesiod Service
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">EXEMPLE</A><DD>
+<DT><A HREF="#lbAE">BOGUES</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:55 GMT, February 11, 2014
+</BODY>
+</HTML>

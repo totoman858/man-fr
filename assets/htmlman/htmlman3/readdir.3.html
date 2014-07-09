@@ -1,0 +1,115 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of READDIR</TITLE>
+</HEAD><BODY>
+<H1>READDIR</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+readdir - Consulter un répertoire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<B>#include &lt;<A HREF="file:///usr/include/dirent.h">dirent.h</A>&gt;</B>
+
+<B>struct dirent * readdir (DIR * </B><I>dir</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>readdir()</B> renvoie un pointeur sur une structure <B>dirent</B>
+représentant l'entrée suivante du flux répertoire pointé par
+<I>dir</I>. Elle renvoie NULL a la fin du répertoire, ou en cas d'erreur.
+<P>
+
+D'après POSIX, la structure
+<I>dirent</I>
+
+contient un champ
+<I>char d_name[]</I>
+
+de taille non spécifiée, avec au plus
+<B>NAME_MAX</B>
+
+caractères avant le caractère nul final.
+L'utilisation des autres champs de cette structure compromet la portabilité
+de votre programme.
+POSIX-2001 documente aussi le champ
+<I>ino_t d_ino</I>
+
+comme une extension XSI.
+<P>
+
+Les données renvoyées par <B>readdir()</B> sont écrasées lors de l'appel suivant
+à <B>readdir()</B> sur le même flux répertoire.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>readdir()</B> renvoie un pointeur sur une structure dirent, ou
+NULL lorsqu'une erreur se produit, ou lorsque la fin du répertoire est
+atteinte.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+Le flux répertoire <I>dir</I> est invalide.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3, POSIX, BSD 4.3
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+closedir">closedir</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+dirfd">dirfd</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+opendir">opendir</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+rewinddir">rewinddir</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+scandir">scandir</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+seekdir">seekdir</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+telldir">telldir</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:28 GMT, February 11, 2014
+</BODY>
+</HTML>

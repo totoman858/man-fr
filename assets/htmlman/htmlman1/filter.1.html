@@ -1,0 +1,154 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of filter</TITLE>
+</HEAD><BODY>
+<H1>filter</H1>
+Section: Easy Software Products (1)<BR>Updated: Common UNIX Printing System<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+filter - Interface des filtres de conversion de fichier de CUPS
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>filter</B>
+
+travail utilisateur titre nb_copies options [
+<I>nom_de_fichier</I>
+
+]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les filtres CUPS sont une méthode standard de reconnaissance de nouveaux
+formats de fichier. Un filtre doit être capable de convertir un ou plusieurs
+formats en entrée, et générer un fichier en sortie, dont le format est soit directement
+compréhensible par CUPS, soit retraité par un autre filtre pour obtenir
+un format imprimable.
+<P>
+
+Ces programmes doivent être capables de lire un fichier de la ligne de
+commande ou via l'entrée standard, si besoin est en recopiant son contenu
+dans un fichier temporaire. Toute sortie doit être faite sur la sortie standard.
+<P>
+
+Le nom de la commande (argv[0]) est l'URI de l'imprimante.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VARIABLES D'ENVIRONNEMENT</H2>
+
+Les variables d'environnement suivantes sont définies par le serveur CUPS
+lors de l'exécution d'un filtre&nbsp;:
+<DL COMPACT>
+<DT>CHARSET<DD>
+<BR>
+
+Le jeu de caractères par défaut (généralement us-ascii ou iso-8859-1).
+<DT>CLASS<DD>
+<BR>
+
+Contient le nom de la classe lorsqu'un travail d'impression est envoyé à une cla
+sse d'imprimantes. Cette variable n'est pas définie si le travail d'impression n'
+est pas envoyé à une classe.
+<DT>CONTENT_TYPE<DD>
+<BR>
+
+Le type MIME associé au fichier (ex&nbsp;: application/postscript).
+<DT>CUPS_DATADIR<DD>
+<BR>
+
+Le répertoire où se trouvent les données.
+<DT>CUPS_SERVERROOT<DD>
+<BR>
+
+Le répertoire racine du serveur.
+<DT>DEVICE_URI<DD>
+<BR>
+
+L'URI de l'imprimante.
+<DT>LANG<DD>
+<BR>
+
+La langue (généralement C ou en).
+<DT>PATH<DD>
+<BR>
+
+La liste des chemins où chercher les programmes pouvant être exécutés
+par le filtre.
+<DT>PPD<DD>
+<BR>
+
+Le chemin complet d'accès au fichier PPD (PostScript Printer Description)
+de l'imprimante.
+<DT>PRINTER<DD>
+<BR>
+
+Le nom de l'imprimante, ceci pour les scripts shells qui ne sont pas
+toujours capables de récupérer l'argument argv[0].
+<DT>RIP_CACHE<DD>
+<BR>
+
+La quantité de mémoire recommandée pour l'utilisation du RIP (Raster Image
+Processors).
+<DT>SOFTWARE<DD>
+<BR>
+
+Le nom et le numéro de version du serveur (généralement CUPS/1.1).
+<DT>TZ<DD>
+<BR>
+
+Le fuseau horaire du serveur.
+<DT>USER<DD>
+<BR>
+
+L'utilisateur exécutant le programme (généralement lp). Vous pouvez
+trouver cette information dans le fichier cupsd.conf.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>COMPATIBILITÉ</H2>
+
+Bien que l'interface des filtres soit compatible avec les scripts System V,
+ceci ne fonctionnera qu'avec le script System V fourni via la commande
+<B><A HREF="/cgi-bin/man/man2html?8+lpadmin">lpadmin</A>(8)</B> avec l'option <I>-i</I>.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+backend">backend</A>(1), <A HREF="/cgi-bin/man/man2html?8+cupsd">cupsd</A>(8),
+CUPS Interface Design Description,
+CUPS Software Administrators Manual,
+CUPS Software Programmers Manual,
+<A HREF="http://localhost:631/documentation.html">http://localhost:631/documentation.html</A>
+<A NAME="lbAH">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright 1993-2003 Easy Software Products, Tous droits réservés.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Gilles QUERRET &lt;<A HREF="mailto:gilles.querret@nerim.net">gilles.querret@nerim.net</A>&gt;
+
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VARIABLES D'ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAF">COMPATIBILITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:43 GMT, February 11, 2014
+</BODY>
+</HTML>

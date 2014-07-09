@@ -1,0 +1,120 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TMPFILE</TITLE>
+</HEAD><BODY>
+<H1>TMPFILE</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+tmpfile - Créer un fichier temporaire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<B>FILE *tmpfile (void);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>tmpfile()</B> crée un nom de fichier unique.  
+Le fichier temporaire est ouvert en lecture/écriture binaire (mode w+b).
+Le fichier sera automatiquement détruit lors de sa fermeture, ou lorsque
+le programme se terminera normalement.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>tmpfile()</B> renvoie un pointeur de flux, ou NULL
+si la création du fichier temporaire est impossible, auquel cas
+<I>errno</I> indique l'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EACCES</B>
+
+<DD>
+Autorisation de parcours refusée dans un répertoire du chemin d'accès.
+<DT><B>EEXIST</B>
+
+<DD>
+Impossible de créer un nom de fichier unique.
+<DT><B>EMFILE</B>
+
+<DD>
+Trop de descripteurs de fichiers pour le processus.
+<DT><B>ENFILE</B>
+
+<DD>
+Trop de fichiers ouverts sur le système.
+<DT><B>ENOSPC</B>
+
+<DD>
+Pas assez de place dans le répertoire pour ajouter un fichier.
+<DT><B>EROFS</B>
+
+<DD>
+Système de fichiers en lecture seule.
+<DT><B>EINTR</B>
+
+<DD>
+L'appel a été interrompu par un signal.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3, POSIX, BSD 4.3, ISO 9899, SUSv2
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Un message d'erreur peut être écrit sur <I>stdout</I> si le flux ne
+peut pas être ouvert. ([NDT] <I>stdout</I>&nbsp;? sûr&nbsp;? ce ne serait
+pas <I>stderr</I> plutôt&nbsp;?).
+<P>
+
+Le standard ne précise pas le répertoire employé par <I>tmpfile()</I>.
+La GlibC essayera d'utilise le préfixe <I>P_tmpdir</I> défini
+dans <I>&lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</I>, puis <I>/tmp</I> en cas d'échec.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+mktemp">mktemp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+mkstemp">mkstemp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+tmpnam">tmpnam</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+tempnam">tempnam</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:40 GMT, February 11, 2014
+</BODY>
+</HTML>

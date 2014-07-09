@@ -1,0 +1,105 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of APT-EXTRACTTEMPLATES</TITLE>
+</HEAD><BODY>
+<H1>APT-EXTRACTTEMPLATES</H1>
+Section:  (1)<BR>Updated: 12 March 2001<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+apt-extracttemplates - Utilitaire d'extraction des scripts de configuration et fichiers modèles Debconf des paquets Debian
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<B>apt-extracttemplate</B> [ <B>-hv</B> ]  [ <B>-t=</B><I>repertoire temporaire</I><B></B> ]  <B></B><I>fichier</I><B></B><I>...</I>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+<B>apt-extracttemplates</B> reçoit en entrée un ou plusieurs paquets Debian et écrit (dans un répertoire temporaire) tous les scripts de configuration et les fichiers modèles associés. À chaque passage dans un paquet contenant des scripts de configuration et fichiers modèles, une ligne est générée en sortie sous la forme&nbsp;:
+<P>
+
+paquet version fichier-modèle script-de-configuration
+<P>
+
+les fichier-modèle et script-de-configuration sont copiés dans un répertoire temporaire désigné par l'option -t ou --tempdir (APT::ExtractTemplates::TempDir&gt;), avec des noms de fichiers sous la forme <I>template.XXXX</I> et <I>config.XXXX</I>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<P>
+
+Toutes les options de la ligne de commande peuvent être configurées via le fichier de configuration, les descriptions expliquent les configurations possibles de l'option. Pour les options booléennes vous pouvez outrepasser le fichier de configuration en utilisant quelque chose comme <B>-f-</B>,
+<B>--no-f</B>, <B>-f=no</B> ou de nombreuses autres variantes.
+<DL COMPACT>
+<DT><B>-t</B><DD>
+<DT><B>--tempdir</B><DD>
+Répertoire temporaire dans lequel écrire les fichiers modèles debconf et les scripts de configuration extraits Balise de configuration: APT::ExtractTemplates::TempDir.
+<DT><B>-h</B><DD>
+<DT><B>--help</B><DD>
+Affiche un court résumé sur les commandes d'usage.
+<DT><B>-v</B><DD>
+<DT><B>--version</B><DD>
+Affiche la version du programme.
+<DT><B>-c</B><DD>
+<DT><B>--config-file</B><DD>
+Fichier de configuration&nbsp;; désigne le fichier de configuration à utiliser.
+Le programme lit le fichier de configuration par défaut puis ce fichier de 
+configuration. Voir <B></B><I><A HREF="/cgi-bin/man/man2html?5+apt.conf">apt.conf</A></I><B></B>(5) pour des informations sur la 
+syntaxe.
+<DT><B>-o</B><DD>
+<DT><B>--option</B><DD>
+Applique une Option de Configuration&nbsp;; cela applique une valeur choisie de configuration à une option. La syntaxe est <B>-o Foo::Bar=bar</B>.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<P>
+
+<B></B><I><A HREF="/cgi-bin/man/man2html?5+apt.conf">apt.conf</A></I><B></B>(5)
+<A NAME="lbAG">&nbsp;</A>
+<H2>DIAGNOSTICS</H2>
+
+<P>
+
+<B>apt-extracttemplates</B> retourne zéro en fonctionnement normal, une 
+valeur entre 1 et 100 en cas d'erreur.
+<A NAME="lbAH">&nbsp;</A>
+<H2>BUGS</H2>
+
+<P>
+
+Voir la page des bugs APT &lt;URL:<A HREF="http://bugs.debian.org/apt">http://bugs.debian.org/apt</A>&gt;. 
+Si vous souhaitez rapporter un bug d'APT, veuillez lire <I>/usr/share/doc/debian/bug-reporting.txt</I> ou la commande <B><A HREF="/cgi-bin/man/man2html?1+bug">bug</A></B>(1).
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<P>
+
+APT a été écrit par l'équipe APT &lt;<A HREF="mailto:apt@packages.debian.org">apt@packages.debian.org</A>&gt;.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">DIAGNOSTICS</A><DD>
+<DT><A HREF="#lbAH">BUGS</A><DD>
+<DT><A HREF="#lbAI">AUTEUR</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:46 GMT, February 11, 2014
+</BODY>
+</HTML>

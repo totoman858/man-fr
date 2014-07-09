@@ -1,0 +1,114 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CTRLALTDEL</TITLE>
+</HEAD><BODY>
+<H1>CTRLALTDEL</H1>
+Section: Manuel du programmeur Linux (8)<BR>Updated: 25 octobre 1993<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ctrlaltdel - Définir la fonction de la combinaison Ctrl-Alt-Del
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>ctrlaltdel hard</B> | <B>soft</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Basé sur l'examen du code de
+<I>linux/kernel/sys.c</I>,
+
+il est clair qu'il existe deux fonctions prises en charge
+par la combinaison des touches Ctrl-Alt-Del&nbsp;:
+un redémarrage
+<I>matériel</I>
+
+qui redémarre immédiatement l'ordinateur sans appeler
+<B><A HREF="/cgi-bin/man/man2html?2+sync">sync</A></B>(2)
+
+et sans aucune autre préparation&nbsp;; et un redémarrage
+<I>logiciel</I>
+
+qui envoye le signal
+<B>SIGINT</B>
+
+(interruption) au processus
+<B>init</B>
+
+(processus dont le PID est toujours 1).
+Si cette option est choisie, le programme
+<B><A HREF="/cgi-bin/man/man2html?8+init">init</A></B>(8)
+
+doit prendre en charge cette fonctionnalité.
+Puisqu'il y a maintenant plusieurs programmes
+<B><A HREF="/cgi-bin/man/man2html?8+init">init</A></B>(8)
+
+dans la communauté Linux, veuillez consultez la documentation de la version
+que vous utilisez.
+<P>
+<B>ctrlaltdel</B>
+
+est généralement utilisé dans le fichier
+<I>/etc/rc.local</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/etc/rc.local</I>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+simpleinit">simpleinit</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+init">init</A></B>(8)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Peter Orbaek (<A HREF="mailto:poe@daimi.aau.dk">poe@daimi.aau.dk</A>)
+<A NAME="lbAH">&nbsp;</A>
+<H2>DISPONIBILITÉ</H2>
+
+La commande
+<B>ctrlaltdel</B>
+
+fait partie du paquetage util-linux-ng et est disponible à l'adresse
+<A HREF="ftp://ftp.kernel.org/pub/linux/utils/util-linux-ng/.">ftp://ftp.kernel.org/pub/linux/utils/util-linux-ng/.</A>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal&nbsp;AT&nbsp;univ-montp2&nbsp;DOT&nbsp;fr&gt; le 26&nbsp;mai&nbsp;2008.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;8&nbsp;ctrlaltdel</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">DISPONIBILITÉ</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:05 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,204 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of lpadmin</TITLE>
+</HEAD><BODY>
+<H1>lpadmin</H1>
+Section: Easy Software Products (8)<BR>Updated: Common UNIX Printing System<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+lpadmin - Configure les imprimantes et classes d'imprimantes de CUPS
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>lpadmin</B>
+
+[ -E ] [ -h
+<I>serveur</I>
+
+] -d
+<I>destination</I>
+
+<BR>
+
+<B>lpadmin</B>
+
+[ -E ] [ -h
+<I>serveur</I>
+
+] -p
+<I>imprimante</I>
+
+<I>option(s)</I>
+
+<BR>
+
+<B>lpadmin</B>
+
+[ -E ] [ -h
+<I>serveur</I>
+
+] -x
+<I>destination</I>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>lpadmin</I> configure les imprimantes et classes d'imprimantes de CUPS.
+Il est également utilisé pour définir l'imprimante ou classe d'imprimante
+par défaut.
+<P>
+
+Lorsque l'option <I>-E</I> est spécifiée avant les options <I>-d</I>, <I>-p</I>,
+ou <I>-x</I>, la communication avec le serveur est cryptée.
+<P>
+
+La première méthode d'utilisation de la commande définit l'imprimante ou la classe
+par défaut. Les impressions futures demandées par les
+commandes <I><A HREF="/cgi-bin/man/man2html?1+lp">lp</A>(1)</I> ou <I><A HREF="/cgi-bin/man/man2html?1+lpr">lpr</A>(1)</I> utiliseront cette destination sauf avis
+contraire de l'utilisateur par l'utilisation de la commande <I><A HREF="/cgi-bin/man/man2html?1+lptions">lptions</A>(1)</I>.
+<P>
+
+La seconde méthode configure une imprimante. Les options disponibles
+sont décrites plus loin.
+<P>
+
+La troisième méthode supprime l'imprimante ou classe
+<I>destination</I>. Tous les travaux d'impression en attente sont supprimés,
+et les travaux en cours d'impression sont arrêtés.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS DE CONFIGURATION</H2>
+
+Les options suivantes sont reconnues par la commande <I>lpadmin</I>&nbsp;:
+<DL COMPACT>
+<DT>-c <I>classe</I><DD>
+<BR>
+
+Ajoute l'imprimante <I>imprimante</I> à la classe <I>classe</I>. Si la classe
+n'existe pas encore, elle est créée automatiquement.
+<DT>-i <I>interface</I><DD>
+<BR>
+
+Crée un script d'interface System V pour l'imprimante. Cette option ne
+peut être utilisée en même temps que <I>-P</I> (fichier PPD) et est destinée
+au support des imprimantes de base.
+<DT>-m <I>modèle</I><DD>
+<BR>
+
+Définit un script d'interface System V ou un fichier PPD à utiliser.
+<DT>-o <I>name=value</I><DD>
+<BR>
+
+Définit une option PPD ou serveur pour une imprimante. La liste des options
+PPD peut être obtenue en utilisant la commande <I>lptions -l</I>.
+<DT>-o <I>job-k-limit=valeur</I><DD>
+<BR>
+
+Définit les quotas par utilisateur en kilo-octets. La valeur est un nombre
+entier de kilo-octets (valant 1&nbsp;024 octets).
+<DT>-o <I>job-page-limit=valeur</I><DD>
+<BR>
+
+Définit les quotas par utilisateur en nombre de pages. La valeur est un nombre
+entier de pages pouvant être imprimées. Les recto-verso comptent pour deux
+pages.
+<DT>-o <I>job-quota-period=valeur</I><DD>
+<BR>
+
+Définit les quotas par utilisateur en impressions par intervalle de temps. La
+valeur est un nombre entier définissant le nombre de secondes entre chaque
+impression. Une journée contient 86&nbsp;400 secondes.
+<DT>-r <I>classe</I><DD>
+<BR>
+
+Supprime <I>l'imprimante</I> de la <I>classe</I>. Si la classe d'imprimante devient
+vide, celle-ci est supprimée.
+<DT>-u <I>allow:user,user</I><DD>
+-u <I>deny:user,user</I>
+-u <I>allow:all</I>
+-u <I>deny:none</I>
+<BR>
+
+Définit les accès par utilisateur sur une imprimante. Les deux dernières expressions
+suppriment les contrôles d'accès par utilisateur.
+<DT>-v <I>device-uri</I><DD>
+<BR>
+
+Définit l'attribut <I>device-uri</I> de la file d'attente de l'imprimante. Si <I>device-uri</I>
+est un nom de fichier, il est converti automatiquement en la forme <B>file:/fichier/nom</B>.
+<DT>-D <I>info</I><DD>
+<BR>
+
+Définit une description de l'imprimante.
+<DT>-E<DD>
+<BR>
+
+Active l'imprimante et lui fait accepter les travaux d'impression. Ceci peut
+également être effectué en lançant les commandes <I><A HREF="/cgi-bin/man/man2html?8+accept">accept</A>(8)</I> et <I><A HREF="/cgi-bin/man/man2html?8+enable">enable</A>(8)</I>
+sur l'imprimante.
+<DT>-L <I>lieufR<DD>
+<BR>
+
+Définit le lieu de l'imprimante.
+<DT>-P fichier-ppd</I><DD>
+<BR>
+
+Définit le fichier PPD (Postscript Printer Description) à utiliser avec cette
+imprimante. Si cette option est spécifiée, elle annule l'option <I>-i</I>
+(script d'interface).
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>COMPATIBILITÉ</H2>
+
+Contrairement au système d'impression System V, CUPS permet des noms d'imprimantes
+contenant tout caractère imprimable sauf ESPACE et TABULATION. De plus, les noms
+d'imprimante et de classe ne sont pas sensibles à la casse. De plus, la version
+CUPS peut demander un mot de passe, suivant la configuration du système, à la
+différence de la version System V qui demande le mot de passe root.
+<A NAME="lbAG">&nbsp;</A>
+<H2>LIMITATIONS</H2>
+
+La version CUPS de <I>lpadmin</I> ne reconnaît pas toutes les options de configuration
+disponibles dans les versions System V ou Solaris.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?8+accept">accept</A>(8), <A HREF="/cgi-bin/man/man2html?1+cancel">cancel</A>(1), <A HREF="/cgi-bin/man/man2html?8+disable">disable</A>(8), <A HREF="/cgi-bin/man/man2html?8+enable">enable</A>(8), <A HREF="/cgi-bin/man/man2html?1+lp">lp</A>(1), <A HREF="/cgi-bin/man/man2html?1+lpstat">lpstat</A>(1), <A HREF="/cgi-bin/man/man2html?8+reject">reject</A>(8),
+CUPS Software Administrators Manual,
+<A HREF="http://localhost:631/documentation.html">http://localhost:631/documentation.html</A>
+<A NAME="lbAI">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright 1993-2003 Easy Software Products, Tous droits réservés.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Gilles QUERRET &lt;<A HREF="mailto:gilles.querret@nerim.net">gilles.querret@nerim.net</A>&gt;
+
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS DE CONFIGURATION</A><DD>
+<DT><A HREF="#lbAF">COMPATIBILITÉ</A><DD>
+<DT><A HREF="#lbAG">LIMITATIONS</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

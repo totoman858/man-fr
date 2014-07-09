@@ -1,0 +1,243 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SHADOW</TITLE>
+</HEAD><BODY>
+<H1>SHADOW</H1>
+Section: C Library Functions (3)<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<P>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+shadow - routines pour fichier mots de passe encryptés
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNTAXE</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/shadow.h">shadow.h</A>&gt;</B>
+
+<P>
+
+<B>struct spwd *getspent();</B>
+
+<P>
+
+<B>struct spwd *getspnam(char</B>
+
+<I>*name</I><B>);</B>
+
+<P>
+
+<B>void setspent();</B>
+
+<P>
+
+<B>void endspent();</B>
+
+<P>
+
+<B>struct spwd *fgetspent(FILE</B>
+
+<I>*fp</I><B>);</B>
+
+<P>
+
+<B>struct spwd *sgetspent(char</B>
+
+<I>*cp</I><B>);</B>
+
+<P>
+
+<B>int putspent(struct spwd</B>
+
+<I>*p,</I>
+
+<B>FILE</B>
+
+<I>*fp</I><B>);</B>
+
+<P>
+
+<B>int lckpwdf();</B>
+
+<P>
+
+<B>int ulckpwdf();</B>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>shadow</I>
+
+manipule le contenu du fichier mots de passe chiffrés,
+<I>/etc/shadow</I>.
+La structure dans le fichier <I>#include</I> est
+<P>
+struct spwd {
+
+<BR>
+
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>char<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>*sp_namp;  /*&nbsp;nom de connexion utilisateur&nbsp;*/<BR>
+<BR>
+
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>char<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>*sp_pwdp;  /*&nbsp;mot de passe encrypté&nbsp;*/<BR>
+<BR>
+
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>long<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT>sp_lstchg; /*&nbsp;dernière modification du mot de passe&nbsp;*/<BR>
+<BR>
+
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>int<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>sp_min;    /*&nbsp;nombre de jours jusqu'à l'autorisation de modification&nbsp;*/<BR>
+<BR>
+
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>int<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>sp_max;    /*&nbsp;nombre de jours avant une nécessaire modification&nbsp;*/<BR>
+<BR>
+
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>int<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>sp_warn;   /*&nbsp;nombre de jours d'avertissement avant expiration&nbsp;*/<BR>
+<BR>
+
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>int<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>sp_inact;  /*&nbsp;nombre de jours avant que le compte soit inactif&nbsp;*/<BR>
+<BR>
+
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>int<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>sp_expire; /*&nbsp;date d'expiration du compte&nbsp;*/<BR>
+<BR>
+
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>int<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>sp_flag;   /*&nbsp;réservé à une utilisation future&nbsp;*/<BR>
+<BR>
+
+
+}
+<P>
+
+La signification de chaque champ est&nbsp;:
+<P>
+sp_namp - pointeur sur une chaîne de caractères contenant le nom d'utilisateur
+et se terminant par le caractère nul.
+<BR>
+
+sp_pwdp - pointeur sur une chaîne de caractères contenant le mot de passe
+et se terminant par le caractère nul.
+<BR>
+
+sp_lstchg - nombre de jours depuis le 1er janvier 1970 de la dernière
+modification du mot de passe.
+<BR>
+
+sp_min - nombre de jours avant que le mot de passe puisse être modifié.
+<BR>
+
+sp_max - nombre de jours après que le mot de passe doive être modifié.
+<BR>
+
+sp_warn - nombre de jours avant que le mot de passe expire et pendant lequels
+l'utilisateur sera averti de l'imminence de l'expiration du mot de passe.
+<BR>
+
+sp_inact - nombre de jours après l'expiration du mot de passe où le compte
+est considéré comme inactif et sera invalidé.
+<BR>
+
+sp_expire - nombre de jours depuis le 1er janvier 1970 où le compte sera
+invalidé.
+<BR>
+
+sp_flag - réservé à une utilisation future.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>getspent</B>, <B>getspname</B>, <B>fgetspent</B>, et <B>sgetspent</B>
+retournent chacune un pointeur sur une structure <B>struct spwd</B>.
+<B>getspent</B> retourne la prochaine entrée du fichier, et <B>fgetspent</B>
+retourne la prochaine entrée du flot donné, qui est supposé être un fichier au
+format correct.
+<B>sgetspent</B> retourne un pointeur sur une structure <B>struct spwd</B> en
+utilisant la chaîne fournie comme entrée.
+<B>getspnam</B> cherche dans le fichier, à partir de la position courante,
+une entrée correspondant à <B>name</B>.
+<P>
+
+<B>setspent</B> et <B>endspent</B> peuvent être utilisées pour débuter et
+achever, respectivement, l'accès au fichier mots de passe masqués.
+<P>
+
+Les routines <B>lckpwdf</B> et <B>ulckpwdf</B> peuvent être utilisées pour
+garantir un accès exclusif au fichier <I>/etc/shadow</I>.
+<B>lckpwdf</B> tente d'obtenir un verrouillage en utilisant <B>pw_lock</B>
+pour plus de 15&nbsp;secondes.
+Il continue en essayant d'obtenir un second verrouillage en utilisant
+<B>spw_lock</B> pour le reste du temps des 15&nbsp;secondes.
+Si l'une ou l'autre tentative échoue au bout de 15&nbsp;secondes,
+<B>lckpwdf</B> retourne -1.
+Lorsque les deux verrouillages sont obtenus, elle retourne 0.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>DIAGNOSTICS</H2>
+
+Les routines retournent NULL s'il n'y a plus d'entrées disponibles ou si une
+erreur est apparue durant le traitement.
+Les routines qui ont un <B>int</B> comme valeur de retour retournent 0 en cas
+de succès et -1 en cas d'échec.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>MISE EN GARDE</H2>
+
+Ces routines ne peuvent être utilisées que par l'administrateur, car l'accès
+au fichier des mots de passe masqués est restreint.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/etc/shadow - fichier des mots de passe utilisateur masqués
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+getpwent">getpwent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+shadow">shadow</A></B>(5)
+
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Julianne Frances Haugh (<A HREF="mailto:jockgrrl@ix.netcom.com">jockgrrl@ix.netcom.com</A>)
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction, réalisée par Alain Portal &lt;aportal AT univ-montp2 DOT fr&gt; le Novembre 2004.
+<P>
+L'équipe de traduction a fait le maximum pour réaliser une adaptation française de qualité.
+<P>
+La version anglaise la plus à jour de ce document est toujours consultable via la commande&nbsp;: LANGUAGE=en man xxxx
+<P>
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute erreur dans de cette page de manuel.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNTAXE</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAF">DIAGNOSTICS</A><DD>
+<DT><A HREF="#lbAG">MISE EN GARDE</A><DD>
+<DT><A HREF="#lbAH">FICHIERS</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">AUTEUR</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:48 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,1034 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FTS</TITLE>
+</HEAD><BODY>
+<H1>FTS</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fts, fts_open, fts_read, fts_children, fts_set, fts_close - Descente d'arborescence de fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/stat.h">sys/stat.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/fts.h">fts.h</A>&gt;</B>
+
+<B>FTS *</B>
+<B>fts_open (char * const</B><I>*path_argv</I><B>, int </B><I>options</I><B>, int</B><I>(*compar)(const FTSENT **, const FTSENT **)</I><B>);</B>
+
+<B>FTSENT *</B>
+<B>fts_read (FTS *</B><I>ftsp</I><B>);</B>
+
+<B>FTSENT *</B>
+<B>fts_children (FTS *</B><I>ftsp</I><B>, int </B><I>options</I><B>);</B>
+
+<B>int</B>
+<B>fts_set (FTS *</B><I>ftsp</I><B>, FTSENT *</B><I>f</I><B>, int </B><I>options</I><B>);</B>
+
+<B>int</B>
+<B>fts_close (FTS *</B><I>ftsp</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les fonctions de la famille
+<B>fts</B>
+
+servent à traverser des hiérarchies de fichiers
+<I>UNIX</I>.
+
+<P>
+Rapidement, disons que la fonction
+<B>fts_open</B>
+
+renvoie une sorte de descripteur de la hiérarchie de fichiers, que l'on fournit
+ensuite aux autres fonctions de la famille
+<B>fts</B><I>.</I>
+
+<P>
+La fonction
+<B>fts_read</B>
+
+renvoie un pointeur sur une structure décrivant l'un des fichiers de l'arborescence.
+<P>
+La fonction
+<B>fts_children</B>
+
+renvoie un pointeur sur une liste chaînée de structures, chacune décrivant l'un des
+fichiers contenu dans le répertoire de la hiérarchie.
+En général, les répertoires sont visités à deux reprises, distinctes. Un passage en ordre
+<I>pre-order</I>
+
+avant d'avoir parcouru leurs descendants, et un passage en ordre
+<I>post-order</I>
+
+après avoir visité tous les sous-répertoires.
+Les fichiers ne sont examinés qu'une seule fois.
+Il est possible de parcourir la hiérarchie ``logiquement'' (en ignorant les liens symboliques) ou
+``physiquement'' (en visitant les liens symboliques). On peut ordonner le parcours de la hiérarchie,
+ignorer ou visiter plusieurs fois certaines parties.
+<P>
+
+Deux structures sont définies (par typedef) dans le fichier d'entête
+<B>&lt;<A HREF="file:///usr/include/fts.h">fts.h</A>&gt;</B>.
+
+La première est
+<B>FTS</B>,
+
+une structure représentant l'arborescence des fichiers elle-même,
+et la seconde est
+<B>FTSENT</B>,
+
+une structure représentant un fichier dans la
+hiérarchie.
+Normalement, une structure
+<B>FTSENT</B>
+
+est renvoyée pour chaque fichier 
+rencontré dans la hiérarchie.
+Dans cette page de manuel, les termes ``fichier'' et structure
+<B>FTSENT</B>
+
+sont généralement
+interchangeables.
+La structure
+<B>FTSENT</B>
+
+contient au moins les champs suivants, décrits en détail
+plus bas :
+<P>
+<PRE>
+<B>typedef struct _ftsent {</B>
+<B>    u_short </B><I>fts_info;          </I><B>/* flags for FTSENT structure */</B>
+<B>    char *  </B><I>fts_accpath;       </I><B>/* access path */</B>
+<B>    char *  </B><I>fts_path;          </I><B>/* root path */</B>
+<B>    short   </B><I>fts_pathlen;       </I><B>/* strlen(fts_path) */</B>
+<B>    char *  </B><I>fts_name;          </I><B>/* file name */</B>
+<B>    short   </B><I>fts_namelen;       </I><B>/* strlen(fts_name) */</B>
+<B>    short   </B><I>fts_level;         </I><B>/* depth (-1 to N) */</B>
+<B>    int     </B><I>fts_errno;         </I><B>/* file errno */</B>
+<B>    long    </B><I>fts_number;        </I><B>/* local numeric value */</B>
+<B>    void *  </B><I>fts_pointer;       </I><B>/* local address value */</B>
+<B>    struct ftsent *</B><I>fts_parent; </I><B>/* parent directory */</B>
+<B>    struct ftsent *</B><I>fts_link;   </I><B>/* next file structure */</B>
+<B>    struct ftsent *</B><I>fts_cycle;  </I><B>/* cycle structure */</B>
+<B>    struct stat *  </B><I>fts_statp;  </I><B>/* <A HREF="/cgi-bin/man/man2html?2+stat">stat</A>(2) information */</B>
+<B>} FTSENT;</B>
+</PRE>
+
+<P>
+
+Les membres ont les significations suivantes :
+<DL COMPACT>
+<DT><B>fts_info</B>
+
+<DD>
+L'un des attribut suivants, décrivant la structure
+<B>FTSENT</B>
+
+et le fichier
+qu'elle représente.
+Toutes ces entrées sont terminales (sauf les répertoires
+<I>FTS_D</I>
+
+ne présentant pas d'erreur), ce qui signifie
+qu'elle ne seront visitées qu'une seule fois, et que leur
+éventuels descendants (cas des répertoires en erreur) ne seront pas visités.
+<P>
+<I>FTS_D</I> :
+
+Un répertoire visité en phase pré-order.
+<P>
+<I>FTS_DC</I> :
+
+Un répertoire introduisant une boucle dans l'arborescence.
+(Le champ
+<B>fts_cycle</B>
+
+de la structure
+<B>FTSENT</B>
+
+sera également remplis).
+<P>
+<I>FTS_DEFAULT</I> :
+
+Toute structure
+<B>FTSENT</B>
+
+représentant un type de fichier non décrit explicitement par
+l'une des autres valeurs de
+<B>fts_info</B>.
+
+<P>
+<I>FTS_DNR</I> :
+
+Un répertoire ne pouvant être lu.
+Ceci est considéré comme une erreur, et le champ
+<B>fts_errno</B>
+
+sera rempli avec une valeur décrivant sa cause.
+<P>
+<I>FTS_DOT</I> :
+
+Un fichier nommé 
+<B>.</B> ou <B>..</B>
+
+qui n'a pas été indiqué explicitement comme argument de
+<B>fts_open</B>
+
+(voir
+<I>FTS_SEEDOT</I>).
+
+<P>
+<I>FTS_DP</I> :
+
+Un répertoire visité en phase post-order. Le contenu de la
+structure
+<B>FTSENT</B>
+
+ne sera pas différent de ce qu'il était 
+durant la phase pré-order. C'est à dire quand le champ
+<B>fts_info</B>
+
+valait
+<I>FTS_D</I>.
+
+<P>
+<I>FTS_ERR</I> :
+
+Il s'agit d'un retour d'erreur, le champ
+<B>fts_errno</B>
+
+étant rempli pour indiquer la cause de l'erreur.
+<P>
+<I>FTS_F</I> :
+
+Fichier normal.
+<P>
+<I>FTS_NS</I> :
+
+Un fichier pour lequel aucune information provenant de
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2)
+
+n'est disponible. Le contenu du champ
+<B>fts_statp</B>
+
+est indéfini. Il s'agit d'un cas d'erreur dont la cause est indiquée dans
+<B>fts_errno</B>.
+
+<P>
+<I>FTS_NSOK</I> :
+
+Un fichier pour lequel aucune information provenant de
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2)
+
+n'a été demandée. Le contenu du champ
+<B>fts_statp</B>
+
+est indéfini.
+<P>
+<I>FTS_SL</I> :
+
+Un lien symbolique.
+<P>
+<I>FTS_SLNONE</I> :
+
+Un lien symbolique pointant dans le vide.
+Le contenu du champ 
+<B>fts_statp</B>
+
+contient les caractéristiques du lien lui-même.
+<DT><B>fts_accpath</B>
+
+<DD>
+Un chemin permettant d'accéder au fichier depuis le répertoire courrant.
+<DT><B>fts_path</B>
+
+<DD>
+Le chemin d'accès au fichier à partir du point de départ du parcours.
+Il contient en préfixe le chemin fourni lors de l'invocation de
+<B>fts_open</B>.
+
+<DT><B>fts_pathlen</B>
+
+<DD>
+La longueur de la chaîne pointée par
+<B>fts_path</B>.
+
+<DT><B>fts_name</B>
+
+<DD>
+Le nom du fichier.
+<DT><B>fts_namelen</B>
+
+<DD>
+La longueur de la chaîne pointée par
+<B>fts_name</B>.
+
+<DT><B>fts_level</B>
+
+<DD>
+La profondeur où le fichier a été trouvé dans l'arborescence, numérotée de -1 à N.
+La structure 
+<B>FTSENT</B>
+
+représentant le parent du point de départ est numérotée -1.
+La structure
+<B>FTSENT</B>
+
+représentant la racine de départ elle-même est numérotée 0.
+<DT><B>fts_errno</B>
+
+<DD>
+Dans une structure
+<B>FTSENT</B>
+
+renvoyée par un appel
+<B>fts_children</B>()
+
+ou
+<B>fts_read</B>(),
+
+dont le champ
+<B>fts_info</B>
+
+contient
+<I>FTS_DNR</I>,
+
+<I>FTS_ERR</I>
+
+ou
+<I>FTS_NS</I>,
+
+le champ
+<B>fts_errno</B>
+
+est rempli avec la valeur de la variable externe
+<I>errno</I>
+
+indiquant la cause de l'erreur.
+Dans les autres cas, le contenu du champ
+<B>fts_errno</B>
+
+est indéfini.
+<DT><B>fts_number</B>
+
+<DD>
+Ce champ est mis à la disposition des programmes applicatifs, et
+n'est modifié par aucune fonction de la famille
+<B>fts</B>.
+
+Il est toutefois initialisé à zéro.
+<DT><B>fts_pointer</B>
+
+<DD>
+Ce champ est mis à la disposition des programmes applicatifs, et
+n'est modifié par aucune fonction de la famille
+<B>fts</B>.
+
+Il est toutefois initialisé à NULL.
+<DT><B>fts_parent</B>
+
+<DD>
+Un pointeur sur la structure
+
+référençant le fichier dans la hiérarchie imédiatement
+au dessus du fichier en cours, c'est à dire le répertoire auquel il appartient.
+Une structure
+<B>fts_parent</B>
+
+pour le point d'entrée initial est également fournie, mais seuls ses membres
+<B>fts_level</B>,
+
+<B>fts_number</B>
+
+et
+<B>fts_pointer</B>
+
+sont garantis d'être initialisés.
+<DT><B>fts_link</B>
+
+<DD>
+Au retour de la fonction
+<B>fts_children</B>(),
+
+le champ
+<B>fts_link</B>
+
+pointe sur la structure suivante dans la liste chaînée des membres du répertoires,
+liste terminée par un NULL.
+Dans les autres situations, le contenu du champ
+<B>fts_link</B>
+
+est indéterminé.
+<DT><B>fts_cycle</B>
+
+<DD>
+Si un répertoire introduit une boucle dans la hiérarchie (voir
+<I>FTS_DC</I>),
+
+soit à cause d'un lien physique entre deux répertoires, soit à cause d'un lien
+symbolique pointant vers un répertoire, le champ
+<B>fts_cycle</B>
+
+pointera vers la structure
+<B>FTSENT</B>
+
+de la hiérarchie qui référence le même fichier que celui représenté par la structure
+<B>FTSENT</B>.
+
+Sinon, le contenu du champ
+<B>fts_cycle</B>
+
+est indéfini.
+<DT><B>fts_statp</B>
+
+<DD>
+Un pointeur vers les informations fournies par
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2)
+
+pour le fichier.
+</DL>
+<P>
+
+Un unique buffer est utilisé pour tous les chemins d'accès de tous les fichiers
+de la hiérarchie.
+Ainsi, les champs
+<B>fts_path</B>
+
+et
+<B>fts_accpath</B>
+
+ne sont assurés d'être terminés par un caractère nul
+<B>que</B>
+
+pour le dernier fichier renvoyé par
+<B>fts_read</B>.
+
+
+
+
+
+
+
+
+
+
+
+
+Le champ
+<B>fts_name</B>
+
+est toujour terminé par un caractère nul.
+<A NAME="lbAE">&nbsp;</A>
+<H2>FTS_OPEN</H2>
+
+La fonction
+<B>fts_open</B>
+
+reçoit un pointeur vers une table de chaînes de caractères représentant
+un ou plusieurs chemins décrivant la hiérarchie de fichiers à traverser.
+Cette table doit se terminer par un pointeur
+<B>NULL</B>.
+
+<P>
+
+Il existe un certain nombre d'options, dont au moins une est obligatoire 
+(<B>FTS_LOGICAL</B>
+
+ou
+<B>FTS_PHYSICAL</B>).
+
+Les options sont sélectionnées par un
+<B>OU</B>
+
+logique entre les valeurs suivantes :
+<DL COMPACT>
+<DT><I>FTS_COMFOLLOW</I> :
+
+<DD>
+Tout lien symbolique spécifié comme racine du parcours sera immédiatement
+suivi (déréférencé), que l'option
+<I>FTS_LOGICAL</I>
+
+soit aussi indiquée ou non.
+<DT><I>FTS_LOGICAL</I> :
+
+<DD>
+Renvoyer des structures
+<B>FTSENT</B>
+
+concernant les cibles des liens symboliques plutôt que
+les liens eux-mêmes. Avec cette options, les seuls liens
+symboliques pour lesquels une structure
+<B>FTSENT</B>
+
+est renvoyée sont ceux pointant dans le vide.
+Il
+<B>faut</B>
+
+préciser soit
+<I>FTS_LOGICAL</I>,
+
+soit
+<I>FTS_PHYSICAL</I>.
+
+<DT><I>FTS_NOCHDIR</I> :
+
+<DD>
+Pour optimiser les performances, les fonctions
+<B>fts</B>
+
+changent de répertoire au cours de la traversée de la hiérarchie de fichiers.
+En contrepartie l'application ne peut pas savoir à l'avance où elle se
+trouve durant la traversée. L'option
+<I>FTS_NOCHDIR</I>
+
+supprime cette optimisation et les fonctions
+<B>fts</B>
+
+ne changeront pas de répertoire de travail.
+Remarquez que les applications ne doivent pas modifier elles-même le répertoire
+de travail et essayer d'accéder aux fichiers sans que l'option
+<I>FTS_NOCHDIR</I>
+
+ne soit spécifiée et que des chemins d'accès absolus soit transmis à
+<B>fts_open</B>.
+
+<DT><I>FTS_NOSTAT</I> :
+
+<DD>
+Par défaut, les structures
+<B>FTSENT</B>
+
+renvoyées contiennent les caractéristiques (voir le champ
+<B>statp</B>)
+
+de chaque fichier visité.
+Cette option relâche cette contrainte pour optimiser les performances,
+en autorisant les fonctions 
+<B>fts</B>
+
+à remplir le champ
+<B>fts_info</B>
+
+avec
+<I>FTS_NSOK</I>
+
+et laisser le contenu du membre
+<B>statp</B>
+
+indéfini.
+<DT><I>FTS_PHYSICAL</I> :
+
+<DD>
+Les structures
+<B>FTSENT</B>
+
+renvoyées concerneront les liens symboliques eux-mêmes
+et non pas leurs cibles.
+Il
+<B>faut</B>
+
+indiquer soit
+<I>FTS_LOGICAL</I>,
+
+soit
+<I>FTS_PHYSICAL</I>
+
+à la fonction
+<B>fts_open</B>.
+
+<DT><I>FTS_SEEDOT</I> :
+
+<DD>
+Par défaut, à moins d'être fournis explicitement en argument à
+<B>fts_open ,</B>
+
+tout fichier nommé
+<B>.</B>
+
+ou
+<B>..</B>
+
+rencontré dans la hiérarchie est ignoré.
+Avec cette option, les routines
+<B>fts</B>
+
+renvoient des structures
+<B>FTSENT</B>
+
+pour ces fichiers.
+<DT><I>FTS_XDEV</I> :
+
+<DD>
+Cette option empêche
+<B>fts</B>
+
+de descendre dans les répertoires se trouvant sur un périphérique différent
+de celui dans lequel le parcours a commencé.
+</DL>
+<P>
+
+L'argument
+<I>compar</I>
+
+spécifie une fonction définie par l'utilisateur pour ordonner la traversée de la hiérarchie.
+Elle prend en argument deux pointeurs sur des pointeurs sur des structures
+<B>FTSENT</B>,
+
+et doit renvoyer une valeur négative, nulle, ou positive pour indiquer que le fichier
+représenté par le premier argument doit venir avant, à n'importe quel moment, ou après
+le fichier référencé par le second argument.
+Les champs
+<B>fts_accpath</B>,
+
+<B>fts_path</B>
+
+et
+<B>fts_pathlen</B>
+
+des structures
+<B>FTSENT</B>
+
+ne doivent
+<B>jamais</B>
+
+être utilisés dans cette comparaison.
+Si le champ
+<B>fts_info</B>
+
+contient
+<I>FTS_NS</I>
+
+ou
+<I>FTS_NSOK</I>,
+
+le membre
+<B>fts_statp</B>
+
+ne doit pas être utilisé non plus.
+Si l'argument
+<I>compar</I>
+
+est
+<I>NULL</I>,
+
+l'ordre de traversée des répertoires est celui de l'argument
+<B>path_argv</B>
+
+pour les racines, et l'ordre interne des répertoires pour le reste.
+<A NAME="lbAF">&nbsp;</A>
+<H2>FTS_READ</H2>
+
+La fonction
+<B>fts_read</B>
+
+renvoie un pointeur sur une structure
+<B>FTSENT</B>
+
+décrivant un fichier de la hiérarchie.
+Les répertoires lisibles et ne causant pas de boucles sont parcourus au moins
+deux foix, une fois en phase pré-order, et une en phase post-order.
+Les autres fichiers ne sont examinés qu'une seule fois.
+Les liens physiques entre répertoires qui ne causent pas de boucles, ou les liens
+symboliques vers des liens symboliques peuvent entrainer des fichiers visités plus
+d'une fois, ou des répertoires plus de deux fois.
+<P>
+
+Si tous les membres de la hiérarchie ont été examinés,
+<B>fts_read</B>
+
+renvoie
+<I>NULL</I>
+
+et remplit la variable externe
+<I>errno</I>
+
+avec un 0.
+Si une erreur sans rapport avec un fichier particulier se produit,
+<B>fts_read</B>
+
+renvoie
+<I>NULL</I>
+
+et remplit
+<B>errno</B>
+
+en conséquence.
+Si une erreur concernant le fichier en cours se produit, un pointeur sur une structure
+<B>FTSENT</B>
+
+est renvoyé, et
+<I>errno</I>
+
+peut ou non être rempli (voir
+<B>fts_info ) .</B>
+
+<P>
+
+Les structures
+<B>FTSENT</B>
+
+renvoyées par
+<B>fts_read</B>
+
+peuvent être écrasées après un appel à
+<B>fts_close</B>
+
+sur le même descripteur de hiérarchie ou après un appel à
+<B>fts_read</B>
+
+sur la même hiérarchie, sauf si elles représentent un répertoire, auquel cas
+elles ne seront pas écrasées avant l'appel
+<B>fts_read</B>
+
+renvoyant la structure
+<B>FTSENT</B>
+
+du répertoire en phase post-order.
+<A NAME="lbAG">&nbsp;</A>
+<H2>FTS_CHILDREN</H2>
+
+La fonction
+<B>fts_children</B>
+
+renvoie un pointeur sur la structure
+<B>FTSENT</B>
+
+décrivant la première entrée d'un liste chaînée terminée par un NULL et
+représentant les fichiers se trouvant dans le répertoire indiqué par la dernière structure
+<B>FTSENT</B>
+
+renvoyée par un appel
+<B>fts_read</B>.
+
+La liste est chaînée par le biais du membre
+<B>fts_link</B>
+
+de la structure
+<B>FTSEN</B>,
+
+et est ordonnée suivant la routine de comparaison fournie par l'utilisateur, si elle existe.
+Des appels répétés à
+<B>fts_children</B>
+
+recréeront la liste chaînée.
+<P>
+
+Un cas particulier se présente si
+<B>fts_read</B>
+
+n'a pas encore été appelé pour cette hiérarchie. Alors,
+<B>fts_children</B>
+
+renverra un pointeur sur les fichiers du répertoire logique transmis
+<B>fts_open</B>,
+
+c'est à dire les arguments fournis à
+<B>fts_open .</B>
+
+Sinon, si la structure
+<B>FTSENT</B>
+
+la plus récemment renvoyée par
+<B>fts_read</B>
+
+n'est pas un répertoire visité en phase pré-order, ou si le répertoire
+ne contient aucun fichier, 
+<B>fts_children</B>
+
+renvoie
+<I>NULL</I>
+
+et met la variable externe
+<I>errno</I>
+
+à zéro.
+Si une erreur se produit,
+<B>fts_children</B>
+
+renvoie
+<I>NULL</I>
+
+et remplit
+<I>errno</I>
+
+comme il se doit.
+<P>
+
+Les structures
+<B>FTSENT</B>
+
+renvoyées par 
+<B>fts_children</B>
+
+peuvent être écrasées après un appel
+<B>fts_children</B>,
+
+<B>fts_close</B>
+
+ou
+<B>fts_read</B>
+
+sur la même hiérarchie de fichiers.
+<P>
+
+<I>Option</I>
+
+peut contenir l'une des valeurs suivantes&nbsp;:
+<DL COMPACT>
+<DT><I>FTS_NAMEONLY</I> :
+
+<DD>
+Seuls les noms des fichiers sont nécessaires. Le contenu des membres
+des structures de la liste chaînée est indéfini sauf pour
+<B>fts_name</B>
+
+et
+<B>fts_namelen</B>.
+
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>FTS_SET</H2>
+
+La fonction
+<B>fts_set</B>
+
+permet à l'application de paramétrer le traitement à venir du fichier
+<B>f</B>
+
+sur la hiérarchie.
+<B>ftsp</B>.
+
+La fonction
+<B>fts_set</B>
+
+renvoie 0 si elle réussit, et -1 si une erreur se produit.
+<I>Option</I>
+
+doit contenir l'une des valeurs suivantes&nbsp;:
+<DL COMPACT>
+<DT><I>FTS_AGAIN</I> :
+
+<DD>
+Re-visiter à nouveau le fichier. N'importe quel type de fichier peut être re-visité.
+L'appel suivant de
+<B>fts_read</B>
+
+renverra le fichier indiqué.
+Les membres 
+<B>fts_stat</B>
+
+et
+<B>fts_info</B>
+
+de la structure seront réinitialisés à ce moment, mais aucun autre champ
+ne sera modifié.
+Cette option n'a de sens que pour le dernier fichier renvoyé par
+<B>fts_read</B>.
+
+L'utilisation habituelle de cette possibilité concerne les répertoires en
+phase post-order, qui sont alors ré-examinés (aussi bien en phase pré-order
+que post-order), ainsi que leurs descendants.
+<DT><I>FTS_FOLLOW</I> :
+
+<DD>
+Le fichier référencé doit être un lien symbolique. Si ce fichier est le dernier renvoyé par
+<B>fts_read ,</B>
+
+alors l'appel suivant de
+<B>fts_read</B>
+
+renverra le fichier, avec les champs
+<B>fts_info</B>
+
+et
+<B>fts_statp</B>
+
+réinitialisés pour représenter la cible du lien symbolique plutôt que le lien lui-même.
+Si le fichier est le dernier renvoyé par
+<B>fts_children</B>,
+
+alors les membres
+<B>fts_info</B>
+
+et 
+<B>fts_statp</B>
+
+de la structure, lorsqu'elle sera renvoyée par
+<B>fts_read</B>,
+
+représenteront la cible du lien symbolique plutôt que le lien lui-même.
+Dans tous les cas, si la cible du lien symbolique n'existe pas, les membres
+de la structure ne seront pas modifiés, et le champ
+<B>fts_info</B>
+
+contiendra
+<I>FTS_SLNONE</I>.
+
+Si la cible du lien est un répertoire, il y aura un retour pré-order, suivi
+d'un retour pour chaque descendant, suivi d'un retour post-order.
+<DT><I>FTS_SKIP</I> :
+
+<DD>
+Aucun descendant de ce fichier ne sera visité.
+Le fichier doit être le dernier renvoyé par
+<B>fts_children</B>
+
+ou
+<B>fts_read</B>.
+
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>FTS_CLOSE</H2>
+
+La fonction
+<B>fts_close</B>
+
+ferme un descripteur
+<I>fts</I>
+
+de hiérarchie de fichier, et restitue le répertoire de travail qui était en vigueur lors de l'appel
+<B>fts_open</B>.
+
+La fonction
+<B>fts_close</B>
+
+renvoie 0 si elle réussit, et -1 en cas d'erreur.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>ERREURS</H2>
+
+La fonction
+<B>fts_open</B>
+
+peut échouer, et mettre dans 
+<I>errno</I>
+
+l'une des erreurs indiquées pour les fonctions
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></B>(3).
+
+<P>
+
+La fonction
+<B>fts_close</B>
+
+peut échouer, et mettre dans 
+<I>errno</I>
+
+l'une des erreurs indiquées pour les fonctions
+<B><A HREF="/cgi-bin/man/man2html?2+chdir">chdir</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+close">close</A></B>(2).
+
+<P>
+
+Les fonctions
+<B>fts_read</B>
+
+et
+<B>fts_children</B>
+
+peuvent échouer, et mettre dans 
+<I>errno</I>
+
+l'une des erreurs indiquées pour les fonctions
+<B><A HREF="/cgi-bin/man/man2html?2+chdir">chdir</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+opendir">opendir</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+readdir">readdir</A></B>(3)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2).
+
+<P>
+
+De plus
+<B>fts_children</B>,
+
+<B>fts_open</B>
+
+et
+<B>fts_set</B>
+
+peuvent échouer, et mettre dans 
+<I>errno</I>
+
+l'une des erreurs suivantes&nbsp;:
+<DL COMPACT>
+<DT><I>EINVAL</I>
+
+<DD>
+Une option est invalide.
+</DL>
+<A NAME="lbAK">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+find">find</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+chdir">chdir</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+qsort">qsort</A></B>(3)
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.4. La famille de fonctions
+<B>fts</B>
+
+sera peut être incluse dans une future mise à jour de 
+<B>-p1003.1-88</B>.
+
+<A NAME="lbAM">&nbsp;</A>
+<H2>DISPONIBILITÉ<TT>&nbsp;&nbsp;&nbsp;</TT></H2>
+
+Ces fonctions sont disponibles sous Linux depuis la bibliothèque GlibC 2.<BR>
+<A NAME="lbAN">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+<P>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">FTS_OPEN</A><DD>
+<DT><A HREF="#lbAF">FTS_READ</A><DD>
+<DT><A HREF="#lbAG">FTS_CHILDREN</A><DD>
+<DT><A HREF="#lbAH">FTS_SET</A><DD>
+<DT><A HREF="#lbAI">FTS_CLOSE</A><DD>
+<DT><A HREF="#lbAJ">ERREURS</A><DD>
+<DT><A HREF="#lbAK">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAL">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAM">DISPONIBILITÉ<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></A><DD>
+<DT><A HREF="#lbAN">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:04 GMT, February 11, 2014
+</BODY>
+</HTML>

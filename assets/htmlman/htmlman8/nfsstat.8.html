@@ -1,0 +1,152 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of NFSSTAT</TITLE>
+</HEAD><BODY>
+<H1>NFSSTAT</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 8 Mai 1996<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+nfsstat - Afficher des statistiques NFS.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>/usr/sbin/nfsstat [-anrcsz] [-o </B><I>domaine</I><B>] ...</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La commande
+<B>nfsstat</B>
+
+affiche des statistiques sur l'état du sous-système NFS du noyau. Actuellement,
+seules les statistiques du serveur peuvent être affichées car le client NFS ne
+fait pas encore de statistiques [Ndt: hum...]
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-s</B>
+
+<DD>
+Affiche seulement les informations sur le serveur. Par défaut, les informations
+concernant et le serveur et le client sont affichées.
+<DT><B>-c</B>
+
+<DD>
+Affiche seulement les informations sur le client.
+<DT><B>-n</B>
+
+<DD>
+Affiche seulement les statitiques sur NFS. Par défaut, les informations sur RPC
+et NFS sont affichées.
+<DT><B>-r</B>
+
+<DD>
+Affiche seulement les statistiques sur les RPC.
+<DT><B>-z</B>
+
+<DD>
+Réinitialise les compteurs du noyau. Option non supportée.
+<DT><B>-o</B><I> domaine</I>
+
+<DD>
+Affiche des statistiques au sujet du domaine indiqué. Ce dernier peut être l'un
+des suivants&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>nfs</B>
+
+<DD>
+Informations sur le protocole NFS, selon les appels RPC.
+<DT><B>rpc</B>
+
+<DD>
+Information générales sur les RPC.
+<DT><B>net</B>
+
+<DD>
+Statistiques de la pile réseau telles que nombre de paquets reçus, nombre de
+connections TCP,...
+<DT><B>fh</B>
+
+<DD>
+Informations sur l'utilisation du cache de descripteurs de fichier du serveur,
+en particulier le nombre total de lookups, et le nombre de réponses trouvées
+dans le cache etcelui de celles non cachées.
+<DT><B>rc</B>
+
+<DD>
+Information sur l'utilisation du cache des réponses aux requêtes, y compris le
+nombre total de lookups, et le nombre de réponses trouvées dans le cache et
+celui de celles non cachées.
+</DL>
+</DL>
+
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><B>/proc/net/rpc/nfsd</B>
+
+<DD>
+Interface basée sur
+<B>procfs</B>
+
+pour les statistiques du serveur NFS implémenté dans le noyau.
+<DT><B>/proc/net/rpc/nfs</B>
+
+<DD>
+Interface basée sur
+<B>procfs</B>
+
+pour les statistiques du client NFS implémenté dans le noyau.
+<P>
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+rpc.nfsd">rpc.nfsd</A></B>(8).
+
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Olaf Kirch, &lt;<A HREF="mailto:okir@monad.swb.de">okir@monad.swb.de</A>&gt;
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 2000
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">EXEMPLES</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">AUTEUR</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

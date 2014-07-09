@@ -1,0 +1,127 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of A64L</TITLE>
+</HEAD><BODY>
+<H1>A64L</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+a64l, l64a - Conversion de long en base 64 et inversement.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<P>
+<B>long a64l(char *</B><I>str64</I><B>);</B>
+
+<P>
+<B>char *l64a(long </B><I>valeur</I><B>);</B>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ces fonctions assurent la conversion entre des entiers sur 32-bit
+(entiers <B>long</B> du «&nbsp;C&nbsp;») et des entiers représentés en base 64
+sur des chaînes ASCII (dont la longueur peut aller de zéro à six
+caractères), dans l'ordre little-endian.
+Si la chaîne passée en argument à
+<B>a64l</B>()
+
+possède plus de six caractères, alors seuls les six premiers octets
+sont utilisés.
+Si les longs font plus de 32 bits, alors
+<B>l64a</B>()
+
+n'utilise que les 32 bits de poids faible de
+<I>valeur</I>,
+
+et
+<B>a64l</B>()
+
+propage le bit de signe de son résultat sur 32 bits.
+<P>
+
+Les 64 chiffres du système en base 64 sont&nbsp;:
+<DL COMPACT><DT><DD>
+<PRE>
+'.'     représente a 0
+'/'     représente a 1
+0-9     representent  2-11
+A-Z     representent 12-37
+a-z     representent 38-63
+</PRE>
+
+</DL>
+
+<BR>
+
+Exemple&nbsp;: 123 = 59*64^0 + 1*64^1 = &quot;v/&quot;.
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les valeurs renvoyées par
+<B>a64l</B>()
+
+peuvent être un pointeur sur un tampon statique, qui peut être réécrit
+par des appels successifs.
+<P>
+
+Le comportement de
+<B>l64a</B>()
+
+est indéfini quand 
+<I>valeur</I>
+
+est négative. Si
+<I>valeur</I>
+
+est zéro, elle renvoie une chaîne vide.
+<P>
+
+Ces fonctions n'étaient pas fonctionnelles avant la version 2.2.5 de
+la glibc (chiffres les plus significatifs en premier).
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORME À</H2>
+
+XPG 4.2, POSIX 1003.1-2001.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+uuencode">uuencode</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?3+itoa">itoa</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strtoul">strtoul</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 2002
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">CONFORME À</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:35 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,175 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SCHED_SETAFFINITY</TITLE>
+</HEAD><BODY>
+<H1>SCHED_SETAFFINITY</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+sched_setaffinity, sched_getaffinity - set and get a process's CPU affinity
+mask
+<A NAME="lbAB">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sched.h">sched.h</A>&gt;</B>
+
+<P>
+<B>int sched_setaffinity(pid_t </B><I>pid</I><B>, unsigned int </B><I>lg</I><B>, unsigned long *</B><I>masque</I><B>);
+<P>
+int sched_getaffinity(pid_t </B><I>pid</I><B>, unsigned int </B><I>lg</I><B>, unsigned long *</B><I>masque</I><B>);
+<P>
+</B><A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>sched_setaffinity</B>
+
+fixe le masque des préférences du processus
+<I>pid</I>
+
+vis-à-vis du CPU.
+Si
+<I>pid</I>
+
+vaut zéro, il s'agit du processus appelant.
+<P>
+Les préférences sont représentées par les bits stockées dans le
+<I>masque</I>.
+
+Le bit de moindre poid représente le numéro logique du premier processeur, tandis
+que le bit de poid le plus fort représent le numéro de dernier processeur.
+Un bit activé correspond à un processeur utilisable pour l'ordonnancement
+alors qu'un bit inhibé représent un processeur refuse. En d'autres terme,
+le processus est attaché et ne s'exécutera que sur les processeurs dont
+les bits sont activés. D'habitude tous les bits du masque sont validés.
+<P>
+L'argument
+<I>lg</I>
+
+représente la longueur des données pointées par le
+<I>masque</I>.
+
+Normalement, il s'agit de la taille d'un mot du système. Pour assurer la
+compatibilités avec les futurs noyaux Linux, comme cette taille peut varier,
+le masque fourni doit être au moins aussi grand que le masque d'affinité
+stocké dans le noyau.
+<P>
+La fonction
+<B>sched_getaffinity</B>
+
+écrit dans la zone pointée par
+<I>masque</I>
+
+(dont la taille est
+<I>lg</I>)
+
+le masque de préférences du processus
+<I>pid</I>.
+
+Si
+<I>pid</I>
+
+vaut zéro, le masque du processus en cours est renvoyé.
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+S'ils réussissent
+<B>sched_setaffinity</B>
+
+et
+<B>sched_getaffinity</B>
+
+renvoient tous deux zéro.
+S'ils échouent, ils renvoient -1 et
+<I>errno</I>
+
+sera rempli avec le code d'erreur.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EFAULT</B>
+
+<DD>
+Une adresse mémoire est invalide.
+<DT><B>ESRCH</B>
+
+<DD>
+Impossible de trouver le processus du <I>pid</I> indiqué.
+<DT><B>EPERM</B>
+
+<DD>
+Le processus appelant n'a pas les privilèges appropriés. Le processus qui
+invoque 
+<B>sched_setaffinity</B>
+
+doit avoir un UID effectif égal à l'UID effectif ou réel du
+processus identifié par
+<I>pid</I>,
+
+ou avoir la capacité
+<I>CAP_SYS_NICE</I>.
+
+<DT><B>EINVAL</B>
+
+<DD>
+Le 
+<I>masque</I>
+
+des préférences ne contient pas de processeurs présents sur le système, ou
+<I>lg</I>
+
+est plus petit que la taille du masque d'affinité utilisé par le noyau.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Les appels-système d'affinité ont été introduit dans Linux 2.5.8.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_setscheduler">sched_setscheduler</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_getscheduler">sched_getscheduler</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_get_priority_max">sched_get_priority_max</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_get_priority_min">sched_get_priority_min</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+nice">nice</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setpriority">setpriority</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getpriority">getpriority</A></B>(2),
+
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_setscheduler">sched_setscheduler</A></B>(2)
+
+décrit le fonctionnement de l'ordonnancement sous Linux.
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAE">ERREURS</A><DD>
+<DT><A HREF="#lbAF">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:00 GMT, February 11, 2014
+</BODY>
+</HTML>

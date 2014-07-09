@@ -1,0 +1,109 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MD5SUM</TITLE>
+</HEAD><BODY>
+<H1>MD5SUM</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+md5sum - Calculer et afficher un compte-rendu MD5.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>md5sum</B>
+
+[-bhtvV] [-c fichier] [-s[chaîne]] [--binary] [--check=fichier]
+[--help] [--string[=chaîne]] [--text] [--verbose] [--version]
+[fichier...]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>md5sum</B>.
+
+<P>
+<B>md5sum</B>
+
+produit, pour chaque fichier d'entrée, une &quot;empreinte digitale&quot; sous forme
+de compte-rendu de 128 bits. 
+<P>
+Il peut également vérifier si les fichiers sont
+toujours cohérents avec des comptes-rendus précédents (ou bien s'ils ont
+été modifiés).
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><I>-b, --binary</I>
+
+<DD>
+Traiter les fichiers d'entrée comme des données binaires. Ceci n'a normalement
+pas d'incidence sur les systèmes UN*X, mais peut en avoir avec d'autres systèmes
+d'exploitation ayant une représentation spécifique des fichiers de texte (plus
+particulièrement en ce qui concerne les retours-chariots).
+<DT><I>-c, --check=fichier</I>
+
+<DD>
+<I>fichier</I> doit être le résultat de l'exécution d'un
+<B>md5sum</B>
+
+précédent.
+Ce fichier disposera sur chaque ligne d'un indicateur Texte/Binaire, d'une
+empreinte MD5 et d'un nom de fichier.
+La vérification sera faite en utilisant ce compte-rendu précédent et le fichier
+sera mentionné comme ayant échoué si une différence apparaît.
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et se terminer normalement.
+<DT><I>-s, --string=chaîne</I>
+
+<DD>
+Effectuer le calcul du compte rendu pour la
+<I>chaîne</I> et non pas pour un fichier. Le résultat sera présenté avec la
+même forme que pour un fichier.
+<DT><I>-t, --text</I>
+
+<DD>
+Traiter tous les fichiers d'entrée comme des données textes. C'est l'option
+inverse de
+<I>--binary</I>.
+
+<DT><I>-v, --verbose</I>
+
+<DD>
+Afficher plusieurs informations pendant le déroulement du processus.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et se terminer normalement.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:48 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,135 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of OSPENT</TITLE>
+</HEAD><BODY>
+<H1>OSPENT</H1>
+Section: ospent (1)<BR>Updated: Novembre 2002<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ospent - Concatène les entités
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<PRE>
+<B>ospent</B> [<B>-ChnrRv</B>] [<B>-b</B><I>bctf</I>] [<B>-c</B><I>sysid</I>] [<B>-f</B><I>fichier</I>]
+       [<B>-D</B><I>répertoire</I>] [<I>sysid</I>...]
+
+</PRE>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+<P>
+
+<B>ospent</B> (OpenSP print entity) affiche la concaténation des entités
+avec les identificateurs système [<I>sysid</I>...] sur la sortie standard.
+<P>
+<P>
+
+Les options suivantes sont disponibles&nbsp;:
+<P>
+<DL COMPACT>
+<DT><B>-b</B><I>bctf</I>, <B>--bctf=</B><I>bctf</I><DD>
+Utilise le BCTF (NdT&nbsp;: <B>B</B>it <B>C</B>ombinaison <B>T</B>ransformation
+<B>F</B>ormat) nommé <I>bctf</I> pour produire la sortie.
+<P>
+<DT><B>-c</B><I>sysid</I>, <B>--catalog=</B><I>sysid</I><DD>
+Met en correspondance les identificateurs publics et les noms d'entités avec
+les identificateurs système en utilisant le fichier d'entrées catalogue dont
+l'identificateur système est <I>sysid</I>.
+<P>
+<DT><B>-C</B>, <B>--catalogs</B><DD>
+Elle a le même effet qu'avec <B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>.
+<P>
+<DT><B>-D</B><I>répertoire</I>, <B>--directory=</B><I>répertoire</I><DD>
+Recherche dans <I>répertoire</I> les fichiers spécifiés dans les identificateurs
+système.
+<P>
+Elle a le même effet qu'avec <B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>.
+<P>
+<DT><B>-f</B><I>fichier</I>, <B>--error-file=</B><I>fichier</I><DD>
+Redirige les messages d'erreur dans <I>fichier</I>.
+<P>
+<DT><B>-h</B>, <B>--help</B><DD>
+Affiche un texte d'aide et quitte.
+<P>
+<DT><B>-n</B>, <B>--non-sgml</B><DD>
+L'entité est une entité de données non SGML. Cette option force les octets dans les
+objets de stockage comprenant l'entité à être copiés exactement sans qu'aucune
+conversion ne soit faite pour les entités textuelles. Implique <B>-r</B>.
+<P>
+<DT><B>-r</B>, <B>--raw</B><DD>
+Sortie brute. N'opère aucune conversion sur les «&nbsp;RSs&nbsp;» (NdT&nbsp;: <B>R</B>ecord
+<B>S</B>tart) et les «&nbsp;REs&nbsp;» (NdT&nbsp;: <B>R</B>ecord <B>E</B>nd) lors de
+l'affichage de l'entité. L'entité devrait typiquement avoir l'attribut de
+gestionnaire de stockage «&nbsp;records=asis&nbsp;».
+<P>
+<DT><B>-R</B>, <B>--restricted</B><DD>
+Elle a le même effet qu'avec <B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>.
+<P>
+<DT><B>-v</B>, <B>--version</B><DD>
+Affiche le numéro de version.
+<P>
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<P>
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>, <B><A HREF="/cgi-bin/man/man2html?1+ospam">ospam</A>(1)</B>, <B><A HREF="/cgi-bin/man/man2html?1+onsgmlnorm">onsgmlnorm</A>(1)</B>, <B><A HREF="/cgi-bin/man/man2html?1+osx">osx</A>(1)</B>
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+James Clark, Ian Castle &lt;<A HREF="mailto:ian.castle@openjade.org">ian.castle@openjade.org</A>&gt;.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Alain Portal &lt;aportal AT univ-montp2 DOT fr&gt;, 16 juin 2004
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>RELECTURE</H2>
+
+<P>
+
+Jean-Marc Destabeaux &lt;jmdestabeaux AT free DOT fr&gt;
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>AVERTISSEMENT SUR LA TRADUCTION</H2>
+
+<P>
+Il est possible que cette traduction soit imparfaite ou périmée.
+En cas de doute, veuillez vous reporter au document original en langue anglaise
+fourni avec le programme.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">AUTEURS</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+<DT><A HREF="#lbAH">RELECTURE</A><DD>
+<DT><A HREF="#lbAI">AVERTISSEMENT SUR LA TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:46 GMT, February 11, 2014
+</BODY>
+</HTML>

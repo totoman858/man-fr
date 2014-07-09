@@ -1,0 +1,320 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DF</TITLE>
+</HEAD><BODY>
+<H1>DF</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+df - Fournit la quantité d'espace occupé des systèmes de fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>df [</B><I>options</I><B>] [</B><I>fichier...</I><B>]</B>
+
+<P>
+Options POSIX :
+<B>[-kP] [--]</B>
+
+<P>
+Options GNU (versions courtes) :
+<B>[-ahikmPv]</B>
+
+<B>[-t </B><I>type_fs</I><B>]</B>
+
+<B>[-x </B><I>type_fs</I><B>]</B>
+
+<B>[--print-type]</B>
+
+<B>[--no-sync]</B>
+
+<B>[--sync]</B>
+
+<B>[--help] [--version] [--]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>df</B>
+
+indique les quantités d'espaces disques utilisées et disponibles sur les
+systèmes de fichiers.
+<P>
+
+Sans argument,
+<B>df</B>
+
+indiquera les quantités correspondant à tous les systèmes de fichiers
+montés, quels que soient leurs types.
+Sinon, 
+<B>df</B>
+
+affichera les données correspondant aux systèmes contenant chaque
+<I>fichier</I>
+
+fournit en argument.
+<A NAME="lbAE">&nbsp;</A>
+<H2>PRÉCISIONS POSIX</H2>
+
+Les valeurs sont indiquées en unités de 512 octets par défaut, mais
+si l'option -k est utilisée, l'unité est 1024 octets.
+Le format de sortie n'est pas défini si l'option -P n'est pas utilisée.
+Si le
+<I>fichier</I>
+
+n'est pas un fichier régulier, un répertoire, ou une FIFO, le résultat
+est imprévisible.
+<A NAME="lbAF">&nbsp;</A>
+<H2>PRÉCISIONS GNU</H2>
+
+Les valeurs sont fournies en unités de 1024 octets par défaut, sauf si la
+variable d'environnement 
+<B>POSIXLY_CORRECT</B>
+
+existe, auquel cas le comportement POSIX est adopté.
+<P>
+
+Si un
+<I>fichier</I>
+
+indiqué en argument est un périphérique disque contenant un système de
+fichiers monté, 
+<B>df</B>
+
+affichera l'espace disponible sur ce système de fichiers plutôt que sur
+celui contenant le noeud du périphérique.
+<A NAME="lbAG">&nbsp;</A>
+<H2>OPTIONS POSIX</H2>
+
+<DL COMPACT>
+<DT><B>-k</B>
+
+<DD>
+Utiliser des unités de 1024 octets plutôt que les unités de 512 octets par défaut.
+<DT><B>-P</B>
+
+<DD>
+Affichage sur six colonnes, précédées de l'en-tête
+`Filesystem N-blocks Used Available Capacity Mounted on'
+(avec N=512, ou N=1024 si l'option -k est utilisée).
+<DT><B>--</B>
+
+<DD>
+Fin explicite de la liste des options.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>OPTIONS GNU</H2>
+
+<DL COMPACT>
+<DT><B>-a, --all</B>
+
+<DD>
+Inclure dans le listing les systèmes de fichiers ayant une taille
+de 0 blocs, et qui sont omis par défaut. Il s'agit typiquement
+de pseudo-systèmes de fichiers particuliers comme les entrées d'un
+auto-monteur. De même les systèmes de type &quot;ignore&quot; ou &quot;auto&quot; utilisés
+par certains systèmes d'exploitation ne sont inclus qu'avec cette option.
+<DT><B>--block-size=</B><I>nb</I>
+
+<DD>
+Afficher les tailles en blocs de 
+<I>nb</I>
+
+octets. (Nouveau dans fileutils-4.0, mais erroné).
+<DT><B>-h, --human-readable</B>
+
+<DD>
+Ajouter à chaque valeur une lettre comme
+<B>M</B>
+
+pour Méga-octet, afin d'améliorer la lisibilité.
+<DT><B>-H, --si</B>
+
+<DD>
+Comme
+<B>-h</B>,
+
+en utilisant les unités SI officielles (puissances de 1000 plutôt que 1024,
+ainsi M signifie 1000000 et non 1048576).
+(Nouveauté fileutils-4.0.)
+<DT><B>-i, --inodes</B>
+
+<DD>
+Afficher les informations sur l'utilisation des i-noeuds plutôt que
+les blocs. Un i-noeud (noeud d'index) contient des informations sur
+un fichier comme son propriétaire, ses dates d'accès et sa position
+sur le disque.
+<DT><B>-k, --kilobytes</B>
+
+<DD>
+Afficher les valeurs avec des unités de 1024 octets.
+<DT><B>-l, --local</B>
+
+<DD>
+Ne traiter que les systèmes de fichiers locaux
+(Nouveauté fileutils-4.0).
+<DT><B>-m, --megabytes</B>
+
+<DD>
+Afficher les valeurs avec des unités de 1 048 576 octets (un méga-octet).
+Notez que les options -h, -H, -k, -m sont mutuellement exclusives, et
+seule la dernière indiquée est effective&nbsp;; par exemple si on indique
+simultanément --si et -m, la sortie ne se fera PAS en blocs de
+1000000 octets. [La taille des blocs est également influencée
+par la variable d'environnement BLOCK_SIZE, mais ceci ne fonctionne
+pas dans fileutiles-4.0.]
+<DT><B>--no-sync</B>
+
+<DD>
+Ne pas invoquer l'appel système
+<B>sync</B>
+
+avant d'obtenir les informations sur l'utilisation du disque.
+Ceci peut permettre à
+<B>df</B>
+
+de s'exécuter sensiblement plus vite, mais sur certains systèmes
+(notamment SunOS) les résultats peuvent être fortement dépassés.
+Il s'agit du comportement par défaut.
+<DT><B>-P, --portability</B>
+
+<DD>
+Utiliser le format d'affichage
+<FONT SIZE="-1">POSIX.</FONT>
+Par rapport à l'affichage par défaut, les informations sur un système
+de fichiers sont toujours affichées sur une ligne exactement. Ceci signifie
+que si un système de fichiers monté a plus de 20 caractères de long (par exemple
+un montage à travers le réseau), les colonnes sont mal alignées.
+<DT><B>--sync</B>
+
+<DD>
+Invoquer l'appel-système
+<B>sync</B>
+
+avant d'obtenir les informations sur l'utilisation du disque.
+Sur certains systèmes (notamment SunOS) ceci fournit des
+résultats beaucoup plus à jour, mais 
+<B>df</B>
+
+s'exécute parfois beaucoup plus lentement, surtout si des systèmes
+de fichiers sont très utilisés.
+<DT><B>-t </B><I>type, </I><B>--type=</B><I>type</I>
+
+<DD>
+Limiter la liste aux systèmes de fichiers du
+<I>type</I>
+
+indiqué.
+On peut fournir plusieurs types de systèmes en utilisant plusieurs
+options
+<B>-t</B>.
+
+Par défaut, rien n'est omis.
+<DT><B>-T, --print-type</B>
+
+<DD>
+Afficher le type de chaque système de fichiers.
+Les types affichés sont indiqués par le système (de manière spécifique,
+par exemple en lisant
+<I>/etc/mtab</I>).
+
+Voir également
+<B><A HREF="/cgi-bin/man/man2html?8+mount">mount</A></B>(8).
+
+<DT><B>-x </B><I>type, </I><B>--exclude-type=</B><I>type</I>
+
+<DD>
+Limiter l'affichage aux systèmes n'ayant PAS le
+<I>type</I>
+
+indiqué.
+Plusieurs types de systèmes de fichiers peuvent être éliminés en
+utilisant plusieurs options
+<B>-x</B>.
+
+Par défaut, rien n'est omis.
+<DT><B>-v</B>
+
+<DD>
+Ignoré. Pour compatibilité avec System V.
+<B>df.</B>
+
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>OPTIONS STANDARDS GNU</H2>
+
+<DL COMPACT>
+<DT><B>--help</B>
+
+<DD>
+Afficher un message d'aide sur la sortie standard, et se terminer correctement.
+<DT><B>--version</B>
+
+<DD>
+Afficher un numéro de version sur la sortie standard, et se terminer
+correctement.
+<DT><B>--</B>
+
+<DD>
+Fin de la liste d'options.
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+La variable POSIXLY_CORRECT détermine le choix des unités.
+Si elle n'existe pas, et si la variable BLOCKSIZE a une valeur
+commençant par HUMAN alors, le comportement est celui de
+l'option -h (à moins qu'il soit surchargé par une option -k ou -m).
+Les variables
+LANG, LC_ALL, LC_CTYPE et LC_MESSAGES ont leurs significations habituelles.
+<A NAME="lbAK">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX 1003.2
+<A NAME="lbAL">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+mount">mount</A></B>(8)
+
+<A NAME="lbAM">&nbsp;</A>
+<H2>NOTES</H2>
+
+Cette page décrit la version de
+<B>df</B>
+
+se trouvant dans le paquetage fileutils-3.16.
+D'autres versions peuvent différer légèrement.
+<A NAME="lbAN">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1998-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">PRÉCISIONS POSIX</A><DD>
+<DT><A HREF="#lbAF">PRÉCISIONS GNU</A><DD>
+<DT><A HREF="#lbAG">OPTIONS POSIX</A><DD>
+<DT><A HREF="#lbAH">OPTIONS GNU</A><DD>
+<DT><A HREF="#lbAI">OPTIONS STANDARDS GNU</A><DD>
+<DT><A HREF="#lbAJ">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAK">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAL">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAM">NOTES</A><DD>
+<DT><A HREF="#lbAN">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:45 GMT, February 11, 2014
+</BODY>
+</HTML>

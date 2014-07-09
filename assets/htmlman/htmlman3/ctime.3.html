@@ -1,0 +1,306 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CTIME</TITLE>
+</HEAD><BODY>
+<H1>CTIME</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ctime, asctime, gmtime, localtime, mktime - Conversions de dates et heures binaires en ASCII.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/time.h">time.h</A>&gt;</B>
+
+<B>char *asctime (const struct tm *</B><I>tm</I><B>);</B>
+
+<B>char *asctime_r (const struct tm *</B><I>tm</I><B>, char *</B><I>buf</I><B>);</B>
+
+<B>char *ctime (const time_t *</B><I>timep</I><B>);</B>
+
+<B>char *ctime_r (const time_t *</B><I>timep</I><B>, char *</B><I>buf</I><B>);</B>
+
+<B>struct tm *gmtime (const time_t *</B><I>timep</I><B>);</B>
+
+<B>struct tm *gmtime_r (const time_t *</B><I>timep</I><B>, struct tm *</B><I>result</I><B>);</B>
+
+<B>struct tm *localtime (const time_t *</B><I>timep</I><B>);</B>
+
+<B>struct tm *localtime_r (const time_t *</B><I>timep</I><B>, struct tm *</B><I>result</I><B>);</B>
+
+<B>time_t mktime (struct tm *</B><I>tm</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les fonctions <B>ctime()</B>, <B>gmtime()</B> et <B>localtime()</B> prennent
+toutes un argument de type <I>time_t</I> qui représente une date.
+Si l'on interprète cet argument comme une valeur absolue, il s'agit du
+nombre de secondes écoulées depuis le 1er Janvier 1970 à 00h 00m 00s en
+Temps Universel (TU).
+<P>
+
+Les fonctions <B>asctime()</B> et <B>mktime()</B> utilisent toutes deux un
+argument de type <I>struct tm</I>, c'est à dire une représentation binaire
+divisée en année, mois, jour, heure...
+<P>
+
+Cette structure <I>tm</I> est définie
+dans <I>&lt;<A HREF="file:///usr/include/time.h">time.h</A>&gt;</I> ainsi :
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct tm {
+        int     tm_sec;         /* secondes           */
+        int     tm_min;         /* minutes            */
+        int     tm_hour;        /* heures             */
+        int     tm_mday;        /* quantième du mois  */
+        int     tm_mon;         /* mois (0 à 11 !)    */
+        int     tm_year;        /* année              */
+        int     tm_wday;        /* jour de la semaine */
+        int     tm_yday;        /* jour de l'année    */
+        int     tm_isdst;       /* décalage horaire   */
+};
+
+</PRE>
+
+</DL>
+
+<P>
+
+Les membres de la structure <I>tm</I> sont :
+<DL COMPACT>
+<DT><I>tm_sec</I>
+
+<DD>
+Le nombre de secondes écoulées depuis le dernier changement de minute.
+Normalement dans l'intervalle 0 à 59, ce membre peut aller jusqu'à
+61 durant les secondes de rattrapage périodique.
+<DT><I>tm_min</I>
+
+<DD>
+Le nombre de minutes écoulées depuis le dernier changement d'heure, dans
+l'intervalle 0 à 59.
+<DT><I>tm_hour</I>
+
+<DD>
+Le nombre d'heures écoulées depuis Minuit, dans l'intervalle 0 à 23.
+<DT><I>tm_mday</I>
+
+<DD>
+Le quantième du mois, dans l'intervalle 1 à 31.
+<DT><I>tm_mon</I>
+
+<DD>
+Le nombre de mois écoulés depuis le début de l'année, dans l'intervalle 0 à 11.
+<DT><I>tm_year</I>
+
+<DD>
+Le nombre d'années écoulées depuis 1900.
+<DT><I>tm_wday</I>
+
+<DD>
+Le nombre de jours écoulés depuis Dimanche, dans l'intervalle 0 à 6.
+<DT><I>tm_yday</I>
+
+<DD>
+Le nombre de jours écoulés depuis le 1er Janvier, dans l'intervalle
+0 à 365 (0 à 364 si l'année n'est pas bissextile).
+<DT><I>tm_isdst</I>
+
+<DD>
+Un drapeau indiquant si le décalage d'heure hiver/éte est en cours au
+moment de l'appel. La valeur retournée est positive si le décalage est
+en fonction, nulle s'il ne l'est pas, et négative si l'information n'est
+pas disponible.
+</DL>
+<P>
+
+L'appel
+<B>ctime(</B><I>t</I><B>)</B>
+
+est équivalent à
+<B>asctime(localtime(</B><I>t))</I><B></B>.
+
+Il convertit la date <I>t</I> en une chaîne de caractères de le forme
+<P>
+<DL COMPACT><DT><DD>
+&quot;Wed Jun 30 21:49:08 1993\n&quot;
+</DL>
+
+<P>
+L'internationalisation de la date est possible en utilisant la fonction
+<B><A HREF="/cgi-bin/man/man2html?3+setlocale">setlocale</A></B>(3) et <B><A HREF="/cgi-bin/man/man2html?3+strftime">strftime</A></B>(3).
+<P>
+Les abréviations pour les jours de la semaine sont `Sun', `Mon', `Tue', `Wed',
+`Thu', `Fri', et `Sat'.  
+les abréviations pour les mois sont `Jan', `Feb', `Mar', `Apr', `May', `Jun',
+`Jul', `Aug', `Sep', `Oct', `Nov', et `Dec'.  
+La valeur renvoyée pointe sur une chaîne statique qui sera écrasée à
+chaque appel de l'une des fonctions ci-dessus.
+La fonction renseigne également la variable externe <I>tzname</I> avec
+les informations concernant le fuseau horaire (voir 
+<B><A HREF="/cgi-bin/man/man2html?3+tzset">tzset</A></B>(3)).
+
+<P>
+
+La version réentrante <B>ctime_r()</B> effectue le même travail mais stocke
+la chaîne dans un buffer fourni par l'appelant, d'une longueur minimale de
+26 caractères. Elle ne renseigne pas nécessairement <I>tzname</I>.
+<P>
+
+la fonction <B>gmtime()</B> convertit la date <I>timep</I> en une représentation
+<B>struct tm</B> exprimée en Temps Universel.
+Elle peut renvoyer NULL quand l'année ne tient pas dans un entier. La valeur
+renvoyée pointe vers une structure allouée statiquement qui peut être écrasée
+par une invocation ultérieure d'une fonction de date ou d'heure.
+La fonction réentrante <B>gmtime_r()</B> effectue le même travail mais stocke
+le résultat dans une structure fournie par l'appelant.
+<P>
+
+La fonction <B>localtime()</B> convertit la date <I>timep</I> en une 
+représentation <B>struct tm</B> exprimée en fonction du fuseau horaire de
+l'utilisateur. Cette fonction se comporte comme si elle appelait
+<B><A HREF="/cgi-bin/man/man2html?3+tzset">tzset</A></B>(3)
+
+et renseigne les variables externes <I>tzname</I>
+avec les informations concernant le fuseau horaire, <I>timezone</I> avec
+la différence (en secondes) entre Temps Universel et Temps Local,
+et <I>daylight</I> avec une valeur non-nulle si le décalage horaire
+saisonnier s'applique.
+La valeur
+renvoyée pointe vers une structure allouée statiquement qui peut être écrasée
+par une invocation ultérieure d'une fonction de date ou d'heure.
+La fonction réentrante <B>localtime_r()</B> effectue le même travail mais stocke
+le résultat dans une structure fournie par l'appelant.
+<P>
+
+La fonction <B>asctime()</B> convertit la date <I>tm</I> exprimée
+sous forme <B>struct tm</B> en une chaîne de caractères du même format 
+que <B>ctime()</B>.
+La valeur renvoyée pointe sur une chaîne statique qui sera écrasée à
+chaque appel de l'une des fonctions ci-dessus.
+La version réentrante <B>asctime_r()</B> effectue le même travail mais stocke
+la chaîne dans un buffer fourni par l'appelant, d'une longueur minimale de
+26 caractères.
+<P>
+
+La fonction <B>mktime()</B> convertit la date <I>timeptr</I> exprimée
+sous forme <B>struct tm</B> en une date locale sous forme <B>time_t</B>.
+La fonction ignore les valeurs transmises des membres <I>tm_wday</I>
+et <I>tm_yday</I> de la structure, et les recalcule en utilisant les
+autres membres.
+Si des membres de la structure débordent de l'intervalle autorisé, ils
+seront corrigés (par exemple le 40 Octobre devient le 9 Novembre).
+L'appel de <B>mktime()</B> renseigne également la variable
+externe <I>tzname</I> avec les informations concernant le fuseau
+horaire.
+Si la structure transmise ne peut pas être convertie, <B>mktime()</B>
+renvoie la valeur (time_t)(-1) et ne modifie pas les membres
+<I>tm_wday</I> et <I>tm_yday</I>.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Chacune de ces fonctions renvoie la valeur décrite plus haut, ou NULL
+(-1 dans le cas de <B>mktime()</B>) si une erreur est détectée.
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les quatre fonctions
+<B>asctime()</B>,
+
+<B>ctime()</B>,
+
+<B>gmtime()</B>
+
+et
+<B>localtime()</B>
+
+renvoient un pointeur vers des données statiques et ne sont donc pas sûres dans
+un contexte multi-threads. Les versions réentrantes
+<B>asctime_r()</B>,
+
+<B>ctime_r()</B>,
+
+<B>gmtime_r()</B>
+
+et
+<B>localtime_r()</B>
+
+sont mentionnées dans SUSv2, et disponibles depuis la libc 5.2.5.
+<P>
+
+La version GlibC de la struct tm a des champs supplémentaires&nbsp;:
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+long tm_gmtoff;           /* Secondes vers l'Est du temps TU */
+const char *tm_tm_zone;   /* Abréviation du nom de fuseau */
+</PRE>
+
+</DL>
+
+<P>
+présents quand _BSD_SOURCE est défini avant l'inclusion de
+<I>&lt;<A HREF="file:///usr/include/time.h">time.h</A>&gt;</I>.
+
+Ceci est une extension BSD, présente dans 4.3BSD-Reno.
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3, POSIX, BSD 4.3, ISO 9899
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+date">date</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+gettimeofday">gettimeofday</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+newctime">newctime</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?2+time">time</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+utime">utime</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+clock">clock</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+difftime">difftime</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strftime">strftime</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strptime">strptime</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+tzset">tzset</A></B>(3),
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:47 GMT, February 11, 2014
+</BODY>
+</HTML>

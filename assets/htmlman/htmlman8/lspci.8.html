@@ -1,0 +1,607 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LSPCI</TITLE>
+</HEAD><BODY>
+<H1>LSPCI</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 10 avril 2008<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="ixAAB"></A>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+lspci - Lister tous les périphériques
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>lspci</B>
+
+[<B>options</B>]
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>lspci</B>
+
+est un utilitaire permettant d'afficher des informations sur les bus PCI
+du système ainsi que sur les périphériques qui y sont connectés.
+<P>
+Par défaut, une briève liste des périphériques est affichée.
+Utilisez les options décrites plus loin pour obtenir soit une sortie plus
+volubile, soit une sortie conçue pour être analyser par d'autres programmes.
+<P>
+Si vous avez l'intention de signaler des bogues dans les pilotes
+de périphériques PCI ou sur
+<B>lspci</B>
+
+lui-même, merci de bien vouloir inclure la sortie de la commande
+<B>lspci -vvx</B>
+
+ou même mieux
+<B>lspci -vvxxx</B>
+
+(toutefois, voir les remarques plus loin).
+<P>
+Certaines parties de la sortie, particulièrement dans les modes
+hautement volubiles, ne sont probalement intelligibles que pour des
+hackers PCI expérimentés.
+Pour la définition exacte des champs, veuillez consulter soit les
+spécifications PCI, soit les fichiers d'inclusion
+<I>header.h</I>
+
+et
+<I>/usr/include/linux/pci.h</I>.
+
+<P>
+L'accès à certaines parties de la configuration PCI est réservé au
+superutilisateur sur la plupart des systèmes.
+Aussi, les fonctionnalités de
+<B>lspci</B>
+
+disponibles aux utilisateurs normaux sont limitées.
+Toutefois,
+<B>lspci</B>
+
+fait de son mieux pour afficher le maximum d'informations disponibles
+marquant les autres avec le texte
+<I>&lt;access denied&gt;</I>
+
+(accès refusé).
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<A NAME="lbAF">&nbsp;</A>
+<H3>Modes d'affichage de base</H3>
+
+<DL COMPACT>
+<DT><B>-m</B>
+
+<DD>
+Vider les données du périphérique PCI au format rétro-compatible
+lisible par un mécanisme.
+Voir les détails plus loin.
+<DT><B>-mm</B>
+
+<DD>
+Vider les données du périphérique PCI au format lisible par un mécanisme
+pour une analyse facile dans des scripts.
+Voir les détails plus loin.
+<DT><B>-t</B>
+
+<DD>
+Afficher un diagramme sous forme d'arbre contenant tous les bus, ponts,
+périphériques et connexions entre eux.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H3>Options d'affichage</H3>
+
+<DL COMPACT>
+<DT><B>-v</B>
+
+<DD>
+Mode volubile.
+Afficher des informations détaillées sur tous les périphériques.
+<DT><B>-vv</B>
+
+<DD>
+Mode très volubile.
+Afficher plus de détails.
+Ce niveau inclut tout ce qui est considéré comme utile.
+<DT><B>-vvv</B>
+
+<DD>
+Mode encore plus volubile.
+Afficher tout ce que l'on puisse analyser, même si cela ne semble pas
+intéressant pour tout le monde (par exemple, les régions de mémoire
+non définies).
+<DT><B>-k</B>
+
+<DD>
+Afficher les pilotes du noyau gérant chaque périphérique et également
+les modules du noyau capables de le gérer.
+Activée par défaut lorsque l'option
+<B>-v</B>
+
+est fournie dans le mode normal de sortie.
+(Actuellement, ne fonctionne que sur les noyaux Linux&nbsp;2.6 et suivants.)
+<DT><B>-x</B>
+
+<DD>
+Afficher un vidage hexadécimal de la partie standard de l'espace
+de configuration (les 64 ou 128 premiers octets des ponts CardBus).
+<DT><B>-xxx</B>
+
+<DD>
+Afficher un vidage hexadécimal de l'espace complet de configuration PCI.
+Cette option n'est disponible qu'au superutilisateur car plusieurs
+périphériques plantent lorsqu'on essaye de lire certaines parties de
+leur espace de configuration (ce comportement ne viole probablement pas
+la norme PCI, mais c'est pour le moins très stupide).
+Toutefois, de tels périphériques sont rares, ne vous en inquiétez donc
+pas plus que ça.
+<DT><B>-xxxx</B>
+
+<DD>
+Afficher un vidage hexadécimal de l'espace étendu (4096&nbsp;octets)
+de configuration PCI disponible sur les bus PCI-X 2.0 et PCI Express.
+<DT><B>-b</B>
+
+<DD>
+Vue focalisée sur les bus.
+Afficher tous les numéros d'interruption (IRQ) et les adresses telles
+qu'elles sont vues par les cartes du bus PCI
+plutôt que comme le noyau les voit.
+<DT><B>-D</B>
+
+<DD>
+Toujours afficher les numéros de domaine PCI.
+Par défaut,
+<B>lspci</B>
+
+les supprime sur les machines qui n'ont que le domaine 0.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H3>Options pour contrôler la résolution des identifiants en noms</H3>
+
+<DL COMPACT>
+<DT><B>-n</B>
+
+<DD>
+Afficher les codes périphériques et vendeurs PCI sous forme de nombre
+plutôt que d'aller les chercher dans la liste des identifiants PCI.
+<DT><B>-nn</B>
+
+<DD>
+Afficher les codes périphériques et vendeurs PCI sous forme de nombre
+et de noms.
+<DT><B>-q</B>
+
+<DD>
+Utiliser le DNS pour interroger la base de données centrale des
+identifiants PCI si un périphérique n'a pas été trouvé dans le fichier
+<I>pci.ids</I>
+
+local.
+Si la requête DNS réussit, le résultat est mis en cache dans
+<I>~/.pciids-cache</I>
+
+et sera reconnu dans les appels ultérieurs, même si l'option
+<B>-q</B>
+
+n'est pas fournie.
+Merci de bien vouloir utiliser cette option dans des scripts automatisés
+avec parcimonie afin d'éviter la surchage des serveurs de base de données.
+<DT><B>-qq</B>
+
+<DD>
+Identique à
+<B>-q</B>,
+
+sauf que le cache local est réinitialisé.
+<DT><B>-Q</B>
+
+<DD>
+Interroger la base de données centrale même pour les entrées reconnues
+localement.
+Utilisez cette option si vous suspectez que l'entrée affichée est fausse.
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H3>Options de sélection des périphériques</H3>
+
+<DL COMPACT>
+<DT><B>-s [[[[&lt;domain&gt;]:]&lt;bus&gt;]:][&lt;slot&gt;][.[&lt;func&gt;]]</B>
+
+<DD>
+Montrer seulement les périphériques du domaine indiqué (si votre
+machine possède plusieurs ponts d'hôtes, soit ils peuvent partager le
+même numéro de bus, soit chacun d'eux peut s'adresser un domaine PCI&nbsp;;
+les domaines sont numérotés de 0 à ffff), du bus indiqué (0 à ff),
+de l'emplacement indiqué (0 à 1f) et de la fonction indiquée (0 à 7).
+Chaque élément de l'adresse du périphérique peut être omis ou défini
+à «&nbsp;*&nbsp;», les deux signifiant «&nbsp;toute valeur&nbsp;».
+Par exemple, «&nbsp;0:&nbsp;» signifie tous les périphériques du bus 0,
+«&nbsp;0&nbsp;» signifie toutes les fonctions du périphérique 0 de tous les bus,
+«&nbsp;0.3&nbsp;» sélectionne la troisième fonction du périphérique 0 sur tous
+les bus et «&nbsp;.4&nbsp;» montre seulement la quatrième fonction de chaque
+périphérique.
+<DT><B>-d [&lt;vendor&gt;]:[&lt;device&gt;]</B>
+
+<DD>
+Sélectionner les périphériques dont les identifiants de vendeur et de
+périphérique sont fournis.
+Les deux identifiants doivent être indiqués sous forme hexadécimale et
+peuvent être omis ou définis à «&nbsp;*&nbsp;», les deux signifiant «&nbsp;toute valeur&nbsp;».
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H3>Autres options</H3>
+
+<DL COMPACT>
+<DT><B>-i &lt;file&gt;</B>
+
+<DD>
+Utiliser le fichier
+<I>&lt;file&gt;</I>
+
+comme liste des identifiants PCI plutôt que le fichier
+<I>/usr/share/hwdata/pci.ids</I>.
+
+(Ndt&nbsp;: l'emplacement peut varier suivant les distributions).
+<DT><B>-p &lt;file&gt;</B>
+
+<DD>
+Utiliser le fichier
+<I>&lt;file&gt;</I>
+
+pour la correspondance des identifiants PCI gérés par les modules du noyau.
+Par défaut,
+<B>lspci</B>
+
+utilise
+<I>/lib/modules/</I>kernel_version<I>/modules.pcimap</I>.
+
+Cela ne s'applique qu'aux systèmes Linux ayant de récents outils de modules.
+<DT><B>-M</B>
+
+<DD>
+Invoquer le mode de correspondance de bus qui effectue un balayage
+exhaustif de tous les périphériques PCI, y compris ceux se trouvent
+derrière des ponts mal configurés, etc.
+Cette option n'est disponible qu'au superutilisateur et ne donnent des
+résultats significatifs que si elle est utilisée avec le mode d'accès
+matériel direct (autrement, les résultats sont identiques aux modes
+normaux d'affichage, modulo les bogues de
+<B>lspci</B>).
+
+Veuillez noter que le mappeur de bus ne prend pas en charge les domaines
+PCI et balaie seulement le domaine 0.
+<DT><B>--version</B>
+
+<DD>
+Afficher la version de
+<B>lspci</B>.
+
+Cette option doit être utilisée seule.
+</DL>
+<A NAME="lbAK">&nbsp;</A>
+<H3>Options d'accès PCI</H3>
+
+<P>
+
+Les utilitaires PCI utilisent la bibliothèque PCI pour dialoguer avec
+les périphériques PCI (voir
+<B><A HREF="/cgi-bin/man/man2html?7+pcilib">pcilib</A></B>(7)
+
+pour plus de détails).
+Vous pouvez utiliser les options suivantes pour influer sur
+son comportement&nbsp;:
+<DL COMPACT>
+<DT><B>-A &lt;method&gt;</B>
+
+<DD>
+La bibliothèque prend en charge plusieurs méthodes d'accès
+au matériel PCI.
+Par défaut, elle utilise la première méthode d'accès disponible,
+mais vous pouvez utilisez cette option pour outrepasser cette décision.
+Voir
+<B>-A help</B>
+
+pour une liste des méthodes disponibles et leurs descriptions.
+<DT><B>-O &lt;param&gt;=&lt;value&gt;</B>
+
+<DD>
+Le comportement de la bibliothèque est contrôlé par plusieurs
+paramètres nommés.
+Cette option permet de définir la valeur de n'importe lequel des paramètres.
+Utilisez
+<B>-O help</B>
+
+pour une liste des paramètres connus et leurs valeurs par défaut.
+<DT><B>-H1</B>
+
+<DD>
+Utiliser l'accès matériel direct via le mécanisme&nbsp;1 de configuration
+Intel (c'est un raccourci pour
+<B>-A intel-conf1</B>).
+
+<DT><B>-H2</B>
+
+<DD>
+Utiliser l'accès matériel direct via le mécanisme&nbsp;2 de configuration
+Intel (c'est un raccourci pour
+<B>-A intel-conf2</B>).
+
+<DT><B>-F &lt;file&gt;</B>
+
+<DD>
+Plutôt que d'accéder vraiment au matériel, lire la liste des périphériques
+et les valeurs de leurs registres de configurations à partir du fichier
+fourni produit par une exécution précédente de
+<B>lspci -x</B>.
+
+Cela est très pratique pour l'analyse des rapports de bogues fournis
+par les utilisateurs car vous pouvez afficher la configuration matérielle
+de quelle façon que vous le voulez sans embêter l'utilisateur en lui
+réclamant plus de vidage.
+<DT><B>-G</B>
+
+<DD>
+Accroître le niveau de débogage de la bibliothèque.
+</DL>
+<A NAME="lbAL">&nbsp;</A>
+<H2>SORTIE LISIBLE PAR DES MÉCANISMES</H2>
+
+Si vous avez l'intention de traiter automatiquement la sortie de
+<B>lspci</B>,
+
+veuillez utiliser l'un des formats de sortie lisible par un mécanisme
+(<B>-m</B>,
+
+<B>-vm</B>,
+
+<B>-vmm</B>)
+
+décrits dans cette section.
+Tous les autres formats sont succeptibles d'être modifiés
+entre deux versions de
+<B>lspci</B>.
+
+<P>
+
+Tous les nombres sont toujours affichés sous forme hexadécimale.
+Si vous voulez traiter les identifiants numériques plutôt que les noms,
+veuillez ajouter l'option
+<B>-n</B>
+
+<A NAME="lbAM">&nbsp;</A>
+<H3>Format simple (-m)</H3>
+
+Dans le format simple, chaque périphérique est décrit sur une seule ligne,
+formatée sous forme de paramètres appropriés à leurs passages à un script
+shell, c'est-à-dire des valeurs séparées par espaces, entourées de
+guillemets et protégées si nécessaire.
+Certains arguments sont positionnels&nbsp;: emplacement (slot), classe, nom
+du vendeur, nom du périphérique, nom du vendeur du sous-système et nom
+du sous-sytème (les deux derniers arguments sont vides si le périphérique
+n'a pas de sous système)&nbsp;; les arguments restants sont de type option&nbsp;:
+<DL COMPACT>
+<DT><B>-r</B><I>rev</I>
+
+<DD>
+Numéro de révision.
+<DT><B>-p</B><I>progif</I>
+
+<DD>
+Interface de programmation.
+</DL>
+<P>
+
+L'ordre relatif des arguments positionnels et des options n'est pas défini.
+De nouvelles options peuvent être introduites dans de futures versions,
+mais elles auront toujours un seul paramètre accollé (sans espace entre
+l'option et le paramètre), aussi, elles pourront être facilement ignorées
+si elles ne sont pas reconnues.
+<A NAME="lbAN">&nbsp;</A>
+<H3>Format volubile (-vmm)</H3>
+
+La sortie volubile est une séquence d'enregistrements séparés
+par des lignes blanches.
+Chaque enregistrement décrit un seul périphérique dans une séquence
+de lignes, chaque ligne contenant une seule paire
+«&nbsp;<I>étiquette</I>:
+
+<I>valeur</I>&nbsp;».
+
+L'<I>étiquette</I>
+
+et la
+<I>valeur</I>
+
+sont séparées par un unique caractère de tabulation.
+Ni les enregistrements, ni les lignes dans un enregistrement ne sont
+dans un ordre particulier.
+Les étiquettes sont sensibles à la casse.
+<P>
+
+Sont définies les étiquettes suivantes&nbsp;:
+<DL COMPACT>
+<DT><B>Slot</B>
+
+<DD>
+Le nom de l'emplacement où se trouve le périphérique
+([<I>domain</I>:]<I>bus</I>:<I>device</I>.<I>function</I>).
+
+Cette étiquette est toujours la première dans un enregistrement.
+<DT><B>Class</B>
+
+<DD>
+Nom de la classe.
+<DT><B>Vendor</B>
+
+<DD>
+Nom du vendeur.
+<DT><B>Device</B>
+
+<DD>
+Nom du périphérique.
+<DT><B>SVendor</B>
+
+<DD>
+Nom du vendeur du sous-système (optionnel).
+<DT><B>SDevice</B>
+
+<DD>
+Nom du sous-système (optionnel).
+<DT><B>Rev</B>
+
+<DD>
+Numéro de révision (optionnel).
+<DT><B>ProgIf</B>
+
+<DD>
+Interface de programmation (optionnel).
+<DT><B>Driver</B>
+
+<DD>
+Pilote du noyau gérant actuellement le périphérique
+(optionnel, Linux seulement).
+<DT><B>Module</B>
+
+<DD>
+Module du noyau signalant qu'il est capable de gérer le périphérique
+(optionnel, Linux seulement).
+</DL>
+<P>
+
+De nouvelles étiquettes pourront être introduites dans de futures versions.
+Aussi, vous devriez ignorer silencieusement les étiquettes non reconnues.
+<A NAME="lbAO">&nbsp;</A>
+<H3>Format volubile rétro-compatible (-vm)</H3>
+
+Dans ce mode,
+<B>lspci</B>
+
+tente d'être parfaitement compatible avec ses anciennes versions.
+Il est presque identique au format volubile normal, mais l'étiquette
+<B>Device</B>
+
+est utilisée à la fois pour l'emplacement et pour le nom du périphérique,
+aussi, elle apparaît deux fois dans un même enregistrement.
+Veuillez éviter ce format dans tout nouveau code.
+<A NAME="lbAP">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/usr/share/hwdata/pci.ids</I>
+
+<DD>
+Une liste de tous les identifiants PCI connus (vendeurs, périphériques,
+classes et sous-classes).
+Maintenu à
+<I><A HREF="http://pciids.sourceforge.net/">http://pciids.sourceforge.net/</A></I>,
+
+utilisez l'utilitaire
+<B><A HREF="/cgi-bin/man/man2html?1+update-pciids">update-pciids</A></B>(1)
+
+pour télécharger la version la plus récente.
+(Ndt&nbsp;: l'emplacement peut varier suivant les distributions).
+<DT><I>/usr/share/hwdata/pci.ids.gz</I>
+
+<DD>
+Si
+<B>lspci</B>
+
+a été compilé avec la prise en charge de la compression,
+on essayera d'utiliser d'abord ce fichier avant
+<I>pci.ids</I>.
+
+(Ndt&nbsp;: l'emplacement peut varier suivant les distributions).
+<DT><B>~/.pciids-cache</B>
+
+<DD>
+Tous les identifiants trouvés avec le mode de requête DNS sont mis
+en chache dans ce fichier.
+</DL>
+<A NAME="lbAQ">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Quelques fois,
+<B>lspci</B>
+
+n'est pas capable de décoder complètement les registres de configuration.
+Cela arrive généralement lorsque l'on n'a pas pu obtenir suffisamment
+d'informations de la part des auteurs.
+Dans de tels cas, il affiche au moins le symbole
+<B>&lt;?&gt;</B>
+
+pour indiquer qu'il y aurait moyen de dire plus à cet endroit.
+Si vous connaissez ces détails, les correctifs sont évidemment
+les bienvenus.
+<P>
+L'accès à l'espace de configuration étendu n'est actuellement pris en
+charge que par le dorsal
+<B>linux_sysfs</B>.
+
+<A NAME="lbAR">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+setpci">setpci</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+update-pciids">update-pciids</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?7+pcilib">pcilib</A></B>(7)
+
+<A NAME="lbAS">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Les utilitaires PCI sont maintenus par Martin Mares &lt;<A HREF="mailto:mj@ucw.cz">mj@ucw.cz</A>&gt;.
+<A NAME="lbAT">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal&nbsp;AT&nbsp;univ-montp2&nbsp;DOT&nbsp;fr&gt; le 6&nbsp;juin&nbsp;2008.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;8&nbsp;lspci</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DL>
+<DT><A HREF="#lbAF">Modes d'affichage de base</A><DD>
+<DT><A HREF="#lbAG">Options d'affichage</A><DD>
+<DT><A HREF="#lbAH">Options pour contrôler la résolution des identifiants en noms</A><DD>
+<DT><A HREF="#lbAI">Options de sélection des périphériques</A><DD>
+<DT><A HREF="#lbAJ">Autres options</A><DD>
+<DT><A HREF="#lbAK">Options d'accès PCI</A><DD>
+</DL>
+<DT><A HREF="#lbAL">SORTIE LISIBLE PAR DES MÉCANISMES</A><DD>
+<DL>
+<DT><A HREF="#lbAM">Format simple (-m)</A><DD>
+<DT><A HREF="#lbAN">Format volubile (-vmm)</A><DD>
+<DT><A HREF="#lbAO">Format volubile rétro-compatible (-vm)</A><DD>
+</DL>
+<DT><A HREF="#lbAP">FICHIERS</A><DD>
+<DT><A HREF="#lbAQ">BOGUES</A><DD>
+<DT><A HREF="#lbAR">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAS">AUTEUR</A><DD>
+<DT><A HREF="#lbAT">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

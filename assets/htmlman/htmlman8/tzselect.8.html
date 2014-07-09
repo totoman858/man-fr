@@ -1,0 +1,102 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TZSELECT</TITLE>
+</HEAD><BODY>
+<H1>TZSELECT</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+tzselect - Sélectionner un fuseau horaire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>tzselect</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le programme
+<B>tzselect</B>
+
+demande à l'utilisateur des informations à propos de son emplacement
+géographique, et fournit sur sa sortie standard la description
+du fuseau horaire.
+Cette sortie est utilisable pour la variable d'environnement TZ.
+<P>
+
+Toutes les interactions avec l'utilisateur se font par l'entrée standard
+et la sortie d'erreur.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VARIABLES D'ENVIRONNEMENT</H2>
+
+<DL COMPACT>
+<DT><B>AWK</B><DD>
+Nom de l'interpréteur
+<I>awk</I>
+
+compatible POSIX disponible sur le système (par défaut :
+<B>awk</B>).
+
+<DT><B>TZDIR</B><DD>
+Nom du répertoire contenant les fichiers de données des fuseaux horaires
+(par défaut :
+<B>/usr/local/etc/zoneinfo</B>).
+
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><B>TZDIR</B><B>/iso3166.tab</B><DD>
+Table des noms de pays et des codes sur deux lettres (ISO 3166).
+<DT><B>TZDIR</B><B>/zone.tab</B><DD>
+Table des codes de pays, latitudes, longitudes, fuseaux horaires et
+commentaires descriptifs.
+<DT><B>TZDIR</B><B>/</B><I>TZ</I><DD>
+Fichier de données de fuseau horaire pour <I>TZ</I>.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CODE DE RETOUR</H2>
+
+Le code de sortie est nul si une zone horaire a été obtenue correctement, et
+une valeur non-nulle sinon.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+newctime">newctime</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+tzfile">tzfile</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+zdump">zdump</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+zic">zic</A>(8)</B>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1999-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VARIABLES D'ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">CODE DE RETOUR</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:02 GMT, February 11, 2014
+</BODY>
+</HTML>

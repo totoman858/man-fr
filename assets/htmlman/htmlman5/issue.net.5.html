@@ -1,0 +1,96 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ISSUE.NET</TITLE>
+</HEAD><BODY>
+<H1>ISSUE.NET</H1>
+Section: Manuel de l administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+issue.net - fichier d'authentification pour les sessions telnet.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION </H2>
+
+Le fichier <B>/etc/issue.net</B> est un fichier texte qui contient un message ou une
+identification du système à afficher avant l'invite de login d'une 
+session telnet. Il peut contenir différentes séquences de caractères&nbsp;:
+<B>'%'</B>
+
+<BR>&nbsp;.&nbsp;Les&nbsp;séquences&nbsp;suivantes&nbsp;sont&nbsp;supportées&nbsp;par&nbsp;
+<B>telnetd</B> :
+
+<DL COMPACT>
+<DT><B>%t</B>
+
+<DD>
+- affiche le tty utilisé
+<DT><B>%h</B>
+
+<DD>
+- affiche le nom de la machine (FQDN)
+<DT><B>%D</B>
+
+<DD>
+- affiche le nom du domaine NIS
+<DT><B>%d</B>
+
+<DD>
+- affiche l'heure et la date
+<DT><B>%s</B>
+
+<DD>
+- affiche le nom du système d'exploitation
+<DT><B>%m</B>
+
+<DD>
+- montre le type de machine (CPU)
+<DT><B>%r</B>
+
+<DD>
+- affiche la sous-version du système d'exploitation
+<DT><B>%v</B>
+
+<DD>
+- affiche la version du système d'exploitation
+<DT><B>%%</B>
+
+<DD>
+- affiche un caractère '%' unique.
+</DL>
+<P>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/etc/issue.net
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+telnetd">telnetd</A></B>(8)
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 1999
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION </A><DD>
+<DT><A HREF="#lbAD">FICHIERS</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:56 GMT, February 11, 2014
+</BODY>
+</HTML>

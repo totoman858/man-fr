@@ -1,0 +1,94 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETDTABLESIZE</TITLE>
+</HEAD><BODY>
+<H1>GETDTABLESIZE</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getdtablesize - Lire la taille de la table des descripteurs.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int getdtablesize(void);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>getdtablesize</B>
+
+retourne le nombre maximal de fichiers qu'un processus puisse ouvrir 
+simultanément.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Le numéro du plus grand descripteur possible plus un.
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+<B>getdtablesize</B>
+
+est implémentée comme fonction de bibliothèque. La version de la GlibC appelle
+<B><A HREF="/cgi-bin/man/man2html?2+getrlimit">getrlimit</A></B>(2)
+
+et renvoie la valeur de la limite
+<B>RLIMIT_NOFILE</B>
+
+actuelle, ou
+<B>OPEN_MAX</B>
+
+si cela échoue.
+Les versions des bibliothèques libc4 et libc5 renvoyaient
+<B>OPEN_MAX</B>
+
+(256 depuis Linux 0.98.4).
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, 4.4BSD (l'appel système
+<B>getdtablesize</B>
+
+est apparu pour la première fois dans 4.2BSD).
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+close">close</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+dup">dup</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getrlimit">getrlimit</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:52 GMT, February 11, 2014
+</BODY>
+</HTML>

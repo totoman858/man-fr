@@ -1,0 +1,554 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of INITRD</TITLE>
+</HEAD><BODY>
+<H1>INITRD</H1>
+Section: Manuel du programmeur Linux (4)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+initrd - Disque RAM initialisé au démarrage du système.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le fichier spécial
+<B>/dev/initrd</B>
+
+est un périphérique bloc en lecture seule.
+Ce périphérique
+<B>/dev/initrd</B>
+
+est un disque RAM qui est initialisé par le chargeur du système avant le
+démarrage du noyau.
+Ainsi, le noyau peut utiliser le contenu de ce périphérique bloc
+pour un démarrage en deux phases.
+<P>
+
+Durant la première phase, le noyau démarre et monte la racine du système de fichiers
+depuis le contenu de
+<B>/dev/initrd </B>
+
+(par exemple un disque RAM initialisé par le chargeur).
+Durant la seconde phase, les drivers supplémentaires, et les autres modules
+sont chargés depuis le périphérique racine initial.
+Après le chargement de ces modules supplémentaires, une nouvelle racine du système de
+fichiers est montée à partir d'un périphérique différent.
+<A NAME="lbAD">&nbsp;</A>
+<H2>DÉMARRAGE DU SYSTÈME </H2>
+
+Quand il démarre en utilisant <B>initrd</B>, le système procède comme suit:
+<DL COMPACT><DT><DD>
+<P>
+
+1. Le chargeur place une copie du noyau en mémoire, ainsi que le
+contenu de <B>/dev/initrd</B>.
+<P>
+
+2. Au démarrage du noyau, celui-ci décompresse et recopie le contenu du
+périphérique
+<B>/dev/initrd</B>
+
+sur le disque virtuel
+<B>/dev/ram0 </B>
+
+puis libère la mémoire utilisée par
+<B>/dev/initrd</B>.
+
+<P>
+
+3. Le noyau monte en lecture-écriture le périphérique
+<B>/dev/ram0 </B>
+
+comme racine initiale du système de fichiers.
+<P>
+
+4. Si la racine désirée pour le système de fichiers est également
+celle que l'on vient de monter (par ex. <B>/dev/ram0</B>), le noyau
+passe directement à la dernière étape du démarrage.
+<P>
+
+5. Si un fichier exécutable <B>/linuxrc</B> est présent sur le système
+de fichiers racine initial, ce fichier est exécuté avec l'uid 0.
+(Le fichier
+<B>/linuxrc</B>
+
+doit avoir la permission d'exécution. Ce peut être n'importe quel
+exécutable, y compris un shell-script.)
+<P>
+
+6. Si
+<B>/linuxrc</B>
+
+n'est pas exécuté ou lorsqu'il se termine,
+la racine normale du système de fichiers est montée.
+(Si
+<B>/linuxrc</B>
+
+se termine en ayant monté d'autres systèmes de fichiers sur la racine
+initiale, alors le comportement du noyau est
+<B>INDÉTERMINÉ</B>.
+
+Voir le paragraphe
+<B>NOTES</B>
+
+pour le comportement effectif.)
+<P>
+
+7. Si la racine normale dispose d'un répertoire
+<B>/initrd</B>,
+
+le périphérique
+<B>/dev/ram0</B>
+
+est déplacé depuis
+<B>/</B> vers <B>/initrd</B>.
+
+Sinon, si le répertoire
+<B>/initrd</B>
+
+n'existe pas, le périphérique
+<B>/dev/ram0</B>
+
+est démonté.
+(Lors du déplacement de
+<B>/</B> vers <B>/initrd</B>, <B>/dev/ram0</B>
+
+n'est pas démonté, aussi des processus peuvent continuer à s'exécuter depuis ce périphérique.
+Si le répertoire
+<B>/initrd</B>
+
+n'existe pas sur le système de fichiers normal, et si des processus continuent à s'exécuter
+depuis
+<B>/dev/ram0</B> lorsque <B>/linuxrc</B>
+
+se termine, le comportement du noyau est
+<B>INDÉTERMINÉ</B>.
+
+Voir le paragraphe
+<B>NOTES</B>
+
+pour le comportement effectif.)
+<P>
+
+8. La séquence de démarrage habituelle (invocation de
+<B>/sbin/init</B>)
+
+est alors effectuée depuis le système de fichiers normal.
+
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+Lorsque l'on utilise
+<B>initrd</B>,
+
+les options suivantes du chargeur affectent les opération
+de démarrage du noyau:
+<DL COMPACT>
+<DT><B>initrd=</B><I>nom_de_fichier</I>
+
+<DD>
+Indique le fichier à charger comme contenu de
+<B>/dev/initrd</B>.
+
+Pour <B>LOADLIN</B>, il s'agit d'une option en ligne de commande.
+Pour <B>LILO</B> il faut utiliser cette commande dans le fichier
+de configuration <I>/etc/lilo.config</I>.
+Le fichier mentionné avec cette option sera typiquement une image
+compressée par 
+<B><A HREF="/cgi-bin/man/man2html?1+gzip">gzip</A></B>(1),
+
+du système de fichiers.
+<DT><B>noinitrd</B>
+
+<DD>
+Cette option désactive le démarrage en deux étapes. Le noyau se
+comporte comme si
+<B>/dev/initrd </B>
+
+n'était pas initialisé. Avec cette option, le contenu de
+<B>/dev/initrd</B>,
+
+une fois chargé en mémoire sera préservé. Ce contenu peut alors
+être n'importe quelle donnée, et pas uniquement une image d'un
+système de fichiers.
+Néanmoins, le périphérique
+<B>/dev/initrd </B>
+
+est en lecture seule, et ne peut être lu qu'une seule fois après
+le démarrage du système.
+<DT><B>root=</B><I>nom_de_périphérique</I>
+
+<DD>
+Indique le nom du périphérique à utiliser comme racine normale du système de fichiers.
+Pour <B>LOADLIN</B>, il s'agit d'une option en ligne de commande.
+Pour <B>LILO</B> il faut utiliser cette commande dans le fichier
+de configuration <I>/etc/lilo.config</I>.
+Le périphérique indiqué ici doit être montable et contenir un système de fichiers convenable.
+
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>MODIFICATION DE LA RACINE DU SYSTÈME DE FICHIERS</H2>
+
+Le système de fichiers utilisé comme racine par défaut est celui
+qui est compilé dans le noyau (ou configuré avec
+<B>rdev</B>),
+
+ou celui qui est spécifié par une option du chargeur.
+Pour accéder à un système de fichiers monté par NFS, il faut utiliser les
+options de démarrage
+<B>nfs_root_name</B> et <B>nfs_root_addrs</B>
+
+pour la configuration NFS.
+Pour plus d'information sur les racines de systèmes de fichiers montées par NFS,
+consultez le fichier
+<B>nfsroot.txt</B>,
+
+dans la documentation du noyau.
+Pour plus d'informations sur la configuration de la racine du système de fichiers,
+voyez également les documentations de
+<B>LILO</B> et <B>LOADLIN</B>.
+
+<P>
+
+On peut aussi faire effectuer la modification de la racine normale par l'exécutable
+<B>/linuxrc</B>.
+
+Pour ce faire, le système
+<B>/proc</B>
+
+doit être monté. Ensuite, 
+<B>/linuxrc </B>
+
+modifie le périphérique racine en écrivant directement dans les fichiers
+<B>/proc/sys/kernel/real-root-dev</B>, 
+
+<B>/proc/sys/kernel/nfs-root-name</B>, et 
+
+<B>/proc/sys/kernel/nfs-root-addrs</B>.
+
+Pour un périphérique physique monté à la racine, le changement s'effectue
+en écrivant le numéro de périphérique du nouveau système de fichiers dans
+<B>/proc/sys/kernel/real-root-dev</B>.
+
+Pour un système monté par NFS, la modification se fait en écrivant la configuration
+NFS dans les fichiers
+<B>/proc/sys/kernel/nfs-root-name</B> et 
+
+<B>/proc/sys/kernel/nfs-root-addrs</B>
+
+puis en inscrivant 0xff (c.-à-d. le numéro de pseudo-périphérique NFS) dans le fichier
+<B>/proc/sys/kernel/real-root-dev</B>.
+
+Par exemple, la ligne de commande suivant basculerait le périphérique racine normale
+sur
+<B>/dev/hdb1</B>:
+
+<PRE>
+        echo 0x365 &gt;/proc/sys/kernel/real-root-dev
+</PRE>
+
+La ligne suivante modifierait le périphérique normal en un répertoire NFS
+<B>/var/nfsroot</B>
+
+sur un serveur local ayant l'adresse IP 193.8.232.7, ceci sur un système nommé idefix,
+se trouvant à l'adresse 193.8.232.7:
+<PRE>
+        echo /var/nfsroot &gt;/proc/sys/kernel/nfs-root-name
+        echo 193.8.232.2:193.8.232.7::255.255.255.0:idefix \
+          &gt;/proc/sys/kernel/nfs-root-addrs
+        echo 255 &gt;/proc/sys/kernel/real-root-dev
+</PRE>
+
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>UTILISATION</H2>
+
+L'intérêt principal d'implémenter
+<B>initrd</B>
+
+était de permettre une configuration modulaire du noyau lors de l'installation
+du système.
+<P>
+
+Un scénario possible d'installation est le suivant:
+<DL COMPACT><DT><DD>
+<P>
+
+1. Le programme de chargement démarre depuis une disquette, ou un autre support,
+avec un noyau minimal (par exemple les supports pour
+<B>/dev/ram</B>, <B>/dev/initrd</B>,
+
+et le système de fichiers ext2). Puis charge
+<B>/dev/initrd</B>
+
+depuis une version compressée avec gzip d'un système de fichiers initial.
+<P>
+
+2. L'exécutable
+<B>/linuxrc</B>
+
+détermine ce qui est nécessaire pour (1) monter le système de fichiers
+normal (pilotes de périphériques, systèmes de fichiers) et (2) utiliser
+le support fourni pour la distribution (CD-ROM, réseau, bande magnétique).
+Cette étape peut être effectué en interrogeant l'utilisateur, en effectuant
+des tests de détection automatique, ou en utilisant une approche hybride entre
+les deux.
+<P>
+
+3. L'exécutable
+<B>/linuxrc</B>
+
+charge les modules nécessaires depuis le système de fichiers initial.
+<P>
+
+4. L'exécutable
+<B>/linuxrc</B>
+
+crée et remplit le système de fichiers racine. (A cet instant, le système
+de fichiers racine n'est pas nécessairement complet).
+<P>
+
+5. L'exécutable
+<B>/linuxrc</B> configure <B>/proc/sys/kernel/real-root-dev,</B>
+
+démonte
+<B>/proc</B>, 
+
+le système de fichiers normal, et tout autre système de fichiers qu'il
+a éventuellement monté, et se termine.
+<P>
+
+6. Le noyau monte alors le système de fichiers racine normal.
+<P>
+
+7. Maintenant que le système de fichiers est accessible,
+le chargeur peut être installé.
+<P>
+
+8. Le chargeur est configuré pour installer dans
+<B>/dev/initrd</B>
+
+un système de fichiers disposant de l'ensemble des modules qui ont été utilisés pour
+démarrer le système.
+(par exemple un périphérique comme
+<B>/dev/ram0</B>
+
+peut être modifié, puis démonté, et finalement l'image est recopiée depuis
+<B>/dev/ram0</B>
+
+vers un fichier.)
+<P>
+
+9. Le système est maintenant prêt à redémarrer, et les tâches supplémentaires
+d'installation peuvent être effectuées.
+</DL>
+
+<P>
+
+Le principal avantage offert par
+<B>/dev/initrd</B>
+
+dans ce scénario est de permettre de réutiliser les données de configuration
+lors du fonctionnement normal du noyau, sans nécessiter de choisir un noyau
+initial, d'utiliser un gros noyau générique, ou de recompiler le noyau après
+l'installation.
+<P>
+
+Un second scénario sert à l'installation 
+de Linux sur un réseau constitué de machines configurées différemment.
+Dans ce cas, il peut être préférable de n'utiliser qu'un nombre minimal
+de noyaux (voire un seul dans le meilleur des cas), et de ne stocker
+qu'une quantité la plus faible possible d'information de configuration.
+Ainsi, on crée un fichier commun contenant tous les modules nécessaires,
+et seul le fichier
+<B>/linuxrc</B>,
+
+ou les fichiers qu'il lance,
+changent suivant les machines.
+<P>
+
+Un troisième scénario permet de disposer de disques de secours les plus
+confortables possible. Les informations comme l'emplacement du système
+de fichiers racines, etc. ne sont pas indispensables lors du démarrage.
+Le système chargé par
+<B>/dev/initrd </B>
+
+peut utiliser des menus de dialogue et/ou des détections automatiques suivi
+de vérification de cohérence du système.
+<P>
+
+Enfin, et c'est peut-être l'usage le plus important, les distributions de
+Linux sur CD-ROM permettent une installation plus aisée.
+La distribution peut utiliser directement
+<B>LOADLIN</B>
+
+pour charger
+<B>/dev/initrd</B>
+
+depuis le CD-ROM sans avoir besoin de créer de disquettes.
+La distribution peut également utiliser une disquette de démarrage avec
+<B>LILO</B>
+
+puis charger un disque ram par l'intermédiaire de
+<B>/dev/initrd</B> depuis le CD-ROM.
+
+
+
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFIGURATION</H2>
+
+<B>/dev/initrd </B>
+
+est un périphérique bloc en lecture-seule, dont le numéro majeur est 1,
+et le mineur 250.
+Typiquement,
+<B>/dev/initrd</B>
+
+appartient à
+<B>root.disk </B>
+
+et dispose du mode 0400 (lecture uniquement par root).
+Si votre système Linux n'a pas encore de fichier
+<B>/dev/initrd</B>,
+
+vous pouvez le créer en utilisant les commandes suivantes :
+<PRE>
+<B>
+        mknod -m 400 /dev/initrd b 1 250
+        chown root:disk /dev/initrd
+</B>
+</PRE>
+
+Il faut également que les options &quot;disque Ram&quot; et &quot;Disque Ram initial&quot;
+(par exemple
+<B>CONFIG_BLK_DEV_RAM=y</B> et <B>CONFIG_BLK_DEV_INITRD=y</B>
+
+) soient compilées directement dans le noyau Linux pour pouvoir utiliser
+<B>/dev/initrd</B>.
+
+Lors de l'utilisation de
+<B>/dev/initrd</B>, 
+
+le pilote de disque Ram ne peut pas être chargé en tant que module.
+
+
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/dev/initrd</I>
+
+<BR>
+
+<I>/dev/ram0</I>
+
+<BR>
+
+<I>/linuxrc</I>
+
+<BR>
+
+<I>/initrd</I>
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+chown">chown</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+mknod">mknod</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?4+ram">ram</A></B>(4),
+
+<B><A HREF="/cgi-bin/man/man2html?8+freeramdisk">freeramdisk</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+rdev">rdev</A></B>(8),
+
+Le fichier
+<I>initrd.txt</I>
+
+dans les sources du noyau, la documentation de LILO, celle de LOADLIN,
+et la documentation SYSLINUX.
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>NOTES</H2>
+
+1. Avec le noyau actuel, tout système de fichier reste monté lors du déplacement
+de
+<B>/dev/ram0</B> depuis <B>/</B> vers <B>/initrd</B>,
+
+et continue à être accessible. Néanmoins, les entrées de
+<B>/proc/mounts</B>
+
+ne sont pas mises à jour.
+<P>
+
+2. Avec le noyau actuel, si le répertoire
+<B>/initrd</B> n'existe pas, alors <B>/dev/ram0</B>
+
+ne sera PAS complètement démonté si
+<B>/dev/ram0</B>
+
+est utilisé par un processus ou si un système de fichiers a été monté dessus.
+Si
+<B>/dev/ram0</B> n'est PAS complètement démonté, 
+
+alors
+<B>/dev/ram0</B>
+
+restera chargé en mémoire.
+<P>
+
+3. Les utilisateurs de
+<B>/dev/initrd</B>
+
+ne doivent pas compter sur les comportements décrits dans les deux notes
+précédentes. Ces comportements peuvent changer dans les versions futures
+du noyau Linux.
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Le code du noyau pour le périphérique
+<B>initrd</B>
+
+a été écrit par Werner Almesberger &lt;<A HREF="mailto:almesber@lrc.epfl.ch">almesber@lrc.epfl.ch</A>&gt; et
+Hans Lermen &lt;<A HREF="mailto:lermen@elserv.ffm.fgan.de">lermen@elserv.ffm.fgan.de</A>&gt;.
+Le code de
+<B>initrd</B>
+
+a été introduit dans le noyau Linux de base dans la version de développement 1.3.73.
+<P>
+<A NAME="lbAM">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1998-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">DÉMARRAGE DU SYSTÈME </A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">MODIFICATION DE LA RACINE DU SYSTÈME DE FICHIERS</A><DD>
+<DT><A HREF="#lbAG">UTILISATION</A><DD>
+<DT><A HREF="#lbAH">CONFIGURATION</A><DD>
+<DT><A HREF="#lbAI">FICHIERS</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">NOTES</A><DD>
+<DT><A HREF="#lbAL">AUTEURS</A><DD>
+<DT><A HREF="#lbAM">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:53 GMT, February 11, 2014
+</BODY>
+</HTML>

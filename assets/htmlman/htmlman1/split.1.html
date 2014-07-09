@@ -1,0 +1,140 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SPLIT</TITLE>
+</HEAD><BODY>
+<H1>SPLIT</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+split - Découper un fichier en différentes partie.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>split</B>
+
+[-lignes] [-l lignes] [-b nb_octets[bkm]] [-C nb_octets[bkm]] [--lines=lignes]
+[--bytes=nb_octets[bkm]] [--line-bytes=nb_octets[bkm]] [--help] [--version]
+[fichier_entrée [préfixe_sortie]]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>split</B>.
+
+<P>
+<B>split</B>
+
+crée un ou plusieurs fichiers (autant que nécessaire) contenant les
+sections consécutives du
+<I>fichier_d_entrée</I>.
+
+<P>
+Si aucun fichier n'est fourni, ou si le nom `-' est mentionné, la lecture
+se fait depuis l'entrée standard.
+<P>
+Par défaut,
+<B>split</B>
+
+copie 1000 lignes du fichier d'entrée (ou ce qu'il en reste) dans chaque
+fichier de sortie.
+<P>
+
+Le nom des fichiers de sortie est composé d'un préfixe suivi d'un groupe
+de lettres, choisi de telle manière que la concaténation des fichiers de sortie,
+triés suivant l'ordre alphabétique, restitue le fichier original.
+<P>
+Le préfixe par défaut est `x'.  Si l'argument
+<I>préfixe_sortie</I>
+
+est fourni, celui ci est utilisé pour créer les noms des fichiers de sortie.
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><I>-n, -l n, --lines=n</I>
+
+<DD>
+Copier
+<I>n</I>
+
+lignes du fichier d'entrée dans chacun des fichiers de sortie.
+<DT><I>-b n[bkm], --bytes=n[bkm]</I>
+
+<DD>
+Copier
+<I>n</I>
+
+octets du fichier d'entrée dans chacun des fichiers de sortie.
+<I>n</I>
+
+doit être un entier non nul, éventuellement suivi d'un caractère précisant
+une unité différente :
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>b<DD>
+blocs de 512 octets.
+<DT>k<DD>
+blocs de 1 Ko
+<DT>m<DD>
+blocs de 1 Mo
+</DL>
+</DL>
+
+<DT><I>-C n[bkm], --line-bytes=n[bkm]</I>
+
+<DD>
+Copier dans chaque fichier de sortie autant de lignes complètes
+que possible, sans dépasser
+<I>n</I>
+
+octets au maximum.
+Si une ligne est plus longue que
+<I>n</I>
+
+octets,
+<B>split</B> copiera <I>n</I> octets de la ligne dans chaque fichier
+jusqu'à ce qu'il reste moins de <I>n</I> octets sur la ligne, puis
+continuera normalement.
+<I>n</I>
+
+est indiqué avec le même format que dans l'option
+<I>--bytes</I>.
+
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et se terminer normalement.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et se terminer normalement.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:47 GMT, February 11, 2014
+</BODY>
+</HTML>

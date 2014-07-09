@@ -1,0 +1,762 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of NETSTAT</TITLE>
+</HEAD><BODY>
+<H1>NETSTAT</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 25 février 1999<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+netstat - Afficher les connexions réseau, les tables de routage, les statistiques des interfaces, les connexions masquées, et les membres multicast.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>netstat</B>
+
+[<I>options_famille_adresse</I>]
+
+[<B>--tcp</B>|<B>-t</B>]
+
+[<B>--udp</B>|<B>-u</B>]
+
+[<B>--raw</B>|<B>-w</B>]
+
+[<B>--listening</B>|<B>-l</B>]
+
+[<B>--all</B>|<B>-a</B>]
+
+[<B>--numeric</B>|<B>-n</B>]
+
+[<B>--numeric-hosts</B>] [<B>--numeric-ports</B>] [<B>--numeric-users</B>]
+
+[<B>--symbolic</B>|<B>-N</B>]
+
+[<B>--extend</B>|<B>-e</B>[<B>--extend</B>|<B>-e]</B>]
+
+[<B>--timers</B>|<B>-o</B>]
+
+[<B>--program</B>|<B>-p</B>]
+
+[<B>--verbose</B>|<B>-v</B>]
+
+[<B>--continuous</B>|<B>-c]</B>
+
+<P>
+
+<B>netstat</B>
+
+{<B>--route</B>|<B>-r</B>}
+
+[<I>options_famille_adresse</I>]
+
+[<B>--extend</B>|<B>-e</B>[<B>--extend</B>|<B>-e]</B>]
+
+[<B>--verbose</B>|<B>-v</B>]
+
+[<B>--numeric</B>|<B>-n</B>]
+
+[<B>--numeric-hosts</B>] [<B>--numeric-ports</B>] [<B>--numeric-users</B>]
+
+[<B>--continuous</B>|<B>-c]</B>
+
+<P>
+
+<B>netstat</B>
+
+{<B>--interfaces</B>|<B>-i</B>}
+
+[<B>--all</B>|<B>-a</B>]
+
+[<B>--extend</B>|<B>-e</B>[<B>--extend</B>|<B>-e]</B>]
+
+[<B>--verbose</B>|<B>-v</B>]
+
+[<B>--program</B>|<B>-p</B>]
+
+[<B>--numeric</B>|<B>-n</B>]
+
+[<B>--numeric-hosts</B>] [<B>--numeric-ports</B>] [<B>--numeric-users</B>]
+
+[<B>--continuous</B>|<B>-c]</B>
+
+<P>
+
+<B>netstat</B>
+
+{<B>--groups</B>|<B>-g</B>}
+
+[<B>--numeric</B>|<B>-n</B>]
+
+[<B>--numeric-hosts</B>] [<B>--numeric-ports</B>] [<B>--numeric-users</B>]
+
+[<B>--continuous</B>|<B>-c]</B>
+
+<P>
+
+<B>netstat</B>
+
+{<B>--masquerade</B>|<B>-M</B>}
+
+[<B>--extend</B>|<B>-e</B>]
+
+[<B>--numeric</B>|<B>-n</B>]
+
+[<B>--numeric-hosts</B>] [<B>--numeric-ports</B>] [<B>--numeric-users</B>]
+
+[<B>--continuous</B>|<B>-c]</B>
+
+<P>
+
+<B>netstat</B>
+
+{<B>--statistics</B>|<B>-s</B>}
+
+[<B>--tcp</B>|<B>-t</B>]
+
+[<B>--udp</B>|<B>-u</B>]
+
+[<B>--raw</B>|<B>-w</B>]
+
+<P>
+
+<B>netstat</B>
+
+{<B>--version</B>|<B>-V</B>}
+
+<P>
+
+<B>netstat</B>
+
+{<B>--help</B>|<B>-h</B>}
+
+<P>
+
+<I>options_famille_adresse</I>&nbsp;:
+
+<P>
+
+[<B>-4</B>]
+
+[<B>-6</B>]
+
+[<B>--protocol=</B>{<B>inet</B>,<B>unix</B>,<B>ipx</B>,<B>ax25</B>,<B>netrom</B>,<B>ddp</B>}[,<B>...]</B>]
+
+[<B>--unix</B>|<B>-x</B>]
+
+[<B>--inet</B>|<B>--ip</B>]
+
+[<B>--ax25</B>]
+
+[<B>--ipx</B>]
+
+[<B>--netrom</B>]
+
+[<B>--ddp</B>]
+
+<P>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>netstat</B>
+
+affiche les informations du sous-système réseau de Linux.
+Le type d'informations est contrôlé par le premier argument, comme suit&nbsp;:
+<DL COMPACT>
+<DT>(<B>pas d'option</B>)
+
+<DD>
+Par défaut,
+<B>netstat</B>
+
+affiche les sockets ouvertes. Si vous ne spécifiez aucune famille d'adresses,
+les sockets actives de toutes les familles d'adresses seront affichées.
+<DT><B>-r,</B> --route
+
+<DD>
+Afficher les tables de routage du noyau.Voir la description dans
+<B><A HREF="/cgi-bin/man/man2html?8+route">route</A></B>(8)
+
+pour les détails.
+<B>netstat -r</B>
+
+et
+<B>route -e</B>
+
+produisent la même sortie.
+<DT><B>-g</B>,<B> --groups</B>
+
+<DD>
+Afficher les informations d'appartenance de groupe multicast pour IPv4 et IPv6.
+<DT><B>-i</B>,<B> --interface</B>
+
+<DD>
+Afficher une table de toutes les interfaces réseau.
+<DT><B>-M</B>,<B> --masquerade</B>
+
+<DD>
+Afficher une liste des connections masquées (Ndt&nbsp;: masqueraded).
+<DT><B>-s</B>,<B> --statistics</B>
+
+<DD>
+Afficher un résumé des statistiques pour chacun des protocoles.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-v</B>,<B> --verbose</B>
+
+<DD>
+Mode verbeux. Afficher en particulier des informations utiles sur les
+familles d'adresse non configurées.
+<DT><B>-n</B>,<B> --numeric</B>
+
+<DD>
+Afficher les adresses au format numérique au lieu d'essayer de déterminer le
+nom symbolique d'hôte, de port ou d'utilisateur.
+<DT><B>--numeric-hosts</B>
+
+<DD>
+Afficher les adresses de l'hôte au format numérique mais ne pas affecter
+la résolution des noms du port ou d'utilisateur.
+<DT><B>--numeric-ports</B>
+
+<DD>
+Afficher les adresses de ports au format numérique mais ne pas affecter
+la résolution des noms d'hôte ou d'utilisateur.
+<DT><B>--numeric-users</B>
+
+<DD>
+Afficher les UID numériques mais ne pas affecter
+la résolution des noms d'hôte ou de port.
+<DT><B>-A</B>,<B> --protocol=</B><I>famille</I>
+
+<DD>
+Spécifier les familles d'adresses (peut être mieux décrites comme protocole
+bas niveau) pour lesquelles les connexions sont affichées.
+<I>famille</I>
+
+est une liste de mots clé de famille d'adresses, séparée par des virgules,
+comme
+<B>inet</B>,
+
+<B>unix</B>,
+
+<B>ipx</B>,
+
+<B>ax25</B>,
+
+<B>netrom</B>
+
+et
+<B>ddp</B>.
+
+Ceci a le même effet que d'utiliser les options
+<B>--inet</B>,
+
+<B>--unix</B> (<B>-x</B>),
+
+<B>--ipx</B>,
+
+<B>--ax25</B>,
+
+<B>--netrom</B>
+
+et
+<B>--ddp</B>.
+
+</DL>
+<P>
+
+La famille d'adresse
+<B>inet</B>
+
+inclut les sockets de protocole raw, udp et tcp.
+<DL COMPACT>
+<DT><B>-C</B>,<B> --continuous</B>
+
+<DD>
+Cette option force
+<B>netstat</B>
+
+à afficher l'information sélectionnée toutes les secondes de manière continue.
+<DT><B>-e</B>,<B> --extend</B>
+
+<DD>
+Afficher des informations supplémentaires.
+Utilisez deux fois cette option pour un maximum de détails.
+<DT><B>-o</B>,<B> --timers</B>
+
+<DD>
+Inclure l'information relative aux temporisateurs réseaux.
+<DT><B>-p</B>,<B> --program</B>
+
+<DD>
+Afficher le nom et le PID des processus auxquels chaque socket appartient.
+<DT><B>-l</B>,<B> --listening</B>
+
+<DD>
+N'afficher que les sockets à l'écoute. (Par défaut, elles sont omises.)
+<DT><B>-a</B>,<B> --all</B>
+
+<DD>
+Afficher les sockets à l'écoute et celles qui ne le sont pas. Avec l'option
+<B>--interfaces</B>,
+
+afficher les interfaces qui ne sont pas montées.
+<DT><B>-F</B>
+
+<DD>
+Afficher les information de routage du FIB.
+(C'est le comportement par défaut.)
+<DT><B>-C</B>
+
+<DD>
+Afficher les information de routage du cache de routage.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>RÉSULTATS</H2>
+
+<A NAME="lbAG">&nbsp;</A>
+<H3>Connexions Internet actives (TCP, UDP, RAW)</H3>
+
+
+<A NAME="lbAH">&nbsp;</A>
+<H3>Proto</H3>
+
+Le protocole (TCP, UDP, RAW) utilisé par la socket.
+
+<A NAME="lbAI">&nbsp;</A>
+<H3>Recv-Q</H3>
+
+Le nombre d'octets non encore lus par le programme utilisateur connecté
+à cette socket.
+
+<A NAME="lbAJ">&nbsp;</A>
+<H3>Send-Q</H3>
+
+Le nombre d'octets non encore acquittés par l'hôte distant.
+
+<A NAME="lbAK">&nbsp;</A>
+<H3>Local Address (Adresse locale)</H3>
+
+L'adresse locale (nom d'hôte local) et numéro de port de la
+socket. Sauf si l'option
+<B>--numeric</B> (<B>-n</B>)
+
+est fournie, l'adresse de la prise est traduite en nom d'hôte,
+et le numéro de port est traduit en nom de service correspondant.
+
+<A NAME="lbAL">&nbsp;</A>
+<H3>Foreign Address (Adresse distante)</H3>
+
+L'adresse distante (nom d'hôte distant) et le numéro de port de la socket.
+Comme pour l'adresse locale et le numéro de port, l'option
+<B>-n</B>
+
+invalide la traduction du nom d'hôte et de service.
+
+<A NAME="lbAM">&nbsp;</A>
+<H3>State (État)</H3>
+
+L'état de la socket. Puisqu'il n'y a pas d'état dans le mode RAW
+et généralement pas d'état utilisé en UDP, cette colonne
+peut se trouver vierge. Normalement, on trouvera une des valeurs suivantes&nbsp;:
+<DL COMPACT>
+<DT><I>ESTABLISHED</I>
+
+<DD>
+La socket a une connexion établie.
+<DT><I>SYN_SENT</I>
+
+<DD>
+La socket attend activement d'établir une connexion.
+<DT><I>SYN_RECV</I>
+
+<DD>
+Une requête de connexion a été reçue du réseau.
+<DT><I>FIN_WAIT1</I>
+
+<DD>
+La socket est fermée, et la connexion est en cours de terminaison.
+<DT><I>FIN_WAIT2</I>
+
+<DD>
+La connexion est fermée, et la socket attend une terminaison du distant.
+<DT><I>TIME_WAIT</I>
+
+<DD>
+La socket attend le traitement de tous les paquets encore sur le réseau
+avant d'entreprendre la fermeture.
+<DT><I>CLOSE</I>
+
+<DD>
+La socket n'est pas utilisée.
+<DT><I>CLOSE_WAIT</I>
+
+<DD>
+Le distant a arrêté, attendant la fermeture de la socket.
+<DT><I>LAST_ACK</I>
+
+<DD>
+Le distant termine, et la socket est fermée. Attente d'acquittement.
+<DT><I>LISTEN</I>
+
+<DD>
+La socket est à l'écoute de connexions entrantes. Ces sockets ne sont
+affichées que si les options
+<B>--listening</B> (<B>-l</B>)
+
+ou
+<B>--all</B> (<B>-a</B>)
+
+sont fournies.
+<DT><I>CLOSING</I>
+
+<DD>
+Les deux sockets sont arrêtées mais toutes les données locales n'ont
+pas encore été envoyées.
+<DT><I>UNKNOWN</I>
+
+<DD>
+L'état de la socket est inconnu.
+
+</DL>
+<A NAME="lbAN">&nbsp;</A>
+<H3>User (Utilisateur)</H3>
+
+Le nom d'utilisateur ou l'UID du propriétaire de la socket.
+
+<A NAME="lbAO">&nbsp;</A>
+<H3>PID/Program name (PID/Nom de Programme)</H3>
+
+Le PID et le nom du programme (séparés par une barre oblique)
+propriétaire de la socket. L'option
+<B>--program</B>
+
+active l'affichage de cette colonne. Vous devez avoir les privilèges du
+superutilisateur pour voir les informations sur les sockets qui ne vous
+appartiennent pas. Ces informations ne sont pas encore disponibles
+pour les sockets IPX.
+
+<A NAME="lbAP">&nbsp;</A>
+<H3>Timer</H3>
+
+(Ceci doit être rédigé)
+<A NAME="lbAQ">&nbsp;</A>
+<H3>Sockets actives du domaine UNIX</H3>
+
+
+<A NAME="lbAR">&nbsp;</A>
+<H3>Proto</H3>
+
+Le protocole (habituellement UNIX) utilisé par la socket.
+
+<A NAME="lbAS">&nbsp;</A>
+<H3>RefCnt</H3>
+
+Le nombre de références (c'est-à-dire. processus attachés via cette socket).
+
+<A NAME="lbAT">&nbsp;</A>
+<H3>Flags (indicateurs)</H3>
+
+Les indicateurs affichés sont SO_ACCEPTON (affiché
+<B>ACC</B>),
+
+SO_WAITDATA
+(<B>W</B>)
+
+ou SO_NOSPACE
+(<B>N</B>).
+
+SO_ACCECPTON est utilisé pour les sockets
+non-connectées si les processus correspondant sont en attente de
+demande de connexion. Les autres indicateurs sont d'un intérêt limité.
+
+<A NAME="lbAU">&nbsp;</A>
+<H3>Type</H3>
+
+Il y a différents types d'accès aux sockets&nbsp;:
+<DL COMPACT>
+<DT><I>SOCK_DGRAM</I>
+
+<DD>
+La prise est utilisée en mode Datagram (sans connexion).
+<DT><I>SOCK_STREAM</I>
+
+<DD>
+C'est une socket «&nbsp;stream&nbsp;» (connexion).
+<DT><I>SOCK_RAW</I>
+
+<DD>
+La socket est utilisée en mode «&nbsp;raw&nbsp;».
+<DT><I>SOCK_RDM</I>
+
+<DD>
+Celle-ci est utilisée pour les messages délivrée de manière fiable.
+<DT><I>SOCK_SEQPACKET</I>
+
+<DD>
+C'est une socket en mode paquets séquentiels.
+<DT><I>SOCK_PACKET</I>
+
+<DD>
+Socket d'accès à l'interface RAW.
+<DT><I>UNKNOWN</I>
+
+<DD>
+Qui sait ce que l'avenir nous réserve - Juste à remplir ici&nbsp;:-)
+
+</DL>
+<P>
+
+<A NAME="lbAV">&nbsp;</A>
+<H3>State (État)</H3>
+
+Ce champ contient un des mots clés suivants&nbsp;:
+<DL COMPACT>
+<DT><I>FREE</I>
+
+<DD>
+La socket n'est pas allouée.
+<DT><I>LISTENING</I>
+
+<DD>
+La socket est à l'écoute de demande de connexion. Ces sockets ne sont
+affichées que si l'une des options
+<B>--listening</B> (<B>-l</B>)
+
+ou
+<B>--all</B> (<B>-a</B>)
+
+est fournie.
+<DT><I>CONNECTING</I>
+
+<DD>
+La socket est en cours d'établissement de connexion.
+<DT><I>CONNECTED</I>
+
+<DD>
+La socket est connectée.
+<DT><I>DISCONNECTING</I>
+
+<DD>
+La socket est en cours de déconnexion.
+<DT><I>(VIDE)</I>
+
+<DD>
+La socket n'est connectée à aucune autre.
+<DT><I>UNKNOWN</I>
+
+<DD>
+Cet état ne devrait jamais apparaître.
+</DL>
+<A NAME="lbAW">&nbsp;</A>
+<H3>PID/Program name (PID/Nom de programme</H3>
+
+Le PID et le nom du programme propriétaire de la socket. Plus
+d'informations sont disponibles dans la section
+<B>Connexions Internet actives</B>
+
+ci-dessus.
+<A NAME="lbAX">&nbsp;</A>
+<H3>Path (chemin)</H3>
+
+Afficher le chemin correspondant à l'attachement des processus à la socket.
+
+<A NAME="lbAY">&nbsp;</A>
+<H3>Sockets IPX actives</H3>
+
+(à faire par quelqu'un qui connaît)
+
+<A NAME="lbAZ">&nbsp;</A>
+<H3>Sockets NET/ROM actives</H3>
+
+(à faire par quelqu'un qui connaît)
+
+<A NAME="lbBA">&nbsp;</A>
+<H3>Sockets AX.25 actives</H3>
+
+(à faire par quelqu'un qui connaît)
+
+<A NAME="lbBB">&nbsp;</A>
+<H2>NOTES</H2>
+
+Depuis la version 2.2 du noyau,
+<B>netstat -i</B>
+
+n'affiche plus les statistiques des interfaces alias.
+Pour obtenir les compteurs par interface alias,
+vous devez définir des règles spécifiques à l'aide de la commande
+<B><A HREF="/cgi-bin/man/man2html?8+ipchains">ipchains</A></B>(8).
+
+<A NAME="lbBC">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/etc/services</I>
+
+<DD>
+Le fichier de correspondance des services.
+<DT><I>/proc/net/dev</I>
+
+<DD>
+Informations périphériques.
+<DT><I>/proc/net/raw</I>
+
+<DD>
+Informations sockets RAW.
+<DT><I>/proc/net/tcp</I>
+
+<DD>
+Informations sockets TCP.
+<DT><I>/proc/net/udp</I>
+
+<DD>
+Informations sockets UDP.
+<DT><I>/proc/net/igmp</I>
+
+<DD>
+Informations multicast IGMP.
+<DT><I>/proc/net/unix</I>
+
+<DD>
+Informations sockets domaine UNIX.
+<DT><I>/proc/net/ipx</I>
+
+<DD>
+Informations sockets IPX.
+<DT><I>/proc/net/ax25</I>
+
+<DD>
+Informations sockets AX25.
+<DT><I>/proc/net/appeltalk</I>
+
+<DD>
+Informations sockets DDP (appeltalk).
+<DT><I>/proc/net/nr</I>
+
+<DD>
+Informations sockets NET/ROM.
+<DT><I>/proc/net/route</I>
+
+<DD>
+Informations routage IP du noyau.
+<DT><I>/proc/net/ax25_route</I>
+
+<DD>
+Informations routage AX25 du noyau.
+<DT><I>/proc/net/ipx_route</I>
+
+<DD>
+Informations routage IPX du noyau.
+<DT><I>/proc/net/nr_nodes</I>
+
+<DD>
+Informations routage NET/ROM du noyau.
+<DT><I>/proc/net/nr_neigh</I>
+
+<DD>
+Voisinage NET/ROM noyau.
+<DT><I>/proc/net/ip_masquerade</I>
+
+<DD>
+Connexion avec masquerade noyau.
+</DL>
+<A NAME="lbBD">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+proc">proc</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ipchains">ipchains</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ifconfig">ifconfig</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+iptables">iptables</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+route">route</A></B>(8)
+
+<A NAME="lbBE">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Des informations étranges peuvent apparaître occasionnellement
+si une socket change d'état au moment où elle est visualisée.
+Ceci est peu probable.
+<A NAME="lbBF">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+L'interface utilisateur de netstat a été développée par
+Fred Baumgarten &lt;<A HREF="mailto:dc6iq@insu1.etec.uni-karlsruhe.de">dc6iq@insu1.etec.uni-karlsruhe.de</A>&gt;. Les pages du
+manuel essentiellement écrites par Matt Welsh
+&lt;<A HREF="mailto:mdw@tc.cornell.edu">mdw@tc.cornell.edu</A>&gt;. Mis à jour par Alan Cox &lt;<A HREF="mailto:Alan.Cox@linux.org">Alan.Cox@linux.org</A>&gt;.
+<BR>
+
+La page de manuel et la commande incluse dans le paquetage net-tools
+a été totallement réécrite par Bernd Eckenfels
+&lt;<A HREF="mailto:ecki@linux.de">ecki@linux.de</A>&gt;.
+<A NAME="lbBG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Jean Michel Vansteene
+&lt;vanstee&nbsp;AT&nbsp;worldnet&nbsp;DOT&nbsp;fr&gt; le 15&nbsp;mars&nbsp;1999
+et révisée le 17&nbsp;août&nbsp;2006.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;8&nbsp;netstat</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">RÉSULTATS</A><DD>
+<DL>
+<DT><A HREF="#lbAG">Connexions Internet actives (TCP, UDP, RAW)</A><DD>
+<DT><A HREF="#lbAH">Proto</A><DD>
+<DT><A HREF="#lbAI">Recv-Q</A><DD>
+<DT><A HREF="#lbAJ">Send-Q</A><DD>
+<DT><A HREF="#lbAK">Local Address (Adresse locale)</A><DD>
+<DT><A HREF="#lbAL">Foreign Address (Adresse distante)</A><DD>
+<DT><A HREF="#lbAM">State (État)</A><DD>
+<DT><A HREF="#lbAN">User (Utilisateur)</A><DD>
+<DT><A HREF="#lbAO">PID/Program name (PID/Nom de Programme)</A><DD>
+<DT><A HREF="#lbAP">Timer</A><DD>
+<DT><A HREF="#lbAQ">Sockets actives du domaine UNIX</A><DD>
+<DT><A HREF="#lbAR">Proto</A><DD>
+<DT><A HREF="#lbAS">RefCnt</A><DD>
+<DT><A HREF="#lbAT">Flags (indicateurs)</A><DD>
+<DT><A HREF="#lbAU">Type</A><DD>
+<DT><A HREF="#lbAV">State (État)</A><DD>
+<DT><A HREF="#lbAW">PID/Program name (PID/Nom de programme</A><DD>
+<DT><A HREF="#lbAX">Path (chemin)</A><DD>
+<DT><A HREF="#lbAY">Sockets IPX actives</A><DD>
+<DT><A HREF="#lbAZ">Sockets NET/ROM actives</A><DD>
+<DT><A HREF="#lbBA">Sockets AX.25 actives</A><DD>
+</DL>
+<DT><A HREF="#lbBB">NOTES</A><DD>
+<DT><A HREF="#lbBC">FICHIERS</A><DD>
+<DT><A HREF="#lbBD">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbBE">BOGUES</A><DD>
+<DT><A HREF="#lbBF">AUTEURS</A><DD>
+<DT><A HREF="#lbBG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:04 GMT, February 11, 2014
+</BODY>
+</HTML>

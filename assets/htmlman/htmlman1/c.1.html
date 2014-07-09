@@ -1,0 +1,191 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of C</TITLE>
+</HEAD><BODY>
+<H1>C</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+c - Distributeur générique de boissons (café, coca...)
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>c</B>
+
+<B>[-s[nombre]]  [-m[type]]  [-e]  [-g]  [-T]  [-q quantité]</B>
+
+<B>[--other=boisson] </B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page documente la version GNU de
+<B>c. </B>
+
+<P>
+<B>c</B>
+
+est un distributeur générique de boisson permettant de fournir sur la
+sortie standard un flux du breuvage désiré. Par défaut, <B>c</B> distribue
+du café au lait, sans sucre. Il s'agit d'un choix historique basé sur les
+préférences de l'auteur original.
+<P>
+Le comportement du distributeur est contrôlé par des options, et une large
+palette d'autres boissons est disponible.
+<P>
+Notez bien que toutes les combinaisons des options ne sont pas toujours
+heureuses en terme de goût, mais la vérification effectuée par <B>c</B>
+n'a qu'une portée syntaxique. Vous êtes seul responsable de vos expérimentations.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-s[nombre]</B>
+
+<DD>
+Indique le nombre de sucres désirés. Par défaut, aucun sucre
+n'est inclus.
+<P>
+Des valeurs excessivement grandes peuvent engendrer des effets de
+bord déplaisants, comme des caries et des surcharges pondérales.
+<P>
+Si on n'indique pas de <I>nombre</I>, la valeur par défaut est
+un sucre.
+<DT><B>-m[type]</B>
+
+<DD>
+Détermine si l'on doit inclure du lait. Le comportement par
+défaut correspond à l'option 'cold'.
+<P>
+<I>cold</I>
+
+- Lait froid normal.
+<P>
+<I>hot</I>
+
+- Lait chaud normal.
+<P>
+<I>frth</I>
+
+- Crème. (Voir option -e pour le capuccino)
+<P>
+<I>none</I>
+
+- Pas de lait. Recommandé pour ceux qui suivent un régime.
+<P>
+<I>goat</I> (chèvre)
+
+- Faites preuve d'imagination.
+<P>
+<DT><B>-e</B>
+
+<DD>
+Option Expresso. Un flux à haute pression est envoyé de force
+sur des grains fin noirs afin d'avoir un breuvage plus fort.
+Utilisez l'option -q avec modération pour éviter les tremblements
+et les palpitations (voir BOGUES)
+<DT><B>-g</B>
+
+<DD>
+Café glacé. Pas besoin d'explication.
+<DT><B>-T</B>
+
+<DD>
+Café turc. Le seul type de café que l'on fasse volontairement
+bouillir. Utilisez conjointement -s2 ou plus pour éviter les grimaces.
+<DT><B>-q [quantité]</B>
+
+<DD>
+Taille de la 'tasse virtuelle' à remplir. L'échelle couverte est
+relativement arbitraire mais devrait répondre à l'essentiel des
+besoins...
+<P>
+<I>1</I>
+
+dé à coudre.
+<P>
+<I>2</I>
+
+tasse à expresso.
+<P>
+<I>3</I>
+
+tasse à café normale.
+<P>
+<I>4</I>
+
+chope.
+<P>
+<I>5</I>
+
+chope d'administrateur système.
+<P>
+<I>6</I>
+
+seau.
+<P>
+L'utilisation de -q 6 est contre-indiquée avec <B><A HREF="/cgi-bin/man/man2html?1+n">n</A></B>(1) à
+cause de dommages possibles des cloisons nasales, et un risque
+de noyade. La valeur par défaut est 4, sauf si une version béta
+du système d'exploitation est en test, auquel cas la valeur
+par défaut passe à 5. Sur Digital Unix, la valeur par défaut
+est 6. Et vous en aurez besoin...
+<DT><B>--other=boisson</B>
+
+<DD>
+Indiquer une autre boisson que le café. L'utilisation conjointe
+avec les autres options n'est pas recommandée, le comportement
+est indéfini.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Une surdose de caféine peut se produire avec des combinaisons
+inadéquates de certaines options (par exemple -e et de grandes
+valeurs pour -q). Si vous ressentez une accélération du rythme
+cardiaque, des difficultés d'accommodation visuelle, des 
+tremblements des mains, ou un essoufflement prolongé, il est
+souhaitable d'arrêter d'employer ces options.
+<P>
+Une version -d (décaféiné) était incluse dans les versions
+précédentes, mais a été supprimé à cause de menaces de poursuites
+judiciaires suite à une série de plaisanteries stupides.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+n">n</A>(1)
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Nick Williams, New College, Oxford University.
+<A HREF="mailto:nickw@iname.com">nickw@iname.com</A>.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1999-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">BOGUES</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">AUTEUR</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:45 GMT, February 11, 2014
+</BODY>
+</HTML>

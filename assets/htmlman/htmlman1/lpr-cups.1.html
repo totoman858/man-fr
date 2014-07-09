@@ -1,0 +1,136 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of lpr</TITLE>
+</HEAD><BODY>
+<H1>lpr</H1>
+Section: Easy Software Products (1)<BR>Updated: Common UNIX Printing System<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+lpr - Imprime des fichiers
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>lpr</B>
+
+[ -E ] [ -P
+<I>destination</I>
+
+] [ -#
+<I>nombre de copies</I>
+
+[ -l ] [ -o
+<I>option</I>
+
+] [ -p] [ -r ] [ -C/J/T
+<I>titre</I>
+
+] [
+<I>fichier(s)</I>
+
+]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>lpr</B> demande l'impression de fichiers. Si des fichiers sont donnés dans la
+ligne de commande, ceux-ci sont envoyés à la destination donnée (ou la destination
+par défaut si aucune n'est fournie).
+Si aucun fichier n'est donné dans la ligne de commande, <B>lpr</B> lit les fichiers
+sur l'entrée standard.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+Les options suivantes sont reconnues par <B>lpr</B>&nbsp;:
+<DL COMPACT>
+<DT>-E<DD>
+<BR>
+
+Force le cryptage lors de la connexion au serveur.
+<DT>-P <I>destination</I><DD>
+<BR>
+
+Imprime les fichiers vers l'imprimante donnée.
+<DT>-# <I>nombre de copies</I><DD>
+<BR>
+
+Définit le nombre de copies (de 1 à 100).
+<DT>-C <I>nom</I><DD>
+<BR>
+
+Définit le nom du travail d'impression.
+<DT>-J <I>nom</I><DD>
+<BR>
+
+Définit le nom du travail d'impression.
+<DT>-T <I>nom</I><DD>
+<BR>
+
+Définit le nom du travail d'impression.
+<DT>-l<DD>
+<BR>
+
+Spécifie que le fichier est déjà formaté pour la destination, et qu'aucun
+filtre n'a besoin d'être appliqué. Cette option est équivalente à «&nbsp;-oraw&nbsp;».
+<DT>-o <I>option</I><DD>
+<BR>
+
+Définit une option pour le travail d'impression.
+<DT>-p<DD>
+<BR>
+
+Spécifie que chaque page du fichier à imprimer doit avoir un en-tête ombré,
+contenant la date, l'heure, le nom du travail d'impression et le numéro de page.
+Cette option est équivalente à «&nbsp;-oprettyprint&nbsp;» et n'est utile que dans le cas de
+fichiers texte.
+<DT>-r<DD>
+<BR>
+
+Spécifie que les fichiers doivent être effacés après impression.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>COMPATIBILITÉ</H2>
+
+Les options «&nbsp;c&nbsp;», «&nbsp;d&nbsp;», «&nbsp;f&nbsp;», «&nbsp;g&nbsp;», «&nbsp;i&nbsp;», «&nbsp;m&nbsp;», «&nbsp;n&nbsp;»,
+«&nbsp;t&nbsp;», «&nbsp;v&nbsp;» et «&nbsp;w&nbsp;» ne sont pas supportées par CUPS et donnent un
+message d'avertissement lorsqu'elles sont utilisées.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+cancel">cancel</A>(1), <A HREF="/cgi-bin/man/man2html?1+lp">lp</A>(1), <A HREF="/cgi-bin/man/man2html?1+lpstat">lpstat</A>(1),
+CUPS Software Users Manual,
+<A HREF="http://localhost:631/documentation.html">http://localhost:631/documentation.html</A>
+<A NAME="lbAH">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright 1993-2003 Easy Software Products, Tous droits réservés.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Gilles QUERRET &lt;<A HREF="mailto:gilles.querret@nerim.net">gilles.querret@nerim.net</A>&gt;
+
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">COMPATIBILITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:49 GMT, February 11, 2014
+</BODY>
+</HTML>

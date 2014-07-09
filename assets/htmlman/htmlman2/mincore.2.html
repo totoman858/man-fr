@@ -1,0 +1,179 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MINCORE</TITLE>
+</HEAD><BODY>
+<H1>MINCORE</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mincore - savoir quelles pages se trouvent en mémoire physique.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/mman.h">sys/mman.h</A>&gt;</B>
+
+<P>
+<B>int mincore(void *</B><I>start</I><B>, size_t </B><I>length</I><B>, unsigned char *</B><I>vec</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>mincore</B>
+
+réclame un vecteur (une table) indiquant quelles pages d'un fichier se trouvent en mémoire
+physique et peuvent être lues sans accès disque. Le noyau fournira les données concernant les
+<I>length</I>
+
+octets à partir de l'adresse
+<I>start</I>.
+
+En retour, le noyau aura rempli la zone
+<I>vec</I>
+
+avec des octets dont le bit de poids faible indiquent si la page est en
+mémoire physique.
+<P>
+Pour que
+<B>mincore</B>
+
+réussisse, 
+<I>start</I>
+
+doit être alignée sur une frontière de page. C'est la responsabilité de l'appelant d'arrondir
+l'adresse à la page la plus proche.
+Le paramètre
+<I>length</I>
+
+n'est pas nécessairement un multiple de la taille de page. Le vecteur
+<I>vec</I>
+
+doit être assez grand pour contenir (length+PAGE_SIZE-1)/PAGE_SIZE octets.
+On peut connaître la taille de page en invoquant
+<B><A HREF="/cgi-bin/man/man2html?2+getpagesize">getpagesize</A>(2).</B>
+
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Si elle réussit, la fonction
+<B>mincore</B>
+
+renvoie zéro.
+En cas d'erreur, elle renvoie -1 et rempli
+<I>errno</I>
+
+avec la valeur d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<B>EAGAIN</B>
+
+le noyau manque temporairement de ressources.
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+
+n'est pas aligné sur une frontière de page, ou
+
+n'est pas une valeur positive.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>vec</I>
+
+pointe vers une adresse illégale.
+<DT><B>ENOMEM</B>
+
+<DD>
+la zone entre
+<I>address</I>
+
+et
+<I>address</I> + <I>length</I>
+
+contient de la mémoire autre qu'une projection de fichier.
+<P>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<B>mincore</B>
+
+devrait renvoyer un vecteur de bits et non un vecteur d'octets.
+A l'heure de Linux 2.4.20, on ne peut pas obtenir d'information
+sur les pages en mémoire physique qui ne sont pas une projection d'un fichier.
+En d'autres termes, appeler
+<B>mincore</B>
+
+sur une zone fournie par un appel anonyme à
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A>(2)</B>
+
+avec
+<B>MAP_PRIVATE</B>
+
+ne fonctionne pas et remplit errno avec ENOMEM. A moins que les pages ne soit verrouillées en mémoire,
+le contenu de
+<I>vec</I>
+
+peut être périmé au moment où ces données atteignent l'espace utilisateur.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<B>mincore</B>
+
+n'appartient ni à POSIX ni aux Spécifications Single Unix. 
+<A NAME="lbAI">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+La fonction mincore() est apparue dans 4.4BSD.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>DISPONIBILITÉ</H2>
+
+Depuis Linux 2.3.99pre1 et GlibC 2.2.
+<A NAME="lbAK">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+getpagesize">getpagesize</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2)
+
+<P>
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAJ">DISPONIBILITÉ</A><DD>
+<DT><A HREF="#lbAK">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:59 GMT, February 11, 2014
+</BODY>
+</HTML>

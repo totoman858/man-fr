@@ -1,0 +1,104 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETHOSTID</TITLE>
+</HEAD><BODY>
+<H1>GETHOSTID</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+gethostid, sethostid - Lire / écrire l'identifiant unique de l'hôte.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>long gethostid (void);</B>
+
+<BR>
+
+<B>int sethostid (long </B><I>hostid</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Lit ou écrit un identifiant unique sur 32 bits pour la station utilisée.
+Cet identificateur est censé être unique pour l'ensemble des stations
+UNIX existantes. Il correspond généralement à l'adresse Internet de
+la machine locale, comme renvoyé par
+<B><A HREF="/cgi-bin/man/man2html?3+gethostbyname">gethostbyname</A></B>(3),
+
+et est normalement fixé une fois pour toutes.
+<P>
+L'appel de
+<B>sethostid</B>
+
+est bien sûr limité au Super-User.
+<P>
+L'argument
+<I>hostid</I>
+
+est mémorisé dans le fichier
+<I>/etc/hostid</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>gethostid</B>
+
+retourne l'identifiant sur 32 bits de l'hôte, tel qu'il
+a été positionné par
+<B><A HREF="/cgi-bin/man/man2html?2+sethostid">sethostid</A></B>(2).
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+4.2BSD.  Ces fonctions ont été abandonnées dans 4.4BSD.
+POSIX.1 ne définit pas ces fonctions, mais ISO/IEC 9945-1:1990 les
+mentionne au paragraphe B.4.4.1. SVr4 contient
+<B>gethostid</B>
+
+mais pas
+<B>sethostid</B>.
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/etc/hostid</I>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+hostid">hostid</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?3+gethostbyname">gethostbyname</A></B>(3).
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:57 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,184 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MREMAP</TITLE>
+</HEAD><BODY>
+<H1>MREMAP</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mremap - Modifier une projection de la mémoire virtuelle.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/mman.h">sys/mman.h</A>&gt;</B>
+
+<P>
+<B>void * mremap(void *</B><I>old_address</I><B>, size_t </B><I>old_size</I>
+
+<B>, size_t </B><I>new_size</I><B>, unsigned long </B><I>flags</I><B>);</B>
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>mremap</B> agrandit (ou diminue) une projection (mapping) de mémoire virtuelle
+en mémoire réelle, en la déplaçant éventuellement (sous contrôle de l'argument
+<I>flags</I> et de la place disponible dans l'espace d'adressage virtuel).
+<P>
+<I>old_address</I> est l'ancienne adresse du bloc de mémoire virtuelle à agrandir 
+(ou à diminuer). Notez que <I>old_address</I> doit être alignée sur une frontière de
+page. <I>old_size</I> est la taille du bloc de mémoire virtuelle.
+<I>new_size</I> est la taille désirée pour le nouveau bloc de mémoire.
+<P>
+<P>
+L'argument <I>flags</I> contient les options décrites plus bas.
+<P>
+Sous Linux, la mémoire est divisée en pages. Un processus
+utilisateur dispose d'un ou plusieurs segments linéaires
+de mémoire virtuelle.
+A chaque segment correspond une ou plusieurs projections dans
+les pages de mémoire réelle (dans la table des pages).
+Chaque segment de mémoire virtuelle dispose de ses propres
+droits d'accès (sa protection), ce qui peut déclencher
+des fautes de segmentation si la mémoire est utilisée
+incorrectement (par exemple, en écrivant dans un segment en
+lecture seule).
+De même une tentative d'accès à la mémoire en-dehors des segments
+déclenche également une faute de segmentation.
+<P>
+<B>mremap</B> utilise le schéma de la table des pages de Linux.
+<B>mremap</B> modifie la correspondance entre les adresses virtuelles et les
+pages de mémoire réelle. Ce mécanisme peut être utilisé pour implémenter un
+<B>realloc</B> très efficace.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+Ces valeurs sont combinées par un
+<I>OU</I>
+
+binaire ( | ) dans le champ
+<I>flags</I>
+
+lors de l'appel de
+<B>mremap.</B>
+
+<DL COMPACT>
+<DT><B>MREMAP_MAYMOVE</B>
+
+<DD>
+indique que le bloc virtuel peut être déplacé si le
+redimensionnement ne peut pas être effectué à la même
+adresse virtuelle.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>mremap</B> renvoie une pointeur sur la nouvelle zone de
+mémoire virtuelle s'il réussit.
+En cas d'échec, -1 est renvoyé et <I>errno</I> contient 
+le code d'erreur.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+Un argument invalide a été fourni. <I>old_address</I> n'était
+probablement pas alignée sur une frontière de pages.
+<DT><B>EFAULT</B>
+
+<DD>
+&quot;Segmentation fault.&quot; Une adresse dans l'intervalle entre
+<I>old_address</I> et <I>old_address</I>+<I>old_size</I> 
+n'est pas une adresse virtuelle valide pour ce processus.
+On peut également obtenir  EFAULT même s'il existe des
+projections recouvrant la zone complète demandée, mais
+que ces projections sont de types différents.
+<DT><B>EAGAIN</B>
+
+<DD>
+Le segment de mémoire est verrouillé et sa projection ne
+peut pas être modifiée.
+<DT><B>ENOMEM</B>
+
+<DD>
+La zone de mémoire ne peut pas être agrandie à l'emplacement
+actuel, et l'option <I>MREMAP_MAYMOVE</I> n'a pas été
+fournie dans <I>flags</I>. 
+Ou encore il n'y a plus assez de mémoire virtuelle disponible.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Avec la GlibC actuelle, pour obtenir la définition de la constante
+<B>MREMAP_MAYMOVE</B>,
+
+il faut définir _GNU_SOURCE avant d'inclure &lt;<A HREF="file:///usr/include/sys/mman.h">sys/mman.h</A>&gt;.
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Cet appel système est spécifique à Linux et ne doit pas être
+employé dans des programmes conçus pour être portables. BSD 4.2
+a un appel système
+<B><A HREF="/cgi-bin/man/man2html?2+mremap">mremap</A></B>(2)
+
+avec une sémantique totalement différente.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+getpagesize">getpagesize</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+realloc">realloc</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?2+brk">brk</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sbrk">sbrk</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2)
+
+<P>
+
+(<I>Modern Operating Systems</I> by Andrew S. Tannenbaum, 
+<I>Inside Linux</I> by Randolf Bentson,
+<I>The Design of the UNIX Operating System</I> by Maurice J. Bach.)
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAG">ERREURS</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:52 GMT, February 11, 2014
+</BODY>
+</HTML>

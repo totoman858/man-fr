@@ -1,0 +1,106 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STRCPY</TITLE>
+</HEAD><BODY>
+<H1>STRCPY</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+strcpy, strncpy - Copier une chaîne.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/string.h">string.h</A>&gt;</B>
+
+<B>char *strcpy (char *</B><I>dest</I><B>, const char *</B><I>src</I><B>);</B>
+
+<B>char *strncpy (char *</B><I>dest</I><B>, const char *</B><I>src</I><B>, size_t </B><I>n</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>strcpy()</B> copie la chaîne pointée par <I>src</I>
+(y compris le caractère `\0' final) dans la chaîne pointée par
+<I>dest</I>.  Les deux chaînes ne doivent pas se chevaucher. La chaîne
+<I>dest</I> doit être assez grande pour accueillir la copie.
+<P>
+
+La fonction <B>strncpy()</B> est identique, sauf que seuls les
+<I>n</I> premiers octets de <I>src</I> sont copiés. Ainsi, s'il n'y a pas
+de caractère nul dans les <I>n</I> premiers octets de <I>src</I>, la chaîne
+résultante ne disposera de caractère nul final.
+<P>
+
+Dans le cas où la longueur
+<I>src</I>
+
+est inférieure à
+<I>n</I>,
+
+la fin de
+<I>dest</I>
+
+sera remplie avec des caractères nuls.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Les fonctions <B>strcpy()</B> et <B>strncpy()</B> renvoient un pointeur
+sur la chaîne destination <I>dest</I>.
+<A NAME="lbAF">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Si la chaîne destination de <B>strcpy()</B> n'est pas assez grande
+(c'est à dire si le programmeur est stupide ou paresseux et n'a pas
+verifié la taille avant la copie) tout peut arriver !
+Le débordement de chaîne de caractères de longueur fixée est l'une
+des techniques préférées des pirates. Les caractères en excès peuvent
+en effet déborder dans une zone de code ou de pile, et être interprétés
+comme des instructions, qui seront exécutées avec l'UID du programme.
+Il s'agit d'un moyen classique d'obtenir un accès `root' avec les
+programmes Set-UID système.
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3, POSIX, BSD 4.3, ISO 9899
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+bcopy">bcopy</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+memccpy">memccpy</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+memcpy">memcpy</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+memmove">memmove</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">BOGUES</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:15 GMT, February 11, 2014
+</BODY>
+</HTML>

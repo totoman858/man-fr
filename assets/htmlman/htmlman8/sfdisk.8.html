@@ -1,0 +1,738 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SFDISK</TITLE>
+</HEAD><BODY>
+<H1>SFDISK</H1>
+Section: Manuel de l utilisateur Linux (8)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+sfdisk - Manipulateur de tables de partitions pour Linux
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>sfdisk</B> [options] périphérique
+
+<BR>
+
+<B>sfdisk -s </B>[partition]
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>sfdisk</B>
+
+a quatre (principales) utilisations&nbsp;: donner la taille d'une
+partition, lister les partitions d'un périphérique, vérifier les
+partitions d'un périphérique et&nbsp;-&nbsp;très dangereux&nbsp;-&nbsp;repartitionner
+un périphérique.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H3>Lister les tailles</H3>
+
+<B>sfdisk -s </B><I>partition</I>
+
+donne la taille de la
+<I>partition</I>
+
+en blocs. Ceci peut être utile avec des programmes comme
+<B>mkswap</B>
+
+ou d'autres du même genre. Ici,
+<I>partition</I>
+
+est en général quelque chose du style
+<I>/dev/hda1</I>
+
+ou
+<I>/dev/sdb12</I>,
+
+mais peut également être un disque entier, comme
+<I>/dev/xda</I>.
+
+<BR>
+
+<DL COMPACT><DT><DD>
+<PRE>
+
+% sfdisk -s /dev/hda9
+81599
+%
+
+</PRE>
+
+</DL>
+
+Si l'argument partition est omis,
+<B>sfdisk</B>
+
+listera la taille de tous les disques, et le total&nbsp;:
+<BR>
+
+<DL COMPACT><DT><DD>
+<PRE>
+
+% sfdisk -s
+/dev/hda: 208896
+/dev/hdb: 1025136
+/dev/hdc: 1031063
+/dev/sda: 8877895
+/dev/sdb: 1758927
+total&nbsp;: 12901917 blocs
+%
+</PRE>
+
+</DL>
+
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H3>Lister les partitions</H3>
+
+Le deuxième type d'invocation&nbsp;:
+<B>sfdisk -l </B><I>[options] périphérique</I>
+
+listera les partitions de ce périphérique. Si l'argument périphérique est
+omis, les partitions de tous les disques durs sont listées.
+<BR>
+
+<PRE>
+
+% sfdisk -l /dev/hdc
+
+Disque /dev/hdc: 16 têtes, 63 secteurs, 2045 cylindres
+Unités = cylindres de 516096 octets, blocs de 1024 octets, à partir de 0
+
+Périph.   Boot.  Début   Fin    #cyls    #blocs    Id  Système
+/dev/hdc1          0+    406     407-    205096+   83  Linux natif
+/dev/hdc2        407     813     407     205128    83  Linux natif
+/dev/hdc3        814    2044    1231     620424    83  Linux natif
+/dev/hdc4          0      -        0          0     0  Vide
+%
+</PRE>
+
+<P>
+Les signes - et + de queue indiquent qu'un arrondi a été effectué, et
+que la valeur réelle est légèrement plus petite (grande). Pour voir
+les valeurs exactes, demandez un listing avec des secteurs comme unité.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H3>Vérifier les partitions</H3>
+
+Le troisième type d'invocation&nbsp;:
+<B>sfdisk -V </B><I>périphérique</I>
+
+effectuera différents tests de cohérence sur la table des partitions du
+<I>périphérique</I>.
+
+Il affichera «&nbsp;OK&nbsp;» ou se plaindra. L'option -V peut être utilisée
+avec -l. Dans un script shell, on peut utiliser
+<B>sfdisk -V -q </B><I>périphérique</I>
+
+qui renvoie uniquement une valeur de retour (de statut).
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H3>Créer des partitions</H3>
+
+Le quatrième type d'invocation&nbsp;:
+<B>sfdisk </B><I>périphérique</I>
+
+fera lire par
+<B>sfdisk</B>
+
+les spécifications du partitionnement désiré de
+<I>périphérique</I>
+
+à partir de son entrée standard, et lui fera ensuite modifier la table
+des partitions sur ce disque. Ainsi, il est possible d'utiliser
+<B>sfdisk</B>
+
+à partir d'un script shell. Quand
+<B>sfdisk</B>
+
+détermine que son entrée standard est un terminal, il sera
+interactif&nbsp;; sinon, il avortera pour n'importe quelle erreur.
+<P>
+
+SOYEZ EXTRÊMEMENT PRUDENT. UNE FAUTE DE FRAPPE ET TOUTES VOS DONNÉES
+PEUVENT ÊTRE PERDUES !
+<P>
+
+Comme mesure de précaution, vous pouvez sauvegarder les secteurs modifiés
+par
+<B>sfdisk</B>&nbsp;:
+
+<DL COMPACT><DT><DD>
+<PRE>
+
+% sfdisk /dev/hdd -O hdd-partition-sectors.save
+...
+%
+</PRE>
+
+</DL>
+
+<P>
+
+Ensuite, si vous découvrez que vous avez fait quelque chose de stupide
+(avant d'avoir écrit quoi que ce soit d'autre sur disque), il peut être
+possible de retrouver l'ancienne situation avec
+<DL COMPACT><DT><DD>
+<PRE>
+
+% sfdisk /dev/hdd -I hdd-partition-sectors.save
+%
+</PRE>
+
+</DL>
+
+<P>
+
+(Ce n'est pas la même chose que de sauvegarder l'ancienne table des
+partitions&nbsp;: une version lisible de l'ancienne table des partitions
+peut être sauvée avec l'option -d. Néanmoins, si vous créez des
+partitions logiques, les secteurs les décrivant sont situés quelque
+part sur le disque, éventuellement sur des secteurs qui ne faisaient
+pas partie de l'ancienne table des partitions. Par conséquent,
+les informations sauvées par l'option -O ne sont pas une version
+binaire de la sortie de&nbsp;-d).
+<P>
+Il y a beaucoup d'options.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-v</B> ou <B>--version</B>
+
+<DD>
+Afficher le numéro de version de
+<B>sfdisk</B>
+
+et se terminer immédiatement.
+<DT><B>-?</B> ou <B>--help</B>
+
+<DD>
+Afficher un message d'utilisation et se terminer immédiatement.
+<DT><B>-T</B> ou <B>--list-types</B>
+
+<DD>
+Afficher les types de systèmes de fichiers reconnus (les identificateurs).
+<DT><B>-s</B> ou <B>--show-size</B>
+
+<DD>
+Afficher la taille d'une partition.
+<DT><B>-g</B> ou <B>--show-geometry</B>
+
+<DD>
+Afficher la façon dont le noyau conçoit la géométrie du(des) disque(s)
+indiqué(s).
+<DT><B>-l</B> ou <B>--list</B>
+
+<DD>
+Lister les partitions d'un périphérique.
+<DT><B>-d</B>
+
+<DD>
+Produire les partitions d'un périphérique dans un format convenant
+comme entrée pour <B>sfdisk</B>.
+<BR>
+
+Exemple&nbsp;:
+<P>
+<BR>
+
+<PRE>
+    % sfdisk -d /dev/hda &gt; hda.out
+    % sfdisk /dev/hda &lt; hda.out
+</PRE>
+
+<P>
+corrigera la dernière mauvaise partition étendue que le fdisk OS/2 a créé.
+<DT><B>-V</B> ou <B>--verify</B>
+
+<DD>
+Tester si les partitions semblent correctes. (Voyez au dessus.)
+<DT><B>-i</B> ou <B>--increment</B>
+
+<DD>
+Numéroter les cylindres (etc.) en commençant à partir de 1 au lieu de 0.
+<DT><B>-N</B><I> numéro</I>
+
+<DD>
+Ne modifier que la seule partition indiquée par <I>numéro</I>.
+<BR>
+
+Exemple&nbsp;:
+<P>
+<BR>
+
+<PRE>
+    % sfdisk /dev/hdb -N5
+    ,,,*
+    %
+</PRE>
+
+<P>
+rendra la cinquième partition de /dev/hdb amorçable («&nbsp;active&nbsp;») et
+ne changera rien d'autre. (Celle-ci sera probablement appelée
+/dev/hdb5, mais vous êtes libre de l'appeler autrement, comme
+p.ex. «&nbsp;/mon_équipement/disques/2/5&nbsp;» ou quelque chose du genre).
+<DT><B>-A</B><I>numéro(s)</I>
+
+<DD>
+Rend la(les) partition(s) indiquée(s) active(s), et toutes les autres
+inactives.
+<DT><B>-c</B><I></I> ou <B>--id</B><I> numéro [Id]</I>
+
+<DD>
+Si aucun argument ID n'est donné, afficher l'identificateur de
+partition de la partition indiquée. S'il est présent, remplacer le
+type (Id) de la partition indiquée par la valeur fournie. Cette option
+a également les deux formes longues --print-id et --change-id.
+Exemple&nbsp;:
+<P>
+<BR>
+
+<PRE>
+    % sfdisk --print-id /dev/hdb 5
+    6
+    % sfdisk --change-id /dev/hdb 5 83
+    OK
+</PRE>
+
+<P>
+dit d'abord que /dev/hdb5 possède l'Id 6, et le remplace ensuite par 83.
+<DT><B>-uS</B> ou <B>-uB</B> ou <B>-uC</B> ou <B>-uM</B>
+
+<DD>
+Accepte ou rapporte en unités de secteurs (blocs, cylindres,
+mégaoctets respectivement). L'unité par défaut est le cylindre, du
+moins quand la géométrie est connue.
+<DT><B>-x</B> ou <B>--show-extended</B>
+
+<DD>
+Lister également les partitions étendues non primaires en sortie, ou
+en attendre des descripteurs en entrée.
+<DT><B>-C</B><I> cylindres</I>
+
+<DD>
+Spécifier le nombre de cylindres, en le substituant à l'avis du noyau.
+<DT><B>-H</B><I> têtes</I>
+
+<DD>
+Spécifier le nombre de têtes, en le substituant à l'avis du noyau.
+<DT><B>-S</B><I> secteurs</I>
+
+<DD>
+Spécifier le nombre de secteurs, en le substituant à l'avis du noyau.
+<DT><B>-f</B> ou <B>--force</B>
+
+<DD>
+Faire ce que vous dites, même si c'est stupide.
+<DT><B>-q</B> ou <B>--quiet</B>
+
+<DD>
+Supprimer les messages d'avertissement.
+<DT><B>-L</B> ou <B>--Linux</B>
+
+<DD>
+Ne pas se plaindre de choses non pertinentes pour Linux.
+<DT><B>-D</B> ou <B>--DOS</B>
+
+<DD>
+Pour la compatibilité DOS&nbsp;: gaspiller un petit espace. (Plus
+précisément&nbsp;: si une partition ne peut contenir le secteur 0,
+p.ex. parce qu'il est occupé par le MBR (Master Boot Record, secteur
+d'amorçage principal) du périphérique, ou si elle contient la table
+des partitions d'une partition étendue, alors
+<B>sfdisk</B>
+
+la fera débuter au secteur suivant. Néanmoins, quand cette option est
+fournie, il passe toute la piste courante pour débuter à la piste
+suivante, en gaspillant p.ex. 33 secteurs (s'il y a 34 secteurs/piste),
+comme le font certaines versions de DOS). 
+Certains Gestionnaires de Disque et chargeurs de démarrage (comme
+OSBS, mais pas comme LILO ou le Gestionnaire d'Amorçage OS/2) vivent
+également dans cet espace vide, et vous pourriez donc avoir besoin
+d'utiliser cette option si vous utilisez l'un d'entre eux.
+<DT><B>-E</B> ou <B>--DOS-extended</B>
+
+<DD>
+Considérer que les numéros des secteurs de démarrage des partitions
+étendues «&nbsp;internes&nbsp;» sont relatifs à la limite du cylindre débutant
+la partition externe, (comme le font certaines versions du DOS),
+plutôt que relatifs au secteur de démarrage (comme le fait Linux). (Le
+fait qu'il y ait ici une différence signifie qu'il faudrait toujours
+laisser les partitions étendues débuter sur une limite de cylindre si
+DOS et Linux doivent interpréter la table des partitions de la même
+manière. Bien sûr, on ne peut savoir où se situent les limites de
+cylindres que lorsque l'on sait quelle géométrie DOS utilisera pour ce
+disque.)
+<DT><B>--IBM</B> ou <B>--leave-last</B>
+
+<DD>
+Certains programmes IBM de diagnostic supposent qu'ils peuvent
+utiliser le dernier cylindre d'un disque à des fins de tests de
+disque. Si vous pensez devoir utiliser de tels programmes, utilisez
+cette option pour dire à
+<B>sfdisk</B>
+
+qu'il ne devrait pas allouer le dernier cylindre. Parfois, le dernier
+cylindre contient une table des secteurs défectueux.
+<DT><B>-n</B>
+
+<DD>
+Effectuer tout ce qu'il y a à faire, mais ne pas réellement écrire sur
+le disque.
+<DT><B>-R</B>
+
+<DD>
+Exécuter uniquement l'ioctl BLKRRPART (pour faire relire au noyau la
+tables des partitions). Ceci peut être utile pour vérifier à l'avance
+que le BLKRRPART final se terminera avec succès, et également quand
+vous modifiez la table des partitions «&nbsp;à la main&nbsp;» (p.ex. en
+utilisant dd à partir d'une sauvegarde). Si le noyau se
+plaint («&nbsp;périphérique occupé pour la revalidation
+(utilisation = 2)&nbsp;»), alors quelque chose utilise encore ce
+périphérique, et vous devrez démonter certains systèmes de fichiers,
+ou désactiver certaines partitions d'échange.
+<DT><B>--no-reread</B>
+
+<DD>
+Au début du repartitionnement d'un disque, sfdisk vérifie que ce
+disque n'est pas monté, ou n'est pas utilisé en tant que périphérique
+d'échange, et refuse de continuer si c'est le cas. Cette option
+supprime le test. (D'un autre côté, l'option -f forcerait
+<B>sfdisk</B> à continuer même si ce test a échoué)
+<DT><B>-O</B><I> fichier</I>
+
+<DD>
+Juste avant d'écrire la nouvelle partition, sauvegarder les secteurs
+qui vont être écrasés dans
+<I>fichier</I>
+
+(il vaut mieux que
+<I>fichier</I>
+
+réside sur un autre disque, ou sur une disquette).
+<DT><B>-I</B><I> fichier</I>
+
+<DD>
+Après avoir détruit vos systèmes de fichiers par une commande
+<B>sfdisk</B>
+
+malheureuse, vous ne pourrez restaurer l'ancienne situation que si
+vous l'avez préservée au préalable en utilisant le drapeau -O.
+<P>
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>THÉORIE</H2>
+
+Le bloc 0 d'un disque (le Master Boot Record) contient entre autres
+choses quatre descripteurs de partition. Les partitions décrites ici
+sont appelées partitions
+<I>primaires</I>.
+
+<P>
+
+Un descripteur de partition comporte 6 champs&nbsp;:
+<BR>
+
+<PRE>
+<DL COMPACT><DT><DD>struct partition {
+    unsigned char bootable;             /* 0 ou 0x80 */
+    hsc begin_hsc;
+    unsigned char id;
+    hsc end_hsc;
+    unsigned int starting_sector;
+    unsigned int nr_of_sectors;
+}
+</DL>
+</PRE>
+
+<P>
+
+Les deux champs hsc indiquent la tête, le secteur et le cylindre du
+début et de la fin de la partition. Puisque chaque champ hsc ne prend
+que 3 octets, seuls 24 bits sont disponibles, ce qui ne suffit pas
+pour les gros disques (disons &gt; 8 Go). En fait, à cause du gaspillage
+dans la représentation (qui utilise un octet pour le nombre de têtes,
+alors qu'il est typiquement de 16), les problèmes commencent déjà à
+partir de 0.5 Go. Néanmoins, Linux n'utilise pas ces champs, et les
+problèmes ne peuvent survenir qu'au moment de l'amorçage, avant que
+Linux ait été démarré. Pour plus de détails, consultez la
+documentation de
+<B>lilo</B>.
+
+<P>
+
+Chaque partition a un type, c.-à-d. son «&nbsp;Id&nbsp;», et si ce type est
+5 ou&nbsp;f («&nbsp;<I>partition étendue</I>&nbsp;»), le secteur de début de la partition
+contient également 4 descripteurs de partition. MSDOS n'utilise que
+les deux premières&nbsp;: la première comme partition des données réelles,
+et la seconde comme partition étendue (ou vide). De cette façon, on
+obtient une chaîne de partitions étendues. D'autres systèmes
+d'exploitation obéissent à des conventions légèrement différentes. Linux
+accepte également le type 85 comme étant équivalent à 5&nbsp;-&nbsp;ceci peut
+être utile si vous voulez avoir des partitions étendues sous Linux
+après la limite des 1024 cylindres, sans plantage du FDISK de DOS. (À
+moins d'avoir une bonne raison, vous devriez utiliser 5, qui est
+compris par les autres systèmes).
+<P>
+
+Les partitions qui ne sont ni primaires ni étendues sont appelées
+<I>logiques</I>.
+
+Souvent, on ne peut amorcer à partir de partitions logiques (car leur
+processus de recherche est plus compliqué que de simplement regarder le
+MBR). Notez que sur une partition étendue, seuls l'Id et le début sont
+utilisés. Il y a différentes conventions concernant ce qu'il y a lieu
+d'écrire dans les autres champs. On ne devrait pas essayer d'utiliser
+des partitions étendues pour le stockage de données ou pour une
+partition d'échange.
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>FORMAT D'ENTRÉE</H2>
+
+<B>sfdisk</B>
+
+lit des lignes de la forme
+<P>
+<BR>
+
+<DL COMPACT><DT><DD>
+&lt;début&gt; &lt;taille&gt; &lt;id&gt; &lt;bootable&gt; &lt;c,t,s&gt; &lt;c,t,s&gt;
+<P>
+</DL>
+
+où chaque ligne correspond à un descripteur de partition.
+<P>
+
+Les champs sont séparés par des caractères d'espacement, des virgules ou
+des points-virgules éventuellement suivis par des caractères
+d'espacement&nbsp;; les caractères d'espacement initiaux et finals sont
+ignorés. Les nombres peuvent être octaux, décimaux ou hexadécimaux
+(représentation décimale par défaut). Quand un champ est absent ou vide,
+une valeur par défaut est utilisée.
+<P>
+
+Les parties &lt;c,t,s&gt; peuvent (et probablement devraient) être omises car
+<B>sfdisk</B>
+
+les calcule à partir de &lt;début&gt; et &lt;taille&gt;, et la géométrie du disque
+est donnée par le noyau ou est spécifiée par les drapeaux -H, -S et
+-C.
+<P>
+
+Bootable (amorçable) est spécifié par [*|-] (non bootable par
+défaut). La valeur de ce champ n'a pas d'importance pour
+Linux - quand Linux tourne, il a déjà été amorcé&nbsp;- mais pourrait
+jouer un rôle pour certains gestionnaires de démarrage ou pour
+d'autres systèmes d'exploitation. Par exemple, quand il y a plusieurs
+partitions DOS primaires, DOS affecte C: à la première d'entre elles
+qui est bootable.
+<P>
+
+Id est donné en hexadécimal, sans le préfixe 0x, ou sous la forme
+[E|S|L|X], où L (LINUX_NATIVE (83)) est utilisé par défaut, S est
+LINUX_SWAP (82) (partition d'échange Linux), E est EXTENDED_PARTITION
+(5) (partition étendue), et X est LINUX_EXTENDED (85).
+<P>
+
+La valeur par défaut de début est le premier secteur/cylindre/... non
+affecté.
+<P>
+
+La valeur par défaut de taille est aussi grande que possible (jusqu'à
+la partition suivante ou la fin du disque).
+<P>
+
+Néanmoins, pour les quatre partitions à l'intérieur d'une partition
+étendue, l'occupation par défaut est&nbsp;: partition Linux, partition
+étendue, vide, vide.
+<P>
+
+Mais quand l'option -N est fournie (modifier uniquement une
+partition), la valeur par défaut pour chaque champ est sa valeur précédente.
+<P>
+<A NAME="lbAL">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+La commande
+<DL COMPACT><DT><DD>
+<PRE>
+
+sfdisk /dev/hdc &lt;&lt; EOF
+0,407
+,407
+;
+;
+EOF
+</PRE>
+
+<P>
+</DL>
+
+partitionnera /dev/hdc comme indiqué ci-dessus.
+<P>
+Avec l'option -x, le nombre de lignes d'entrée doit être un multiple
+de&nbsp;4&nbsp;: vous devez lister les deux partitions vides que vous ne voulez
+pas en utilisant deux lignes vides. Sans l'option -x, vous donnez une
+ligne pour les partitions à l'intérieur d'une partition étendue, au
+lieu de quatre, et vous terminez par un caractère de fin de fichier
+(Ctrl-D). (Et
+<B>sfdisk</B>
+
+supposera que votre ligne d'entrée représente la première des quatre,
+que la deuxième est étendue, et que les troisième et quatrième sont vides.)
+<P>
+<A NAME="lbAM">&nbsp;</A>
+<H2>AVERTISSEMENT DOS 6.x</H2>
+
+<P>
+La commande DOS 6.x FORMAT recherche certaines informations sur le
+premier secteur de la zone de données de la partition, et suppose
+qu'elles sont plus fiables que celles contenues dans la table des
+partitions. Le FORMAT DOS suppose que FDISK DOS efface les 512 premiers
+octets de la zone de données de la partition à chaque fois qu'un
+changement de taille se produit. FORMAT DOS regardera cette information
+additionnelle même si le drapeau /U est fourni -- nous considérons que
+c'est un bogue dans les FORMAT et FDISK DOS.
+<P>
+Si vous utilisez sfdisk pour modifier la taille d'une entrée DOS de la
+table des partitions, alors vous devrez également utiliser
+<B>dd</B>
+
+pour mettre à zéro les 512 premiers octets de cette partition avant
+d'utiliser FORMAT DOS pour formater cette partition. Par exemple, si
+vous avez utilisé sfdisk pour créer une entrée DOS dans la table des
+partitions pour /dev/hda1, alors (après la sortie de sfdisk et
+après avoir redémarré Linux afin que les informations sur la
+table des partitions soient valides) vous devriez utiliser la commande
+«&nbsp;dd if=/dev/zero of=/dev/hda1 bs=512 count=1&nbsp;» pour mettre à zéro
+les 512 premiers octets de la partition.
+<B>SOYEZ EXTRÊMEMENT PRUDENT </B>
+
+si vous utilisez la commande
+<B>dd</B>,
+
+car une petite faute de frappe peut rendre toutes les données de
+votre disque inutilisables.
+<P>
+Pour obtenir les meilleurs résultats, vous devriez toujours utiliser
+un programme de partitionnement spécifique au système
+d'exploitation. Par exemple, vous devriez créer des partitions DOS
+avec le programme FDISK DOS, et des partitions Linux avec le
+programme Linux sfdisk.
+<P>
+<A NAME="lbAN">&nbsp;</A>
+<H2>AVERTISSEMENTS DRDOS</H2>
+
+<P>
+Stephen Tweedie rapporta (15/05/1993)&nbsp;: «&nbsp;La plupart des rapports de
+corruption de superbloc s'avèrent être dûs à un mauvais
+partitionnement, où un système de fichiers écrase le début du
+suivant et corrompt son superbloc. J'ai même eu ce problème avec le
+prétendument fiable DRDOS. C'était probablement dû à la commande FDISK du
+DRDOS-6.0. À&nbsp;moins de créer une piste ou un cylindre vide entre la
+partition DRDOS et celle la suivant immédiatement, DRDOS écrase
+joyeusement le début de la partition suivante. Remarquez qu'aussi
+longtemps que je garde un petit espace disque vide après toute
+partition DRDOS, je n'ai aucun autre problème de coexistence entre les
+deux partitions sur le même disque.&nbsp;»
+<P>
+A. V. Le Blanc a écrit dans README.efdisk: «&nbsp;On a rapporté des
+problèmes de coopération entre Dr. DOS 5.0 et 6.0 et Linux, et avec
+cette version de efdisk
+en particulier. Ce efdisk fixe le type de système de fichiers à 81
+(hexadécimal). Dr. DOS semble le confondre avec le 1 hexadécimal, un
+code DOS. Si vous utilisez Dr. DOS, utilisez la commande «&nbsp;t&nbsp;» de
+efdisk pour remplacer le code de système de fichiers de toute
+partition Linux en un nombre plus petit que 80 en hexadécimal. Je
+suggère 41 et 42 pour le moment.&nbsp;»
+<P>
+A. V. Le Blanc a écrit dans README.fdisk: «&nbsp;DR-DOS 5.0 et 6.0 ont
+certaines difficultés avec les codes d'ID de partition de 80 ou
+plus. Le fdisk Linux fixe habituellement le type des nouvelles
+partitions à 81 en hexadécimal. DR-DOS semble le confondre avec le 1
+hexadécimal, un code DOS. Les valeurs 82 pour la partition d'échange
+et 83 pour les systèmes de fichiers ne devraient pas causer de
+problèmes avec DR-DOS. S'il y en a, vous pouvez utiliser la commande
+«&nbsp;t&nbsp;» du fdisk Linux pour modifier le code du système de fichiers de
+toute partition Linux en un nombre plus petit que 80 en
+hexadécimal. Je suggère 42 et 43 pour le moment.&nbsp;»
+<P>
+En fait, il semble que seuls 4 bits soient significatifs pour le FDISK
+de DRDOS. Ainsi, par exemple, 11 et 21 sont listés comme étant DOS
+2.0. Néanmoins, DRDOS lui-même semble utiliser l'octet complet. Je
+n'ai pas été capable de reproduire une corruption avec DRDOS ou avec
+son fdisk.
+<P>
+<A NAME="lbAO">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Une interface interactive correspondant à
+<B>cfdisk</B>
+
+(avec une interface curses) manque toujours.
+<P>
+
+Il y a trop d'options.
+<P>
+
+Il n'y a pas de support pour les types de partitions non-DOS.
+<P>
+<A NAME="lbAP">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+A. E. Brouwer (<A HREF="mailto:aeb@cwi.nl">aeb@cwi.nl</A>)
+<P>
+<A NAME="lbAQ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+cfdisk">cfdisk</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+fdisk">fdisk</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+parted">parted</A></B>(8)
+
+<P>
+<A NAME="lbAR">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Frédéric Delanoy &lt;<I>delanoy_f at yahoo.com</I>&gt;, 2002.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">Lister les tailles</A><DD>
+<DT><A HREF="#lbAF">Lister les partitions</A><DD>
+<DT><A HREF="#lbAG">Vérifier les partitions</A><DD>
+<DT><A HREF="#lbAH">Créer des partitions</A><DD>
+</DL>
+<DT><A HREF="#lbAI">OPTIONS</A><DD>
+<DT><A HREF="#lbAJ">THÉORIE</A><DD>
+<DT><A HREF="#lbAK">FORMAT D'ENTRÉE</A><DD>
+<DT><A HREF="#lbAL">EXEMPLE</A><DD>
+<DT><A HREF="#lbAM">AVERTISSEMENT DOS 6.x</A><DD>
+<DT><A HREF="#lbAN">AVERTISSEMENTS DRDOS</A><DD>
+<DT><A HREF="#lbAO">BOGUES</A><DD>
+<DT><A HREF="#lbAP">AUTEUR</A><DD>
+<DT><A HREF="#lbAQ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAR">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:02 GMT, February 11, 2014
+</BODY>
+</HTML>

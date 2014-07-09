@@ -1,0 +1,203 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ISALPHA</TITLE>
+</HEAD><BODY>
+<H1>ISALPHA</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+isalpha, isalnum, isascii, isblank, iscntrl, isdigit, isgraph, islower, isprint, ispunct, isspace, isupper, isxdigit - Routines de classification de caractères.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/ctype.h">ctype.h</A>&gt;</B>
+
+<B>int isalnum (int </B><I>c</I><B>);</B>
+<B>int isalpha (int </B><I>c</I><B>);</B>
+<B>int isascii (int </B><I>c</I><B>);</B>
+<B>int isblank (int </B><I>c</I><B>);</B>
+<B>int iscntrl (int </B><I>c</I><B>);</B>
+<B>int isdigit (int </B><I>c</I><B>);</B>
+<B>int isgraph (int </B><I>c</I><B>);</B>
+<B>int islower (int </B><I>c</I><B>);</B>
+<B>int isprint (int </B><I>c</I><B>);</B>
+<B>int ispunct (int </B><I>c</I><B>);</B>
+<B>int isspace (int </B><I>c</I><B>);</B>
+<B>int isupper (int </B><I>c</I><B>);</B>
+<B>int isxdigit (int </B><I>c</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ces fonctions vérifient si le caractère
+<I>c</I>,
+
+qui doit avoir la valeur d'un
+<B>unsigned char</B>
+
+ou valoir
+<B>EOF</B>,
+
+rentre dans une catégorie donnée, en accord avec la localisation en cours.
+<DL COMPACT>
+<DT><B>isalnum()</B>
+
+<DD>
+vérifie si l'on a un caractère alphanumérique. C'est équivalent à
+<B>(isalpha(</B><I>c</I><B>) || isdigit(</B><I>c</I><B>))</B><I></I>.
+
+<DT><B>isalpha()</B>
+
+<DD>
+vérifie si l'on a un caractère alphabétique. Dans la localisation <B>&quot;C&quot;</B> 
+standard, c'est équivalent à
+<B>(isupper(</B><I>c</I><B>) || islower(</B><I>c</I><B>))</B><I></I>.
+
+Dans certaines localisations, il peut y avoir des caractères supplémentaires
+pour lesquels
+<B>isalpha()</B>
+
+est vrai--des lettres qui ne sont ni majuscules ni minuscules.
+<DT><B>isascii()</B>
+
+<DD>
+vérifie si <I>c</I> est un
+<I>unsigned char</I>
+
+sur 7 bits, entrant dans le jeu de caractères ASCII. Cette fonction est
+une extension BSD et SVID.
+<DT><B>isblank()</B>
+
+<DD>
+vérifie si le caractère est blanc, c'est à dire un espace ou une tabulation.
+C'est une extension GNU.
+<DT><B>iscntrl()</B>
+
+<DD>
+vérifie si l'on a un caractère de contrôle.
+<DT><B>isdigit()</B>
+
+<DD>
+vérifie si l'on a un chiffre (0 a 9).
+<DT><B>isgraph()</B>
+
+<DD>
+vérifie s'il s'agit d'un caractère imprimable, à l'exception de l'espace.
+<DT><B>islower()</B>
+
+<DD>
+vérifie si l'on a un caractère minuscule.
+<DT><B>isprint()</B>
+
+<DD>
+vérifie s'il s'agit d'un caractère imprimable, y compris l'espace.
+<DT><B>ispunct()</B>
+
+<DD>
+vérifie s'il s'agit d'un caractère imprimable, qui ne soit ni un espace,
+ni un caractere alphanumérique.
+<DT><B>isspace()</B>
+
+<DD>
+vérifie si l'on a un caractère blanc, d'espacement. Dans les localisations
+<B>C</B>
+
+et
+<B>POSIX</B>
+
+il s'agit de: espace, saut de page (form-feed,
+<B>'\f'</B>),
+
+saut de ligne (newline,
+<B>'\n'</B>),
+
+retour chariot (carriage return,
+<B>'\r'</B>),
+
+tabulation horizontale
+(<B>'\t'</B>),
+
+et tabulation verticale
+(<B>'\v'</B>).
+
+<DT><B>isupper()</B>
+
+<DD>
+vérifie si l'on a une lettre majuscule.
+<DT><B>isxdigit()</B>
+
+<DD>
+vérifie s'il s'agit d'un chiffre héxadécimal, c'est à dire
+
+<B>0 1 2 3 4 5 6 7 8 9 a b c d e f A B C D E F</B>.
+
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Les valeurs renvoyées sont non nulles si le caractère
+<I>c</I>
+
+entre dans la catégorie testée, et zéro sinon
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+C ANSI, BSD 4.3.
+<B>isascii()</B> est une extension BSD et SVID.
+<B>isblank()</B> est une extension GNU.
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTE</H2>
+
+L'appartenance d'un caractère à une catégorie dépend de la localisation en
+cours. Par exemple
+<B>islower()</B>
+
+ne reconnaîtra pas un e-accent-aigu comme une minuscule dans la localisation
+<B>C</B>
+
+par défaut.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+tolower">tolower</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+toupper">toupper</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setlocale">setlocale</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?7+ascii">ascii</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+locale">locale</A></B>(7)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">NOTE</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:05 GMT, February 11, 2014
+</BODY>
+</HTML>

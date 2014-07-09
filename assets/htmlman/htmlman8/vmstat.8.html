@@ -1,0 +1,254 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of VMSTAT</TITLE>
+</HEAD><BODY>
+<H1>VMSTAT</H1>
+Section: Manuel de l'administrateur système Linux (8)<BR>Updated: 27 juillet 1994 <BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<P>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+vmstat - Afficher des statistiques sur la mémoire virtuelle
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>
+vmstat</B>
+
+[<B>-n</B>]
+
+[<I>nb_sec</I> [ <I>total</I>]]
+
+<BR>
+
+<B>vmstat</B>[<B>-V</B>]
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le programme
+<B>vmstat</B> fournit des informations à propos des processus, de la mémoire, de
+la pagination, des entrées-sorties, des interruptions et de la répartition du
+temps CPU.
+<P>
+Le premier rapport donne les moyennes depuis le précédent redémarrage du
+système. Les rapports suivants donnent des informations toutes les <I>nb_sec</I>
+secondes.
+Les informations concernant les processus et la mémoire sont fournies dans les
+deux cas.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+L'option <B>-n</B> affiche un en-tête décrivant les champs une seule fois et non
+plus à chaque rapport.
+<P>
+
+<I>nb_sec</I>
+
+est le nombre de secondes écoulées entre chaque rapport. Si aucune valeur n'est
+fournie, un seul rapport sera affiché avec les moyennes depuis la
+dernière initialisation du système.
+<P>
+
+<I>total</I>
+
+est le nombre de mises à jour. Si aucun total n'est indiqué et si nb_sec est
+fournie, alors <I>total</I> est considéré comme étant infini.
+<P>
+
+L'option <B>-V</B> affiche le numéro de version.
+<P>
+
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>DESCRIPTIONS DES CHAMPS</H2>
+
+<A NAME="lbAG">&nbsp;</A>
+<H3><B>Procs</B>
+
+</H3>
+
+<PRE>
+r: Nombre de processus en compétition pour le temps CPU.
+b: Nombre de processus dormants.
+w: Nombre de processus transférés dans le swap mais qui ne seraient exécutés
+sinon. Ce champ est calculable, mais Linux ne fait jamais de swap intégral
+aussi désespéré.
+</PRE>
+
+<P>
+
+<A NAME="lbAH">&nbsp;</A>
+<H3><B>Memory</B>
+
+</H3>
+
+<PRE>
+swpd: Quantité de mémoire virtuelle utilisée (ko) [Ndt&nbsp;: mémoire disponible -
+mémoire utilisé + swap utilisé ]
+free: Quantité de mémoire [Ndt&nbsp;: physique&nbsp;!] libre (ko).
+buff: Quantité de mémoire utilisée comme tampons d'E/S (ko).
+</PRE>
+
+<P>
+
+<A NAME="lbAI">&nbsp;</A>
+<H3><B>Swap</B>
+
+</H3>
+
+<PRE>
+si: Quantité de mémoire paginé lue depuis un disque en ko/s.
+so: Quantité de mémoire paginé transférée sur disque en ko/s.
+</PRE>
+
+<P>
+
+<A NAME="lbAJ">&nbsp;</A>
+<H3><B>IO</B>
+
+</H3>
+
+<PRE>
+bi: Blocs écrits par seconde sur des périphériques orientés bloc.
+bo: Blocs lus par seconde sur des périphériques orientés bloc.
+</PRE>
+
+<P>
+
+<A NAME="lbAK">&nbsp;</A>
+<H3><B>System</B>
+
+</H3>
+
+<PRE>
+in: Nombre d'interruptions par seconde, y compris l'horloge.
+cs: Nombre de changement de contextes (context switches) par seconde (appels
+systèmes + commutations de tâches).
+
+Il s'agit de la répartition du temps CPU en pourcentages.
+<PRE>
+us: user time : temps consommé par les processus
+sy: system time : temps passé dans le noyau
+id: idle time : temps CPU inutilisé
+
+</PRE><A NAME="lbAM">&nbsp;</A>
+<H2>NOTES</H2>
+
+<B>vmstat </B>
+
+ne nécessite pas de permissions spéciales [Ndt&nbsp;: pas de Set-UID].
+<P>
+
+Le but de ces informations est d'aider à identifier l'origine d'un problème de
+performances. L'utilitaire
+<B>vmstat </B>
+
+de Linux ne se compte pas en tant que processus actif.
+<P>
+
+Dans la version Linux, tous les blocs font 1&nbsp;ko, exceptés pour les CD-ROM où ils
+font 2&nbsp;ko [Ndt&nbsp;: chaque bloc de 2&nbsp;ko est suivi de 512&nbsp;octets de CRC qui sont
+également lus, aussi un lecteur de CD donne-t-il lieu à plus d'E/S que
+<I><A HREF="/cgi-bin/man/man2html?8+vmstat">vmstat</A>(8)</I>
+
+peut le laisser penser&nbsp;: 25&nbsp;% en plus].
+<P>
+
+<P>
+<A NAME="lbAN">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+
+
+<PRE>
+/proc/meminfo
+/proc/stat
+/proc/*/stat
+</PRE>
+
+<P>
+<A NAME="lbAO">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+ps">ps</A>(1), <A HREF="/cgi-bin/man/man2html?1+top">top</A>(1), <A HREF="/cgi-bin/man/man2html?1+free">free</A>(1)
+<P>
+
+<P>
+<A NAME="lbAP">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Les E/S en blocs par périphériques ne sont pas tabulés.
+<BR>
+
+Les appels système ne sont pas comptés.
+<P>
+<A NAME="lbAQ">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Henry Ware &lt;<I><A HREF="mailto:al172@yfn.ysu.edu">al172@yfn.ysu.edu</A></I>&gt;
+
+<P>
+<A NAME="lbAR">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 2000
+
+<A NAME="lbAS">&nbsp;</A>
+<H2>AVERTISSEMENT SUR LA TRADUCTION</H2>
+
+Il est possible que cette traduction soit imparfaite ou périmée. En cas de
+doute, veuillez vous reporter au document original en langue anglaise fourni
+avec le programme.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">DESCRIPTIONS DES CHAMPS</A><DD>
+<DL>
+<DT><A HREF="#lbAG"><B>Procs</B>
+
+</A><DD>
+<DT><A HREF="#lbAH"><B>Memory</B>
+
+</A><DD>
+<DT><A HREF="#lbAI"><B>Swap</B>
+
+</A><DD>
+<DT><A HREF="#lbAJ"><B>IO</B>
+
+</A><DD>
+<DT><A HREF="#lbAK"><B>System</B>
+
+</A><DD>
+<DT><A HREF="#lbAL"><B>CPU </B>
+
+</A><DD>
+</DL>
+<DT><A HREF="#lbAM">NOTES</A><DD>
+<DT><A HREF="#lbAN">FICHIERS</A><DD>
+<DT><A HREF="#lbAO">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAP">BOGUES</A><DD>
+<DT><A HREF="#lbAQ">AUTEUR</A><DD>
+<DT><A HREF="#lbAR">TRADUCTION</A><DD>
+<DT><A HREF="#lbAS">AVERTISSEMENT SUR LA TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:04 GMT, February 11, 2014
+</BODY>
+</HTML>

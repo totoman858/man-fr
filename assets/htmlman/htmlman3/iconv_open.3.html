@@ -1,0 +1,103 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ICONV_OPEN</TITLE>
+</HEAD><BODY>
+<H1>ICONV_OPEN</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+iconv_open - Allouer un descripteur pour une conversion de jeux de caractères.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/iconv.h">iconv.h</A>&gt;</B>
+
+<B>iconv_t iconv_open (const char* </B><I>tocode</I><B>, const char* </B><I>fromcode</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>iconv_open</B> alloue un descripteur de conversion adapté à la transformation
+d'une séquence d'octets depuis le codage de caractères <I>fromcode</I> dans le codage
+<I>tocode</I>.
+<P>
+
+Les valeurs autorisées pour <I>fromcode</I> et <I>tocode</I> et leurs combinaisons acceptées
+dépendent du système. Pour la bibliothèque C GNU, les valeurs permises sont fournies par
+la commande <B>iconv --list</B> et toutes les combinaisons de ces valeurs sont supportées.
+<P>
+[NDT] Apparement ce n'est pas toujours vrai, puisque cette commande <B>iconv --list</B>
+affiche le commentaire suivant :
+La liste suivante contient tous les jeux des codes de caractères connus. Ceci
+ne signifie pas nécessairement que toutes les combinaisons de ces noms peuvent
+être utilisées dans les paramètres FROM et TO des commandes[...]
+<P>
+
+Le descripteur de conversion fourni peut être utilisé autant de fois que voulu avec
+<B>iconv</B>. Il reste valide jusqu'à sa libération avec <B>iconv_close</B>.
+<P>
+
+Un descripteur contient un état de conversion. Lors de sa création avec
+<B>iconv_open</B>, il se trouve dans l'état initial. L'utilisation de <B>iconv</B>
+modifie l'état du descripteur. On ne doit donc pas utiliser simultanément un descripteur
+de conversion dans plusieurs threads. Pour revenir à l'état initial, on peut employer
+<B>iconv</B> avec un argument <I>inbuf</I> NULL.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>iconv_open</B> renvoie un nouveau descripteur de conversion. En cas d'erreur,
+elle remplit <B>errno</B> et renvoie (iconv_t)(-1).
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Les erreurs suivantes peuvent - entre autres - se présenter :
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+La conversion depuis <I>fromcode</I> vers <I>tocode</I> n'est pas supportée par l'implémentation.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT></H2>
+
+UNIX98<BR>
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+iconv">iconv</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+iconv_close">iconv_close</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?1+iconv">iconv</A></B>(1)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:45 GMT, February 11, 2014
+</BODY>
+</HTML>

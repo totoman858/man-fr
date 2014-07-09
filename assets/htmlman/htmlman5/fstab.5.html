@@ -1,0 +1,283 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FSTAB</TITLE>
+</HEAD><BODY>
+<H1>FSTAB</H1>
+Section: Manuel de l'administrateur Linux (5)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fstab - Informations statiques sur les systèmes de fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/fstab.h">fstab.h</A>&gt;</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le fichier
+<B>fstab</B>
+
+contient des informations sur les différents systèmes de fichiers.
+<B>fstab</B>
+
+est uniquement lu par les programmes, jamais écrit. C'est la responsabilité
+de l'administrateur de créer et de maintenir ce fichier correctement. Chaque
+système de fichier est décrit sur une ligne indépendante. Les champs contenus
+sur chaque ligne sont séparés par des espaces ou des tabulations.
+L'ordre des enregistrements au sein de
+<B>fstab</B>
+
+est important car
+<B><A HREF="/cgi-bin/man/man2html?8+fsck">fsck</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+mount">mount</A></B>(8),
+
+et 
+<B><A HREF="/cgi-bin/man/man2html?8+umount">umount</A></B>(8)
+
+utilisent séquentiellement les enregistrements de
+<B>fstab</B>.
+
+<P>
+Le premier champ
+(<I>fs_spec</I>),
+
+décrit le périphérique bloc ou le système de fichiers
+distant a monter.
+<P>
+
+Pour les montages habituels, ce sera (un lien vers) un fichier spécial
+de périphérique, créé par
+<B><A HREF="/cgi-bin/man/man2html?8+mknod">mknod</A></B>(8),
+
+correspondant au périphérique à monter, comme '/dev/cdrom' ou '/dev/sdb7'.
+Pour les montages NFS, on trouvera &lt;hôte&gt;:&lt;rép&gt;, par ex. 'knuth.aeb.nl:/'.
+Pour le système de fichier 'procfs', utilisez 'proc'.
+<P>
+
+Plutôt que fournir explicitement le nom du périphérique, on peut indiquer un
+système de fichiers (ext2 ou XFS) à monter par son UUID ou son
+étiquette de volume (voir
+<B><A HREF="/cgi-bin/man/man2html?8+e2label">e2label</A></B>(8)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?8+xfs_admin">xfs_admin</A></B>(8)),
+
+en écrivant LABEL=&lt;label&gt; ou UUID=&lt;uuid&gt;, par exemple
+`LABEL=Boot' ou `UUID=3e6be9de-8139-11d1-9106-a43f08d823a6'.
+Ceci rendra le système plus robuste à l'ajout ou à la suppression de
+disque SCSI par exemple.
+<P>
+Le second champ
+(<I>fs_file</I>),
+
+indique le point de montage du système de fichier. Pour les partitions
+de swap ce champ doit être spécifié comme ``none'' (aucun). Si le nom du point
+de montage contient des espaces, il faut les protéger ainsi '\040'.
+<P>
+Le troisième champ
+(<I>fs_vfstype</I>),
+
+décrit le type de système de fichiers. Linux supporte beaucoup de systèmes de
+fichiers, comme
+<I>adfs</I>,
+
+<I>affs</I>,
+
+<I>autofs</I>,
+
+<I>coda</I>,
+
+<I>coherent</I>,
+
+<I>cramfs</I>,
+
+<I>devpts</I>,
+
+<I>efs</I>,
+
+<I>ext2</I>,
+
+<I>ext3</I>,
+
+<I>hfs</I>,
+
+<I>hpfs</I>,
+
+<I>iso9660</I>,
+
+<I>jfs</I>,
+
+<I>minix</I>,
+
+<I>msdos</I>,
+
+<I>ncpfs</I>,
+
+<I>nfs</I>,
+
+<I>ntfs</I>,
+
+<I>proc</I>,
+
+<I>qnx4</I>,
+
+<I>reiserfs</I>,
+
+<I>romfs</I>,
+
+<I>smbfs</I>,
+
+<I>sysv</I>,
+
+<I>tmpfs</I>,
+
+<I>udf</I>,
+
+<I>ufs</I>,
+
+<I>umsdos</I>,
+
+<I>vfat</I>,
+
+<I>xenix</I>,
+
+<I>xfs</I>,
+
+voire d'autres. Pour plus de détail, voyez
+<B><A HREF="/cgi-bin/man/man2html?8+mount">mount</A></B>(8).
+
+Pour les systèmes supportés par le noyau en cours, voyez
+<I>/proc/filesystems</I>.
+
+Une entrée
+<I>swap</I>
+
+indique une partition ou un fichier à utiliser pour
+le swap, voir
+<B><A HREF="/cgi-bin/man/man2html?8+swapon">swapon</A></B>(8).
+
+Avec une entrée
+<I>ignore</I>
+
+la ligne n'est pas traitée.
+Ceci permet de visualiser aisément les partitions non utilisées.
+<P>
+Le quatrième champ 
+(<I>fs_mntops</I>),
+
+indique des options de montage associées au système de fichiers.
+<P>
+Il s'agit d'une liste d'options séparées par des virgules.  Il contient au moins
+le type de montage, suivi éventuellement d'options appropriées au type de
+système de fichiers. Pour la documentation sur les options disponibles pour les
+systèmes non-NFS, voir
+<B><A HREF="/cgi-bin/man/man2html?8+mount">mount</A></B>(8).
+
+Pour la documentation sur les options spécifiques à NFS, voir
+<B><A HREF="/cgi-bin/man/man2html?5+nfs">nfs</A></B>(5).
+
+Les options communes à tous les systèmes de fichiers sont ``noauto''
+(ne pas monter lors d'une commande &quot;mount -a&quot; par exemple au boot), ``user''
+(autoriser un utilisateur à monter), ``owner'' (autoriser le propriétaire
+du périphérique à monter), et ``_netdev'' (le  réseau doit être disponible).
+Les options ``owner'' et ``_netdev''sont
+spécifiques à Linux.
+Pour plus de détails voir
+<B><A HREF="/cgi-bin/man/man2html?8+mount">mount</A></B>(8).
+
+<P>
+Le cinquième champ
+(<I>fs_freq</I>),
+
+est utilisé par la commande
+<B><A HREF="/cgi-bin/man/man2html?8+dump">dump</A></B>(8)
+
+pour déterminer quels sont les systèmes de fichiers à sauvegarder.
+Si le cinquième champ est absent ou vaut zéro,
+<B>dump</B>
+
+supposera qu'il ne faut pas sauvegarder ce système.
+<P>
+Le sixième champ
+(<I>fs_passno</I>),
+
+est utilisé par le programme
+<B><A HREF="/cgi-bin/man/man2html?8+fsck">fsck</A></B>(8)
+
+pour déterminer l'ordre de vérification des systèmes de fichiers au démarrage.
+Le système de fichiers racine doit avoir un champ
+<I>fs_passno</I>
+
+de valeur 1, et les autres un
+<I>fs_passnode</I>
+
+de valeur 2. Les systèmes partageant le même contrôleur seront vérifiés
+séquentiellement, mais ceux utilisant différents contrôleurs seront vérifies
+simultanément pour utiliser le parallélisme offert par le matériel.
+Si le sixième champ est absent ou vaut zéro, 
+<B>fsck</B>
+
+ne vérifiera pas ce système de fichiers.
+<P>
+La meilleure manière de lire les enregistrements de 
+<B>fstab</B>
+
+est d'utiliser la routine
+<B><A HREF="/cgi-bin/man/man2html?3+getmntent">getmntent</A></B>(3).
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/etc/fstab</I>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+getmntent">getmntent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?8+mount">mount</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+swapon">swapon</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?5+fs">fs</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?5+nfs">nfs</A></B>(5)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Le format du fichier
+<B>fstab</B>
+
+est apparu dans 4.0BSD.
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:54 GMT, February 11, 2014
+</BODY>
+</HTML>

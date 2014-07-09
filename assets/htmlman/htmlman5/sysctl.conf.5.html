@@ -1,0 +1,101 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SYSCTL.CONF</TITLE>
+</HEAD><BODY>
+<H1>SYSCTL.CONF</H1>
+Section:  (5)<BR>Updated: 21 Septembre 1999<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+sysctl.conf - fichier de configuration pour <A HREF="/cgi-bin/man/man2html?8+sysctl">sysctl</A>(8)
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>sysctl.conf</I>
+
+est un fichier très simple contenant les valeurs qui doivent être mise en
+place par <A HREF="/cgi-bin/man/man2html?8+sysctl">sysctl</A>(8).
+La syntaxe est la suivante&nbsp;:
+<DL COMPACT><DT><DD>
+<P>
+<PRE>
+# commentaire
+; commentaire
+
+  élément  =   valeur
+</PRE>
+
+<P>
+</DL>
+
+<P>
+
+Notez que les lignes vides sont ignorées et ainsi que les espaces avant et après un
+<I>élément</I>
+
+ou une
+<I>valeur</I>.
+
+Une espace dans une
+<I>valeur</I>
+
+fait bien partie de la
+<I>valeur</I>.
+
+Les lignes commençant par un # ou un ; sont des commentaires et sont ignorées.
+<A NAME="lbAD">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+<DL COMPACT><DT><DD>
+<P>
+<PRE>
+# exemple de fichier sysctl.conf
+#
+
+  kernel.domainname = exemple.com
+; celle-ci a une espace qui sera écrite par la commande sysctl&nbsp;!
+  kernel.modprobe = /sbin/mod probe
+
+</PRE>
+
+<P>
+</DL>
+
+<P>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+sysctl">sysctl</A>(8)</B>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+George Staikos, &lt;<A HREF="mailto:staikos@0wned.org">staikos@0wned.org</A>&gt;
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Loïc Le Loarer, 2001.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">EXEMPLE</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">AUTEUR</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:54 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,105 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of VIMDIFF</TITLE>
+</HEAD><BODY>
+<H1>VIMDIFF</H1>
+Section: User Commands  (1)<BR>Updated: 30 mars 2001<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+vimdiff - ouvre dans Vim deux ou trois versions d'un fichier et affiche les différences
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<BR>
+
+<B>vimdiff</B>
+
+[options] fichier1 fichier2 [fichier3]
+<P>
+
+<B>gvimdiff</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>Vimdiff</B>
+
+ouvre dans 
+<B>Vim</B>
+
+deux (ou trois) fichiers.
+Chaque fichier est ouvert dans sa propre fenêtre.
+Les différences entre les fichiers sont mises en surbrillance.
+C'est pratique pour visualiser les changements et reporter les modifications
+d'une version à l'autre d'un fichier.
+<P>
+
+Voir <A HREF="/cgi-bin/man/man2html?1+vim">vim</A>(1) pour les informations propres à Vim.
+<P>
+
+Si l'interface graphique est disponible, elle sera utilisée en tapant
+<B>gvimdiff</B>
+
+<P>
+
+Dans chaque fenêtre, l'option «&nbsp;diff&nbsp;» est utilisée afin de mettre les
+différences en surbrillance.
+<BR>
+
+Pour donner un bon aspect au texte, les options «&nbsp;wrap&nbsp;» et «&nbsp;scrollbind&nbsp;»
+sont utilisées.
+<BR>
+
+L'option «&nbsp;foldmethod&nbsp;» vaut «&nbsp;diff&nbsp;», ceci regroupe les lignes non modifiées
+dans un pli.  Afin de repérer, d'ouvrir et de fermer facilement les plis, 
+l'option «&nbsp;foldcolumn&nbsp;» vaut deux.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+La séparation verticale est utilisée pour aligner les lignes, comme si l'option «&nbsp;-O&nbsp;» était spécifié.
+Si vous désirez plutôt utiliser une séparation horizontale, spécifiez l'option «&nbsp;-o&nbsp;».
+<P>
+
+Pour toute autre option, voir <A HREF="/cgi-bin/man/man2html?1+vim">vim</A>(1).
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+vim">vim</A>(1)
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+La plus grande partie de
+<B>Vim</B>
+
+a été conçue par Bram       Moolenaar, avec l'aide de beaucoup d'autres contributeurs.
+Voir «&nbsp;:help credits&nbsp;» dans
+<B>Vim.</B>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Antoine Gémis.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:45 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,171 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of RESOLVER</TITLE>
+</HEAD><BODY>
+<H1>RESOLVER</H1>
+Section: Manuel de l administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+
+<A NAME="lbAC">&nbsp;</A>
+<H2>NOM</H2>
+
+resolver - Fichier de configuration de la résolution de noms.
+<A NAME="lbAD">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+/etc/resolv.conf
+<A NAME="lbAE">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+La bibliothèque
+<I>resolver</I>
+
+est un ensemble de routines de la bibliothèque C
+qui fournit un accès au système DNS Internet.
+Le fichier de configuration de la résolution de noms contient des informations qui sont lues
+par les routines de résolution la première fois qu'elles sont invoquées par un processus.
+Le fichier est prévu pour être lisible par des humains et contient une liste de mots-clés
+avec des valeurs.
+<P>
+
+Sur un système configuré normalement, ce fichier ne devrait pas être nécessaire.
+Le seul serveur de noms interrogé sera celui résidant sur la machine locale,
+le nom de domaine est déterminé à partir du nom d'hôte,
+et le chemin de recherche du domaine est construit à partir du nom de domaine.
+<P>
+
+Les différentes options de configuration sont&nbsp;:
+<DL COMPACT>
+<DT><B>nameserver</B><DD>
+Adresse Internet (en notation pointée) du serveur de noms
+que la bibliothèque <I>resolver</I> interrogera.
+Jusqu'à MAXNS (actuellement 3) serveurs de noms peuvent être
+mentionnés sur des lignes indépendantes.
+Si il y a de multiples serveurs, la bibliothèque de
+résolution les interrogera dans l'ordre indiqué.
+Si aucune entrée <B>nameserver</B> n'est présente, le fonctionnement par défaut
+est d'utiliser le serveur de noms se trouvant sur la machine.
+(L'algorithme consiste à interroger un serveur de noms, et si la requête dépasse le temps maximum,
+à essayer le suivant, jusqu'à la fin de la liste, et à recommencer jusqu'à un nombre maximal de
+tentatives).
+<DT><B>domain</B><DD>
+Nom du domaine local.
+La plupart des requêtes au sein de ce domaine peuvent être réduites
+à des raccourcis relatifs au domaine local.
+Si aucune entrée <B>domain</B> n'est présente, le domaine local est déterminé
+à partir du nom local de l'hôte renvoyé par
+<I>gethostname</I>();
+la partie domaine est extraite en considérant tout ce qui se trouve après le premier `.'.
+Finalement si le nom d'hôte ne contient pas de portion de domaine, on suppose être
+dans le domaine racine.
+<DT><B>search</B><DD>
+Liste de recherche pour les noms d'hôte.
+La liste de recherche est normalement déterminée à partir du nom de domaine local.
+Par défaut, elle ne contient que le domaine local.
+On peut la modifier en listant les chemins de recherche des domaines désirés
+à la suite du mot-clé <I>search</I> avec des espaces ou des tabulations séparant
+les noms.
+La plupart des recherches seront menées en essayant chaque composant des
+chemins de recherche l'un après l'autre jusqu'à obtenir une réponse.
+Notez que ce processus peut être lent et engendrer un trafic réseau important
+si les serveurs pour les domaines listés ne sont pas locaux,
+et que les requêtes dépassent le délai accordé car aucun serveur n'est disponible
+pour un des domaines.
+<DT><DD>
+La liste de recherche est actuellement limitée à six domaines,
+avec un maximum de 256 caractères.
+<DT><B>sortlist</B><DD>
+Cette option permet aux adresses renvoyées par <B>gethostbyname</B>() d'être ordonnées.
+Une liste de tri est indiquée par des paires d'adresses IP et de masques réseau. Le masque réseau
+est optionnel et prend par défaut la valeur du masque naturel du réseau. L'adresse IP et le masque
+réseau optionnel sont séparés par des slashes. Jusqu'à 10 paires peuvent
+être mentionnées.
+<DT><DD>
+ex : sortlist 130.155.160.0/255.255.240.0 130.155.0.0
+<DT><B>options</B><DD>
+Les options permettent de modifier certaines variables internes de la bibliothèque <I>resolver</I>.
+La syntaxe est
+<DT><DD>
+<B>options</B> <I>opt</I> <I>...</I>
+<DT><DD>
+où <I>opt</I> est une des options suivantes :
+<DT><DD>
+<B>debug</B> --- écrit RES_DEBUG dans _res.options.
+<DT><DD>
+<B>ndots:</B><I>n</I> --- fixe un seuil pour le nombre de points qui doivent
+apparaître dans un nom fourni à <B>res_query</B> (voir <I><A HREF="/cgi-bin/man/man2html?3+resolver">resolver</A></I>(3))
+avant qu'une <I>requête absolue initiale</I> soit entreprise. La valeur par défaut pour
+<I>n</I> est ``1'', ce qui signifie que dès qu'un point apparaît dans le nom, il sera
+d'abord essayé en tant que nom absolu avant d'ajouter tout élément de
+la liste de rechercher <I>search</I>.
+</DL>
+<P>
+
+Les mots-clés <I>domain</I> et <I>search</I> sont mutuellement exclusifs.
+Si les deux apparaissent dans le fichier,
+le dernier gagne.
+<P>
+
+Le mot-clé <I>search</I> du fichier <I>resolv.conf</I> du système peut être
+surchargé indépendamment pour chaque processus en remplissant la variable d'environnement
+``<FONT SIZE="-1">LOCALDOMAIN</FONT>'' avec une liste de domaines de recherche séparés par des espaces.
+<P>
+
+Le mot-clé <I>options</I> du fichier <I>resolv.conf</I> du système peut être
+surchargé indépendamment pour chaque processus en remplissant la variable d'environnement
+``<FONT SIZE="-1">RES_OPTIONS</FONT>'' en une liste d'options de la bibliothèque <I>resolver</I> (séparées par
+des espaces), comme indiqué à la rubrique <B>options</B> plus haut.
+<P>
+
+Le mot-clé et la valeur doivent apparaître sur une ligne isolée, le mot-clé
+(ex: <B>nameserver</B>) doit apparaître en début de ligne
+et il doit être séparé de la valeur par des espaces.
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/etc/resolv.conf</I>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+gethostbyname">gethostbyname</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?7+hostname">hostname</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?8+named">named</A></B>(8),
+
+<BR>
+
+Name Server Operations Guide for BIND
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">NOM</A><DD>
+<DT><A HREF="#lbAD">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAE">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:55 GMT, February 11, 2014
+</BODY>
+</HTML>

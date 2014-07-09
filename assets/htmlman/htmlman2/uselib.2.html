@@ -1,0 +1,111 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of USELIB</TITLE>
+</HEAD><BODY>
+<H1>USELIB</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+uselib - Sélectionner une bibliothèque partagée.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int uselib(const char *</B><I>library</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>uselib</B> sélectionne la bibliothèque partagée
+dont le fichier binaire est
+<I>library</I>
+
+pour qu'elle soit utilisée par le processus appelant.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>uselib</B>
+
+renvoie 0 s'il réussit, -1 s'il échoue auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+En plus de toutes les erreurs déclenchées par
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2),
+
+les suivantes peuvent se produire&nbsp;:
+<DL COMPACT>
+<DT><B>ENOEXEC</B>
+
+<DD>
+Le fichier décrit par
+<I>library</I>
+
+n'est pas exécutable ou n'a pas le bon nombre magique.
+<DT><B>EACCES</B>
+
+<DD>
+La bibliothèque indiquée par
+<I>library</I>
+
+n'est pas accessible en lecture.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<B>uselib()</B> est spécifique à Linux et ne doit pas être employé
+dans des programmes destinés à être portables.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+ar">ar</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+gcc">gcc</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+ld">ld</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+ldd">ldd</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ld.so">ld.so</A></B>(8).
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:58 GMT, February 11, 2014
+</BODY>
+</HTML>

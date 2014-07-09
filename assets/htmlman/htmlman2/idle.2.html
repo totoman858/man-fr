@@ -1,0 +1,93 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of IDLE</TITLE>
+</HEAD><BODY>
+<H1>IDLE</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+idle - Rendre le processus 0 inactif.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>void idle(void);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>idle</B>
+
+est un appel-système interne, utilisé pendant le démarrage du système.
+Il sert à rendre swappables les pages du processus, à abaisser sa
+priorité, et entrer dans la boucle principale de l'ordonnanceur.
+<B>idle</B>
+
+ne retourne jamais.
+<P>
+
+Seul le processus 0 peut appeler
+<B>idle</B>.
+
+Tout processus utilisateur, même avec les privilèges de Super-Utilisateur
+déclenchera l'erreur
+<B>EPERM</B>
+
+s'il tente d'appeler
+<B>idle.</B>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>idle</B>
+
+ne retourne jamais lorsqu'il est appelé par le processus 0,
+et renvoie toujours -1 aux processus utilisateurs.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+Toujours déclenchée pour un processus utilisateur.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Cette fonction est spécifique à Linux.
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Depuis le noyau 2.3.13, cet appel-système n'existe plus.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:02 GMT, February 11, 2014
+</BODY>
+</HTML>

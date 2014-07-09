@@ -1,0 +1,335 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STATFS</TITLE>
+</HEAD><BODY>
+<H1>STATFS</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+statfs, fstatfs - Obtenir des statistiques sur le système de fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/vfs.h">sys/vfs.h</A>&gt;</B>
+
+<P>
+<B>int statfs(const char *</B><I>path</I><B>, struct statfs *</B><I>buf</I><B>);</B>
+
+<BR>
+
+<B>int fstatfs(int </B><I>fd</I><B>, struct statfs *</B><I>buf</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>statfs</B>
+
+renvoie des informations à propos d'un système de fichiers montés.
+<I>path</I>
+
+est le nom d'un fichier quelconque dans le système de fichiers.
+<I>buf</I>
+
+est un pointeur sur une structure
+<I>statfs</I>
+
+définie comme suit :
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+struct statfs {
+   long    f_type;     /* type de système de fichier        */
+   long    f_bsize;    /* Taille optimale de bloc           */
+   long    f_blocks;   /* Nombre total de blocs             */
+   long    f_bfree;    /* Blocs libres                      */
+   long    f_bavail;   /* Blocs libres pour utilisateurs    */
+   long    f_files;    /* Nombres de noeuds                 */
+   long    f_ffree;    /* Nombre de noeuds libres           */
+   fsid_t  f_fsid;     /* ID du système de fichiers         */
+   long    f_namelen;  /* Longueur maxi des noms de fichier */
+   long    f_spare[6]; /* réservé pour usage ultérieur      */
+};
+
+Types de systèmes de fichiers :
+
+linux/affs_fs.h:
+   AFFS_SUPER_MAGIC       0xADFF
+linux/efs_fs.h:
+   EFS_SUPER_MAGIC       0x00414A53
+linux/ext_fs.h:
+   EXT_SUPER_MAGIC        0x137D
+linux/ext2_fs.h:
+   EXT2_OLD_SUPER_MAGIC   0xEF51
+   EXT2_SUPER_MAGIC       0xEF53
+linux/hpfs_fs.h:
+   HPFS_SUPER_MAGIC       0xF995E849
+linux/iso_fs.h:
+   ISOFS_SUPER_MAGIC      0x9660
+linux/minix_fs.h:
+   MINIX_SUPER_MAGIC      0x137F  /* Minix original   */
+   MINIX_SUPER_MAGIC2     0x138F  /* Minix 30 caract. */
+   MINIX2_SUPER_MAGIC     0x2468  /* Minix V2         */
+   MINIX2_SUPER_MAGIC2    0x2478  /* Minix V2 30 car. */
+linux/msdos_fs.h:
+   MSDOS_SUPER_MAGIC      0x4d44
+linux/ncp_fs.h:
+   NCP_SUPER_MAGIC        0x564c
+linux/nfs_fs.h:
+   NFS_SUPER_MAGIC        0x6969
+linux/proc_fs.h:
+   PROC_SUPER_MAGIC       0x9fa0
+linux/smb_fs.h:
+   SMB_SUPER_MAGIC        0x517B
+linux/sysv_fs.h:
+   XENIX_SUPER_MAGIC      0x012FF7B4
+   SYSV4_SUPER_MAGIC      0x012FF7B5
+   SYSV2_SUPER_MAGIC      0x012FF7B6
+   COH_SUPER_MAGIC        0x012FF7B7
+linux/ufs_fs.h:
+   UFS_MAGIC              0x00011954
+linux/xfs_fs.h:
+   XFS_SUPER_MAGIC       0x58465342
+linux/xia_fs.h:
+   _XIAFS_SUPER_MAGIC     0x012FD16D
+</PRE>
+
+</DL>
+
+<P>
+
+Personne ne sait ce que
+<I>f_fsid</I>
+
+est supposé contenir (voir plus loin).
+<P>
+
+Les champs indéfinis pour un système de fichiers donné sont mis à 0.
+<B>fstatfs</B>
+
+renvoie les mêmes informations concernant un fichier ouvert référencé par
+<I>fd</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>statfs</B>
+
+et
+<B>fstatfs</B>
+
+renvoient zéro s'ils réussissent.
+En cas d'échec -1 est renvoyé, et
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Pour
+<B>statfs&nbsp;:</B>
+
+<DL COMPACT>
+<DT><B>ENOTDIR</B>
+
+<DD>
+Un élément du chemin d'accès
+<I>path</I>
+
+n'est pas un répertoire
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+<I>path</I>
+
+est trop long.
+<DT><B>ENOENT</B>
+
+<DD>
+Le fichier indiqué par
+<I>path</I>
+
+n'existe pas.
+<DT><B>EACCES</B>
+
+<DD>
+Un élément du chemin d'accès
+<I>path</I>
+
+ne permet pas le parcours.
+<DT><B>ELOOP</B>
+
+<DD>
+<I>path</I>
+
+contient une référence circulaire (à travers un lien symbolique).
+<DT><B>EFAULT</B>
+
+<DD>
+<I>buf</I>
+
+ou
+<I>path</I>
+
+pointent en dehors de l'espace d'adressage accessible
+<DT><B>EIO</B>
+
+<DD>
+Une erreur d'entrée/sortie s'est produite pendant la lecture
+dans le système de fichiers.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour le noyau.
+<DT><B>ENOSYS</B>
+
+<DD>
+Le système de fichiers contenant
+<I>path</I>
+
+ne supporte pas l'appel
+<B>statfs</B>.
+
+</DL>
+<P>
+
+Pour
+<B>fstatfs&nbsp;:</B>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+<I>Fd</I>
+
+n'est pas un descripteur de fichier ouvert valide.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>Buf</I>
+
+pointe en dehors de l'espace d'adressage accessible
+<DT><B>EIO</B>
+
+<DD>
+Une erreur d'entrée/sortie s'est produite pendant la lecture
+dans le système de fichiers.
+<B>ENOSYS</B>
+
+Le système de fichiers contenant
+<I>fd</I>
+
+ne supporte pas l'appel
+<B>statfs</B>.
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+La routine
+<B>statfs</B>
+
+de Linux a été inspirée par celle de BSD 4.4, mais n'emploie pas
+la même structure.
+<A NAME="lbAH">&nbsp;</A>
+<H3>f_fsid</H3>
+
+Solaris et POSIX 1003.1-2001 ont un appel-système
+<I>statvfs</I>
+
+qui renvoie une
+<B>struct statvfs</B>
+
+(définie dans
+<I>&lt;<A HREF="file:///usr/include/sys/statvfs.h">sys/statvfs.h</A>&gt;</I>)
+
+contenant un
+<B>unsigned long</B>
+
+<I>f_fsid</I>.
+
+Linux, SunOS, HPUX, 4.4BSD ont un appel-système
+<I>statfs</I>
+
+qui renvoie une
+<B>struct statfs</B>
+
+(définie dans
+<I>&lt;<A HREF="file:///usr/include/sys/vfs.h">sys/vfs.h</A>&gt;</I>)
+
+contenant un
+<B>fsid_t</B>
+
+<I>f_fsid</I>,
+
+où
+<I>fsid_t</I>
+
+est défini comme une
+<B>struct { int val[2]; }</B>.
+
+La même chose vaut pour FreeBSD, sauf que le fichier d'en-tête est
+<I>&lt;<A HREF="file:///usr/include/sys/mount.h">sys/mount.h</A>&gt;</I>.
+
+<P>
+L'idée générale est que
+<I>f_fsid</I>
+
+contient quelque chose qui permette que la paire
+(<I>f_fsid</I>,<I>ino</I>)
+
+identifie un fichier de manière unique.
+Certains systèmes utilisent (une variation sur) le numéro de périphérique
+combiné au type de système de fichiers.
+Plusieurs systèmes restreigne l'accès au champ
+<I>f_fsid</I>
+
+pour le Super-user, (et indique zéro pour les utilisateurs normaux), car ce champ
+est utilisé dans la manipulation du système de fichiers lors d'exportation par
+NFS, et sa valeur peut être considérée comme un élément de sécurite.
+<P>
+
+Sous certains systèmes, le
+<I>fsid</I>
+
+peut être utilisé en second paramètre de
+l'appel-système
+<I>sysfs()</I>.
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DL>
+<DT><A HREF="#lbAH">f_fsid</A><DD>
+</DL>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:53 GMT, February 11, 2014
+</BODY>
+</HTML>

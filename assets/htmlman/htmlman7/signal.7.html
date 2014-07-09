@@ -1,0 +1,311 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SIGNAL</TITLE>
+</HEAD><BODY>
+<H1>SIGNAL</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+signal - Liste des signaux disponibles.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Linux supporte supporte à la fois les signaux POSIX classiques (&quot;signaux
+standards&quot;) et les signaux POSIX temps-réel.
+<A NAME="lbAD">&nbsp;</A>
+<H3>Signaux standards</H3>
+
+Linux supporte les signaux standards indiqués ci-dessous. Plusieurs
+d'entre-eux dépendent de l'architecture, comme on le voit dans la colonne
+&quot;Valeur&quot;. Lorsque trois valeurs sont indiquées, la première correspond
+normalement aux architectures Alpha et Sparc, la seconde pour les ix86,
+PPC et la dernière pour les Mips.
+Un - dénote un signal absent pour l'architecture correspondante.
+<P>
+Les symboles de la colonne &quot;Action&quot; ont la signification suivante&nbsp;:
+<DL COMPACT>
+<DT>Term<DD>
+Par défaut, terminer le processus.
+<DT>Ign<DD>
+Par défaut, ignorer le signal.
+<DT>Core<DD>
+Par défaut, créer un fichier core et terminer le processus.
+<DT>Stop<DD>
+Par défaut arrêter le processus.
+</DL>
+<P>
+
+Voici tout d'abord les signaux décrits dans le standard Posix.1 original&nbsp;:
+<P>
+<P>
+
+<TABLE>
+<TR VALIGN=top><TD>Signal</TD><TD ALIGN=center>Valeur</TD><TD ALIGN=center>Action</TD><TD>Commentaire<BR></TD></TR>
+<TR VALIGN=top><TD><HR></TD><TD><HR></TD><TD><HR></TD><TD><HR></TD></TR>
+<TR VALIGN=top><TD><B><BR>&nbsp;&nbsp;</B></TD><TD ALIGN=center> </TD><TD ALIGN=center></TD><TD>de contrôle, ou mort du processus<BR></TD></TR>
+<TR VALIGN=top><TD><B><BR>&nbsp;&nbsp;</B></TD><TD ALIGN=center> </TD><TD ALIGN=center></TD><TD>de contrôle.<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGINT</B></TD><TD ALIGN=center>&nbsp;2</TD><TD ALIGN=center>Term</TD><TD>Interruption depuis le clavier.<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGQUIT</B></TD><TD ALIGN=center>&nbsp;3</TD><TD ALIGN=center>Core</TD><TD>Demande 'Quitter' depuis le clavier.<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGILL</B></TD><TD ALIGN=center>&nbsp;4</TD><TD ALIGN=center>Core</TD><TD>Instruction illégale.<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGABRT</B></TD><TD ALIGN=center>&nbsp;6</TD><TD ALIGN=center>Core</TD><TD>Signal d'arrêt depuis <I><A HREF="/cgi-bin/man/man2html?3+abort">abort</A></I>(3).<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGFPE</B></TD><TD ALIGN=center>&nbsp;8</TD><TD ALIGN=center>Core</TD><TD>Erreur mathématique virgule flottante.<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGKILL</B></TD><TD ALIGN=center>&nbsp;9</TD><TD ALIGN=center>Term</TD><TD>Signal 'KILL'.<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGSEGV</B></TD><TD ALIGN=center>11</TD><TD ALIGN=center>Core</TD><TD>Référence mémoire invalide.<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGPIPE</B></TD><TD ALIGN=center>13</TD><TD ALIGN=center>Term</TD><TD>Écriture dans un tube sans lecteur.<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGALRM</B></TD><TD ALIGN=center>14</TD><TD ALIGN=center>Term</TD><TD>Temporisation <I><A HREF="/cgi-bin/man/man2html?2+alarm">alarm</A></I>(2) écoulée.<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGTERM</B></TD><TD ALIGN=center>15</TD><TD ALIGN=center>Term</TD><TD>Signal de fin.<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGUSR1</B></TD><TD ALIGN=center>30,10,16</TD><TD ALIGN=center>Term</TD><TD>Signal utilisateur 1.<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGUSR2</B></TD><TD ALIGN=center>31,12,17</TD><TD ALIGN=center>Term</TD><TD>Signal utilisateur 2.<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGCHLD</B></TD><TD ALIGN=center>20,17,18</TD><TD ALIGN=center>Ign</TD><TD>Fils arrêté ou terminé.<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGCONT</B></TD><TD ALIGN=center>19,18,25</TD><TD ALIGN=center></TD><TD>Continuer si arrêté.<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGSTOP</B></TD><TD ALIGN=center>17,19,23</TD><TD ALIGN=center>Stop</TD><TD>Arrêt du processus.<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGTSTP</B></TD><TD ALIGN=center>18,20,24</TD><TD ALIGN=center>Stop</TD><TD>Stop invoqué depuis tty.<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGTTIN</B></TD><TD ALIGN=center>21,21,26</TD><TD ALIGN=center>Stop</TD><TD>Lecture sur tty en arrière-plan.<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGTTOU</B></TD><TD ALIGN=center>22,22,27</TD><TD ALIGN=center>Stop</TD><TD>Écriture sur tty en arrière-plan.<BR></TD></TR>
+</TABLE>
+
+<P>
+Les signaux
+<B>SIGKILL</B>
+
+et
+<B>SIGSTOP</B>
+
+ne peuvent ni capturés ni ignorés.
+<P>
+Ensuite, les signaux non décrits par POSIX.1, mais présents dans les spécifications SUSv2 et SUSv3 / POSIX 1003.1-2001&nbsp;:
+<P>
+<P>
+
+<TABLE>
+<TR VALIGN=top><TD>Signal</TD><TD ALIGN=center>Valeur</TD><TD ALIGN=center>Action</TD><TD>Commentaire<BR></TD></TR>
+<TR VALIGN=top><TD><HR></TD><TD><HR></TD><TD><HR></TD><TD><HR></TD></TR>
+<TR VALIGN=top><TD><B>SIGPOLL</B></TD><TD ALIGN=center></TD><TD ALIGN=center>Term</TD><TD>Synonyme de SIGIO (System V).<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGPROF</B></TD><TD ALIGN=center>27,27,29</TD><TD ALIGN=center>Term</TD><TD>Horloge pour le suivi<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGSYS</B></TD><TD ALIGN=center>12,-,12</TD><TD ALIGN=center>Core</TD><TD>Mauvais argument de fonction (System V)<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGTRAP</B></TD><TD ALIGN=center>5</TD><TD ALIGN=center>Core</TD><TD>Point d'arrêt rencontré.<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGURG</B></TD><TD ALIGN=center>16,23,21</TD><TD ALIGN=center>Ign</TD><TD>Condition urgente sur socket (4.2 BSD).<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGVTALRM</B></TD><TD ALIGN=center>26,26,28</TD><TD ALIGN=center>Term</TD><TD>Alarme virtuelle (4.2 BSD).<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGXCPU</B></TD><TD ALIGN=center>24,24,30</TD><TD ALIGN=center>Core</TD><TD>Limite de temps CPU dépassée (4.2 BSD).<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGXFSZ</B></TD><TD ALIGN=center>25,25,31</TD><TD ALIGN=center>Core</TD><TD>Taille de fichier excessive (4.2 BSD).<BR></TD></TR>
+</TABLE>
+
+<P>
+Jusqu'à Linux 2.2 inclus, l'action par défaut pour
+<B>SIGSYS</B>, <B>SIGXCPU</B>, <B>SIGXFSZ</B>, 
+
+et (sur les architectures autres que Sparc ou Mips)
+<B>SIGBUS</B>
+
+était de terminer simplement le processus, sans fichier core.
+(Sur certains Unix, l'action par défaut pour
+<B>SIGXCPU</B> et <B>SIGXFSZ</B>
+
+est de finir le processus sans fichier core).
+Linux 2.4 se conforme à Posix 1003.1-2001 pour ces signaux, et termine le
+processus avec un fichier core.
+<P>
+Puis quelques signaux divers&nbsp;:
+<P>
+<P>
+
+<TABLE>
+<TR VALIGN=top><TD>Signal</TD><TD ALIGN=center>Valeur</TD><TD ALIGN=center>Action</TD><TD>Commentaire<BR></TD></TR>
+<TR VALIGN=top><TD><HR></TD><TD><HR></TD><TD><HR></TD><TD><HR></TD></TR>
+<TR VALIGN=top><TD><B>SIGEMT</B></TD><TD ALIGN=center>7,-,7</TD><TD ALIGN=center>Term</TD><TD><BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGSTKFLT</B></TD><TD ALIGN=center>-,16,-</TD><TD ALIGN=center>Term</TD><TD>Erreur de pile sur coprocesseur<BR></TD></TR>
+<TR VALIGN=top><TD><B><BR>&nbsp;</B></TD><TD ALIGN=center></TD><TD ALIGN=center></TD><TD>(inutilisé).<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGIO</B></TD><TD ALIGN=center>23,29,22</TD><TD ALIGN=center>Term</TD><TD>E/S à nouveau possible(4.2 BSD).<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGCLD</B></TD><TD ALIGN=center>-,-,18</TD><TD ALIGN=center>Ign</TD><TD>Synonyme de SIGCHLD.<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGPWR</B></TD><TD ALIGN=center>29,30,19</TD><TD ALIGN=center>Term</TD><TD>Chute d'alimentation (System V).<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGINFO</B></TD><TD ALIGN=center>29,-,-</TD><TD ALIGN=center></TD><TD>Synonyme de SIGPWR<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGLOST</B></TD><TD ALIGN=center>-,-,-</TD><TD ALIGN=center>Term</TD><TD>Perte de verrou de fichier.<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGWINCH</B></TD><TD ALIGN=center>28,28,20</TD><TD ALIGN=center>Ign</TD><TD>Fenêtre redimensionnée (4.3 BSD, Sun).<BR></TD></TR>
+<TR VALIGN=top><TD><B>SIGUNUSED</B></TD><TD ALIGN=center>-,31,-</TD><TD ALIGN=center>Term</TD><TD>Signal inutilisé (sera SIGSYS).<BR></TD></TR>
+</TABLE>
+
+<P>
+(Le signal 29 est
+est
+<B>SIGINFO</B>
+
+/
+<B>SIGPWR</B>
+
+sur Alpha mais
+<B>SIGLOST</B>
+
+sur Sparc).
+<P>
+<B>SIGEMT</B>
+
+n'est pas spécifié par Posix 1003.1-2001 mais apparaît néanmoins sur la
+plupart des Unix, avec une action par défaut typique correspondant à une
+fin du processus avec fichier core.
+<P>
+<B>SIGPWR</B>
+
+(non spécifié dans Posix 1003.1-2001) est typiquement ignoré sur les autres
+Unix où il apparaît.
+<P>
+<B>SIGIO</B>
+
+(non sécifié par Posix 1003.1-2001) est ignoré par défaut sur plusieurs
+autres Unix.
+<A NAME="lbAE">&nbsp;</A>
+<H3>Signaux temps-réel</H3>
+
+Linux supporte les signaux temps-réel tels qu'ils ont été définis à l'origine
+dans les extentions temps-réel Posix.4 (et inclus à présent dans Posix
+1003.1-2001). Linux supporte 32 signaux temps-réel numéroté de 32
+(<B>SIGRTMIN</B>)
+
+à 63
+(<B>SIGRTMAX</B>).
+
+(Les applications doivent toujours se référer aux signaux temps-réel en
+utilisant la notation
+<B>SIGRTMIN</B>+n,
+
+car la plage des numéros des signaux varie suivant les Unix).
+<P>
+
+Contrairement aux signaux standards, les signaux temps-réel n'ont pas de
+signification prédéfinie&nbsp;: l'ensemble complet de ces signaux peut être
+utilisée à des fins spécifiques à l'application.
+(Notez quand même que l'implémentation LinuxThreads utilise les trois
+premiers signaux temps-réel).
+<P>
+
+L'action par défaut pour un signal temps-réel non capturé est de terminer
+le processus récepteur.
+<P>
+
+Les signaux temps-réel se distinguent de leurs homologues classiques ainsi&nbsp;:
+<DL COMPACT>
+<DT>1.<DD>
+Plusieurs instances d'un signal temps-réel peuvent être empilées. Au
+contraire, si plusieurs instances d'un signal standard arrivent alors qu'il
+est bloqué, une seule instance sera mémorisée.
+<DT>2.<DD>
+Si le signal est envoyé en utilisant
+<B><A HREF="/cgi-bin/man/man2html?2+sigqueue">sigqueue</A></B>(2),
+
+il peut être accompagné d'une valeur (un entier ou un pointeur).
+Si le processus récepteur positionne un gestionnaire en utilisant
+l'attribut
+<B>SA_SIGACTION</B>
+
+de l'appel
+<B><A HREF="/cgi-bin/man/man2html?2+sigaction">sigaction</A></B>(2)
+
+alors il peut accéder à la valeur transmise dans le champ
+<I>si_value</I>
+
+de la structure
+<I>siginfo_t</I>
+
+passée en second argument au gestionnaire.
+De plus, les champs
+<I>si_pid</I>
+
+et
+<I>si_uid</I>
+
+de cette structure fournissent le PID et l'UID réel du processus émetteur.
+<DT>3.<DD>
+Les signaux temps-réel sont délivrés dans un ordre précis.
+Les divers signaux temps-réel du même type sont délivrés dans l'ordre
+où ils ont été émis.
+Si différents signaux temps-réel sont envoyés au processus, ils sont
+délivrés en commençant par le signal de numéro le moins élevé (le signal
+de plus fort numéro est celui de priorité la plus faible).
+</DL>
+<P>
+
+Si des signaux standards et des signaux temps-réel sont simultanément en
+attente pour un processus, Posix ne précise pas d'ordre de délivrance.
+Linux, comme beaucoup d'autres implémentations, donne priorité aux
+signaux temps-réel dans ce cas.
+<P>
+
+D'après Posix, une implémentation doit permettre l'empilement d'au moins 
+_POSIX_SIGQUEUE_MAX (32) signaux pour un processus.
+Néanmoins, plutôt que de fixer une limite par processus, Linux impose une
+limite pour l'ensemble des signaux empilés sur le système pour tous les
+processus.
+Cette limite peut être consultée, et modifiée (avec les privilèges adéquats)
+grâce au fichier
+<I>/proc/sys/kernel/rtsig-max</I>.
+
+Un fichier associé,
+<I>/proc/sys/kernel/rtsig-max</I>,
+
+indique combien de signaux temps-réel sont actuellement empilés.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX.1
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<B>SIGIO</B>
+
+et
+<B>SIGLOST</B>
+
+ont la même valeur, le dernier est
+mis en commentaire dans les sources du noyau, mais certaines
+applications considèrent encore que le signal 29 est
+<B>SIGLOST</B>.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+kill">kill</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+kill">kill</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setitimer">setitimer</A></B>(2)
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigaction">sigaction</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+signal">signal</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigprocmask">sigprocmask</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigqueue">sigqueue</A></B>(2)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAD">Signaux standards</A><DD>
+<DT><A HREF="#lbAE">Signaux temps-réel</A><DD>
+</DL>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:59 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,581 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of EPOLL</TITLE>
+</HEAD><BODY>
+<H1>EPOLL</H1>
+Section: Manuel du programmeur Linux (4)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+epoll - Notifications d'évènements d'entrées/sorties.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/epoll.h">sys/epoll.h</A>&gt;</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>epoll</B>
+
+est une variante de
+<B><A HREF="/cgi-bin/man/man2html?2+poll">poll</A></B>(2)
+
+que l'on peut déclencher par niveau ou par changement d'état, et monte
+bien en charge pour un grand nombre de descripteurs simultanés. Trois appels-système
+sont fournis pour configurer et commander un ensemble
+<B>epoll</B> :
+
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_create">epoll_create</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_ctl">epoll_ctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_wait">epoll_wait</A></B>(2).
+
+<P>
+Un ensemble
+<B>epoll</B>
+
+est connecté à un descripteur de fichiers créé par
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_create">epoll_create</A></B>(2).
+
+L'interêt pour certains descripteurs est ensuite enregistré avec
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_ctl">epoll_ctl</A></B>(2).
+
+Enfin, l'attente effective démarre avec l'appel 
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_wait">epoll_wait</A></B>(2).
+
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+L'interface de distribution d'évènement de
+<B>epoll</B>
+
+est capable de se comporter en détection de niveau (Level Triggered - LT)
+ou en détection de changement d'état (Edge Triggered - ET). La différence
+entre ces mécanismes est décrite ci-dessous. Supposons que le
+scénario suivant se produise&nbsp;:
+<DL COMPACT>
+<DT><B>1</B>
+
+<DD>
+Le descripteur de fichier qui représente le côté lecture d'un tube
+(<B>fd_lect</B>)
+
+est ajouté dans un ensemble
+<B>epoll</B>.
+
+<DT><B>2</B>
+
+<DD>
+Celui qui écrie dans le tube envoie 2 Ko de données.
+<DT><B>3</B>
+
+<DD>
+Un appel à
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_wait">epoll_wait</A></B>(2)
+
+est effectué et renvoie
+<B>fd_lect</B>
+
+comme descripteur de fichier prêt.
+<DT><B>4</B>
+
+<DD>
+Le lecture du tube lit 1 Ko de données depuis
+<B>fd_lect</B>.
+
+<DT><B>5</B>
+
+<DD>
+Un appel de
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_wait">epoll_wait</A></B>(2)
+
+est effectué.
+</DL>
+<P>
+
+<P>
+Si le descripteur
+<B>fd_lect</B>
+
+a été ajouté à l'ensemble
+<B>epoll</B>
+
+en utilisant l'attribut
+<B>EPOLLET</B>,
+
+l'appel
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_wait">epoll_wait</A></B>(2)
+
+réalisé à l'étape
+<B>5</B>
+
+va bloquer malgré les données déjà présentes dans les buffers d'entrée
+du fichier. La raison en est que le mécanisme ET détecte les changements
+sur un périphérique supervisé entre l'état &quot;aucune entrée/sortie possible&quot;
+(<B>0</B>)
+
+et l'état &quot;entrée/sortie possible&quot;
+(<B>1</B>).
+
+Dans l'exemple ci-dessus, un événement sur
+<B>fd_lect</B>
+
+sera déclenché (en supposant que le buffer était vide à l'origine)
+à cause de l'écriture à l'étape
+<B>2</B>,
+
+et l'événement est consommé dans
+<B>3</B>.
+
+Comme l'opération de lecture de l'étape
+<B>4</B>
+
+ne consomme pas toutes les données du buffer (la condition &quot;Entrées/sorties
+possibles&quot; persiste), aucune transition
+<B>0</B>
+
+-&gt;
+<B>1</B>
+
+ne peut se produire en
+<B>5</B>.
+
+Lorsqu'on emploie l'attribut
+<B>EPOLLET</B>
+
+(Edge Triggered)
+de la fonction
+<B>epoll</B>,
+
+on devrait toujours utiliser des descripteurs non-bloquants pour éviter 
+qu'une lecture ou une écriture bloque une tâche qui gère plusieurs
+descripteurs de fichiers.
+L'utilisation suggérée d
+<B>epoll</B>
+
+avec l'interface en détection de changements
+(<B>EPOLLET</B>)
+
+est décrite ci-dessous, avec les pièges à éviter.
+
+<DL COMPACT>
+<DT><B>i</B>
+
+<DD>
+ave des descripteurs non-bloquants&nbsp;;
+<DT><B>ii</B>
+
+<DD>
+en attendant seulement après qu'un
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2)
+
+ou un
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2)
+
+ait renvoyé EAGAIN.
+
+</DL>
+<P>
+
+Au contraire, lorsqu'il est utilisé avec l'interface en détection de niveau
+<B>epoll</B>
+
+est une alternative plus rapide à
+<B><A HREF="/cgi-bin/man/man2html?2+poll">poll</A></B>(2),
+
+et peut être employé chaque fois que poll() est utilisé, car il utilise
+la même sémantique.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLE D'UTILISATION CONSEILLÉE</H2>
+
+<P>
+Tandis que l'utilisation de
+<B>epoll</B>
+
+avec un déclenchement par niveau correspond à la même sémantique
+que
+<B><A HREF="/cgi-bin/man/man2html?2+poll">poll</A></B>(2),
+
+le déclenchement par changement d'état nécessite plus d'explication pour
+éviter les cas de blocage. Dans cet exemple, le lecteur emploie
+une socket non-bloquante sur laquelle
+<B><A HREF="/cgi-bin/man/man2html?2+listen">listen</A></B>(2)
+
+a été appelée. La fonction do_use_fd() va utiliser le nouveau descripteur
+de fichier, jusqu'à ce que EAGAIN soit renvoyé par
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2)
+
+ou par
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2).
+
+Une application fonctionnant par transition d'état devrait, après réception
+d'EAGAIN, enregistrer l'état en cours, afin que l'appel suivant de
+do_use_fd() continue avec le
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2)
+
+ou le 
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2)
+
+où il s'est arrêté.  
+<P>
+<PRE>
+struct epoll_event ev, *events;
+
+for(;;) {
+    nfds = epoll_wait(kdpfd, events, maxevents, -1);
+
+    for(n = 0; n &lt; nfds; ++n) {
+        if(events[n].data.fd == listener) {
+            client = accept(listener, (struct sockaddr *) &amp;local,
+                            &amp;addrlen);
+            if(client &lt; 0){
+                perror(&quot;accept&quot;);
+                continue;
+            }
+            setnonblocking(client);
+            ev.events = EPOLLIN | EPOLLET;
+            ev.data.fd = client;
+            if (epoll_ctl(kdpfd, EPOLL_CTL_ADD, client, &amp;ev) &lt; 0) {
+                fprintf(stderr, &quot;epoll set insertion error: fd=%d,
+                        client);
+                return -1;
+            }
+        }
+        else
+            do_use_fd(events[n].data.fd);
+    }
+}
+</PRE>
+
+<P>
+Lorsqu'on utilise une détection de changement d'états, pour des raisons de
+performances, il est possible d'ajouter le descriptuer de fichier dans
+l'interface epoll
+(<B>EPOLL_CTL_ADD</B>)
+
+une fois, en spécifiant
+(<B>EPOLLIN</B>|<B>EPOLLOUT</B>).
+
+Ceci évite de basculer sans
+cesse entre
+<B>EPOLLIN</B>
+
+et
+<B>EPOLLOUT</B>
+
+lors des appels
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_ctl">epoll_ctl</A></B>(2)
+
+avec
+<B>EPOLL_CTL_MOD</B>.
+
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>QUESTIONS ET REPONSES (de la liste linux-kernel)</H2>
+
+<P>
+
+<DL COMPACT>
+<DT><B>Q1 </B>
+
+<DD>
+Que se passe-t-il si on ajoute deux fois le même fd dans un ensemble epoll&nbsp;?
+<DT><B>A1 </B>
+
+<DD>
+On aura probablement l'erreur EEXIST. Toutefois, il est possible que deux
+threads puisse ajouter le même fd deux fois. Sans conséquences fâcheuses.
+<DT><B>Q2 </B>
+
+<DD>
+Deux ensemples
+<B>epoll</B>
+
+peuvent-ils attendre le même fd? Si oui, les événements seront-t-ils
+reportés sur des deux ensembles
+<B>epoll</B>
+
+en même temps&nbsp;?
+<DT><B>A2</B>
+
+<DD>
+Oui. Toutefois, c'est peu recommandé. Oui, l'événement sera rapporté pour
+les deux.
+<DT><B>Q3</B>
+
+<DD>
+Peut-on utiliser le descripteur
+<B>epoll</B>
+
+lui-même avec poll/epoll/select&nbsp;?
+<DT><B>A3</B>
+
+<DD>
+Oui.
+<DT><B>Q4 </B>
+
+<DD>
+Que se passe-t-il si le descripteur de
+<B>epoll</B>
+
+est inséré dans son propre ensemble&nbsp;?
+<DT><B>A4</B>
+
+<DD>
+Cela échouera. Toutefois vous pouvez ajoutez le descripteur de
+<B>epoll</B>
+
+dans un autre ensemble epoll. 
+<DT><B>Q5</B>
+
+<DD>
+Puis-je envoyer le descripteur
+<B>epoll</B>
+
+à travers une socket Unix vers un autre processus&nbsp;?
+<DT><B>A5</B>
+
+<DD>
+Non.
+<DT><B>Q6</B>
+
+<DD>
+Est-ce que la feermeteur d'un descripteur le supprime 
+automatiquement d'un ensemble
+<B>epoll  ?</B>
+
+<DT><B>A6</B>
+
+<DD>
+Oui.
+<DT><B>Q7 </B>
+
+<DD>
+Si plus d'un événement survient entre deux appels
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_wait">epoll_wait</A></B>(2),
+
+sont-ils combinés ou rapportés séparément&nbsp;?
+<DT><B>A7</B>
+
+<DD>
+Ils sont combinés..
+<DT><B>Q8</B>
+
+<DD>
+Est-ce qu'une opération sur un descripteur affecte les événements déjà
+collectés mais pas encore rapportés&nbsp;?
+<DT><B>A8</B>
+
+<DD>
+Vous pouvez faire deux choses sur un descripteur existant. Une suppression
+serait sans signification dans ce cas. Une modification re-vérifie les
+entrées/sorties disponibles.
+<DT><B>Q9</B>
+
+<DD>
+Dois-je lire/écrire sans cesse un descripteur jusqu'à obtenir EAGAIN avec
+l'attribut
+<B>EPOLLET</B>
+
+(Edge Triggered behaviour)&nbsp;?
+<DT><B>A9</B>
+
+<DD>
+Non. La réception d'un événement depuis
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_wait">epoll_wait</A></B>(2)
+
+suggère qu'un descripteur est prêt pour l'opération d'E/S désirée. Vous
+devez le considérer prêt jusqu'au prochain EAGAIN. Quand et comment
+utiliser le descripteur dépend de vous. De plus, la disponibilité des
+entrées/sorties peut-être vérifiée par la quantité de données lues ou
+écrites avec le descripteur. Par exemple, si vous appelez
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2)
+
+en demandant la lecture d'une certaine quantité de données et que
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2)
+
+en renvoie moins, vous pouvez être sûrs d'avoir consommé tout le buffer
+d'entrée pour le descripteur. La même chose est vraie pour
+l'appel-système
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2).
+
+
+<P>
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>PIÈGES POSSIBLES, ET SOLUTIONS</H2>
+
+
+<DL COMPACT>
+<DT><B>o Faux Positifs (Edge Triggered)</B>
+
+<DD>
+</DL>
+<P>
+
+Il est possible que durant une lecture (en supposant que vous lisez en
+boucle en attendant EAGAIN), des données supplémentaires arrivent en
+second événement. Bien que ces données soient lues tout de suite, l'appel
+suivant de 
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_wait">epoll_wait</A></B>(2)
+
+sur le descripteur dira qu'il y a un événement &quot;lecture possible&quot; alors
+qu'il a déjà été consommé.
+<P>
+
+<DL COMPACT>
+<DT><B>1</B>
+
+<DD>
+Une certaine quantité de données arrive sur un descripteur surveillé.
+<DT><B>2</B>
+
+<DD>
+Un appel à
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_wait">epoll_wait</A></B>(2)
+
+renvoit le descripteur repéré.
+<DT><B>3</B>
+
+<DD>
+Un autre bloc de données arrive sur la même descripteur.
+<DT><B>4</B>
+
+<DD>
+Le descripteur est signalé en interne comme prêt.
+<DT><B>5</B>
+
+<DD>
+Un appel à
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2)
+
+consomme toutes les données disponibles.
+<DT><B>6</B>
+
+<DD>
+Un autre appel à
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_wait">epoll_wait</A></B>(2)
+
+renverra le descripteur ci-dessus même si aucune donnée
+n'est disponible, ainsi l'appel suivant de
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2)
+
+renverra EAGAIN.
+</DL>
+<P>
+
+Dans le cas de descripteurs non-bloquants, cela fera échouer immédiatement
+la lecture suivante avec l'erreur EAGAIN. Dans le cas de descripteurs
+bloquants, on restera en attente pour lire des données non encore présentes.
+L'auteur recommande de ne pas utiliser de descripteur bloquant avec le
+mécanisme de détection de changement d'état (ET).
+<P>
+
+Pour traiter ce cas, une possibilité est de marquer le descripteur comme
+prêt dans sa structure de données associée après la réception du premier
+événement, puis d'ignorer les événements tant qu'il est dans l'état prêt.
+Lorsque vous lisez jusqu'à recevoir EAGAIN, effacez le bit d'état prêt
+avant de rappeler
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_wait">epoll_wait</A></B>(2)
+
+sur ce descripteur.
+<DL COMPACT>
+<DT><B>o Famine (Edge Triggered)</B>
+
+<DD>
+</DL>
+<P>
+
+S'il y a un gros volume d'entrées/sorties, il est possible qu'en essayant
+de les traiter, d'autres fichiers ne soient pas pris en compte, ce qu'on
+appelle un cas de famine. Ce n'est pas spécifique à
+<B>epoll</B>.
+
+<P>
+
+La solution est de maintenir une liste de descripteurs prêts et de les
+marquer comme tels dans leur structure associée, permettant à l'application
+de savoir quels fichiers traiter, en organisant l'ordre au mieux. Ceci
+permet aussi d'ignorer les événments ultérieurs sur un descripteur prêt.
+<DL COMPACT>
+<DT><B>o Utilisation d'un cache d'événements...</B>
+
+<DD>
+</DL>
+<P>
+
+Si vous utilisez un cache d'événement, ou stockez tous les descripteurs
+renvoyés par
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_wait">epoll_wait</A></B>(2),
+
+alors assurez vous de disposer d'un moyen de marquer dynamiquement leurs
+fermetures (causées par un événement précédent).
+Supposons que vous recevez 100 événements de
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_wait">epoll_wait</A></B>(2),
+
+et que l'événement 47 implique de fermer le descripteur 13.
+Si vous supprimez la structure et utilisez close(), alors votre cache
+peut encore contenir des événements pour ce descripteur, et poser des
+problèmes de cohérence.
+<P>
+
+Une solution est d'invoquer, pendant le traitement de l'événement 47,
+<B>epoll_ctl</B>(<B>EPOLL_CTL_DEL</B>)
+
+pour supprimer le descripteur 13, le fermer, et marquer sa structure
+associée comme supprimée. Si vous rencontrez un autre événement pour
+le descripteur 13 dans votre traitement, vous verrez qu'il a été
+supprimé précédement, sans que cela ne prête à confusion.
+<P>
+
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?4+epoll">epoll</A></B>(4)
+
+est une API introduie dans Linux 2.5.44. Son interface devrait être
+finalisée depuis le 2.5.66.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_ctl">epoll_ctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_create">epoll_create</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_wait">epoll_wait</A></B>(2)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">EXEMPLE D'UTILISATION CONSEILLÉE</A><DD>
+<DT><A HREF="#lbAG">QUESTIONS ET REPONSES (de la liste linux-kernel)</A><DD>
+<DT><A HREF="#lbAH">PIÈGES POSSIBLES, ET SOLUTIONS</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:53 GMT, February 11, 2014
+</BODY>
+</HTML>

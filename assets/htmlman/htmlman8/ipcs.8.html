@@ -1,0 +1,122 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of IPCS</TITLE>
+</HEAD><BODY>
+<H1>IPCS</H1>
+Section: Manuel de l utilisateur Linux (8)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ipcs - Fournit des informations sur l'usage des ressources IPC.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>ipcs [ -asmq ] [ -tclup ]</B>
+
+<BR>
+
+<B>ipcs [ -smq ] -i </B><I>id</I>
+
+<BR>
+
+<B>ipcs -h</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>ipcs</B>
+
+fournit des informations sur l'usage des ressources IPC pour lesquelles
+le processus appelant a accès en lecture.
+<P>
+L'option
+<B>-i</B>
+
+autorise la ressource spécifique
+<I>id</I>
+
+à être indiquée. Seules les informations sur cette ressource
+<I>id</I>
+
+seront imprimées.
+<P>
+Les ressources peuvent être indiquées comme suit :
+<DL COMPACT>
+<DT><B>-m</B>
+
+<DD>
+zones de mémoires partagées
+<DT><B>-q</B>
+
+<DD>
+files de messages
+<DT><B>-s</B>
+
+<DD>
+tableaux de sémaphores
+<DT><B>-a</B>
+
+<DD>
+tous (option par défaut)
+</DL>
+<P>
+
+Le format de sortie peut être modifié ainsi:
+<DL COMPACT>
+<DT><B>-t</B>
+
+<DD>
+heure
+<DT><B>-p</B>
+
+<DD>
+pid (Processus IDentification)
+<DT><B>-c</B>
+
+<DD>
+créateur
+<DT><B>-l</B>
+
+<DD>
+limites
+<DT><B>-u</B>
+
+<DD>
+résumé
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+ipcrm">ipcrm</A></B>(8)
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+krishna balasubramanian (<A HREF="mailto:balasub@cis.ohio-state.edu">balasub@cis.ohio-state.edu</A>)
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 1999.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">AUTEUR</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:02 GMT, February 11, 2014
+</BODY>
+</HTML>

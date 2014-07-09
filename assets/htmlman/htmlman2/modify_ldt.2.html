@@ -1,0 +1,148 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MODIFY_LDT</TITLE>
+</HEAD><BODY>
+<H1>MODIFY_LDT</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+modify_ldt - Lire / écrire la LDT.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/linux/ldt.h">linux/ldt.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/linux/unistd.h">linux/unistd.h</A>&gt;</B>
+
+<P>
+<B>_syscall3(int, modify_ldt, int, </B><I>func</I><B>, void *, </B><I>ptr</I><B>, unsigned long, </B><I>bytecount</I><B>)</B>
+
+<P>
+<B>int modify_ldt(int </B><I>func</I><B>, void *</B><I>ptr</I><B>, unsigned long </B><I>bytecount</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>modify_ldt</B>
+
+lit ou écrit la table des descripteurs locaux (Local Descriptor Table) du
+processus. La LDT est une table de gestion mémoire par processus utilisée par les
+processeurs i386. Pour plus d'information sur cette table, se reporter
+au manuel Intel 386.
+<P>
+
+Quand
+<I>func</I>
+
+vaut 0,
+<B>modify_ldt</B>
+
+lit la LDT et la place dans la mémoire pointée par
+<I>ptr</I>.
+
+Le nombre d'octets lus est le minimum entre
+<I>bytecount</I>
+
+et la vraie taille de la LDT.
+<P>
+
+Quand
+<I>func</I>
+
+vaut 1,
+<B>modify_ldt</B>
+
+modifie une entrée de la LDT.
+<I>ptr</I>
+
+pointe sur une structure
+<I>modify_ldt_ldt_s</I>
+
+et
+<I>bytecount</I>
+
+doit être égal à la taille de cette structure.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+S'il réussit
+<B>modify_ldt</B>
+
+renvoie soit le nombre d'octets lus soit
+0 (écriture).
+En cas d'échec -1 est renvoyé et
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ENOSYS</B>
+
+<DD>
+<I>func</I>
+
+n'est ni 0 ni 1.
+<DT><B>EINVAL</B>
+
+<DD>
+<I>ptr</I>
+
+est nul, ou
+<I>bytecount</I>
+
+n'est pas égal à la taille de la structure
+<I>modify_ldt_ldt_s</I>,
+
+ou
+la nouvelle entrée de LDT a des valeurs illégales.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>ptr</I>
+
+pointe en dehors de l'espace d'adressage accessible.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Cet appel-système est spécifique à Linux et ne doit pas être employé
+dans des programmes conçus pour être portables.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+vm86">vm86</A></B>(2)
+
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:01 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,91 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of NEWUSERS</TITLE>
+</HEAD><BODY>
+<H1>NEWUSERS</H1>
+Section: Maintenance Commands (8)<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+<B>newusers</B> - crée et met à jour de nouveaux utilisateurs par lot
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>newusers</B> [<I> nouveaux_utilisateurs </I>]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>newusers</B> lit un fichier contenant des paires de nom d'utilisateur
+et mot de passe en clair, et utilise cette information pour mettre à
+jour un groupe d'utilisateurs existants ou pour créer de nouveaux
+utilisateurs.  
+Chaque ligne est au même format que le fichier standard de mots de
+passe (voir <B><A HREF="/cgi-bin/man/man2html?5+passwd">passwd</A></B>(5)) avec les exceptions suivantes.
+<DL COMPACT>
+<DT><I>pw_passwd</I><DD>
+Ce champ sera crypté et utilisé comme nouvelle valeur du mot de 
+passe crypté.
+<DT><I>pw_age</I><DD>
+Ce champ sera ignorée pour les «&nbsp;shadow password&nbsp;» si l'utilisateur
+existe déjà.
+<DT><I>pw_gid</I><DD>
+Ce champ peut être le nom d'un groupe existant quelconque, auquel cas
+l'utilisateur y sera ajouté.  Si un groupe inexistant est donné sous 
+forme numérique, un nouveau groupe sera créé avec cette valeur.
+<DT><I>pw_dir</I><DD>
+L'existence d'un répertoire correspondant à ce champs sera vérifiée
+et un nouveau répertoire du même nom sera créé s'il n'existe pas encore.
+Les droits de propriété du répertoire seront positionnés pour correspondre
+à ceux de l'utilisateur créé ou modifié.
+</DL>
+<P>
+
+Cette commande est destinée à être utilisée dans un environnement où
+de nombreux comptes sont modifiés en une fois.
+<A NAME="lbAE">&nbsp;</A>
+<H2>AVERTISSEMENTS</H2>
+
+
+
+Le fichier d'entrée doit être correctement protégé s'il contient des mots
+de passe en clair.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+
+<B><A HREF="/cgi-bin/man/man2html?1+passwd">passwd</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+useradd">useradd</A></B>(8)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Julianne Frances Haugh &lt;<A HREF="mailto:jfh@austin.ibm.com">jfh@austin.ibm.com</A>&gt;
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Amand Tihon &lt;<A HREF="mailto:amand@alrj.org">amand@alrj.org</A>&gt;
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">AVERTISSEMENTS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:02 GMT, February 11, 2014
+</BODY>
+</HTML>

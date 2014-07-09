@@ -1,0 +1,285 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of WAIT4</TITLE>
+</HEAD><BODY>
+<H1>WAIT4</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+wait3, wait4 - Attendre la fin d'un processus - Style BSD.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/time.h">sys/time.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/resource.h">sys/resource.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/wait.h">sys/wait.h</A>&gt;</B>
+
+<B>pid_t wait3(int *</B><I>status</I><B>, int </B><I>options</I><B>,</B>
+<B>      struct rusage *</B><I>rusage</I><B>);</B>
+
+<B>pid_t wait4(pid_t </B><I>pid</I><B>, int *</B><I>status</I><B>, int </B><I>options</I><B>,</B>
+<B>      struct rusage *</B><I>rusage</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>wait3</B>
+
+suspend l'exécution du processus courant jusqu'à ce qu'un enfant
+se termine, ou jusqu'à ce qu'un signal à intercepter arrive.
+Si un processus fils s'est déjà terminé au moment de l'appel
+(il est devenu &quot;zombie&quot;), la fonction revient immédiatement.
+Toutes les ressources utilisées par le fils sont libérées.
+<P>
+La fonction
+<B>wait4</B>
+
+suspend l'exécution du processus courant jusqu'à ce que le 
+processus fils numéro
+<I>pid</I>
+
+se termine, ou jusqu'à ce qu'un signal à intercepter arrive.
+Si le fils mentionné par
+<I>pid</I>
+
+s'est déjà terminé au moment de l'appel
+(il est devenu &quot;zombie&quot;), la fonction revient immédiatement.
+Toutes les ressources utilisées par le fils sont libérées.
+<P>
+La valeur de
+<I>pid</I>
+
+peut également être l'une des suivantes :
+<DL COMPACT>
+<DT>&lt; -1<DD>
+attendre la fin de n'importe quel processus fils
+appartenant à un groupe de processus d'ID 
+<I>pid</I>.
+
+<DT>-1<DD>
+attendre la fin de n'importe quel fils. C'est le même
+comportement que
+<B>wait3</B>.
+
+<DT>0<DD>
+attendre la fin de n'importe quel processus fils du même groupe
+que l'appelant.
+<DT>&gt; 0<DD>
+attendre la fin du processus numéro
+<I>pid</I>.
+
+</DL>
+<P>
+
+La valeur de l'argument option
+<I>options</I>
+
+est un 
+<I>OU</I>
+
+binaire entre les constantes suivantes :
+<DL COMPACT>
+<DT><B>WNOHANG</B>
+
+<DD>
+ne pas bloquer si aucun fils ne s'est terminé.
+<DT><B>WUNTRACED</B>
+
+<DD>
+recevoir l'information concernant également les fils bloqués
+si on ne l'a pas encore reçue.
+</DL>
+<P>
+
+Si
+<I>status</I>
+
+est non
+<B>NULL</B>,
+
+<B>wait3</B>
+
+et
+<B>wait4</B>
+
+y stockent l'information sur la terminaison du fils.
+<P>
+
+Cette information peut être analysée avec les macros suivantes,
+qui prennent en argument le buffer
+<I>status</I>
+
+(un <B>int</B> et non pas un pointeur sur le buffer).
+<DL COMPACT>
+<DT><B>WIFEXITED(</B><I>status</I><B>)</B>
+
+<DD>
+non nul si le fils s'est terminé normalement
+<DT><B>WEXITSTATUS(</B><I>status</I><B>)</B>
+
+<DD>
+donne le code de retour tel qu'il a été mentionné dans l'appel
+<B>exit()</B>
+
+ou dans le
+<B>return</B>
+
+de la routine
+<B>main.</B>
+
+Cette macro ne peut être évaluée que si 
+<B>WIFEXITED</B>
+
+est non nul.
+<DT><B>WIFSIGNALED(</B><I>status</I><B>)</B>
+
+<DD>
+indique que le fils s'est terminé à cause d'un signal non
+intercepté.
+<DT><B>WTERMSIG(</B><I>status</I><B>)</B>
+
+<DD>
+donne le numéro du signal qui a causé la fin du fils. Cette
+macro ne peut être évaluée que si
+<B>WIFSIGNALED</B>
+
+est non nul.
+<DT><B>WIFSTOPPED(</B><I>status</I><B>)</B>
+
+<DD>
+indique que le fils est actuellement arrêté. Cette macro n'a de
+sens que si l'on a effectué l'appel avec l'option
+<B>WUNTRACED</B>.
+
+<DT><B>WSTOPSIG(</B><I>status</I><B>)</B>
+
+<DD>
+donne le numéro du signal qui a causé l'arrêt du fils. Cette macro
+ne peut être évaluée que si
+<B>WIFSTOPPED</B>
+
+est non nul.
+</DL>
+<P>
+
+Si
+<I>rusage</I>
+
+n'est pas
+<B>NULL</B>,
+
+La structure
+<B>rusage</B>
+
+définie dans
+<B>&lt;<A HREF="file:///usr/include/sys/resource.h">sys/resource.h</A>&gt;</B>
+
+sera remplie avec les informations de comptabilité. Voir
+<B><A HREF="/cgi-bin/man/man2html?2+getrusage">getrusage</A></B>(2)
+
+Pour plus de détails.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+En cas de réussite, le PID du fils qui s'est terminé est renvoyé,
+en cas d'échec -1 est renvoyé et
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ECHILD</B>
+
+<DD>
+Le processus indiqué par
+<I>pid</I>
+
+n'existe pas, ou n'est pas un fils du processus appelant.
+<DT><B>EINTR</B>
+
+<DD>
+<B>WNOHANG</B>
+
+n'est pas indiqué, et un signal à intercepter ou
+<B>SIGCHLD</B>
+
+a été reçu.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTE</H2>
+
+L'inclusion de
+<I>&lt;<A HREF="file:///usr/include/sys/time.h">sys/time.h</A>&gt;</I>
+
+n'est plus obligatoire, mais améliore la portabilité.
+(En fait,
+<I>&lt;<A HREF="file:///usr/include/sys/resource.h">sys/resource.h</A>&gt;</I>
+
+définit la structure
+<I>rusage</I>
+
+qui contient des champs de type
+<I>struct timeval</I>
+
+définis dans
+<I>&lt;<A HREF="file:///usr/include/sys/time.h">sys/time.h</A>&gt;</I>).
+
+<P>
+
+Les prototypes de ces fonctions ne sont disponibles que si la constante
+<B>_BSD_SOURCE</B>
+
+est définie (soit explicitement, ou implicitement en ne définissant par
+_POSIX_SOURCE ou en compilant avec l'option -ansi).
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, POSIX.1
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+signal">signal</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getrusage">getrusage</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+wait">wait</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?7+signal">signal</A></B>(7)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTE</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:59 GMT, February 11, 2014
+</BODY>
+</HTML>

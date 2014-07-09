@@ -1,0 +1,282 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DATE</TITLE>
+</HEAD><BODY>
+<H1>DATE</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+date - Afficher ou configurer la date et l'heure du système.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>date</B>
+
+[-d chaîne_date] [-f fichier] [-r fichier] [-R] [-s chaîne_date] [-u]
+[--date=chaîne_date] [--file=fichier] [--reference=fichier] [--rfc-822] [--set=chaîne_date] [--utc] [--universal]
+[--help] [--version]
+[+FORMAT] [MMJJhhmm[[SS]AA][.ss]]
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>date</B>.
+
+<P>
+<B>date</B>
+
+sans argument affiche la date et l'heure actuelles (avec le format
+indiqué par la directive `%c' décrite plus-bas).
+<P>
+Si un argument commençant par un `+' est indiqué, la date et l'heure
+sont affichées avec un format contrôlé par cet argument. La structure
+de la chaîne précisant le format est semblable à celle utilisée avec
+la fonction <B><A HREF="/cgi-bin/man/man2html?3+strftime">strftime</A></B>(3).
+<P>
+Les caractères présents dans cette chaîne sont affichés tels quels, sauf
+les directives, commençant toutes par '%'.
+<P>
+
+Ces directives sont les suivantes :
+<DL COMPACT>
+<DT>%<DD>
+un caractère % littéral.
+<DT>n<DD>
+saut de ligne
+<DT>t<DD>
+tabulation horizontale
+</DL>
+<P>
+
+Champs horaires :
+<DL COMPACT>
+<DT>%H<DD>
+heure (00..23)
+<DT>%I<DD>
+heure (01..12)
+<DT>%k<DD>
+heure ( 0..23)
+<DT>%l<DD>
+heure ( 1..12)
+<DT>%M<DD>
+minute (00..59)
+<DT>%p<DD>
+notation locale pour AM ou PM.
+<DT>%r<DD>
+heure actuelle (sur 12 heures) (hh:mm:ss [AP]M)
+<DT>%s<DD>
+secondes écoulées depuis le 01-01-1970 à 00:00:00 T.U (extension non standard)
+<DT>%S<DD>
+secondes (00..61)
+<DT>%T<DD>
+heure actuelle, (sur 24 heures) (hh:mm:ss)
+<DT>%X<DD>
+représentation locale de l'heure (%H:%M:%S)
+<DT>%Z<DD>
+fuseau horaire (par ex. MET), ou rien si le fuseau horaire n'est pas déterminé
+</DL>
+<P>
+
+Champs de date :
+<DL COMPACT>
+<DT>%a<DD>
+abréviation locale du jour de la semaine (Dim .. Sam)
+<DT>%A<DD>
+nom local du jour de la semaine (Dimanche .. Samedi)
+<DT>%b<DD>
+abréviation locale du nom du mois (Jan..Dec)
+<DT>%B<DD>
+nom local du mois (Janvier .. Décembre)
+<DT>%c<DD>
+date et heure locales (Sat Nov 04 12:02:33 EST 1989)
+<DT>%d<DD>
+jour du mois (01..31)
+<DT>%D<DD>
+date (mm/jj/aa)
+<DT>%h<DD>
+comme %b
+<DT>%j<DD>
+jour de l'année (001..366)
+<DT>%m<DD>
+mois (01..12)
+<DT>%U<DD>
+numéro de semaine dans l'année (00..53). La semaine commence le Dimanche.
+<DT>%w<DD>
+Jour de la semaine (0..6). Le 0 correspond au Dimanche.
+<DT>%W<DD>
+numéro de semaine dans l'année (00..53). La semaine commence le Lundi.
+<DT>%x<DD>
+représentation locale de la date (mm/jj/aa)
+<DT>%y<DD>
+deux derniers chiffres de l'année (00..99)
+<DT>%Y<DD>
+année (1970...)
+</DL>
+<P>
+
+Par défaut,
+<B>date</B>
+
+complète les champs numériques avec des zéros.
+La version GNU de
+<B>date</B>
+
+dispose des options non standards suivantes :
+<DL COMPACT>
+<DT>-<DD>
+(tiret) ne pas compléter le champ
+<DT>_<DD>
+(souligne) remplir le champ avec des espaces
+</DL>
+<P>
+
+Si l'on fournit un argument ne commençant pas par `+',
+<B>date</B>
+
+le considère comme une heure à utiliser pour configurer l'horloge système.
+Cet argument doit être constitué uniquement de chiffres, ayant la
+signification suivante :
+<DL COMPACT>
+<DT>MM<DD>
+mois
+<DT>JJ<DD>
+jour du mois
+<DT>hh<DD>
+heure
+<DT>mm<DD>
+minute
+<DT>SS<DD>
+Deux premiers chiffres de l'année (facultatif)
+<DT>AA<DD>
+Deux derniers chiffres de l'année (facultatif)
+<DT>ss<DD>
+secondes (facultatif)
+</DL>
+<P>
+
+Seul le Super-Utilisateur peut configurer l'horloge du système.
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><I>-d chaîne_date, --date=chaîne_date</I>
+
+<DD>
+Afficher la date et l'heure indiquées par la chaîne
+<I>chaîne_date</I>.
+
+L'affichage est fait avec le format par défaut, à moins qu'un argument
+commençant par un `+' ne fournisse un autre format
+<DT><I>-f fichier, --file=fichier</I>
+
+<DD>
+Comme -d mais en utilisant successivement toutes les dates indiquées
+dans le fichier.
+<DT><I>-r fichier, --reference=fichier</I>
+
+<DD>
+Afficher la date de dernière modification du fichier.
+<DT><I>-R, --rfc-822</I>
+
+<DD>
+Afficher la date dans un format conforme à la RFC 822.
+<DT><I>-s chaîne_date, --set=chaîne_date</I>
+
+<DD>
+Configurer l'horloge système avec la date et l'heure indiquées par
+<I>chaîne_date</I>,
+
+qui peut contenir éventuellement des noms littéraux de mois, de fuseau
+horaire, `am' ou `pm', etc...
+<DT><I>-u, --utc, --universal</I>
+
+<DD>
+Afficher ou configurer l'heure en utilisant le Temps Universel (heure du 
+méridien de Greenwich) plutôt que le temps local.
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard, et se terminer normalement.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard, et se terminer
+normalement.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+<P>
+
+Pour afficher la date de l'avant-veille :
+<DL COMPACT>
+<DT><DD>
+date --date '2 days ago'
+</DL>
+<P>
+
+Pour afficher la date du jour à venir dans 3 mois plus un jour :
+<DL COMPACT>
+<DT><DD>
+date --date '3 months 1 day'
+</DL>
+<P>
+
+Pour afficher le numéro du jour de Noël de l'année en cours :
+<DL COMPACT>
+<DT><DD>
+date --date '25 Dec' +%j
+</DL>
+<P>
+
+Pour afficher la date actuelle dans un format incluant le jour du mois
+suivi du nom complet du mois :
+<DL COMPACT>
+<DT><DD>
+date '+%d %B'
+</DL>
+<P>
+
+Il est parfois indésirable que les 9 premiers jours du mois
+soient complétés par un zéro. l'argument `%d' est responsable de
+ce complément sur deux chiffres. Par exemple `date -d 1-may '+%d %B'' 
+donnera `01 May'.
+<P>
+
+Pour afficher la même chose sans le zéro de complément, on peut
+utiliser l'option non standard `-'.
+<DL COMPACT>
+<DT><DD>
+date -d 1-may '+%-d %B'
+<P>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">EXEMPLES</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:40 GMT, February 11, 2014
+</BODY>
+</HTML>

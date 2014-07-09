@@ -1,0 +1,377 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ADDUSER</TITLE>
+</HEAD><BODY>
+<H1>ADDUSER</H1>
+Section: Maintenance Commands (8)<BR>Updated: Version 3.50<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+adduser, addgroup - Ajouter un utilisateur ou un groupe au système.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>adduser</B> [options] [--home DIR] [--shell SHELL] [--no-create-home] [--uid ID] [--firstuid ID] [--lastuid ID] [--ingroup GROUP | --gid ID] [--disabled-password] [--disabled-login] [--gecos GECOS] utilisateur
+
+<P>
+
+<B>adduser</B> --system [options] [--home DIR] [--shell SHELL] [--no-create-home] [--uid ID] [--group | --ingroup GROUP | --gid ID] [--disabled-password] [--disabled-login] [--gecos GECOS] utilisateur
+
+<P>
+
+<B>adduser</B> --group [options] [--gid ID] groupe
+
+<BR>
+
+<B>addgroup</B> [options] [--gid ID] groupe
+
+<P>
+
+<B>adduser</B> --group --system [options] [--gid ID] groupe
+
+<BR>
+
+<B>addgroup</B> --system [options] [--gid ID] groupe
+
+<P>
+
+<B>adduser</B> [options] utilisateur groupe
+
+<A NAME="lbAD">&nbsp;</A>
+<H3>OPTIONS STANDARD</H3>
+
+<BR>
+
+[--quiet] [--force-badname] [--help] [--version] [--conf FICHIER]
+<A NAME="lbAE">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+<B>adduser</B> et <B>addgroup</B>
+
+ajoutent des utilisateurs et des groupes au système en fonction des options de la ligne de commande et des informations contenues dans le fichier de configuration 
+<I>/etc/adduser.conf</I>.
+
+Ce sont des interfaces plus conviviales aux programmes 
+<B>useradd</B> et <B>groupadd,</B>
+
+se conformant à la charte Debian concernant les valeurs d'UID et de GID, créant un répertoire personnel avec une configuration suivant un modèle (squelette), lançant un script personnalisé, ainsi que d'autres fonctionnalités.
+<B>adduser</B> et <B>addgroup</B>
+
+peuvent être lancé de 5 manières différentes&nbsp;:
+<A NAME="lbAF">&nbsp;</A>
+<H3>Ajouter un utilisateur normal</H3>
+
+Si cette option est appelée avec un argument sans options ou sans les options 
+<B>--system</B> ou <B>--group</B>
+
+adduser ajoutera un utilisateur normal.
+<P>
+<B>adduser</B>
+
+va choisir le premier UID disponible depuis la gamme spécifiée pour les utilisateurs normaux dans le fichier de  configuration. L'UID peut être modifié avec l'option
+<B>--uid.</B>
+
+<P>
+La gamme spécifiée dans le fichier peut être modifiée grâce aux options
+<B>--firstuid</B>
+
+et
+<B>--lastuid.</B>
+
+<P>
+Par défaut, à chaque utilisateur de Debian GNU/Linux créé est associé un groupe du même nom et id. 
+Les groupes d'utilisateurs autorisent l'écriture sur les dossiers aux membres du groupe pour être facilement administrés en introduisant les utilisateurs appropriés dans ce nouveau groupe, en définissant qu'il appartient à tel groupe et en s'assurant que les autres utilisateurs ont un umask de 002.
+Si cette option est éteinte, en ayant défini le
+<B>USERGROUPS</B>
+
+avec
+<I>no</I>,
+
+Tous les GID des utilisateurs seront définis en tant que
+<B>USERS_GID</B>.
+
+Les groupes d'utilisateurs peuvent aussi être modifiés par une ligne de commande comportant l'option
+<B>--gid</B> ou <B>--ingroup</B>
+
+pour définir le groupe respectivement par id ou par nom.
+<P>
+<B>adduser</B>
+
+créera un répertoire personnel dépendant de 
+<B>DHOME</B>, <B>GROUPHOMES</B>, et <B>LETTERHOMES</B>.
+
+Le répertoire personnel peut être modifié en ajoutant l'option
+<B>--home</B>
+
+dans la ligne de commande, ainsi que le shell en y ajoutant l'option
+<B>--shell.</B>
+
+Le &quot;set-group-ID&quot; bit du répertoire personnel est défini si la variable
+<B>USERGROUPS</B>
+
+vaut
+<I>yes</I>
+
+, alors tous les fichiers créés dans le répertoire personnel de l'utilisateur auront le groupe correct.
+<P>
+<B>adduser</B>
+
+va copier les fichiers depuis
+<B>SKEL</B>
+
+dans le répertoire personnel et vous demander l'information sur le finger (gecos) et le mot de passe. Le gecos peut aussi être défini avec l'option
+<B>--gecos.</B>
+
+Avec l'option
+<B>--disabled-login</B>
+
+, le compte sera créé mais sera effacé dès qu'un mot de passe sera défini. L'option
+<B>--disabled-password</B>
+
+ne définira pas de mot de passe, mais le login est toutefois possible par clefs SSH RSA par exemple.
+<P>
+Si le fichier
+<B>/usr/local/sbin/adduser.local</B>
+
+existe, il sera exécuté après que le compte a été défini *afin de faire une installation locale*. Les arguments passés au fichier
+<B>adduser.local</B>
+
+sont&nbsp;:
+<BR>
+
+username uid gid home-directory.
+<A NAME="lbAG">&nbsp;</A>
+<H3>Ajouter un utilisateur système</H3>
+
+S'il est appelé avec un argument sans options et l'option
+<B>--system</B>
+
+adduser ajoutera un utilisateur système. Si un utilisateur ayant un uid dans la gamme système (ou si le uid est spécifié avec ceci) existe déjà, adduser quittera silencieusement.
+<P>
+<B>adduser</B>
+
+choisira le premier UID disponible depuis la gamme spécifiée pour les utilisateurs système dans le fichier de configuration. L'UID peut être modifié avec l'option
+<B>--uid.</B>
+
+<P>
+Par défaut, les utilisateurs système sont placés dans le groupe 
+<B>nogroup.</B>
+
+Pour placer le nouvel utilisateur système dans un groupe déjà existant, utilisez l'option
+<B>--gid</B> ou <B>--ingroup.</B>
+
+Pour placer le nouvel utilisateur dans un nouveau groupe ayant le même ID, utilisez l'option 
+<B>--group.</B>
+
+<P>
+Un répertoire personnel est créé avec les même règles que les utilisateurs normaux.
+Le nouvel utilisateur système aura le shell
+<I>/bin/false</I>
+
+(qui peut être modifié par l'option
+<B>--shell</B>
+
+), et a un mot de passe non défini.  Les fichiers squelettes de configuration ne sont pas copiés.
+<A NAME="lbAH">&nbsp;</A>
+<H3>Ajouter un groupe d'utilisateur</H3>
+
+Si
+<B>adduser</B> est appelé avec l'option <B>--group</B> et sans l'option
+
+<B>--system</B> , ou si <B>addgroup</B> est appelé respectivement, un groupe d'utilisateur sera ajouté.
+
+<P>
+Un GID sera choisi depuis la gamme spécifiée pour les UIDS des utilisateurs du fichier de configuration. Le GID peut être modifié avec l'option
+<B>--gid</B>
+
+Le groupe est créé sans utilisateurs.
+<A NAME="lbAI">&nbsp;</A>
+<H3>Ajouter un groupe système</H3>
+
+Si
+<B>adduser</B> est appelé avec les options <B>--group</B> et 
+
+<B>--system</B>, ou si <B>addgroup</B> est appelé de la même manière, un groupe sera créé.
+
+<P>
+Un GID sera choisi depuis la gamme spécifiée dans le fichier de configuration pour les users UIDS. Les GID peuvent être modifiés avec l'option
+<B>--gid.</B>
+
+<P>
+Ce groupe est créé, mais ne comporte aucun utilisateur.
+<A NAME="lbAJ">&nbsp;</A>
+<H3>Ajouter un utilisateur existant dans un groupe existant</H3>
+
+Si
+<B>adduser</B>
+
+est appelé avec deux arguments sans options, il va ajouter un utilisateur existant dans un groupe existant.
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>--conf FILE</B>
+
+<DD>
+Utilise le fichier FILE à la place de
+<I>/etc/adduser.conf</I>.
+
+<DT><B>--disabled-login</B>
+
+<DD>
+Ne pas lancer passwd pour définir le mot de passe. L'utilisateur ne sera pas autorisé à utiliser son compte tant que le mot de passe ne sera pas défini.
+<DT><B>--disabled-password</B>
+
+<DD>
+Tout comme --disabled-login, mais il est possible de se loguer à travers les clefs SSH RSA, mais n'utilise pas l'authentification par mot de passe.
+<DT><B>--force-badname</B>
+
+<DD>
+Par défaut, les noms d'utilisateur et de groupe doivent être composés d'une lettre minuscule suivie d'aucun ou de plusieurs caractères composés de lettres minuscules ou de chiffres. Cette option permet d'accepter les noms d'utilisateur enfreignant cette règle.
+Cette option force
+<B>adduser</B>
+
+et 
+<B>addgroup</B>
+
+à être plus indulgent.
+<DT><B>--gecos GECOS</B>
+
+<DD>
+Initialise le champ gecos pour la nouvelle entrée générée. adduser ne demandera aucune information finger si cette option est entrée.
+<DT><B>--gid ID</B>
+
+<DD>
+À la création d'un groupe, cette options force le nouveau groupid à être le nombre donné. À la création d'un utilisateur, cette option mettra l'utilisateur dans ce groupe.
+<DT><B>--group</B>
+
+<DD>
+Quand combiné avec
+<B>--system</B>,
+
+un groupe avec le même nom et la même ID que l'utilisateur système est créé.
+S'il ne sont pas combinés,
+<B>--system</B>,
+
+un groupe avec le nom donné est créé. C'est l'action par défaut si le programme est invoqué comme
+<B>addgroup</B>.
+
+<DT><B>--help</B>
+
+<DD>
+Affiche de brèves instructions.
+<DT><B>--home REPERTOIRE</B>
+
+<DD>
+Utilise REPERTOIRE comme le répertoire personnel de l'utilisateur, autre que celui spécifié dans le fichier de configuration. Si le répertoire n'existe pas, il est créé et des fichiers squelettes y sont copiés.
+<DT><B>--shell SHELL</B>
+
+<DD>
+Utilise SHELL comme shell de démarrage de l'utilisateur, à la place de celui spécifié dans le fichier de configuration.
+<DT><B>--ingroup GROUPE</B>
+
+<DD>
+Ajoute l'utilisateur à GROUPE à la place d'un groupe utilisateur ou du groupe par défaut défini par USERS_GID dans le fichier adduser.conf.
+<DT><B>--no-create-home</B>
+
+<DD>
+Ne crée pas le répertoire personnel, même s'il existe.
+<DT><B>--quiet</B>
+
+<DD>
+N'affiche pas les messages de progression.
+<DT><B>--system</B>
+
+<DD>
+Crée un utilisateur système.
+<DT><B>--uid ID</B>
+
+<DD>
+Force le nouveau userid à être ce nombre. adduser va s'arrêter si l'userid est déjà pris.
+<DT><B>--firstuid ID</B>
+
+<DD>
+Modifie le premier uid dans la gamme dans laquelle l'uid est choisi.
+<DT><B>--lastuid ID</B>
+
+<DD>
+Modifie le dernier uid dans la gamme dans laquelle l'uid est choisi.
+<DT><B>--version</B>
+
+<DD>
+Montre la version du programme et les informations sur le copyright.
+</DL>
+<A NAME="lbAL">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/etc/adduser.conf
+<A NAME="lbAM">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?5+adduser.conf">adduser.conf</A>(5), <A HREF="/cgi-bin/man/man2html?8+deluser">deluser</A>(8), <A HREF="/cgi-bin/man/man2html?8+useradd">useradd</A>(8), <A HREF="/cgi-bin/man/man2html?8+groupadd">groupadd</A>(8)
+<P>
+<A NAME="lbAN">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright (C) 1997, 1998, 1999 Guy Maor.
+<BR>
+
+Copyright (C) 1995 Ted Hajek, with a great deal borrowed from the original
+Debian 
+<B>adduser</B>
+
+<BR>
+
+Copyright (C) 1994 Ian Murdock.
+<B>adduser</B>
+
+est un logiciel libre, se reporter à la GNU General Public Licence version 2 ou ultérieure pour recopier les conditions. Notez qu'il n'y a aucune garantie.
+<P>
+<A NAME="lbAO">&nbsp;</A>
+<H2>TRADUCTEURS</H2>
+
+Félix SPORTELLI &lt;<A HREF="mailto:neo@fsportelli.org">neo@fsportelli.org</A>&gt;
+<A NAME="lbAP">&nbsp;</A>
+<H2>AVERTISSEMENT SUR LA TRADUCTION</H2>
+
+Il est possible que cette traduction soit imparfaite ou périmée. En cas de
+doute, veuillez vous reporter au document original en langue anglaise fourni
+avec le programme.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DL>
+<DT><A HREF="#lbAD">OPTIONS STANDARD</A><DD>
+</DL>
+<DT><A HREF="#lbAE">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAF">Ajouter un utilisateur normal</A><DD>
+<DT><A HREF="#lbAG">Ajouter un utilisateur système</A><DD>
+<DT><A HREF="#lbAH">Ajouter un groupe d'utilisateur</A><DD>
+<DT><A HREF="#lbAI">Ajouter un groupe système</A><DD>
+<DT><A HREF="#lbAJ">Ajouter un utilisateur existant dans un groupe existant</A><DD>
+</DL>
+<DT><A HREF="#lbAK">OPTIONS</A><DD>
+<DT><A HREF="#lbAL">FICHIERS</A><DD>
+<DT><A HREF="#lbAM">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAN">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAO">TRADUCTEURS</A><DD>
+<DT><A HREF="#lbAP">AVERTISSEMENT SUR LA TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:03 GMT, February 11, 2014
+</BODY>
+</HTML>

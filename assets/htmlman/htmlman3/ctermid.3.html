@@ -1,0 +1,93 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CTERMID</TITLE>
+</HEAD><BODY>
+<H1>CTERMID</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ctermid - Obtenir le nom du terminal de contrôle.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<B>char *ctermid (char *</B><I>s</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>ctermid()</B>
+
+renvoie une chaine de caractères correspondant au chemin d'accès au
+fichier spécial du terminal contrôlant le processus en cours.
+Si
+<I>s</I>
+
+vaut
+<B>NULL</B>,
+
+un buffer statique est utilisé pour renvoyer
+la chaîne, sinon
+<I>s</I>
+
+doit pointer sur le buffer à remplir avec le nom du terminal.
+La constante symbolique
+<B>L_ctermid</B>
+
+représente le nombre maximum de caratères dans le nom renvoyé.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Un pointeur sur le nom du terminal.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID, POSIX.1
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Le chemin renvoyé n'identifie pas obligatoirement le terminal de contrôle de
+manière unique. Ce peut être par exemple :
+<B>/dev/tty</B>.
+
+<P>
+
+Il n'est pas garantit que le programme puisse ouvrir le terminal.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+ttyname">ttyname</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:13 GMT, February 11, 2014
+</BODY>
+</HTML>

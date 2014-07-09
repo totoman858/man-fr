@@ -1,0 +1,101 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of APT-SORTPKGS</TITLE>
+</HEAD><BODY>
+<H1>APT-SORTPKGS</H1>
+Section:  (1)<BR>Updated: 12 Mars 2001<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+apt-sortpkgs - Utilitaire pour trier des fichiers d'index de paquet
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<B>apt-sortpkgs</B> [ <B>-hvs</B> ]  [ <B>-o=</B><I>config string</I><B></B> ]  [ <B>-c=</B><I>file</I><B></B> ]  <B></B><I>file</I><B></B><I>...</I>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+<B>apt-sortpkgs</B> prendra un fichier index (source ou paquet) and triera les enregistrements de telle façon qu'ils soient ordonnés par nom. Il triera aussi les champs internes de chaque enregistrement selon les règles de tri internes.
+<P>
+
+Toute sortie est envoyée vers la sortie standard (stdout), l'entrée doit être un fichier &quot;seekable&quot;.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<P>
+
+Toutes les options de la ligne de commande peuvent être positionnées via le fichier de configuration, les descriptions indiquent les options de configuration à valider. Pour les options de type booléen, on peut passer outre le fichier de configuration en utilisant quelque chose comme
+<B>-f-</B>,<B>--no-f</B>, <B>-f=no</B> ou d'autres variantes.
+<DL COMPACT>
+<DT><B>-s</B><DD>
+<DT><B>--source &lt;source&gt;</B><DD>
+Utilise l'ordonnancement du champ index de &lt;source&gt;.
+Configuration: APT::SortPkgs::Source.
+<DT><B>-h</B><DD>
+<DT><B>--help</B><DD>
+Montre un court résumé de l'utilisation.
+<DT><B>-v</B><DD>
+<DT><B>--version</B><DD>
+Montre la version du programme.
+<DT><B>-c</B><DD>
+<DT><B>--config-file &lt;fichier de configuration&gt;</B><DD>
+Specifie un fichier de configuration à utiliser. Le programme lira le fichier de configuration par défaut puis celui-ci.
+Cf. <B></B><I><A HREF="/cgi-bin/man/man2html?5+apt.conf">apt.conf</A></I><B></B>(5) pour des informations liées a la syntaxe. 
+<DT><B>-o</B><DD>
+<DT><B>--option</B><DD>
+Positionne une option de configuration. Positionnera une option de configuration de facon arbitraire. La syntaxe est <B>-o Foo::Bar=bar</B>.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<P>
+
+<B></B><I><A HREF="/cgi-bin/man/man2html?5+apt.conf">apt.conf</A></I><B></B>(5)
+<A NAME="lbAG">&nbsp;</A>
+<H2>DIAGNOSTICS</H2>
+
+<P>
+
+<B>apt-sortpkgs</B> retourne zéro pour une opération normale, la valeur décimale de 100 en cas d'erreur.
+<A NAME="lbAH">&nbsp;</A>
+<H2>BUGS</H2>
+
+<P>
+
+Voir la page de bug d'APT &lt;URL:<A HREF="http://bugs.debian.org/apt">http://bugs.debian.org/apt</A>&gt;. 
+Si vous désirez rapporter un bug, voyez 
+<I>/usr/share/doc/debian/bug-reporting.txt</I> ou la commande <B><A HREF="/cgi-bin/man/man2html?1+bug">bug</A></B>(1) .
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<P>
+
+APT a été écrit par l'équipe APT &lt;<A HREF="mailto:apt@packages.debian.org">apt@packages.debian.org</A>&gt;.
+Traduit par Richard Bonichon &lt;<A HREF="mailto:richard.bonichon@free.fr">richard.bonichon@free.fr</A>&gt;.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">DIAGNOSTICS</A><DD>
+<DT><A HREF="#lbAH">BUGS</A><DD>
+<DT><A HREF="#lbAI">AUTEUR</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:50 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,176 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ATD</TITLE>
+</HEAD><BODY>
+<H1>ATD</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+atd - Exécute les travaux enregistrés pour un lancement ultérieur.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>atd</B>
+
+[<B>-l</B>
+
+<I>load_avg</I>]
+
+[<B>-b</B>
+
+<I>batch_interval</I>]
+
+[<B>-d</B>]
+
+[<B>-s</B>]
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>atd</B>
+
+exécute les travaux mis en file d'attente par
+<B><A HREF="/cgi-bin/man/man2html?1+at">at</A>(1)</B>.
+
+<P>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-l</B>
+
+<DD>
+Indique le facteur limite de charge, au delà duquel les travaux
+ne devraient pas être lancés, à la place du choix de 0.8 précompilé.
+Pour un système SMP (multiprocesseurs) avec
+<I>n</I>
+
+CPUs, vous voudrez probablement le mettre plus grand que
+<I>n-1.</I>
+
+<DT><B>-b</B>
+
+<DD>
+Indique l'intervalle minimum en secondes entre le départ de deux 
+traitement par lots (60 par défaut)
+<DT><B>-d</B>
+
+<DD>
+Débogage&nbsp;; affiche les messages d'erreur sur la sortie standard au lieu d'utiliser
+<B><A HREF="/cgi-bin/man/man2html?3+syslog">syslog</A>(3)</B>.
+
+<DT><B>-s</B>
+
+<DD>
+Traiter la file d'attente at/batch une seule fois.
+Surtout utile pour une compatibilité avec les anciennes versions de 
+<B>at</B>;
+
+<B>atd -s</B>
+
+est équivalent à l'ancienne
+commande
+<B>atrun.</B>
+
+Un script appelant
+<B>atd -s</B>
+
+est installé comme
+<B>/usr/sbin/atrun</B>
+
+pour une compatibilité ascendante.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>AVERTISSEMENT</H2>
+
+<B>atd</B>
+
+ne fonctionnera pas si le répertoire de stockage est monté via NFS, même si
+<I>no_root_squash</I>
+
+est indiqué.
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/var/spool/at</I>
+
+Le répertoire pour stocker les travaux&nbsp;; les droits d'accès devraient être 700,
+le propriétaire daemon.
+<P>
+
+<I>/var/spool/at/spool</I>
+
+Le répertoire pour stocker le résultat&nbsp;; les droits d'accès devraient être 700,
+le propriétaire daemon.
+<P>
+
+<I>/etc/at.allow,</I>
+
+<I>/etc/at.deny</I>
+
+déterminent qui peut utiliser
+le mécanisme
+<B>at</B>.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+at">at</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+atrun">atrun</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+cron">cron</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?1+crontab">crontab</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?3+syslog">syslog</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+at.deny">at.deny</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?5+at.allow">at.allow</A>(5).</B>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Les fonctionalités de
+<B>atd</B>
+
+devraient être regroupées dans
+<B><A HREF="/cgi-bin/man/man2html?8+cron">cron</A>(8)</B>.
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Frédéric Gacquer, 1999
+<BR>
+
+Christophe Blaess, 2003.
+<P>
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">AVERTISSEMENT</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">BOGUES</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:04 GMT, February 11, 2014
+</BODY>
+</HTML>

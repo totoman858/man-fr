@@ -1,0 +1,255 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of man2html</TITLE>
+</HEAD><BODY>
+<H1>man2html</H1>
+Section: Commandes utilisateur (1)<BR>Updated: 1er janvier 1998<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+man2html - formate une page de manuel en html
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+man2html [options] [fichier]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>man2html</B>
+
+convertit une page de manuel telle que trouvée dans
+<I>fichier</I>
+
+(ou l'entrée standard stdin si aucun argument fichier n'est donné
+ou si l'argument «&nbsp;-&nbsp;» est donné) à partir du format nroff
+(celui des pages de manuels) vers un format html et affiche le résultat
+sur la sortie standard (stdout).
+<B>man2html</B>
+
+supporte
+<B><A HREF="/cgi-bin/man/man2html?1+tbl">tbl</A></B>(1)
+
+mais ne connaît rien à propos de
+<B><A HREF="/cgi-bin/man/man2html?1+eqn">eqn</A></B>(1).
+
+Le code de sortie est 0. Si quelque chose va mal, une page d'erreur
+est affichée sur la sortie standard stdout.
+<P>
+Cette commande peut être utilisée seule mais a été principalement conçue pour
+être un auxiliaire afin que les utilisateurs puissent naviguer dans les pages
+de manuel avec un navigateur html comme
+<B><A HREF="/cgi-bin/man/man2html?1+lynx">lynx</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+xmosaic">xmosaic</A></B>(1)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?1+netscape">netscape</A></B>(1).
+
+
+
+
+
+
+
+<P>
+La plus grande partie de
+<B>man2html</B>
+
+est l'engin «&nbsp;troff-vers-html&nbsp;» écrit par Richard Verhoeven (<A HREF="mailto:rcb5@win.tue.nl">rcb5@win.tue.nl</A>).
+Il ajoute des hyperliens aux constructions suivantes&nbsp;:
+<P>
+
+<TABLE>
+<TR VALIGN=top><TD><A HREF="/cgi-bin/man/man2html?3x+foo">foo</A>(3x)</TD><TD>&quot;<A HREF="http://localhost/cgi-bin/man/man2html?3x+foo">http://localhost/cgi-bin/man/man2html?3x+foo</A>&quot;<BR></TD></TR>
+<TR VALIGN=top><TD><A HREF="method://string">method://string</A></TD><TD>&quot;<A HREF="method://string">method://string</A>&quot;<BR></TD></TR>
+<TR VALIGN=top><TD><A HREF="http://www.host.name">www.host.name</A></TD><TD>&quot;<A HREF="http://www.host.name">http://www.host.name</A>&quot;<BR></TD></TR>
+<TR VALIGN=top><TD><A HREF="ftp://ftp.host.name">ftp.host.name</A></TD><TD>&quot;<A HREF="ftp://ftp.host.name">ftp://ftp.host.name</A>&quot;<BR></TD></TR>
+<TR VALIGN=top><TD><A HREF="mailto:name@host">name@host</A></TD><TD>&quot;mailto:<A HREF="mailto:name@host">name@host</A>&quot;<BR></TD></TR>
+<TR VALIGN=top><TD>&lt;<A HREF="file:///usr/include/string.h">string.h</A>&gt;</TD><TD>&quot;file:/usr/include/string.h&quot;<BR></TD></TR>
+</TABLE>
+
+<P>
+
+(La première de celles-ci peut être ajustée par des options - voir plus loin.)
+Aucune consultation n'est effectuée - les liens générés n'ont pas besoin
+d'exister. Un index avec des hyperliens internes vers les diverses
+sections est également créé rendant plus facile la navigation dans les grandes
+pages comme
+<B><A HREF="/cgi-bin/man/man2html?1+bash">bash</A></B>(1).
+
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+Lorsqu'on lit à partir de stdin, il n'est pas toujours évident de savoir
+comment se fait l'expansion .so. L'option -D permet à un script de définir
+le répertoire de travail.
+<P>
+
+<DL COMPACT>
+<DT><B>-D chemin</B>
+
+<DD>
+Retire les deux derniers éléments du chemin et effectue un changement
+de répertoire courant <I>chdir</I>(<I>dir</I>) avant de débuter la conversion.
+</DL>
+<P>
+
+L'option -E option facilite la production de messages d'erreurs à partir
+de scripts cgi.
+<P>
+
+<DL COMPACT>
+<DT><B>-E chaîne</B>
+
+<DD>
+Produire en sortie une page d'erreur contenant le message d'erreur donné.
+</DL>
+<P>
+
+La forme générale d'un hyperlien généré pour référencer une page de manuel est
+<DL COMPACT>
+<DT><DD>
+&lt;method:cgipath&gt;&lt;man2htmlpath&gt;&lt;separator&gt;&lt;manpage&gt;
+</DL>
+<P>
+
+qui est d'ailleurs la forme par défaut. Les éléments de cet hyperlien sont
+positionnés en utilisant diverses options.
+<DL COMPACT>
+<DT><B>-h</B>
+
+<DD>
+Positionner method:cgipath à <A HREF="http://localhost.">http://localhost.</A>
+C'est le comportement par défaut.
+<DT><B>-H</B><I> hôte[.domaine][:port]</I>
+
+<DD>
+Positionner method:cgipath à
+http://<I>hôte.domaine:port</I>.
+
+<DT><B>-l</B>
+
+<DD>
+Positionner method:cgipath à
+lynxcgi:<I>/home/httpd</I>.
+
+<DT><B>-L</B><I> dir</I>
+
+<DD>
+Positionner method:cgipath à
+lynxcgi:<I>dir</I>.
+
+<DT><B>-M</B><I> man2htmlpath</I>
+
+<DD>
+Positionner le chemin vers man2html à utiliser. La valeur par défaut est
+<I>/cgi-bin/man/man2html</I>.
+
+<DT><B>-p</B>
+
+<DD>
+Positionner le séparateur à «&nbsp;/&nbsp;».
+<DT><B>-q</B>
+
+<DD>
+Positionner le séparateur à «&nbsp;?&nbsp;». C'est la valeur par défaut.
+<DT><B>-r</B>
+
+<DD>
+Utiliser des chemins html relatifs plutôt que les chemins cgi-bin.
+</DL>
+<P>
+
+Sur une machine sur laquelle
+<B>httpd</B>
+
+ne tourne pas, vous pouvez utiliser
+<B>lynx</B>
+
+pour naviguer dans les pages de manuel en utilisant la méthode lynxcgi.
+Lorsqu'un démon http est en service, vous pouvez utiliser lynx ou n'importe
+quel autre navigateur pour parcourir les pages de manuel en utilisant
+la méthode http.
+L'option -l (pour «&nbsp;lynxcgi&nbsp;») sélectionne ce fonctionnement.
+Avec elle, le chemin cgi par défaut est <I>/home/httpd</I>.
+<P>
+En général, un script cgi peut être appelé de la façon suivante
+<DL COMPACT>
+<DT><DD>
+&lt;path_to_script&gt;/&lt;more_path&gt;?&lt;query&gt;
+</DL>
+<P>
+
+et les variables d'environnement PATH_INFO et QUERY_STRING seront positionnées
+respectivement à &lt;more_path&gt; et &lt;query&gt;.
+Puisque lynxcgi ne gère pas l'élément PATH_INFO, nous allons générer des
+hyperliens avec «&nbsp;?&nbsp;» comme séparateur par défaut.
+L'option -p (pour «&nbsp;path&nbsp;») sélectionne «&nbsp;/&nbsp;» comme séparateur, alors que
+l'option -q (for «&nbsp;query&nbsp;») sélectionne «&nbsp;?&nbsp;».
+<P>
+L'option -H <I>host</I> spécifiera l'hôte à utiliser
+(à la place <I>localhost</I>). Un script cgi pourra utiliser
+<DL COMPACT>
+<DT><DD>
+man2html -H $SERVER_NAME
+</DL>
+<P>
+
+si la variable SERVER_NAME est positionnée. Cela permettra à votre machine
+de fonctionner en tant que serveur et d'exporter les pages manuel.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Il y a beaucoup d'heuristiques. La sortie produite ne sera pas toujours
+parfaite. La méthode lynxcgi ne fonctionnera pas si lynx a été compilé sans
+le support de celle-ci. Il peut y avoir des problèmes de sécurité.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+lynx">lynx</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+man">man</A></B>(1)
+
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal AT univ-montp2 DOT fr&gt; le 1er juin 2005 et mise à jour
+le 2 novembre 2005.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=en&nbsp;man&nbsp;1&nbsp;man2html</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">BOGUES</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:41 GMT, February 11, 2014
+</BODY>
+</HTML>

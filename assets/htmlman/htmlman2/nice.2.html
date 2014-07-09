@@ -1,0 +1,125 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of NICE</TITLE>
+</HEAD><BODY>
+<H1>NICE</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+nice - Augmenter la courtoisie du processus.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int nice(int </B><I>inc</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>nice</B>
+
+ajoute
+<I>inc</I>
+
+à la valeur de courtoisie processus appelant, le rendant donc moins 
+prioritaire. 
+Seul le Super-User peut spécifier
+une valeur
+<I>inc</I>
+
+négative (ce qui rend le processus plus prioritaire).
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>nice</B>
+
+renvoie 0 s'il réussit, ou -1 s'il échoue, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+Tentative d'augmenter la priorité du processus
+(en diminuant sa courtoisie) avec un
+<I>inc</I>
+
+négatif sans être Super-User.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID EXT, AT&amp;T, X/OPEN, BSD 4.3. Toutefois, la valeur de retour
+sous Linux avec la GlibC (jusqu'à Glibc 2.2.4) n'est pas standard, voir
+ci-dessous. SVr4 documente un code d'erreur
+supplémentaire EINVAL.
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Notez que SUSv2 indique que cet appel-système renvoie la nouvelle valeur
+de courtoisie, tandis que l'appel-système Linux et la routine de la GlibC
+(jusqu'à GlibC 2.2.4)
+renvoient 0 en cas de réussite. La nouvelle valeur de courtoisie peut être
+obtenue grâce à
+<B><A HREF="/cgi-bin/man/man2html?2+getpriority">getpriority</A></B>(2).
+
+Remarquez également que dans une implémentation où
+<B>nice</B>
+
+renvoie la nouvelle valeur de courtoisie, un code de retour -1 est
+tout à fait possible. Pour détecter les erreurs, il faut mettre
+<I>errno</I>
+
+à zéro avant l'appel, et examiner sa valeur si
+<B>nice</B>
+
+renvoie -1.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+nice">nice</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getpriority">getpriority</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setpriority">setpriority</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?8+renice">renice</A></B>(8)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:00 GMT, February 11, 2014
+</BODY>
+</HTML>

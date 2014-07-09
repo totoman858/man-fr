@@ -1,0 +1,208 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TZFILE</TITLE>
+</HEAD><BODY>
+<H1>TZFILE</H1>
+Section: Manuel de l administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+tzfile - Information de fuseau horaire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/tzfile.h">tzfile.h</A>&gt;</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les fichiers d'information de fuseau horaire utilisés par
+<B><A HREF="/cgi-bin/man/man2html?3+tzset">tzset</A></B>(3)
+
+commencent par les caractères magiques &quot;TZif&quot; pour les identifier
+(Time Zone information file).
+Ces caractères sont suivis de 16 octets réservés pour une utilisation
+future, suivis de 6 valeurs sur 4 octets de type
+<B>long</B>,
+
+écrites dans l'ordre &quot;standard&quot; des octets
+(poids fort en premier)
+Ces valeurs sont,
+dans l'ordre&nbsp;:
+<DL COMPACT>
+<DT><I>tzh_ttisgmtcnt</I>
+
+<DD>
+Le nombre d'indicateurs UTC/local enregistrés dans le fichier.
+<DT><I>tzh_ttisstdcnt</I>
+
+<DD>
+Le nombre d'indicateurs standard/wall enregistrés dans le fichier.
+<DT><I>tzh_leapcnt</I>
+
+<DD>
+Le nombre de secondes de rattrapage pour lesquelles des données sont enregistrées.
+<DT><I>tzh_timecnt</I>
+
+<DD>
+Le nombre d'instants de transition pour lesquels des données sont
+enregistrées dans le fichier.
+<DT><I>tzh_typecnt</I>
+
+<DD>
+Le nombre de types d'heures locales pour lesquelles des données sont
+enregistrées dans le fichier (ne doit pas être nul).
+<DT><I>tzh_charcnt</I>
+
+<DD>
+Le nombre de caractères de chaînes d'abréviation de fuseau horaire
+enregistrées dans le fichier.
+</DL>
+<P>
+
+Cet en-tête est suivi par
+<I>tzh_timecnt</I>
+
+valeurs sur 4 octets de type
+<B>long</B>,
+
+classées en ordre croissant.
+Ces valeurs sont écrites dans l'ordre standard des octets.
+Chacune est un instant de transition (comme renvoyé par l'appel-système
+<B><A HREF="/cgi-bin/man/man2html?2+time">time</A></B>(2))
+
+auquel les règles de calcul de l'heure locale changent.
+Ensuite viennent
+<I>tzh_timecnt</I>
+
+valeurs sur un octet de type
+<B>unsigned char</B>;
+
+chacune indiquant lequel des différents types d'heures locales décrites
+dans le fichier est associé avec l'instant de transition ayant le même rang.
+Ces valeurs servent d'indice dans une table de structures
+<I>ttinfo</I>
+
+qui apparaissent ensuite dans le fichier.
+Ces structures sont définies ainsi&nbsp;:
+
+<P>
+<PRE>
+
+struct ttinfo {
+     long          tt_gmtoff;
+     int           tt_isdst;
+     unsigned int  tt_abbrind;
+};
+</PRE>
+
+<P>
+Chaque structure est écrite sous forme d'une valeur 4 octets pour
+<I>tt_gmtoff</I>
+
+du type
+<B>long</B>,
+
+dans l'ordre standard des octets, suivie d'une valeur sur 1 octet pour
+<I>tt_isdst</I>
+
+et une valeur sur 1 octet pour
+<I>tt_abbrind</I>.
+
+Dans chaque structure, 
+<I>tt_gmtoff</I>
+
+indique le nombre de secondes à ajouter à l'UTC,
+<I>tt_isdst</I>
+
+indique si
+<I>tm_isdst</I>
+
+doit être indiqué par
+<B><A HREF="/cgi-bin/man/man2html?3+localtime">localtime</A></B>(3)
+
+et
+<I>tt_abbrind</I>
+
+sert d'index dans la table des caractères d'abréviation de la zone horaire
+qui suit les structures
+<I>ttinfo</I>
+
+dans le fichier.
+<P>
+
+Viennent ensuite
+<I>tzh_leapcnt</I>
+
+paires de valeurs 4 octets, écrites dans l'ordre standard des octets. La
+première valeur de chaque paire donne l'instant
+(comme fourni par
+<B><A HREF="/cgi-bin/man/man2html?2+time">time</A>(2))</B>
+
+auquel se trouve une seconde de rattrapage.
+La seconde indique le nombre 
+<I>total</I>
+
+de secondes de rattrapage à insérer après l'instant donné.
+Ces paires sont classées en ordre croissant de date.
+<P>
+
+Ensuite se trouvent
+<I>tzh_ttisstdcnt</I>
+
+indicateurs standard/wall, chacun enregistré sur un octet. Ils indiquent
+si les instants de transition associés aux types d'heures locales ont été
+spécifiés en heure standard ou locale, et servent lorsqu'un fichier
+de fuseau horaire permet de manipuler des variables d'environnement
+de zone horaire à la manière POSIX.
+<P>
+
+Finalement se trouvent
+<I>tzh_ttisgmtcnt</I>
+
+indicateurs UTC/local , chacun enregistré sur un octet. Ils indiquent si les
+instants de transition associés aux types d'heures locales ont été spécifiés
+en heure UTC ou locale, et servent lorsqu'un fichier de fuseau horaire
+permet de manipuler des variables d'environnement
+de zone horaire à la manière POSIX.
+<P>
+
+<I>Localtime</I>
+
+utilise la première structure
+<I>ttinfo</I>
+
+en heure standard du fichier (ou simplement la première structure
+<I>ttinfo</I>
+
+s'il n'y en a pas en heure standard), si 
+<I>tzh_timecnt</I>
+
+est nul, ou si son argument temporel est antérieur à la première transition
+enregistrée dans le fichier..
+
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1999-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:54 GMT, February 11, 2014
+</BODY>
+</HTML>

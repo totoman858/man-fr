@@ -1,0 +1,112 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of UPDATE-PCIIDS</TITLE>
+</HEAD><BODY>
+<H1>UPDATE-PCIIDS</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 10 avril 2008<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="ixAAB"></A>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+update-pciids - Télécharger la nouvelle version de la liste des identifiants PCI
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>update-pciids</B>
+
+[<B>-q</B>]
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>update-pciids</B>
+
+va chercher la version actuelle du fichier
+<I>pci.ids</I>
+
+sur le site principal du distributeur et l'installe.
+<P>
+Cet utilitaire nécessite que
+<B><A HREF="/cgi-bin/man/man2html?1+curl">curl</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+wget">wget</A></B>(1)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?1+lynx">lynx</A></B>(1)
+
+soit installé.
+Si
+<B><A HREF="/cgi-bin/man/man2html?1+gzip">gzip</A></B>(1)
+
+ou
+bzip2 (1)
+sont disponibles, il téléchargera automatiquement la version compressée
+de la liste.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-q</B>
+
+<DD>
+Mode silencieux&nbsp;: ne rien afficher à part les erreurs.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/usr/share/hwdata/pci.ids</I>
+
+<DD>
+Ici nous installons la nouvelle liste.
+(Ndt&nbsp;: l'emplacement peut varier suivant les distributions).
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+lspci">lspci</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+setpci">setpci</A></B>(8)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Les utilitaires PCI sont maintenus par Martin Mares &lt;<A HREF="mailto:mj@ucw.cz">mj@ucw.cz</A>&gt;.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal&nbsp;AT&nbsp;univ-montp2&nbsp;DOT&nbsp;fr&gt; le 6&nbsp;juin&nbsp;2008.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;8&nbsp;update-pciids</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">AUTEUR</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:04 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,278 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LILO</TITLE>
+</HEAD><BODY>
+<H1>LILO</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 17 octobre 1996<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+lilo - Installer le chargeur lilo.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+Fonction principale :
+<P>
+
+<B> /sbin/lilo</B>
+
+- Installer le chargeur lilo
+<P>
+
+Autres utilisations :
+<P>
+
+<B> /sbin/lilo -q</B>
+
+- Obtenir la carte des noyaux gérés.
+<BR>
+
+<B> /sbin/lilo -R</B>
+
+- Positionner les attributs par défaut pour le prochain boot.
+<BR>
+
+<B> /sbin/lilo -I</B>
+
+- Rechercher le chemin d'accès au noyau en cours d'utilisation.
+<BR>
+
+<B> /sbin/lilo {-u|-U}</B>
+
+- Désinstaller Lilo.
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+<B>lilo</B>
+
+installe le chargeur Lilo, qui sera activé au prochain démarrage de
+la machine. Il dispose de nombreuses options.
+<P>
+
+<DL COMPACT>
+<DT><B>-v</B>
+
+<DD>
+Augmente la quantité de commentaires. Ajouter un ou plusieurs
+<B>-v</B> rendra Lilo de plus en plus volubile.
+<DT><B>-q</B>
+
+<DD>
+Affiche la carte des noyaux actuellement gérés, et qui
+sont proposés lors du démarrage de la machine.
+<B>lilo</B>
+
+gère une carte, située par défaut dans le fichier
+<I>/boot/map</I>,
+
+contenant les noms et les positions des divers noyaux
+à proposer lors du démarrage.
+Cette option liste les noms des systèmes proposés lors
+du boot.
+<DT><B>-m </B><I>map-file</I>
+
+<DD>
+Utiliser le fichier 
+<I>map-file</I>
+
+pour stocker la carte plutôt que celui par défaut.
+<DT><B>-C </B><I>config-file</I>
+
+<DD>
+<B>lilo</B>
+
+lit les instructions à propos des systèmes à gérer dans
+un fichier de configuration, par défaut
+<I>/etc/lilo.conf</I>.
+
+Cette option permet d'indiquer un autre fichier de configuration.
+<DT><B>-d </B><I>délai</I>
+
+<DD>
+Si vous avez indiqué plusieurs noyaux, en pressant SHIFT durant
+le démarrage de la machine, Lilo vous proposera un choix des
+divers systèmes utilisables.
+Après l'expiration d'un certain délai, le premier noyau
+de la liste est lancé. Cette option permet de configurer
+le 
+<I>délai</I>
+
+désiré (en dixièmes de secondes).
+<DT><B>-D </B><I>étiquette</I>
+
+<DD>
+Utilise le noyau associé à
+<I>étiquette</I>
+
+plutôt que le premier de la liste, en tant que système
+par défaut.
+<DT><B>-r </B><I>root-directory</I>
+
+<DD>
+Avant toute chose, effectue un <I>chroot</I> vers le répertoire
+indiqué. Cette option sert à réparer la configuration après
+avoir booté depuis une disquette de secours.
+<DT><B>-t </B>
+
+<DD>
+Juste un essai. Ne pas modifier vraiment le secteur de boot
+ou le fichier carte.
+A utiliser avec <B>-v</B> pour s'assurer de ce que
+<B>lilo</B>
+
+va faire.
+<DT><B>-c</B>
+
+<DD>
+Autoriser la compression de la carte. Ceci va permettre de
+grouper les requêtes de lecture sur des secteurs adjacents.
+Cette option accélère le démarrage (surtout sur disquette).
+<DT><B>-f </B><I>disk-tab</I>
+
+<DD>
+Indique un fichier décrivant les paramètres géométriques
+du disque. Le fichier par défaut est
+<I>/etc/disktab</I>.
+
+<DT><B>-i </B><I>boot-sector</I>
+
+<DD>
+Indique un fichier à installer en tant que nouveau secteur
+de boot. Le fichier par défaut est
+<I>/boot/boot.b</I>.
+
+<DT><B>-l</B>
+
+<DD>
+Utilise un adressage linéaire des secteurs, plutôt qu'un adressage
+secteur/tête/cylindre.
+<DT><B>-L</B>
+
+<DD>
+Utilise des Adresses de Blocs Logiques 32 bits, plutôt qu'un adressage
+secteur/tête/cylindre, ce qui donne accès aux disques supérieurs à 8.4&nbsp;Go
+<DT><B>-P </B><I>{fix|ignore}</I>
+
+<DD>
+Corrige (fix) ou ignore les tables de partitions endommagées, c'est
+à dire les tables dont les adresses linéaires et secteur/tête/cylindre
+ne correspondent pas.
+<DT><B>-s </B><I>save-file</I>
+
+<DD>
+Quand
+<B>lilo</B>
+
+écrase le secteur de boot, il sauvegarde l'ancien contenu dans un
+fichier, par défaut
+<I>/boot/boot.NNNN</I>
+
+ou NNNN dépend du périphérique. Cette option précise un autre fichier
+de sauvegarde du secteur de boot. En l'associant avec l'option
+<B>-u</B> on indique depuis quel fichier restaurer le secteur.
+<DT><B>-S </B><I>save-file</I>
+
+<DD>
+Normalement
+<B>lilo</B>
+
+n'écrasera pas un fichier de sauvegarde existant. Cette option
+autorise l'écrasement.
+<DT><B>-u </B><I>device-name</I>
+
+<DD>
+Désinstallation de 
+<B>lilo</B>,
+
+en recopiant le fichier de sauvegarde sur le secteur de boot.
+Un horodatage du fichier est vérifié.
+<DT><B>-U </B><I>device-name</I>
+
+<DD>
+Idem, sans vérification de l'horodatage
+<DT><B>-R </B><I>command line</I>
+
+<DD>
+Cette option indique les commandes par défaut lors du prochain
+redémarrage du système. Ensuite Lilo effacera ces commandes, elles
+ne sont utilisées qu'une seule fois.
+Ceci est typiquement utilisé dans les scripts de redémarrage,
+juste avant d'appeler `shutdown -r'.
+<DT><B>-I </B><I>label</I>
+
+<DD>
+L'étiquette associée au noyau en cours d'utilisation est stockée
+après le démarrage dans la variable d'environnement BOOT_IMAGE.
+Cette commande affichera l'étiquette sur stdout.
+<DT><B>-V</B>
+
+<DD>
+Afficher le numéro de version.
+<P>
+</DL>
+<P>
+
+Les lignes de commandes ci-dessus correspondent aux mots
+clés du fichier de configuration ainsi :
+<DL COMPACT>
+<DT><DD>
+<TABLE>
+<TR VALIGN=top><TD>-b bootdev</TD><TD>boot=bootdev<BR></TD></TR>
+<TR VALIGN=top><TD>-c</TD><TD>compact<BR></TD></TR>
+<TR VALIGN=top><TD>-d dsec</TD><TD>delay=dsec<BR></TD></TR>
+<TR VALIGN=top><TD>-D label</TD><TD>default=label<BR></TD></TR>
+<TR VALIGN=top><TD>-i bootsector</TD><TD>install=bootsector<BR></TD></TR>
+<TR VALIGN=top><TD>-f file</TD><TD>disktab=file<BR></TD></TR>
+<TR VALIGN=top><TD>-l</TD><TD>linear<BR></TD></TR>
+<TR VALIGN=top><TD>-L</TD><TD>lba32<BR></TD></TR>
+<TR VALIGN=top><TD>-m mapfile</TD><TD>map=mapfile<BR></TD></TR>
+<TR VALIGN=top><TD>-P fix</TD><TD>fix-table<BR></TD></TR>
+<TR VALIGN=top><TD>-P ignore</TD><TD>ignore-table<BR></TD></TR>
+<TR VALIGN=top><TD>-s file</TD><TD>backup=file<BR></TD></TR>
+<TR VALIGN=top><TD>-S file</TD><TD>force-backup=file<BR></TD></TR>
+<TR VALIGN=top><TD>-v</TD><TD>verbose=level<BR></TD></TR>
+</TABLE>
+
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?5+lilo.conf">lilo.conf</A>(5).
+<BR>
+
+La distribution de Lilo contient une documentation très complète.
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Werner Almesberger (<A HREF="mailto:almesber@bernina.ethz.ch">almesber@bernina.ethz.ch</A>).
+<BR>
+
+John Coffman (<A HREF="mailto:johninsd@san.rr.com">johninsd@san.rr.com</A>) (extensions lba32).
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">AUTEUR</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:00 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,109 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TIME</TITLE>
+</HEAD><BODY>
+<H1>TIME</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+time - Lire l'heure.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/time.h">time.h</A>&gt;</B>
+
+<P>
+<B>time_t time(time_t *</B><I>t</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>time</B> renvoie l'heure actuelle sous forme du nombre de
+secondes écoulées depuis le 1er Janvier 1970 à 
+00h 00m 00s GMT, le début de l'Ère Unix.
+<P>
+Si
+<I>t</I>
+
+n'est pas NULL, la valeur renvoyée est également stockée
+dans la structure vers laquelle il pointe.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+S'il réussit, l'appel <B>time</B> renvoie l'heure actuelle. S'il
+échoue, la valeur ((time_t)-1) est renvoyée, et <I>errno</I> contient
+le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EFAULT</B>
+
+<DD>
+<I>t</I>
+
+pointe en dehors de l'espace d'adressage.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+POSIX.1 définit le nombre de secondes écoulées depuis le 1er Janvier
+1970 à 0h grâce à une formule de conversion naïve ignorant les secondes
+supplémentaires de rattrapage périodique, et en considérant que toutes
+les années divisibles par 4 sont bissextiles.
+Cette valeur ne correspond donc pas toujours au véritable nombre de
+secondes écoulées, mais elle reste cohérente au cours du temps.
+Voir l'Annexe B 2.2.2 de POSIX.1 pour plus de détails.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID, POSIX, X/OPEN, BSD 4.3
+<BR>
+
+Sous BSD 4.3, cet appel est remplacé par
+<B><A HREF="/cgi-bin/man/man2html?2+gettimeofday">gettimeofday</A></B>(2).
+
+POSIX ne précise pas de condition d'erreur.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+ctime">ctime</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?1+date">date</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?3+ftime">ftime</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?2+gettimeofday">gettimeofday</A></B>(2)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:50 GMT, February 11, 2014
+</BODY>
+</HTML>

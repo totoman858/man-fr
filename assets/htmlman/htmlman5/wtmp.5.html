@@ -1,0 +1,297 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of UTMP</TITLE>
+</HEAD><BODY>
+<H1>UTMP</H1>
+Section: Manuel de l administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+utmp, wtmp - Enregistrements de connexion.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+#include &lt;<A HREF="file:///usr/include/utmp.h">utmp.h</A>&gt;
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le fichier
+<I>utmp</I>
+
+permet de voir qui est connecté sur le système. Tous les programmes n'utilisant
+pas les enregistrement utmp, il se peut qu'il y ait plus d'utilisateurs que
+ceux affichés.
+<P>
+
+<B>Attention</B> :
+
+<I>utmp</I>
+
+ne doit pas être accessible en écriture car de nombreux programmes systèmes
+dépendent (malheureusement) de son intégrité. En laissant
+<I>utmp </I>
+
+accessible en écriture pour les utilisateurs, vous prenez le risque d'avoir de
+mauvais fichiers de journalisation, et des modifications de fichiers système.
+<P>
+
+Le fichier est une suite d'enregistrements avec la structure suivante
+(remarquez que les détails d'implémentation dépendent d'une version à l'autre
+de la bibliothèque C):
+<DL COMPACT><DT><DD>
+<PRE>
+
+
+#define UT_UNKNOWN            0
+#define RUN_LVL               1
+#define BOOT_TIME             2
+#define NEW_TIME              3
+#define OLD_TIME              4
+#define INIT_PROCESS          5
+#define LOGIN_PROCESS         6
+#define USER_PROCESS          7
+#define DEAD_PROCESS          8
+#define ACCOUNTING            9
+
+#define UT_LINESIZE           12
+#define UT_NAMESIZE           32
+#define UT_HOSTSIZE           256
+
+struct exit_status {
+  short int e_termination;    /* Code de fin du processus   */
+  short int e_exit;           /* Valeur de fin du processus */
+};
+
+struct utmp {
+  short ut_type;              /* type de login              */
+  pid_t ut_pid;               /* pid du processus           */
+  char ut_line[UT_LINESIZE];  /* périphérique tty - &quot;/dev/&quot; */
+  char ut_id[4];              /* ID tty initial             */
+  char ut_user[UT_NAMESIZE];  /* nom utilisateur            */
+  char ut_host[UT_HOSTSIZE];  /* nom hôte si login distant  */
+  struct exit_status ut_exit; /* Code de fin d'un processus */
+                              /* déjà marqué DEAD_PROCESS.  */
+  long ut_session;            /* ID de session              */
+  struct timeval ut_tv;       /* Horodatage                 */
+  int32_t ut_addr_v6[4];      /* Adresse IP hôte distant    */
+  char pad[20];               /* Remplissage, réservé...    */
+};
+
+/* Bidouille pour compatibilité ascendante  */
+#define ut_name ut_user
+#ifndef _NO_UT_TIME
+  #define ut_time ut_tv.tv_sec
+#endif
+#define ut_xtime ut_tv.tv_sec
+#define ut_addr ut_addr_v6[0]
+
+</PRE>
+
+</DL>
+
+Cette structure donne le nom du fichier spécial associé au terminal de 
+l'utilisateur, le nom d'utilisateur, l'heure de connexion sous la forme
+<I><A HREF="/cgi-bin/man/man2html?2+time">time</A></I>(2).
+
+Les chaînes de caractères se terminent par <B>'\0'</B> si elles sont plus
+courtes que les longueurs définies dans la structure.
+<P>
+
+Le premier enregistrement créé est le  traitement de
+<B><A HREF="/cgi-bin/man/man2html?5+inittab">inittab</A></B>(5)
+
+par
+<B><A HREF="/cgi-bin/man/man2html?8+init">init</A></B>(8).
+
+Néanmoins, avant ça, 
+<B><A HREF="/cgi-bin/man/man2html?8+init">init</A></B>(8)
+
+positionne le champ <B>ut_type</B> à <B>DEAD_PROCESS</B>,
+et efface <B>ut_user</B>, <B>ut_host</B> et <B>ut_time</B> (remplis avec
+des octets nul) de tous les enregistrement dont l'<B>ut_type</B> 
+n'est ni <B>DEAD_PROCESS</B> ni <B>RUN_LVL</B>, et si aucun processus
+de PID <B>ut_pid</B> n'existe. Si aucun enregistrement vide n'est trouvé avec
+le <B>ut_id</B> correct, init en crée un nouveau. Il positionne <B>ut_id</B> en
+s'aidant de l'inittab, <B>ut_pid</B> et <B>ut_time</B> avec les valeurs actuelles et
+<B>ut_type</B> à <B>INIT_PROCESS</B>.
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?8+getty">getty</A></B>(8)
+
+récupère l'entrée correspondant à son PID, modifie <B>ut_type</B>
+à la valeur <B>LOGIN_PROCESS</B>, modifie <B>ut_time</B>, positionne <B>ut_line</B>
+et attend une connexion.
+Une fois qu'un utilisateur est authentifié,
+<B><A HREF="/cgi-bin/man/man2html?8+login">login</A></B>(8)
+
+modifie <B>ut_type</B> à <B>USER_PROCESS</B>, modifie <B>ut_time</B> 
+et positionne <B>ut_host</B> et <B>ut_addr</B>.  En fonction du 
+<B><A HREF="/cgi-bin/man/man2html?8+getty">getty</A></B>(8)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?8+login">login</A></B>(8)
+
+utilisés, les enregistrements sont parfois identifiés par <B>ut_line</B>
+plutôt que <B>ut_pid</B> qui est toutefois préférable.
+<P>
+
+Quand
+<B><A HREF="/cgi-bin/man/man2html?8+init">init</A></B>(8)
+
+s'aperçoit qu'un processus est terminé, il identifie son
+enregistrement utmp grâce au champ <B>ut_pid</B>, positionne <B>ut_type</B> a
+<B>DEAD_PROCESS</B> et efface <B>ut_user</B>, <B>ut_host</B> et <B>ut_time</B>
+avec des octets nuls.
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?1+xterm">xterm</A></B>(1)
+
+(comme les autres émulateurs de terminaux) crée directement un
+enregistrement <B>USER_PROCESS</B>, engendrant <B>ut_id</B> grâce aux deux
+dernières lettres de <B>/dev/ttyp</B><I>%c</I> ou en utilisant <B>p</B><I>%d</I>
+pour <B>/dev/pts/</B><I>%d</I>.
+S'il trouve un <B>DEAD_PROCESS</B> pour cet ID, il le recycle, sinon il en crée
+un nouveau. Si possible, il marque l'enregistrement avec <B>DEAD_PROCESS</B>
+à la sortie. Il est recommande qu'il efface également <B>ut_line</B>,
+<B>ut_time</B>, <B>ut_user</B> et <B>ut_host</B>.
+<P>
+
+<I><A HREF="/cgi-bin/man/man2html?8+xdm">xdm</A></I>(8) ne doit pas créer d'enregistrement car il n'y a pas de
+terminal associé. Le forcer à en créer peut déclencher des problèmes, tels
+que l'impossibilité de faire fonctionner finger. Par contre <I>xdm</I> peut
+très bien créer des entrées wtmp tout comme
+<B><A HREF="/cgi-bin/man/man2html?8+ftpd">ftpd</A></B>(8).
+
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?8+telnetd">telnetd</A></B>(8)
+
+construit un enregistrement <B>LOGIN_PROCESS</B>
+et laisse le reste du travail à
+<B><A HREF="/cgi-bin/man/man2html?8+login">login</A></B>(8).
+
+Une fois que la session telnet est terminée,
+<B><A HREF="/cgi-bin/man/man2html?8+telnetd">telnetd</A></B>(8)
+
+efface l'utmp de la manière décrite plus haut.
+<P>
+
+Le fichier <B>wtmp</B> enregistre les connexions et déconnexions. Son
+format est exactement le même que <B>utmp</B> excepte qu'un utilisateur nul
+indique une déconnexion sur le terminal associé. De plus un nom de terminal
+<B>&quot;~&quot;</B>, associe à un nom d'utilisateur <B>&quot;shutdown&quot;</B> ou <B>&quot;reboot&quot;</B>
+indique un arrêt ou un redémarrage du système. Une paire d'enregistrements avec
+les noms de terminaux  <B>&quot;|&quot;</B> / <B>&quot;}&quot;</B> indique une modification de
+l'heure système avec
+<B><A HREF="/cgi-bin/man/man2html?1+date">date</A></B>(1).
+
+Le fichier <B>wtmp</B> est maintenu par 
+<B><A HREF="/cgi-bin/man/man2html?1+login">login</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+init">init</A></B>(1)
+
+et quelques un des
+<B><A HREF="/cgi-bin/man/man2html?1+getty">getty</A></B>(1).
+
+Aucun de ces programmes ne crée le fichier, aussi si on le supprime, les
+enregistrements de connexions sont arrêtés.
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/var/run/utmp
+<BR>
+
+/var/run/wtmp
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Les enregistrements utmp de Linux ne se conforment ni à v7/BSD ni à SYSV.
+Ils sont en réalité un mélange des deux.
+v7/BSD dispose de moins de champs, par exemple pas de <B>ut_type</B>, 
+ce qui conduit les programmes pour v7/BSD à afficher des entrées invalides
+de login.
+Sous Linux (comme sous SYS V), le champ <B>ut_id</B> d'un enregistrement ne
+sera jamais modifié après son initialisation. L'effacement de <B>ut_id</B>
+peut engendrer des conditions de concurrence menant à l'endommagement
+des enregistrements utmp.
+<P>
+
+SYSV n'utilise le champ <B>ut_type</B> que pour noter et horodater des messages
+informatifs comme par exemple <B>&quot;new time&quot;</B>.
+<B>UT_UNKNOWN</B> semble être une innovation de Linux.
+SYSV n'a pas de champs <B>ut_host</B> ni <B>ut_addr_v6</B>.
+<P>
+
+Contrairement à d'autres systèmes, sur lesquels l'effacement du fichier
+arrête la journalisation, le fichier utmp doit toujours exister sous
+Linux. Si vous désirez désactiver <I><A HREF="/cgi-bin/man/man2html?1+who">who</A></I>(1) alors laissez le fichier
+utmp en place, mais ne le laissez pas lisible par tout le monde.
+<P>
+
+Notez que l'implémentation de la structure utmp a changé entre les bibliothèques
+C libc5 et libc6. A cause de ceci, les fichiers exécutables utilisant l'ancien
+format libc5 risquent d'endommager les fichiers
+<I>/var/run/utmp</I> et/ou <I>/var/log/wtmp</I>.
+
+Les distributions Debian utilisent une version modifiée de libc5 proposant le
+nouveau format. Néanmoins, le problème persiste car wtmp est accédé directement
+dans la libc5.
+<A NAME="lbAG">&nbsp;</A>
+<H2>RESTRICTIONS</H2>
+
+Le format de ces fichiers dépend de la machine, et il est recommandé de 
+ne les utiliser que sur la machine où ils ont été créés.
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Cette page de manuel est basée sur la libc5, et les choses fonctionnent
+peut-être différemment à présent.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+ac">ac</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+date">date</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+last">last</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+login">login</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+who">who</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getutent">getutent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+updwtmp">updwtmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?8+init">init</A></B>(8)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">RESTRICTIONS</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:54 GMT, February 11, 2014
+</BODY>
+</HTML>

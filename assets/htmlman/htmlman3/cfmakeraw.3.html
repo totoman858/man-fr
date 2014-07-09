@@ -1,0 +1,825 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TERMIOS</TITLE>
+</HEAD><BODY>
+<H1>TERMIOS</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+termios, tcgetattr, tcsetattr, tcsendbreak, tcdrain, tcflush, tcflow, cfmakeraw, cfgetospeed, cfgetispeed, cfsetispeed, cfsetospeed - Configuration du terminal.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+
+<B>
+#include &lt;<A HREF="file:///usr/include/termios.h">termios.h</A>&gt;
+<BR>
+
+#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;
+<P>
+int tcgetattr (int </B><I>fd</I><B>, struct termios *</B><I>termios_p</I><B>);</B>
+
+<P>
+<B>int tcsetattr (int </B><I>fd</I><B>, int </B><I>optional_actions</I><B>, struct termios * </B><I>termios_p</I><B>);</B>
+
+<P>
+<B>int tcsendbreak (int </B><I>fd</I><B>, int </B><I>duree</I><B>);</B>
+
+<P>
+<B>int tcdrain (int </B><I>fd</I><B>);</B>
+
+<P>
+<B>int tcflush (int </B><I>fd</I><B>, int </B><I>queue_selector</I><B>);</B>
+
+<P>
+<B>int tcflow (int </B><I>fd</I><B>, int </B><I>action</I><B>);</B>
+
+<P>
+<B>int cfmakeraw (struct termios * </B><I>termios_p</I><B>);</B>
+
+<P>
+<B>speed_t cfgetispeed (struct termios * </B><I>termios_p</I><B>);</B>
+
+<P>
+<B>speed_t cfgetospeed (struct termios * </B><I>termios_p</I><B>);</B>
+
+<P>
+<B>int cfsetispeed (struct termios * </B><I>termios_p</I><B>, speed_t </B><I>speed</I><B>);</B>
+
+<P>
+<B>int cfsetospeed (struct termios * </B><I>termios_p</I><B>, speed_t </B><I>speed</I><B>);</B>
+
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les fonctions termios établissent une interface générale sous forme de terminal,
+permettant de contrôler les ports de communication asynchrone.
+<P>
+
+Plusieurs fonctions décrites ici utilisent un argument <I>termios_p</I>
+qui est un pointeur sur une structure <B>termios</B>. Cette structure
+contient au moins les membres suivants&nbsp;:
+
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+tcflag_t <I>c_iflag</I>;      /* modes d'entrée */
+tcflag_t <I>c_oflag</I>;      /* modes de sortie */
+tcflag_t <I>c_cflag</I>;      /* modes de contrôle */
+tcflag_t <I>c_lflag</I>;      /* modes locaux */
+cc_t <I>c_cc</I>[<B>NCCS</B>];       /* caractères de controle */
+</PRE>
+
+</DL>
+
+<P>
+
+Constante pour l'attribut <I>c_iflag</I> :
+<DL COMPACT>
+<DT><B>IGNBRK</B>
+
+<DD>
+ignorer les signaux BREAK en entrée.
+<DT><B>BRKINT</B>
+
+<DD>
+Si <B>IGNBRK</B> est indiqué, un caractère BREAK en entrée est ignoré. S'il
+n'est pas indiqué, mais si <B>BRKINT</B> est présent, alors un BREAK videra
+les files d'attente en entrée et sortie, et si le terminal contrôle un
+groupe de processus en avant-plan, un signal <B>SIGINT</B> sera envoyé à
+ce groupe. Si ni <B>IGNBRK</B> ni <B>BRKINT</B> ne sont indiqué, un caractère
+BREAK sera lu comme un caractère nul, sauf si <B>PARMRK</B> est présent,
+auquel cas il sera lu
+comme une séquence \377 \0 \0.
+<DT><B>IGNPAR</B>
+
+<DD>
+Ignorer les erreurs de format et de parité.
+<DT><B>PARMRK</B>
+
+<DD>
+Si <B>IGNPAR</B> n'est pas indiqué, un caractère ayant une erreur de parité
+ou de format est préfixé avec \377 \0. 
+Si ni <B>IGNPAR</B> ni <B>PARMRK</B> ne sont indiqués, un caractère contenant
+une erreur de parité ou de format est lu comme \0.
+<DT><B>INPCK</B>
+
+<DD>
+Valider la vérification de parité en entrée.
+<DT><B>ISTRIP</B>
+
+<DD>
+Eliminer le huitième bit.
+<DT><B>INLCR</B>
+
+<DD>
+Convertir NL en CR en entrée.
+<DT><B>IGNCR</B>
+
+<DD>
+Ignorer CR en entrée.
+<DT><B>ICRNL</B>
+
+<DD>
+Convertir CR en NL en entrée, sauf si <B>IGNCR</B> est indiqué.
+<DT><B>IUCLC</B>
+
+<DD>
+(Pas dans Posix) Transformer les majuscules en minuscules en entrée.
+<DT><B>IXON</B>
+
+<DD>
+Valider le contrôle de flux XON/XOFF en sortie.
+<DT><B>IXANY</B>
+
+<DD>
+(Pas dans Posix&nbsp;; XSI) Redémarrer le flux de sortie par n'importe quel caractère.
+<DT><B>IXOFF</B>
+
+<DD>
+Valider le contrôle de flux XON/XOFF en entrée.
+<DT><B>IMAXBEL</B>
+
+<DD>
+(Pas dans Posix) Faire sonner le terminal quand le buffer d'entrée est plein.
+Linux n'implémente pas ce bit, et considère qu'il est toujours actif.
+</DL>
+<P>
+
+Constantes Posix.1 pour l'attribut <I>c_oflag</I>&nbsp;:
+<DL COMPACT>
+<DT><B>OPOST</B>
+
+<DD>
+traitement en sortie dépendant de l'implémentation.
+</DL>
+<P>
+
+Les autres constantes pour <I>c_oflag</I> sont définies dans Posix 1003.1-2001 sauf
+indication contraire.
+<DL COMPACT>
+<DT><B>OLCUC</B>
+
+<DD>
+(Pas dans Posix) Convertir les minuscules en majuscules en sortie.
+<DT><B>ONLCR</B>
+
+<DD>
+(XSI) Convertir NL en CR-NL en sortie.
+<DT><B>OCRNL</B>
+
+<DD>
+Convertir CR en NL en sortie.
+<DT><B>ONOCR</B>
+
+<DD>
+Ne pas émettre de CR en colonne 0
+<DT><B>ONLRET</B>
+
+<DD>
+Ne pas émettre de CR
+<DT><B>OFILL</B>
+
+<DD>
+Utiliser des caractères de remplissage pour le délai, plutôt qu'une temporisation.
+<DT><B>OFDEL</B>
+
+<DD>
+(Pas dans Posix) Le caractère de remplissage est ASCII DEL.
+Sinon c'est ASCII NUL
+<DT><B>NLDLY</B>
+
+<DD>
+Délai du saut de ligne. Les valeurs sont <B>NL0</B> et <B>NL1</B>.
+<DT><B>CRDLY</B>
+
+<DD>
+Délai du retour chariot.
+Les valeurs sont <B>CR0</B>, <B>CR1</B>, <B>CR2</B>, ou <B>CR3</B>.
+<DT><B>TABDLY</B>
+
+<DD>
+Délai de tabulation horizontale.
+Les valeurs sont <B>TAB0</B>, <B>TAB1</B>, <B>TAB2</B>, <B>TAB3</B>, ou <B>XTABS</B>.
+Une valeur <B>TAB3</B> , c'est-à-dire XTABS, convertit les tabulations en espaces
+(positions toutes les huit colonnes).
+<DT><B>BSDLY</B>
+
+<DD>
+Délai du retour en arrière (baskspace).
+Les valeurs sont <B>BS0</B> ou <B>BS1</B> (n'a jamais été implémenté).
+<DT><B>VTDLY</B>
+
+<DD>
+Délai de tabulation verticale. Les valeurs sont <B>VT0</B> ou <B>VT1</B>.
+<DT><B>FFDLY</B>
+
+<DD>
+Délai de saut de page. Les valeurs sont <B>FF0</B> ou <B>FF1</B>.
+</DL>
+<P>
+
+Constantes pour l'attribut <I>c_cflag</I>&nbsp;:
+<DL COMPACT>
+<DT><B>CBAUD</B>
+
+<DD>
+(Pas dans POSIX) masque binaire des vitesses (4+1 bits).
+<DT><B>BAUDEX</B>
+
+<DD>
+(Pas dans POSIX) masque binaire étendu des vitesses (1 bit) inclus dans CBAUD.
+</DL>
+<P>
+
+(POSIX dit que la vitesse est stockée dans une structure termios
+sans dire précisément où, et fournit
+<B>cfgetispeed()</B>
+
+et
+<B>cfsetispeed()</B>
+
+pour la lire ou l'écrire. Certains systèmes utilisent les bits de CBAUD dans
+<I>c_cflag</I>,
+
+d'autres systèmes utilisent des champs distincts, par exemple
+<I>sg_ispeed</I>
+
+et
+<I>sg_ospeed</I>).
+
+<DL COMPACT>
+<DT><B>CSIZE</B>
+
+<DD>
+Longueur des caractères. Les valeurs sont <B>CS5</B>, <B>CS6</B>, <B>CS7</B>,
+ou <B>CS8</B>.
+<DT><B>CSTOPB</B>
+
+<DD>
+Utiliser deux bits de stop plutôt qu'un.
+<DT><B>CREAD</B>
+
+<DD>
+Valider la réception.
+<DT><B>PARENB</B>
+
+<DD>
+Valider le codage de parité en sortie, et la vérification de parité en entrée.
+<DT><B>PARODD</B>
+
+<DD>
+Parité impaire en entrée et sortie.
+<DT><B>HUPCL</B>
+
+<DD>
+Abaisser les signaux de contrôle du modem lorsque le dernier processus
+referme le périphérique (raccrochement).
+<DT><B>CLOCAL</B>
+
+<DD>
+Ignorer les signaux de contrôle du modem.
+<DT><B>LOBLK</B>
+
+<DD>
+(Pas POSIX) Bloquer la sortie depuis un niveau de shell non-concurrent.
+(Utilisé par <B>shl</B>).
+<DT><B>CIBAUD</B>
+
+<DD>
+(Pas dans Posix) Vitesse d'entrée (inutilisée). Les bits pour CIBAUD sont les
+mêmes que ceux de CBAUD, décalés à gauche de IBSHIFT bits.
+<DT><B>CRTSCTS</B>
+
+<DD>
+(Pas dans Posix) Contrôle de flux RTS/CTS.
+</DL>
+<P>
+
+Constantes pour l'attribut <I>c_lflag</I>&nbsp;:
+<DL COMPACT>
+<DT><B>ISIG</B>
+
+<DD>
+Lorsqu'un signal INTR, QUIT, SUSP, ou DSUSP arrivent, engendrer le
+signal correspondant.
+<DT><B>ICANON</B>
+
+<DD>
+Mode canonique. Ceci permet l'utilisation des caractères spéciaux
+EOF, EOL, EOL2, ERASE, KILL, LNEXT, REPRINT, STATUS, et WERASE, et
+configure les buffers par ligne.
+<DT><B>XCASE</B>
+
+<DD>
+(Pas dans Posix, non supporté sous Linux)
+Si <B>ICANON</B> est indiqué également, le terminal est en mode
+majuscule uniquement.
+Les entrées sont converties en minuscules, sauf pour les caractères
+précédes par \. En sortie, les caractères majuscules sont précédes
+par \ et les minuscules sont converties en majuscules.
+<DT><B>ECHO</B>
+
+<DD>
+Effectuer un écho des caractères saisis.
+<DT><B>ECHOE</B>
+
+<DD>
+Si <B>ICANON</B> est également activé, la touche ERASE efface le
+caractère précédent, et WERASE efface le mot précédent.
+<DT><B>ECHOK</B>
+
+<DD>
+Si <B>ICANON</B> est également activé, la touche KILL efface la ligne en cours.
+<DT><B>ECHONL</B>
+
+<DD>
+Si <B>ICANON</B> est également activé, la touche NL dispose d'un écho local,
+même si ECHO n'est pas activé.
+<DT><B>ECHOCTL</B>
+
+<DD>
+(Pas dans Posix) Si <B>ECHO</B> est également activé, les signaux de contrôle ASCII autres
+que TAB, NL, START, et STOP sont représentés en écho local par ^X,
+ou X est le caractère dont le code ASCII est supérieur de 0x40 à celui du
+signal de contrôle. par exemple 0x08 (BS) est représenté par ^H.
+<DT><B>ECHOPRT</B>
+
+<DD>
+(Pas dans Posix) Si <B>ICANON</B> et <B>IECHO</B> sont aussi activés, les caractères sont imprimés
+avant leur effacement. (?)
+<DT><B>ECHOKE</B>
+
+<DD>
+(Pas dans Posix) Si <B>ICANON</B> est également activé, la touche KILL efface chaque caractère
+de la ligne, comme indiqué par <B>ECHOE</B> et <B>ECHOPRT</B>.
+<DT><B>DEFECHO</B>
+
+<DD>
+(Pas dans Posix) N'effectuer l'écho que lorsque le caractère est lu.
+<DT><B>FLUSHO</B>
+
+<DD>
+(Pas dans Posix, non supporté sous Linux)
+Le buffer de sortie est vidé. Cet attribut est déclenché en tappant le
+caractère DISCARD.
+<DT><B>NOFLSH</B>
+
+<DD>
+Désactive le vidage des files d'entrée et de sortie pendant les signaux SIGINT
+et SIGQUIT, ainsi que le vidage de la file d'entrée durant les signaux SIGSUSP.
+<DT><B>TOSTOP</B>
+
+<DD>
+Envoie le signal SIGTTOU au groupe d'un processus en arrière-plan essayant
+d'écrire sur son terminal de contrôle.
+<DT><B>PENDIN</B>
+
+<DD>
+(Pas dans Posix, non supporté sous Linux)
+Tous les caractères de la file d'entrée sont réimprimés quand le caractère
+suivant est lu. (<B>bash</B> utilise ceci pour la complétion de commande.)
+<DT><B>IEXTEN</B>
+
+<DD>
+Traitement de l'entrée dépendant de l'implémentation
+Cet attribut, tout comme <B>ICANON</B> doit être actif pour que les caractères
+spéciaux EOL2, LNEXT, REPRINT, WERASE soit interprétés,et pour que l'attribut
+<B>IUCLC</B> prenne effet.
+</DL>
+<P>
+
+Le tableau <I>c_cc</I> définit des caractères de contrôle spéciaux.
+Les symboles (valeurs initiales) et significations sont&nbsp;:
+<DL COMPACT>
+<DT><B>VINTR</B>
+
+<DD>
+(003, ETX, Ctrl-C, ou encore 0177, DEL, rubout),
+Caractère d'interruption. Envoie le signal SIGINT.
+Reconnu quand ISIG est présent, et n'est pas transmis en entrée.
+<DT><B>VQUIT</B>
+
+<DD>
+(034, FS, Ctrl-\),
+Caractère Quit. Envoie le signal SIGQUIT.
+Reconnu quand ISIG est présent, et n'est pas transmis en entrée.
+<DT><B>VERASE</B>
+
+<DD>
+(0177, DEL, Rubout, ou encore 010, BS, Ctrl-H),
+Caractère d'effacement. Ceci efface le caractère précédent pas
+encore effacé, mais ne revient pas en-deça de EOF ou du début de
+ligne.
+Reconnu quand ICANON est actif, et n'est pas transmis en entrée.
+<DT><B>VKILL</B>
+
+<DD>
+(025, NAK, Ctrl-U ou Ctrl-X, et aussi @),
+Caractère Kill. Celui efface tous les caractères en entrée, jusqu'au
+dernier EOF ou début de ligne. Reconnu quand ICANON est actif, et
+pas transmis en entrée.
+<DT><B>VEOF</B>
+
+<DD>
+(004, EOT, Ctrl-D),
+Caractère de fin de fichier.
+Plus précisément&nbsp;: Ce caractère oblige l'envoi du contenu du buffer vers
+le programme lecteur sans attendre la fin de ligne.
+S'il s'agit du premier caractère de la ligne, le <I>read()</I> renvoie zéro dans
+le programme appelant, ce qui correspond à une fin de fichier.
+Reconnu quand ICANON est actif, et pas transmis en entrée.
+<DT><B>VMIN</B>
+
+<DD>
+Nombre minimum de caractères lors d'une lecture en mode non-canonique.
+<DT><B>VEOL</B>
+
+<DD>
+(0, NUL),
+Caractère fin de ligne supplémentaire.
+Reconnu quand ICANON est actif.
+<DT><B>VTIME</B>
+
+<DD>
+Délai en dixièmes de secondes pour une lecture en mode non-canonique.
+<DT><B>VEOL2</B>
+
+<DD>
+(Pas dans Posix&nbsp;; 0, NUL),
+Encore un autre caractère fin de ligne.
+Reconnu quand ICANON est actif.
+<DT><B>VSWTCH</B>
+
+<DD>
+(Pas dans Posix et non supporté sous Linux&nbsp;; 0, NUL),
+Carctère de basculement (utilisé uniquement par <B>sh</B>).
+<DT><B>VSTART</B>
+
+<DD>
+(021, DC1, Ctrl-Q),
+Caractère de démarrage. Relance la sortie interrompue par un caractère d'arrêt.
+Reconnu quand IXON est actif, et pas transmis en entrée.
+<DT><B>VSTOP</B>
+
+<DD>
+(023, DC3, Ctrl-S),
+Caractère d'arrêt. Interrompt la sortie jusqu'à la pression d'un caractère de démarrage.
+Reconnu quand IXON est actif, et pas transmis en entrée.
+<DT><B>VSUSP</B>
+
+<DD>
+(032, SUB, Ctrl-Z),
+Caractère de suspension. Envoie le signal SIGTSTP.
+Reconnu quand ISIG est actif, et pas transmis en entrée.
+<DT><B>VDSUSP</B>
+
+<DD>
+(Pas dans Posix et non supporté sous Linux&nbsp;; 031, EM, Ctrl-Y),
+Caractère de suspension retardée. Envoie le signal SIGTSTP quand le caractère
+est lu par le programme utilisateur. Reconnu quand IEXTEN et ISIG sont actifs, et quand
+le système support le contrôle des jobs, et non transmis en entrée.
+<DT><B>VLNEXT</B>
+
+<DD>
+(Pas dans Posix&nbsp;; 026, SYN, Ctrl-V),
+Protègle le caractère suivant en lui supprimant toute signification spéciale.
+Reconnu quand IEXTEN est actif, et pas transmis en entrée.
+<DT><B>VWERASE</B>
+
+<DD>
+(Pas dans Posix&nbsp;; 027, ETB, Ctrl-W)
+Effacement de mot.
+Reconnu quand ICANON et IEXTEN sont actifs, et pas transmis en entrée.
+<DT><B>VREPRINT</B>
+
+<DD>
+(Pas dans Posix&nbsp;; 022, DC2, Ctrl-R),
+Réafficher les caractères pas encore lus.
+Reconnu quand ICANON et IEXTEN sont actifs, et pas transmis en entrée.
+<DT><B>VDISCARD</B>
+
+<DD>
+(Pas dans Posix, non supporté sous Linux&nbsp;; 017, SI, Ctrl-O).
+Bascule start/stop pour ignorer les caractères en attente de sortie.
+Reconnu quand IEXTEN est actif, et pas transmis en entrée.
+<DT>VSTATUS<DD>
+(Pas dans Posix, non supporté sous Linux&nbsp;; 024, DC4, Ctrl-T)
+Interrogation d'état.
+</DL>
+<P>
+
+Ces valeurs sont toutes différentes, sauf 
+VTIME, VMIN qui peuvent avoir la même valeur de VEOL et VEOF respectivement.
+(en mode non-canonnique, la signification d'un caractère spécial est remplacé
+par sa valeur de temporisation. MIN représente le nombre mini de caractères à
+recevoir pour satisfaire une lecture. TIME est une valeur en dixième de
+seconde. Quand ils sont tout dexu remplis, une lecture attendra au moins
+un caractère, et reviendra dès que MIN caractères auront été reçus, ou
+si le temps TILME est écoulé depuis la réception du dernier caractère.
+Si seul MIN est rempli, la lecture ne reviendra pas avant d'avoir reçu
+MIN caractères. Si seul TIME est rempli, la lecture reviendra dès qu'un
+caractère arrivera, ou dès que le délai sera écoulé. Si aucun n'est rempli,
+la lecture reviendra immédiatement, ne lisant que les caractères immédiatement
+disponibles.
+<P>
+
+<B>tcgetattr()</B>
+
+obtient les paramètres associés à l'objet référencé par <I>fd</I> et les
+stocke dans la structure <B>termios</B> pointée par <I>termios_p</I>.
+Cette fonction peut être appelée par un processus en arrière-plan, néanmoins
+les attributs de terminal peuvent être modifiés par la suite par le processus
+en avant-plan.
+<P>
+
+<B>tcsetattr()</B>
+
+fixe les paramètres du terminal (à moins que le matériel sous-jacent
+ne le supporte par) en lisant la structure <B>termios</B> pointée
+par <I>termios_p</I>.  
+<I>optional_actions</I> précise QUAND les changements auront lieu :
+<DL COMPACT>
+<DT><B>TCSANOW</B><DD>
+Les modifications sont effectuées immédiatement.
+<DT><B>TCSADRAIN</B><DD>
+Les modifications sont effectuées lorsque toutes les opérations d'écriture
+sur
+<I>fd</I>
+
+auront été transmises.  Cette fonction devrait être utilisée pour toute
+modification de paramètre affectant les sorties.
+<DT><B>TCSAFLUSH</B><DD>
+Les modifications sont effectuées lorsque toutes les opérations d'écriture
+sur
+<I>fd</I>
+
+auront été transmises. Les entrées qui n'ont pas été traitées seront éliminées
+avant de faire les modifications.
+</DL>
+<P>
+
+<B>tcsendbreak()</B>
+
+transmet un flux continu de bits à zéro pendant une <I>durée</I> donnée si le terminal
+utilise une transmission série asynchrone.
+Si <I>durée</I> vaut zéro, les bits à zéro sont émis pendant au moins
+0.25 seconde, et pas plus de 0.5 seconde.
+Si <I>durée</I> est non nul, l'émission se fera pendant un temps
+dépendant de l'implémentation.
+<P>
+
+Si le terminal n'est pas connecté avec une liaison série asynchrone,
+<B>tcsendbreak()</B> n'effecte aucune action.
+<P>
+
+<B>tcdrain()</B>
+
+attend que toutes les écritures sur l'objet référencé par
+<I>fd</I>
+
+aient été transmises.
+<P>
+
+<B>tcflush()</B>
+
+élimine toutes les écritures sur l'objet
+<I>fd</I>
+
+pas encore transmises, ainsi que les données reçues mais pas encore
+lues, ceci en fonction de la valeur de
+<I>queue_selector</I>:
+
+<DL COMPACT>
+<DT><B>TCIFLUSH</B><DD>
+efface les données reçues mais non lues.
+<DT><B>TCOFLUSH</B><DD>
+efface les données écrites mais non transmises.
+<DT><B>TCIOFLUSH</B><DD>
+efface a la fois les données reçues non lues, et les données ecrites
+non transmises.
+</DL>
+<P>
+
+<B>tcflow()</B>
+
+suspend la transmission ou la réception des données sur l'objet référencé par
+<I>fd</I>,
+
+en fonction de la valeur de
+<I>action</I>:
+
+<DL COMPACT>
+<DT><B>TCOOFF</B><DD>
+suspend les transmissions
+<DT><B>TCOON</B><DD>
+redémarre les transmissions suspendues
+<DT><B>TCIOFF</B><DD>
+envoie un caractère STOP, ce qui demande au terminal de suspendre toute
+transmission de données vers le système.
+<DT><B>TCION</B><DD>
+envoie un caractère START, ce qui redémarre la transmission des données
+depuis le terminal vers le système.
+</DL>
+<P>
+
+Lors de l'ouverture d'un terminal, ni ses sorties, ni ses entrées ne
+sont suspendues.
+<P>
+
+On peut utiliser les fonctions suivantes pour lire ou écrire la
+vitesse de communication du terminal, en utilisant la structure <B>termios</B>.
+Les modifications ne prennent effet que lorsque la fonction <B>tcsetattr()</B>
+a été invoquée et qu'elle a réussit.
+<P>
+Fixer une vitesse <B>B0</B> demande au modem de racrocher.
+La vitesse réelle de communication correspondant à <B>B38400</B>
+peut être modifiée avec <B><A HREF="/cgi-bin/man/man2html?8+setserial">setserial</A></B>(8).<TT>&nbsp;&nbsp;&nbsp;</TT><BR>
+<P>
+
+Les vitesses en entrée et en sortie sont stockées dans la structure
+<B>termios</B>.
+<P>
+
+<B>cfmakeraw</B> fixe les attributs du terminal ainsi :
+<PRE>
+            termios_p-&gt;c_iflag &amp;= ~(IGNBRK|BRKINT|PARMRK|ISTRIP
+                            |INLCR|IGNCR|ICRNL|IXON);
+            termios_p-&gt;c_oflag &amp;= ~OPOST;
+            termios_p-&gt;c_lflag &amp;= ~(ECHO|ECHONL|ICANON|ISIG|IEXTEN);
+            termios_p-&gt;c_cflag &amp;= ~(CSIZE|PARENB);
+            termios_p-&gt;c_cflag |= CS8;
+</PRE>
+
+<P>
+
+<B>cfgetospeed()</B>
+
+renvoie la vitesse de sortie stockée dans la structure <B>termios</B> pointée
+par
+<I>termios_p</I>.
+
+<P>
+
+<B>cfsetospeed()</B>
+
+fixe la vitesse de sortie stockée dans la structure <B>termios</B>  pointée par
+<I>termios_p</I> à la valeur <I>speed</I>, qui doit être l'une des constantes
+suivantes :
+<PRE>
+<B>        B0
+        B50
+        B75
+        B110
+        B134
+        B150
+        B200
+        B300
+        B600
+        B1200
+        B1800
+        B2400
+        B4800
+        B9600
+        B19200
+        B38400
+        B57600
+        B115200
+        B230400
+</B></PRE>
+
+La vitesse nulle, <B>B0</B>, est utilisée pour terminer une connexion.
+Si B0 est indiquée, il n'y a aucune garantie d'état des lignes de contrôle
+du modem.
+Normalement, ceci devrait déconnecter la ligne.
+<B>CBAUDEX</B> est un masque pour les vitesses supérieures à celles définies
+dans POSIX.1 (supérieures ou égales à 57600).
+Ainsi, <B>B57600</B> &amp; <B>CBAUDEX</B> est non nulle.
+<P>
+
+<B>cfgetispeed()</B>
+
+renvoie la vitesse d'entrée stockée dans la structure <B>termios</B>.
+<P>
+
+<B>cfsetispeed()</B>
+
+fixe la vitesse d'entrée stockée dans la structure <B>termios</B>
+à la valeur
+<I>speed</I>.
+
+Si la vitesse d'entrée est mise à 0, elle prendra la même valeur que
+la vitesse de sortie.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEURS RENVOYÉES</H2>
+
+<P>
+
+<B>cfgetispeed()</B>
+
+renvoie la vitesse d'entrée stockée dans la structure
+<B>termios</B>.
+<P>
+
+<B>cfgetospeed()</B>
+
+renvoie la vitesse de sortie stockée dans la structure <B>termios</B>.
+<P>
+
+Toutes les autres fonctions renvoient
+<DL COMPACT>
+<DT>0<DD>
+si elle réussissent, et
+<DT>-1<DD>
+si elles échouent, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+</DL>
+<P>
+
+Notez que
+<B>tcsetattr()</B>
+
+indique une réussite si <I>une</I> des modifications peut être réalisée.
+Toutefois, pour effectuer plusieurs changements, il peut être
+nécessaire de faire suivre cet appel d'une invocation de
+<B>tcgetattr()</B>
+
+pour vérifier que les modifications ont bien été réalisées.
+<BR>&nbsp;
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Unix V7 et plusieurs systèmes ultérieurs avaient une liste de vitesse de transmission
+où l'on rencontrait, après les quatorzes valeurs B0...B9600, les constantes
+EXTA, EXTB (&quot;External A&quot; et &quot;External B&quot;).
+De nombreux systèmes étendent cette liste avec des vitesses bien plus rapides.
+<P>
+
+L'effet d'une <I>durée</I> non-nulle avec <B>tcsendbreak</B> est variable.
+SunOS indique une break pendant
+<I>durée</I><B>*</B><I>N</I>
+
+secondes, où <I>N</I> est au moins 0.25, et au plus 0.5.
+Linux, AIX, DU, Tru64 envoie un break pendant
+<I>durée</I>
+
+millisecondes.
+FreeBSD, NetBSD, HP-UX et MacOS ignorent la valeur
+<I>durée</I>.
+
+Sous Solaris et Unixware,
+<B>tcsendbreak</B>
+
+avec une
+<I>durée</I>
+
+non-nulle, se comporte comme
+<B>tcdrain</B>.
+
+
+
+
+
+<P>
+<P>
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+stty">stty</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+setserial">setserial</A></B>(8)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEURS RENVOYÉES</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:15 GMT, February 11, 2014
+</BODY>
+</HTML>

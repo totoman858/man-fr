@@ -1,0 +1,186 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of X25</TITLE>
+</HEAD><BODY>
+<H1>X25</H1>
+Section: Manuel de l'admnistrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+x25, PF_X25 - Interface du protocole ITU-T X.25 / ISO-8208.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/linux/x25.h">linux/x25.h</A>&gt;</B>
+
+<P>
+<B>x25_socket = socket(PF_X25, SOCK_SEQPACKET, 0); </B>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les sockets X25 fournissent une interface pour le protocole par paquets X.25.
+Elles permettent aux application de communiquer sur un réseau X.25 public
+standardisé par la recommandation de l'International Telecommunication Union
+(X.25 mode DTE-DCE). Les sockets X25 peuvent aussi servir à communiquer sans
+réseau intermédiaire X.25 (X.25 mode DTE-DTE) décrit par ISO-8208.
+<P>
+
+Les frontières de message sont préservées - un
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2)
+
+sur la socket retrouvera le même bloc de donnée que celui du
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A>(2)</B>
+
+sur la socket correspondante. Si nécessaire, le noyau prend soin de
+segmenter et réassembler les messages longs par le biais du bit M de
+X.25. Il n'y a pas de limite maximale pour la taille du message, toutefois
+le réassemblage d'un long message peut échouer si on manque temporairement
+de ressource système ou si d'autres contraintes (taille mémoire, limite
+de buffer) entre en jeu. Si cela se produit, la connexion X.25 sera
+réinitialisée.
+<A NAME="lbAE">&nbsp;</A>
+<H2>ADRESSE DE SOCKET</H2>
+
+L'adresse d'une socket de la famille
+<B>AF_X25 </B>
+
+utilise une
+<B>struct sockaddr_x25</B>
+
+pour représenter les adresses réseau définies par la
+recommandation X.121 de l'ITU-T.
+<P>
+
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct sockaddr_x25 {
+    sa_family_t   sx25_family;  /* doit être AF_X25 */
+    x25_address   sx25_addr;    /* adresse X.121    */
+};
+
+</PRE>
+
+</DL>
+
+<P>
+
+<I>sx25_addr</I>
+
+contient une table de caractères
+<I>x25_addr[] </I>
+
+à interpréter comme une chaîne terminée par un caractère nul.
+<I>sx25_addr.x25_addr[]</I>
+
+contient jusqu'à 15 caractères Ascii (sans compter le zéro final)
+formant l'adress X.121.
+Seuls les chiffres décimaux de `0' à `9' sont autorisés.
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS DES SOCKETS</H2>
+
+Les options suivantes spécifiques aux sockets X.25 peuvent être fixées avec
+<B><A HREF="/cgi-bin/man/man2html?2+setsockopt">setsockopt</A></B>(2)
+
+et lue avec 
+<B><A HREF="/cgi-bin/man/man2html?2+getsockopt">getsockopt</A></B>(2)
+
+en utilisant le paramètre niveau
+<B>SOL_X25</B>.
+
+<DL COMPACT>
+<DT><B>X25_QBITINCL</B>
+
+<DD>
+Contôle si le bit Q X.25 (Qualified Data Bit) est accessible par
+l'utilisateur. Il attend un argument entier. S'il est nul (par défaut),
+le bit Q n'est jamais mis pour les paquets sortants et le bit Q des paquets
+entrants est ignoré. S'il vaut 1, un premier octet supplémentaire est accolé
+à chaque message lus ou écrits sur la socket. Pour les données lues depuis
+la socket, un premier octet nul indique que le bit Q des données
+correspondantes n'était pas actif. Un premier octet avec une valeur 1
+indique que le bit Q était validé.
+Si le premier octet des donnés écrites sur la socket est 1, le bit Q
+sera activé&nbsp;; si le premier octet est 0, le bit Q sera inhibé.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Beaucoup, l'implémentation X.25 PLP est considérée comme
+<B>CONFIG_EXPERIMENTAL</B>.
+
+<P>
+
+Cette page de manuel est incomplète.
+<P>
+
+Il n'y a pas encore de fichier d'en-tête dédié pour les applications, il
+faut inclure l'en-tête du noyau
+<B>&lt;<A HREF="file:///usr/include/linux/x25.h">linux/x25.h</A>&gt;</B>.
+
+<B>CONFIG_EXPERIMENTAL </B>
+
+implique aussi que les versions à venir seront
+peut-être incompatibles au niveau binaire.
+<P>
+
+Les événements N-Reset X.25 ne sont pas encore propagés au processus
+utilisateur. Ainsi si une réinitialisation se produit, des données peuvent
+être perdues sans avertissement.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2)
+
+<P>
+
+Jonathan Simon Naylor: 
+"The Re-Analysis and Re-Implementation of X.25."
+The URL is
+<DL COMPACT><DT><DD>
+<I><A HREF="ftp://ftp.pspt.fi/pub/ham/linux/ax25/x25doc.tgz">ftp://ftp.pspt.fi/pub/ham/linux/ax25/x25doc.tgz</A></I>
+
+</DL>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>VERSIONS</H2>
+
+La famille de protocole PF_X25 est une nouveauté avec Linux 2.2.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">ADRESSE DE SOCKET</A><DD>
+<DT><A HREF="#lbAF">OPTIONS DES SOCKETS</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">VERSIONS</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:58 GMT, February 11, 2014
+</BODY>
+</HTML>

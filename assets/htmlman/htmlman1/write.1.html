@@ -1,0 +1,126 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of WRITE</TITLE>
+</HEAD><BODY>
+<H1>WRITE</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+write - Envoyer un message à un autre utilisateur.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>write</B><I> utilisateur </I><B>[</B><I>nom_terminal</I><B>]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>Write</B>
+
+vous permet de communiquer avec d'autres utilisateurs, en copiant des
+lignes de votre terminal sur les leurs.
+<P>
+
+Quand vous exécutez la commande
+<B>write</B>
+
+, l'utilisateur à qui vous écrivez reçoit un message de la forme&nbsp;:
+<P>
+
+<DL COMPACT><DT><DD>
+Message de <A HREF="mailto:votrenom@votremachine">votrenom@votremachine</A> sur votreterminal à hh:mm ...
+</DL>
+
+<P>
+
+Toutes les lignes suivantes que vous entrerez seront copiées sur le
+terminal de l'utilisateur spécifié. Si l'autre utilisateur veut
+répondre, il doit également lancer
+<B>write.</B>
+
+<P>
+
+Quand vous avez terminé, entrez un caractère de fin de fichier (EOF)
+ou un caractère d'interruption. L'autre utilisateur verra le
+message
+<B>EOF</B>
+
+qui indique que la conversation est terminée.
+<P>
+
+Vous pouvez empêcher quiconque (à l'exception du super-utilisateur)
+de vous écrire en utilisant la commande
+<B><A HREF="/cgi-bin/man/man2html?1+mesg">mesg</A></B>(1).
+
+Certaines commandes, par exemple
+<B><A HREF="/cgi-bin/man/man2html?1+nroff">nroff</A></B>(1)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?1+pr">pr</A></B>(1),
+
+peuvent désactiver automatiquement l'écriture sur votre terminal, afin
+que leur sortie ne soit pas écrasée.
+<P>
+
+Si l'utilisateur que vous voulez joindre est connecté sur plus d'un
+terminal, vous pouvez spécifier sur quel terminal écrire en spécifiant
+le nom du terminal comme second opérande pour la commande
+<B>write.</B>
+
+Sinon, vous pouvez laisser
+<B>write</B>
+
+sélectionner un des terminaux&nbsp;; il prendra celui le moins souvent
+oisif (idle), afin que dans le cas où l'utilisateur est connecté au
+travail et par après à la maison, le message aille au bon endroit (à
+la maison).
+<P>
+
+La convention traditionnelle utilisée pour écrire à quelqu'un est que
+lorsque la chaîne de caractères «&nbsp;-o&nbsp;» est placée dans ou à la fin
+d'une ligne, c'est au tour de l'autre personne à parler. La chaîne
+«&nbsp;oo&nbsp;» signifie que la personne concernée croit que la conversation
+est terminée.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+mesg">mesg</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+talk">talk</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+who">who</A></B>(1)
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Une commande
+<B>write</B>
+
+est apparue dans la version 6 du UNIX AT&amp;T.
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Frédéric Delanoy &lt;<I>delanoy_f at yahoo.com</I>&gt;, 2000.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:41 GMT, February 11, 2014
+</BODY>
+</HTML>

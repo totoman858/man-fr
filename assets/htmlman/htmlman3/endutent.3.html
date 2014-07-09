@@ -1,0 +1,260 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETUTENT</TITLE>
+</HEAD><BODY>
+<H1>GETUTENT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getutent, getutid, getutline, pututline, setutent, endutent, utmpname - Accéder aux enregistrements utmp.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/utmp.h">utmp.h</A>&gt;</B>
+
+<P>
+<B>struct utmp *getutent (void);</B>
+
+<BR>
+
+<B>struct utmp *getutid (struct utmp *</B><I>ut</I><B>);</B>
+
+<BR>
+
+<B>struct utmp *getutline (struct utmp *</B><I>ut</I><B>);</B>
+
+<P>
+<B>void pututline (struct utmp *</B><I>ut</I><B>);</B>
+
+<P>
+<B>void setutent (void);</B>
+
+<BR>
+
+<B>void endutent (void);</B>
+
+<P>
+<B>void utmpname (const char *</B><I>file</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>utmpname()</B> indique le nom du fichier au format utmp à utiliser avec les
+autres fonctions. Si <B>utmpname()</B> n'est pas appelé avant les autres fonctions,
+elles utiliseront le fichier <B>_PATH_UTMP</B>, défini dans <I>&lt;<A HREF="file:///usr/include/paths.h">paths.h</A>&gt;</I>.
+<P>
+
+<B>setutent()</B> ramène le pointeur au début du fichier utmp. Il est généralement
+conseillé d'appeler cette fonction au début du programme.
+<P>
+
+<B>endutent()</B> ferme le fichier utmp.  Ceci devrait être appelé une fois que le
+programme a terminé ses accès au fichier.
+<P>
+
+<B>getutent()</B> lit une ligne du fichier utmp, à la position courante.
+Elle renvoie un pointeur sur une structure contenant les divers champs
+de la ligne.
+<P>
+
+<B>getutid()</B> effectue une recherche dans le fichier utmp, à partir de la position
+courante, en se basant sur <I>ut</I>.
+Si <I>ut</I>-&gt;ut_type vaut <B>RUN_LVL</B>, <B>BOOT_TIME</B>,
+<B>NEW_TIME</B>, ou <B>OLD_TIME</B>,
+<B>getutid()</B> recherchera le premier enregistrement dont le champ
+ut_type corresponde à <I>ut</I>-&gt;ut_type.
+<P>
+Si <I>ut</I>-&gt;ut_type vaut <B>INIT_PROCESS</B>, <B>LOGIN_PROCESS</B>,
+<B>USER_PROCESS</B>, ou <B>DEAD_PROCESS</B>,
+<B>getutid()</B> recherchera le premier enregistrement dont le champ
+ut_id corresponde à <I>ut</I>-&gt;ut_id.
+<P>
+
+<B>getutline()</B> effectue une recherche dans le fichier utmp, à partir de la position
+courante.
+Elle examine les enregistrements dont le champ ut_type soit <B>USER_PROCESS</B>
+ou <B>LOGIN_PROCESS</B> et renvoie le premier dont le champ <B>ut_line</B> corresponde
+à <I>ut</I>-&gt;<B>ut_line</B>.
+<P>
+
+<B>pututline()</B> écrit la structure utmp <I>ut</I> dans le fichier utmp.  Elle
+utilise <B>getutid()</B> pour rechercher l'emplacement ou insérer le nouvel
+enregistrement.
+Si elle ne trouve pas d'emplacement approprié <B>pututline()</B> ajoutera le
+nouvel enregistrement à la fin du fichier.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>getutent</B>(), <B>getutid</B>(), <B>getutline</B>() et <B>pututline</B>()
+renvoient un pointeur sur une
+<B>struct utmp</B> statique, définie dans <I>&lt;<A HREF="file:///usr/include/utmp.h">utmp.h</A>&gt;</I> comme ci-dessous,
+ou NULL en cas d'erreur.
+<P>
+<PRE>
+struct utmp {
+  short  ut_type;     /* Type de connexion         */
+  pid_t  ut_pid;      /* PID de la connexion       */
+  char   ut_line[12]; /* Périphérique de connexion */
+  char   ut_id[4];    /* Nom de tty abrégé         */
+  time_t ut_time;     /* Heure de connexion        */
+  char   ut_user[8];  /* Nom d'utilisateur         */
+  char   ut_host[16]; /* Nom d'hôte distant        */
+  long   ut_addr;     /* Adresse IP d'hôte distant */
+};
+</PRE>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+L'exemple suivant ajoute et retire un enregistrement utmp, en supposant
+qu'il est invoqué depuis un pseudo-terminal. Dans une véritable application,
+il faudrait vérifier les valeurs renvoyées par <B>getpwuid</B>() et
+<B>ttyname</B>().
+<P>
+
+<PRE>
+#include &lt;<A HREF="file:///usr/include/string.h">string.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/pwd.h">pwd.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/utmp.h">utmp.h</A>&gt;
+
+   int
+main (int argc, char * argv [])
+{
+   struct utmp entry;
+
+   system (&quot;echo Avant d ajouter un enregistrement :;who&quot;);
+
+   entry . ut_type = USER_PROCESS;
+   entry . ut_pid  = getpid();
+   
+   strcpy (entry . ut_line, ttyname (0) + strlen (&quot;/dev/&quot;));
+
+   /* ne fonctionne qu'avec les pseudo tty /dev/tty[pqr][0-9a-z] */
+
+   strcpy (entry . ut_id, ttyname (0) + strlen (&quot;/dev/tty&quot;));
+
+   time (&amp; entry.ut_time);
+   strcpy (entry . ut_user, getpwuid (getuid ()) -&gt; pw_name);
+   memset (entry . ut_host, 0, UT_HOSTSIZE);
+   entry . ut_addr = 0;
+   setutent ();
+   pututline (&amp; entry);
+
+   system (&quot;echo Apres l ajout :;who&quot;);
+
+   entry . ut_type = DEAD_PROCESS;
+   memset (entry.ut_line, 0, UT_LINESIZE);
+   entry . ut_time = 0;
+   memset (entry . ut_user, 0, UT_NAMESIZE);
+   setutent ();
+   pututline (&amp; entry);
+
+   system (&quot;echo Apres suppression de l enregistrement :;who&quot;);
+
+   endutent ();
+
+   return (0);
+}
+</PRE>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/var/run/utmp - Base de données des utilisateurs connectés.
+<BR>
+
+/var/log/wtmp - Base de données des connexions passées.
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+XPG 2, SVID 2, Linux FSSTND 1.2
+<P>
+
+Dans XPG2 et SVID2  la fonction <I>pututline()</I> est décrite comme
+de type void, et c'est les cas sur de nombreux systèmes
+(AIX, HPUX, Linux libc5).
+HPUX introduit une nouvelle fonction <I>_pututline()</I> avec le prototype
+fourni plus haut pour <I>pututline()</I> (comme avec la libc5 de Linux).
+<P>
+
+Toutes ces fonctions sont obsolètes maintenant sur les systèmes non-Linux.
+POSIX 1003.1-2001, comme XPG4.2, ne propose aucune de ces fonctions,
+mais utilise plutôt
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/utmpx.h">utmpx.h</A>&gt;</B>
+
+<P>
+<B>struct utmpx *getutxent(void);</B>
+
+<BR>
+
+<B>struct utmpx *getutxid(const struct utmpx *);</B>
+
+<BR>
+
+<B>struct utmpx *getutxline(const struct utmpx *);</B>
+
+<BR>
+
+<B>struct utmpx *pututxline(const struct utmpx *);</B>
+
+<BR>
+
+<B>void setutxent(void);</B>
+
+<BR>
+
+<B>void endutxent(void);</B>
+
+<P>
+La structure <I>utmpx</I> est un sur-ensemble de la structure <I>utmp</I>,
+avec des champs supplémentaires, et une version plus large des champs existants.
+Les fichiers correspondants sont souvent
+<I>/var/*/utmpx</I>
+
+et
+<I>/var/*/wtmpx</I>.
+
+<P>
+
+D'un autre côté, la GlibC sous Linux n'utilise pas <I>utmpx</I> car sa structure
+<I>utmp</I> est déjà assez grande. Les fonctions <I>getutxent</I>
+etc. sont des alias pour <I>getutent</I> etc.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+utmp">utmp</A></B>(5)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">EXEMPLE</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:19 GMT, February 11, 2014
+</BODY>
+</HTML>

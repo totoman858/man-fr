@@ -1,0 +1,186 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of BLOCKDEV</TITLE>
+</HEAD><BODY>
+<H1>BLOCKDEV</H1>
+Section: Manuel du programmeur Linux (8)<BR>Updated: 1er juin 2007<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+blockdev - Appeler les ioctls des périphériques de blocs à partir de la ligne de commande
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>blockdev</B>
+
+[<I>options</I>]
+
+<I>commandes périphériques</I>
+
+<BR>
+
+<B>blockdev</B>
+
+--report
+[<I>devices</I>]
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+L'utilitaire
+<B>blockdev</B>
+
+vous permet d'appeler les ioctls des périphériques de blocs
+à partir de la ligne de commande.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-V</B>
+
+<DD>
+Afficher la version et quitter.
+<DT><B>-q</B>
+
+<DD>
+Mode silencieux.
+<DT><B>-v</B>
+
+<DD>
+Mode volubile.
+<DT><B>--report</B>
+
+<DD>
+Afficher un rapport pour les
+<I>périphériques</I>.
+
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>COMMANDES</H2>
+
+<DL COMPACT>
+<DT><B>--setro</B>
+
+<DD>
+Définir en lecture seule.
+<DT><B>--setrw</B>
+
+<DD>
+Définir en lecture/écriture.
+<DT><B>--getro</B>
+
+<DD>
+Obtenir la permission lecture seule.
+Affiche 1 si le périphérique est en lecture seule, 0 autrement.
+<DT><B>--getss</B>
+
+<DD>
+Afficher la taille des secteurs en octets - généralement 512.
+<DT><B>--getbsz</B>
+
+<DD>
+Afficher la taille des blocs en octets.
+<DT><B>--setbsz</B><I> N</I>
+
+<DD>
+Définir la taille des blocs à
+<I>N</I>
+
+octets.
+<DT><B>--getsize</B>
+
+<DD>
+Afficher la taille du périphérique en secteurs (BLKGETSIZE).
+Dépréciée en faveur de l'option
+<B>--getsz</B>.
+
+<DT><B>--getsize64</B>
+
+<DD>
+Afficher la taille du périphérique en octets (BLKGETSIZE64).
+<DT><B>--getsz</B>
+
+<DD>
+Afficher la taille du périphérique en secteurs de 512&nbsp;octets (BLKGETSIZE64&nbsp;/&nbsp;512).
+<DT><B>--setra</B><I> N</I>
+
+<DD>
+Définir le tampon de lecture anticipée à
+<I>N</I>
+
+secteurs de 512&nbsp;octets.
+<DT><B>--getra</B>
+
+<DD>
+Afficher le tampon de lecture anticipée (en secteur de 512&nbsp;octets).
+<DT><B>--setfra</B><I> N</I>
+
+<DD>
+Définir le tampon de lecture anticipée du système de fichier.
+(comme
+<B>--setra</B>
+
+dans les noyaux&nbsp;2.6).
+<DT><B>--getfra</B>
+
+<DD>
+Obtenir le tampon de lecture anticipée du système de fichier.
+<DT><B>--flushbufs</B>
+
+<DD>
+Purger les tampons.
+<DT><B>--rereadpt</B>
+
+<DD>
+Relire la table de partition.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<B>blockdev</B>
+
+a été écrit par Andries E. Brouwer.
+<A NAME="lbAH">&nbsp;</A>
+<H2>DISPONIBILITÉ</H2>
+
+La commande
+<B>blockdev</B>
+
+fait partie du paquetage util-linux-ng et est disponible à l'adresse
+<A HREF="ftp://ftp.kernel.org/pub/linux/utils/util-linux-ng/.">ftp://ftp.kernel.org/pub/linux/utils/util-linux-ng/.</A>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal&nbsp;AT&nbsp;univ-montp2&nbsp;DOT&nbsp;fr&gt; le 26&nbsp;mai&nbsp;2008.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;8&nbsp;blockdev</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">COMMANDES</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">DISPONIBILITÉ</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:04 GMT, February 11, 2014
+</BODY>
+</HTML>

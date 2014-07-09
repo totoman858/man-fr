@@ -1,0 +1,77 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CATAN</TITLE>
+</HEAD><BODY>
+<H1>CATAN</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+catan, catanf, catanl - Fonctions arc tangentes complexes.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/complex.h">complex.h</A>&gt;</B>
+
+<P>
+<B>double complex catan(double complex </B><I>z</I><B>);</B>
+
+<P>
+<B>float complex catanf(float complex </B><I>z</I><B>);</B>
+
+<P>
+<B>long double complex catanl(long double complex </B><I>z</I><B>);</B>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>catan</B>()
+
+calcule la version complexe de
+<B>atan</B>().
+
+Si y&nbsp;=&nbsp;catan(z), alors z&nbsp;=&nbsp;ctan(y).
+La partie réelle de y est choisie dans l'intervalle [-pi/2,pi/2].
+<P>
+
+On a
+catan(z)&nbsp;=&nbsp;1/2i&nbsp;clog((1+iz)/(1-iz)).
+<A NAME="lbAE">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+C99
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+clog">clog</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+ccos">ccos</A></B>(3)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:41 GMT, February 11, 2014
+</BODY>
+</HTML>

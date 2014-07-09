@@ -1,0 +1,239 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FTW</TITLE>
+</HEAD><BODY>
+<H1>FTW</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ftw, nftw - Parcours d'arborescence de fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/ftw.h">ftw.h</A>&gt;</B>
+
+<P>
+<B>int ftw (const char *</B><I>directory</I><B>, int (*</B><I>funcptr</I><B>)</B>
+
+<B>(const char *</B><I>file</I><B>, const struct stat *</B><I>sb</I><B>, int </B><I>flag</I><B>), int </B><I>depth</I><B>);</B>
+
+<P>
+<B>int nftw (const char *</B><I>directory</I><B>, int (*</B><I>funcptr</I><B>)</B>
+
+<B>(const char *</B><I>file</I><B>, const struct stat *</B><I>sb</I><B>, int </B><I>flag</I><B>,</B>
+
+<B>struct FTW *</B><I>s</I><B>),</B>
+
+<B>int </B><I>depth</I><B>, int </B><I>flags</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>ftw</B>() parcourt la hiérarchie de fichiers commençant au
+répertoire <I>directory</I>.
+Pour chaque fichier rencontré, elle appelle <I>funcptr</I> avec le chemin
+d'accès du fichier relativement à <I>directory</I>, un pointeur sur une
+structure
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2),
+
+et un entier <I>flag</I>, dont la valeur signifie&nbsp;:
+<DL COMPACT>
+<DT><B>FTW_F</B>
+
+<DD>
+Fichier normal
+<DT><B>FTW_D</B>
+
+<DD>
+Répertoire
+<DT><B>FTW_DNR</B>
+
+<DD>
+Répertoire non lisible
+<DT><B>FTW_SL</B>
+
+<DD>
+Lien symbolique
+<DT><B>FTW_NS</B>
+
+<DD>
+Echec de stat sur cet élément
+</DL>
+<P>
+
+S'il s'agit d'un lien symbolique et que stat échoue, XPG4v2 précise que
+FTW_NS ou FTW_SL peuvent être utilisés.
+<P>
+
+<B>ftw</B>() s'appelle lui-même recursivement pour parcourir tous les
+répertoires trouvés. Afin d'éviter d'utiliser tous les descripteurs de
+fichiers disponibles pour le programme, la profondeur <I>depth</I>
+limite le nombre de répertoires ouverts simultanément. Quand cette 
+profondeur est atteinte, <B>ftw</B>() va ralentir, car des répertoires
+devront être fermés puis réouverts.
+<P>
+
+Pour arrêter le parcours des fichiers, la fonction <I>funcptr</I> peut
+renvoyer une valeur non-nulle, qui deviendra la valeur de retour de <B>ftw</B>().
+Sinon, <B>ftw</B>() continuera jusqu'à atteindre la fin du parcours de
+l'arbre, et renverra zéro, ou jusqu'à ce que se produise une erreur comme
+celles de 
+<B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></B>(3)
+
+et renverra -1.
+<P>
+
+Comme <B>ftw()</B> utilise des structures de données allouées dynamiquement,
+la seule manière propre de sortir d'un parcours est de renvoyer une valeur
+non nulle.
+Pour traiter les interruptions, par exemple, notez le numéro d'interruption
+survenue et renvoyez une valeur non nulle. N'utilisez jamais
+<B><A HREF="/cgi-bin/man/man2html?3+longjmp">longjmp</A></B>(3)
+
+à moins que le programme ne soit prêt à se terminer.
+<P>
+La fonction <B>nftw</B>() fait exactement la même chose que <B>ftw</B>(),
+sauf qu'elle utilise un argument <I>flags</I> supplémentaire (et invoque
+la fonction transmise avec un argument de plus).
+L'argument <I>flags</I> est un OU regroupant zéro ou certaines des constantes :
+<DL COMPACT>
+<DT><B>FTW_CHDIR</B>
+
+<DD>
+Faire un
+<I>chdir</I>()
+
+dans chaque répertoire avant d'en traiter le contenu.
+<DT><B>FTW_DEPTH</B>
+
+<DD>
+Faire une recherche en profondeur d'abord, c'est-à-dire n'appeler la fonction
+pour le répertoire lui-même qu'après en avoir traité tout le contenu, y
+compris les sous-répertoires.
+<DT><B>FTW_MOUNT</B>
+
+<DD>
+Rester uniquement dans le même système de fichiers.
+<DT><B>FTW_PHYS</B>
+
+<DD>
+Ne pas suivre les liens symboliques (C'est classiquement ce que l'on veut).
+Sinon, les liens symboliques sont suivis, mais aucun fichier n'est traité
+plus d'une fois.
+</DL>
+<P>
+
+Si FTW_PHYS n'est pas demandé, mais si FTW_DEPTH l'est, la fonction
+<I>funcptr</I>()
+
+n'est jamais appelée sur un répertoire que l'on retrouve dans ses descendants.
+<P>
+
+La fonction
+<I>funcptr</I>()
+
+est appelée avec quatre arguments : le chemin de l'entrée traitée, un pointeur
+sur une structure stat la concernant, un entier décrivant son type, et un
+pointeur sur une structure FTW. Le type sera FTW_F, FTW_D, FTW_DNR, FTW_SL,
+ou FTW_NS (significations ci-dessus, FTW_SL uniquement si FTW_PHYS est
+demandé) ou
+<DL COMPACT>
+<DT><B>FTW_DP</B>
+
+<DD>
+Répertoire dont tous les descendants on été déjà traités.
+Ceci ne se produit qu'avec FTW_DEPTH.
+<DT><B>FTW_SLN</B>
+
+<DD>
+Lien symbolique pointant nulle part.
+Ceci ne se produit qu'avec FTW_PHYS absent.
+</DL>
+<P>
+
+La structure FTW pointée par le quatrième argument de
+<I>funcptr</I>()
+
+contient au moins les champs
+<I>base</I>,
+
+la position du nom de fichier dans le chemin fourni par le premier
+argument de
+<I>funcptr</I>(),
+
+et
+<I>level</I>,
+
+la profondeur de l'objet par rapport au point de départ
+(de profondeur 0).
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+La fonction
+<I>nftw</I>()
+
+et l'usage de FTW_SL dans
+<I>ftw</I>()
+
+ont été introduits dans XPG4v2.
+<P>
+
+Sur certains systèmes
+<I>ftw</I>()
+
+n'utilise jamais FTW_SL, sur d'autres FTW_SL ne se présente que
+pour les liens symboliques pointant dans le vide,
+sur d'autres encore
+<I>ftw</I>()
+
+utilisera FTW_SL pour chaque lien symbolique. Pour un fonctionnement prévisible,
+employez
+<I>nftw</I>().
+
+<P>
+
+Sous Linux, les LibC 4, LibC 5, et GlibC 2.0.6 utilisent FTW_F pour tous
+les objets (fichiers, liens symboliques, fifos, etc.) ne permettant pas un
+stat, mais autres que les répertoires.
+La fonction
+<I>nftw</I>()
+
+est disponible depuis la GlibC 2.1.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+AES, SVID2, SVID3, XPG2, XPG3, XPG4, XPG4v2.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:45 GMT, February 11, 2014
+</BODY>
+</HTML>

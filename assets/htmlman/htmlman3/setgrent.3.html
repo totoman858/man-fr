@@ -1,0 +1,123 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETGRENT</TITLE>
+</HEAD><BODY>
+<H1>GETGRENT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getgrent, setgrent, endgrent - Lire les enregistrement du fichier des groupes.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/grp.h">grp.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<B>struct group *getgrent (void);</B>
+
+<B>void setgrent (void);</B>
+
+<B>void endgrent (void);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>getgrent()</B> renvoie un pointeur sur une structure contenant
+les enregistrements de groupes issus de <I>/etc/<A HREF="/cgi-bin/man/man2html?5+group">group</A></I>(5).  
+Au premier appel elle renvoie le premier enregistrement, puis les autres
+enregistrements lors des autres appels successifs.
+<P>
+
+La fonction <B>setgrent()</B> ramène le pointeur au début du
+fichier <I>/etc/group</I>.
+<P>
+
+La fonction <B>endgrent()</B> ferme le fichier <I>/etc/group</I>.
+<P>
+
+La structure <I>group</I> est définie dans <I>&lt;<A HREF="file:///usr/include/grp.h">grp.h</A>&gt;</I> ainsi :
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct group {
+     char   *gr_name;    /* Nom du groupe.          */
+     char   *gr_passwd;  /* Mot de passe du groupe. */
+     gid_t   gr_gid;     /* ID du groupe.           */
+     char  **gr_mem;     /* Membres du groupe.      */
+};
+
+</PRE>
+
+</DL>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>getgrent()</B> renvoie la structure de groupe, ou NULL s'il
+n'y a plus d'enregistrements, ou si une erreur se produit.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour allouer une structure.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/etc/group</I>
+
+<DD>
+Base de données des groupes.
+
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3, BSD 4.3
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+fgetgrent">fgetgrent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getgrnam">getgrnam</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getgrgid">getgrgid</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:30 GMT, February 11, 2014
+</BODY>
+</HTML>

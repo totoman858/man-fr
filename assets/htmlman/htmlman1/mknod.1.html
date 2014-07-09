@@ -1,0 +1,201 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MKNOD</TITLE>
+</HEAD><BODY>
+<H1>MKNOD</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mknod - Créer des fichiers spéciaux.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>mknod [</B><I>options</I><B>] </B><I>nom</I><B> {bc} </B><I>numéro_majeur numéro_mineur</I>
+
+<BR>
+
+<B>mknod [ options ]  nom   p</B>
+
+<P>
+Options GNU (forme courte)&nbsp;:
+<B>[-m </B><I>mode</I><B>] [--mode=mode] [--help] [--version]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>mknod</B>
+
+crée une FIFO, un fichier spécial en mode caractère, ou un fichier
+spécial en mode bloc, avec le
+<I>nom</I>
+
+indiqué.
+<P>
+
+Un fichier spécial est un ensemble de trois valeurs (une booléenne, et
+deux entiers) enregistré dans un système de fichiers. La valeur booléenne
+indique s'il s'agit d'un fichier caractères ou blocs, et les deux entiers
+correspondent aux numéros majeur et mineur.
+<P>
+
+Ainsi un fichier spécial ne prend quasiment pas de place sur le disque,
+et est utilisé pour dialoguer avec le système d'exploitation, pas pour
+enregistrer des données. Généralement les fichiers spéciaux concernent
+des périphériques matériels (disques, bandes, ttys, imprimantes) ou
+des services fournis par le système d'exploitation (/dev/null, /dev/random).
+<P>
+
+Les fichiers en mode bloc sont des périphériques comme des disques (où les
+données sont accessibles à travers un numéro de bloc, et où il est
+intéressant d'avoir une mémoire cache par bloc). Tous les autres périphériques
+sont en mode caractère. Autrefois la distinction se faisait autrement, les
+entrées/sorties en mode bloc étaient bufferisées, pas les autres.
+<P>
+
+La commande
+<B>mknod</B>
+
+permet de créer ce type fichiers.
+<P>
+
+Les arguments fournis à la suite du
+<I>nom</I>
+
+indiquent le type de fichier à créer&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>p </B>
+
+<DD>
+pour une FIFO
+<DT><B>b </B>
+
+<DD>
+pour un fichier spécial en mode bloc (avec buffer)
+<DT><B>c</B>
+
+<DD>
+pour un fichier spécial en mode caractère (sans buffer)
+</DL>
+</DL>
+
+<P>
+
+La version GNU de
+<B>mknod</B>
+
+dispose de l'option
+<B>u</B>
+
+(&quot;unbuffered&quot;) synonyme de
+<B>c</B>.
+
+<P>
+
+Lorsque l'on crée un fichier spécial bloc ou caractère, les numéros
+majeur et mineur correspondant au périphérique doivent être précisés
+après le type de fichier, en décimal, en octal commençant par 0, ou 
+(version GNU seulement) en hexadécimal précédé de 0x.
+Par défaut le mode de création est 0666 ('a+rw') moins les bits se trouvant
+dans le umask.
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><I>-m, --mode mode</I>
+
+<DD>
+Indique les autorisations d'accès au fichier, 
+<I>mode</I>
+
+étant fourni sous forme symbolique, comme pour
+<B><A HREF="/cgi-bin/man/man2html?1+chmod">chmod</A></B>(1),
+
+les permissions par défaut étant utilisées comme valeur de départ.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS STANDARDS GNU</H2>
+
+<DL COMPACT>
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard, et se terminer normalement.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard, et se terminer
+normalement.
+<DT><I>--</I>
+
+<DD>
+Terminer la liste des options.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX ne décrit pas cette commande, considérée comme non portable, et
+recommande d'utiliser plutôt
+<B><A HREF="/cgi-bin/man/man2html?1+mkfifo">mkfifo</A></B>(1)
+
+pour créer des FIFOs.
+SVID dispose d'une commande
+<I>/etc/mknod</I>
+
+ayant la même syntaxe mais sans l'option mode.
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Sur un système Linux (1.3.22 ou plus récent) le fichier
+<I>/usr/src/linux/Documentation/devices.tex</I>
+
+contient une liste des noms de périphériques, avec le type, et
+les numéros majeurs et mineurs.
+<P>
+
+Cette page décrit la version de
+<B>mknod</B>
+
+trouvée dans le paquetage fileutils-4.0.
+D'autres versions peuvent diverger légèrement.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+chmod">chmod</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+mkfifo">mkfifo</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mknod">mknod</A></B>(2).
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">OPTIONS STANDARDS GNU</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:40 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,254 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SETPGID</TITLE>
+</HEAD><BODY>
+<H1>SETPGID</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+setpgid, getpgid, setpgrp, getpgrp - Fixer / lire le groupe du processus.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int setpgid(pid_t </B><I>pid</I><B>, pid_t </B><I>pgid</I><B>);</B>
+
+<BR>
+
+<B>pid_t getpgid(pid_t </B><I>pid</I><B>);</B>
+
+<BR>
+
+<B>int setpgrp(void);</B>
+
+<BR>
+
+<B>pid_t getpgrp(void);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>setpgid</B>
+
+fixe à
+<I>pgid</I>
+
+l'ID du groupe de processus auquel appartient le processus
+mentionné par
+<I>pid.</I>
+
+Si
+<I>pid</I>
+
+vaut zéro, le PID du processus en cours est utilisé. Si
+<I>pgid</I>
+
+vaut zéro, le PID du processus indiqué par 
+<I>pid</I>
+
+est utilisé. Si <B>setpgid</B> est utilisé pour déplacer un processus d'un
+groupe dans un autre (comme cela peut être fait par certains shell pour les
+pipelines), les deux groupes de processus doivent appartenir à la même session.
+Dans ce cas, <I>pgid</I> indique un groupe de processus existant à rejoindre
+et l'ID de session de ce groupe doit être celui du processus concerné.
+<B>getpgid</B>
+
+renvoie l'ID du groupe de processus auquel appartient le processus 
+indiqué par
+<I>pid</I>.
+
+Si
+<I>pid</I>
+
+vaut zéro, le PID du processus en cours est utilisé.
+<P>
+L'appel
+<B>setpgrp ()</B>
+
+invoque simplement
+<B>setpgid(0,0)</B>.
+
+<P>
+De même
+<B>getpgrp</B>
+
+est équivalent à
+<B>getpgid(0)</B>.
+
+Chaque groupe de processus est membre d'une session et chaque processus
+est membre de cette session.
+<P>
+Les groupes de processus sont utilisés pour la distribution de signaux,
+et par les terminaux pour contrôler les requêtes de saisie.
+Les processus appartenant au même groupe que le terminal sont
+en avant-plan, et peuvent y lire des données, alors que les autres sont
+en arrière plan et seront bloqués s'ils tentent de lire des données.
+Ces appels sont utilisés par des programmes comme
+<B><A HREF="/cgi-bin/man/man2html?1+csh">csh</A></B>(1)
+
+pour créer des groupes de processus afin d'implémenter le contrôle de jobs.
+Les appels
+<B>TIOCGPGRP</B>
+
+et
+<B>TIOCSPGRP</B>
+
+décrits dans
+<B><A HREF="/cgi-bin/man/man2html?3+termios">termios</A></B>(3)
+
+servent à fixer/lire le groupe de processus du terminal de contrôle.
+<P>
+Si une session a un terminal de contrôle, CLOCAL n'est pas actif, et une
+deconnexion se produit, alors le leader de la session recevra SIGHUP. Si le
+leader se termine, le signal SIGHUP sera envoyé à tous les processus du
+groupe en avant-plan sur le terminal de contrôle.
+<P>
+Si la fin du processus rend un groupe orphelin, et si l'un des membres de
+ce groupe est arrêté, alors un signal SIGHUP suivi de SIGCONT sera envoyé
+à tous les processus du groupe.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>setpgid</B> et <B>setpgrp</B>
+
+renvoient zéro s'ils réussissent, ou -1 s'ils échouent, auquel
+cas
+<I>errno</I>
+
+contient le code d'erreur.
+<P>
+<I>getpgid</I>
+
+renvoie le groupe du processus s'il réussit
+ou -1 s'il échoue, et
+<I>errno</I>
+
+contient le code d'erreur.
+<P>
+<I>getpgrp</I>
+
+retourne toujours le groupe du processus courant.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+<I>pgid</I>
+
+est inférieur à 0
+(<B>setpgid</B>, <B>setpgrp</B>).
+<DT><B>EACCES</B>
+
+<DD>
+On a essayé de changer le groupe de processus d'un enfant du processus
+appelant, et ce fils a déjà effectué
+un <B>execve</B>
+(<B>setpgid</B>, <B>setpgrp</B>).
+<DT><B>EPERM</B>
+
+<DD>
+On a essayé de déplacer un processus dans un groupe d'une session différente,
+ou de changer le groupe d'un fils du processus appelant qui se trouve
+dans une autre session, ou de modifier le groupe d'un
+leader de session
+(<B>setpgid</B>, <B>setpgrp</B>).
+<DT><B>ESRCH</B>
+
+<DD>
+Pour
+<B>getpgid</B> :
+
+<I>pid</I>
+
+ne corespond à aucun processus.
+Pour
+<B>setpgid</B> :
+
+<I>pid</I>
+
+n'est ni le processus appelant, ni l'un de ses enfants.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Les fonctions
+<B>setpgid</B>
+
+et
+<B>getpgid</B>
+
+sont conformes à POSIX.1.
+La fonction
+<B>setpgrp</B>
+
+provient de BSD 4.2, et
+<B>getpgid</B>
+
+de SVr4.
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+POSIX à défini
+<B>setpgid</B>
+
+à partir de la fonction
+<B>setpgrp</B>
+
+de BSD. Une fonction Système V existe avec le même nom, mais
+fonctionnant comme
+<B><A HREF="/cgi-bin/man/man2html?2+setsid">setsid</A></B>(2).
+
+<P>
+
+Pour obtenir les prototypes avec la GlibC, définissez à la fois _XOPEN_SOURCE
+et _XOPEN_SOURCE_EXTENDED ou utilisez un &quot;#define _XOPEN_SOURCE <I>n</I>&quot;
+avec <I>n</I> supérieur ou égal à 500.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+getuid">getuid</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setsid">setsid</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+tcgetpgrp">tcgetpgrp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+tcsetpgrp">tcsetpgrp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+termios">termios</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:59 GMT, February 11, 2014
+</BODY>
+</HTML>

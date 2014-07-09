@@ -1,0 +1,133 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETDOMAINNAME</TITLE>
+</HEAD><BODY>
+<H1>GETDOMAINNAME</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getdomainname, setdomainname - Lire ou fixer le nom de domaine.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int getdomainname(char *</B><I>name</I><B>, size_t </B><I>len</I><B>);</B>
+
+<BR>
+
+<B>int setdomainname(const char *</B><I>name</I><B>, size_t </B><I>len</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ces deux fonctions servent à lire ou à changer le nom de domaine de
+l'hôte concerné.
+Si le nom de domaine, suivi d'un caractère nul, nécessite plus de <I>len</I> octets
+pour être stocké, 
+<B>getdomainname</B>(),
+
+renvoie les <I>len</I> premiers octets (GlibC), ou une erreur (libc).
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>getdomainname</B> et <B>setdomainname</B>
+
+renvoient 0 s'ils réussissent, ou -1 s'ils échouent, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+Avec
+<B>getdomainname</B>
+
+et la Libc :
+<I>name</I>
+
+est
+<B>NULL</B>
+
+ou
+<I>name</I>
+
+est plus long que
+<I>len</I>.
+
+<DT><B>EINVAL</B>
+
+<DD>
+Avec
+<B>setdomainname</B> :
+
+<I>len</I>
+
+est négatif ou trop grand.
+<DT><B>EPERM</B>
+
+<DD>
+Pour
+<B>setdomainname</B> :
+
+l'utilisateur n'est pas le Super-User.
+<DT><B>EFAULT</B>
+
+<DD>
+Pour
+<B>setdomainname</B>,
+
+<I>name</I>
+
+pointe en dehors de l'espace d'adressage disponible.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Cette fonction n'est 
+<B>pas </B>
+
+spécifiée par POSIX.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+gethostname">gethostname</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sethostname">sethostname</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+uname">uname</A></B>(2)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:53 GMT, February 11, 2014
+</BODY>
+</HTML>

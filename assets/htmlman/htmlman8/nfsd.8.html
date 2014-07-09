@@ -1,0 +1,102 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of rpc.nfsd</TITLE>
+</HEAD><BODY>
+<H1>rpc.nfsd</H1>
+Section: Maintenance Commands (8)<BR>Updated: 31 Mai 1999<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+rpc.nfsd - processus serveur NFS
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>/usr/sbin/rpc.nfsd [-p </B><I>port</I><B>] </B><I>nproc</I>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le programme
+<B>rpc.nfsd</B>
+
+implémente la partie utilisateur du service NFS. Le service NFS est traité par
+le module du noyau <B>nfsd.o</B>&nbsp;; le programme qui s'exécute dans l'espace
+utilisateur (et non dans l'espace noyau) se contente (!) de lancer un certain
+nombre de threads systèmes (c'est à dire que plusieurs contextes d'exécution
+existent dans le noyau).
+<P>
+
+Le serveur
+<B>rpc.mountd</B>
+
+fournit un ancien service nécessaire pour satisfaire les requêtes de montage
+par les clients NFS.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-p</B><I> port</I>
+
+<DD>
+spécifie un port diférent pour écouter les requêtes NFS. Par défaut,
+<B>rpc.nfsd</B>
+
+écoute le port 2049.
+<DT><I>nproc</I>
+
+<DD>
+spécifie le nombre de threads du serveur NFS. Par défaut, seul un thread est
+lancé. Toutefois, pour des performances optimales, plusieurs threads peuvent
+être lancés. Le nombre optimal dépend du nombre de threads et de la charge dûe
+aux clients NFS, mais une bonne valeur est 8 threads. Le programme
+<B><A HREF="/cgi-bin/man/man2html?8+nfsstat">nfsstat</A></B>(8)
+
+permet d'observer les effets d'une modification de cette valeur.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+rpc.mountd">rpc.mountd</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+exportfs">exportfs</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+rpc.rquotad">rpc.rquotad</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+nfsstat">nfsstat</A></B>(8).
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Olaf Kirch, Bill Hawes, H. J. Lu, G. Allan Morris III,
+et quelques autres.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 2000
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

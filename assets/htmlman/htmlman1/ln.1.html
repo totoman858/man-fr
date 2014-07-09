@@ -1,0 +1,381 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LN</TITLE>
+</HEAD><BODY>
+<H1>LN</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ln - Créer des liens entre fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>ln [options]</B>
+
+<I>source</I><B> [</B><I>dest</I><B>]</B>
+
+<BR>
+
+<B>ln [options]</B>
+
+<I>source... répertoire</I>
+
+<P>
+Options POSIX :
+<B>[-f] [--]</B>
+
+<P>
+Options GNU (forme abrégée):
+<B>[-bdfinsvF]</B>
+
+<B>[-S </B><I>suffixe</I><B>]</B>
+
+<B>[-V {numbered,existing,simple}]</B>
+
+<B>[--help] [--version] [--]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Sous Unix, il existe deux types de `liens' entre fichiers, que l'on
+nomme généralement liens matériels (ou physiques) et liens symboliques
+(ou logiques).
+<P>
+Un lien matériel est simplement une manière de nommer
+un fichier. Un fichier peut avoir plusieurs noms. Un fichier n'est effacé
+réellement que lorsque son dernier nom est supprimé. Le nombre de noms
+d'un fichier est indiqué par la commande
+<B><A HREF="/cgi-bin/man/man2html?1+ls">ls</A></B>(1).
+
+Il n'y a pas de notion de nom `original' : tous les noms d'un fichier ont
+exactement la même importance. Tous les noms d'un fichier se trouvent
+généralement - mais ce n'est pas obligatoire - dans le système de fichiers
+contenant les données du fichier.
+<P>
+
+Un lien symbolique est d'un tout autre genre. Il s'agit d'un petit fichier
+spécial, qui contient un chemin d'accès. Ainsi un lien symbolique peut
+pointer vers un système de fichier différent de celui qui l'accueille.
+Il peut également pointer, grâce à NFS, vers un système de fichiers
+appartenant à une autre machine. Enfin, un lien symbolique ne pointe
+pas nécessairement vers un fichier existant.
+Lorsque l'on accède à un lien symbolique (avec les appels systèmes
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2)),
+
+le nom du lien symbolique est remplacé, par le noyau Unix, par une
+référence au fichier vers lequel le lien pointe.
+Toutefois, avec les appels
+<B><A HREF="/cgi-bin/man/man2html?1+rm">rm</A></B>(1)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+unlink">unlink</A></B>(2)
+
+le lien lui-même est supprimé, et non pas le fichier visé.
+Il existe des appels systèmes spéciaux
+<B><A HREF="/cgi-bin/man/man2html?2+lstat">lstat</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+readlink">readlink</A></B>(2)
+
+qui renvoient le statut du lien symbolique, et le nom du fichier vers
+lequel il pointe. Pour de nombreux autres appels-systèmes, il existe
+une frange d'incertitudes et de variations entre les différents systèmes
+pour savoir si la fonction s'applique au lien symbolique lui-même, ou au
+fichier cible.
+<P>
+
+<B>ln</B>
+
+crée des liens entre fichiers. Par défaut il s'agit de liens matériels.
+Si l'on utilise l'option 
+<B>-s</B>,
+
+les liens seront symboliques (logiques).
+<P>
+
+Si l'on n'indique qu'un seul nom de fichier, un lien vers ce fichier
+est créé dans le répertoire courant. Le nom de ce lien sera le même
+que celui du fichier visé (il s'agit là d'une extension GNU).
+Sinon, si le dernier argument indique un répertoire existant,
+<B>ln</B>
+
+créera des liens sur chacun des fichiers
+<I>source</I>
+
+indiqués dans ce répertoire. Les noms seront égaux à ceux des fichiers
+<I>source</I>
+
+visés. (Consultez toutefois l'option
+<B>--no-dereference</B>
+
+plus bas).
+Si l'on indique seulement deux noms de fichiers, un lien sera créé avec
+le nom
+<I>dest</I>
+
+pointant vers le fichier
+<I>source</I>.
+
+Il est interdit d'indiquer plus de deux arguments si le dernier nom n'est
+pas un répertoire.
+<P>
+
+Par défaut,
+<B>ln</B>
+
+ne supprime pas les fichiers ni les liens symboliques existants.
+(Ainsi on peut l'utiliser à des fins de verrouillage, il échouera
+si 
+<I>dest</I>
+
+existe déjà).
+On peut toutefois forcer l'écrasement avec l'option -f.
+<P>
+
+Avec les implémentations existant actuellement, seul le Super-User peut
+créer un lien matériel sur un répertoire, et encore, c'est souvent totalement
+impossible. POSIX interdit aux appels système
+<B><A HREF="/cgi-bin/man/man2html?2+link">link</A></B>(2)
+
+et à l'utilitaire
+<B>ln</B>
+
+de créer des liens physique sur un répertoire (mais n'interdit pas les liens
+matériels entre différents systèmes de fichiers).
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS POSIX</H2>
+
+<DL COMPACT>
+<DT><B>-f</B>
+
+<DD>
+Forcer l'écrasement du fichier destination s'il existe.
+<DT><B>--</B>
+
+<DD>
+Fin explicite de la liste des options.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS GNU</H2>
+
+<DL COMPACT>
+<DT><B>-d, -F, --directory</B>
+
+<DD>
+Autoriser le Super-User à créer un lien physique sur un répertoire.
+<DT><B>-f, --force</B>
+
+<DD>
+Forcer l'écrasement du fichier destination s'il existe.
+<DT><B>-i, --interactive</B>
+
+<DD>
+Demander confirmation avant de supprimer les fichiers destination.
+<DT><B>-n, --no-dereference</B>
+
+<DD>
+Lorsque l'on fournit une destination explicite qui se trouve être
+un répertoire, la considérer comme un fichier normal.
+<BR>
+
+Lorsque la destination est un répertoire réel (et non pas un
+lien symbolique sur un répertoire), il n'y a pas d'ambiguïté. Le lien
+est créé dans ce répertoire. Mais lorsque la destination est un lien
+symbolique vers un répertoire, il y a deux possibilités pour traiter
+la demande.
+<B>ln</B>
+
+peut considérer la destination comme un répertoire normal,
+et créer le lien dans celui-ci. D'un autre côté, la destination peut
+également être considérée comme le lien symbolique lui-même à créer.
+Dans ce cas,
+<B>ln</B>
+
+doit détruire, ou archiver, le lien existant avant de créer le nouveau lien.
+Le comportement par défaut est de considérer la destination comme un
+répertoire à part entière.
+<DT><B>-s, --symbolic</B>
+
+<DD>
+Créer des liens symboliques à la place des liens physiques. Cette option
+produit souvent des messages d'erreurs sur les systèmes qui ne supportent
+pas les liens symboliques.
+<DT><B>-v, --verbose</B>
+
+<DD>
+Afficher le nom de chaque fichier avant de le lier.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>OPTIONS DE SAUVEGARDE GNU</H2>
+
+Les versions GNU des programmes comme 
+<B>cp</B>,
+
+<B>mv</B>,
+
+<B>ln</B>,
+
+<B>install</B>
+
+et
+<B>patch </B>
+
+créeront au besoin une copie de sauvegarde des fichiers à écraser,
+à modifier ou à détruire.
+On demande une copie de sauvegarde à l'aide de l'option -b,
+on indique la nomenclature à adopter avec l'option -V, et si
+la sauvegarde se fait avec un suffixe, celui-ci est précisé avec l'option -S.
+<DL COMPACT>
+<DT><B>-b, --backup</B>
+
+<DD>
+Créer une copie de sauvegarde des fichiers à écraser ou à détruire.
+<DT><B>-S </B><I>SUFFIXE</I><B>, --suffix=</B><I>SUFFIXE</I>
+
+<DD>
+Ajouter le
+<I>SUFFIXE</I>
+
+indiqué à chaque fichier de sauvegarde créé.
+Si cette option n'est pas indiquée, on utilisera la valeur de la variable
+d'environnement
+<B>SIMPLE_BACKUP_SUFFIX</B>.
+
+Si la variable
+<B>SIMPLE_BACKUP_SUFFIX</B>
+
+n'existe pas, la valeur par défaut est `~'.
+<DT><B>-V </B><I>MÉTHODE</I><B>, --version-control=</B><I>MÉTHODE</I>
+
+<DD>
+<DL COMPACT><DT><DD>
+Préciser la nomenclature des fichiers de sauvegarde
+La
+<I>MÉTHODE</I>
+
+indiquée peut être `numbered' (`t'), `existing' (`nil'), ou `never' (`simple').
+Si cette option n'est pas indiquée, la valeur de la variable
+d'environnement
+<B>VERSION_CONTROL</B>
+
+est utilisée, et si la variable
+<B>VERSION_CONTROL</B>
+
+n'existe pas, la valeur par défaut est `existing'.
+<P>
+
+Cette option correspond à la variable `version-control' sous Emacs.
+Les 
+<I>MÉTHODES</I>
+
+valides (les abréviations non-ambiguës sont acceptées) sont :
+<DL COMPACT>
+<DT><B>t</B>, <B>numbered</B>
+
+<DD>
+Toujours faire une sauvegarde numérotée.
+<DT><B>nil</B>, <B>existing</B>
+
+<DD>
+Faire une sauvegarde numérotée des fichiers en ayant déjà une précédente, et
+une sauvegarde simple pour les autres.
+<DT><B>never</B>, <B>simple</B>
+
+<DD>
+Faire toujours une sauvegarde simple.
+</DL>
+</DL>
+
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>OPTIONS STANDARDS GNU</H2>
+
+<DL COMPACT>
+<DT><B>--help</B>
+
+<DD>
+Afficher un message d'aide sur la sortie standard, et se terminer correctement.
+<DT><B>--version</B>
+
+<DD>
+Afficher un numéro de version sur la sortie standard, et se terminer correctement.
+<DT><B>--</B>
+
+<DD>
+Fin de la liste d'options.
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+Les variables LANG, LC_ALL, LC_CTYPE et LC_MESSAGES
+ont leurs significations habituelles.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX 1003.2. Toutefois, POSIX 1003.2 (1996) ne parle pas des liens symboliques.
+Ceux-ci ont été introduits par BSD, et n'existent pas dans System V release 3
+et antérieurs.
+<A NAME="lbAK">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+ls">ls</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+rm">rm</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+link">link</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+lstat">lstat</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+readlink">readlink</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+unlink">unlink</A></B>(2)
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>NOTES</H2>
+
+Cette page décrit la version de
+<B>ln</B>
+
+se trouvant dans le paquetage fileutils-4.0.
+D'autres versions peuvent différer légèrement.
+<P>
+<A NAME="lbAM">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1998-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS POSIX</A><DD>
+<DT><A HREF="#lbAF">OPTIONS GNU</A><DD>
+<DT><A HREF="#lbAG">OPTIONS DE SAUVEGARDE GNU</A><DD>
+<DT><A HREF="#lbAH">OPTIONS STANDARDS GNU</A><DD>
+<DT><A HREF="#lbAI">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAJ">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAK">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAL">NOTES</A><DD>
+<DT><A HREF="#lbAM">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:46 GMT, February 11, 2014
+</BODY>
+</HTML>

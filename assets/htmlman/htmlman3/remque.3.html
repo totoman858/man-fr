@@ -1,0 +1,89 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of INSQUE</TITLE>
+</HEAD><BODY>
+<H1>INSQUE</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+insque, remque - Ajouter ou supprimer un élément d'une file.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/search.h">search.h</A>&gt;</B>
+
+<B>void insque (struct qelem *</B><I>elem</I><B>, struct qelem *</B><I>prev</I><B>);</B>
+<B>void remque (struct qelem *</B><I>elem</I><B>);</B>
+</PRE><A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les fonctions <B>insque()</B> et <B>remque()</B> permettent de manipuler une
+file constituée d'une liste doublement chaînée. Chaque élément de cette liste
+est du type <B>struct qelem</B>
+<P>
+La structure <B>qelem</B> est définie ainsi&nbsp;:
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+struct qelem {
+    struct    qelem *q_forw;
+    struct    qelem *q_back;
+    char      q_data[1];
+};
+</PRE>
+
+</DL>
+
+<P>
+<B>insque()</B> insère l'élément pointé par <I>elem</I> immédiatement
+après l'élément pointé par <I>prev</I>, qui ne doit <B>JAMAIS</B> être NULL.
+<P>
+<B>remque()</B> supprime l'élément pointé par <I>elem</I> de la liste doublement
+chaînée.
+<A NAME="lbAE">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVR4
+<A NAME="lbAF">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Le champ  q_data peut parfois être défini comme un <B>char *</B>, et sous
+solaris 2.x, il n'existe pas.
+<P>
+L'emplacement des prototypes de ces fonctions varie suivant les différentes
+versions d'Unix. Certains systèmes les placent dans &lt;<A HREF="file:///usr/include/search.h">search.h</A>&gt;, d'autres dans
+&lt;<A HREF="file:///usr/include/string.h">string.h</A>&gt;. La bibliothèque GlibC les place dans &lt;<A HREF="file:///usr/include/search.h">search.h</A>&gt;.
+<P>
+Quelques versions d'UNIX (comme HP-UX 10.x) ne définissent pas une 
+<B>struct qelem</B> mais utilisent à la place des arguments de
+<B>insque()</B> et <B>remque()</B> du type <B>void *</B>.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAF">BOGUES</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:38 GMT, February 11, 2014
+</BODY>
+</HTML>

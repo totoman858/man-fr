@@ -1,0 +1,94 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of NFSSERVCTL</TITLE>
+</HEAD><BODY>
+<H1>NFSSERVCTL</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+nfsservctl - Appel-système d'interface pour le démon NFS du noyau.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/linux/nfsd/syscall.h">linux/nfsd/syscall.h</A>&gt;</B>
+
+<P>
+<B>nfsservctl(int </B><I>cmd</I><B>, struct nfsctl_arg *</B><I>argp</I><B>, union nfsctl_res *</B><I>resp</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<PRE>
+/*
+ * Voici les commandes comprises par nfsctl().
+ */
+#define NFSCTL_SVC              0       /* Voici le processus serveur */
+#define NFSCTL_ADDCLIENT        1       /* Ajouter un client NFS      */
+#define NFSCTL_DELCLIENT        2       /* Supprimer un client NFS    */
+#define NFSCTL_EXPORT           3       /* Exporter un système de     *
+                                        /* fichiers.                  */
+#define NFSCTL_UNEXPORT         4       /* Arrêter l'exportation d'un */
+                                        /* système de fichiers.       */
+#define NFSCTL_UGIDUPDATE       5       /* Mise à jour de la table    */
+                                        /* uid/gid du client.         */
+#define NFSCTL_GETFH            6       /* obtenir un fh (utilisé par */
+                                        /* mountd).                   */
+
+struct nfsctl_arg {
+        int                     ca_version;     /* garde-fou */
+        union {
+                struct nfsctl_svc       u_svc;
+                struct nfsctl_client    u_client;
+                struct nfsctl_export    u_export;
+                struct nfsctl_uidmap    u_umap;
+                struct nfsctl_fhparm    u_getfh;
+                unsigned int            u_debug;
+        } u;
+}
+
+union nfsctl_res {
+        struct knfs_fh          cr_getfh;
+        unsigned int            cr_debug;
+};
+</PRE>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>nfsservctl</B>
+
+renvoie 0 s'il réussit, ou -1 s'il échoue, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Cet appel-système est spécifique à Linux.
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:51 GMT, February 11, 2014
+</BODY>
+</HTML>

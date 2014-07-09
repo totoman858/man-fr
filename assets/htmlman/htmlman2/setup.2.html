@@ -1,0 +1,95 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SETUP</TITLE>
+</HEAD><BODY>
+<H1>SETUP</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+setup - Configurer les périphériques, les systèmes de fichiers et monter le système de fichiers racine.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>_syscall0(int, setup);</B>
+
+<P>
+<B>int setup(void);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>setup</B>
+
+est appelé une fois dans
+<I>linux/init/main.c</I>.
+
+Il appelle les fonctions d'initialisation des périphériques
+et des systèmes de fichiers configurés dans le noyau.
+Ensuite il monte, le système de fichiers racine.
+<P>
+
+Aucun processus ne peut appeler
+<B>setup</B>.
+
+Même un processus avec des privilèges Super-User déclenchera
+une erreur
+<B>EPERM</B>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>setup</B>
+
+renvoie toujours -1 pour un processus utilisateur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+Toujours déclenchée pour un processus utilisateur.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Cette fonction est spécifique Linux et ne doit pas être employée
+dans un programme portable, ni même dans aucun programme du tout.
+Depuis Linux 2.1.121 cette fonction n'existe plus.
+La séquence d'appel a changé, elle a d'abord eu un paramètre unique
+<I>void * BIOS</I>
+
+et plus tard un paramètre unique
+<I>int magic</I>.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:52 GMT, February 11, 2014
+</BODY>
+</HTML>

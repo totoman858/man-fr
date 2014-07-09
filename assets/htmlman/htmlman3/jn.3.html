@@ -1,0 +1,114 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of J0</TITLE>
+</HEAD><BODY>
+<H1>J0</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+j0, j0f j0l j1, j1f j1l jn, jnf, jnl y0, y0f, y0l, y1, y1f, y1l, yn, ynf, ynl - Fonctions de Bessel.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/math.h">math.h</A>&gt;</B>
+
+<B>double j0 (double </B><I>x</I><B>);</B>
+
+<B>double j1 (double </B><I>x</I><B>);</B>
+
+<B>double jn (int </B><I>n</I><B>, double </B><I>x</I><B>);</B>
+
+<B>double y0 (double </B><I>x</I><B>);</B>
+
+<B>double y1 (double </B><I>x</I><B>);</B>
+
+<B>double yn (int </B><I>n</I><B>, double </B><I>x</I><B>);</B>
+
+<B>float j0f (float </B><I>x</I><B>);</B>
+<BR>
+<B>float j1f (float </B><I>x</I><B>);</B>
+<BR>
+<B>float jnf (int </B><I>n</I><B>, float </B><I>x</I><B>);</B>
+<BR>
+<B>float y0f (float </B><I>x</I><B>);</B>
+<BR>
+<B>float y1f (float </B><I>x</I><B>);</B>
+<BR>
+<B>float ynf (int </B><I>n</I><B>, float </B><I>x</I><B>);</B>
+
+<B>long double j0l (long double </B><I>x</I><B>);</B>
+<BR>
+<B>long double j1l (long double </B><I>x</I><B>);</B>
+<BR>
+<B>long double jnl (int </B><I>n</I><B>, long double </B><I>x</I><B>);</B>
+<BR>
+<B>long double y0l (long double </B><I>x</I><B>);</B>
+<BR>
+<B>long double y1l (long double </B><I>x</I><B>);</B>
+<BR>
+<B>long double ynl (int </B><I>n</I><B>, long double </B><I>x</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les fonctions <B>j0()</B> et <B>j1()</B> renvoient les valeurs des fonctions
+de Bessel de la première espèce, respectivement d'ordre 0 et 1, pour
+la variable réelle <I>x</I>. La fonction <B>jn()</B> renvoie la valeur de la
+fonction de Bessel de la première espece d'ordre <I>n</I>, pour la variable
+réelle <I>x</I>.
+<P>
+
+Les fonctions <B>y0()</B> et <B>y1()</B> renvoient les valeurs des fonctions
+de Bessel de la seconde espèce, respectivement d'ordre 0 et 1, pour
+la variable réelle <I>x</I>. La fonction <B>yn()</B> renvoie la valeur de la
+fonction de Bessel de la seconde espèce d'ordre <I>n</I>, pour la variable
+réelle <I>x</I>.
+<P>
+
+Pour les fonctions <B>y0()</B>, <B>y1()</B> et <B>yn()</B>, la valeur de <I>x</I>
+doit être positive. Si <I>x</I> est négatif, ces fonctions renvoient -HUGE_VAL.
+<P>
+
+Les fonctions <B>j0f()</B>, etc. ainsi que <B>j0l()</B> etc. en sont des versions
+qui prennent en argument et renvoient des valeurs de type float ou long double.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Les fonctions renvoyant des valeurs de type double se conforment à SVID 3, BSD 4.3, XPG4, et POSIX 1003.1-2001.
+Les autres existebt par analogien comme sur plusieurs autres plates-formes.
+<A NAME="lbAF">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Il peut y avoir une erreur allant jusqu'a 2e-16 dans les valeurs renvoyées
+par <B>j0()</B>, <B>j1()</B> et <B>jn()</B> pour <I>x</I> compris entre -8 et 8.
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAF">BOGUES</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:51 GMT, February 11, 2014
+</BODY>
+</HTML>

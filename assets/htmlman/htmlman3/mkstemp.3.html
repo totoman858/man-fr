@@ -1,0 +1,123 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MKSTEMP</TITLE>
+</HEAD><BODY>
+<H1>MKSTEMP</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mkstemp - Créér un fichier temporaire unique.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<B>int mkstemp (char *</B><I>template</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>mkstemp()</B> engendre un nom de fichier temporaire unique,
+à partir du motif <I>template</I>. Les six derniers caractères de <I>template</I>
+doivent être XXXXXX et ils seront alors remplacés par une chaîne rendant
+ce nom de fichier unique. Le fichier est créé avec les permission 0666 jusqu'à
+la GlibC 2.0.6, puis 0600 depuis la Glib 2.0.7.
+Comme il sera modifié,
+<I>template</I>
+
+ne doit pas être une chaîne constante, mais comme un tableau de caractères.
+Le fichier est ouvert avec l'attribut O_EXCL, garantissant que nous
+soyons le seul propriétaire du fichier.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>mkstemp()</B> renvoie le descripteur du fichier temporaire
+créé ou -1 en cas d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+Les 6 derniers caractères de <I>template</I> ne sont pas XXXXXX.
+Dans ce cas, <I>template</I> n'est pas modifié.
+<DT><B>EEXIST</B>
+
+<DD>
+Impossible de créer un nom de fichier unique. Le contenu du
+fichier est imprévisible.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+L'ancien comportement (créer les fichiers avec le mode 0666) est un
+trou de sécurité potentiel, surtout depuis que les autres dérivés Unix
+utilisent le mode 0600 et quelqu'un risque d'oublier ce détail en
+effectuant un portage de programme.
+<P>
+Plus généralement, les spécifications POSIX ne disent rien des modes
+des fichiers, ainsi les applications doivent s'assurer que la valeur
+d'umask est correcte avant d'appeler
+<B>mkstemp</B>.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.3, POSIX 1003.1-2001
+<A NAME="lbAI">&nbsp;</A>
+<H2>NOTE</H2>
+
+Le prototype se trouve dans
+<I>&lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</I>
+
+pour libc4, libc5; glibc1. Glibc2 suit les spécifications Single Unix et
+place le prototype dans
+<I>&lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</I>.
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+mkdtemp">mkdtemp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+mktemp">mktemp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+tmpnam">tmpnam</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+tempnam">tempnam</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+tmpfile">tmpfile</A></B>(3)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">NOTE</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:41 GMT, February 11, 2014
+</BODY>
+</HTML>

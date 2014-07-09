@@ -1,0 +1,190 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETFSENT</TITLE>
+</HEAD><BODY>
+<H1>GETFSENT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getfsent, getfsspec, getfsfile, setfsent, endfsent - Lire la table des systèmes de fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/fstab.h">fstab.h</A>&gt;</B>
+
+<P>
+<B>void endfsent(void);</B>
+
+<P>
+<B>struct fstab *getfsent(void);</B>
+
+<P>
+<B>struct fstab *getfsfile(const char *</B><I>mount_point</I><B>);</B>
+
+<P>
+<B>struct fstab *getfsspec(const char *</B><I>special_file</I><B>);</B>
+
+<P>
+<B>int setfsent(void);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ces fonctions lisent dans le fichier
+<I>/etc/fstab</I>.
+
+La structure fstab est définie ainsi&nbsp;:
+<P>
+
+<PRE>
+struct fstab {
+     char *fs_spec;          /* nom du périphérique bloc */
+     char *fs_file;          /* point de montage */
+     char *fs_vfstype;       /* type système de fichiers */
+     char *fs_mntops;        /* options de montage */
+     const char *fs_type;    /* option rw/rq/ro/sw/xx */
+     int fs_freq;            /* période sauvegarde en jours */
+     int fs_passno;          /* numéro de passage parallèle */
+};
+</PRE>
+
+Ici, le champ
+<I>fs_type</I>
+
+contient (sur un système type BSD)
+l'une des cinq chaînes &quot;rw&quot;, &quot;rq&quot;, &quot;ro&quot;, &quot;sw&quot;, &quot;xx&quot;
+(read-write, read-write et quotas, read-only, swap, ignore).
+<P>
+La fonction
+<B>setfsent()</B>
+
+ouvre le fichier au besoin et se positionne sur la première ligne.
+<P>
+
+La fonction
+<B>getfsent()</B>
+
+examine la ligne suivante du fichier.
+(Après ouverture si besoin).
+<P>
+
+La fonction
+<B>endfsent()</B>
+
+ferme le fichier si nécessaire.
+<P>
+
+La fonction
+<B>getfsspec()</B>
+
+recherche dans le fichier la première entrée pour laquelle le
+champ
+<I>fs_spec</I>
+
+corresponde à
+l'argument
+<I>special_file</I>.
+
+<P>
+
+La fonction
+<B>getfsfile()</B>
+
+recherche dans le fichier la première entrée pour laquelle le
+champ
+<I>fs_file</I>
+
+corresponde à
+l'argument
+<I>mount_point</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Si elles réussissent, les fonctions
+<B>getfsent()</B>,
+
+<B>getfsfile()</B>,
+
+et
+<B>getfsspec()</B>
+
+renvoient un pointeur sur une structure fstab, et
+<B>setfsent()</B>
+
+renvoie 1.
+En échec ou en fin de fichier, ces fonctions renvoient NULL et 0, respectivement.
+<A NAME="lbAF">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+La fonction
+<B>getfsent()</B>
+
+est apparue dans 4.0BSD, les quatre autres fonctions dans 4.3BSD.
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Ces fonctions ne sont pas dans POSIX. Plusieurs systèmes d'exploitation les 
+proposent&nbsp;: *BSD, SunOS, Digital Unix, AIX (qui a également une fonction
+<I>getfstype()</I>).
+
+HP-UX a des fonctions avec les mêmes noms, mais utilise une struct checklist
+plutôt que la struct fstab, et ces fonctions sont obsolètes, remplacées par
+<B><A HREF="/cgi-bin/man/man2html?3+getmntent">getmntent</A></B>(3).
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Ces routines ne sont pas sûres dans un contexte multi-threads.
+<P>
+
+Comme Linux autorise le montage d'un périphérique bloc en plusieurs endroits,
+comme plusieurs périphériques peuvent avoir le même point de montage (le
+dernier est celui qui compte), et comme
+<B>getfsfile()</B>
+
+et
+<B>getfsspec()</B>
+
+ne renvoient que les premières occurrences, ces deux fonctions ne sont pas
+très utilisables sous Linux.
+<P>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+getmntent">getmntent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+fstab">fstab</A></B>(5)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:33 GMT, February 11, 2014
+</BODY>
+</HTML>

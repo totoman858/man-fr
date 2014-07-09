@@ -1,0 +1,798 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SOCKET</TITLE>
+</HEAD><BODY>
+<H1>SOCKET</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+socket - Interface Linux des sockets.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+
+<BR>
+
+<I>mysocket</I><B> = socket(int </B><I>socket_family</I><B>, int </B><I>socket_type</I><B>, int </B><I>protocol</I><B>);</B>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente l'interface utilisateur de l'implémentation Linux des
+sockets réseau. Les sockets compatibles BSD représentent
+une interface uniforme entre
+le processus utilisateur et les piles de protocoles réseau dans le noyau.
+Les modules des protocoles sont groupés en
+<I>familles de protocoles</I>
+
+comme
+<B>PF_INET</B>, <B>PF_IPX</B>, <B>PF_PACKET</B>
+
+et en
+<I>types de sockets</I>
+
+comme
+<B>SOCK_STREAM</B>
+
+ou
+<B>SOCK_DGRAM</B>.
+
+Voir
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2)
+
+pour plus de détails sur les familles et les types de sockets.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>FONCTIONS DE LA COUCHE SOCKET</H2>
+
+Ces fonctions servent à un processus utilisateur pour envoyer ou recevoir des paquets
+et pour faire d'autres opérations sur les sockets. Pour plus de détails, voir
+leur pages de manuel respectives.
+<P>
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2)
+
+crée une socket,
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2)
+
+connecte une socket à une adresse de socket distante,
+la fonction
+<B><A HREF="/cgi-bin/man/man2html?2+bind">bind</A></B>(2)
+
+attache une socket à une adresse locale,
+<B><A HREF="/cgi-bin/man/man2html?2+listen">listen</A></B>(2)
+
+indique à la socket que de nouvelles connexions doivent y être acceptées, et
+<B><A HREF="/cgi-bin/man/man2html?2+accept">accept</A></B>(2)
+
+fournit une nouvelle socket avec la nouvelle connexion entrante.
+<B><A HREF="/cgi-bin/man/man2html?2+socketpair">socketpair</A></B>(2)
+
+renvoie deux sockets anonymes connectées (seulement implémenté pour quelques
+familles locales comme
+<B>PF_UNIX</B>)
+
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?2+send">send</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sendto">sendto</A></B>(2),
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+sendmsg">sendmsg</A></B>(2)
+
+envoient des données sur une socket, et
+<B><A HREF="/cgi-bin/man/man2html?2+recv">recv</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+recvfrom">recvfrom</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+recvmsg">recvmsg</A></B>(2)
+
+reçoivent des données depuis une socket.
+<B><A HREF="/cgi-bin/man/man2html?2+poll">poll</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+select">select</A></B>(2)
+
+attendent que des données arrivent ou que l'émission soit possible.
+De plus, les opérations d'entrées-sorties standards comme
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+writev">writev</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sendfile">sendfile</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2),
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+readv">readv</A></B>(2)
+
+peuvent servir à écrire ou lire des données.
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?2+getsockname">getsockname</A></B>(2)
+
+renvoie l'adresse locale d'une socket et
+<B><A HREF="/cgi-bin/man/man2html?2+getpeername">getpeername</A></B>(2)
+
+renvoie l'adresse de la socket distante.
+<B><A HREF="/cgi-bin/man/man2html?2+getsockopt">getsockopt</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+setsockopt">setsockopt</A></B>(2)
+
+servent à fixer ou lire des options du niveau socket ou protocole.
+<B><A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A></B>(2)
+
+peut servir pour lire ou écrire d'autres options.
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?2+close">close</A></B>(2)
+
+sert à fermer une socket.
+<B><A HREF="/cgi-bin/man/man2html?2+shutdown">shutdown</A></B>(2)
+
+ferme un sens de communication d'une socket full-duplex connectée.
+<P>
+
+Le positionnement, ou l'utilisation de
+<B><A HREF="/cgi-bin/man/man2html?2+pread">pread</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+pwrite">pwrite</A></B>(2)
+
+avec un décalage non-nul n'est pas possible sur les sockets
+<P>
+
+On peut faire des entrées-sorties non-bloquante sur les sockets en fixant l'attribut
+<B>O_NONBLOCK</B>
+
+sur le descripteur de la socket avec
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2).
+
+Ensuite toutes les opérations qui devraient normalement bloquer 
+se terminent immédiatement avec l'erreur
+<B>EAGAIN </B>
+
+(l'opération devra être retentée ultérieurement).
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2)
+
+renverra
+l'erreur
+<B>EINPROGRESS</B>.
+
+L'utilisateur peut alors attendre divers événements avec
+<B><A HREF="/cgi-bin/man/man2html?2+poll">poll</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+select">select</A></B>(2).
+
+<P>
+
+<TABLE BORDER>
+<TR VALIGN=top><TD ALIGN=center COLSPAN=3>Événement E/S<BR></TD></TR>
+<TR VALIGN=top><TD>Événemt</TD><TD>Poll</TD><TD>Occurrence<BR></TD></TR>
+<TR VALIGN=top><TD>Lecture</TD><TD>POLLIN</TD><TD>
+De nouvelles données sont arrivées. 
+<BR></TD></TR>
+<TR VALIGN=top><TD>Lecture</TD><TD>POLLIN</TD><TD>
+Une connexion est établie
+(pour les sockets orientées connexion)
+<BR></TD></TR>
+<TR VALIGN=top><TD>Lecture</TD><TD>POLLHUP</TD><TD>
+Déconnexion du correspondant. 
+<BR></TD></TR>
+<TR VALIGN=top><TD>Lecture</TD><TD>POLLHUP</TD><TD>
+Connexion rompue (seulement pour les protocoles orientés connexion).
+Si on écrit sur la socket, le signal
+<B>SIGPIPE </B>
+
+est aussi émis.
+<BR></TD></TR>
+<TR VALIGN=top><TD>Écriture</TD><TD>POLLOUT</TD><TD>
+La socket a assez de place dans le 
+<BR>
+
+buffer d'émission pour
+écrire de nouvelles données.
+<BR></TD></TR>
+<TR VALIGN=top><TD>Lect/Écrit.</TD><TD>
+POLLIN
+<BR>
+
+POLLOUT
+</TD><TD>
+Un
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2)
+
+en attente est terminé.
+<BR></TD></TR>
+<TR VALIGN=top><TD>Lect/Écrit.</TD><TD>POLLERR</TD><TD>Une erreur asynchrone s'est produite<BR></TD></TR>
+<TR VALIGN=top><TD>Lect/Écrit.</TD><TD>POLLHUP</TD><TD>
+Le correspondant à clos un sens de communication
+<BR></TD></TR>
+<TR VALIGN=top><TD>Exception</TD><TD>POLLPRI</TD><TD>
+Données urgentes arrivées, le signal
+<B>SIGURG</B>
+
+est alors envoyé.
+<BR></TD></TR>
+</TABLE>
+
+<P>
+<P>
+
+Une alternative à l'utilisation de poll/select
+est de laisser le noyau informer l'application à propos des
+événements par l'intermédiaire d'un signal
+<B>SIGIO</B>.
+
+Pour cela l'attribut
+<B>FASYNC</B>
+
+doit être placé sur le descripteur de la socket
+via
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2)
+
+et un gestionnaire de signal pour
+<B>SIGIO</B>
+
+doit être installé avec
+<B><A HREF="/cgi-bin/man/man2html?2+sigaction">sigaction</A></B>(2).
+
+Voir les remarques sur les
+<I>SIGNAUX</I>
+
+plus bas.
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS DES SOCKETS</H2>
+
+Ces options communes à toutes les sockets
+peuvent être écrites en utilisant
+<B><A HREF="/cgi-bin/man/man2html?2+setsockopt">setsockopt</A></B>(2)
+
+et lues avec
+<B><A HREF="/cgi-bin/man/man2html?2+getsockopt">getsockopt</A></B>(2)
+
+avec le niveau socket positionné sur
+<B>SOL_SOCKET</B>.
+
+<DL COMPACT>
+<DT><B>SO_KEEPALIVE</B>
+
+<DD>
+Valide l'émission de messages périodiques gardant la socket ouverte pour les sockets
+orientées connexion. Il s'agit d'un attribut entier booléen.
+<DT><B>SO_OOBINLINE</B>
+
+<DD>
+Si cette option est activée, les données hors-bande sont placées directement dans le
+flux de données reçues. Sinon elles ne sont transmises que si l'attribut
+<B>MSG_OOB </B>
+
+est demandé durant la réception.
+
+
+<DT><B>SO_RCVLOWAT</B> et <B>SO_SNDLOWAT</B>
+
+<DD>
+Indiquent le nombre minimal d'octets dans le buffer pour que la couche socket
+passe les données au protocole
+(<B>SO_SNDLOWAT</B>)
+
+ou à l'utilisateur en réception
+(<B>SO_RCVLOWAT</B>).
+
+Ces deux valeurs ne sont pas modifiables sous Linux et la taille de leur argument
+est toujours fixée
+à un octet.
+<B>getsockopt </B>
+
+peut lire les valeurs, mais
+<B>setsockopt </B>
+
+renverra toujours
+<B>ENOPROTOOPT</B>.
+
+<DT><B>SO_RCVTIMEO</B> et <B>SO_SNDTIMEO</B>
+
+<DD>
+Indiquent le délai maximal d'émission ou de réception avant de renvoyer une erreur.
+Sous Linux ces valeurs sont fixées dans les protocoles et ne peuvent être ni lues
+ni modifiées. Leurs fonctionnalités peuvent être émulées à l'aide de
+<B><A HREF="/cgi-bin/man/man2html?2+alarm">alarm</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+setitimer">setitimer</A></B>(2).
+
+<DT><B>SO_BSDCOMPAT</B>
+
+<DD>
+Valider une compatibilité bogue-à-bogue avec BSD. Cela n'est pris en compte que par le
+module du protocole UDP et sera supprimé dans le futur.
+Dans ce mode, les erreurs ICMP reçues pour une socket UDP ne seront pas transmises
+aux programmes utilisateurs. Linux 2.0 donnait aussi une compatibilité bogue-à-bogue
+pour les sockets raw avec cette option,
+mais cela a été éliminé dans Linux 2.2. Il vaut mieux corriger les programmes utilisateur
+que de valider cet attribut.
+<DT><B>SO_PASSCRED</B>
+
+<DD>
+Autorise ou interdit la réception des messages de contrôle
+<B>SCM_CREDENTIALS</B>.
+
+Pour plus de détails, voir
+<B><A HREF="/cgi-bin/man/man2html?7+unix">unix</A></B>(7).
+
+<DT><B>SO_PEERCRED</B>
+
+<DD>
+Renvoie les authentifications du processus connecté à l'autre extrémité de la socket.
+N'est utile que pour les sockets
+<B>PF_UNIX</B>.
+
+Voir
+<B><A HREF="/cgi-bin/man/man2html?7+unix">unix</A></B>(7).
+
+L'argument est une structure
+<B>ucred</B>.
+
+Seulement valide avec
+<B>getsockopt</B>.
+
+<DT><B>SO_BINDTODEVICE</B>
+
+<DD>
+Attacher cette socket à un périphérique donné, tel "eth0",
+comme indiqué dans le nom d'interface transmis. Si le nom est une chaîne vide
+ou si la longueur d'option est nulle, l'attachement de la socket au périphérique
+est supprimé. L'option transmise est une chaîne terminée par un caractère nul,
+contenant le nom de l'interface, la longueur maximale étant
+<B>IFNAMSIZ</B>.
+
+Si la socket est attachée à une interface, seuls les paquets reçus sur cette
+interface particulière sont traités par la socket. Remarquez que cela ne
+fonctionne que pour certains types de sockets, en particulier les sockets
+<B>AF_INET</B>.
+
+Ceci n'est pas supporté pour les sockets packet (utilisez un
+<B><A HREF="/cgi-bin/man/man2html?8+bind">bind</A></B>(8)
+
+normal dessus).
+<DT><B>SO_DEBUG</B>
+
+<DD>
+Activer le débogage sur la socket. Seulement autorisé pour les processus avec la capacité
+<B>CAP_NET_ADMIN</B>
+
+ou un UID effectif nul.
+<DT><B>SO_REUSEADDR</B>
+
+<DD>
+Indique que les règles permettant la validation des adresses fournies dans un appel
+<B><A HREF="/cgi-bin/man/man2html?2+bind">bind</A></B>(2)
+
+doivent autoriser la réutilisation des adresses locales. Pour les sockets
+<B>PF_INET</B>
+
+cela signifie que la socket peut s'attacher à n'importe quelle adresse
+sauf s'il y a une attente active dessus. Lorsque la socket en attente
+est attachée à
+<B>INADDR_ANY</B>
+
+avec un port spécifique, il n'est pas possible de s'attacher à nouveau
+à ce port quelque soit l'adresse locale.
+<DT><B>SO_TYPE</B>
+
+<DD>
+Obtenir le type de socket, sous forme d'entier (comme
+<B>SOCK_STREAM</B>).
+
+Ne peut qu'être 
+lu avec
+<B>getsockopt</B>.
+
+
+
+<DT><B>SO_ACCEPTCONN</B>
+
+<DD>
+Renvoie une valeur indiquant si la socket a été déclarée comme acceptant
+les connexions à l'aide de
+<B>listen</B>().
+
+La valeur 0 indique que la socket n'est pas en attente de connexions&nbsp;;
+la valeur 1 indique que la socket accepte les connexions.
+Peut eulement être
+lu avec
+<B>getsockopt</B>.
+
+<DT><B>SO_DONTROUTE</B>
+
+<DD>
+Ne pas émettre par l'intermédiaire d'une passerelle, n'envoyer qu'aux hôtes directement
+connectés. Le même effet peut être obtenu avec l'attribut
+<B>MSG_DONTROUTE</B>
+
+durant une opération
+<B><A HREF="/cgi-bin/man/man2html?2+send">send</A></B>(2)
+
+sur la socket. Il s'agir d'un attribut entier booléen.
+<DT><B>SO_BROADCAST</B>
+
+<DD>
+Fixer ou lire l'attribut broadcast. Lorsqu'il est actif une socket datagramme
+reçoit les paquets envoyés à l'adresse broadcast et peut envoyer des paquets
+à une adresse broadcast. Cette option n'a aucun effet sur les sockets de type
+<B>SOCK_STREAM.</B>
+
+<DT><B>SO_SNDBUF </B>
+
+<DD>
+Fixer ou lire la taille maximale en octets du buffer d'émission. La valeur par défaut
+est fixée par le sysctl
+<B>wmem_default </B>
+
+et la valeur maximale autorisée est fixée par le
+sysctl
+<B>wmem_max</B>.
+
+<DT><B>SO_RCVBUF</B>
+
+<DD>
+Fixer ou lire la taille maximale en octets du buffer de réception. La valeur par défaut
+est fixée par le sysctl
+<B>rmem_default </B>
+
+et la valeur maximale autorisée est fixée par le
+sysctl
+<B>rmem_max</B>.
+
+<DT><B>SO_LINGER</B>
+
+<DD>
+Fixer ou lire l'option
+<B>SO_LINGER</B>.
+
+L'argument est une
+structure
+<B>linger</B>.
+
+</DL>
+<P>
+
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct linger {
+    int   l_onoff;    /* actif */
+    int   l_linger;   /* délai maximal */
+};
+
+</PRE>
+
+</DL>
+
+<DL COMPACT>
+<DT><DD>
+Lorsque ce paramètre est actif, un appel
+<B><A HREF="/cgi-bin/man/man2html?2+close">close</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+shutdown">shutdown</A></B>(2)
+
+ne se terminera pas avant que tous les messages en attente pour la socket aient été correctement
+émise ou que le délai soit écoulé. Sinon, l'appel revient immédiatement et la fermeture est
+effectuée à l'arrière-plan.
+Lorsque la socket est fermée lors d'un
+<B><A HREF="/cgi-bin/man/man2html?3+exit">exit</A></B>(3),
+
+elle se vide toujours à l'arrière-plan.
+<DT><B>SO_PRIORITY</B>
+
+<DD>
+Fixe la priorité définie par le protocole pour tous les paquets envoyés sur la socket.
+Linux utiliser cette valeur pour trier les files réseau : les paquets avec une priorité
+élevés peuvent être traités d'abord, en fonction de la gestion des files sur
+le périphérique. Pour
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7),
+
+ceci fixe aussi le champ IP Type-Of-Service pour les paquets sortants.
+<DT><B>SO_ERROR</B>
+
+<DD>
+Lire et effacer l'erreur en attente sur la socket. Uniquement valide pour
+<B>getsockopt</B>.
+
+Renvoie un entier. 
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>SIGNAUX</H2>
+
+Lorsqu'on écrit sur une socket orientée connexion qui a été fermée
+(localement ou à l'autre extrémité) le signal
+<B>SIGPIPE</B>
+
+est envoyé au processus écrivain, et
+<B>EPIPE</B>
+
+est renvoyé. 
+Le signal n'est pas envoyé lorsque l'appel d'écriture
+contenait
+l'attribut
+<B>MSG_NOSIGNAL</B>.
+
+<P>
+
+Lorsqu'on le demande avec l'option
+<B>FIOSETOWN </B>
+
+de fcntl ou l'option
+<B>SIOCSPGRP </B>
+
+de ioctl, le signal
+<B>SIGIO </B>
+
+est envoyée quand un événement d'entrée-sortie se produit. Il est possible d'utiliser
+<B><A HREF="/cgi-bin/man/man2html?2+poll">poll</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+select">select</A></B>(2)
+
+dans le gestionnaire de signal pour savoir sur quelle socket l'événement s'est produit?
+Une alternative (sous Linux 2.2) est de demander un signal temps-réel avec le fnctl
+<B>F_SETSIG</B>.
+
+Le gestionnaire du signal temps-réel sera invoqué avec le descripteur
+de fichier dans le champ
+<I>si_fd</I>
+
+de
+<I>siginfo_t</I>.
+
+Voir
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2)
+
+pour plus d'informations.
+<P>
+
+Dans certains cas (par exemple différents processus accédant à la même socket),
+la condition ayant déclenché le 
+<B>SIGIO</B>
+
+peut avoir disparu quand le processus réagit au signal. Si cela se produit
+le processus doit attendre à nouveau car Linux lui renverra le signal
+ultérieurement.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>SYSCTLS</H2>
+
+Les sysctls réseau des sockets de base sont accessibles avec les fichiers
+<B>/proc/sys/net/core/* </B>
+
+ou avec
+l'interface
+<B><A HREF="/cgi-bin/man/man2html?2+sysctl">sysctl</A></B>(2).
+
+<DL COMPACT>
+<DT><B>rmem_default</B>
+
+<DD>
+contient la taille en octets par défaut du buffer de réception.
+<DT><B>rmem_max</B>
+
+<DD>
+contient la taille maximale en octets du buffer de réception qu'un utilisateur peut
+réclamer avec l'option
+<B>SO_RCVBUF</B>
+
+de la socket.
+<DT><B>wmem_default</B>
+
+<DD>
+contient la taille en octets par défaut du buffer d'émission.
+<DT><B>wmem_max</B>
+
+<DD>
+contient la taille maximale en octets du buffer d'émission qu'un utilisateur peut
+réclamer avec l'option
+<B>SO_SNDBUF</B>
+
+de la socket.
+<DT><B>message_cost</B> et <B>message_burst</B>
+
+<DD>
+configurent le filtrage par jeton utilisé pour limiter la charge des
+message d'avertissement dus aux événements réseau extérieurs.
+<DT><B>netdev_max_backlog </B>
+
+<DD>
+Nombre maximal de paquets dans la file d'entrée globale.
+<DT><B>optmem_max</B>
+
+<DD>
+Taille maximale par socket des données de service et des données de contrôle utilisateur
+comme les iovecs.
+
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>IOCTLS</H2>
+
+Ces ioctls sont accessibles en utilisant
+<B><A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A></B>(2):
+
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+<I>error</I><B> = ioctl(</B><I>ip_socket</I><B>, </B><I>ioctl_type</I><B>, </B><I>&amp;value_result</I><B>);</B>
+</PRE>
+
+</DL>
+
+<P>
+<DL COMPACT>
+<DT><B>SIOCGSTAMP</B>
+
+<DD>
+Renvoie une structure
+<B>struct timeval </B>
+
+avec l'horodatage de réception du dernier paquet transmis à l'utilisateur. Ceci permet
+des mesures précises de circulation sur le réseau. Voir
+<B><A HREF="/cgi-bin/man/man2html?2+setitimer">setitimer</A></B>(2)
+
+pour le détail de la
+<B>struct timeval</B>.
+
+
+<DT><B>SIOCSPGRP</B>
+
+<DD>
+Fixer le processus ou le groupe de processus auquel envoyer les signaux
+<B>SIGIO</B>
+
+ou
+<B>SIGURG</B>
+
+lorsqu'une
+opération d'entrée-sortie
+asynchrone s'est terminée ou si des données urgentes sont disponibles.
+L'argument est un pointeur sur un
+<B>pid_t</B>.
+
+Si l'argument est positif, on envoie le signal à ce processus. S'il est négatif
+on l'envoie au groupe de processus dont l'identifiant correspond à la valeur
+absolue de l'argument.
+Un processus ne peut demande que l'émission vers lui-même ou son propre
+groupe, à moins qu'il ait la capacité
+<B>CAP_KILL</B>
+
+ou un UID effectif nul.
+<DT><B>FIOASYNC</B>
+
+<DD>
+Changer l'attribut
+<B>O_ASYNC</B>
+
+pour activer ou désactiver le mode d'entrée-sortie asynchrone sur la socket. Le mode
+d'entrées-sorties asynchrones signifie que le signal
+<B>SIGIO </B>
+
+ou le signal fixé avec
+<B>F_SETSIG</B>
+
+est envoyé quand un événement d'entrée-sortie se produit.
+<DT><DD>
+L'argument est un attribut booléen entier.
+
+<DT><B>SIOCGPGRP</B>
+
+<DD>
+Lire le processus ou le groupe de processus auquel les signaux
+<B>SIGIO</B>
+
+ou
+<B>SIGURG</B>
+
+sont envoyés,
+ou zéro
+si aucun n'est configuré.
+</DL>
+<P>
+
+Fcntls valides:
+<DL COMPACT>
+<DT><B>FIOGETOWN</B>
+
+<DD>
+Comme l'ioctl SIOCGPGRP.
+<DT><B>FIOSETOWN</B>
+
+<DD>
+Comme l'ioctl SIOCSPGRP.
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>NOTES</H2>
+
+Linux suppose que la moitié du buffer d'émission/réception est utilisé pour les structures
+internes du noyau. Ainsi les sysctls sont deux fois plus grand que ce que l'on peut
+observer directement sur le câble.
+<A NAME="lbAK">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Les options de socket
+<B>CONFIG_FILTER </B>
+
+<B>SO_ATTACH_FILTER </B>
+
+et
+<B>SO_DETACH_FILTER </B>
+
+ne sont
+pas documentées. Pour les utiliser il est conseillé d'utiliser la
+bibliothèque libpcap.
+<A NAME="lbAL">&nbsp;</A>
+<H2>VERSIONS</H2>
+
+<B>SO_BINDTODEVICE </B>
+
+a été introduit dans Linux 2.0.30.
+<B>SO_PASSCRED </B>
+
+est une nouveauté de Linux 2.2.
+Les sysctls sont nouveaux dans Linux 2.2.
+<A NAME="lbAM">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Cette page de manuel a été écrire par Andi Kleen.
+<A NAME="lbAN">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setsockopt">setsockopt</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getsockopt">getsockopt</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?7+packet">packet</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+ddp">ddp</A></B>(7)
+
+<A NAME="lbAO">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2001-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">FONCTIONS DE LA COUCHE SOCKET</A><DD>
+<DT><A HREF="#lbAF">OPTIONS DES SOCKETS</A><DD>
+<DT><A HREF="#lbAG">SIGNAUX</A><DD>
+<DT><A HREF="#lbAH">SYSCTLS</A><DD>
+<DT><A HREF="#lbAI">IOCTLS</A><DD>
+<DT><A HREF="#lbAJ">NOTES</A><DD>
+<DT><A HREF="#lbAK">BOGUES</A><DD>
+<DT><A HREF="#lbAL">VERSIONS</A><DD>
+<DT><A HREF="#lbAM">AUTEURS</A><DD>
+<DT><A HREF="#lbAN">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAO">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:59 GMT, February 11, 2014
+</BODY>
+</HTML>

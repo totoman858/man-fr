@@ -1,0 +1,204 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SETXATTR</TITLE>
+</HEAD><BODY>
+<H1>SETXATTR</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+setxattr, lsetxattr, fsetxattr - Fixer les attributs étendus.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/attr/xattr.h">attr/xattr.h</A>&gt;</B>
+
+<B>int setxattr (const char&nbsp;*</B><I>chemin</I><B>, const char&nbsp;*</B><I>nom</I><B>,</B>
+<B>			 const void&nbsp;*</B><I>valeur</I><B>, size_t </B><I>taille</I><B>, int </B><I>options</I><B>);</B>
+<B>int lsetxattr (const char&nbsp;*</B><I>chemin</I><B>, const char&nbsp;*</B><I>nom</I><B>,</B>
+<B>			 const void&nbsp;*</B><I>valeur</I><B>, size_t </B><I>taille</I><B>, int </B><I>options</I><B>);</B>
+<B>int fsetxattr (int </B><I>descripteur</I><B>, const char&nbsp;*</B><I>nom</I><B>,</B>
+<B>			 const void&nbsp;*</B><I>valeur</I><B>, size_t </B><I>taille</I><B>, int </B><I>options</I><B>);</B>
+</PRE>
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTIONLes attributs étendus sont des paires</H2>
+
+<I>nom</I>:<I>valeur </I>
+
+associées aux i-noeuds (fichiers, répertoires, liens symboliques, etc).
+Ce sont des extensions des attributs normaux qui sont associés avec tous les
+i-noeuds du système (les informations renvoyées
+par 
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2).
+
+Une description complète des concepts d'attributs étendus est disponible dans
+<B><A HREF="/cgi-bin/man/man2html?5+attr">attr</A></B>(5).
+
+<P>
+
+<B>setxattr</B>
+
+écrit la
+<I>valeur</I>
+
+dans l'attribut étendu identifié par le
+<I>nom</I>
+
+et associé avec le
+<I>chemin</I>
+
+dans le système de fichiers
+La 
+<I>taille</I>
+
+de la
+<I>valeur</I>
+
+doit être spcifiée
+<P>
+
+<B>lsetxattr</B>
+
+est identique à 
+<B>setxattr</B>,
+
+sauf dans le cas d'un lien symbolique, où il traite le lien lui-même
+et non le fichier qu'il vise.
+<P>
+
+<B>fsetxattr</B>
+
+est identique à
+<B>setxattr</B>,
+
+seulement on écrit l'attribut du fichier ouvert indiqué par le
+<I>descripteur</I>
+
+(renvoyé par
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2))
+
+plutôt que par un
+<I>chemin</I>.
+
+<P>
+
+Le
+<I>nom</I>
+
+d'un attribut étendu est une simple chaîne terminée par un caractère nul.
+Le nom inclut un préfixe d'espace de noms - il peut y avoir plusieurs espaces
+de noms disjoints associés avec un i-noeud donné.
+La valeur d'un attribut étendu est un bloc de données littérales ou binaires
+d'une longueur donnée.
+<P>
+
+Le paramètre
+<I>option</I>
+
+permet d'affiner la sémantique de l'opétation.
+XATTR_CREATE indique une création pure, avec un échec si
+l'attribut existe déjà.
+XATTR_REPLACE indique un remplacement, échouant si l'attribut
+n'existe pas.
+Par défaut (pas d'option), l'attribut sera créé s'il le faut,
+ou remplacé s'il existe déjà.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+S'ils réussissent, ces appels renvoient un nombre positif correspondant à la
+taille de la valeur de l'attribut étendu.
+En cas d'échec, ils renvoient -1 et remplissent
+<I>errno</I>
+
+avec un code d'erreur.
+<P>
+
+Si XATTR_CREATE est indiqué et que l'attribut existe,
+<I>errno</I>
+
+contiendra EEXIST.
+Si XATTR_REPLACE est demandé et si l'attribut n'existe pas
+<I>errno</I>
+
+sera remplis avec ENOATTR.
+<P>
+
+S'il n'y a pas assez d'espace pour stocker l'attribut étendu,
+<I>errno</I>
+
+vaudra ENOSPC, ou EDQUOT si le problème vient du système de quotas.
+<P>
+
+Si les attributs étendus ne sont pas suportés par le système de fichiers ou le noyau
+<I>errno</I>
+
+contient ENOTSUP.
+<P>
+
+Les erreurs documentés pour l'appel-système
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2)
+
+sont également applicables ici.
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Andreas Gruenbacher,
+&lt;<I><A HREF="mailto:a.gruenbacher@computer.org">a.gruenbacher@computer.org</A></I>&gt;
+
+et l'équipe de développement SGI XFS,
+&lt;<I><A HREF="mailto:linux-xfs@oss.sgi.com">linux-xfs@oss.sgi.com</A></I>&gt;.
+
+Envoyez les rapports de bogues et les commentaires (en anglais) à ces adresses.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+getfattr">getfattr</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+setfattr">setfattr</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getxattr">getxattr</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+listxattr">listxattr</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+removexattr">removexattr</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?5+attr">attr</A></B>(5)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTIONLes attributs étendus sont des paires</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">AUTEURS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:51 GMT, February 11, 2014
+</BODY>
+</HTML>

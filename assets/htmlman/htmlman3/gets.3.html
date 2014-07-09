@@ -1,0 +1,248 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETS</TITLE>
+</HEAD><BODY>
+<H1>GETS</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+gets, fgetc, fgets, getc, getchar, ungetc - Saisie de caractères et de chaînes.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<B>int fgetc (FILE *</B><I>stream</I><B>);</B>
+<B>char * fgets (char * </B><I>s</I><B>, int </B><I>size</I><B>, FILE * </B><I>stream</I><B>);</B>
+<B>int getc (FILE * </B><I>stream</I><B>);</B>
+<B>int getchar (void);</B>
+<B>char * gets (char * </B><I>s</I><B>);</B>
+<B>int ungetc (int </B><I>c</I><B>, FILE * </B><I>stream</I><B>);</B>
+</PRE><A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>fgetc()</B>
+
+lit le caractère suivant depuis le flux
+<I>stream </I>
+
+et le renvoie sous forme d'un
+<B>unsigned char</B>,
+
+transformé en
+<B>int</B>,
+
+ou
+<B>EOF</B>
+
+en cas d'erreur ou de fin de fichier.
+<P>
+
+<B>getc()</B>
+
+est équivalent à
+<B>fgetc()</B>
+
+sauf qu'il peut être implementé sous forme de macro, qui évalue l'argument
+<I>stream</I>
+
+plusieurs fois.
+<P>
+
+<B>getchar()</B>
+
+est équivalent à
+<B>getc(</B><I>stdin</I><B>).</B>
+
+<P>
+
+<B>gets()</B>
+
+lit une ligne depuis
+<I>stdin</I>
+
+et la place dans le buffer pointé par
+<I>s</I>
+
+jusqu'à atteindre un retour-chariot, ou
+<B>EOF</B>,
+
+qu'il remplace par
+<B>'\0'</B>.
+
+Il n'y a pas de vérification de débordement de buffer (voir plus bas la section
+<B>BOGUE</B>
+
+plus bas).
+<P>
+
+<B>fgets()</B>
+
+lit au plus 
+<I>size - 1</I>
+
+caractères depuis
+<I>stream</I>
+
+et les place dans le buffer pointé par
+<I>s</I>.
+
+La lecture s'arrête après
+<B>EOF</B>
+
+ou un retour-chariot. Si un retour-chariot (newline) est lu, il est
+placé dans le buffer. Un caractère nul
+<B>'\0'</B>
+
+est placé à la fin de la ligne.
+<P>
+
+<B>ungetc()</B>
+
+replace le caractère
+<I>c</I>
+
+dans le flux
+<I>stream</I>,
+
+en le transformant en
+<B>unsigned char</B>,
+
+où il sera disponible pour une lecture ultérieure.
+Les caractères replacés seront renvoyés en ordre inverse.
+Le fonctionnement n'est garantit que pour le replacement d'un seul
+caractère.
+<P>
+
+Les fonctions décrites ci-dessus peuvent être utilisées conjointement,
+ainsi qu'avec les autres fonctions de lecture de la bibliothèque
+<B>stdio</B>.
+
+<P>
+
+Pour les versions de ces fonctions ignorant les verrouillages, voir
+<B><A HREF="/cgi-bin/man/man2html?3+unlocked_stdio">unlocked_stdio</A></B>(3).
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>fgetc()</B>,<B> getc() </B>et<B> getchar()</B>
+
+renvoie un caractère, lu comme un
+<B>unsigned char</B>,
+
+et transformé en 
+<B>int</B>,
+
+ou
+<B>EOF</B>
+
+à la fin du fichier, ou en cas d'erreur.
+<P>
+
+<B>gets()</B> et <B>fgets()</B>
+
+renvoient le pointeur
+<I>s</I>
+
+si elles réussissent, et
+<B>NULL</B>
+
+en cas d'erreur, ou si la fin de fichier est atteinte avant d'avoir pu
+lire au moins un caractère.
+<P>
+
+<B>ungetc()</B>
+
+renvoie
+<I>c</I>
+
+s'il reussit, ou
+<B>EOF</B>
+
+en cas d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ANSI - C, POSIX.1
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+N'utilisez jamais
+<B>gets</B>().
+
+Comme il est impossible de savoir à l'avance combien de caractères seront lus par
+<B>gets()</B>, 
+
+et comme celui-ci
+écrira tous les caractères lus, même s'ils débordent du buffer, cette fonction
+est extrèmement dangereuse à utiliser. On a déjà utilisé ce dysfonctionnement
+pour créer des trous de sécurité.
+UTILISEZ TOUJOURS
+<B>fgets()</B>
+
+A LA PLACE DE
+<B>gets()</B>.
+
+<P>
+
+Il est fortement déconseillé de mélanger les appels aux fonctions de lecture
+de la bibliothèque
+<B>stdio</B>
+
+avec les appels aux fonctions de lecture bas-niveau
+<B>read()</B>
+
+sur le descripteur de fichier associé au flux. Les résultats sont indéfinis,
+et très probablement indésirables.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fopen">fopen</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fread">fread</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+scanf">scanf</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+puts">puts</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fseek">fseek</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+ferror">ferror</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+unlocked_stdio">unlocked_stdio</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:31 GMT, February 11, 2014
+</BODY>
+</HTML>

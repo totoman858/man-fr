@@ -1,0 +1,172 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ALSACONF</TITLE>
+</HEAD><BODY>
+<H1>ALSACONF</H1>
+Section: Maintenance Commands (8)<BR>Updated: 15 mars 2005<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<P>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+alsaconf - outil de configuration pour ALSA (architecture de son avancée de Linux)
+
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>alsaconf</B>
+
+[<I>options</I>]
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente brièvement la commande 
+<B>alsaconf.</B>
+
+<P>
+<P>
+
+<B>Alsaconf</B> 
+est un simple script shell qui essaye de détecter les cartes son sur votre
+système et écrit un fichier de configuration adéquat pour ALSA. Il va
+essayer de deviner quelle distribution GNU/Linux vous utilisez, et agira
+conformément aux standards de cette distribution, si un support spécifique
+est disponible.
+<P>
+<P>
+
+Alsaconf va écrire un fragment de code modutils qui peut être ensuite
+utilisé par modutils pour charger les paramètres corrects de votre carte
+son. 
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+Alsaconf accepte les options suivantes&nbsp;:
+<P>
+<DL COMPACT>
+<DT><B>-l, --legacy</B>
+
+<DD>
+Cherche seulement les anciennes cartes non-isapnp
+<P>
+<DT><B>-m, --modinfo</B>
+
+<DD>
+Lit les descriptions de modules au lieu de lire une base de données de
+carte
+<P>
+<DT><B>-s, --sound-wav-file</B>
+
+<DD>
+Utilise le fichier wav spécifié comme son de test
+<P>
+<DT><B>-u, --uid uid</B>
+
+<DD>
+Choisit l'uid pour les périphériques ALSA (valeur par défaut&nbsp;= 0)
+<P>
+<DT><B>-g, --gid gid</B>
+
+<DD>
+Choisit le gid pour les périphériques ALSA (valeur par défaut&nbsp;= 0)
+<P>
+<DT><B>-d, --devmode mode</B>
+
+<DD>
+Choisit le mode du périphérique pour les périphériques ALSA (valeur par
+défaut&nbsp;: 0666)
+<P>
+<DT><B>-r, --strict</B>
+
+<DD>
+Choisit le mode de périphérique strict (équivaut à -g&nbsp;17 -d&nbsp;0660)
+<P>
+<DT><B>-L, --log</B>
+
+<DD>
+Mise en journal dans /tmp/alsaconf.log
+<P>
+<DT><B>-p, --probe card-name</B>
+
+<DD>
+Teste une ancienne carte non-isapnp et affiche les options du module
+<P>
+<DT><B>-h, --help</B>
+
+<DD>
+Affiche ce message d'aide
+<P>
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>POUR DEBIAN EXCLUSIVEMENT</H2>
+
+Sous Debian, le gid par défaut des fichiers de périphériques est 29 (qui
+correspond au groupe audio) et le mode par défaut des périphériques est
+0660.
+<P>
+Pour le paquetage de base ALSA, voir aussi
+<I>/usr/share/doc/alsa-base/</I>
+
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B>
+<A HREF="/cgi-bin/man/man2html?1+alsamixer">alsamixer</A>(1),
+<A HREF="/cgi-bin/man/man2html?1+amixer">amixer</A>(1),
+<A HREF="/cgi-bin/man/man2html?1+aplay">aplay</A>(1),
+<A HREF="/cgi-bin/man/man2html?1+arecord">arecord</A>(1)
+</B>
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>PAGE D'ACCUEIL</H2>
+
+<A HREF="http://www.alsa-project.org/">http://www.alsa-project.org/</A>
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Le script alsaconf fut écrit par
+Takashi Iwai &lt;<A HREF="mailto:tiwai@suse.de">tiwai@suse.de</A>&gt;,
+Bernd Kaindl &lt;<A HREF="mailto:bk@suse.de">bk@suse.de</A>&gt; et
+Jan Ondrej (SAL) &lt;<A HREF="mailto:ondrejj@salstar.sk">ondrejj@salstar.sk</A>&gt;
+<P>
+Cette page de manuel fut écrite par Jordi Mallach &lt;<A HREF="mailto:jordi@debian.org">jordi@debian.org</A>&gt;, pour
+le système Debian (mais elle peut être utilisée par d'autres).
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Baptiste Mélès 2005.
+<P>
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">POUR DEBIAN EXCLUSIVEMENT</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">PAGE D'ACCUEIL</A><DD>
+<DT><A HREF="#lbAI">AUTEUR</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,141 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MAN.CONF</TITLE>
+</HEAD><BODY>
+<H1>MAN.CONF</H1>
+Section: Commandes utilisateur (5)<BR>Updated: 19 septembre 2005<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+man.conf - fichier de configuration de la commande man
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+Ce fichier est lu par
+<B><A HREF="/cgi-bin/man/man2html?1+man">man</A></B>(1)
+
+et contient&nbsp;: (a) des informations sur la manière de construire le
+chemin de recherche des pages de manuel, (b) les chemins d'accès
+complets de divers programmes de formatage tels nroff, eqn, tbl, etc.
+utilisés par man, et (c) une liste des décompacteurs à employer pour
+traiter les pages préformatées selon l'extension de leur nom de
+fichier. Il est possible de spécifier un autre fichier que celui-ci en
+précisant&nbsp;:
+<P>
+
+<DL COMPACT><DT><DD>
+man -C man.conf_personnel ...
+</DL>
+
+<P>
+
+Les noms de commandes peuvent comporter des options.
+Les options utiles pour nroff se trouvent dans <A HREF="/cgi-bin/man/man2html?1+grotty">grotty</A>(1).
+Par exemple, au lieu de la ligne par défaut&nbsp;:
+<P>
+
+<DL COMPACT><DT><DD>
+<PRE>
+NROFF /usr/bin/groff -mandoc -Tlatin1
+</PRE>
+
+</DL>
+
+<P>
+
+vous pouvez mettre&nbsp;:
+<P>
+
+<DL COMPACT><DT><DD>
+<PRE>
+NROFF /usr/bin/groff -mandoc -Tlatin1 -P-u -P-b
+</PRE>
+
+</DL>
+
+<P>
+
+afin de supprimer le soulignement et les caractères gras.
+<P>
+Notez que l'option -Tlatin1 passée à la commande groff est importante
+pour nous autres, francophones&nbsp;; associée à un visualiseur et un
+terminal supportant ce jeu de caractères (comme less et xterm), elle
+permet de conserver nos précieux accents dans les pages de manuel.
+<A NAME="lbAD">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>@man_config_file@</I>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+John W. Eaton est l'auteur historique de
+<B>man</B>.
+
+Federico Lucifredi &lt;<A HREF="mailto:flucifredi@acm.org">flucifredi@acm.org</A>&gt; en assure aujourd'hui la maintenance.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+col">col</A></B>(1),
+
+<B>(g)<A HREF="/cgi-bin/man/man2html?1+eqn">eqn</A></B>(1),
+
+<B>(g)<A HREF="/cgi-bin/man/man2html?1+pic">pic</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+groff">groff</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+grotty">grotty</A></B>(1),
+
+<B>(g)<A HREF="/cgi-bin/man/man2html?1+refer">refer</A></B>(1),
+
+<B>(g)<A HREF="/cgi-bin/man/man2html?1+tbl">tbl</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+less">less</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+man">man</A></B>(1)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?1+compress">compress</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+gzip">gzip</A></B>(1).
+
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par René Cougnenc en mai 1995 et mise
+à jour par Alain Portal &lt;aportal AT univ-montp2 DOT fr&gt; le 2 novembre 2005.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=en&nbsp;man&nbsp;5&nbsp;man.conf</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">FICHIERS</A><DD>
+<DT><A HREF="#lbAE">AUTEUR</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:55 GMT, February 11, 2014
+</BODY>
+</HTML>

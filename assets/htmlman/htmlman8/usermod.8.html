@@ -1,0 +1,226 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of USERMOD</TITLE>
+</HEAD><BODY>
+<H1>USERMOD</H1>
+Section: Maintenance Commands (8)<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+usermod - modifier un compte utilisateur
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<DL COMPACT>
+<DT><B>usermod</B>
+
+<DD>
+
+
+[<B>-c</B>
+
+<I>commentaire</I>]
+
+[<B>-d</B>
+
+<I>rép_perso</I> [
+
+<B>-m</B>]]
+
+<BR>
+
+[<B>-e</B>
+
+<I>date_expiration</I>]
+
+[<B>-f</B>
+
+<I>inactivité</I>]
+
+<BR>
+
+[<B>-g</B>
+
+<I>groupe_initial</I>]
+
+[<B>-G</B>
+
+<I>groupe</I>[,...]]
+
+<BR>
+
+[<B>-l</B>
+
+<I>nom_connexion</I>]
+
+[<B>-p</B>
+
+<I>mot_de_passe</I>]
+
+<BR>
+
+[<B>-s</B>
+
+<I>shell</I>]
+
+[<B>-u</B>
+
+<I>uid</I> [
+
+<B>-o</B>]]
+
+[<B>-L</B>|<B>-U</B>]
+
+<I>login</I>
+
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La commande <B>usermod</B> modifie les fichiers des comptes du système pour
+refléter les modifications qui ont été spécifiées sur la ligne de
+commandes. Les options qui s'appliquent à la commande <B>usermod</B> sont&nbsp;:
+
+
+
+
+
+
+<DL COMPACT>
+<DT><B>-c </B><I>commentaire</I><DD>
+La nouvelle valeur du champ de commentaire de l'utilisateur dans le fichier
+de mots de passe. Il est normalement modifié en utilisant l'utilitaire
+<B><A HREF="/cgi-bin/man/man2html?1+chfn">chfn</A></B>(1).
+<DT><B>-d </B><I>rép_perso</I><DD>
+Le nouveau répertoire de connexion de l'utilisateur. Si l'option
+<B>-m</B> est fournie, le contenu du répertoire personnel actuel sera
+déplacé dans le nouveau répertoire personnel, qui sera créé si nécessaire.
+<DT><B>-e </B><I>date_expiration</I><DD>
+La date à laquelle le compte utilisateur sera désactivé. La date est
+spécifiée dans le format <I>AAAA-MM-JJ</I>.
+<DT><B>-f </B><I>jours_inactifs</I><DD>
+Le nombre de jours suivant l'expiration d'un mot de passe après lequel
+le compte est définitivement désactivé. Une valeur de 0 désactive le
+compte dès que le mot de passe a expiré, et une valeur de -1 désactive
+cette fonctionnalité. La valeur par défaut est de -1.
+<DT><B>-g </B><I>groupe_initial</I><DD>
+Le nom ou le numéro du groupe de connexion initial de l'utilisateur. Le nom
+du groupe doit exister. Un numéro de groupe doit se référer à un groupe
+préexistant. Le numéro de groupe par défaut est 1.
+<DT><B>-G </B><I>groupe,[...]</I><DD>
+Une liste de groupes supplémentaires auxquels fait également partie
+l'utilisateur. Chaque groupe est séparé du suivant par une virgule,
+sans espace entre les deux. Les groupes sont soumis aux mêmes
+restrictions que celles données avec l'option <B>-g</B>. Si
+l'utilisateur fait actuellement partie d'un groupe qui n'est pas
+listé, l'utilisateur sera supprimé du groupe.
+<DT><B>-l </B><I>nom_connexion</I><DD>
+Le nom de l'utilisateur passera de <I>login</I> à
+<I>nom_connexion</I>. Rien d'autre n'est modifié. En particulier, le
+répertoire personnel de l'utilisateur devra probablement être changé
+pour refléter le nouveau nom de connexion.
+<DT><B>-p </B><I>mot_de_passe</I><DD>
+Le mot de passe chiffré, comme renvoyé par <B><A HREF="/cgi-bin/man/man2html?3+crypt">crypt</A></B>(3).
+<DT><B>-s </B><I>shell</I><DD>
+Le nom du nouveau shell de connexion de l'utilisateur. Si <I>shell</I> n'est
+pas fourni, le système sélectionnera le shell de connexion par défaut.
+<DT><B>-u </B><I>uid---</I><DD>
+La valeur numérique de l'ID de l'utilisateur. Cette valeur doit être
+unique, à moins que l'option <I>-o</I> ne soit utilisée. La valeur doit être
+non négative. Les valeurs comprises entre 0 et 99 sont typiquement
+réservées aux comptes systèmes. Tous les fichiers possédés par
+l'utilisateur qui sont situés dans le sous-arbre de répertoires ayant le
+répertoire personnel de l'utilisateur comme racine verront leur ID
+d'utilisateur automatiquement modifié. Les fichiers situés à l'extérieur du
+répertoire personnel de l'utilisateur doivent être modifiés à la main.
+<DT><B>-L</B><DD>
+Verrouiller le mot de passe d'un utilisateur. Cette option ajoute un
+«&nbsp;!&nbsp;» devant le mot de passe chiffré, ce qui désactive le mot de passe.
+Vous ne pouvez pas utiliser cette option avec <I>-p</I> ou <I>-U</I>.
+<DT><B>-U</B><DD>
+Déverrouiller le mot de passe d'un utilisateur. Cela supprime le «&nbsp;!&nbsp;»
+situé devant le mot de passe chiffré. Vous ne pouvez pas utiliser cette
+option avec <I>-p</I> ou <I>-L</I>.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>AVERTISSEMENTS</H2>
+
+<B>usermod</B> ne vous permet pas de modifier le nom d'un utilisateur qui
+est actuellement connecté. Vous devez vous assurer que l'utilisateur nommé
+n'est pas en train d'exécuter un quelconque programme quand cette commande
+est exécutée si l'UID numérique de l'utilisateur est modifié. Vous devez
+modifier le nom du propriétaire de tous les fichiers crontab manuellement.
+Vous devez modifier le nom du propriétaire tous les travaux <I>at</I>
+manuellement. Vous devez effectuer les modifications impliquant NIS sur le
+serveur NIS.
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/etc/passwd - information sur les comptes utilisateurs
+<BR>
+
+/etc/shadow - information sécurisée sur les comptes utilisateurs
+<BR>
+
+/etc/group  - information sur les groupes
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+chfn">chfn</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+chsh">chsh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?3+crypt">crypt</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?8+groupadd">groupadd</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+groupdel">groupdel</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+groupmod">groupmod</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?1+passwd">passwd</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+useradd">useradd</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+userdel">userdel</A></B>(8)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Julianne Frances Haugh (<A HREF="mailto:jfh@austin.ibm.com">jfh@austin.ibm.com</A>)
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Frédéric Delanoy &lt;<I>delanoy_f at yahoo.com</I>&gt;, 2000.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>AVERTISSEMENT SUR LA TRADUCTION</H2>
+
+Il est possible que cette traduction soit imparfaite ou périmée. En cas de
+doute, veuillez vous reporter au document original en langue anglaise fourni
+avec le programme.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">AVERTISSEMENTS</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">AUTEUR</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+<DT><A HREF="#lbAJ">AVERTISSEMENT SUR LA TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:00 GMT, February 11, 2014
+</BODY>
+</HTML>

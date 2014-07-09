@@ -1,0 +1,244 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SYSLOG</TITLE>
+</HEAD><BODY>
+<H1>SYSLOG</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+syslog, klogctl - Lire et/ou effacer les buffers circulaires de messages du noyau.
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+/* L'interface GlibC */
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/sys/klog.h">sys/klog.h</A>&gt;</B>
+
+<B>int klogctl(int </B><I>type</I><B>, char *</B><I>bufp</I><B>, int </B><I>len</I><B>);</B>
+
+/* L'appel-système déclaré à la main */
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<B>#include &lt;<A HREF="file:///usr/include/linux/unistd.h">linux/unistd.h</A>&gt;</B>
+
+<B>_syscall3(int, syslog, int, type, char *, bufp, int, len);</B>
+
+<B>int syslog(int </B><I>type</I><B>, char *</B><I>bufp</I><B>, int </B><I>len</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette fonction n'est probablement pas celle qui vous intéresse,
+regardez plutot
+<B><A HREF="/cgi-bin/man/man2html?3+syslog">syslog</A></B>(3)
+
+pour l'interface avec la bibliothèque C. Cette page ne documente
+que l'interface directe de l'appel-système avec le noyau.
+<P>
+L'argument <I>type</I> détermine l'action effectuée par cette fonction.
+<P>
+Extrait de
+<I>kernel/printk.c</I>:
+
+<PRE>
+/*
+ * Commandes de sys_syslog:
+ *
+ *   0 -- Fermer le journal (actuellement NOP)
+ *   1 -- ouvrir le journal (actuellement NOP)
+ *   2 -- Lire depuis le journal
+ *   3 -- Lire jusqu'a 4Ko des derniers messages du buffer circulaire.
+ *   4 -- Lire et effacer les 4Ko derniers messages du buffer circulaire.
+ *   5 -- Vider le buffer circulaire
+ *   6 -- Désactiver printk sur la console
+ *   7 -- Activer printk sur la console
+ *   8 -- Indiquer le niveau des messages à afficher sur la console.
+ *   9 -- Renvoie le nombre de caractères non lus dans le buffer.
+ */
+</PRE>
+
+<P>
+Seule la fonction 3 est autorisée pour les processus non Super-User.
+(La fonction 9 a été ajoutée dans le 2.4.10)
+<P>
+<B>Le buffer de journalisation du noyau.</B>
+
+<BR>
+
+Le noyau dispose d'un buffer circulaire d'une longueur LOG_BUF_LEN
+(4096 à l'origine, 8192 depuis le 1.3.54, et 16384 depuis la version 2.1.113)
+dans laquelle il stocke les messages reçus par la fonction <I>printk</I>().
+Ce buffer est le journal du système.
+<P>
+L'appel
+<B>syslog</B>
+
+(2,<I>buf</I>,<I>len</I>)
+
+attend que ce journal soit non vide, puis lit au plus <I>len</I> 
+octets qu'il place dans le buffer <I>buf</I>. Il renvoie le
+nombre d'octets lus. Les octets lus sont extraits du journal&nbsp;:
+les informations ne peuvent être lues qu'une seule fois.
+C'est la fonction exécutée par le noyau quand un programme
+utilisateur lit
+<I>/proc/kmsg</I>.
+
+<P>
+L'appel
+<B>syslog</B>
+
+(3,<I>buf</I>,<I>len</I>)
+
+lit les <I>len</I> dernier octets depuis le journal (de manière non destructive).
+Il ne lira pas plus que ce qui a été écrit dans le buffer depuis la
+dernière commande de lecture destructrice.
+Il renvoie le nombre d'octets lus.
+<P>
+L'appel
+<B>syslog</B>
+
+(4,<I>buf</I>,<I>len</I>)
+
+effectue la même chose puis vide le buffer.
+<P>
+L'appel
+<B>syslog</B>
+
+(5,<I>dummy</I>,<I>idummy</I>)
+
+vide uniquement le buffer.
+<P>
+<B>le niveau de journalisation (loglevel)</B>
+
+<BR>
+
+La routine du noyau <I>printk</I>() n'écrira un message sur la console
+que si celui-ci a un niveau de journalisation inférieur à la valeur
+de la variable
+<I>console_loglevel</I>
+
+(initialement DEFAULT_CONSOLE_LOGLEVEL (7), mais augmenté à 10
+si la ligne de commande du noyau contient le mot `debug', et à 
+15 si une faute du noyau se produit - en réalite les valeurs
+10 et 15 sont idiotes et n'apportent rien de plus que 8).
+Cette variable est positionnée (dans l'intervalle 1-8) par l'appel
+<B>syslog</B>
+
+(8,<I>dummy</I>,<I>value</I>).
+
+L'appel
+<B>syslog</B>
+
+(<I>type</I>,<I>dummy</I>,<I>idummy</I>)
+
+avec <I>type</I> 
+égal à 6 ou 7 la positionne à 1 (seulement les messages kernel panics)
+ou 7 (tout sauf les messages de débugging), respectivement.
+<P>
+Chaque ligne de texte dans un message a son propre niveau de journalisation.
+Ce niveau est DEFAULT_MESSAGE_LOGLEVEL - 1 (6) 
+à moins que la ligne ne commence par &lt;d&gt;
+où <I>d</I> est un chiffre dans l'intervalle 1-7.
+La signification conventionnelle des niveaux de journalisation est
+définie dans
+<I>&lt;<A HREF="file:///usr/include/linux/kernel.h">linux/kernel.h</A>&gt;</I>
+
+comme suit :
+<P>
+<PRE>
+#define KERN_EMERG    &quot;&lt;0&gt;&quot;  /* système inutilisable             */
+#define KERN_ALERT    &quot;&lt;1&gt;&quot;  /* action à effectuer immédiatement */
+#define KERN_CRIT     &quot;&lt;2&gt;&quot;  /* conditions critiques             */
+#define KERN_ERR      &quot;&lt;3&gt;&quot;  /* conditions d'erreurs             */
+#define KERN_WARNING  &quot;&lt;4&gt;&quot;  /* message d'avertissement          */
+#define KERN_NOTICE   &quot;&lt;5&gt;&quot;  /* normal mais significatif         */
+#define KERN_INFO     &quot;&lt;6&gt;&quot;  /* informations                     */
+#define KERN_DEBUG    &quot;&lt;7&gt;&quot;  /* messages de débugging            */
+</PRE>
+
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+En cas d'erreur -1 est renvoyé et <I>errno</I> contient le
+code d'erreur.
+En cas de réussite
+<B>syslog</B>() renvoie le nombre d'octets lus
+pour <I>type</I> valant 2, 3 ou 4, 
+et 0 sinon.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+Une tentative de changer console_loglevel ou d'effacer le
+buffer circulaire du noyau par un processus sans les privilèges
+Super-User.
+<DT><B>EINVAL</B>
+
+<DD>
+Mauvais paramètres
+<DT><B>ERESTARTSYS</B>
+
+<DD>
+L'appel-système a été interrompu par un signal - rien n'a été lu.
+(Ceci ne peut être vu que pendant un suivi de processus).
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Cet appel système est spécifique Linux et ne doit pas être employé dans
+des programmes destinés à être portables.
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Depuis longtemps des gens trouvent regrettable qu'un appel-système du
+noyau et une routine de bibliothèque aient le même nom bien qu'ils
+n'aient pas de rapports entre eux.
+Dans les libc4 et libc5 le numéro de cet appel-système était défini par
+<B>SYS_klog</B>.
+
+Dans la GlibC 2.0, l'appel-système est nommé
+<B>klogctl</B>.
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+syslog">syslog</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:02 GMT, February 11, 2014
+</BODY>
+</HTML>

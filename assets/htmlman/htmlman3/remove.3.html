@@ -1,0 +1,126 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of REMOVE</TITLE>
+</HEAD><BODY>
+<H1>REMOVE</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+remove - Détruire un nom et éventuellement le fichier correspondant.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<P>
+<B>int remove (const char *</B><I>pathname</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>remove</B>
+
+supprime un nom du système de fichiers, en invoquant
+<I>unlink</I>
+
+pour les fichiers, et
+<I>rmdir</I>
+
+pour les répertoires.
+<P>
+Si ce nom était le dernier lien
+sur le fichier correspondant, et si aucun processus n'a ouvert le
+fichier, celui-ci est supprimé, et l'espace qu'il occupait est à nouveau
+disponible.
+<P>
+Si le nom était le dernier lien sur le fichier correspondant, mais si
+un processus avait ouvert ce fichier, celui-ci persistera jusqu'à ce que
+le dernier descripteur s'y rapportant soit fermé.
+<P>
+Si le nom correspond à un lien symbolique, le lien est supprimé.
+<P>
+Si le nom se rapporte à une socket, une Fifo, ou un périphérique, le nom
+est supprimé, mais un processus ayant ouvert l'objet peut continuer à
+l'utiliser.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>remove</B> renvoie 0 si elle réussit, ou -1 si elle échoue,
+auquel cas <I>errno</I> contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Les erreurs qui peuvent se produire pour
+<B><A HREF="/cgi-bin/man/man2html?2+unlink">unlink</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+rmdir">rmdir</A></B>(2)<B>.</B>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ANSI C, SVID, AT&amp;T, POSIX, X/OPEN, BSD 4.3
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Des problèmes dans le protocole sous-jacent à NFS peuvent provoquer
+la disparition de fichiers encore en utilisation.
+<A NAME="lbAI">&nbsp;</A>
+<H2>NOTES</H2>
+
+Avec libc4 et libc5,
+<B>remove</B>
+
+était simplement un alias de unlink, et ne supprimait donc pas les répertoires.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+unlink">unlink</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+rename">rename</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+rmdir">rmdir</A>(2),</B>
+
+<B><A HREF="/cgi-bin/man/man2html?2+mknod">mknod</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+mkfifo">mkfifo</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?2+link">link</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?1+rm">rm</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+unlink">unlink</A></B>(8).
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">NOTES</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:45 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,108 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DPRINTF</TITLE>
+</HEAD><BODY>
+<H1>DPRINTF</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+dprintf, vdprintf - Ecriture formatée dans un descripteur de fichier
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#define _GNU_SOURCE</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<P>
+<B>int dprintf(int </B><I>fd</I><B>, const char *</B><I>format</I><B>, ...);</B>
+
+<P>
+<B>int vdprintf(int </B><I>fd</I><B>, const char *</B><I>format</I><B>, va_list </B><I>ap</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les fonctions
+<B>dprintf</B>
+
+et
+<B>vdprintf</B>
+
+(telles qu'elles apparaissent dans la librairie glibc2) sont les homologues parfaites de 
+<B>fprintf</B>
+
+et
+<B>vfprintf</B>,
+
+si ce n'est qu'elles écrivent dans un descripteur de fichier
+<I>fd</I>
+
+plutôt que dans un flux donné.
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+Ces fontions sont des extensions GNU et ne sont pas présentes dans les standards C ou POSIX.
+Les noms ont clairement été mal choisis.
+Plusieurs systèmes (comme MacOs) possèdent des fonctions incompatibles appelées
+<I>dprintf</I>,
+
+qui sont généralement des versions de debug de
+<I>printf</I>,
+
+et qui ont potentiellement un prototype tel que 
+<P>
+<B>void dprintf (int level, const char *</B><I>format</I><B>, ...);</B>
+
+<P>
+où le premier paramètre est le niveau de debug (et où la sortie est redirigée vers
+<I>stderr</I>).
+
+De plus,
+<B>dprintf</B>
+
+(ou
+<B>DPRINTF</B>)
+
+est également le nom d'une macro bien connue fournissant une version debug de printf.
+Il vaut donc mieux éviter d'utiliser cette fonction dans les programmes 
+souhaitant être portables.
+<P>
+<I>fdprintf</I>
+
+aurait été un meilleur nom.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+printf">printf</A></B>(3)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Stéphan Rafin, 2002.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:12 GMT, February 11, 2014
+</BODY>
+</HTML>

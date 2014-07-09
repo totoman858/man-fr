@@ -1,0 +1,97 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ISGREATER</TITLE>
+</HEAD><BODY>
+<H1>ISGREATER</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+isgreater, isgreaterequal, isless, islessgreater, isunordered - macros vérifiant les relations d'ordre.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/math.h">math.h</A>&gt;</B>
+
+<B>int isgreater(x,y);</B>
+
+<B>int isgreaterequal(x,y);</B>
+
+<B>int isless(x,y);</B>
+
+<B>int islessequal(x,y);</B>
+
+<B>int islessgreater(x,y);</B>
+
+<B>int isunordered(x,y);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+L'opérateur normal de relation (comme &lt;) échouera si l'un des opérandes
+est le non-nombre NaN. Ceci déclenche une exception. Pour l'éciter, C99
+définit ces macros. Elles garantissent de n'évaluer leurs opérandes qu'une
+seule fois. Ces opérandes peuvent être n'importe quel type réel.
+<DL COMPACT>
+<DT>isgreater()<DD>
+détermine si (x) &gt; (y) sans erreur si x ou y vaut NaN.
+<DT>isgreaterequal()<DD>
+détermine si (x) &gt;= (y) sans erreur si x ou y vaut NaN.
+<DT>isless()<DD>
+détermine si (x) &lt; (y) sans erreur si x ou y vaut NaN.
+<DT>islessequal()<DD>
+détermine si (x) &lt;= (y) sans erreur si x ou y vaut NaN.
+<DT>islessgreater()<DD>
+détermine si (x) &lt; (y) || (x) &gt; (y) sans erreur si x ou y vaut NaN.
+Cette macro n'est pas équivalente à x != y cette expression est vraie
+si x ou y vaut NaN.
+<DT>isunordered()<DD>
+est vraie si x ou y vaut NaN et fausse sinon.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTE</H2>
+
+Tous les matériels ne supportent pas ces fonctions et lorsqu'ils ne le
+font pas, elle sont émulées par des macros. Cela diminue les performances.
+Ne les utilisez pas si NaN ne vous concerne pas.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+C99
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+fpclassify">fpclassify</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+isnan">isnan</A>(3)</B>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:30 GMT, February 11, 2014
+</BODY>
+</HTML>

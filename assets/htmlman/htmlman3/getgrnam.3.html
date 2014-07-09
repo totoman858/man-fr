@@ -1,0 +1,176 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETGRNAM</TITLE>
+</HEAD><BODY>
+<H1>GETGRNAM</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getgrnam, getgrgid - Obtenir l'enregistrement d'un goupe.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/grp.h">grp.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<B>struct group *getgrnam (const char *</B><I>name</I><B>);</B>
+
+<B>struct group *getgrgid (gid_t </B><I>gid</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>getgrnam()</B> renvoie un pointeur sur structure contenant
+l'enregistrement issus de <I>/etc/group</I> pour le groupe correspondant
+au nom <I>name</I>.
+<P>
+
+La fonction <B>getgrgid()</B> renvoie un pointeur sur structure contenant
+l'enregistrement issus de <I>/etc/group</I> pour le groupe correspondant
+a l'ID <I>gid</I>.
+<P>
+
+La structure <I>group</I> est définie dans <I>&lt;<A HREF="file:///usr/include/grp.h">grp.h</A>&gt;</I> ainsi :
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct group {
+     char   *gr_name;    /* Nom du groupe.          */
+     char   *gr_passwd;  /* Mot de passe du groupe. */
+     gid_t   gr_gid;     /* ID du groupe.           */
+     char  **gr_mem;     /* Membres du groupe.      */
+};
+
+</PRE>
+
+</DL>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Les fonctions <B>getgrnam()</B> et <B>getgrgid()</B> renvoient un pointeur
+sur la structure du groupe, ou NULL s'il n'y a pas de groupe
+correspondant aux données, ou si une erreur se produit. Dans ce cas,
+<I>errno</I>
+
+est rempli.
+<P>
+
+La valeur de retour peut pointer sur une zone de mémoire statique, et peut
+être écrasée par des appels ultérieurs.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>0</B> ou <B>ENOENT</B> ou <B>ESRCH</B> ou <B>EBADF</B> ou <B>EPERM</B> ou ... 
+
+<DD>
+Le nom
+<I>name</I>
+
+ou l'identifiant 
+<I>gid</I>
+
+n'ont pas été trouvés.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire.
+
+<DT><B>EIO</B>
+
+<DD>
+Erreur d'entrée/sortie.
+<DT><B>EINTR</B>
+
+<DD>
+Un signal a été capturé.
+<DT><B>EMFILE</B>
+
+<DD>
+Le nombre maximal (OPEN_MAX) de fichiers ouverts pour le processus est atteint.
+<DT><B>ENFILE</B>
+
+<DD>
+Le nombre maximal de fichiers ouverts sur le système est atteint.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/etc/group</I>
+
+<DD>
+Base de données des groupes.
+
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3, POSIX, BSD 4.3
+<A NAME="lbAI">&nbsp;</A>
+<H2>NOTES</H2>
+
+La description &quot;VALEUR RENVOYÉE&quot; ci-dessu vient de Posix.1-2001. Elle ne
+considère pas le cas &quot;non trouvé&quot; commme une erreur, et ne spécifie pas
+<I>errno</I>
+
+dans ce cas. Cela rend la détection d'erreur impossible. On peut dire que
+d'après Posix,
+<I>errno</I>
+
+est inchangé dans le cas où aucune entrée n'est trouvée. Des essais sur
+de nombreux systèmes Unix ont fait apparaître différentes valeurs dans ce
+cas&nbsp;: 0, ENOENT, EBADF, ESRCH, EWOULDBLOCK, EPERM et probablement d'autres.
+
+
+
+
+
+
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+fgetgrent">fgetgrent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getgrent">getgrent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setgrent">setgrent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+endgrent">endgrent</A></B>(3)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">NOTES</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:20 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,145 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of INET</TITLE>
+</HEAD><BODY>
+<H1>INET</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+inet_aton, inet_addr, inet_network, inet_ntoa, inet_makeaddr, inet_lnaof, inet_netof - Routines de manipulation d'adresses Internet.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/netinet/in.h">netinet/in.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/arpa/inet.h">arpa/inet.h</A>&gt;</B>
+
+<B>int inet_aton (const char *</B><I>cp</I><B>, struct in_addr *</B><I>inp</I><B>);</B>
+
+<B>in_addr_t inet_addr (const char * </B><I>cp</I><B>);</B>
+
+<B>in_addr_t inet_network (const char * </B><I>cp</I><B>);</B>
+
+<B>char * inet_ntoa (struct in_addr </B><I>in</I><B>);</B>
+
+<B>struct in_addr inet_makeaddr (int </B><I>net</I><B>, int </B><I>host</I><B>);</B>
+
+<B>in_addr_t inet_lnaof (struct in_addr </B><I>in</I><B>);</B>
+
+<B>in_addr_t inet_netof (struct in_addr </B><I>in</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>inet_aton()</B> convertit l'adresse Internet de l'hôte <I>cp</I> depuis la
+notation standard avec nombres et points en une donnée binaire, et la
+stocke dans la structure pointée par <I>inp</I>. <B>inet_aton</B> renvoie une
+valeur non nulle si l'adresse est valide, et zéro sinon.
+<P>
+
+La fonction <B>inet_addr()</B> convertit l'adresse Internet de l'hôte <I>cp</I>
+depuis la notation standard avec nombres et points en une donnée binaire dans
+l'ordre des octets du réseau. Si l'adresse est invalide, INADDR_NONE 
+(généralement -1) est renvoyé.
+Ceci est une interface <I>obsolète</I> pour la fonction <B>inet_aton</B>,
+décrite ci-dessus, car -1 est une adresse valide (255.255.255.255),
+et <B>inet_aton</B> utilise un renvoi d'erreur plus propre.
+<P>
+
+La fonction <B>inet_network()</B> extrait la partie réseau de
+l'adresse <I>cp</I> fournie dans la notation avec nombres et points, et
+renvoie cette valeur dans l'ordre des octets de l'hôte. Si l'adresse
+est invalide, -1 est renvoyé.
+<P>
+
+La fonction <B>inet_ntoa()</B> convertit l'adresse Internet de l'hôte
+<I>in</I> donne dans l'ordre des octets du réseau en une chaîne de caractères
+dans la notation avec nombres et points. La chaine est renvoyée dans un buffer
+alloué statiquement, qui est donc écrasé à chaque appel.
+<P>
+
+La fonction <B>inet_makeaddr()</B> crée une adresse d'hôte Internet dans
+l'ordre des octets du réseau, en combinant le numéro du réseau <I>net</I>
+et l'adresse locale <I>host</I>, chacun d'eux étant donné dans l'ordre des
+octets de l'hôte.
+<P>
+
+La fonction <B>inet_lnaof()</B> renvoie la partie adresse locale extraite d'une
+adresse Internet <I>in</I>.  L'adresse locale est renvoyée dans l'ordre des
+octets de l'hôte.
+<P>
+
+La fonction <B>inet_netof()</B> renvoie la partie adresse réseau extraite d'une
+adresse Internet <I>in</I>.  Le numéro de réseau est renvoyé dans l'ordre des
+octets de l'hôte.
+<P>
+
+La structure <I>in_addr</I> utilisée dans <B>inet_ntoa()</B>,
+<B>inet_makeaddr()</B>, <B>inet_lnoaf()</B> et <B>inet_netof()</B>
+est définie ainsi dans <I>netinet/in.h</I> :
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+
+   struct in_addr {
+        unsigned long int s_addr;
+    }
+
+</PRE>
+
+</DL>
+
+<P>
+
+Notez que l'ordre des octets des i80x86 est LSB (poids faible en premier),
+alors que l'ordre des octets sur l'Internet est MSB (poids fort en premier).
+<A NAME="lbAE">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.3
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+gethostbyname">gethostbyname</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getnetent">getnetent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+inet_ntop">inet_ntop</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+inet_pton">inet_pton</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+hosts">hosts</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?5+networks">networks</A></B>(5)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:04 GMT, February 11, 2014
+</BODY>
+</HTML>

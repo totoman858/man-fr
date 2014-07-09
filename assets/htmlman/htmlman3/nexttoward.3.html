@@ -1,0 +1,117 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of NEXTAFTER</TITLE>
+</HEAD><BODY>
+<H1>NEXTAFTER</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+nextafter, nexttoward - Manipulation de nombres en virgule flottante.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/math.h">math.h</A>&gt;</B>
+
+<P>
+<B>double nextafter(double </B><I>x</I><B>, double </B><I>y</I><B>);</B>
+
+<BR>
+
+<B>float nextafterf(float </B><I>x</I><B>, float </B><I>y</I><B>);</B>
+
+<BR>
+
+<B>long double nextafterl(long double </B><I>x</I><B>, long double </B><I>y</I><B>);</B>
+
+<P>
+<B>double nexttoward(double </B><I>x</I><B>, long double </B><I>y</I><B>);</B>
+
+<BR>
+
+<B>float nexttowardf(float </B><I>x</I><B>, long double </B><I>y</I><B>);</B>
+
+<BR>
+
+<B>long double nexttowardl(long double </B><I>x</I><B>, long double </B><I>y</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction 
+<B>nextafter()</B>
+
+renvoie le réel représentable le plus proche de
+<I>x</I>
+
+dans la direction de
+<I>y</I>.
+
+L'intervalle entre
+<I>x</I>
+
+et le résultat dépend du type de données.
+Si
+<I>x</I>=<I>y</I>,
+
+alors la fonction renvoie simplement
+<I>y</I>.
+
+Si l'une des valeurs est
+<I>NaN</I>,
+
+alors la fonction renvoie
+<I>Nan</I>.
+
+Autrement, une valeur correspondant au bit de poid le plus faible dans la
+mantisse est ajouté ou soustrait, suivant la direction.
+<P>
+
+La fonction
+<B>nexttoward()</B>
+
+réalise le même travail que 
+<B>nextafter()</B>
+
+sauf qu'elle a un second argument de type &quot;long double&quot;.
+<P>
+
+Ces fonctions signaleront le débordement si le résultat dépasse
+les limites des nombres normalisés.
+<A NAME="lbAE">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+C99. Cette fonction est définie dans IEC 559 (et l'annexe avec les fonctions
+recommandées de IEEE 754/IEEE 854).
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+nearbyint">nearbyint</A></B>(3)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:34 GMT, February 11, 2014
+</BODY>
+</HTML>

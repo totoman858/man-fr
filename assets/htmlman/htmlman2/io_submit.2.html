@@ -1,0 +1,183 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of IO_SUBMIT</TITLE>
+</HEAD><BODY>
+<H1>IO_SUBMIT</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+io_submit - Soumettre un bloc d'entrées/sorties asynchrones.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+
+
+<P>
+#include &lt;<A HREF="file:///usr/include/linux/aio.h">linux/aio.h</A>&gt;
+<P>
+<DL COMPACT>
+<DT>
+<DD>long&nbsp;<B>io_submit</B>&nbsp;(aio_context_t&nbsp;<I>ctx_id</I>, long&nbsp;<I>nr</I>, struct&nbsp;iocb&nbsp;<I>**iocbpp</I>);
+
+
+<P>
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+<P>
+
+<B>io_submit</B>
+
+enregistre
+<I>nr</I>
+
+requête d'entrées/sorties asynchones pour être traitées dans le contexte
+<I>ctx_id</I>,
+
+<I>iocbpp</I>
+
+devant être une table de
+<I>nr</I>
+
+blocs de requêtes, qui seront soumis au contexte
+<I>ctx_id</I>.
+
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<P>
+<P>
+
+<B>io_submit</B>
+
+renvoie le nombre de blocs
+<I>iocb</I>
+
+soumis et zéro si
+<I>nr</I>
+
+vaut zéro.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<P>
+<DL COMPACT>
+<DT>EINVAL<DD>
+Le contexte
+<I>ctx_id</I>
+
+est invalide,
+<I>nr</I>
+
+est inférieur à zéro,
+Le bloc à
+<I>*iocbpp[0]</I>
+
+n'est pas initialisé correctement ou l'opération précisée est invalide
+pour le descripteur de fichier dans
+<I>iocb</I>.
+
+<P>
+<DT>EFAULT<DD>
+L'une des structures de données pointe sur une zone invalide.
+<P>
+<DT>EBADF<DD>
+Le descripteur de fichier dans le premier
+<I>iocb</I>
+
+est invalide.
+<P>
+<DT>EAGAIN<DD>
+Pas assez de ressources pour enregistrer un
+<I>iocb</I>.
+
+<P>
+<DT>ENOSYS<DD>
+<B>io_submit</B>
+
+n'est pas implémenté dans ce noyau.
+<P>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<P>
+<P>
+
+<B>io_submit</B>
+
+est spécifique à Linux et ne doit pas être utilisé dans des programmes
+conçus pour être portables.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+<P>
+<P>
+
+Les appels-systèmes d'entrées/sorties asynchrones sont apparus dans Linux 2.5
+en août 2002.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<P>
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?2+io_getevents">io_getevents</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+io_cancel">io_cancel</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+io_destroy">io_destroy</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+io_setup">io_setup</A></B>(2)
+
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>NOTES</H2>
+
+<P>
+<P>
+
+Les appels d'E/S asynchrones ont été écrits par Be,jam LaHaise.
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Kent Yoder.
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">NOTES</A><DD>
+<DT><A HREF="#lbAK">AUTEUR</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:57 GMT, February 11, 2014
+</BODY>
+</HTML>

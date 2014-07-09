@@ -1,0 +1,169 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MODINFO</TITLE>
+</HEAD><BODY>
+<H1>MODINFO</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+modinfo - Informations à propos d'un module du noyau.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>modinfo</B>
+
+[ options ] &lt;module_file&gt;
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+L'utilitaire
+<B>modinfo</B>
+
+examine le fichier objet
+<I>module_file</I>
+
+associé à un module du noyau et affiche les informations qu'il peut y
+recueillir.
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><B>-a</B>, <B>--author</B>
+
+<DD>
+Affiche l'auteur du module.
+<DT><B>-d</B>, <B>--description</B>
+
+<DD>
+Affiche une description du module.
+<DT><B>-f</B><I>format_string</I><B>, --format </B><I>format_string</I>
+
+<DD>
+Utilise la chaîne de format spécifiée par l'utilisateur pour extraire
+les valeurs de la section ELF de
+<I>module_file</I>
+
+qui contient l'information sur le module.
+Les remplacements consistent en un signe de pourcentage suivi du nom d'étiquette
+entre accolades.
+Un nom d'étiquette
+<I>%{filename}</I>
+
+est toujours supporté, même si le module n'a pas de section modinfo.
+<I>%{kernel_version}</I>
+
+affiche le numéro de version du noyau pour lequel le module a été compilé.
+<I>%{{using_checksums}</I>
+
+renvoie 1 si le module a des numéros de version sur les symboles et 0 ou
+&lt;none&gt; sinon.
+<P>
+Un nom d'étiquette
+<I>%{parm}</I>
+
+est spécial&nbsp;: la chaîne de format est répétée pour chaque paramètre connu du
+module (ce qui peut être zéro fois) et
+<I>%{parm}</I>
+
+est remplacé par la description du paramètre du modules (un paramètre sur
+chaque ligne).
+<P>
+De plus,
+<I>%a</I>,
+
+<I>%d</I>,
+
+<I>%l</I>,
+
+<I>%n</I>
+
+et
+<I>%p</I>
+
+peuvent servir à remplacer
+<I>%{author}</I>,
+
+<I>%{description}</I>,
+
+<I>%{filename}</I>,
+
+<I>%{license}</I>
+
+et
+<I>%{parm}</I>,
+
+respectivement.
+<DT><B>-h</B>, <B>--help</B>
+
+<DD>
+Affiche un court message d'aide.
+<DT><B>-l</B>, <B>--license</B>
+
+<DD>
+Affiche la licence du module.
+<DT><B>-n</B>, <B>--filename</B>
+
+<DD>
+Affiche le nom du fichier du module.
+<DT><B>-p</B>, <B>--parameters</B>
+
+<DD>
+Affiche le type de paramètres que le module accepte.
+<DT><B>-V</B>, <B>--version</B>
+
+<DD>
+Affiche la version de 
+<B>modinfo</B>.
+
+</DL>
+<P>
+
+Si aucune option n'est fournie, l'affichage par défaut est nom de fichier,
+description, auteur, licence et paramètres.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+insmod">insmod</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+modprobe">modprobe</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+depmod">depmod</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+rmmod">rmmod</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+lsmod">lsmod</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ksyms">ksyms</A></B>(8)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Jérome Signouret, 2000.
+<BR>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:02 GMT, February 11, 2014
+</BODY>
+</HTML>

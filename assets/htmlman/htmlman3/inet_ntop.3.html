@@ -1,0 +1,157 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of INET_NTOP</TITLE>
+</HEAD><BODY>
+<H1>INET_NTOP</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+inet_ntop - Manipuler les adresses réseau.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/arpa/inet.h">arpa/inet.h</A>&gt;</B>
+
+<B>const char *inet_ntop(int </B><I>af</I><B>, const void * </B><I>src</I><B>,</B>
+<B>                        char * </B><I>dst</I><B>, size_t </B><I>cnt</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette fonction convertit une adresse réseau représentée par  la structure
+<I>src</I>
+
+de la famille
+<I>af</I>,
+
+en une chaîne de caractères copiée dans le buffer
+<I>dst</I>,
+
+long de
+<I>cnt</I>
+
+octets.
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?3+inet_ntop">inet_ntop</A></B>(3)
+
+étend les possibilités de la fonction
+<B><A HREF="/cgi-bin/man/man2html?3+inet_ntoa">inet_ntoa</A></B>(3)
+
+pour gérer plusieurs familles d'adresses.
+L'utilisation de
+<B><A HREF="/cgi-bin/man/man2html?3+inet_ntoa">inet_ntoa</A></B>(3)
+
+est à présent déconseillée au profit de
+<B><A HREF="/cgi-bin/man/man2html?3+inet_ntop">inet_ntop</A></B>(3).
+
+Les familles d'adresses suivantes sont supportées dès à présent :
+<DL COMPACT>
+<DT><B>AF_INET</B>
+
+<DD>
+<I>src</I>
+
+doit pointer sur une structure
+<I>struct in_addr</I>
+
+(octets stockés dans l'ordre du réseau)
+qui est convertie en une adresse réseau IPv4 dans le
+format décimal pointé &quot;<I>ddd.ddd.ddd.ddd</I>&quot;.
+Le buffer 
+<I>dst</I>
+
+doit mesurer au minimum
+<B>INET_ADDRSTRLEN</B>
+
+octets.
+<DT><B>AF_INET6</B>
+
+<DD>
+<I>src</I>
+
+doit pointer sur une structure
+<I>struct in6_addr</I>
+
+(octets stockés dans l'ordre du réseau)
+qui est convertie dans la représentation la plus appropriée de
+l'adresse IPv6.
+Le buffer
+<I>dst</I>
+
+doit mesurer au minimum
+<B>INET6_ADDRSTRLEN</B>
+
+octets.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>inet_ntop</B>
+
+renvoie un pointeur sur
+<I>buf</I>.
+
+Si une erreur se produit, la fonction renvoie NULL, et
+<I>errno</I>
+
+contient
+<B>EAFNOSUPPORT</B>
+
+si
+<I>af</I>
+
+ne représente pas une famille d'adresses valide,
+ou
+<B>ENOSPC</B>
+
+si l'adresse convertie ne tient pas dans le buffer
+<I>dst</I>,
+
+dont la taille est indiquée par l'argument
+<I>cnt</I>.
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+inet_pton">inet_pton</A></B>(3)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<B>AF_INET6</B>
+
+convertit les adresse IPv4 projetées dans l'espace IPv6 en
+employant le format IPv6.
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:43 GMT, February 11, 2014
+</BODY>
+</HTML>

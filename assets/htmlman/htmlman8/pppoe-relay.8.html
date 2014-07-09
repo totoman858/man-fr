@@ -1,0 +1,222 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PPPOE-RELAY</TITLE>
+</HEAD><BODY>
+<H1>PPPOE-RELAY</H1>
+Section: Maintenance Commands (8)<BR>Updated: 26 janvier 2001<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+pppoe-relay - agent de relais PPPoE espace utilisateur.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>pppoe-relay </B>[<I>options</I>]
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>pppoe-relay</B> est un agent de relais espace utilisateur pour PPPoE
+(Point-to-Point Protocol over Ethernet) pour Linux. <B>pppoe-relay</B>
+travaille de concert avec le client <B>pppoe</B> et le serveur
+<B>pppoe-server</B>. Voir la section FONCTIONNEMENT plus loin dans ce manuel
+pour voir en détail la façon d'opérer de <B>pppoe-relay</B>.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-S </B><I>interface</I>
+
+<DD>
+Ajoute l'interface Ethernet <I>interface</I> à la liste des interfaces gérées
+par <B>pppoe-relay</B>. Seuls les serveurs PPPoE peuvent être connectés à cette
+interface.
+<P>
+<DT><B>-C </B><I>interface</I>
+
+<DD>
+Ajoute l'interface Ethernet <I>interface</I> à la liste des interfaces gérées
+par <B>pppoe-relay</B>. Seuls les clients PPPoE peuvent être connectés à cette
+interface.
+<P>
+<DT><B>-B </B><I>interface</I>
+
+<DD>
+Ajoute l'interface Ethernet <I>interface</I> à la liste des interfaces gérées
+par <B>pppoe-relay</B>. Seuls les clients et les serveurs PPPoE peuvent être
+connectés à cette interface.
+<P>
+<DT><B>-n </B><I>nb</I>
+
+<DD>
+Autorise au plus <I>nb</I> sessions PPPoE simultanées. Si elle n'est pas
+spécifiée, la valeur par défaut est 5000. <I>nb</I> peut être une valeur de 1
+à 65534.
+<P>
+<DT><B>-i </B><I>timeout</I>
+
+<DD>
+Spécifie la fin d'attente inactive de la session. Si les deux vis-à-vis d'une
+session sont inactifs pendant une durée supérieure à <I>timeout</I> secondes, la
+session est clôturée. Si <I>timeout</I> est spécifié à zéro, les sessions ne
+seront jamais clôturées à cause de leur inactivité.
+<P>
+Notez que la routine de fin d'activité d'une session n'est jamais lancée plus
+fréquemment que toutes les 30 secondes, aussi la fin d'attente est
+approximative. La valeur par défaut pour <I>timeout</I> est de 600 secondes
+(10 minutes).
+<P>
+<DT><B>-F</B>
+
+<DD>
+L'option <B>-F</B> force <B>pppoe-relay</B> à <I>ne pas</I> lancer un processus
+fils en arrière-plan&nbsp;; à la place, il reste en avant-plan.
+<P>
+<DT><B>-h</B>
+
+<DD>
+L'option <B>-h</B> affiche un court message d'usage et quitte.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FONCTIONNEMENT</H2>
+
+<P>
+<B>pppoe-relay</B> se met à l'écoute des trames PADI PPPoE entrantes sur toutes
+les interfaces spécifiées par les options <B>-B</B> ou <B>-C</B>. Lorsqu'une
+trame PADI apparaît, <B>pppoe-relay</B> ajoute une balise
+Identificateur-de-Session-Relais (NdT&nbsp;: Relay-Session-ID) et diffuse le PADI
+sur toutes les interfaces spécifiées par les options <B>-B</B> ou <B>-S</B>
+(exceptée l'interface sur laquelle la trame est arrivée).
+<P>
+Toutes les trames PADO reçues sont relayées vers le client qui envoie le PADI
+(en supposant qu'elles contiennent une balise Identificateur-de-Session-Relais
+valide). De même, les trames PADR des clients sont relayées vers le
+concentrateur d'accès concerné.
+<P>
+Lorsqu'une trame PADS est reçue, <B>pppoe-relay</B> entre les deux adresses MAC
+des vis-à-vis et les identificateurs de session dans une table de
+hachage. (L'identificateur de session vu par le concentrateur d'accès peut être
+différent de celui vu par le client&nbsp;; <B>pppoe-relay</B> doit renuméroter les
+sessions pour éviter la possibilité de duplication d'identificateur de
+session). Chaque fois que l'un des vis-à-vis envoie une trame de session,
+<B>pppoe-relay</B> cherche l'entrée de la session dans la table de hachage et
+relaie la trame au bon vis-à-vis.
+<P>
+Lorsqu'une trame PADT est reçue, <B>pppoe-relay</B> relaie celle-ci au vis-à-vis
+et efface l'entrée de la session de sa table de hachage.
+<P>
+Si un client et le serveur plantent (ou si les trames sont perdues), les trames
+PADT ne peuvent jamais être envoyées, et la table de hachage de
+<B>pppoe-relay</B> peut se remplir de sessions périmées.
+Donc, une routine de nettoyage de session tourne périodiquement, et retire les
+vieilles sessions de la table de hachage. Une session est considérée comme
+«&nbsp;vieille&nbsp;» si aucun trafic n'a été vu depuis <I>timeout</I>
+secondes. Lorsqu'une session a été effacée à cause d'une fin d'attente, une
+trame PADT est envoyée à chacun des vis-à-vis pour être certain qu'ils aient pris
+conscience du fait que la session ait été tuée.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>EXEMPLE D'INVOCATIONS</H2>
+
+<P>
+<PRE>
+pppoe-relay -C eth0 -S eth1
+</PRE>
+
+<P>
+L'exemple ci-dessus relaie des trames entre des clients PPPoE sur le réseau eth0
+et des serveurs PPPoE sur le réseau eth1.
+<P>
+<PRE>
+pppoe-relay -B eth0 -B eth1
+</PRE>
+
+<P>
+Cet exemple est un relais limpide -- des trames sont relayées entre tout mélange
+de clients et serveurs sur les réseaux eth0 et eth1.
+<P>
+<PRE>
+pppoe-relay -S eth0 -C eth1 -C eth2 -C eth3
+</PRE>
+
+<P>
+Cet exemple relaie des trames entre des serveurs sur le réseau eth0 et des
+clients sur les réseaux eth1, eth2 et eth3.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<B>pppoe-relay</B> a été écrit David F. Skoll &lt;<A HREF="mailto:dfs@roaringpenguin.com">dfs@roaringpenguin.com</A>&gt;.
+<P>
+La page d'accueil <B>pppoe</B> est <I><A HREF="http://www.roaringpenguin.com/pppoe/">http://www.roaringpenguin.com/pppoe/</A></I>.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal AT univ-montp2 DOT fr&gt; le 3&nbsp;février&nbsp;2003
+et révisée le 18&nbsp;janvier&nbsp;2006.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=en&nbsp;man&nbsp;8&nbsp;pppoe-relay</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-start">pppoe-start</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-stop">pppoe-stop</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-connect">pppoe-connect</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppd">pppd</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?5+pppoe.conf">pppoe.conf</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe">pppoe</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-setup">pppoe-setup</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-status">pppoe-status</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-sniff">pppoe-sniff</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-server">pppoe-server</A></B>(8)
+
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">FONCTIONNEMENT</A><DD>
+<DT><A HREF="#lbAG">EXEMPLE D'INVOCATIONS</A><DD>
+<DT><A HREF="#lbAH">AUTEUR</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:00 GMT, February 11, 2014
+</BODY>
+</HTML>

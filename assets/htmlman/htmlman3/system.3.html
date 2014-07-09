@@ -1,0 +1,191 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SYSTEM</TITLE>
+</HEAD><BODY>
+<H1>SYSTEM</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+system - Exécuter une commande Shell.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<B>int system (const char * </B><I>string</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>system()</B>
+
+exécute la commande indiquée dans
+<I>string</I>
+
+en appelant
+<B>/bin/sh -c</B>
+
+<I>string</I>,
+
+et revient après l'exécution complete de la commande. 
+Durant cette exécution, le signal
+<B>SIGCHLD</B>
+
+est bloqué, et les signaux
+<B>SIGINT</B>
+
+et
+<B>SIGQUIT</B>
+
+sont ignorés.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La valeur renvoyée est -1 en cas d'erreur (par exemple echec de fork())
+ou le code de retour de la commande sinon. Ce dernier code est dans le format
+indiqué dans
+<B><A HREF="/cgi-bin/man/man2html?2+wait">wait</A></B>(2).
+
+Ansi le retour de la commande sera
+<I>WEXITSTATUS(status)</I>.
+
+Dans le cas où
+<B>/bin/sh</B>
+
+ne peut pas être exécuté, le code de retour sera identique à celui d'une
+commande effectuant un
+<I>exit(127)</I>.
+
+<P>
+
+Si la valeur de
+<I>string</I>
+
+est
+<B>NULL</B>,
+
+<B>system()</B>
+
+renvoie une valeur non nulle si le shell est accessible, et zéro sinon.
+<P>
+
+<B>system()</B>
+
+n'affecte pas le statut d'attente des autres processus fils.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ANSI C, POSIX.2, BSD 4.3
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Comme mentionné plus haut,
+<B>system</B>()
+
+ignore SIGINT et SIGQUIT. Ceci peut rendre ininterruptible un programme
+qui l'appelle en boucle, à moins qu'il ne vérifie le code de retour
+du fils, par exemple
+<BR>
+
+<PRE>
+    while(qqchose) {
+        int ret = system(&quot;foo&quot;);
+ 
+        if (WIFSIGNALED(ret) &amp;&amp;
+            (WTERMSIG(ret) == SIGINT || WTERMSIG(ret) == SIGQUIT))
+                break;
+    }
+</PRE>
+
+<P>
+
+N'utilisez jamais
+<B>system()</B>
+
+dans un programme avec les privilèges Set-UID ou Set-GID. Des variables
+d'environnement avec des valeurs étranges peuvent être utilisées
+pour corrompre l'intégrité du système. Utilisez les fonctions de la famille
+<B><A HREF="/cgi-bin/man/man2html?3+exec">exec</A></B>(3)
+
+à la place, mais pas
+<B><A HREF="/cgi-bin/man/man2html?3+execlp">execlp</A></B>(3)
+
+ni
+<B><A HREF="/cgi-bin/man/man2html?3+execvp">execvp</A></B>(3).
+
+<P>
+
+<B>system()</B>
+
+ne fonctionnera pas correctement avec les programmes ayant des privilèges
+fournis par les bits Set-UID ou Set-GID sur les systèmes où
+<B>/bin/sh</B>
+
+est
+<B>bash</B>
+
+version 2, car celui-ci rejette les privilèges au démarrage. (Debian utilise
+une version modifiée de bash où ce comportement est abandonné si on l'invoque
+sous le nom <B>sh</B>).
+<P>
+
+La vérification de disponibilité du shell
+<B>/bin/sh</B>
+
+n'est pas réellement faite. Il est toujours supposé disponible. Le standard
+ISO C réclame cette vérification, mais POSIX.2 précise que le retour doit
+toujours être non-nul car un système sans shell n'est pas conforme. Ceci
+justifie le choix d'implémentation.
+<P>
+
+Il est possible qu'une commande shell renvoie 127, ainsi le code de retour
+n'est pas une indication sûre de l'échec de
+<B>execve()</B>.
+
+Verifiez
+<I>errno</I>
+
+pour en être sûrs.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+sh">sh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+signal">signal</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+wait">wait</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+exec">exec</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:04 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,697 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GZIP</TITLE>
+</HEAD><BODY>
+<H1>GZIP</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: <BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+gzip, gunzip, zcat - Compacter ou décompacter des fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+
+<B>gzip</B>
+
+[<B> -acdfhlLnNrtvV19 </B>]
+
+[<B>-S&nbsp;suffixe</B>]
+
+[
+<I>nom ...</I>
+
+]
+
+<BR>
+
+<B>gunzip</B>
+
+[<B> -acfhlLnNrtvV </B>]
+
+[<B>-S&nbsp;suffixe</B>]
+
+[
+<I>nom ...</I>
+
+]
+<BR>
+
+<B>zcat</B>
+
+[<B> -fhLV </B>]
+
+[
+<I>nom ...</I>
+
+]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>gzip</I>
+
+réduit la taille des fichiers nommés en utilisant le codage Lempel-Ziv
+(LZ77). Quand c'est possible, chaque fichier est remplacé par un autre
+fichier portant l'extension
+<B>.gz</B>,
+
+tout en conservant les mêmes modes de permissions, et les mêmes dates de
+derniers accès et modification. (L'extension par défaut est
+<B>-gz</B>
+
+pour VMS,
+<B>z</B>
+
+pour MSDOS, FAT OS/2, FAT Windows NT et Atari.)  Si aucun fichier n'est
+spécifié, ou si un nom de fichier est «&nbsp;-&nbsp;», l'entrée standard est
+compactée sur la sortie standard.
+<B>gzip</B>
+
+n'essaiera de compacter que les fichiers réguliers. En particulier, il
+ignorera les liens symboliques.
+<P>
+
+Si le nom du fichier compacté est trop long pour son système de fichiers,
+<I>gzip</I>
+
+le tronque.
+<I>gzip</I>
+
+essaie de ne tronquer que les parties du nom du fichier plus longues que 3
+caractères. (Une partie est délimitée par des points.) Si le nom n'est
+constitué que de petites parties, les plus longues d'entre elles seront
+tronquées. Par exemple, si les noms de fichiers sont limités à 14
+caractères, gzip.msdos.exe sera compacté en gzi.msd.exe.gz. Les noms ne
+sont pas tronqués sur les systèmes qui ne comportent pas de limites portant
+sur la longueur des noms de fichiers.
+<P>
+
+Par défaut,
+<I>gzip</I>
+
+conserve le nom du fichier original et son horodate dans le fichier
+compacté. Ceux-ci sont utilisés durant le compactage du fichier avec
+l'option
+<B>-N</B>.
+
+C'est utile quand le nom du fichier compacté a été tronqué ou lorsque
+l'horodate n'a pas été préservée après un transfert de fichier.
+<P>
+
+Les fichiers compactés peuvent être restaurés dans leur forme originale en
+utilisant
+<I>gzip -d</I>
+
+ou
+<I>gunzip</I>
+
+ou bien encore
+<I>zcat</I>.
+
+Si le nom original sauvegardé dans le fichier compacté ne convient pas à
+son système de fichiers, un nouveau nom est construit à partir de
+l'original pour le rendre conforme.
+<P>
+
+<I>gunzip</I>
+
+reçoit une liste de fichiers sur la ligne de commandes et remplace chaque
+fichier dont le nom se termine par .gz, -gz, .z, -z, _z or .Z, et qui
+commence par le nombre magique correct, par un fichier décompacté sans
+l'extension originale.
+<I>gunzip</I>
+
+reconnaît également les extensions spéciales
+<B>.tgz</B>
+
+et
+<B>.taz</B>
+
+comme des raccourcis pour
+<B>.tar.gz</B>
+
+et
+<B>.tar.Z</B>
+
+respectivement. Lors du compactage,
+<I>gzip</I>
+
+utilise l'extension
+<B>.tgz</B>
+
+si nécessaire au lieu de tronquer un fichier possédant une extension
+<B>.tar</B>.
+
+<P>
+
+<I>gunzip</I>
+
+peut actuellement décompacter les fichiers créés avec
+<I>gzip</I>, <I>zip</I>, <I>compress</I>, <I>compress -H</I>
+
+ou
+<I>pack</I>.
+
+La détection du format d'entrée est automatique. Quand il utilise les deux
+premiers formats,
+<I>gunzip</I>
+
+vérifie un CRC 32 bits. Pour
+<I>pack</I>, <I>gunzip</I>
+
+vérifie la longueur du fichier décompacté. Le format
+<I>compress</I>
+
+standard n'a pas été prévu pour permettre des contrôles de
+cohérence. Néanmoins,
+<I>gunzip</I>
+
+est quelquefois capable de détecter un fichier .Z défectueux. Si vous
+obtenez une erreur lors du décompactage d'un fichier .Z, ne supposez pas
+que le fichier .Z est correct uniquement parce que
+l'<I>uncompress</I>
+
+standard ne se plaint pas. Cela signifie en général que
+l'<I>uncompress</I>
+
+standard ne vérifie pas son entrée, et génère béatement une sortie
+«&nbsp;dégradée&nbsp;» sans s'en offusquer. Le format -H du <B>compress</B> SCO
+(méthode de réduction LZH) n'inclut pas de CRC mais permet tout de même
+quelques tests de cohérence.
+<P>
+
+Les fichiers créés par
+<I>zip</I>
+
+ne peuvent être décompactés par <B>gzip</B> que s'ils n'ont qu'un seul
+membre compacté avec la méthode de «&nbsp;dégonflement&nbsp;» (deflation). Cette
+fonctionnalité n'est prévue que pour faciliter la conversion de fichiers
+.tar.zip vers le format .tar.gz. Pour extraire des fichiers zip contenant
+plusieurs membres, utilisez
+<I>unzip</I>
+
+au lieu de
+<I>gunzip</I>.
+
+<P>
+
+<I>zcat</I>
+
+est identique à
+<I>gunzip</I>
+
+<B>-c</B>.
+
+(Sur certains systèmes,
+<B>zcat</B>
+
+peut être installé en tant que
+<I>gzcat</I>
+
+pour préserver le lien original vers
+<I>compress</I>.)
+
+<I>zcat</I>
+
+décompacte soit une liste de fichiers obtenue à partir de la ligne de
+commandes, soit son entrée standard, et écrit les données décompactées sur
+la sortie standard.
+<I>zcat</I>
+
+décompactera les fichiers ayant le nombre magique correct qu'ils possèdent
+le suffixe
+<B>.gz</B>
+
+ou non.
+<P>
+
+<I>gzip</I>
+
+utilise l'algorithme de Lempel-Ziv utilisé par
+<I>zip</I>
+
+et PKZIP. Le taux de compression obtenu dépend de la taille de l'entrée, et
+de la distribution des sous-chaînes de caractères communes. Typiquement,
+des fichiers textes du type code source en anglais seront réduits à hauteur
+de 60-70&nbsp;%. La réduction est en général nettement meilleure que celle
+obtenue par LZW (utilisé par
+<I>compress</I>),
+
+le codage de Huffman (utilisé dans
+<I>pack</I>),
+
+ou le codage de Huffman adaptatif
+(<I>compact</I>).
+
+<P>
+
+Le compactage est toujours effectué, même si le fichier compacté est
+légèrement plus grand que l'original. L'expansion dans le pire des cas est
+de quelques octets pour l'en-tête du fichier gzip, plus 5 octets tous les
+blocs de 32&nbsp;Ko, ou une expansion de 0,015&nbsp;% pour les grands fichiers.
+Notez que le nombre réel de blocs de disque utilisés n'augmente presque
+jamais.
+<I>gzip</I>
+
+préserve les modes, permissions et horodates des fichiers qu'il compacte ou
+décompacte.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-a --ascii</B>
+
+<DD>
+Mode texte ascii&nbsp;; convertit les fins de lignes en utilisant les
+conventions locales. Cette option n'est supportée que sur certains systèmes
+non Unix. Pour MSDOS, CR LF est converti en LF lors du compactage, et LF
+est converti en CR LF lors du décompactage.
+<DT><B>-c --stdout --to-stdout</B>
+
+<DD>
+Écrire la sortie sur la sortie standard&nbsp;; garder les fichiers originaux
+inchangés. S'il y plusieurs fichiers d'entrée, la sortie consiste en une
+séquence de membres compactés indépendamment. Pour obtenir un meilleur taux
+de compression, concaténez tous les fichiers d'entrée avant de les
+compacter.
+<DT><B>-d --decompress --uncompress</B>
+
+<DD>
+Décompacter.
+<DT><B>-f --force</B>
+
+<DD>
+Forcer le compactage ou le décompactage même si le fichier possède
+plusieurs liens matériels, ou si le fichier correspondant existe déjà, ou
+encore si les données compactées sont lues ou écrites à partir d'un
+terminal. Si les données d'entrée ne sont pas dans un format reconnu par
+<I>gzip</I>,
+
+et si l'option --stdout est fournie, copier les données en entrée sans
+modification sur la sortie standard&nbsp;: laisser
+<I>zcat</I>
+
+se comporter comme
+<I>cat</I>.
+
+Si
+<B>-f</B>
+
+n'est pas fourni, et s'il ne tourne pas en arrière-plan,
+<I>gzip</I>
+
+interroge l'utilisateur pour vérifier si un fichier existant doit être
+écrasé ou non.
+<DT><B>-h --help</B>
+
+<DD>
+Afficher un écran d'aide et se terminer.
+<DT><B>-l --list</B>
+
+<DD>
+Pour chaque fichier compacté, afficher les champs suivants&nbsp;:
+<P>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;compressed&nbsp;size&nbsp;:&nbsp;taille&nbsp;du&nbsp;fichier&nbsp;compacté
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;uncompressed&nbsp;size&nbsp;:&nbsp;taille&nbsp;du&nbsp;fichier&nbsp;non
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>           compacté<BR>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;ratio&nbsp;:&nbsp;coefficient&nbsp;de&nbsp;réduction&nbsp;
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>  (0.0&nbsp;% si inconnu)<BR>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;uncompressed_name&nbsp;:&nbsp;nom&nbsp;du&nbsp;fichier&nbsp;non&nbsp;compacté
+<P>
+La taille du fichier non compacté vaut -1 pour les fichiers n'étant pas au
+format <B>gzip</B>, comme les fichiers compactés&nbsp;.Z. Pour obtenir la taille
+décompactée de tels fichiers, vous pouvez utiliser&nbsp;:
+<P>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;zcat&nbsp;fichier.Z&nbsp;|&nbsp;wc&nbsp;-c
+<P>
+En combinaison avec l'option --verbose, les champs suivants sont également
+affichés&nbsp;:
+<P>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;méthode&nbsp;de&nbsp;réduction
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;crc:&nbsp;CRC&nbsp;32&nbsp;bits&nbsp;des&nbsp;données&nbsp;décompactées
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;date&nbsp;&amp;&nbsp;time:&nbsp;horodate&nbsp;du&nbsp;fichier&nbsp;décompacté
+<P>
+Les méthodes de réduction actuellement supportées sont deflate, compress,
+lzh (option -H du <B>compress</B> SCO) et pack. La valeur du CRC affichée
+est de ffffffff pour les fichiers qui ne sont pas au format <B>gzip</B>.
+<P>
+Avec --name, le nom décompacté, la date et l'heure sont ceux stockés dans
+le fichier compacté (s'il y sont présents).
+<BR>&nbsp;
+Avec --verbose, les totaux de taille et de coefficient de réduction pour
+tous les fichiers sont également affichés, à moins que certaines tailles
+soient inconnues. Avec --quiet, les lignes de titre et de totaux ne sont
+pas affichées.
+<DT><B>-L --license</B>
+
+<DD>
+Afficher la licence d'utilisation de
+<I>gzip</I>
+
+et se terminer.
+<DT><B>-n --no-name</B>
+
+<DD>
+Lors du compactage, ne pas sauvegarder les noms et horodates des fichiers
+originaux par défaut (le nom original est toujours sauvegardé si le nom du
+fichier a dû être tronqué). Lors du décompactage, ne pas restaurer le nom
+du fichier original s'il est présent (ne supprimer que le suffixe
+<I>gzip</I>
+
+du nom du fichier compacté), et ne pas restaurer l'horodate originale si
+elle est présente (prendre celle du fichier compacté). Cette option est
+activée par défaut lors du décompactage.
+<DT><B>-N --name</B>
+
+<DD>
+Lors du compactage, toujours sauvegarder les noms et horodates des fichiers
+originaux&nbsp;; c'est le comportement par défaut. Lors du décompatage,
+restaurer le nom du fichier original et son horodate s'ils sont présents.
+Cette option est utile sur les systèmes ayant une limite sur la longueur
+des noms de fichiers ou lorsque l'horodate a été perdue à l'occasion d'un
+transfert de fichier.
+<DT><B>-q --quiet</B>
+
+<DD>
+Supprimer tous les avertissements.
+<DT><B>-r --recursive</B>
+
+<DD>
+Parcourir la structure du répertoire récursivement. Si l'un des noms de
+fichiers spécifiés sur la ligne de commandes est un répertoire,
+<I>gzip</I>
+
+descendra dans ce répertoire et compactera tous les fichiers qu'il y trouve
+(ou les décompactera dans le cas de
+<I>gunzip</I>).
+
+<DT><B>-S .suf   --suffix .suf</B>
+
+<DD>
+Utiliser le suffixe .suf au lieu de .gz. N'importe quel suffixe peut être
+donné, mais les suffixes différents de .z et .gz devraient être évités pour
+éviter une confusion lors du transfert de fichiers sur d'autres
+systèmes. Un suffixe vide force <B>gunzip</B> à essayer de décompacter tous
+les fichiers donnés quel que soit leur suffixe, comme dans
+<P>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;gunzip&nbsp;-S&nbsp;&quot;&quot;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*.*&nbsp;pour&nbsp;MSDOS)
+<P>
+Des versions précédentes de <B>gzip</B> utilisaient le suffixe .z. Ceci a
+été changé pour éviter un conflit avec
+<I><A HREF="/cgi-bin/man/man2html?1+pack">pack</A></I>(1).
+
+<DT><B>-t --test</B>
+
+<DD>
+Tester. Vérifier l'intégrité du fichier compacté.
+<DT><B>-v --verbose</B>
+
+<DD>
+Mode bavard. Afficher le nom et le pourcentage de réduction pour chaque
+fichier compacté ou décompacté.
+<DT><B>-V --version</B>
+
+<DD>
+Version. Afficher le numéro de version et les options de compilation puis
+se terminer.
+<DT><B>-# --fast --best</B>
+
+<DD>
+Réguler la vitesse de compactage en utilisant le chiffre
+<I>#</I>
+
+spécifié, où
+<B>-1</B>
+
+ou
+<B>--fast</B>
+
+indique la méthode de réduction la plus rapide (la moins bonne réduction),
+et
+<B>-9</B>
+
+ou
+<B>--best</B>
+
+indique la méthode de réduction la plus lente (la meilleure réduction). Le
+niveau de réduction par défaut est
+<B>-6</B>
+
+(c.-à-d. biaisé en faveur d'une forte réduction aux dépens de la vitesse d'exécution.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>UTILISATION AVANCÉE</H2>
+
+De multiples fichiers compactés peuvent être concaténés. Dans ce cas,
+<I>gunzip</I>
+
+extraira tous les membres ensemble. Par exemple, si on fait
+<P>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gzip&nbsp;-c&nbsp;fichier1&nbsp;&nbsp;&gt;&nbsp;foo.gz
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gzip&nbsp;-c&nbsp;fichier2&nbsp;&gt;&gt;&nbsp;foo.gz
+<P>
+alors
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gunzip&nbsp;-c&nbsp;foo
+<P>
+est équivalent à
+<P>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cat&nbsp;fichier1&nbsp;fichier2
+<P>
+Si un membre d'un fichier .gz est endommagé, les autres membres peuvent
+néanmoins être récupérés (si le membre endommagé est supprimé). Néanmoins,
+vous pouvez obtenir un meilleur taux de compression en compactant tous les
+membres ensemble&nbsp;:
+<P>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cat&nbsp;fichier1&nbsp;fichier2&nbsp;|&nbsp;gzip&nbsp;&gt;&nbsp;foo.gz
+<P>
+compacte mieux que
+<P>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gzip&nbsp;-c&nbsp;fichier1&nbsp;fichier2&nbsp;&gt;&nbsp;foo.gz
+<P>
+Si vous voulez recompacter des fichiers concaténés pour obtenir une
+meilleure réduction, faites
+<P>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gzip&nbsp;-cd&nbsp;ancien.gz&nbsp;|&nbsp;gzip&nbsp;&gt;&nbsp;nouveau.gz
+<P>
+Si un fichier compacté est constitué de plusieurs membres, la taille
+décompactée et le CRC rapportés par l'option --list s'appliquent uniquement
+au dernier membre. Si vous avez besoin de la taille décompactée de tous les
+membres, vous pouvez utiliser
+<P>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gzip&nbsp;-cd&nbsp;fichier.gz&nbsp;|&nbsp;wc&nbsp;-c
+<P>
+Si vous voulez créer un fichier archive contenant plusieurs membres de
+sorte que les membres puissent être ensuite extraits indépendamment,
+utilisez un archiveur comme tar ou zip. GNU tar supporte l'option -z pour
+invoquer <B>gzip</B> de façon transparente. <B>gzip</B> est conçu comme un
+complément à tar, pas comme un remplacement.
+<A NAME="lbAG">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+La variable d'environnement
+<B>GZIP</B>
+
+peut contenir un ensemble d'options par défaut pour
+<I>gzip</I>.
+
+Ces options sont interprétées en premier lieu et peuvent être surchargées
+explicitement par les paramètres explicites présents sur la ligne de
+commandes. Par exemple,
+<P>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pour&nbsp;sh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;GZIP=&quot;-8v&nbsp;--name&quot;;&nbsp;export&nbsp;GZIP
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pou&nbsp;csh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;setenv&nbsp;GZIP&nbsp;&quot;-8v&nbsp;--name&quot;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pour&nbsp;MSDOS&nbsp;&nbsp;:&nbsp;set&nbsp;GZIP=-8v&nbsp;--name
+<P>
+Sur Vax/VMS, le nom de la variable d'environnement est GZIP_OPT, pour
+éviter un conflit avec le jeu de symboles utilisés lors de l'invocation du
+programme.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+znew">znew</A>(1), <A HREF="/cgi-bin/man/man2html?1+zcmp">zcmp</A>(1), <A HREF="/cgi-bin/man/man2html?1+zmore">zmore</A>(1), <A HREF="/cgi-bin/man/man2html?1+zforce">zforce</A>(1), <A HREF="/cgi-bin/man/man2html?1+gzexe">gzexe</A>(1), <A HREF="/cgi-bin/man/man2html?1+zip">zip</A>(1), <A HREF="/cgi-bin/man/man2html?1+unzip">unzip</A>(1), <A HREF="/cgi-bin/man/man2html?1+compress">compress</A>(1),
+<A HREF="/cgi-bin/man/man2html?1+pack">pack</A>(1), <A HREF="/cgi-bin/man/man2html?1+compact">compact</A>(1)
+<P>
+
+Le format de fichier
+<I>gzip</I>
+
+est spécifié par P. Deutsch, dans «&nbsp;<FONT SIZE="-1">GZIP</FONT> file format
+specification&nbsp;» version 4.3, sur
+<B>&lt;<A HREF="ftp://ftp.isi.edu/in-notes/rfc1952.txt">ftp://ftp.isi.edu/in-notes/rfc1952.txt</A>&gt;</B>,
+
+RFC Internet 1952 (mai 1996).
+Le format de dégonflement (deflation)
+<I>zip</I>
+
+est spécifié par P. Deutsch, dans «&nbsp;<FONT SIZE="-1">DEFLATE</FONT> Compressed Data Format
+Specification&nbsp;» version 1.3, sur
+<B>&lt;<A HREF="ftp://ftp.isi.edu/in-notes/rfc1951.txt">ftp://ftp.isi.edu/in-notes/rfc1951.txt</A>&gt;</B>,
+
+RFC Internet 1951 (mai 1996).
+<A NAME="lbAI">&nbsp;</A>
+<H2>DIAGNOSTICS</H2>
+
+La valeur de sortie est normalement 0&nbsp;; si une erreur se produit, la
+valeur de sortie sera 1. Si un avertissement se produit, la valeur de
+sortie sera 2.
+<DL COMPACT>
+<DT>Usage: gzip [-cdfhlLnNrtvV19] [-S suffix] [file ...]<DD>
+Des options invalides ont été spécifiées sur la ligne de commandes.
+<DT><I>fichier</I>: not in gzip format<DD>
+Le fichier fourni à
+<I>gunzip</I>
+
+n'a pas été compacté.
+<DT><I>fichier</I>: Corrupt input. Use zcat to recover some data.<DD>
+Le fichier compacté a été endommagé. Les données se situant jusqu'au point
+d'échec peuvent être récupérées en utilisant
+<P>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zcat&nbsp;<I>fichier</I>&nbsp;&gt;&nbsp;recover
+<DT><I>fichier</I>: compressed with <I>xx</I> bits, can only handle <I>yy</I> bits<DD>
+<I>fichier</I>
+
+a été compacté (en utilisant LZW) par un programme qui peut traiter plus de
+<I>bits</I>
+
+que le code de décompactage sur la machine utilisée. Recompactez le fichier
+avec gzip, qui compacte mieux et utilise moins de mémoire.
+<DT><I>fichier</I>: already has .gz suffix -- no change<DD>
+Le fichier est supposé être déjà compacté. Renommez le fichier et réessayez.
+<DT><I>fichier</I> already exists; do you wish to overwrite (y or n)?<DD>
+Répondez « y » si vous voulez que le fichier de sortie soit
+remplacé&nbsp;; répondez «&nbsp;n&nbsp;» sinon.
+<DT>gunzip: corrupt input<DD>
+Une violation de mémoire SIGSEGV a été détectée, ce
+qui signifie en général que le fichier d'entrée a été corrompu.
+<DT><I>xx.x%</I> Pourcentage du fichier d'entrée économisé par le compactage.<DD>
+(Pertinent uniquement pour
+<B>-v</B>
+
+et
+<B>-l</B>.)
+
+<DT>-- not a regular file or directory: ignored<DD>
+Quand le fichier d'entrée n'est pas un fichier régulier ou un répertoire
+(c.-à-d. un lien symbolique, une socket, une FIFO ou un fichier de
+périphérique), il n'est pas altéré.
+<DT>-- has <I>xx</I> other links: unchanged<DD>
+Le fichier d'entrée possède des liens (NdT&nbsp;: matériels)&nbsp;; il est
+laissé inchangé. Voyez
+<I><A HREF="/cgi-bin/man/man2html?1+ln">ln</A></I>(1)
+
+pour plus d'informations. Utilisez l'option
+<B>-f</B>
+
+pour forcer la réduction de fichiers liés plus d'une fois.
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>AVERTISSEMENTS</H2>
+
+Lors de l'écriture de données compactées sur une bande magnétique, il est
+généralement nécessaire de compléter la sortie avec des zéros jusqu'à
+arriver à une limite de bloc. Quand les données sont lues et que le bloc
+entier est envoyé à
+<I>gunzip</I>
+
+pour décompactage,
+<I>gunzip</I>
+
+détecte qu'il y a des déchets excédentaires à la fin des données
+compactées, et émet par défaut un avertissement. Vous devez utiliser
+l'option --quiet pour supprimer cet avertissement. Cette option peut être
+placée dans la variable d'environnement
+<B>GZIP</B>
+
+comme ceci&nbsp;:
+<P>
+<BR>&nbsp;&nbsp;pour&nbsp;sh:&nbsp;GZIP=&quot;-q&quot;&nbsp;&nbsp;tar&nbsp;-xfz&nbsp;--block-compress&nbsp;/dev/rst0
+<BR>&nbsp;&nbsp;pour&nbsp;csh:&nbsp;(setenv&nbsp;GZIP&nbsp;-q;&nbsp;tar&nbsp;-xfz&nbsp;--block-compr&nbsp;/dev/rst0
+<P>
+Dans l'exemple ci-dessus, <B>gzip</B> est invoqué implicitement avec
+l'option -z du tar GNU. Assurez-vous que la même taille de bloc (option -b
+de tar) est utilisée pour la lecture et l'écriture de données compactées
+sur des bandes magnétiques. (Cet exemple suppose que vous utilisiez la
+version GNU de tar.)
+<A NAME="lbAK">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Le format gzip représente la taille modulo 2^32&nbsp;; de ce fait, l'option
+--list rapporte des tailles réduites et des taux de compression incorrects
+pour des fichiers réduits de 4&nbsp;Go ou plus. Pour contourner ce problème,
+vous pouvez utiliser la commande suivante pour découvrir la véritable
+taille d'un grand fichier réduit&nbsp;:
+<P>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zcat&nbsp;fichier.gz&nbsp;|&nbsp;wc&nbsp;-c
+<P>
+L'option --list rapporte des tailles de -1 et un crc de ffffffff si le
+fichier compacté est situé sur un médium à accès non aléatoire.
+<P>
+Dans quelques rares cas, l'option --best donne un moins bon compactage que
+le niveau de compactage par défaut (-6). Sur certains fichiers hautement
+redondants,
+<I>compress</I>
+
+compacte mieux que
+<I>gzip</I>.
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright &#169; 1998, 1999, 2001 Free Software Foundation, Inc.
+<BR>
+
+Copyright &#169; 1992, 1993 Jean-loup Gailly
+<P>
+
+L'autorisation est donnée de créer et de distribuer des copies textuelles
+de ce manuel, à condition que la notice de copyright et la notice de
+permission soient préservées dans toutes les copies.
+<P>
+
+L'autorisation est donnée de traiter ce fichier avec troff et d'imprimer le
+résultat, à condition que le document imprimé comporte une notice de
+permission identique à celle-ci à l'exception de la suppression de ce
+paragraphe (qui n'est pas pertinent dans la version imprimée).
+
+<P>
+
+L'autorisation est donnée de copier et distribuer des traductions de ce manuel dans n'importe quel autre langue, sous les conditions ci-dessus pour les versions modifiées, mis à part que cette notice de permission peut être incluse dans des traductions approuvées par la Free Software Foundation au lieu de l'anglais originel.
+<P>
+
+<A NAME="lbAM">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Frédéric Delanoy &lt;<I>delanoy_f at yahoo.com</I>&gt;, 2002.
+<P>
+<P>
+<P>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">UTILISATION AVANCÉE</A><DD>
+<DT><A HREF="#lbAG">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">DIAGNOSTICS</A><DD>
+<DT><A HREF="#lbAJ">AVERTISSEMENTS</A><DD>
+<DT><A HREF="#lbAK">BOGUES</A><DD>
+<DT><A HREF="#lbAL">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAM">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:43 GMT, February 11, 2014
+</BODY>
+</HTML>

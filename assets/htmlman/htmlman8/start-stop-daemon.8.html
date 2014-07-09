@@ -1,0 +1,339 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of START-STOP-DAEMON</TITLE>
+</HEAD><BODY>
+<H1>START-STOP-DAEMON</H1>
+Section: Debian GNU/Linux (8)<BR>Updated: 15th March 1997<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+start-stop-daemon - lance ou arrête des démons-systèmes
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>start-stop-daemon</B>
+
+<B>-S</B>|--start
+
+<I>options</I>
+
+[<B>--</B>]
+
+<I>arguments</I>
+
+<DL COMPACT>
+<DT>
+<B>start-stop-daemon</B>
+
+<B>-K</B>|<B>--stop</B>
+
+<I>options</I>
+
+<DT>
+<B>start-stop-daemon</B>
+
+<B>-H</B>|<B>--help</B>
+
+<DT>
+<B>start-stop-daemon</B>
+
+<B>-V</B>|<B>--version</B>
+
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<DD>On se sert de
+<B>start-stop-daemon</B>
+
+pour contrôler la création ou l'arrêt de processus-systèmes.
+On peut configurer
+<B>start-stop-daemon</B>
+
+avec les options
+<B>--exec</B>, <B>--pidfile</B>, <B>--user</B>, et <B>--name</B>,
+
+pour trouver les exemplaires présents d'un processus en fonctionnement.
+<P>
+Avec l'action
+<B>--start,</B>
+
+<B>start-stop-daemon</B>
+
+vérifie l'existence d'un processus particulier.
+Quand existe un tel processus,
+<B>start-stop-daemon</B>
+
+ne fait rien et se termine avec un code d'erreur égal à 1 (0 si
+<B>--oknodo</B>
+
+est précisé).  
+Quand un tel processus n'existe pas, un exemplaire de l'exécutable est lancé 
+avec
+<B>--exec,</B>
+
+(ou, si c'est précisé, avec
+<B>--startas).</B>
+
+Tout argument donné après
+<B>--</B>
+
+sur la ligne de commande est passé tel quel au programme qui doit être lancé.
+Si
+<B>--retry</B>
+
+est indiqué,
+<B>start-stop-daemon</B>
+
+vérifie que le (ou les) processus s'est terminé.
+<P>
+Avec l'action
+<B>--stop,</B>
+
+<B>start-stop-daemon</B>
+
+vérifie aussi l'existence d'un processus particulier.
+Quand un tel processus existe 
+<B>start-stop-daemon</B>
+
+lui envoie le signal précisé avec
+<B>--signal,</B>
+
+et se termine avec un code d'erreur égal à 0.
+Quand un tel processus n'existe pas
+<B>start-stop-daemon</B>
+
+se termine avec un code d'erreur égal à 1
+(0 if 
+<B>--oknodo</B>
+
+est précisé).  
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<P>
+<DL COMPACT>
+<DT><B>-x</B>|<B>--exec</B> <I>executable</I><DD>
+Cherche les processus qui sont des exemplaires de cet exécutable (selon
+<B>/proc/</B><I>pid</I><B>/exe</B>).
+
+<DT><B>-p</B>|<B>--pidfile</B> <I>pid-file</I><DD>
+Cherche les processus dont les identifiants sont précisés dans
+<I>pid-file.</I>
+
+<DT><B>-u</B>|<B>--user</B> <I>nom-d-utilisateur</I>|<I>uid</I><DD>
+Cherche les processus qui appartiennent à l'utilisateur défini par
+<I>nom-d-utilisateur </I>
+
+ou
+<I>uid.</I>
+
+<DT><B>-n</B>|<B>--name</B> <I>nom-de-processus</I><DD>
+Cherche les processus dont le nom est
+<I>nom-de-processus</I>
+
+(selon
+<B>/proc/</B><I>pid</I><B>/stat</B>).
+
+<DT><B>-s</B>|<B>--signal</B> <I>signal</I><DD>
+Avec l'action
+<B>--stop,</B>
+
+on définit le signal à envoyer au processus qui doit être arrêté 
+(par défaut&nbsp;: signal 15).
+<DT><B>-R</B>|<B>--retry</B> <I>durée</I>|<I>action-prévue</I><DD>
+Avec l'action
+<B>--stop,</B>
+
+<B>start-stop-daemon</B>
+
+doit vérifier que les processus se sont terminés. Il le fait pour tous les
+processus correspondants qui tournent, jusqu'à ce qu'il n'y en ait plus.
+Quand le processus ne se termine pas, il prend d'autres mesures déterminées
+par l'action-prévue.
+<P>
+Si
+<I>durée</I>
+
+est indiqué plutôt que
+<I>action-prévue,</I>
+
+l'action-prévue
+<I>signal</I><B>/</B><I>durée</I><B>/KILL/</B><I>durée</I>
+
+est utilisé, où
+<I>signal</I>
+
+est le signal indiqué par
+<B>--signal.</B>
+
+<P>
+<I>action-prévue</I>
+
+est une liste d'au moins deux items séparés par des barres obliques
+(<B>/</B>)&nbsp;;
+
+Chaque item peut être de la forme
+<B>-</B><I>signal-number</I>
+
+ou de la forme [<B>-</B>]<I>signal-name</I>,
+ce qui demande d'envoyer ce signal&nbsp;;
+ou bien de la forme
+<I>durée,</I>
+
+ce qui demande d'attendre tant de secondes avant de terminer les processus,
+ou bien de la forme
+<B>forever</B>,
+
+ce qui demande de répéter constamment le reste de action-prévue, si nécessaire.
+<P>
+Quand la fin de l'action-prévue est atteinte et que
+<B>forever</B>
+
+n'a pa été précisé,
+<B>start-stop-daemon</B>
+
+se termine avec un code d'erreur égal à 2.
+Quand une action-prévue est indiquée, tout signal donné par
+<B>--signal</B>
+
+est ignoré.
+<DT><I>-a | --startas chemin/nom</I>
+
+<DD>
+Avec l'action
+<B>--start</B>
+
+, lance le processus spécifié par
+<I>chemin/nom.</I>
+
+Si rien n'est précisé, c'est par défaut l'argument donné à
+<B>--exec.</B>
+
+<DT><I>-t | --test</I>
+
+<DD>
+Affiche les actions qui seraient entreprises et détermine la bonne valeur de 
+retour, mais ne fait rien.
+<DT><I>-o | --oknodo</I>
+
+<DD>
+Retourne un code de sortie égal à 0 au lieu de 1 si rien n'est ou ne sera fait.
+<DT><I>-q | --quiet</I>
+
+<DD>
+N'affiche pas de messages d'information ; affiche seulement les messages
+d'erreur.
+<DT><I>-c | --chuid</I>
+
+<DD>
+Change l'utilisateur ou l'identifiant avant de lancer le processus.
+On peut aussi préciser un groupe an ajoutant un «&nbsp;:&nbsp;», puis le groupe ou un
+identifiant de la même façon qu'avec la commande «&nbsp;chown&nbsp;»
+(utilisateur:groupe). Quand on utilise cette option, on doit s'apercevoir
+que les groupes primaires ainsi que les groupes supplémentaires sont aussi
+déterminés, même si l'option «&nbsp;group&nbsp;» n'est pas spécifiée. L'option «&nbsp;group&nbsp;»
+sert seulement pour les groupes dont l'utilisateur n'est pas un membre régulier
+(c'est comme rendre membres d'un groupe-processus des utilisateurs
+génériques comme «&nbsp;nobody&nbsp;»).
+<DT><I>-r | --chroot root</I>
+
+<DD>
+Change de répertoire racine pour
+<B>root</B>
+
+avant de lancer le processus. Remarquez que le «&nbsp;pidfile&nbsp;» est aussi écrit
+après le changement de racine.
+<DT><I>-b | --background</I>
+
+<DD>
+est utilisé de manière classique pour les programmes qui ne «&nbsp;se détachent&nbsp;»
+pas d'eux-mêmes. Cette option oblige
+<B>start-stop-daemon</B>
+
+à se dupliquer (fork) avant de lancer le processus, et l'oblige à passer en
+arrière-plan.
+<B>AVERTISSEMENT :</B>
+
+start-stop-daemon
+ne peut pas vérifier le code de sortie quand, pour
+<B>une raison ou une autre,</B>
+
+le processus échoue.
+C'est un expédient dont on se servira seulement pour des programmes dont la
+duplication n'a pas de sens ou bien des programmes dont le code 
+n'est pas transformable pour leur ajouter cette fonctionnalité.
+<DT><B>-N</B>|<B>--nicelevel</B>
+
+<DD>
+Cela modifie la priorité du processus avant qu'il ne soit lancé.
+<DT><I>-m | --make-pidfile</I>
+
+<DD>
+Est utilisé lors du lancement d'un programme qui ne crée pas son propre 
+fichier identificateur. Cette option dit à
+<B>start-stop-daemon</B>
+
+de créer le fichier référencé par
+<B>--pidfile</B>
+
+et place le «&nbsp;pid&nbsp;» dans ce fichier juste avant d'exécuter le processus.
+Il faut remarquer que ce fichier n'est pas supprimé quand le programme
+s'arrête.
+<B>NOTE :</B>
+
+il se peut que cette caractéristique ne marche pas dans tous les cas. Et
+notamment quand le programme qui est exécuté se duplique. À cause de cela,
+cette option n'est habituellement utile que combinée avec l'option
+<B>--background.</B>
+
+<DT><I>-v | --verbose</I>
+
+<DD>
+Affiche des messages prolixes de renseignements.
+<DT><I>-H | --help</I>
+
+<DD>
+Affiche une aide et se termine.
+<DT><I>-V | --version</I>
+
+<DD>
+Affiche le numéro de version et se termine.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Ian Jackson &lt;<A HREF="mailto:ian@chiark.greenend.org.uk">ian@chiark.greenend.org.uk</A>&gt;
+<P>
+Marek Michalkiewicz &lt;<A HREF="mailto:marekm@i17linuxb.ists.pwr.wroc.pl">marekm@i17linuxb.ists.pwr.wroc.pl</A>&gt;
+<P>
+Page de manuel par Klee Dienes &lt;<A HREF="mailto:klee@mit.edu">klee@mit.edu</A>&gt;.
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Philippe Batailler &lt;<A HREF="mailto:pbatailler@teaser.fr">pbatailler@teaser.fr</A>&gt;, Mai 2002.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">AUTEURS</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:03 GMT, February 11, 2014
+</BODY>
+</HTML>

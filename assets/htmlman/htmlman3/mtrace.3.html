@@ -1,0 +1,105 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MTRACE</TITLE>
+</HEAD><BODY>
+<H1>MTRACE</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mtrace, muntrace - Déboguage de malloc.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/mcheck.h">mcheck.h</A>&gt;</B>
+
+<P>
+<B>void mtrace(void);</B>
+
+<P>
+<B>void muntrace(void);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>mtrace</B>()
+
+installe un gestionnaire (qui surveille les allocations mémoire) pour
+<I>malloc</I>(),
+
+<I>realloc</I>()
+
+et
+<I>free</I>().
+
+La fonction
+<B>muntrace</B>()
+
+désactive ce gestionnaire.
+<BR>
+
+La variable d'environnement 
+<B>MALLOC_TRACE</B>
+
+définit le nom d'un fichier où
+<B>mtrace</B>()
+
+écrit ses résultats.
+Ce fichier doit être accessible en écriture à l'utilisateur sinon
+<B>mtrace</B>()
+
+ne fera rien.
+Si le fichier n'est pas vide, il sera tronqué.
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le résultat de
+<B>mtrace</B>()
+
+est en ASCII mais pas dans un format humainement compréhensible.
+Aussi la glibc fournit-elle un script perl appelé mtrace qui affiche
+un résultat plus compréhensible.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Ce sont des extensions GNU.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+malloc_hook">malloc_hook</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 2002
+
+<BR>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:31 GMT, February 11, 2014
+</BODY>
+</HTML>

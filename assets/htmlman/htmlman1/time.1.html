@@ -1,0 +1,435 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TIME</TITLE>
+</HEAD><BODY>
+<H1>TIME</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 23 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+time - Chronométrer ou évaluer les ressources employées par une commande simple.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>time [</B><I>options</I><B>] </B><I>commande</I><B> [</B><I>arguments...</I><B>] </B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>time</B>
+
+lance le programme représenté par la
+<I>commande</I>
+
+indiquée, avec les
+<I>arguments</I>
+
+fournis. Lorsque la
+<I>commande</I>
+
+se termine,
+<B>time</B>
+
+affiche un message sur la sortie standard contenant des statistiques sur
+l'exécution du programme.
+Ces statistiques contiennent (i) le temps écoulé entre l'invocation
+et la fin de la commande, (ii) le temps CPU écoulé en mode utilisateur
+(la somme des valeurs
+<I>tms_utime</I>
+
+et
+<I>tms_cutime</I>
+
+de la structure
+<I>struct tms</I>
+
+fournie par l'appel système
+<B><A HREF="/cgi-bin/man/man2html?2+times">times</A></B>(2)),
+
+et (iii) le temps CPU passé en mode système (la somme des champs
+<I>tms_stime</I>
+
+et
+<I>tms_cstime</I>
+
+de la 
+<I>struct tms</I>
+
+fournie par l'appel système
+<B><A HREF="/cgi-bin/man/man2html?2+times">times</A></B>(2)).
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-p</B>
+
+<DD>
+Dans la localisation POSIX, utiliser le format traditionnel
+<BR>
+
+
+&quot;real %f\nuser %f\nsys %f\n&quot;
+
+<BR>
+
+(avec des nombres exprimés en secondes)
+où le nombre de décimales dans le format %f n'est pas précisé, mais
+suffisant pour exprimer le top d'horloge précisément.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+Les variables LANG, LC_ALL, LC_CTYPE, LC_MESSAGES, LC_NUMERIC,
+NLSPATH et PATH sont utilisées. La dernière sert à rechercher la
+<I>commande</I>.
+
+Les autres servent au formatage du texte et de la sortie.
+<A NAME="lbAG">&nbsp;</A>
+<H2>CODE RENVOYÉ</H2>
+
+Si la
+<I>commande</I>
+
+a été invoquée, le code de sortie est celui de la
+<I>commande</I>.
+
+Sinon, il s'agit de 127 si la 
+<I>commande</I>
+
+n'a pas été trouvée, 126 si elle a été trouvée mais n'a pas pu être invoquée,
+et une autre valeur non-nulle (1-125) si quelque chose d'autre a échoué.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+times">times</A></B>(2),
+
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>VERSION GNU</H2>
+
+Suit une description de la version GNU 1.7 de 
+<B>time</B>.
+
+Contrairement au nom de cet utilitaire, GNU ajoute un grand nombre d'informations
+utiles, concernant non seulement le temps écoulé, mais également d'autres ressources,
+comme la mémoire, les entrées-sorties ou les communications IPC (si disponibles).
+La sortie est formatée en utilisant une chaîne qui peut être transmise avec l'option
+-f ou en utilisant la variable d'environnement TIME.
+<P>
+
+La chaîne de format par défaut est
+<BR>
+
+
+%Uuser %Ssystem %Eelapsed %PCPU (%Xtext+%Ddata %Mmax)k
+<BR>
+
+%Iinputs+%Ooutputs (%Fmajor+%Rminor)pagefaults %Wswaps
+<BR>
+
+
+<P>
+
+Lorsque l'option -p est fournie, le format de sortie (portable)
+<BR>
+
+
+real %e
+<BR>
+
+user %U
+<BR>
+
+sys %S
+<BR>
+
+
+est utilisé.
+<A NAME="lbAJ">&nbsp;</A>
+<H3>Chaîne de format</H3>
+
+Le format est interprété comme d'habitude à la manière de 
+<B><A HREF="/cgi-bin/man/man2html?3+printf">printf</A></B>(3).
+
+Les caractères ordinaires sont copiés directement, les tabulations
+sauts de lignes et baskslashes sont protégés par \t, \n et \\.
+Un signe pourcent est représenté par %%, sinon % indique une conversion.
+Le programme
+<B>time</B>
+
+ajoutera toujours un saut de ligne à la fin de la sortie.
+Les conversions se trouvent ci-dessous. Toutes celles utilisées par
+<B><A HREF="/cgi-bin/man/man2html?1+tcsh">tcsh</A></B>(1)
+
+sont disponibles.
+<P>
+
+<B>Temps</B>
+
+<DL COMPACT>
+<DT><B>%E</B>
+
+<DD>
+Temps réel écoulé (en [heures:]minutes:secondes).
+<DT><B>%e</B>
+
+<DD>
+(pas avec tcsh.) Temps réel écoulé (en secondes).
+<DT><B>%S</B>
+
+<DD>
+Nombre total de secondes-CPU passé par le processus en mode noyau.
+<DT><B>%U</B>
+
+<DD>
+Nombre total de secondes-CPU passé par le processus en mode utilisateur.
+<DT><B>%P</B>
+
+<DD>
+Pourcentage de CPU obtenu par ce job, calculé comme (%U + %S) / %E.
+</DL>
+<P>
+
+<B>Mémoire</B>
+
+<DL COMPACT>
+<DT><B>%M</B>
+
+<DD>
+Taille maximale du processus en mémoire physique durant son exécution, en kilo-octets.
+<DT><B>%t</B>
+
+<DD>
+(pas avec tcsh) Taille moyenne du processus en mémoire physique durant son exécution, en kilo-octets.
+<DT><B>%K</B>
+
+<DD>
+Mémoire moyenne (donnée + pile + code) utilisée par le processus, en kilo-octets.
+<DT><B>%D</B>
+
+<DD>
+Taille moyenne des données non-partagées du processus, en kilo-octets.
+<DT><B>%p</B>
+
+<DD>
+(pas avec tcsh.) Taille moyenne de la pile non-partagée du processus, en kilo-octets.
+<DT><B>%X</B>
+
+<DD>
+Taille moyenne du code partagé du processus, en kilo-octets.
+<DT><B>%Z</B>
+
+<DD>
+(pas avec tcsh.) Taille de page du système, en octets. Ceci est une constante sur un système,
+mais varie de système en système.
+<DT><B>%F</B>
+
+<DD>
+Nombre de fautes de pages majeures durant l'exécution. Ce sont les fautes où des pages ont dû
+être rechargées depuis le disque.
+<DT><B>%R</B>
+
+<DD>
+Nombre de fautes de pages mineures durant l'exécution. Ce sont les fautes où des pages ne sont
+plus valides, mais n'ont pas encore été réutilisées. Les données y sont encore présentes et
+seules les tables système doivent être mises à jour.
+<DT><B>%W</B>
+
+<DD>
+Nombre de fois où le processus a été envoyé sur la mémoire de swap.
+<DT><B>%c</B>
+
+<DD>
+Nombre de fois où le processus a été préempté involontairement (sa
+tranche de temps ayant expiré).
+<DT><B>%w</B>
+
+<DD>
+Nombre de fois où le processus a été commuté volontairement, en passant
+en attente par exemple de la fin d'une entrée-sortie.
+</DL>
+<P>
+
+<B>Entrées/Sorties</B>
+
+<DL COMPACT>
+<DT><B>%I</B>
+
+<DD>
+Nombre de lecture depuis un fichier
+<DT><B>%O</B>
+
+<DD>
+Nombre d'écriture dans un fichier
+<DT><B>%r</B>
+
+<DD>
+Nombre de messages reçus par le processus sur une socket.
+<DT><B>%s</B>
+
+<DD>
+Nombre de messages envoyés par le processus sur une socket.
+<DT><B>%k</B>
+
+<DD>
+Nombre de signaux délivrés au processus.
+<DT><B>%C</B>
+
+<DD>
+(pas avec tcsh.) Nom de la commande examinée avec ses arguments.
+<DT><B>%x</B>
+
+<DD>
+(pas avec tcsh.) Code de retour de la commande.
+</DL>
+<A NAME="lbAK">&nbsp;</A>
+<H2>OPTIONS GNU</H2>
+
+<DL COMPACT>
+<DT><B>-f </B><I>FORMAT</I><B>, --format=</B><I>FORMAT</I>
+
+<DD>
+Préciser le format de sortie, en écrasant celui mentionné éventuellement
+dans la variable d'environnement TIME.
+<DT><B>-p, --portability</B>
+
+<DD>
+Utilise le format de sortie portable.
+<DT><B>-o </B><I>FICHIER</I><B>, --output=</B><I>FICHIER</I>
+
+<DD>
+Ne pas envoyer les résultats sur la sortie d'erreur standard, mais écraser
+le fichier indiqué.
+<DT><B>-a, --append</B>
+
+<DD>
+En conjonction avec -o, ne pas écraser le fichier, mais ajouter les résultats
+à la fin.
+<DT><B>-v, --verbose</B>
+
+<DD>
+Afficher des informations concernant le programme.
+</DL>
+<A NAME="lbAL">&nbsp;</A>
+<H2>OPTIONS STANDARDS GNU</H2>
+
+<DL COMPACT>
+<DT><B>--help</B>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et se terminer normalement.
+<DT><B>-V, --version</B>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et se terminer normalement.
+<DT><B>--</B>
+
+<DD>
+Fin de la liste des options.
+</DL>
+<A NAME="lbAM">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Toutes les ressources ne sont pas disponibles avec toutes les versions d'Unix,
+ainsi certaines valeurs peuvent être toujours à zéro.
+La sélection proposée a été essentiellement inspirée des données disponibles
+sur système 4.2 ou 4.3BSD.
+<P>
+
+La version 1.7 GNU de time ne supporte pas encore la localisation.
+<P>
+
+Le choix de la variable d'environnement TIME est une erreur. Il n'est pas rare
+que des systèmes comme autoconf ou make emploient une variable avec le nom d'un
+utilitaire pour remplacer l'invocation directe. L'utilisation de noms de variables
+comme MORE ou TIME au lieu des noms de programme conduit parfois à des problèmes.
+<P>
+
+Il est plutôt malheureux que -o écrase le fichier plutôt que d'y ajouter ses
+informations (le comportement de -a devrait être celui par défaut).
+<P>
+
+Envoyez vos rapports de bogues et suggestions pour la version GNU de
+<B>time</B>
+
+à
+<BR>
+
+<I><A HREF="mailto:bug-utils@prep.ai.mit.edu">bug-utils@prep.ai.mit.edu</A></I>
+
+<BR>
+
+Indiquez bien la version de
+<B>time ,</B>
+
+que vous employez, en invoquant
+<BR>
+
+<I>time --version</I>
+
+<BR>
+
+ainsi que le système d'exploitation et le compilateur C utilisés.
+<A NAME="lbAN">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+tcsh">tcsh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+times">times</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+wait3">wait3</A></B>(2)
+
+<A NAME="lbAO">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+<DL COMPACT>
+<DT><DT>David Keppel<DD>
+<DD>
+Version originale.
+<DT>David MacKenzie<DD>
+POSIX, autoconf, GNU getopt, documentation, corrections de bogues
+et améliorations.
+<DT>Arne Henrik Juul<DD>
+Aide à la portabilité.
+<DT>François Pinard<DD>
+Aide à la portabilité.
+</DL>
+<A NAME="lbAP">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe BLAESS, 2001-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAG">CODE RENVOYÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">VERSION GNU</A><DD>
+<DL>
+<DT><A HREF="#lbAJ">Chaîne de format</A><DD>
+</DL>
+<DT><A HREF="#lbAK">OPTIONS GNU</A><DD>
+<DT><A HREF="#lbAL">OPTIONS STANDARDS GNU</A><DD>
+<DT><A HREF="#lbAM">BOGUES</A><DD>
+<DT><A HREF="#lbAN">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAO">AUTEURS</A><DD>
+<DT><A HREF="#lbAP">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:49 GMT, February 11, 2014
+</BODY>
+</HTML>

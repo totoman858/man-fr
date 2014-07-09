@@ -1,0 +1,320 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ARGZ_ADD</TITLE>
+</HEAD><BODY>
+<H1>ARGZ_ADD</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+argz_add, argz_add_sep, argz_append, argz_count, argz_create,
+argz_create_sep, argz_delete, argz_extract, argz_insert,
+argz_next, argz_replace, argz_stringify - functions to handle an argz list
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+
+<B>#include &lt;<A HREF="file:///usr/include/argz.h">argz.h</A>&gt;</B>
+
+<B>error_t</B>
+<B>argz_add(char **</B><I>argz</I><B>, size_t *</B><I>argz_len</I><B>, const char *</B><I>str</I><B>);</B>
+
+<B>error_t</B>
+<B>argz_add_sep(char **</B><I>argz</I><B>, size_t *</B><I>argz_len</I><B>,</B>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>const char *</B><I>str</I><B>, int </B><I>delim</I><B>);</B>
+
+<B>error_t</B>
+<B>argz_append(char **</B><I>argz</I><B>, size_t *</B><I>argz_len</I><B>,</B>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>const char *</B><I>buf</I><B>, size_t </B><I>buf_len</I><B>);</B>
+
+<B>size_t</B>
+<B>argz_count(const char *</B><I>argz</I><B>, size_t </B><I>argz_len</I><B>);</B>
+
+<B>error_t</B>
+<B>argz_create(char * const </B><I>argv</I><B>[], char **</B><I>argz</I><B>,</B>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>size_t *</B><I>argz_len</I><B>);</B>
+
+<B>error_t</B>
+<B>argz_create_sep(const char *</B><I>str</I><B>, int </B><I>sep</I><B>, char **</B><I>argz</I><B>,</B>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>size_t *</B><I>argz_len</I><B>);</B>
+
+<B>error_t</B>
+<B>argz_delete(char **</B><I>argz</I><B>, size_t *</B><I>argz_len</I><B>, char *</B><I>entry</I><B>);</B>
+
+<B>void</B>
+<B>argz_extract(char *</B><I>argz</I><B>, size_t </B><I>argz_len</I><B>, char  **</B><I>argv</I><B>);</B>
+
+<B>error_t</B>
+<B>argz_insert (char **</B><I>argz</I><B>, size_t *</B><I>argz_len</I><B>, char *</B><I>before</I><B>,</B>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>const char *</B><I>entry</I><B>);</B>
+
+<B>char *</B>
+<B>argz_next(char *</B><I>argz</I><B>, size_t </B><I>argz_len</I><B>, const char *</B><I>entry</I><B>);</B>
+
+<B>error_t</B>
+<B>argz_replace(char **</B><I>argz</I><B>, size_t *</B><I>argz_len</I><B>, const char *</B><I>str</I><B>,</B>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>const char *</B><I>with</I><B>, unsigned int *</B><I>replace_count</I><B>);</B>
+
+<B>void</B>
+<B>argz_stringify(char *</B><I>argz</I><B>, size_t </B><I>len</I><B>, int </B><I>sep</I><B>);</B>
+
+</PRE><A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ces fonctions sont spécifiques à la GlibC.
+<P>
+
+Un vecteur argz est un pointeur sur un buffer de caractères associé à une longueur.
+L'inteprétation voulue pour le buffer de cartactères est un tableau de chaînes,
+ou les chaînes sont séparées par des octets nuls.
+Si la longueur est non nulle, le dernier octet du buffer doit être nul.
+<P>
+
+Ces fonctions servent à manipuler les vecteurs argz. La paire (NULL, 0)
+est un vecteur argz, et réciproquement les vecteurs argz de longueur
+zéro doivent avoir un pointeur NULL.
+L'allocation de vecteurs argz non nuls est faite avec
+<B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></B>(3),
+
+afin que
+<B><A HREF="/cgi-bin/man/man2html?3+free">free</A></B>(3)
+
+puisse être utilisé pour les libérer.
+<P>
+
+<B>argz_add()</B>
+
+ajoute la chaîne
+<I>str</I>
+
+à la fin de la table
+*<I>argz</I>,
+
+et met à jour
+*<I>argz</I>
+
+et
+*<I>argz_len</I>.
+
+<P>
+
+<B>argz_add_sep()</B>
+
+est similaire, mais découpe la chaîne
+<I>str</I>
+
+en sous-chaînes séparées par le délimiteur
+<I>delim</I>.
+
+Par exemple, on peut l'utiliser sur la liste de recherche des chemins Unix avec le
+délimiteur ':'.
+<P>
+
+<B>argz_append()</B>
+
+ajoute le vecteur argz
+(<I>buf</I>,<I>buf_len</I>)
+
+à la fin de
+(*<I>argz</I>,*<I>argz_len</I>)
+
+et met à jour
+*<I>argz</I>
+
+et
+*<I>argz_len</I>.
+
+(Donc,
+*<I>argz_len</I>
+
+sera augmentée de
+<I>buf_len</I>).
+
+<P>
+
+<B>argz_count()</B>
+
+compte le nombre de chaînes, c'est-à-dire de caractères nuls dans le vecteur
+(<I>argz</I>,<I>argz_len</I>).
+
+<P>
+
+<B>argz_create()</B>
+
+convertit un vecteur de type argv Unix
+<I>argv</I>,
+
+terminé par (char *) 0, en un vecteur argz
+(*<I>argz</I>,*<I>argz_len</I>).
+
+<P>
+
+<B>argz_create_sep()</B>
+
+convertit la chaîne terminée par un caractère nul
+<I>str</I>
+
+en un vecteur argz
+(*<I>argz</I>,*<I>argz_len</I>)
+
+en la découpant à chaque occurrence du séparateur
+<I>sep</I>.
+
+<P>
+
+<B>argz_delete()</B>
+
+retire la sous-chaîne pointée par
+<I>entry</I>
+
+du vecteur argz
+(*<I>argz</I>,*<I>argz_len</I>)
+
+et met à jour
+*<I>argz</I>
+
+et
+*<I>argz_len</I>.
+
+<P>
+
+<B>argz_extract()</B>
+
+est l'inverse de
+<B>argz_create()</B>.
+
+Elle prend le vecteur argz
+(<I>argz</I>,<I>argz_len</I>)
+
+et remplit la table commençant à
+<I>argv</I>
+
+avec des pointeurs sur les sous-chaines, et un NULL final
+en créant un vecteur de type argv Unix.
+La table
+<I>argv</I>
+
+doit avoir assez de place pour
+<I>argz_count</I>(<I>argz</I>,<I>argz_len</I>) + 1
+
+pointeurs.
+<P>
+
+<B>argz_insert()</B>
+
+est l'opposée de 
+<B>argz_delete()</B>.
+
+Elle insère l'argument
+<I>entry</I>
+
+à la position
+<I>before</I>
+
+dans le vecteur argz
+(*<I>argz</I>,*<I>argz_len</I>)
+
+et met à jour
+*<I>argz</I>
+
+et
+*<I>argz_len</I>.
+
+Si
+<I>before</I>
+
+est NULL, alors
+<I>entry</I>
+
+est insérée à la fin.
+<P>
+
+<B>argz_next()</B>
+
+est une fonction pour se déplacer dans le vecteur argz. Si
+<I>entry</I>
+
+est NULL, elle renvoie la première entrée. Sinon, l'entrée
+suivante est renvoyée. Elle renvoie NULL s'il n'y a pas d'entrée suivante.
+<P>
+
+<B>argz_replace()</B>
+
+remplace chaque occurrence de
+<I>str</I>
+
+avec
+<I>with</I>,
+
+en réallouant argz si nécessaire. Si
+<I>replace_count</I>
+
+est non-NULL,
+*<I>replace_count</I>
+
+sera incrémenté du nombre de remplacements.
+<P>
+
+<B>argz_stringify()</B>
+
+est l'opposée de
+<B>argz_create_sep()</B>.
+
+Elle transforme le vecteur argz en une chaîne normale en remplaçant tous
+les caractères nuls sauf le dernier par
+<I>sep</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Tout les fonctions argz qui font de l'allocation mémoire ont un type de retour
+<I>error_t</I>, et renvoient <B>0</B> si elles réussissent et <B>ENOMEM</B>
+si l'allocation échoue.
+<A NAME="lbAF">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Les vecteurs argz sans caractère nul final conduisent une faute de segmentation.
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Ces fonctions sont des extensions GNU, à utiliser avec précaution.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+envz">envz</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">BOGUES</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:52 GMT, February 11, 2014
+</BODY>
+</HTML>

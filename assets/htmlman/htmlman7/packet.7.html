@@ -1,0 +1,585 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PACKET</TITLE>
+</HEAD><BODY>
+<H1>PACKET</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+packet, PF_PACKET - Interface par paquet au niveau périphérique.
+<P>
+
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/features.h">features.h</A>&gt;   /* pour avoir la version GlibC */</B>
+<BR>
+<B>#if __GLIBC__ &gt;= 2 &amp;&amp; __GLIBC_MINOR &gt;= 1 </B>
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/netpacket/packet.h">netpacket/packet.h</A>&gt;</B>
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/net/ethernet.h">net/ethernet.h</A>&gt;       /* protocoles L2 */</B>
+<BR>
+<B>#else</B>
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/asm/types.h">asm/types.h</A>&gt;</B>
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/linux/if_packet.h">linux/if_packet.h</A>&gt;</B>
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/linux/if_ether.h">linux/if_ether.h</A>&gt;     /* protocoles L2 */ </B>
+<BR>
+<B>#endif</B>
+
+
+<B>packet_socket = socket(PF_PACKET, int </B><I>socket_type</I><B>, int protocol</B><I>);</I>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les sockets packets sont utilisées pour envoyer ou recevoir des paquets de données<BR>
+bruts au pilote de périphérique (Niveau OSI 2).
+Elles permettent d'implémenter des modules protocoles dans l'espace utilisateur
+au dessus du niveau physique.
+<P>
+L'argument
+<I>socket_type</I>
+
+est soit
+<B>SOCK_RAW </B>
+
+pour les paquets incluant l'en-tête du niveau liaison, soit
+<B>SOCK_DGRAM</B>
+
+pour les paquets préparés sans l'en-tête de la couche liaison. Les informations de l'en-tête
+du niveau liaison sont disponibles dans un format commun, par l'intermédiaire d'un
+<B>sockaddr_ll</B>.
+
+<I>protocol </I>
+
+est un numéro de protocole IEEE 802.3 dans l'ordre des octets du réseau. Voir le fichier d'en-tête
+<B>&lt;<A HREF="file:///usr/include/linux/if_ether.h">linux/if_ether.h</A>&gt; </B>
+
+pour avoir une liste des protocoles autorisés. Lorsque le numéro demandé
+est
+<B>htons(ETH_P_ALL) </B>
+
+alors tous les protocoles sont reçus.
+Tous les paquets entrants du protocole indiqué seront passés à la socket packet avant d'être
+transmis aux protocoles implémentés dans le noyau.
+<BR>&nbsp;
+Seuls les processus avec un UID effectif nul ou la capacité
+<B>CAP_NET_RAW</B>
+
+peuvent ouvrir des sockets packet.
+<P>
+Les paquets des sockets
+<B>SOCK_RAW</B>
+
+sont transmis depuis et vers le pilote de périphérique sans aucune modification des données des paquets.
+Lors de la réception, l'adresse est toujours examinée et fournie dans une structure standard
+<B>sockaddr_ll</B>
+
+Lors de l'émission d'un paquet, le buffer fourni par l'utilisateur doit contenir l'en-tête du niveau
+physique. Le paquet est alors mis en file sans modification
+à l'attention du pilote de périphérique correspondant à l'interface définie par
+l'adresse de destination. Certains pilotes de périphérique ajoute toujours d'autres en-têtes.
+<B>SOCK_RAW</B>
+
+est identique mais non compatible avec l'ancien
+<B>SOCK_PACKET</B>
+
+de Linux 2.0.
+<P>
+<B>SOCK_DGRAM </B>
+
+opère à un niveau légèrement plus élevé. L'en-tête du niveau physique est supprimé avant que le
+paquet ne soit transmis à l'utilisateur. Les paquets envoyés par une socket packet
+<B>SOCK_DGRAM</B>
+
+reçoivent un en-tête de niveau physique correct, en fonction des informations dans
+l'adresse destination
+<B>sockaddr_ll </B>
+
+avant d'être mis en file.
+<P>
+Par défaut tous les paquets du type de protocole indiqué sont
+passés à la socket packet. Pour ne recevoir que les paquets d'une interface donnée
+utilisez
+<B><A HREF="/cgi-bin/man/man2html?2+bind">bind</A></B>(2)
+
+en indiquant une adresse dans une 
+<B>struct sockaddr_ll</B>
+
+pour attacher la socket à une interface. Seuls les champs d'adresse
+<B>sll_protocol </B>
+
+et
+<B>sll_ifindex</B>
+
+sont utilisés pour l'attachement.
+<P>
+L'opération
+<B><A HREF="/cgi-bin/man/man2html?3+connect">connect</A></B>(3)
+
+n'est pas supportée sur les sockets packet.
+<P>
+Lorsque l'attribut
+<B>MSG_TRUNC</B>
+
+est transmis à 
+<B><A HREF="/cgi-bin/man/man2html?2+recvmsg">recvmsg</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+recv">recv</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+recvfrom">recvfrom</A></B>(2)
+
+la véritable longueur du paquet sur le réseau est toujours renvoyée, même si elle
+est plus grande que le buffer.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>TYPES D'ADRESSE</H2>
+
+La structure sockaddr_ll est une adresse du niveau physique dépendant du périphérique.
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct sockaddr_ll {
+    unsigned short  sll_family;   /* Toujours AF_PACKET        */
+    unsigned short  sll_protocol; /* Protocole niveau physique */
+    int             sll_ifindex;  /* Numéro d'interface        */
+    unsigned short  sll_hatype;   /* Type d'en-tête            */
+    unsigned char   sll_pkttype;  /* Type de paquet            */
+    unsigned char   sll_halen;    /* Longueur de l'adresse     */
+    unsigned char   sll_addr[8];  /* Adresse niveau physique   */
+};
+
+</PRE>
+
+</DL>
+
+<P>
+<B>sll_protocol </B>
+
+est le type de protocole standard ethernet, dans l'ordre des octets du réseau,
+comme défini dans le fichier d'en-tête
+<B>linux/if_ether.h</B>.
+
+Par défaut il s'agit du protocole de la socket.
+<B>sll_ifindex </B>
+
+est le numéro de l'interface
+(voir
+<B><A HREF="/cgi-bin/man/man2html?2+netdevice">netdevice</A></B>(2));
+
+0 correspond à n'importe quelle interface (autorisé uniquement pour l'attachement).
+<B>sll_hatype </B>
+
+est un type ARP, comme défini dans le fichier d'en-tête
+<B>linux/if_arp.h </B>
+
+Le champ
+<B>sll_pkttype </B>
+
+contient le type de paquet. Les types valides sont
+<B>PACKET_HOST</B>
+
+pour un paquet destiné à l'hôte local,
+<B>PACKET_BROADCAST</B>
+
+pour un paquet broadcast du niveau physique,
+<B>PACKET_MULTICAST</B>
+
+pour un paquet envoyé à une adresse multicast du niveau physique,
+<B>PACKET_OTHERHOST</B>
+
+pour un paquet destiné à un autre hôte capturé par un pilote de périphérique en
+mode promiscuous, et
+<B>PACKET_OUTGOING</B>
+
+pour un paquet provenant de l'hôte local rebouclé sur une socket packet.
+Ceci n'a de signification qu'en réception.
+<B>sll_addr</B>
+
+et
+<B>sll_halen</B>
+
+contiennent l'adresse de niveau physique (par exemple IEEE 802.3) et sa longueur. L'interprétation
+exacte dépend du périphérique.
+<P>
+Lorsqu'on envoie des paquets, il suffit d'indiquer
+<B>sll_family</B>,
+
+<B>sll_addr</B>,
+
+<B>sll_halen</B>,
+
+<B>sll_ifindex</B>.
+
+Les autres champs devraient être à zéro.
+<B>sll_hatype</B>
+
+et
+<B>sll_pkttype</B>
+
+sont remplis en réception pour information.
+Pour l'attachement, seuls
+<B>sll_protocol</B>
+
+et
+<B>sll_ifindex</B>
+
+sont utilisés.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS DES SOCKETS</H2>
+
+Les options des sockets packets permettent de configurer le multicasting du niveau physique
+et le mode promiscuous. Cela fonctionne en appelant
+<B><A HREF="/cgi-bin/man/man2html?2+setsockopt">setsockopt</A></B>(2)
+
+sur une socket packet avec SOL_PACKET et l'option
+<B>PACKET_ADD_MEMBERSHIP </B>
+
+pour ajouter un attachement ou
+<B>PACKET_DROP_MEMBERSHIP</B>
+
+pour en supprimer un.
+Toutes les deux attendent une structure
+<B>packet_mreq</B>
+
+en argument&nbsp;:
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct packet_mreq
+{
+    int            mr_ifindex;    /* Numéro d'interface      */
+    unsigned short mr_type;       /* Action                  */
+    unsigned short mr_alen;       /* Longueur d'adresse      */
+    unsigned char  mr_address[8]; /* Adresse niveau physique */
+};
+
+</PRE>
+
+</DL>
+
+<P>
+<B>mr_ifindex</B>
+
+contient le numéro de l'interface dont le statut doit
+être modifié.
+Le paramètre
+<B>mr_type</B>
+
+indique l'action à effectuer.
+<B>PACKET_MR_PROMISC</B>
+
+valide la réception de tous les paquets circulant sur le segment de réseau commun. Souvent appelé
+``mode promiscuous''.
+<B>PACKET_MR_MULTICAST </B>
+
+attache la socket au groupe multicast de niveau physique indiqué dans 
+<B>mr_address</B>
+
+et
+<B>mr_alen</B>,
+
+et
+<B>PACKET_MR_ALLMULTI</B>
+
+demande à la socket de recevoir tous les paquets multicast arrivant sur l'interface.
+<P>
+De plus, les ioctls classiques
+<B>SIOCSIFFLAGS,</B>
+
+<B>SIOCADDMULTI, </B>
+
+<B>SIOCDELMULTI</B>
+
+peuvent donner les mêmes résultats.
+<P>
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>IOCTLS</H2>
+
+<B>SIOCGSTAMP</B>
+
+peut servir à obtenir l'horodatage du dernier paquet reçu. L'argument est une
+structure
+<B>struct timeval.</B>
+
+<P>
+De plus, les ioctls standards définis dans
+<B><A HREF="/cgi-bin/man/man2html?7+netdevice">netdevice</A></B>(7)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7)
+
+sont valides sur les sockets packets.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>GESTION D'ERREUR</H2>
+
+Les sockets packets ne gère pas d'autres erreurs que celles se produisant durant la transmission
+des paquets au pilote de périphérique. Elles ne traitent pas le concept
+de file d'erreurs.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>COMPATIBILITÉ</H2>
+
+Sous Linux 2.0, la seule manière d'obtenir une socket packet était l'appel
+<B>socket(PF_INET, SOCK_PACKET, </B><I>protocol</I><B>)</B>.
+
+Ceci est encore supporté mais fortement déconseillé.
+La principale différence entre les deux méthodes est que
+<B>SOCK_PACKET</B>
+
+utilise l'ancienne
+<B>struct sockaddr_pkt</B>
+
+pour indiquer l'interface, ce qui ne fournit aucune indépendance vis-à-vis du niveau physique.
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct sockaddr_pkt
+{
+    unsigned short  spkt_family;
+    unsigned char   spkt_device[14];
+    unsigned short  spkt_protocol;
+};
+
+</PRE>
+
+</DL>
+
+<P>
+<B>spkt_family </B>
+
+contient le
+type de périphérique
+<B>spkt_protocol </B>
+
+est le type de protocole IEEE 802.3 comme défini dans
+<B>&lt;<A HREF="file:///usr/include/sys/if_ether.h">sys/if_ether.h</A>&gt;</B>
+
+et
+<B>spkt_device </B>
+
+est le nom du périphérique sous forme de chaîne terminée par un caractère nul, par exemple eth0.
+<P>
+Cette structure est obsolète et ne doit pas être employé dans des nouveaux programmes.
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>NOTES</H2>
+
+Pour la portabilité, il est conseillé d'utiliser les fonctionnalités
+<B>PF_PACKET</B>
+
+par l'intermédiaire de l'interface
+<B><A HREF="/cgi-bin/man/man2html?3+pcap">pcap</A></B>(3);
+
+bien que cela ne couvre qu'un sous-ensembles des
+possibilités de
+<B>PF_PACKET</B>.
+
+<P>
+Les sockets packet
+<B>SOCK_DGRAM</B>
+
+n'essayent pas de créer ou de traiter les en-têtes IEEE 802.2 LLC pour
+une trame IEEE 802.3.
+Lorsque le protocole
+<B>ETH_P_802_3 </B>
+
+est indiqué en émission, le noyau crée la trame
+802.3 et remplit le champ de longueur. L'utilisateur doit fournir l'en-tête
+LLC pour obtenir un paquet entièrement conforme. Les paquets 802.3 entrants ne sont pas
+multiplexés sur les champs du protocole DSAP/SSAP. A la place, ils sont fournis à l'utilisateur
+sous le protocole
+<B>ETH_P_802_2</B>
+
+sans en-tête LLC ajouté. Il n'est donc pas possible de faire d'attachement
+<B>ETH_P_802_3;</B>
+
+L'attachement
+<B>ETH_P_802_2 </B>
+
+doit être réalisé à la place, et le multiplexage de protocole doit être réalisé manuellement.
+Le comportement par défaut en émission est l'encapsulation Ethernet DIX standard, avec le
+protocole renseigné.
+<P>
+Les sockets packets ne sont pas soumises aux chaînes de firewall en entrée ou sortie.
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ENETDOWN</B>
+
+<DD>
+L'interface n'est pas en marche.
+<P>
+<DT><B>ENOTCONN</B>
+
+<DD>
+No interface address passed.
+<P>
+<DT><B>ENODEV</B>
+
+<DD>
+Unknown device name or interface index specified in interface address.
+<P>
+<DT><B>EMSGSIZE</B>
+
+<DD>
+Le paquet est plus grand que le MTU de l'interface.
+<P>
+<DT><B>ENOBUFS</B>
+
+<DD>
+Pas assez de mémoire pour le paquet.
+<P>
+<DT><B>EFAULT</B>
+
+<DD>
+Adresse mémoire invalide.
+<P>
+<DT><B>EINVAL</B>
+
+<DD>
+Argument invalide.
+<P>
+<DT><B>ENXIO</B>
+
+<DD>
+Numéro d'interface illégal.
+<P>
+<DT><B>EPERM</B>
+
+<DD>
+L'utilisateur n'a pas les privilèges nécessaires pour l'opération.
+<P>
+<DT><B>EADDRNOTAVAIL</B>
+
+<DD>
+Adresse de groupe multicast inconnue.
+<P>
+<DT><B>ENOENT</B>
+
+<DD>
+Pas de paquet reçu.
+<P>
+De plus, d'autres erreurs peuvent être engendrées par le pilote bas-niveau.
+</DL>
+<A NAME="lbAL">&nbsp;</A>
+<H2>VERSIONS</H2>
+
+<B>PF_PACKET </B>
+
+est une nouveauté de Linux 2.2. Les versions Linux précédente ne supportaient que
+<B>SOCK_PACKET.</B>
+
+<P>
+<A NAME="lbAM">&nbsp;</A>
+<H2>BOGUES</H2>
+
+La GlibC 2.1 ne définit pas la constante symbolique
+<B>SOL_PACKET.</B>
+
+Pour contourner ce problème, il est conseillé d'écrire&nbsp;:
+<DL COMPACT><DT><DD>
+<PRE>
+#ifndef SOL_PACKET
+#define SOL_PACKET 263
+#endif
+</PRE>
+
+</DL>
+
+Ceci est corrigé dans les dernières versions de la GlibC et ne se produit pas sur les LibC5.
+<P>
+La gestion des en-têtes LLC IEEE 802.2/802.3 devrait être considérée comme un bogue.
+<P>
+Les filtres des sockets ne sont pas documentés.
+<P>
+L'extension
+<I>MSG_TRUNC</I>
+
+de recmsg est une bidouille horrible et devrait être remplacée par un message de commande.
+Il n'y a actuellement aucun moyen d'obtenir l'adresse de destination originale des
+paquets via SOCK_DGRAM.
+<P>
+<A NAME="lbAN">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Cette page de manuel a été écrite par Andi Kleen avec l'aide de Matthew Wilcox.
+PF_PACKET sous Linux 2.2 a été implémenté
+par Alexey Kuznetsov, d'après du code d'Alan Cox et d'autres.
+<P>
+<A NAME="lbAO">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?7+raw">raw</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?3+pcap">pcap</A></B>(3).
+
+<P>
+RFC 894 pour l'encapsulation standard Ethernet.
+<P>
+RFC 1700 pour l'encapsulation IP IEEE 802.3.
+<P>
+Le fichier d'en-tête
+<B>linux/if_ether.h</B>
+
+pour les protocoles du niveau physique.
+<BR>&nbsp;
+<A NAME="lbAP">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2001-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">TYPES D'ADRESSE</A><DD>
+<DT><A HREF="#lbAF">OPTIONS DES SOCKETS</A><DD>
+<DT><A HREF="#lbAG">IOCTLS</A><DD>
+<DT><A HREF="#lbAH">GESTION D'ERREUR</A><DD>
+<DT><A HREF="#lbAI">COMPATIBILITÉ</A><DD>
+<DT><A HREF="#lbAJ">NOTES</A><DD>
+<DT><A HREF="#lbAK">ERREURS</A><DD>
+<DT><A HREF="#lbAL">VERSIONS</A><DD>
+<DT><A HREF="#lbAM">BOGUES</A><DD>
+<DT><A HREF="#lbAN">AUTEURS</A><DD>
+<DT><A HREF="#lbAO">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAP">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:59 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,121 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CLEANUP-INFO</TITLE>
+</HEAD><BODY>
+<H1>CLEANUP-INFO</H1>
+Section: utilitaires dpkg (8)<BR>Updated: Novembre 1999<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+cleanup-info - nettoyer le désordre qui a pu être mis par un install-info
+bogué
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>cleanup-info</B>
+
+[--help] [--unsafe] [--version] [--] [<I>&lt;nom-de-rep&gt;</I>]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>cleanup-info</B>
+
+est un script Perl qui essaye de nettoyer le désordre qui a pu être mis par un 
+install-info bogué. Il rassemble en une seule section toutes les sections qui 
+possèdent le même en-tête. Il essaye de se débrouiller avec les
+problèmes de casse ou avec des espaces ou deux-points qui peuvent avoir été
+laissés.
+<BR>
+
+Il procède aussi à la suppression des sections vides et à l'élimination des 
+lignes blanches (dans les entrées seulement).
+<P>
+L'ordre des sections est préservé (la première section rencontrée est prise en
+compte). L'ordre des entrées à l'intérieur des sections est préservé.
+<P>
+<B>Faites très attention</B> en utilisant ce script. - il n'est peut-être
+pas fiable à 100&nbsp;%. cleanup-info essaye de faire attention au fichier
+«&nbsp;info/dir&nbsp;», mais seulement jusqu'à ce qu'il l'ait modifié. Il vaut 
+mieux sauvegarder ce fichier avant d'utiliser ce script.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><I>--help</I>
+
+<DD>
+Affiche un écran d'aide et se termine normalement.
+<DT><I>--unsafe</I>
+
+<DD>
+Apporte quelques options supplémentaires qui peuvent être utiles.
+<BR>
+
+<B>Attention&nbsp;: l'option «&nbsp;--unsafe&nbsp;» peut altérer un fichier qui était correct&nbsp;!</B>
+
+<DT><I>--version</I>
+
+<DD>
+Affiche la version et se termine normalement.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/usr/info/dir ou &lt;nom-de-rep&gt;/dir</I>
+
+<DD>
+Le fichier «&nbsp;dir&nbsp;» du répertoire «&nbsp;info&nbsp;». Le fichier verrouillé porte le même
+nom suivi de «&nbsp;.lock&nbsp;».
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Beaucoup, sans doute.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOYEZ AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+install-info">install-info</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?1+info">info</A></B>(1).
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Copyright (C) 1996 Kim-Minh Kaplan.
+<P>
+C'est un logiciel libre&nbsp;; voyez la «&nbsp; GNU General Public Licence&nbsp;» version 2
+ou supérieure pour le copyright. Il n'y a
+<B>pas</B>
+
+de garantie.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Philippe Batailler, Janvier 2001.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">VOYEZ AUSSI</A><DD>
+<DT><A HREF="#lbAI">AUTEUR</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:00 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,383 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETIPNODEBYNAME</TITLE>
+</HEAD><BODY>
+<H1>GETIPNODEBYNAME</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getipnodebyname, getipnodebyaddr, freehostent - Obtenir les adresses réseau et noms d'hôte.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/netdb.h">netdb.h</A>&gt;</B>
+
+<B>struct hostent * getipnodebyname (const char * </B><I>name</I><B>,</B>
+<B>                         int </B><I>af</I><B>, int </B><I>flags</I><B>,</B>
+<B>                         int * </B><I>error_num</I><B>);</B>
+
+<B>struct hostent * igetipnodebyaddr (const void * </B><I>addr</I><B>,</B>
+<B>                         size_t </B><I>len</I><B>, int </B><I>af</I><B>,</B>
+<B>                         int </B><I>flags</I><B>, int * </B><I>error_num</I><B>);</B>
+
+<B>void freehostent (struct hostent * </B><I>ip</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ces fonctions sont déconseillées. Utilisez
+<B><A HREF="/cgi-bin/man/man2html?3+getaddrinfo">getaddrinfo</A></B>(3)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+getnameinfo">getnameinfo</A></B>(2)
+
+à leur place.
+<P>
+
+Les fonctions
+<B><A HREF="/cgi-bin/man/man2html?3+getipnodebyname">getipnodebyname</A></B>(3)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?3+getipnodebyaddr">getipnodebyaddr</A></B>(3)
+
+renvoient le nom et l'adresse réseau d'un hôte.
+Ces fonctions renvoient un pointeur 
+sur une structure définie comme suit :
+<P>
+<PRE>
+<B>struct  hostent {</B>
+<B>        char    *</B><I>h_name</I><B>;</B>
+<B>        char    **</B><I>h_aliases</I><B>;</B>
+<B>        int     </B><I>h_addrtype</I><B>;</B>
+<B>        int     </B><I>h_length</I><B>;</B>
+<B>        char    **</B><I>h_addr_list</I><B>;</B>
+<B>};</B>
+</PRE>
+
+<P>
+
+Ces fonctions remplacent les fonctions
+<B><A HREF="/cgi-bin/man/man2html?3+gethostbyname">gethostbyname</A></B>(3)
+
+et 
+<B><A HREF="/cgi-bin/man/man2html?3+gethostbyaddr">gethostbyaddr</A></B>(3)
+
+qui ne pouvaient qu'accéder aux adresses réseau de la famille IPv4.
+Les fonctions
+<B><A HREF="/cgi-bin/man/man2html?3+getipnodebyname">getipnodebyname</A></B>(3)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?3+getipnodebyaddr">getipnodebyaddr</A></B>(3)
+
+peuvent fonctionner avec diverses familles d'adresses réseau.
+<P>
+
+Contrairement aux fonctions du type
+<B>gethostby</B>,
+
+Ces routines
+renvoient des pointeurs
+sur des zones de mémoires allouées dynamiquement.
+La fonction
+<B><A HREF="/cgi-bin/man/man2html?3+freehostent">freehostent</A></B>(3)
+
+sert à libérer la zone de mémoire allouée dynamiquement
+une fois que l'on n'a plus besoin des
+informations se trouvant dans la structure
+<B>hostent</B>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H3>Arguments de getipnodebyname</H3>
+
+La fonction
+<B><A HREF="/cgi-bin/man/man2html?3+getipnodebyname">getipnodebyname</A></B>(3)
+
+recherche l'adresse
+réseau de l'hôte indiqué
+dans son
+argument
+<I>name</I>.
+
+L'argument
+<I>af</I>
+
+prend l'une des valeurs suivantes :
+<DL COMPACT>
+<DT><B>AF_INET</B>
+
+<DD>
+Le paramètre
+<I>name</I>
+
+représente une adresse décimale pointée IPv4, ou le nom 
+d'un hôte sur un réseau IPv4.
+<DT><B>AF_INET6</B>
+
+<DD>
+Le paramètre
+<I>name</I>
+
+représente une adresse hexadécimale IPv6, ou le nom 
+d'un hôte sur un réseau IPv6.
+</DL>
+<P>
+
+L'argument
+<I>flags</I>
+
+indique des options supplémentaires.
+Plusieurs options peuvent être indiquées en 
+les regroupant par un OU binaire.
+<I>flags</I>
+
+doit être mis à 0
+si aucune option n'est désirée.
+<DL COMPACT>
+<DT><B>AI_V4MAPPED</B>
+
+<DD>
+Cet attribut est utilisé avec
+<B>AF_INET6</B>
+
+pour demander de rechercher une adresse IPv4 plutôt
+qu'une IPv6. L'adresse IPv4 devra toutefois
+être projetée dans l'espace IPv6.
+<DT><B>AI_ALL</B>
+
+<DD>
+Cet attribut est utilisé avec
+<B>AI_V4MAPPED</B>
+
+pour demander une recherche simultanée d'adresses IPv4 et IPv6.
+Toute adresse IPv4 trouvée sera projetée dans l'espace IPv6.
+<DT><B>AI_ADDRCONFIG</B>
+
+<DD>
+Cet attribut est utilisé avec
+<B>AF_INET6</B>
+
+pour indiquer que les requêtes ultérieures d'adresses IPv6
+n'auront pas lieu à moins que le système n'ait au moins une
+adresse IPv6 affectée à une interface réseau. Symétriquement, 
+les requêtes d'adresses IPv4 n'auront lieu que si
+le système dispose au mons d'une adresse IPv4 affectée à une interface réseau.
+Cet attribut peut être utilisé seul ou
+avec
+<B>AI_V4MAPPED</B>.
+
+<DT><B>AI_ALL</B>
+
+<DD>
+Cet attribut est équivalent à
+<B>(AI_ADDRCONFIG | AI_V4MAPPED)</B>.
+
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H3>Arguments de getipnodebyaddr</H3>
+
+La fonction
+<B><A HREF="/cgi-bin/man/man2html?3+getipnodebyaddr">getipnodebyaddr</A></B>(3)
+
+recherche le nom d'un hôte dont
+l'adresse réseau
+est indiquée
+par
+l'argument
+<I>addr</I>.
+
+L'argument
+<I>af</I>
+
+prend l'une des valeurs suivantes :
+<DL COMPACT>
+<DT><B>AF_INET</B>
+
+<DD>
+L'argument
+<I>addr</I>
+
+pointe vers une structure
+<B>struct in_addr</B>
+
+et 
+<I>len</I>
+
+doit valoir
+<B>sizeof(struct in_addr)</B>.
+
+<DT><B>AF_INET6</B>
+
+<DD>
+L'argument
+<I>addr</I>
+
+pointe vers une structure
+<B>struct in6_addr</B>
+
+et 
+<I>len</I>
+
+doit valoir
+<B>sizeof(struct in6_addr)</B>.
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+En cas d'erreur, un pointeur NULL est renvoyé, et
+<I>error_num</I>
+
+contiendra un code d'erreur parmi les suivants :
+<DL COMPACT>
+<DT><B>HOST_NOT_FOUND</B>
+
+<DD>
+Le nom d'hôte ou l'adresse réseau n'ont pas été trouvés.
+<DT><B>NO_ADDRESS</B>
+
+<DD>
+Le serveur de noms reconnait l'adresse réseau ou le nom, 
+mais n'a pas fourni de réponse.
+Ceci peut se produire si l'hôte n'a que des adresse IPv4, et
+qu'on a demandé uniquement des informations IPv6, ou l'inverse.
+<DT><B>NO_RECOVERY</B>
+
+<DD>
+Le serveur de noms a renvoyé une erreur définitive.
+<DT><B>TRY_AGAIN</B>
+
+<DD>
+Le serveur de noms a renvoyé une erreur temporaire.
+Réessayez plus tard.
+</DL>
+<P>
+
+Une recherche couronnée de succès renvoie un pointeur sur une structure
+<B>hostent</B>
+
+contenant les champs suivants&nbsp;:
+<DL COMPACT>
+<DT><B>h_name</B>
+
+<DD>
+Nom officiel de l'hôte.
+<DT><B>h_aliases</B>
+
+<DD>
+Table de pointeurs vers des alias non-officiels du même hôte.
+La table est terminée par un pointeur NULL.
+<DT><B>h_addrtype</B>
+
+<DD>
+Il s'agit d'une copie de l'argument
+<I>af</I>
+
+de
+<B><A HREF="/cgi-bin/man/man2html?3+getipnodebyname">getipnodebyname</A></B>(3)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?3+getipnodebyaddr">getipnodebyaddr</A></B>(3).
+
+<I>h_addrtype</I>
+
+sera toujours
+<B>AF_INET</B>
+
+si l'argument
+<I>af</I>
+
+était
+<B>AF_INET</B>.
+
+<I>h_addrtype</I>
+
+sera toujours
+<B>AF_INET6</B>
+
+si l'argument
+<I>af</I>
+
+était
+<B>AF_INET6</B>.
+
+<DT><B>h_length</B>
+
+<DD>
+Ce champ contiendra la longueur
+<B>sizeof(struct in_addr)</B>
+
+si
+<I>h_addrtype</I>
+
+est AF_INET, et
+<B>sizeof(struct in6_addr)</B>
+
+si
+<I>h_addrtype</I>
+
+vaut AF_INET6.
+<DT><B>h_addr_list</B>
+
+<DD>
+Il s'agit d'une table de pointeurs vers les structures d'adresse
+de l'hôte.
+La table est terminée par un pointeur NULL.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Ces fonctions étaient présentes dans la GlibC 2.1.91-95, mais en ont été
+retirées. Plusieurs systèmes de type Unix les supportent, mais tous les
+considèrent comme déconseillées.
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+RFC 2553
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+getaddrinfo">getaddrinfo</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getnameinfo">getnameinfo</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+inet_ntop">inet_ntop</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+inet_pton">inet_pton</A></B>(3)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">Arguments de getipnodebyname</A><DD>
+<DT><A HREF="#lbAF">Arguments de getipnodebyaddr</A><DD>
+</DL>
+<DT><A HREF="#lbAG">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:08 GMT, February 11, 2014
+</BODY>
+</HTML>

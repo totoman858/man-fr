@@ -1,0 +1,107 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CACHEFLUSH</TITLE>
+</HEAD><BODY>
+<H1>CACHEFLUSH</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+cacheflush - Vider le contenu des mémoires caches.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/asm/cachectl.h">asm/cachectl.h</A>&gt;</B>
+
+<B>int cacheflush(char *</B><I>addr</I><B>, int nbytes</B><I>, int cache</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>cacheflush</B>
+
+vide le contenu des mémoires caches de l'espace d'adressage
+utilisateur compris entre addr et (addr+nbytes-1). 
+La mémoire cache est l'une des suivantes :
+<DL COMPACT>
+<DT><B>ICACHE</B>
+
+<DD>
+Mémoire cache d'instructions
+<DT><B>DCACHE</B>
+
+<DD>
+Réécriture du cache et désactivation du cache concerné
+<DT><B>BCACHE</B>
+
+<DD>
+identique à
+<B>(ICACHE|DCACHE).</B>
+
+</DL>
+<P>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>cacheflush</B>
+
+renvoie 0 s'il réussit. En cas d'échec, -1 est renvoyé et
+<I>errno </I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+Le paramètre de cache n'est pas l'un des trois mentionnés ci-dessus.
+<DT><B>EFAULT</B>
+
+<DD>
+Une partie de l'espace d'adressage entre addr et (addr+nbytes-1) n'est pas accessible.
+</DL>
+<P>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+L'implémentation actuelle ignore les paramètres addr et nbytes. A la place,
+le cache entier est toujours vide.
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Cet appel système n'est disponible que sur les systèmes MIPS, il ne faut
+pas l'employer dans un programme destiné à être portable.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:51 GMT, February 11, 2014
+</BODY>
+</HTML>

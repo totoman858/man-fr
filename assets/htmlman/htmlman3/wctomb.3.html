@@ -1,0 +1,96 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of WCTOMB</TITLE>
+</HEAD><BODY>
+<H1>WCTOMB</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+wctomb - Convertir un caractère étendu en caractère multi-octet.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<B>int wctomb (char *</B><I>s</I><B>, wchar_t </B><I>wchar</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Si <I>s</I> n'est pas NULL, la fonction <B>wctomb</B> convertit le caractère large
+<I>wc</I> dans sa représentation multi-octets et le stocke au début de la chaîne
+de caractères pointée par <I>s</I>. Elle met à jour l'état de décalage, variable statique
+anonyme connue uniquement de la fonction wctomb, et renvoie la longueur de la représentation
+multioctets, c'est à dire le nombre d'octets écrits dans <I>s</I>.
+<P>
+
+Le programmeur doit s'assurer qu'il y a suffisament de place pour <B>MB_CUR_MAX</B> octets
+au moins dans <I>s</I>.
+<P>
+
+Si <I>s</I> est NULL, la fonction <B>wctomb</B> réinitialise l'état de décalage, connu seulement
+de cette fonction, à sa valeur initiale et renvoie une valeur non-nulle si l'encodage a
+un état de décalage non trivial, ou zéro si l'encodage est sans état.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Si <I>s</I> n'est pas NULL, la fonction <B>wctomb</B> renvoie le nombre d'octets qui ont
+été écrit dans la chaîne d'octet à l'adresse <I>s</I>. Si <I>wc</I> ne peut pas être représenté
+par une séquence multi-octets (d'après la localisation en cours), elle renvoie -1.
+<P>
+
+Si <I>s</I> est NULL, la fonction <B>wctomb</B> renvoie une valeur non-nulle si l'encodage a
+un état de décalage non trivial, ou zéro si l'encodage est sans état.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ISO/ANSI C, UNIX98
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+wcrtomb">wcrtomb</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+wcstombs">wcstombs</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+MB_CUR_MAX">MB_CUR_MAX</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le comportement de <B>wctomb</B> dépend de la catégorie LC_TYPE de la localisation
+en cours.
+<P>
+
+Cette fonction ne doit pas être utilisée dans un environnement multi-threads. La routine
+<B>wcrtomb</B> fournit une meilleure interface pour la même fonctionnalité.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:11 GMT, February 11, 2014
+</BODY>
+</HTML>

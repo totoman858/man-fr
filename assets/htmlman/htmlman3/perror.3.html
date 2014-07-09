@@ -1,0 +1,131 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PERROR</TITLE>
+</HEAD><BODY>
+<H1>PERROR</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+perror - Affiche un message d'erreur.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<P>
+<B>void perror (const char </B><I>*s</I><B>);</B>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/errno.h">errno.h</A>&gt;</B>
+
+<P>
+<B>const char *</B><I>sys_errlist</I><B>[];</B>
+
+<BR>
+
+<B>int </B><I>sys_nerr</I><B>;</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>perror()</B>
+
+affiche un message sur la sortie d'erreur standard, décrivant la dernière
+erreur rencontrée durant un appel système ou une fonction de bibliothèque.
+D'abord, (si
+<I>s</I>
+
+n'est pas NULL et
+*<I>s</I>
+
+non plus), la chaîne de caractère
+<I>s</I>
+
+est imprimée, suivie d'un double-point ou d'un blanc,
+puis le message, suivi d'un saut de ligne.
+<P>
+La chaîne de caractères contient généralement le nom de la fonction
+où s'est produit l'erreur. Le numéro d'erreur est obtenu à partir de
+la variable externe <I>errno</I>, qui contient le code d'erreur lorsqu'un
+problème survient, mais qui n'est PAS effacé lorsqu'un appel est réussi.
+<P>
+La liste globale d'erreurs 
+<I>sys_errlist</I>[]
+
+indexée par
+<I>errno</I>
+
+peut être utilisée pour obtenir le message d'erreur sans le saut de ligne.
+Le plus grand numéro de message contenu dans cette table est
+<I>sys_nerr</I> - 1.
+
+Soyez prudents lors des accès directs dans cette liste, car de nouvelles
+erreurs n'ont peut être pas de message dans
+<I>sys_errlist</I>[].
+
+<P>
+<P>
+Quand un appel système échoue, il renvoie habituellement -1, et place le
+code d'erreur dans
+<I>errno</I>.
+
+(Les codes sont décrits dans 
+<I>&lt;<A HREF="file:///usr/include/errno.h">errno.h</A>&gt;</I>.)
+
+Beaucoup de fonctions de bibliothèque se comportent également ainsi.
+La fonction
+<B>perror()</B>
+
+permet de traduire les codes d'erreur en une forme humainement lisible.
+Notez que
+<I>errno</I>
+
+est indéfini après un appel de fonction de bibliothèque réussi. Cette fonction
+peut modifier <I>errno</I> même si elle réussit, ne serait-ce que par des
+appels systèmes internes qui peuvent échouer.
+<P>
+Ainsi, si un appel qui échoue n'est pas immédiatement suivi par
+<B>perror</B>,
+
+la valeur de
+<I>errno</I>
+
+doit être sauvegardée.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ANSI C, BSD 4.3, POSIX, X/OPEN
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+strerror">strerror</A></B>(3)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:51 GMT, February 11, 2014
+</BODY>
+</HTML>

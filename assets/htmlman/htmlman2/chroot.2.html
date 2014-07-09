@@ -1,0 +1,135 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CHROOT</TITLE>
+</HEAD><BODY>
+<H1>CHROOT</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+chroot - Modifier le répertoire racine.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int chroot (const char *</B><I>path</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>chroot</B>
+
+remplace le répertoire racine du processus en cours par celui 
+spécifié par le chemin
+<I>path</I>.
+
+Ce répertoire sera utilisé comme origine des chemins commençant par /.  
+Le répertoire racine est hérité par tous les enfants du processus
+ayant fait le changement.
+<P>
+Seul le Super-User peut effectuer un changement de répertoire racine.
+<P>
+Notez que cet appel système ne modifie pas le répertoire de travail,
+aussi `.' peut se retrouver en-dehors de l'arbre dont la racine
+est `/'. En particulier, le Super-User peut s'évader d'un &quot;piège chroot&quot;
+en faisant `mkdir foo; chroot foo; cd ..'.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>chroot</B>
+
+renvoie 0 s'il réussit, ou -1 s'il échoue, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Suivant le type de système de fichiers, plusieurs erreurs peuvent être
+renvoyées. Les plus courantes sont les suivantes :
+<P>
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+L'UID effectif du processus n'est pas nul.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>path</I>
+
+pointe en dehors de l'espace d'adressage accessible.
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+<I>path</I>
+
+est trop long.
+<DT><B>ENOENT</B>
+
+<DD>
+Le fichier n'existe pas.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour le noyau.      
+<DT><B>ENOTDIR</B>
+
+<DD>
+Un élément du chemin d'accès n'est pas un répertoire.
+<DT><B>EACCES</B>
+
+<DD>
+L'accès à un élément du chemin est interdit.                  
+<DT><B>ELOOP</B>
+
+<DD>
+<I>path</I>
+
+contient une référence circulaire (à travers un lien symbolique)
+<B>EIO</B>
+
+Une erreur d'entrée/sortie de bas-niveau s'est produite.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID, 4.4BSD, X/OPEN. Cette fonction n'est pas décrite dans POSIX.1
+SVr4 indique des conditions d'erreurs supplémentaires EINTR, ENOLINK
+et EMULTIHOP.
+X/OPEN ne décrit pas les erreurs EIO, ENOMEM, et EFAULT.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+chdir">chdir</A></B>(2)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:51 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,201 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of NL</TITLE>
+</HEAD><BODY>
+<H1>NL</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+nl - Numéroter les lignes d'un fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>nl</B>
+
+[-h type_en_tête] [-b type_corps] [-f type_pied_page] [-p] [-d cc]
+[-v numéro_départ] [-i incrément] [-l lignes] [-s séparateur_lignes]
+[-w largeur_numéros] [-n {ln,rn,rz}] [--header-numbering=style]
+[--body-numbering=style] [--footer-numbering=style]
+[--first-page=nombre] [--page-increment=nombre] [--no-renumber]
+[--join-blank-lines=nombre] [--number-separator=chaîne]
+[--number-width=nombre] [--number-format={ln,rn,rz}]
+[--section-delimiter=cc] [--help] [--version] [fichier...]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>nl</B>.
+
+<P>
+<B>nl</B>
+
+copie les fichiers indiqués sur la sortie standard en ajoutant
+des numéros à toutes les lignes, ou à certaines d'entre-elles.
+<P>
+Si aucun nom de fichier n'est fourni, ou si le nom `-' est
+mentionné, l'entrée standard sera copiée.
+<P>
+
+<B>nl</B>
+
+considère que ses entrées sont composées de pages. Par défaut, le
+numéro de ligne est réinitialisé à 1 au début de chaque page.
+<B>nl</B>
+
+traite tous ses fichiers d'entrée comme un unique document. Il ne
+réinitialise pas les numéros de ligne ou de page entre les fichiers.
+<P>
+
+Une page est composée de 3 sections : un en-tête, un corps, et un
+pied de page. Chacune de ces sections peut éventuellement être vide.
+Chacune peut également être numérotée de manière différente des
+autres.
+<P>
+
+Le début des sections de chaque page est indiqué dans le fichier
+d'entrée par une ligne ne contenant qu'une chaîne de délimitation
+comme suit :
+<P>
+
+<PRE>
+
+\:\:\: début de l'en-tête
+\:\: début du corps de la page
+\: début du pied de page
+</PRE>
+
+<P>
+
+Les deux caractères utilisés pour ces chaînes peuvent être modifiés
+par une option indiquée plus bas, mais l'organisation et la longueur des
+chaînes sont figées.
+<P>
+
+Les chaînes de délimitation des sections sont remplacées par des lignes
+vides en sortie. Tout texte rencontré avant le délimiteur de début
+d'en-tête est considéré comme appartenant au corps de la page. Ainsi, 
+un texte ne contenant aucun délimiteur sera considéré comme une unique
+section &quot;corps de page&quot;.
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><I>-h, --header-numbering=style</I>
+
+<DD>
+Voir --footer-numbering.
+<DT><I>-b, --body-numbering=style</I>
+
+<DD>
+Voir --footer-numbering.
+<DT><I>-f, --footer-numbering=style</I>
+
+<DD>
+Choisit le type de numérotation pour les lignes de la section &quot;pied-de-page&quot;
+de chaque page logique. Quand une ligne n'est pas numérotée, le numéro de
+ligne n'est pas incrémenté, mais le caractère séparateur de numéro de ligne
+est quand même ajouté à celle-ci.
+Les styles possibles sont :
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>a<DD>
+numéroter toutes les lignes
+<DT>t<DD>
+ne numéroter que les lignes non-vide (comportement par défaut pour le corps de page)
+<DT>n<DD>
+ne pas numéroter les lignes (comportement par défaut pour les en-têtes et les pieds de page)
+<DT>p<I>regexp</I><DD>
+ne numéroter que les lignes contenant une correspondance avec l'expression rationnelle <I>regexp</I>
+</DL>
+</DL>
+
+<DT><I>-p, --no-renumber</I>
+
+<DD>
+Ne pas réinitialiser la numérotation en début de page
+<DT><I>-v, --first-page=valeur</I>
+
+<DD>
+Démarrer en début de page la numérotation à la <I>valeur</I> indiquée
+(par défaut : 1).
+<DT><I>-i, --page-increment=valeur</I>
+
+<DD>
+Incrémenter les numéros de ligne de la <I>valeur</I> indiquée (par défaut 1).
+<DT><I>-l, --join-blank-lines=nombre</I>
+
+<DD>
+Considérer que <I>nombre</I> (par défaut 1) lignes vides consécutives
+représentent une seule ligne logique pour la numérotation. Seule la dernière
+ligne sera numérotée. Quand il y a moins de <I>nombre</I> lignes
+vides consécutives, ne pas les numéroter. Une ligne vide ne doit contenir
+aucun caractère, pas même d'espaces ou de tabulations.
+<DT><I>-s, --number-separator=chaîne</I>
+
+<DD>
+Séparer, en sortie, le numéro de ligne et le texte de celle-ci avec la
+<I>chaîne</I> mentionnée (Par défaut, il s'agit du caractère Tabulation).
+<DT><I>-w, --number-width=largeur</I>
+
+<DD>
+Formater le numéro de ligne avec la <I>largeur</I> indiquée (par défaut 6 caractères).
+<DT><I>-n, --number-format={ln,rn,rz}</I>
+
+<DD>
+Sélection du format de numérotation des lignes :
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>ln<DD>
+aligné à gauche, pas de 0 en début de nombre.
+<DT>rn<DD>
+aligné à droite, pas de 0 en début de nombre (attitude par défaut).
+<DT>rz<DD>
+aligné à droite, complété à gauche par des 0.
+</DL>
+</DL>
+
+<DT><I>-d, --section-delimiter=cc</I>
+
+<DD>
+Utiliser les deux caractères <I>cc</I> mentionnés ici pour les indicateurs
+de début de sections. Si un seul caractère est fourni, le second
+conserve la valeur ':'.
+Pour saisir '\', utiliser '\\'.
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et se terminer normalement.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et se terminer normalement.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:41 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,497 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of AT</TITLE>
+</HEAD><BODY>
+<H1>AT</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+at, batch, atq, atrm - Mémoriser, examiner ou supprimer des jobs à exécuter ultérieurement.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>at</B>
+
+[<B>-V</B>]
+
+[<B>-q</B>
+
+<I>file</I>]
+
+[<B>-f</B>
+
+<I>fichier</I>]
+
+[<B>-mldbv</B>]
+
+<B>HEURE</B>
+
+<BR>
+
+<B>at -c</B>
+
+<I>commande</I>
+
+[<I>commande...</I>]
+
+<BR>
+
+<B>atq</B>
+
+[<B>-V</B>]
+
+[<B>-q</B>
+
+<I>file</I>]
+
+<BR>
+
+<B>atrm</B>
+
+[<B>-V</B>]
+
+<I>commande</I>
+
+[<I>commande...</I>]
+
+<BR>
+
+<B>batch</B>
+
+[<B>-V</B>]
+
+[<B>-q</B>
+
+<I>file</I>]
+
+[<B>-f</B>
+
+<I>fichier</I>]
+
+[<B>-mv</B>]
+
+[<B>HEURE</B>]
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>at</B>
+
+et
+<B>batch</B>
+
+lisent, depuis l'entrée standard, ou depuis un fichier, des commandes
+qu'ils exécuteront ultérieurement, en utilisant le shell indiqué dans
+la variable d'environnement
+<B>SHELL</B>,
+
+le shell de connexion de l'utilisateur, ou en dernier ressort
+<B>/bin/sh</B>.
+
+<DL COMPACT>
+<DT><B>at</B>
+
+<DD>
+lance les commandes indiquées à une heure précise.
+<DT><B>atq</B>
+
+<DD>
+affiche la liste des commandes en attente d'exécution pour l'utilisateur
+appelant, sauf s'il s'agit du Super-Utilisateur auquel cas toutes les 
+commandes en attente sont listées. Le format de sortie est (une ligne par
+job)&nbsp;: numéro de job, date, heure, classe.
+<DT><B>atrm</B>
+
+<DD>
+efface les travaux en attente, identifiés par leurs numéros de job.
+<DT><B>batch</B>
+
+<DD>
+exécute les commandes indiquées lorsque la charge système le permet,
+c'est à dire lorsque la charge du processeur descend sous 0.8, ou
+en dessous d'une valeur mentionnée explicitement durant l'invocation de
+<B>atrun</B>.
+
+</DL>
+<P>
+
+<B>At</B>
+
+permet d'indiquer l'heure de lancement de manière assez complexe, en
+extension du standard POSIX.2. Il accepte des spécifications de la forme
+<B>HH:MM</B>
+
+pour exécuter un travail à une heure donnée de la journée en cours (ou
+du lendemain si l'heure mentionnée est déjà dépassée).
+On peut aussi lui fournir l'un des arguments suivants :
+<B>midnight</B> (minuit),
+
+<B>noon</B> (midi),
+
+ou
+<B>teatime</B> (l'heure du thé, soit 16 heures).
+
+Il est également possible de fournir un suffixe du type
+<B>AM</B> (matin),
+
+ou
+<B>PM</B> (après-midi)
+
+avec une heure sur un cadran de 12 heures.
+On peut indiquer le jour de lancement, en précisant une date
+du type
+<B>nom-du-mois</B> (en anglais)
+
+<B>jour</B>
+
+et éventuellement
+<B>année</B>,
+
+ou encore une date du type
+<B>MMJJAA</B>
+
+ou
+<B>MM/JJ/AA</B>
+
+ou
+<B>JJ.MM.AA</B>.
+
+La date
+<I>doit</I>
+
+suivre l'heure.
+On peut indiquer une heure de la forme
+<B>now</B>(maintenant) 
+
+<B>+</B>
+
+<I>nombre</I>
+
+d'<I>unités</I>,
+
+où les unités peuvent être
+<B>minutes</B>,
+
+<B>hours</B>,
+
+<B>days</B> (jours),
+
+ou
+<B>weeks</B> (semaines)
+
+et on peut également demander à
+<B>at</B>
+
+de déclencher le travail le jour même en ajoutant le suffixe
+<B>today</B>
+
+ou le lendemain en ajoutant
+<B>tomorrow</B>.
+
+<P>
+
+Par exemple, pour lancer une commande à 16 heures, 3 jours plus tard,
+on peut indiquer
+<B>at 4pm + 3 days</B>,
+
+pour lancer le travail à 10 heures du matin le 31 Juillet, il faut invoquer
+<B>at 10am Jul 31</B>
+
+et pour lancer une commande à 1 heure du matin le lendemain, effectuez
+<B>at 1am tomorrow</B>.
+
+<P>
+
+<I>/usr/share/doc/at-3.1.8/timespec</I>
+
+contient les définitions exactes des spécifications horaires.
+<P>
+
+Aussi bien
+<B>at</B> que <B>batch</B>
+
+lisent les commandes à mémoriser depuis l'entrée standard, ou dans le
+fichier indiqué par l'option
+<B>-f</B>.
+
+Le répertoire de travail, l'environnement (sauf pour les variables
+<B>TERM</B>,
+
+<B>DISPLAY</B>
+
+et
+<B>_</B>)
+
+ainsi que le <I>umask</I> sont mémorisés au moment de l'invocation.
+Une commande
+<B>at </B>-
+
+ou
+<B>batch </B>-
+
+invoquée depuis un shell obtenu par
+<B><A HREF="/cgi-bin/man/man2html?1+su">su</A>(1)</B>
+
+mémorisera l'U-ID en cours.
+L'appelant recevra par courrier (mail) les messages écrits sur les flux de
+sortie standard et d'erreur standard, s'il y en a.
+Le courrier sera envoyé en utilisant la commande
+<B>/usr/sbin/sendmail</B>.
+
+Si
+<B>at</B>
+
+est invoquée depuis un shell obtenu par
+<B><A HREF="/cgi-bin/man/man2html?1+su">su</A>(1)</B>,
+
+le courrier sera envoyé à l'utilisateur correspondant au login.
+<P>
+
+Le Super-Utilisateur peut toujours employer ces commandes. Pour les
+autres utilisateurs, les permissions sont déterminées
+par les fichiers
+<I>/etc/at.allow</I>
+
+et
+<I>/etc/at.deny</I>.
+
+<P>
+
+Si le fichier
+<I>/etc/at.allow</I>
+
+existe, seuls les utilisateurs dont les noms sont mentionnés dans
+ce fichier peuvent utiliser
+<B>at</B>.
+
+<P>
+
+Si
+<I>/etc/at.allow</I>
+
+n'existe pas, <B>at</B> vérifie si
+<I>/etc/at.deny</I>
+
+existe, et tous les utilisateurs non-mentionnés dans ce fichier ont
+le droit d'invoquer
+<B>at</B>.
+
+<P>
+
+Si aucun de ces deux fichiers n'existe, seul le Super-utilisateur a
+le droit d'appeler
+<B>at</B>.
+
+<P>
+
+Un fichier
+<I>/etc/at.deny</I>
+
+vide signifie que tous les utilisateurs ont le droit d'appeler ces
+commandes, c'est la configuration par défaut.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-V</B>
+
+<DD>
+Afficher un numéro de version sur la sortie d'erreur standard.
+<DT><B>-q</B><I> file</I>
+
+<DD>
+Utiliser la <I>file</I> d'attente mentionnée.
+Une file est désignée par une lettre unique, dans l'intervalle
+<B>a</B>
+
+jusqu'à
+<B>z</B>,
+
+et
+<B>A</B>
+
+jusqu'à
+<B>Z</B>.
+
+La file
+<B>a</B>
+
+est la file d'attente par défaut pour
+<B>at</B>
+
+tandis que la file
+<B>b</B>
+
+est celle par défaut pour
+<B>batch</B>.
+
+Plus les files ont une lettre importante, plus les travaux seront exécutés
+avec une valeur de gentillesse (voir <B><A HREF="/cgi-bin/man/man2html?1+nice">nice</A></B>(1)) élevée. La file spéciale
+&quot;=&quot; est réservée pour les jobs en cours d'exécution.
+</DL>
+<P>
+
+Si un travail est enregistré dans une file avec une lettre majuscule, il
+sera transmis à
+<B>batch</B>
+
+à l'<I>heure</I> indiquée.
+Si l'on invoque
+<B>atq</B>
+
+avec un nom de file spécifique, il ne montrera que les travaux en attente
+dans cette file.
+<DL COMPACT>
+<DT><B>-m</B>
+
+<DD>
+Envoyer un courrier à l'utilisateur lorsque le travail est terminé, même
+s'il n'a rien écrit sur ses flux de sortie.
+<DT><B>-f</B><I> fichier</I>
+
+<DD>
+Lire la commande à exécuter dans le
+<B>fichier</B>
+
+et non pas sur l'entrée standard.
+<DT><B>-l</B>
+
+<DD>
+Est un alias pour
+<B>atq</B>.
+
+<DT><B>-d</B>
+
+<DD>
+Est un alias pour
+<B>atrm</B>.
+
+<DT><B>-v</B>
+
+<DD>
+Afficher les heures de lancement programmées.
+</DL>
+<P>
+
+Les heures seront affichées avec le format &quot;1997-02-20 14:50&quot; sauf si la
+variable d'environnement
+<B>POSIXLY_CORRECT </B>
+
+est remplie, auquel cas ce sera &quot;Thu Feb 20 14:50:00 1996&quot;.
+<DL COMPACT>
+<DT><B>-c</B>
+
+<DD>
+Imprimer sur la sortie standard les travaux mentionnés sur la ligne de commande.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/var/spool/at</I>
+
+<BR>
+
+<I>/var/spool/at/spool</I>
+
+<BR>
+
+<I>/proc/loadavg</I>
+
+<BR>
+
+<I>/var/run/utmp</I>
+
+<BR>
+
+<I>/etc/at.allow</I>
+
+<BR>
+
+<I>/etc/at.deny</I>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+cron">cron</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+nice">nice</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+sh">sh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+umask">umask</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?8+atd">atd</A></B>(8).
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Sous Linux, 
+<B>batch</B>
+
+est tributaire d'un système de fichiers de type
+<I>proc</I>
+
+monté sur le répertoire
+<I>/proc</I>.
+
+<P>
+
+Si le fichier
+<I>/var/run/utmp</I>
+
+n'est pas disponible, ou est endommagé, ou si l'utilisateur n'est pas
+connecté lorsque 
+<B>at</B>
+
+est invoquée, le courrier est envoyé a l'U-ID correspondant à la variable
+d'environnement
+<B>LOGNAME</B>.
+
+Si celle-ci est indéfinie ou vide, l'U-ID courant est utilisé par défaut.
+<P>
+
+<B>At</B>
+
+et
+<B>batch</B>,
+
+tels qu'ils sont implémentés actuellement, ne sont pas fiables lorsqu'il
+y a une situation de manque de ressources systèmes. Si c'est régulièrement
+le cas sur votre site, vous devriez vous orienter vers un autre système
+de lancements différés, comme
+<B>nqs</B>.
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+At a été écrit principalement par Thomas Koenig, <A HREF="mailto:ig25@rz.uni-karlsruhe.de">ig25@rz.uni-karlsruhe.de</A>.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">AUTEURS</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:43 GMT, February 11, 2014
+</BODY>
+</HTML>

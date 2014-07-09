@@ -1,0 +1,130 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PROTOCOLS</TITLE>
+</HEAD><BODY>
+<H1>PROTOCOLS</H1>
+Section: Manuel de l administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+protocols - Fichier de définition des protocoles.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>/etc/protocols</B>
+
+est un fichier de texte ASCII, décrivant les différents protocoles internet 
+DARPA qui sont disponibles avec le sous-système TCP/IP. Il faut consulter
+ce fichier pour connaître les valeurs utilisées sur le système plutôt que
+d'utiliser les nombres donnés dans les fichiers d'en-tête ARPA, ou encore pire,
+d'essayer de deviner les valeurs.
+Ces numéros se trouvent dans le champ protocole des en-têtes IP.
+<P>
+Évitez de modifier ce fichier, sinon le sous-système IP ne fonctionnerait
+plus correctement. Les valeurs et les noms des protocoles sont spécifiés
+par le DDN Network Information Center.
+<P>
+Chaque ligne a le format suivant&nbsp;:
+<P>
+<DL COMPACT><DT><DD>
+<I>protocole numéro alias ...</I>
+
+</DL>
+
+<P>
+où les champs sont séparés par des espaces ou des tabulations. 
+Les lignes vides sont ignorées.
+Le caractère # débute un commentaire qui se poursuit jusqu'à la fin de la ligne.
+<P>
+La description des champs est la suivante&nbsp;:
+<P>
+<DL COMPACT>
+<DT><I>protocole</I>
+
+<DD>
+Le nom original du protocole, par exemple
+<I>ip</I>, <I>tcp</I>, ou <I>udp</I>.
+
+<DT><I>numéro</I>
+
+<DD>
+Le numéro officiel du protocole, tel qu'il apparaîtra dans l'en-tête IP.
+<DT><I>alias</I>
+
+<DD>
+Des synonymes éventuels pour le nom du protocole.
+</DL>
+<P>
+
+<P>
+Ce fichier peut être diffusé sur le réseau, en utilisant un service
+d'information comme 
+<B>Yellow Pages/NIS </B>
+
+ou 
+<B>BIND/Hesiod</B>.
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+<PRE>
+$ ls -l /etc/protocols 
+-rw-r--r--   1 root     root      715 Jan  1  1980 /etc/protocols
+$ cat /etc/protocols
+ip      0       IP      # Protocole internet
+icmp    1       ICMP    # Protocole internet pour messages de contrôle
+igmp    2       IGMP    # Protocole internet pour multi-cast.
+ggp     3       GGP     # Protocole passerelle/passerelle
+tcp     6       TCP     # Protocole de contrôle de transmission
+pup     12      PUP     # Protocole universel PARC
+udp     17      UDP     # Protocole pour Datagrammes
+raw     255     RAW     # Interface IP directe.
+$
+</PRE>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/etc/protocols</I>
+
+<DD>
+Le fichier de définition des protocoles.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+getprotoent">getprotoent</A></B>(3)
+
+<P>
+Guide to Yellow Pages Service
+<P>
+Guide to BIND/Hesiod Service
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">EXEMPLE</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:56 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,151 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of UNITS</TITLE>
+</HEAD><BODY>
+<H1>UNITS</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+units, kilo, kibi, mega, mebi, giga, gibi - Préfixes décimaux et binaires.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<A NAME="lbAD">&nbsp;</A>
+<H3>Préfixes décimaux</H3>
+
+Le Système International utilise des préfixes qui indiquent des puissances
+de dix. Un kilomètre vaut 1000 mètres, et un mégawatt vaut 1000000 watt.
+Voici les préfixes standards.
+<P>
+<DL COMPACT><DT><DD>
+<TABLE>
+<TR VALIGN=top><TD>Préfixe</TD><TD>Nom</TD><TD>Valeur<BR></TD></TR>
+<TR VALIGN=top><TD>y</TD><TD>yocto</TD><TD>10^-24 = 0.000000000000000000000001<BR></TD></TR>
+<TR VALIGN=top><TD>z</TD><TD>zepto</TD><TD>10^-21 = 0.000000000000000000001<BR></TD></TR>
+<TR VALIGN=top><TD>a</TD><TD>atto</TD><TD>10^-18 = 0.000000000000000001<BR></TD></TR>
+<TR VALIGN=top><TD>f</TD><TD>femto</TD><TD>10^-15 = 0.000000000000001<BR></TD></TR>
+<TR VALIGN=top><TD>p</TD><TD>pico</TD><TD>10^-12 = 0.000000000001<BR></TD></TR>
+<TR VALIGN=top><TD>n</TD><TD>nano</TD><TD>10^-9  = 0.000000001<BR></TD></TR>
+<TR VALIGN=top><TD>u</TD><TD>micro</TD><TD>10^-6  = 0.000001<BR></TD></TR>
+<TR VALIGN=top><TD>m</TD><TD>milli</TD><TD>10^-3  = 0.001<BR></TD></TR>
+<TR VALIGN=top><TD>c</TD><TD>centi</TD><TD>10^-2  = 0.01<BR></TD></TR>
+<TR VALIGN=top><TD>d</TD><TD>deci</TD><TD>10^-1  = 0.1<BR></TD></TR>
+<TR VALIGN=top><TD>da</TD><TD>deca</TD><TD>10^ 1  = 10<BR></TD></TR>
+<TR VALIGN=top><TD>h</TD><TD>hecto</TD><TD>10^ 2  = 100<BR></TD></TR>
+<TR VALIGN=top><TD>k</TD><TD>kilo</TD><TD>10^ 3  = 1000<BR></TD></TR>
+<TR VALIGN=top><TD>M</TD><TD>mega</TD><TD>10^ 6  = 1000000<BR></TD></TR>
+<TR VALIGN=top><TD>G</TD><TD>giga</TD><TD>10^ 9  = 1000000000<BR></TD></TR>
+<TR VALIGN=top><TD>T</TD><TD>tera</TD><TD>10^12  = 1000000000000<BR></TD></TR>
+<TR VALIGN=top><TD>P</TD><TD>peta</TD><TD>10^15  = 1000000000000000<BR></TD></TR>
+<TR VALIGN=top><TD>E</TD><TD>exa</TD><TD>10^18  = 1000000000000000000<BR></TD></TR>
+<TR VALIGN=top><TD>Z</TD><TD>zetta</TD><TD>10^21  = 1000000000000000000000<BR></TD></TR>
+<TR VALIGN=top><TD>Y</TD><TD>yotta</TD><TD>10^24  = 1000000000000000000000000<BR></TD></TR>
+</TABLE>
+
+</DL>
+
+<P>
+Le symbole pour micro est la lettre grecque Mu, souvent écrite u
+dans un contexte Ascii où la lettre grecque n'est pas disponible.
+Voir aussi
+<P>
+<DL COMPACT><DT><DD>
+<A HREF="http://physics.nist.gov/cuu/Units/prefixes.html">http://physics.nist.gov/cuu/Units/prefixes.html</A>
+</DL>
+
+<A NAME="lbAE">&nbsp;</A>
+<H3>Préfixes binaires</H3>
+
+Les préfixes binaires ressemblent aux décimaux, mais ont un 'i'
+supplémentaires (et 'Ki' commence par un 'K' majuscule). Les noms sont
+formés en prenant la première syllable du préfixe décimal avec la
+même taille approximative et en ajoutant &quot;bi&quot; pour &quot;binaire&quot;.
+<P>
+<DL COMPACT><DT><DD>
+<TABLE>
+<TR VALIGN=top><TD>Préfixe</TD><TD>Nom</TD><TD>Valeur<BR></TD></TR>
+<TR VALIGN=top><TD>Ki</TD><TD>kibi</TD><TD>2^10 = 1024<BR></TD></TR>
+<TR VALIGN=top><TD>Mi</TD><TD>mebi</TD><TD>2^20 = 1048576<BR></TD></TR>
+<TR VALIGN=top><TD>Gi</TD><TD>gibi</TD><TD>2^30 = 1073741824<BR></TD></TR>
+<TR VALIGN=top><TD>Ti</TD><TD>tebi</TD><TD>2^40 = 1099511627776<BR></TD></TR>
+<TR VALIGN=top><TD>Pi</TD><TD>pebi</TD><TD>2^50 = 1125899906842624<BR></TD></TR>
+<TR VALIGN=top><TD>Ei</TD><TD>exbi</TD><TD>2^60 = 1152921504606846976<BR></TD></TR>
+</TABLE>
+
+</DL>
+
+<P>
+Voir aussi
+<P>
+<DL COMPACT><DT><DD>
+<A HREF="http://physics.nist.gov/cuu/Units/binary.html">http://physics.nist.gov/cuu/Units/binary.html</A>
+</DL>
+
+<A NAME="lbAF">&nbsp;</A>
+<H3>Discussion</H3>
+
+Avant l'introduction des préfixes binaires, il était asez courant
+d'utiliser k=1000 et K=1024.
+Malheureusement le M est déjà en majuscule, et ne peut pas
+indiquer l'aspect binaire.
+<P>
+Il y a queleques temps cela n'était pas trop grave, car les modules mémoire et
+les disques avaient toujours des tailles en puissance de deux, ainsi tout le
+monde savait, dans ce contexte que &quot;kilo-octet&quot; et &quot;méga-octet&quot; signifiaent
+1024 et 1048576 octets respectivement. Ce qui était un abus de langage
+à l'origine avec les préfixes &quot;kilo&quot; et &quot;méga&quot; a commencé à devenir
+la pratique officielle dans le monde informatique.
+Mais la technologie des disques a évolué et leurs tailles sont devenues
+arbitraires. Après une période de flottement, tous les fabricants de
+disques ont fixé le standard k=1000, M=1000k, et G=1000M.
+<P>
+La situation était floue&nbsp;: pour un modem 14.4&nbsp;k, k=1000&nbsp;; pour une
+
+disquette 1.44&nbsp;M, M=1024000, etc. En 1998 l'IEC a approuvé le standard
+qui définit les préfixes binaires ci-dessus, permettant d'être précis
+et sans ambiguïté.
+<P>
+Ainsi aujourd'hui, MB = 1000000B et MiB = 1048576B.
+<P>
+Dans le monde du logiciel libre, les programmes évoluent peu à peu
+pour être conformes. Lorsque Linux boote, il dit
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+hda: 120064896 sectors (61473 MB) w/2048KiB Cache
+</PRE>
+
+</DL>
+
+<P>
+les MB sont des &quot;megabytes&quot; et les &quot;KiB&quot; des &quot;kibibytes&quot;.
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAD">Préfixes décimaux</A><DD>
+<DT><A HREF="#lbAE">Préfixes binaires</A><DD>
+<DT><A HREF="#lbAF">Discussion</A><DD>
+</DL>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:56 GMT, February 11, 2014
+</BODY>
+</HTML>

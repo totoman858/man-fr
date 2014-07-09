@@ -1,0 +1,107 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of NAN</TITLE>
+</HEAD><BODY>
+<H1>NAN</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+nan, nanf, nanl - Fonctions renvoyant «&nbsp;Not a Number&nbsp;».
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/math.h">math.h</A>&gt;</B>
+
+<P>
+<B>double nan(const char *</B><I>tagp</I><B>);</B>
+
+<P>
+<B>float nanf(const char *</B><I>tagp</I><B>);</B>
+
+<P>
+<B>long double nanl(const char *</B><I>tagp</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ces fonctions renvoient une représentation (déterminée par
+<I>tagp</I>)
+
+d'un NaN (Not-A-Number, élément non-numérique indiquant un cas d'erreur dans
+les routines mathématiques).
+<BR>&nbsp;Si&nbsp;cette&nbsp;implementation&nbsp;ne&nbsp;supporte&nbsp;pas&nbsp;support&nbsp;les&nbsp;NaNs,
+ces fonctions renvoient zéro.
+<P>
+
+L'appel
+<I>nan(char-sequence)</I>
+
+est équivalent à
+<I>strtod</I>(NAN(char-sequence),NULL)<I> ;</I>
+
+de même
+<I>nanf</I>
+
+et
+<I>nanl</I>
+
+sont équivalentes aux appels analogues 
+<I>strtof</I>
+
+et
+<I>strtold</I>.
+
+<P>
+
+L'argument
+<I>tagp</I>
+
+est utilisé de manière non spécifiée.  Sur les systèmes IEEE 754, il
+existe de nombreuses représentations de NaN, et
+<I>tagp</I>
+
+en sélectionne une.  Sur les autres systèmes, il peut n'avoir aucun effet.
+<A NAME="lbAE">&nbsp;</A>
+<H2>CONFORME À</H2>
+
+C99. Voir aussi IEC 559 et l'annexe sur les fonctions recommendées dans
+<BR>&nbsp;IEEE&nbsp;754/IEEE&nbsp;854.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+isnan">isnan</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strtod">strtod</A></B>(3)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 2002
+
+<BR>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">CONFORME À</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:17 GMT, February 11, 2014
+</BODY>
+</HTML>

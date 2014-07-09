@@ -1,0 +1,126 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FGETPWENT</TITLE>
+</HEAD><BODY>
+<H1>FGETPWENT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fgetpwent - Lire un fichier de mots de passe.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/pwd.h">pwd.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<B>struct passwd *fgetpwent (FILE *</B><I>stream</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>fgetpwent()</B> renvoie une structure contenant les
+différents champs d'une ligne du fichier <I>stream</I>.
+Lors de la première invocation, elle renvoie le premier enregistrement,
+ensuite elle retourne successivement tous les autres enregistrements du
+fichier.
+Le fichier <I>stream</I> doit avoir le même format que <I>/etc/<A HREF="/cgi-bin/man/man2html?5+passwd">passwd</A></I>(5).
+<P>
+
+La structure <I>passwd</I> est définie dans <I>&lt;<A HREF="file:///usr/include/pwd.h">pwd.h</A>&gt;</I> ainsi :
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct passwd {
+        char    *pw_name;     /* Nom d'utilisateur       */
+        char    *pw_passwd;   /* Mot de passe            */
+        uid_t    pw_uid;      /* ID utilisateur          */
+        gid_t    pw_gid;      /* ID groupe               */
+        char    *pw_gecos;    /* Vrai nom                */
+        char    *pw_dir;      /* Répertoire de connexion */
+        char    *pw_shell;    /* Shell à la connexion    */
+};
+
+</PRE>
+
+</DL>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>fgetpwent()</B> renvoie la structure de mot de passe, ou NULL
+si il n'y a plus d'enregistrement, ou si une erreur s'est produite.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour allouer la structure.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/etc/passwd</I>
+
+<DD>
+Base de données des mots de passe
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+getpwnam">getpwnam</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getpwuid">getpwuid</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getpwent">getpwent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setpwent">setpwent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+endpwent">endpwent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getpw">getpw</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+putpwent">putpwent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+passwd">passwd</A></B>(5).
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:17 GMT, February 11, 2014
+</BODY>
+</HTML>

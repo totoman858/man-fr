@@ -1,0 +1,226 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PPPCONFIG</TITLE>
+</HEAD><BODY>
+<H1>PPPCONFIG</H1>
+Section: Maintenance Commands (8)<BR>Updated: Version 2.0.9<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+pppconfig - configurateur de pppd
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>pppconfig</B>
+
+[--version] | [--help] | [[--dialog] | [--whiptail] | [--gdialog] [--noname] | [nomdufournisseur]]
+<BR>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+<B>pppconfig</B>
+
+est un utilitaire basé sur
+<B>dialog</B>
+
+utilisant une série de menus interactifs afin de vous aider à mettre en
+place une connexion ppp sortante. À chaque étape, des explications complètes
+vous sont fournies.
+<B>pppconfig</B>
+
+accepte les authentifications PAP, CHAP, et celles basées sur des scripts
+de connexion. Il utilise les fichiers standards de configuration de ppp
+et effectue la configuration de façon à ce que les commandes «&nbsp;pon&nbsp;» et
+«&nbsp;poff&nbsp;» puissent être utilisées pour contrôler la connexion. Voici
+quelques caractéristiques de
+<B>ppconfig :</B>
+
+<BR>
+
+- Plusieurs fournisseurs d'accès avec serveurs DNS distincts.
+<BR>
+
+- Détection du modem.
+<BR>
+
+- DNS dynamique.
+<BR>
+
+- Numérotation à la demande.
+<BR>
+
+- Autorise l'emploi de ppp par des utilisateurs autres que root.
+<BR>
+
+- Utilise l'interface gdialog, en remplacement de dialog, quand c'est possible.
+<P>
+<P>
+Avant de lancer
+<B>pppconfig,</B>
+
+vous devez connaître le type d'authentification utilisé par votre
+fournisseur d'accès, le nom d'utilisateur et le mot de passe qui vous
+ont été fournis, ainsi que le numéro de téléphone. Si le mode
+d'authentification nécessite un dialogue, il vous faudra également
+connaître les invites envoyées pour le login et le mot de passe, ainsi que
+toutes les autres invites ou réponses nécessaires durant la phase de login.
+Si vous n'arrivez pas à obtenir ces informations de votre fournisseur
+d'accès, vous pouvez tenter de numéroter avec
+<B><A HREF="/cgi-bin/man/man2html?1+minicom">minicom</A>(1)</B>
+
+et dérouler la procédure jusqu'à ce que vous obteniez les «&nbsp;signes
+cabalistiques&nbsp;» indiquant que ppp a démarré de l'autre côté.
+<P>
+<B>pppconfig</B>
+
+vous permet de configurer des connexions vers plusieurs fournisseurs
+d'accès. Par exemple, vous pourriez appeler votre fournisseur «&nbsp;fai&nbsp;»,
+votre employeur «&nbsp;bureau&nbsp;» et votre université «&nbsp;ecole&nbsp;». Cela vous
+permettrait ensuite de vous connecter à votre fournisseur d'accès
+avec «&nbsp;pon&nbsp;», à votre bureau avec «&nbsp;pon bureau&nbsp;», et votre université
+avec «&nbsp;pon ecole&nbsp;».
+<P>
+Il peut déterminer sur quel port série se trouve votre modem, mais ce
+port doit être configuré au préalable. Cette étape est normalement
+effectuée lors de l'installation de Linux.
+<P>
+Il peut vous aider à configurer vos serveurs DNS, ou, si votre fournisseur
+d'accès utilise le DNS dynamique, il peut configurer ppp pour l'utiliser.
+<P>
+Il peut configurer ppp pour la numérotation à la demande, de façon à ce
+que votre connexion démarre automatiquement. Cependant, il ne démarrera
+pas pppd pour vous. Vous devrez toujours démarrer pppd vous-même (par
+«&nbsp;pon&nbsp;», par exemple). pppd attendra ensuite en arrière-plan vos demandes
+d'accès au réseau, et établira la liaison si besoin est.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<B>/etc/ppp/peers/provider</B>
+
+est le fichier standard des options de pppd pour le fournisseur d'accès
+par défaut.
+<P>
+<B>/etc/ppp/peers/&lt;nom&gt;</B>
+
+est le fichier des options de pppd pour le fournisseur nommé &lt;nom&gt;.
+<P>
+<B>/etc/ppp/peers/provider.bak</B>
+
+est une copie de sauvegarde de /etc/ppp/peers/provider.
+<P>
+<B>/etc/chatscripts/provider</B>
+
+est le script de connexion standard pour le fournisseur d'accès par défaut.
+<P>
+<B>/etc/chatscripts/&lt;nom&gt;</B>
+
+est le script de connexion pour le fournisseur d'accès nommé &lt;nom&gt;.
+<P>
+<B>/etc/chatscripts/provider.bak</B>
+
+est une copie de sauvegarde de /etc/chatscripts/provider.
+<P>
+<B>/etc/ppp/resolv</B>
+
+est un répertoire où les fichiers resolv.conf pour chaque fournisseur
+d'accès sont stockés.
+<P>
+<B>/etc/ppp/ip-up.d/0dns-up</B>
+
+est un script mettant en place le fichier resolv.conf approprié lorsque
+la connexion s'établit.
+<P>
+<B>/etc/ppp/ip-down.d/0dns-down</B>
+
+est un script remettant en place le fichier resolv.conf original lorsque
+la connexion se coupe.
+<P>
+<B>/etc/init.d/dns-clean</B>
+
+est un script qui appelle 0dns-down au démarrage de la machine, afin
+de corriger certaines situations anormales résultant d'un crash.
+<P>
+<B>/etc/ppp/pap-secrets</B>
+
+et
+<B>/etc/ppp/chap-secrets</B>
+
+sont décrits dans la documentation de pppd.
+pppconfig peut ajouter des lignes à ces fichiers et pourra ensuite modifier
+les lignes qu'il aura ajoutées.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+<B>pppconfig</B>
+
+requiert pppd 2.3.7 ou plus récent.
+<A NAME="lbAG">&nbsp;</A>
+<H2>À FAIRE</H2>
+
+Ajouter le support complet de MSCHAP.
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Ne demandez pas à
+<B>pppconfig</B>
+
+de détecter votre modem lorsque pppd fonctionne.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+pon">pon</A>(1), <A HREF="/cgi-bin/man/man2html?1+poff">poff</A>(1), <A HREF="/cgi-bin/man/man2html?1+gpppon">gpppon</A>(1), <A HREF="/cgi-bin/man/man2html?1+plog">plog</A>(1), <A HREF="/cgi-bin/man/man2html?8+pppd">pppd</A>(8), <A HREF="/cgi-bin/man/man2html?8+chat">chat</A>(8), </B>
+
+et
+<B><A HREF="/cgi-bin/man/man2html?1+whiptail">whiptail</A>(1).</B>
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<B>pppconfig</B>
+
+a été écrit par John Hasler &lt;<A HREF="mailto:jhasler@debian.org">jhasler@debian.org</A>&gt;.
+<A NAME="lbAK">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+<B>Cette page de manuel peut être traitée comme faisant partie du</B>
+
+<B>domaine public.</B>
+
+<P>
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Bruno Tréguier &lt;<A HREF="mailto:Bruno.Treguier@shom.fr">Bruno.Treguier@shom.fr</A>&gt;, 7 mars 2001.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">À FAIRE</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">AUTEUR</A><DD>
+<DT><A HREF="#lbAK">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

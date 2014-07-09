@@ -1,0 +1,339 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of OD</TITLE>
+</HEAD><BODY>
+<H1>OD</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+od - Afficher le contenu d'un fichier en octal ou sous d'autres formats.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>od</B>
+
+[-abcdfhiloxv] [-s[longueur]] [-w[largeur]] [-A base] [-j nb_octets]
+[-N nb_octets] [-t type] [--skip-bytes=nb_octets] [--address-radix=base]
+[--read-bytes=nb_octets] [--format=type] [--output-duplicates]
+[--strings[=longueur]] [--width[=largeur]] [--traditional]
+[--help] [--version] [file...]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>od</B>
+
+([NDT] <B>od</B> = Octal Dump).
+<P>
+<B>od</B>
+
+affiche sur la sortie standard le contenu des fichiers indiqués. Si aucun
+fichier n'est fourni, ou si le nom `-' est mentionné, c'est le contenu
+de l'entrée standard qui est affiché.
+<P>
+Chaque ligne de sortie est constituée d'une colonne représentant le décalage
+par rapport au début du fichier, suivi d'une ou plusieurs colonnes de
+données, dans un format contrôlé par les options.
+<P>
+Par défaut
+<B>od</B>
+
+affiche les décalages en octal, et les données contenues dans le fichier
+sous forme de nombres en octal de deux octets.
+<P>
+
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><I>-A, --address-radix=base</I>
+
+<DD>
+Sélectionner la
+<I>base</I>
+
+dans laquelle les décalages sont affichées.
+<I>base</I>
+
+peut prendre l'une des valeurs suivantes :
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>d<DD>
+décimale
+<DT>o<DD>
+octale
+<DT>x<DD>
+hexadécimale
+<DT>n<DD>
+aucune (ne pas afficher les décalages)
+</DL>
+</DL>
+
+<P>
+La base par défaut est octale.
+<DT><I>-j, --skip-bytes=n</I>
+
+<DD>
+Sauter
+<I>n</I>
+
+octets en entrée avant la mise en forme et l'affichage. Si
+<I>n</I>
+
+commence par `0x' ou `0X', il est interprété en hexadécimal. Autrement,
+il est interprété en octal s'il commence par `0', et en décimal sinon.
+En ajoutant `b', la valeur est multipliée par 512, en ajoutant `k' par
+1024 et en ajoutant `m' par 1048576.
+<DT><I>-N, --read-bytes=n</I>
+
+<DD>
+Afficher au maximum
+<I>n</I>
+
+octets de chaque fichier d'entrée. Les préfixes et suffixes de
+<B>n</B>
+
+sont interprétés comme ceux de l'option
+<I>-j</I>.
+
+<DT><I>-t, --format=type</I>
+
+<DD>
+Sélectionner le format d'affichage des résultats.
+<I>type</I>
+
+est une chaîne composée d'un ou plusieurs indicateurs de type
+décrits ci-dessous. Si plusieurs indicateurs sont indiqués, ou
+si cette option est répétée plusieurs fois,
+<B>od</B>
+
+affichera une copie de chaque ligne de sortie en utilisant chacun
+des types spécifiés, dans l'ordre des arguments.
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>a<DD>
+caractères littéraux
+<DT>c<DD>
+caractères ASCII ou séquences d'échappement préfixées par BackSlash
+<DT>d<DD>
+valeurs décimales signées
+<DT>f<DD>
+valeurs en virgule flottante
+<DT>o<DD>
+valeurs octales
+<DT>u<DD>
+valeurs décimales non signées
+<DT>x<DD>
+valeurs hexadécimales
+</DL>
+</DL>
+
+<P>
+Pour tous les types, sauf `a' et `c', vous pouvez préciser le nombre
+d'octets à utiliser pour interpréter chaque nombre dans le format
+indiqué. Pour cela, on fait suivre la lettre indiquant le type d'un
+nombre entier décimal. On peut également utiliser l'un des types
+génériques des compilateurs C en ajoutant une des lettres suivantes après le type.
+Pour les valeurs entières (d, o, u, x):
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>C<DD>
+char
+<DT>S<DD>
+short
+<DT>I<DD>
+int
+<DT>L<DD>
+long
+</DL>
+</DL>
+
+<P>
+Pour les réels en virgule flottante (f):
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>F<DD>
+float
+<DT>D<DD>
+double
+<DT>L<DD>
+long double
+</DL>
+</DL>
+
+<DT><I>-v, --output-duplicates</I>
+
+<DD>
+Afficher les lignes identiques consécutives. Par défaut, lorsque
+deux (ou plus) lignes successives de résultat sont identiques,
+<B>od</B>
+
+n'affiche que la première, et imprime un astérisque sur les lignes
+suivantes.
+<DT><I>-s, --strings[=n]</I>
+
+<DD>
+Plutôt que l'affichage normal, ne présenter que les chaînes
+de caractères trouvées dans les lignes d'entrée, et s'étendant
+sur au moins
+<I>n</I>
+
+caractères ASCII graphiques (ou de mise en page), terminées par
+un caractère NUL. Si
+<I>n</I>
+
+est omis, la valeur 3 est utilisée par défaut.
+<DT><I>-w, --width[=n]</I>
+
+<DD>
+Afficher
+<I>n</I>
+
+octets d'entrée par ligne. Cette valeur doit être un multiple commun aux
+tailles des types de sortie spécifiés.
+Si
+<I>n</I>
+
+est omis, la valeur par défaut est 32 octets. Si cette option n'est pas
+mentionnée, la valeur par défaut est 16.
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et se terminer normalement.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et se terminer normalement.
+</DL>
+<P>
+
+Les options suivantes sont d'anciennes spécifications, antérieures à POSIX,
+équivalentes aux nouvelles options POSIX.
+La version GNU de
+<B>od</B>
+
+accepte toutes les combinaisons d'options correspondant à l'ancien et
+au nouveau style. Les spécifications de format s'ajoutent.
+<DL COMPACT>
+<DT><I>-a</I>
+
+<DD>
+Afficher des caractères littéraux, équivalent à
+<I>-t&nbsp;a</I>.
+
+<DT><I>-b</I>
+
+<DD>
+Afficher des valeurs octales, équivalent à
+<I>-t oC</I>.
+
+<DT><I>-c</I>
+
+<DD>
+Afficher des caractères ASCII ou des séquences préfixées par BackSlash,
+équivalent à
+<I>-t c</I>.
+
+<DT><I>-d</I>
+
+<DD>
+Afficher des entiers courts en décimal non signé, équivalent à
+<I>-t u2</I>.
+
+<DT><I>-f</I>
+
+<DD>
+Afficher des valeurs réelles, équivalent à
+<I>-t fF</I>.
+
+<DT><I>-h</I>
+
+<DD>
+Afficher des entiers courts en hexadécimal, équivalent à
+<I>-t x2</I>.
+
+<DT><I>-i</I>
+
+<DD>
+Afficher des entiers courts en décimal, équivalent à
+<I>-t d2</I>.
+
+<DT><I>-l</I>
+
+<DD>
+Afficher des entiers longs en décimal, équivalent à
+<I>-t d4</I>.
+
+<DT><I>-o</I>
+
+<DD>
+Afficher des entiers courts en octal, équivalent à
+<I>-t o2</I>.
+
+<DT><I>-x</I>
+
+<DD>
+Afficher des entiers courts en hexadécimal, équivalent à
+<I>-t x2</I>.
+
+<DT><I>--traditional</I>
+
+<DD>
+Reconnaître les arguments antérieurs à POSIX que supportaient d'anciennes
+version de <B>od</B>. La syntaxe suivante :
+<BR>
+
+<B>od</B>
+
+--traditional [file] [[+]décalage[.][b] [[+]étiquette[.][b]]]
+<BR>
+
+peut être utilisée pour indiquer au plus un fichier, et des arguments
+supplémentaires indiquant un <I>décalage</I> et une adresse de départ, 
+<I>étiquette.</I>
+
+par défaut
+<I>décalage</I>
+
+est interprété comme un nombre octal précisant combien d'octets d'entrée
+doivent être ignorés avant de démarrer la mise en forme. Le point décimal
+optionnel permet de forcer l'interprétation de
+<I>décalage</I>
+
+en tant que nombre décimal.
+Si le point est absent, et si le décalage débute par `0x' ou `0x', il est
+interprété comme nombre hexadécimal. S'il y a un suffixe `b', le nombre
+d'octets est multiplié par 512.
+L'étiquette est interprétée comme le décalage, mais elle indique une
+pseudo-adresse de départ. Les pseudo-adresses obtenues sont affichées
+entre parenthèses après les adresses normales.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:50 GMT, February 11, 2014
+</BODY>
+</HTML>

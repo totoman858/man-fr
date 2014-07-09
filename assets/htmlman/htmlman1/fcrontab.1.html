@@ -1,0 +1,239 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FCRONTAB</TITLE>
+</HEAD><BODY>
+<H1>FCRONTAB</H1>
+Section:  (1)<BR>Updated: 6 février 2006<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<P>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fcrontab - Manipuler les fichiers fcrontab utilisateur
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<B>fcrontab</B> [ <B>-c </B><I>fichier</I><B></B> ] [ <B>-n</B> ] <B></B><I>fichier</I><B></B> [ <B></B><I>utilisateur</I><B></B> | <B>-u </B><I>utilisateur</I><B></B> ]
+<P>
+<B>fcrontab</B> [ <B>-c </B><I>fichier</I><B></B> ] [ <B>-n</B> ] { <B>-l</B> | <B>-r</B> | <B>-e</B> | <B>-z</B> } [ <B></B><I>utilisateur</I><B></B> | <B>-u </B><I>utilisateur</I><B></B> ]
+<P>
+<B>fcrontab</B> [ <B>-h</B> ]
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+<B>Fcrontab</B> est le programme conçu pour installer, éditer, afficher
+et supprimer les tables utilisées par le démon <B><A HREF="/cgi-bin/man/man2html?8+fcron">fcron</A></B>(8). Comme <B>fcron</B> utilise un format
+non humainement lisible (ceci est nécessaire car <B>fcron</B> enregistre
+beaucoup d'informations fournies par l'utilisateur, par exemple la
+date et l'heure de la prochaine exécution), l'utilisateur ne peut pas
+éditer directement son fichier <B>fcrontab</B> (celui utilisé par <B>fcron</B>).
+<P>
+
+Lorsqu'un utilisateur installe un <B>fcrontab</B>, le fichier source
+est enregistré dans le répertoire de travail (Ndt~: spool
+directory) (<I>/var/spool/fcron</I>)
+pour permettre des éditions ultérieures, un fichier formaté est généré
+par le démon <B>fcron</B>, qui est averti dix secondes avant la minute
+suivante de toutes les modifications effectuées précédemment. Le démon
+<B>fcron</B> ne reçoit pas immédiatement le signal lui annonçant qu'un
+fichier <B>fcrontab</B> a été modifié, mais en reçoit au plus un par minute,
+de façon à éviter que des utilisateurs mal intentionnés ne gênent le
+fonctionnement de <B>fcron</B> en faisant des modifications incessantes
+d'un fichier <B>fcrontab</B> (c.-à-d. attaque en déni de service).
+Nous appellerons, dans la suite du document,
+«~<B>fcrontab</B>~» le fichier source des
+tables <B>fcrontab</B>.
+<P>
+
+Un utilisateur peut installer un <B>fcrontab</B> si son nom est
+enregistré dans le fichier <I>/etc/fcron.allow</I> et
+pas dans le fichier <I>/etc/fcron.deny</I> (à moins
+qu'il n'y ait le mot clé «~all~»). Voir la section
+«~FICHIERS~» plus
+loin. Si aucun des fichiers <I>fcron.allow</I> ou
+<I>fcron.deny</I> n'existe, tous les utilisateurs sont
+autorisés. Il n'est pas nécessaire que ces deux fichiers existent,
+mais s'ils existent, le fichier <I>fcron.deny</I> est
+prioritaire.
+<P>
+
+La première forme de la commande est utilisée pour installer un
+nouveau fichier <B>fcrontab</B>, à partir d'un nom de fichier ou de
+l'entrée standard si le pseudo nom de fichier «~-~» est
+fourni sur la ligne de commande, remplaçant le fichier précédent (s'il
+existait)~: chaque utilisateur ne peut avoir qu'un seul fichier
+<B>fcrontab</B>.
+<P>
+
+Par exemple, le super-utilisateur peut créer un fichier fcrontab
+pour le système, disons <I>/etc/fcrontab</I>, et lancer
+«~<B>fcrontab</B> <I>/etc/fcrontab</I>~»
+pour installer la nouvelle version après chaque modification du
+fichier. Ou bien, il peut créer un nouveau fichier fcrontab en lançant
+simplement «~<B>fcrontab</B>~», et le maintenir
+par la suite en lançant «~<B>fcrontab</B>
+<B>-e</B>~». Les mêmes considérations s'appliquent à un
+utilisateur normal.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-u </B><I>utilisateur</I><B></B><DD>
+Spécifier l'utilisateur dont le <B>fcrontab</B> sera géré, ou
+«~systab~» pour le fcrontab système. Ne peut
+être utilisée que par le super-utilisateur. S'il n'est pas
+fourni, le fichier <B>fcrontab</B> de l'utilisateur qui a invoqué
+<B>fcrontab</B> sera traité. Cela peut être pratique puisque la
+commande <B><A HREF="/cgi-bin/man/man2html?8+su">su</A></B>(8) peut tromper <B>fcrontab</B>.
+<P>
+<DL COMPACT><DT><DD>
+<B>Note&nbsp;:</B>
+
+l'«~<I>utilisateur</I>~»
+dans le synopsys
+est équivalent à «~<B>-u</B>
+<I>utilisateur</I>~».
+</DL>
+
+<DT><B>-l</B><DD>
+Afficher sur la sortie standard le <B>fcrontab</B> actuel de
+l'utilisateur.
+<DT><B>-e</B><DD>
+Éditer le <B>fcrontab</B> actuel de l'utilisateur en utilisant
+l'éditeur spécifié soit par la variable d'environnement
+<B>VISUAL</B>,  soit par la variable d'environnement
+<B>EDITOR</B> si <B>VISUAL</B> n'est pas
+positionnée. Si aucune des deux n'est positionnée,
+<B>/usr/bin/vi</B> sera utilisée.
+<DT><B>-r</B><DD>
+Effacer le <B>fcrontab</B> de l'utilisateur.
+<DT><B>-z</B><DD>
+Réinstaller le <B>fcrontab</B> de l'utilisateur à partir de son
+code source. Toutes les informations que <B>fcron</B> aurait pu
+conserver dans le <B>fcrontab</B> binaire (comme l'heure et la date
+de la prochaine exécution) seront perdues.
+<DT><B>-n</B><DD>
+Ignorer la version précédente. Si cette option n'est pas
+fournie, <B>fcron</B> essayera de conserver le plus d'informations
+possibles entre l'ancienne et la nouvelle version du <B>fcrontab</B>
+(date et heure de la prochaine exécution, la tâche est-elle dans
+une file série, etc.) si la ligne n'a pas été modifiée (mêmes
+champs, même commande shell).
+<DT><B>-c </B><I>fichier</I><B></B><DD>
+Forcer <B>fcrontab</B> à utiliser le fichier de configuration
+<I>fichier</I> à la place du fichier de
+configuration par défaut
+<I>/etc/fcron.conf</I>. Pour interagir
+avec un processus <B>fcron</B> existant, <B>fcrontab</B> doit utiliser le
+même fichier de configuration que le processus. De cette manière,
+plusieurs processus <B>fcron</B> peuvent être exécutés simultanément
+sur un même système.
+<DT><B>-d</B><DD>
+Démarrer en mode débogage. Dans ce mode, beaucoup de messages
+d'informations seront produits en sortie afin de vérifier que
+tout se passe bien.
+<DT><B>-h</B><DD>
+Afficher une brève description des options.
+<DT><B>-V</B><DD>
+Afficher un message d'information à propos de <B>fcrontab</B>.
+Cela inclut sa version et la licence sous laquelle il est
+distribué.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VALEURS RENVOYÉES</H2>
+
+<P>
+
+<B>Fcrontab</B> renvoie 0 lorsqu'il quitte normalement, et
+1 en cas d'erreur.
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<P>
+
+Devrait être conforme aux spécifications POSIX.
+<A NAME="lbAH">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><B></B><I>/etc/fcron.conf</I><B></B><DD>
+Fichier de configuration de <B>fcron</B>, <B>fcrontab</B> et <B>fcrondyn</B>~:
+contient les chemins (répertoire spool, fichier pid) et les
+programmes par défaut à utiliser (éditeur, shell, etc.). Voir
+<B><A HREF="/cgi-bin/man/man2html?5+fcron.conf">fcron.conf</A></B>(5) pour plus de
+détails.
+<DT><B></B><I>/etc/fcron.allow</I><B></B><DD>
+Utilisateurs autorisés à utiliser <B>fcrontab</B> et <B>fcrondyn</B>
+(un seul nom par ligne, le nom spécial «~all~»
+signifiant tout le monde).
+<DT><B></B><I>/etc/fcron.deny</I><B></B><DD>
+Utilisateurs autorisés à utiliser <B>fcrontab</B> et <B>fcrondyn</B>
+(un seul nom par ligne, le nom spécial «~all~»
+signifiant tout le monde).
+<DT><B></B><I>/etc/pam.d/fcron</I> (or <I>/etc/pam.conf</I>)<DD>
+Fichier de configuration PAM pour
+<B>fcron</B>. Voir <B><A HREF="/cgi-bin/man/man2html?8+pam">pam</A></B>(8) pour plus de détails.
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+fcrontab">fcrontab</A></B>(1),
+<B><A HREF="/cgi-bin/man/man2html?1+fcrondyn">fcrondyn</A></B>(1),
+<B><A HREF="/cgi-bin/man/man2html?5+fcrontab">fcrontab</A></B>(5),
+<B><A HREF="/cgi-bin/man/man2html?5+fcron.conf">fcron.conf</A></B>(5),
+<B><A HREF="/cgi-bin/man/man2html?8+fcron">fcron</A></B>(8)
+<P>
+Si vous êtes en train d'apprendre à utiliser fcron, je vous
+suggère plutôt de lire la version HTML de la documentation (si ce n'est pas
+déjà ce que vous faites en ce moment~! :) )~: le contenu est le même, mais
+il est plus aisé de naviguer grâce aux hyperliens.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<P>
+
+Thibault Godouet &lt;<A HREF="mailto:fcron@free.fr">fcron@free.fr</A>&gt;
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal AT univ-montp2 DOT fr&gt; le 6 février 2006.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document
+est toujours consultable via la commande~: «~<B>LANG=en
+man 1 fcrontab</B>~».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas,
+toute erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">VALEURS RENVOYÉES</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">FICHIERS</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">AUTEUR</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:44 GMT, February 11, 2014
+</BODY>
+</HTML>

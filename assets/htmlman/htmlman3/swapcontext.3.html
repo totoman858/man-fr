@@ -1,0 +1,129 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MAKECONTEXT</TITLE>
+</HEAD><BODY>
+<H1>MAKECONTEXT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+makecontext, swapcontext - Manipulation du contexte utilisateur.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/ucontext.h">ucontext.h</A>&gt;</B>
+
+<P>
+<B>void makecontext(ucontext_t *</B><I>ucp</I><B>, void *</B><I>func</I><B>(),</B>
+
+<B>int </B><I>argc</I><B>, ...);</B>
+
+<BR>
+
+<B>int swapcontext (ucontext_t *</B><I>oucp</I><B>, ucontext_t *</B><I>ucp</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Dans un environnement de type SysV, on dispose du type <B>ucontext_t</B> défini dans
+<I>&lt;<A HREF="file:///usr/include/ucontext.h">ucontext.h</A>&gt;</I>
+
+et des quatre fonctions 
+<B>getcontext()</B>, <B>setcontext()</B>, <B>makecontext()</B>
+et <B>swapcontext()</B> qui permettent, au niveau utilisateur, des permutations de contextes entre plusieurs threads de contrôle au sein d'un processus.
+<P>
+
+Pour le type et les deux premières fonctions, voir
+<B><A HREF="/cgi-bin/man/man2html?2+getcontext">getcontext</A></B>(2).
+
+<P>
+
+La fonction <B>makecontext()</B> modifie le contexte pointé par 
+<I>ucp</I> ( qui a été obtenu par un appel à <B>getcontext()</B>).
+Avant d'appeler <B>makecontext()</B>, il faut allouer une nouvelle pile
+pour ce contexte, l'affectant à <I>ucp-&gt;uc_stack</I>, et définir un
+contexte successeur, l'affectant à <I>ucp-&gt;uc_link</I>.
+Lorsque ce contexte est activé par la suite (en utilisant <B>setcontext()</B> ou
+<B>swapcontext()</B>), alors, la fonction <I>func</I> est tout d'abord appelée
+avec les arguments spécifiés à la suite de <I>argc</I> (où <I>argc</I>
+doit préciser le nombre de ces arguments), et lorsque cette fonction
+s'achève, le contexte successeur est activé. Quand le pointeur sur le 
+contexte successeur vaut NULL, le thread se termine.
+<P>
+
+La fonction <B>swapcontext()</B> sauvegarde le contexte actuel dans
+la structure pointée par <I>oucp</I> et active ensuite le contexte 
+pointé par <I>ucp</I>.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+En cas de succès, <B>makecontext()</B> renvoie 0 tandis que <B>swapcontext()</B>
+ne rend pas la main à l'appelant. (On peut toutefois revenir à l'appelant en cas d'activation de
+<I>oucp</I>. Dans un tel cas, <B>swapcontext()</B> se comporte comme si elle renvoyait 0.)
+En cas d'erreur, les deux fonctions renvoient -1 et positionnent <I>errno</I> de façon appropriée.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ENOMEM</B>
+
+<DD>
+Espace de pile disponible insuffisant.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+L'interprétation de <I>ucp-&gt;uc_stack</I> est exactement la même que pour
+<B><A HREF="/cgi-bin/man/man2html?2+sigaltstack">sigaltstack</A></B>(2),
+
+à savoir, cette structure contient l'adresse de départ et la longueur 
+d'une zone mémoire destinée à être utilisée comme pile, et ce, sans considération
+sur le sens d'expansion de la pile. Il n'est donc pas nécessaire pour le 
+programme utilisateur de se soucier de ce sens.
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SUSv2, POSIX 1003.1-2001.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+getcontext">getcontext</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigaction">sigaction</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigaltstack">sigaltstack</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigprocmask">sigprocmask</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+sigsetjmp">sigsetjmp</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Stéphan Rafin, 2002.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:05 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,32 @@
+####
+## Configuration pour deposer un projet sous GitHub
+####
+
+# Commit avec la bonne conf email
+git config --global user.email "julien.lecubin@gmail.com"
+
+# Verif adresse email
+git config --global user.email
+# doit retourner julien.lecubin@gmail.com
+
+# Creation projet
+mkdir myProject && cd myProject
+
+# Init projet git
+# Va generer un repertoire .git dans la racine du projet
+git init
+
+# Ajout fichiers dans le depot local
+git add .
+
+# Commit des fichiers dans le depot local
+git commit -m 'First commit'
+
+# URL ou le depot sera pousse
+git remote add origin https://github.com/totoman858/man-fr.git
+
+# Verification de l'URL distante
+git remote -v
+
+# Push des modifications locales vers le site distant (GitHub)
+git push origin master

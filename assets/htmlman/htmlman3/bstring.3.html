@@ -1,0 +1,98 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of BSTRING</TITLE>
+</HEAD><BODY>
+<H1>BSTRING</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+bstring, bcmp, bcopy, bzero, memccpy, memchr, memcmp, memcpy, memfrob, memmem, memmove, memset - Opérations sur des blocs d'octets.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/string.h">string.h</A>&gt;</B>
+
+<B>int bcmp (const void *</B><I>s1</I><B>, const void *</B><I>s2</I><B>, int </B><I>n</I><B>);</B>
+
+<B>void bcopy (const void *</B><I>src</I><B>, void *</B><I>dest</I><B>, int </B><I>n</I><B>);</B>
+
+<B>void bzero (void *</B><I>s</I><B>, int </B><I>n</I><B>);</B>
+
+<B>void *memccpy (void *</B><I>dest</I><B>, const void *</B><I>src</I><B>, int </B><I>c</I><B>, size_t </B><I>n</I><B>);</B>
+
+<B>void *memchr (const void *</B><I>s</I><B>, int </B><I>c</I><B>, size_t </B><I>n</I><B>);</B>
+
+<B>int memcmp (const void *</B><I>s1</I><B>, const void *</B><I>s2</I><B>, size_t </B><I>n</I><B>);</B>
+
+<B>void *memcpy (void *</B><I>dest</I><B>, const void *</B><I>src</I><B>, size_t </B><I>n</I><B>);</B>
+
+<B>void *memfrob (void *</B><I>s</I><B>, size_t </B><I>n</I><B>);</B>
+
+<B>void *memmem (const void *</B><I>needle</I><B>, size_t </B><I>needlelen</I><B>,</B>
+<DL COMPACT><DT><DD><B>const void *</B><I>haystack</I><B>, size_t </B><I>haystacklen</I><B>);</B>
+</DL>
+
+<B>void *memmove (void *</B><I>dest</I><B>, const void *</B><I>src</I><B>, size_t </B><I>n</I><B>);</B>
+
+<B>void *memset (void *</B><I>s</I><B>, int </B><I>c</I><B>, size_t </B><I>n</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ces fonctions agissent sur des blocs d'octets qui ne se terminent pas
+nécessairement par le caractère NULL, contrairement aux chaînes de
+caractères. Reportez-vous aux pages de manuel spécifiques pour chacune
+de ces fonctions.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+bcmp">bcmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+bcopy">bcopy</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+bzero">bzero</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+memccpy">memccpy</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+memchr">memchr</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+memcmp">memcmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+memcpy">memcpy</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+memfrob">memfrob</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+memmem">memmem</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+memmove">memmove</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+memset">memset</A></B>(3)
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:23 GMT, February 11, 2014
+</BODY>
+</HTML>

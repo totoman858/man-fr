@@ -1,0 +1,361 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SEND</TITLE>
+</HEAD><BODY>
+<H1>SEND</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+send, sendto, sendmsg - Envoyer un message sur une socket.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+
+<P>
+<B>int send(int </B><I>s</I><B>, const void *</B><I>msg</I><B>, size_t </B><I>len</I><B>,</B>
+
+<B>int </B><I>flags</I><B>);</B>
+
+<P>
+<B>int sendto(int </B><I>s</I><B>, const void *</B><I>msg</I><B>, size_t </B><I>len</I><B>,</B>
+
+<B>int </B><I>flags</I><B>, const struct sockaddr *</B><I>to</I><B>, socklen_t </B><I>tolen</I><B>);</B>
+
+<P>
+<B>int sendmsg(int </B><I>s</I><B>, const struct msghdr *</B><I>msg</I><B>,</B>
+
+<B>int </B><I>flags</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>Send</B>,
+
+<B>sendto</B>,
+
+et
+<B>sendmsg</B>
+
+permettent de transmettre un message à destination d'une
+autre socket.
+<B>Send</B>
+
+ne peut être utilisé qu'avec les sockets
+<I>connectées</I>
+
+alors que
+<B>sendto</B>
+
+et
+<B>sendmsg</B>
+
+peuvent être utilisés tout le temps.
+<P>
+
+L'adresse de la cible est donnée par
+<I>to</I>
+
+avec la longueur 
+<I>tolen.</I>
+
+la longueur du message est indiquée dans
+<I>len</I>.
+
+Si le message est trop long pour être transmis intégralement
+au protocole sous-jacent, l'erreur
+<B>EMSGSIZE</B>
+
+sera déclenchée et rien ne sera émis.
+<P>
+
+Aucune indication d'échec de distribution n'est
+fournie par
+<B>send</B>.
+
+Seules les erreurs locales sont détectées, et indiquées
+par une valeur de retour -1.
+<P>
+
+Si la socket ne dispose pas de la place suffisante pour
+le message, alors
+<B>send</B>
+
+va bloquer, à moins que la socket ait été configurée en mode
+d'entrées/sorties non-bloquantes auquel cas elle renverra
+<B>EAGAIN</B>.
+
+On peut utiliser l'appel système
+<B><A HREF="/cgi-bin/man/man2html?2+select">select</A></B>(2)
+
+pour vérifier s'il est possible d'émettre des données.
+<P>
+
+Le paramètre
+<I>flags</I>
+
+peut contenir une ou plusieurs des options suivantes
+<DL COMPACT>
+<DT><B>MSG_OOB</B>
+
+<DD>
+est utilisée pour émettre des données 
+<I>hors-bande</I>
+
+sur une socket qui l'autorise (par ex :
+<B>SOCK_STREAM</B>).
+
+Le protocole sous-jacent doit également autoriser l'émission
+de données
+<I>hors-bande.</I>
+
+<DT><B>MSG_DONTROUTE</B>
+
+<DD>
+est utilisé pour empêcher la transmission d'un paquet vers une passerelle,
+n'envoyer de données que vers les hôtes directement connectés au réseau.
+Ceci n'est normalement employé que par les programmes de diagnostique
+ou de routage. Cette option n'est définie que pour les familles de
+protocoles employant le routage, pas les sockets par paquets.
+<DT><B>MSG_DONTWAIT</B>
+
+<DD>
+active le mode non-bloquant. Une opération qui devrait bloquer renverra
+<B>EAGAIN</B>
+
+à la place (Cela peut être également paramétré avec l'option
+<B>O_NONBLOCK</B>
+
+de la fonction
+<B>F_SETFL</B>
+
+de
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A>(2)).</B>
+
+<DT><B>MSG_NOSIGNAL</B>
+
+<DD>
+demande de ne pas envoyer de signal
+<B>SIGPIPE</B>
+
+d'erreur sur les sockets connectées lorsque le correspondant coupe
+la connexion. L'erreur
+<B>EPIPE</B>
+
+est toutefois renvoyée.
+<DT><B>MSG_CONFIRM</B> (Depuis Linux 2.3)
+
+<DD>
+Indiquer à la couche de liaison qu'une réponse correcte a été reçue du
+correspondant. Si la couche de liaison n'a pas cette confirmation, elle
+va ré-interroger régulièrement le voisinage (par exemple avec un ARP unicast).
+Seulement valide pour les sockets
+<B>SOCK_DGRAM</B>
+
+et
+<B>SOCK_RAW</B>
+
+et uniquement implémenté pour IPv4 et IPv6. Voir
+<B><A HREF="/cgi-bin/man/man2html?7+arp">arp</A></B>(7)
+
+pour plus de détails.
+</DL>
+<P>
+
+La définition de la structure
+<I>msghdr</I>
+
+se trouve ci-dessous. Voir
+<B><A HREF="/cgi-bin/man/man2html?2+recv">recv</A></B>(2)
+
+pour une description exacte de ses champs.
+<DL COMPACT>
+<DT><DD>
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct msghdr {
+        void    * msg_name;     /* optional address */
+        socklen_t       msg_namelen;    /* size of address */
+        struct iovec    * msg_iov;      /* scatter/gather array */
+        size_t  msg_iovlen;     /* # elements in msg_iov */
+        void    * msg_control;  /* ancillary data, see below */
+        socklen_t       msg_controllen; /* ancillary data buffer len */
+        int     msg_flags;      /* flags on received message */
+};
+
+</PRE>
+
+</DL>
+
+</DL>
+<P>
+
+On peut transmettre des informations de service en employant les membres
+<I>msg_control</I>
+
+et
+<I>msg_controllen</I>.
+
+La longueur maximale du buffer de service que le noyau peut gérer est limité
+par socket par la valeur
+<B>net.core.optmem_max</B>
+
+de sysctl(). Voir
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7).
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Ces appels systèmes renvoient le nombre de caractères
+émis, ou -1 s'ils échouent, auquel cas 
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Voici les erreurs standards engendrés par la couche socket. Des erreurs
+supplémentaires peuvent être déclenchées par les protocoles sous-jacents.
+Voir leurs pages de manuel respectives.
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+Descripteur de socket invalide.
+<DT><B>ENOTSOCK</B>
+
+<DD>
+L'argument
+<I>s</I>
+
+n'est pas une socket.
+<DT><B>EFAULT</B>
+
+<DD>
+Un paramètre pointe en dehors de l'espace d'adressage accessible.
+<DT><B>EMSGSIZE</B>
+
+<DD>
+La socket nécessite une émission intégrale du message mais la taille
+de celui-ci ne le permet pas.
+<DT><B>EAGAIN</B> ou <B>EWOULDBLOCK</B>
+
+<DD>
+La socket est non-bloquante et l'opération demandée bloquerait.
+<DT><B>ENOBUFS</B>
+
+<DD>
+La file d'émission de l'interface réseau est pleine. Ceci
+indique généralement une panne de l'interface réseau, mais
+peut également être dû à un engorgement passager. Ceci ne doit
+pas se produire sous Linux, les paquets sont silencieusement éliminés.
+<DT><B>EINTR</B>
+
+<DD>
+Un signal a été reçu.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour le noyau.
+<DT><B>EINVAL</B>
+
+<DD>
+Un argument invalide a été transmis.
+<DT><B>EPIPE</B>
+
+<DD>
+L'écriture est impossible (correspondant absent). Dans ce cas le processus
+recevra également un signal
+<B>SIGPIPE</B>
+
+sauf s'il a activée l'option
+<B>MSG_NOSIGNAL</B>.
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.4 (cet appel système est apparu dans BSD 4.2), SVr4,
+Draft POSIX 1003.1g.
+<B>MSG_CONFIRM</B>
+
+est une extension Linux.
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTE</H2>
+
+Les prototypes fournis plus haut suivent les Spécifications Single Unix,
+tout comme glibc2. L'argument
+<I>flags</I>
+
+était un `int' dans BSD 4.*, mais `unsigned int' dans libc4 et libc5.
+L'argument
+<I>len</I>
+
+était un  `int' dans BSD 4.* et libc4, mais un `size_t' dans libc5;
+L'argument
+<I>tolen</I>
+
+était un `int' dans BSD 4.*, libc4 et libc5.
+Voir aussi les notes accompagnant la page
+<B><A HREF="/cgi-bin/man/man2html?2+accept">accept</A></B>(2).
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+recv">recv</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+select">select</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getsockopt">getsockopt</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sendfile">sendfile</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+tcp">tcp</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+udp">udp</A></B>(7)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTE</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:59 GMT, February 11, 2014
+</BODY>
+</HTML>

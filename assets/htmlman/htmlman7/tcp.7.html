@@ -1,0 +1,935 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TCP</TITLE>
+</HEAD><BODY>
+<H1>TCP</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+tcp - Protocole TCP.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/netinet/in.h">netinet/in.h</A>&gt;</B>
+
+<BR>
+
+<B>tcp_socket = socket(PF_INET, SOCK_STREAM, 0); </B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Il s'agit d'une implémentation du protocole TCP défini dans les
+RFC 793, RFC 1122 et RFC 2001
+avec les extensions SACK et NewReno.
+Cela fournit un connexion full-duplex fiable orientée flux entre
+deux sockets au-dessus de
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7).
+
+TCP garantit que les données arrivent dans l'ordre et assure la retransmission
+des paquets perdus. Il calcule et vérifie une somme de contrôle par paquet pour
+détecter les erreurs de transmission. TCP ne préserve pas les limites des enregistrements.
+<P>
+Une socket TCP neuve n'a pas d'adresse locale ou distante et n'est pas complètement définie.
+Pour créer une connexion TCP sortante, utilisez
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2)
+
+pour établir la connexion sur une autre socket TCP.
+Pour recevoir les connexions entrantes, attachez d'abord la socket avec
+<B><A HREF="/cgi-bin/man/man2html?2+bind">bind</A></B>(2)
+
+à une adresse locale et un port, puis appelez
+<B><A HREF="/cgi-bin/man/man2html?2+listen">listen</A></B>(2)
+
+pour mettre la socket dans un état d'attente. Après cela, une nouvelle
+socket peut être obtenue pour chaque connexion entrante
+en utilisant
+<B><A HREF="/cgi-bin/man/man2html?2+accept">accept</A></B>(2).
+
+Une socket sur laquelle on a appelé
+<B>accept</B>
+
+ou
+<B>connect</B>
+
+avec succès est complètement définie et peut transmettre des données.
+Les données ne peuvent pas circuler sur les socket en attente ou non connectées.
+<P>
+Linux 2.2 supporte les extensions TCP à hautes performances RFC 1323. Cela inclue
+les fenêtres TCP larges pour supporter les liaisons avec une latence ou une
+bande passante élevées.
+Pour les utiliser, les tailles des buffers d'émission et de réception doivent être augmentées.
+On peut les fixer globalement avec les sysctls
+<B>net.ipv4.tcp_wmem</B>
+
+et
+<B>net.ipv4.tcp_rmem</B>
+
+ou individuellement sur les sockets avec les options
+<B>SO_SNDBUF </B>
+
+et
+<B>SO_RCVBUF</B>
+
+de l'appel-système
+<B><A HREF="/cgi-bin/man/man2html?2+setsockopt">setsockopt</A></B>(2).
+
+<P>
+Les tailles maximales pour les buffers déclarés via
+<B>SO_SNDBUF</B>
+
+et
+<B>SO_RCVBUF</B>
+
+sont limitées par les sysctls généraux
+<B>net.core.rmem_max</B>
+
+et
+<B>net.core.wmem_max</B>
+
+Notez que TCP alloue en fait deux fois plus de place que la taille
+demandée avec l'appel
+<B><A HREF="/cgi-bin/man/man2html?2+setsockopt">setsockopt</A></B>(2),
+
+et qu'un appel
+<B><A HREF="/cgi-bin/man/man2html?2+getsockopt">getsockopt</A></B>(2)
+
+réussi ne renverra pas la même taille de buffer que celle
+réclamée dans le
+<B><A HREF="/cgi-bin/man/man2html?2+setsockopt">setsockopt</A></B>(2).
+
+TCP les utilise à des fins administratives et pour des structures internes
+du noyau, et les variables sysctls renvoient des tailles supérieures 
+à celle des véritables fenêtres TCP.
+Pour les connexions individuelles, la taille du buffer doit être
+fixée avant les appels
+<B>listen</B>()
+
+ou
+<B>connect</B>()
+
+pour qu'elle soit prise en compte. Voir
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7)
+
+pour plus de détails.
+<P>
+
+TCP supporte les données urgentes. Elles signalent au récepteur qu'un message
+important est dans le flux de données et qu'il doit être traité
+le plus tôt possible.
+Pour envoyer des données urgentes, indiquez l'option
+<B>MSG_OOB</B>
+
+de
+<B><A HREF="/cgi-bin/man/man2html?2+send">send</A></B>(2).
+
+Quand des données urgentes sont reçues, le noyau envoie un signal
+<B>SIGURG</B>
+
+au processus lecture ou au groupe de processus qui a été indiqué
+pour la socket avec les ioctls
+<B>FIOCSPGRP</B>
+
+ou
+<B>FIOCSETOWN</B>.
+
+Quand l'option de socket
+<B>SO_OOBINLINE</B>
+
+est validée, les données urgentes sont mises dans le flux de données normal
+(et peuvent être détectées avec l'ioctl
+<B>SIOCATMARK</B>),
+
+sinon, on ne peut
+les recevoir que lorsque l'attribut
+<B>MSG_OOB</B>
+
+et positionné pour
+<B><A HREF="/cgi-bin/man/man2html?2+sendmsg">sendmsg</A></B>(2).
+
+<P>
+Linux 2.4 a introduit un certain nombre de changements pour améliorer le
+débit et l'extensibilité, ainsi que des fonctionnalités améliorées.
+Certaines de ces fonctions incluent le support pour l'émission sans copie avec
+<B><A HREF="/cgi-bin/man/man2html?2+sendfil">sendfil</A></B>(2),
+
+la notification de congestion explicitie, la nouvelle gestion des sockets
+TIME_WAIT, les options &quot;keep-alive&quot; et le support des extensions SACK dupliqués.
+<A NAME="lbAE">&nbsp;</A>
+<H2>FORMATS D'ADRESSE</H2>
+
+TCP est construit au-dessus de IP (voir
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7)).
+
+Les formats d'adresse définis pour
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7)
+
+s'appliquent pour TCP. TCP ne supporte que les communications point-à-point.
+Le broadcast et le multicast ne sont pas supportés.
+<A NAME="lbAF">&nbsp;</A>
+<H2>SYSCTLS</H2>
+
+Ces variables sont accessibles avec les fichiers
+<B>/proc/sys/net/ipv4/* </B>
+
+ou avec l'interface
+<B><A HREF="/cgi-bin/man/man2html?2+sysctl">sysctl</A></B>(2).
+
+De plus, la plupart des sysctls d'IP s'appliquent à TCP. Voir
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7).
+
+<DL COMPACT>
+<DT><B>tcp_abort_on_overflow</B>
+
+<DD>
+Valide la réinitialisation des connexions si le service en écoute est trop
+lent et incapable de les traiter et les accepter. Ceci n'est pas validé par
+défaut. Ce qui signifie que si un déborderment se produit à cause d'une surcharge
+temporaire, la connexion va se rattraper. N'activez cette option que si vous
+êtes SÛRS que le démon en écoute ne peut pas être configuré pour accepter
+les connexions plus vite. Cette option peut désorienter les clients
+de votre serveur.
+<DT><B>tcp_adv_win_scale</B>
+
+<DD>
+Calculer le surplus du buffer comme 1/2^tcp_adv_win_scale
+(si tcp_adv_win_scale &gt; 0) ou 1&nbsp;-&nbsp;1/2^(-tcp_adv_win_scale)
+(si tcp_adv_win_scal &lt;= 0). La valeur par défaut est 2.
+<P>
+L'espace du buffer de réception de la socket est partagé entre l'application
+et le noyau. TCP conserve une portion du buffer en tant que fenêtre TCP, c'est
+la taille de la fenêtre de réception indiquée au correspondant. Le reste
+de cet espace est utilisé comme buffer d'&quot;application&quot;, pour isoler le
+réseau des latences de l'ordonnanceur et de l'application.
+La valeur par défaut de
+<B>tcp_adv_win_scale</B>
+
+(2) indique que l'espace utilisé
+pour le buffer d'application est un quart
+de l'espace total.
+<DT><B>tcp_app_win </B>
+
+<DD>
+Cette variable définit combien d'octets
+de la fenêtre TCP sont réservés pour
+le surplus de buffer.
+<P>
+Un maximum de (fenetre/2^tcp_app_win, mss) octets de la fenêtre
+est réservé pour le buffer d'application. Une valeur nulle indique
+qu'aucune portion n'est réservée. La valeur par défaut est 31.
+<DT><B>tcp_dsack</B>
+
+<DD>
+Valide le support TCP SACK dupliqué, de la RFC2883.
+Validé par défaut.
+<DT><B>tcp_ecn</B>
+
+<DD>
+Valide la notification explicite de congestion de la RFC2884. Elles n'est pas
+activée par défaut. Lorsqu'elle est en service, la connectivité avec certaines
+destinations peut être affectée à cause de vieux routeurs mal configurés le
+long du trajet, et les connexions peuvent être rompues.
+<DT><B>tcp_fack</B>
+
+<DD>
+Valide le support TCP Forward Acknoledgement. Validé
+par défaut.
+<DT><B>tcp_fin_timeout</B>
+
+<DD>
+Nombre de secondes à attendre un paquet final FIN avant que la socket soit
+fermée de force. Strictement parlant, ceci est une violation des spécifications TCP,
+mais est nécessaire pour empêcher les attaques par déni de service.
+La valeur par défaut dans les noyaux 2.4 est 60, elle était 180 dans les 2.2.
+<DT><B>tcp_keepalive_intvl</B>
+
+<DD>
+L'intervalle en secondes entre deux messages TCP keep-alive.
+La valeur par défaut est 75 secondes.
+<DT><B>tcp_keepalive_probes</B>
+
+<DD>
+Nombre maximal de tentatives TCP keep-alive à envoyer
+avant d'abandonner et de tuer la connexion si aucune
+réponse n'est obtenue de l'autre partie.
+La valeur par défaut est 9.
+<DT><B>tcp_keepalive_time</B>
+
+<DD>
+Nombre de secondes durant lesquelles aucune donnée n'est transmise
+sur la connexion avant d'envoyer un message keep-alive.
+Ces messages ne sont envoyés que si l'option
+<B>SO_KEEPALIVE </B>
+
+de la socket est validée.
+La valeur par défaut est 7200 secondes (2 heures).
+Une connexion inactive est coupée environ 11 minutes plus tard
+(9 tentatives à 75 secondes d'écart).
+<P>
+Notez que les délais de la couche de transport sous-jacente, ou
+de l'application peuvent être bien plus courts.
+<DT><B>tcp_max_orphans</B>
+
+<DD>
+Le nombre maximal de sockets TCP orphelines (attachées à aucun descripteur
+utilisateur) sur le système. Quand ce nombre est dépassé, la connexion
+orpheline est réinitialisée et un message d'avertissement est affiché.
+Cette limite n'existe que pour éviter les attaques par déni de service&nbsp;;
+la diminuer n'est pas recommandé. Certaines situations peuvent réclamer
+d'augmenter cette limite, mais notez que chaque connexion orpheline peut
+consommer jusqu'à 64&nbsp;ko de mémoire non-swappable. La valeur par défaut
+est égale au paramètre NR_FILE du noyau. Elle est ajustée en fonction
+de la mémoire disponible sur
+le système.
+<DT><B>tcp_max_syn_backlog</B>
+
+<DD>
+Le nombre maximal de requêtes de connexions en attente, qui n'ont pas
+encore reçu d'acquittement de la part du client se connectant.
+Si ce nombre est atteint, le noyau commencera à abandonner des requêtes.
+La valeur par défaut, 256, est augmentée jusqu'à 1024 si la
+mémoire présente est suffisante (&gt;= 128&nbsp;Mo) et peut être
+diminuée à 128 sur les systèmes avec très peu de mémoire (&lt;= 32&nbsp;Mo).
+Il est recommandé, s'il faut augmenter cette valeur au dessus
+de 1024, de modifier TCP_SYNQ_HSIZE dans
+include/net/tcp.h pour conserver
+TCP_SYNQ_HSIZE * 16 &lt;= tcp_max_syn_backlog et de recompiler le
+noyau.
+<DT><B>tcp_max_tw_buckets</B>
+
+<DD>
+Le nombre maximal de sockets dans l'état TIME_WAIT autorisées sur
+le système. Cette limite n'existe que pour éviter les attaques par
+déni de service. La valeur par défaut est NR_FILE*2, ajustée en
+fonction de la mémoire disponible. Si ce nombre est atteint,
+la socket est fermée et un avertissement est affiché.
+<DT><B>tcp_mem</B>
+
+<DD>
+Il s'agit d'un vecteur de trois entiers&nbsp;: [bas, charge, haut]. Ces
+limites sont utilisées par TCP pour surveiller sa consommation mémoire. Les
+valeurs par défaut sont calculées au moment du boot à partir de la mémoire
+disponible.
+<P>
+<I>bas</I>
+
+- TCP ne cherche pas à réguler ses allocations mémoire quand le nombre de
+pages qu'il a alloué est en-dessous de ce nombre
+<P>
+<I>charge</I>
+
+- lorsque la taille mémoire allouée par TCP dépasse ce nombre
+de pages, TCP modère sa consommation mémoire. L'état de mémoire chargée
+se termine lorsque le nombre de pages allouées descend
+en dessous
+de la
+marque
+<B>bas</B>.
+
+<P>
+<I>haut</I>
+
+- le nombre global maximal de pages que TCP allouera. Cette valeur surcharge
+tout autre limite
+imposée par le noyau.
+<DT><B>tcp_orphan_retries</B>
+
+<DD>
+Le nombre maximal de tentatives pour accéder à l'autre extrémité d'une
+connexion dont notre côté a été fermé.
+La valeur par défaut est 8.
+<DT><B>tcp_reordering</B>
+
+<DD>
+Le nombre de réorganisations dans un flux TCP avant de supposer
+qu'un paquet est perdu et reprendre au début.
+La valeur par défaut est 3. Il n'est pas conseillé de modifier cette valeur.
+C'est une métrique sur la détection des réordonnancements de paquets
+conçue pour minimiser les retransmissions inutiles provoquées par
+la réorganisation des paquets dans une connexion.
+<DT><B>tcp_retrans_collapse</B>
+
+<DD>
+Essayer d'envoyer des paquets de tailles complètes durant les réémissions.
+C'est validé par défaut.
+<DT><B>tcp_retries1</B>
+
+<DD>
+Le nombre de fois que TCP essayera de retransmettre un paquet sur
+une connexion établie normalement, sans demander de
+contribution supplémentaire de la couche
+réseau concernée. Une fois ce nombre atteint, on
+demande au niveau réseau de remettre à jour son
+routage, si possible avant chaque nouvelle transmission.
+La valeur par défaut, 3, est le minimum indiqué dans la RFC.
+<DT><B>tcp_retries2</B>
+
+<DD>
+Le nombre de fois qu'un paquet TCP est restransmis sur une connexion
+établie avant d'abandonner. La valeur par défaut est 15,
+ce qui correspond à une durée entre
+13 et 3 minutes suivant le délai maximal de
+retransmission. La limite minimal de 100 secondes spécifiée par la RFC 1122
+est typiquement considérée comme trop
+courte.
+
+<B>tcp_rfc1337</B>
+
+Activer le comportement TCP conformément à la RFC 1337.
+Ceci n'est pas actif par défaut. Lorsqu'il n'est pas activé,
+si un RST est reçu en état TIME_WAIT, on ferme la socket
+immédiatement sans attendre la fin de la
+période TIME_WAIT.
+<DT><B>tcp_rmem</B>
+
+<DD>
+Il s'agit d'un vecteur de trois entiers&nbsp;: [min, défaut, max].
+Ces paramètres sont utilisés par TCP pour régler la taille du
+buffer de réception. TCP ajuste dynamiquement la taille à partir
+de la valeur par défaut, dans l'intervalle
+de ces variables sysctls, en fonction de la mémoire
+disponible sur le système.
+<P>
+<I>min</I>
+
+- taille minimale du buffer de réception utilisée par chaque socket TCP.
+La valeur par défaut 4&nbsp;Ko et descend à
+PAGE_SIZE octets sur les systèmes avec peu de mémoire. Cette valeur
+assure qu'en mode de mémoire chargée, les allocations
+en-dessous de cette taille réussiront. Elle n'est pas utilisée pour
+limiter la taille du buffer de réception,
+déclarée en utilisant l'option
+<B>SO_RCVBUF</B>
+
+sur la socket.
+<P>
+<I>défaut</I>
+
+- la taille par défaut du buffer de réceptiion pour une socket TCP.
+Cette valeur écrase la taille par défaut dans
+la valeur globale
+<B>net.core.rmem_defautl</B>
+
+définie pour tous les protocoles. La valeur par défaut est 87380 octets,
+et descend à 43689 sur les systèmes avec peu de mémoire. Si une taille
+plus grande est désirée, il faut augmenter cette valeur (pour affecter
+toutes les sockets). Pour utiliser une grande fenêtre TCP,
+l'option
+<B>net.ipv4.tcp_window_scaling</B>
+
+doit être activé (par défaut).
+<P>
+<I>max</I>
+
+- la taille maximale du buffer de réception utilisé par chaque socket TCP.
+Cette valeur ne surcharge pas la valeur globale
+<B>net.core.rmem_max</B>.
+
+Elle ne permet pas de limiter la taille du buffer
+de réception déclarée avec l'option
+<B>SO_RCVBUF</B>
+
+sur la socket.
+La valeur par défaut est 87380*2 octets et peut descendre à 87380
+sur les systèmes avec peu de mémoire.
+<DT><B>tcp_sack</B>
+
+<DD>
+Activer l'acquittement TCP sélectif (RFC 2018).
+Actif par défaut.
+<DT><B>tcp_stdurg</B>
+
+<DD>
+Activation de l'interprétation RFC 793 stricte du champ TCP Urgent-Pointer.
+Par défaut on utilise une interprétation compatible BSD de ce champ, qui
+pointe vers le premier octet des données urgentes.
+L'interprétation RFC 793
+le fait pointer vers le dernier octet des données urgentes. Valider cette option
+peut poser des problèmes d'interactions
+entre systèmes.
+<DT><B>tcp_synack_retries</B>
+
+<DD>
+Le nombre maximal de fois où un segment SYN/ACK sera retransmis sur une
+connection TCP passive. 
+Ce nombre ne doit pas dépasser 255.
+La valeur par défaut est 5.
+<DT><B>tcp_syncookies</B>
+
+<DD>
+Valider les syncookies TCP. Le noyau doit être compilé avec l'option
+<B>CONFIG_SYN_COOKIES</B>.
+
+Envoie des syncookies lorsque la file d'attente des connexions sur une socket
+déborde. Ceci est utilisé pour se protéger d'une attaque de type &quot;SYN flood&quot;.
+On ne doit l'utiliser qu'en
+dernier ressort. C'est une violation du protocole TCP,
+et entre en conflit avec d'autres fonctions comme les extensions TCP.
+Cela peut poser des problèmes avec les clients ou les relais.
+Ce mécanisme n'est pas considéré comme un moyen de réglage sur un serveur
+très chargé ou mal configuré.
+Pour des alternatives acceptables, voyez
+<B>tcp_max_syn_backlog</B>,
+
+<B>tcp_synack_retries</B>,
+
+<B>tcp_abort_on_overflow</B>.
+
+<DT><B>tcp_syn_retries</B>
+
+<DD>
+Le nombre maximal de fois où un paquet SYN initial sera retransmis pour
+une tentative de connexion TCP active. Cette valeur ne doit pas dépasser
+255. La valeur par défaut est 5, ce qui correspond approximativement à
+180 secondes. 
+<DT><B>tcp_timestamps</B>
+
+<DD>
+Activer les horodatages TCP (RFC 1323).
+Ceci est actif par défaut.
+<DT><B>tcp_tw_recycle</B>
+
+<DD>
+Activer le recyclage rapide des sockets TIME-WAIT. Ceci n'est pas
+actif par défaut. Cette option n'est pas recommandée
+car elle peut poser des problèmes avec les
+redirections NAT (Network Address Translation).
+<DT><B>tcp_window_scaling</B>
+
+<DD>
+Activer le dimensionnement de la fenêtre TCP (RFC 1323). Ceci est actif
+par défaut. Cette fonctionnalité permet d'utiliser une grande fenêtre
+(&gt; 64&nbsp;Ko) sur une connexion TCP si le correspondant le supporte.
+Normalement, les 16 bits du champ de longueur de fenêtre dans l'en-tête TCP
+limitent la taille à 64&nbsp;Ko. Si on désire une fenêtre plus grande,
+l'application peut augmenter la taille du buffer le
+la socket et activer l'option tcp_window_scaling.
+Si
+<B>tcp_window_scaling</B>
+
+est inhibée, TCP ne négotiera pas l'utilisation du dimensionnement
+des fenêtres avec le correspondant lors de l'initialisation de la connexion.
+<DT><B>tcp_wmem</B>
+
+<DD>
+Il s'agit d'un vecteur de trois entiers&nbsp;: [min, défaut, max]. Ces
+paramètres servent à TCP pour réguler la taille du buffer d'émission.
+La taille est ajustée dynamiquement à partir de la valeur par défaut,
+dans l'intervalle des variables sysctl, en fonction
+de la mémoire disponible.
+<P>
+<I>min</I>
+
+- taille minimale du buffer d'émission utilisé par chaque socket TCP.
+La valeur par défaut est 4&nbsp;Ko.
+Cette valeur assure qu'en mode de mémoire chargée, les allocations
+en-dessous de cette taille réussiront. Elle n'est pas utilisée pour
+limiter la taille du buffer de réception,
+déclarée en utilisant l'option
+<B>SO_SNDBUF</B>
+
+sur la socket.
+<P>
+<I>défaut</I>
+
+- la taille par défaut du buffer d'émission pour une socket TCP.
+Cette valeur écrase la taille par défaut dans
+la valeur globale
+<B>net.core.wmem_defautl</B>
+
+définie pour tous les protocoles. La valeur par défaut est 16&nbsp;Ko.
+Si une taille plus grande est désirée, 
+il faut augmenter cette valeur (pour affecter
+toutes les sockets). Pour utiliser une grande fenêtre TCP, la variable
+<B>net.ipv4.tcp_window_scaling</B>
+
+doit être activé (par défaut).
+<P>
+<I>max</I>
+
+- la taille maximale du buffer d'émission utilisé par chaque socket TCP.
+Cette valeur ne surcharge pas la valeur globale
+<B>net.core.rmem_max</B>.
+
+Elle ne permet pas de limiter la taille du buffer
+de réception déclarée avec l'option
+<B>SO_SNDBUF</B>
+
+sur la socket.
+La valeur par défaut est 128&nbsp;Ko et peut descendre à 64&nbsp;Ko
+sur les systèmes avec peu de mémoire.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>OPTIONS DES SOCKETS</H2>
+
+Pour lire ou écrire une option de socket TCP, appeler 
+<B><A HREF="/cgi-bin/man/man2html?2+getsockopt">getsockopt</A></B>(2)
+
+pour la lecture ou
+<B><A HREF="/cgi-bin/man/man2html?2+setsockopt">setsockopt</A></B>(2)
+
+pour l'écriture, avec l'argument famille de socket valant
+<B>SOL_TCP</B>.
+
+De plus, la plupart des
+options de socket
+<B>SOL_IP </B>
+
+sont valides sur les sockets TCP. Pour plus de détails,
+voir
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7).
+
+<DL COMPACT>
+<DT><B>TCP_CORK</B>
+
+<DD>
+Ne pas envoyer de trames partielles. Toutes les trames partielles
+en attente sont envoyées lorsque cette option est effacée à nouveau.
+Ceci permet de préparer les en-têtes avant d'appeler
+<B><A HREF="/cgi-bin/man/man2html?2+sendfile">sendfile</A></B>(2),
+
+ou pour optimiser le débit. Cette option ne peut pas être
+combinée avec
+<B>TCP_NODELAY</B>.
+
+Cette option ne doit pas être utilisée dans du code conçu pour
+être portable.
+<DT><B>TCP_DEFER_ACCEPT</B>
+
+<DD>
+Permettre à un processus en écoute de n'être réveillé que si des données
+arrivent sur la socket. Prend une valeur entière (en secondes), correspondant
+au nombre maximal de tentatives que TCP fera pour terminer la connexion.
+Cette option ne doit pas être utilisée dans du code conçu pour
+être portable.
+<DT><B>TCP_INFO</B>
+
+<DD>
+Fournit des informations sur la socket. Le noyau renvoie une
+structure tcp_info comme définie dans le fichier
+/usr/include/linux/tcp.h. Cette option ne doit pas être utilisée dans du
+code conçu pour être portable.
+<DT><B>TCP_KEEPCNT</B>
+
+<DD>
+Le nombre maximal de messages keepalive envoyés par TCP avant d'abandonner
+une connexion. Cette option ne doit pas être utilisée dans du code
+conçu pour être portable.
+<DT>
+<DD>
+La durée (en secondes) d'inactivité sur une connexion avant que TCP
+commence à envoyer les messages keepalive, si l'option
+SO_KEEPALIVE a été activée sur la socket. Cette option ne doit pas être
+employée dans du code conçu pour être portable.
+<DT><B>TCP_KEEPINTVL</B>
+
+<DD>
+Délai (en seconde) entre deux messages keepalive. Cette
+option ne doit pas être utilisée dans du code conçu pour
+être portable.
+<DT><B>TCP_LINGER2</B>
+
+<DD>
+La durée des sockets orphelines dans l'état FIN_WAIT2. Cette option peut
+servir à surcharger la valeur de la variable sysctl (globale pour le système)
+<B>tcp_fin_timeout</B>
+
+spécialement pour la socket. À ne pas confondre avec l'option
+<B>SO_LINGER</B>
+
+du niveau
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7).
+
+Cette option ne doit pas être utilisée dans du code conçu pour
+être portable.
+<DT><B>TCP_MAXSEG </B>
+
+<DD>
+La taille maximale de segment pour les paquets TCP sortants. Si cette options
+est fixée avant d'établir la connexion, elle
+change également la valeur MSS annoncée à l'autre extrémité,
+dans le paquet initial. Les valeurs supérieures
+au MTU de l'interface sont ignorées et n'ont pas d'effet. TCP imposera
+ses limites minimales et maximales plutôt que les valeurs fournies.
+<DT><B>TCP_NODELAY</B>
+
+<DD>
+Désactiver l'algorithme Nagle. Ceci signifie que les paquets
+seront envoyés dès que possible, même s'il n'y a que très
+peu de données. Sinon, les données sont conservées jusqu'à ce qu'il
+y en ait un nombre suffisant, pour éviter d'envoyer de fréquents
+petits paquets, au détriment du
+réseau. Cette option ne peut pas être utilisée
+en même temps que l'option
+<B>TCP_CORK</B>.
+
+<DT><B>TCP_QUICKACK</B>
+
+<DD>
+Valider le mode quickack, ou l'inhiber si l'option est nulle.
+En mode quickack, les acquitements sont envoyés immédiatement
+plutôt que retardés si besoin par rapport au fonctionnement
+normal de TCP. Cet attribut n'est pas permanent, il s'agit
+seulement d'un basculement vers ou depuis le mode quickack.
+Les opérations ultérieures du protocole TCP feront à nouveau
+entrer/quitter le mode quickack en fonction des traitements
+internes du protocole et de facteurs tels que les délais
+d'acquittements retardés, ou les tranferts de données.
+Cette option ne doit pas être utilisée dans du code conçu
+pour être portable.
+<DT><B>TCP_SYNCNT</B>
+
+<DD>
+Indique le nombre de retransmissions de SYN que TCP doit envoyer avant
+d'annuler la tentative de connexion. Ne doit pas dépasser 255.
+Cette option ne doit pas être utilisée dans du code conçu pour
+être portable.
+<DT><B>TCP_WINDOW_CLAMP</B>
+
+<DD>
+Limite la taille de la fenêtre. Le noyau impose
+une taille minimale de SOCK_MIN_RCVBUF/2.
+Cette option ne doit pas être employée dans du code conçu
+pour être portable.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>IOCTLS</H2>
+
+Ces ioctls sont accessibles à travers l'appel-système
+<B><A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A></B>(2).
+
+La syntaxe correcte est&nbsp;:
+<P>
+
+<DL COMPACT><DT><DD>
+<PRE>
+<B>int</B><I> value;</I>
+<I>error</I><B> = ioctl(</B><I>tcp_socket</I><B>, </B><I>ioctl_type</I><B>, &amp;</B><I>value</I><B>);</B>
+</PRE>
+
+</DL>
+
+<DL COMPACT>
+<DT><B>SIOCINQ</B>
+
+<DD>
+Renvoie la quantité de données non lues en attente dans le
+buffer de réception. L'argument est un pointeur sur un entier.
+La socket ne doit pas être dans l'état LISTEN, sinon l'erreur EINVAL
+est renvoyée.
+<DT><B>SIOCATMARK</B>
+
+<DD>
+Renvoie vrai si toutes les données urgentes ont déjà été reçues par
+le programme utilisateur. On l'utilise conjointement à
+<B>SO_OOBINLINE</B>.
+
+L'argument est un pointeur sur un entier contenant le résultat.
+<DT><B>SIOCOUTQ</B>
+
+<DD>
+Renvoie la quantité de données non lues en attente dans le buffer d'émission.
+La valeur est écrite dans l'entier sur lequel on passe un pointeur.
+La socket ne doit pas être dans l'état LISTEN, sinon l'erreur EINVAL
+est renvoyée.
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>GESTION D'ERREUR</H2>
+
+Quand une erreur réseau se produit, TCP tente de renvoyer le paquet. S'il ne réussit
+pas après un certain temps, soit
+<B>ETIMEDOUT </B>
+
+soit la dernière erreur reçue sur la connexion est renvoyée.
+<P>
+
+Certaines application demande une notification d'erreur plus rapide.
+Ceci peut être validé avec l'option de socket
+<B>IP_RECVERR </B>
+
+de niveau
+<B>SOL_IP</B>.
+
+Quand cette option est active, toutes les erreurs arrivant sont immédiatement
+passées au programme utilisateur. Employez cette option avec précaution,
+elle rend TCP moins tolérant envers les modifications de routage
+et autres conditions réseau normales.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>NOTES</H2>
+
+Lorsqu'une erreur se produit due à une écriture durant l'établissement
+de la connexion, le signal
+<B>SIGPIPE</B>
+
+n'est envoyé que lorsque l'option
+<B>SO_KEEPALIVE</B>
+
+de la socket est active.
+<P>
+
+TCP n'a pas de véritables données hors-bande&nbsp;; il a des données urgentes.
+Sous Linux cela signifie que si l'autre côté envoie de nouvelles données
+hors-bande, les données urgentes plus anciennes sont insérées comme des
+données normales dans le flux (même quand
+<B>SO_OOBINLINE</B>
+
+n'est pas actif). Cela diffère des piles basées sur BSD.
+<P>
+
+Linux utilise par défaut une interprétation compatible BSD du champ
+Urgent-Pointer. Ceci viole la RFC 1122, mais est indispensable pour
+l'interopérabilité avec les autres piles. On peut modifier ce
+comportement avec le
+sysctl
+<B>tcp_stdurg</B>.
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EPIPE</B>
+
+<DD>
+L'autre extrémité a fermé inopinément la socket, ou une lecture est tenté
+sur une socket terminée.
+<DT><B>ETIMEDOUT</B>
+
+<DD>
+L'autre côte n'a pas acquitté les données retransmises après un certain
+délai.
+<DT><B>EAFNOTSUPPORT</B>
+
+<DD>
+Le type d'adresse de la socket passée dans
+<I>sin_family </I>
+
+n'était pas
+<B>AF_INET</B>.
+
+</DL>
+<P>
+
+Toutes les erreurs définies dans
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7)
+
+ou au niveau générique des sockets peuvent aussi se produire avec TCP.
+<A NAME="lbAL">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Toutes les erreurs ne sont pas documentées.
+<BR>
+
+IPv6 n'est pas décrit.
+<P>
+<P>
+<P>
+<A NAME="lbAM">&nbsp;</A>
+<H2>VERSIONS</H2>
+
+Le support pour la notification explicite de congestion, l'émission de fichiers
+dsans copie, le réordonnancement et certaines extensions SACK (DSACK)
+ont été introduits dans Linux 2.4.
+Le support du Forward Acknowledgement (FACK), le recyclage de TIME_WAIT
+les options des messages keepalive et les variables sysctls
+ont été introduits dans Linux 2.3.
+<P>
+Les valeurs par défaut et les descriptions des variables sysctls
+décrites ci-dessus sont applicables pour les noyaux 2.4.
+<A NAME="lbAN">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Cette page de manuel a été écrite à l'origine par Andi Kleen.
+Elle a été mise à jour pour le 2.4 par Nivedita Singhvi en se basant sur
+le fichier Documentation/networking/ip-sysctls.txt
+d'Alexey Kuznetsov.
+<A NAME="lbAO">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?2+bind">bind</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+listen">listen</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+accept">accept</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sendmsg">sendmsg</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+recvmsg">recvmsg</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sendfile">sendfile</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sysctl">sysctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getsockopt">getsockopt</A></B>(2).
+
+<P>
+RFC 793 pour les spécifications TCP.
+<BR>
+
+RFC 1122 pour les nécessités TCP et une description
+de l'algorithme Nagle.
+<BR>
+
+RFC1323 pour les options d'horodatage et la fenêtre TCP.
+<BR>
+
+RFC1644 pour une description des dangers
+de TIME_WAIT.
+<BR>
+
+RFC2481 pour une description de la notification explicite
+de congestion.
+<BR>
+
+RFC 2581 pour des algorithmes de contrôle de congestion TCP.
+<BR>
+
+RFC2018 et RFC2883 pour SACK et ses extensions.
+<A NAME="lbAP">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2001-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">FORMATS D'ADRESSE</A><DD>
+<DT><A HREF="#lbAF">SYSCTLS</A><DD>
+<DT><A HREF="#lbAG">OPTIONS DES SOCKETS</A><DD>
+<DT><A HREF="#lbAH">IOCTLS</A><DD>
+<DT><A HREF="#lbAI">GESTION D'ERREUR</A><DD>
+<DT><A HREF="#lbAJ">NOTES</A><DD>
+<DT><A HREF="#lbAK">ERREURS</A><DD>
+<DT><A HREF="#lbAL">BOGUES</A><DD>
+<DT><A HREF="#lbAM">VERSIONS</A><DD>
+<DT><A HREF="#lbAN">AUTEURS</A><DD>
+<DT><A HREF="#lbAO">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAP">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:57 GMT, February 11, 2014
+</BODY>
+</HTML>

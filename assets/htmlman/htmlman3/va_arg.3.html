@@ -1,0 +1,397 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STDARG</TITLE>
+</HEAD><BODY>
+<H1>STDARG</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+stdarg, va_start, va_arg, va_copy, va_end - Liste variable d'arguments.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdarg.h">stdarg.h</A>&gt;</B>
+
+<P>
+<B>void va_start (va_list </B><I>ap</I><B>, </B><I>last</I><B>);</B>
+
+<BR>
+
+<B></B><I>type</I><B> va_arg (va_list </B><I>ap</I><B>, </B><I>type</I><B>);</B>
+
+<BR>
+
+<B>void va_end (va_list </B><I>ap</I><B>);</B>
+
+
+<B>void va_copy (va_list </B><I>dest</I><B>, va_list </B><I>src</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Une fonction peut être appelée avec un nombre variable d'arguments, eux-mêmes
+de types variables. Une telle fonction est dite &quot;variadique&quot;. Le fichier d'en-tête
+<I>stdarg.h</I>
+
+déclare un type
+<B>va_list</B>
+
+et définit trois macros permettant de parcourir la liste d'arguments dont
+le nombre et les types ne sont pas connus par la fonction appelée.
+<P>
+
+La fonction appelée doit déclarer un objet de type
+<B>va_list</B>
+
+utilisé par les macros
+<B>va_start</B>,
+
+<B>va_arg</B>,
+
+et
+<B>va_end</B>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H3>va_start</H3>
+
+La macro
+<B>va_start</B>
+
+initialise
+<I>ap</I>
+
+pour les utilisations ultérieures de
+<B>va_arg</B>
+
+et
+<B>va_end</B>,
+
+et doit donc être appelée en premier.
+<P>
+
+Le paramètre
+<I>last</I>
+
+est le nom du dernier paramètre avant la liste d'argument variable, c'est-à-dire
+le dernier paramètre dont la fonction connaisse le type.
+<P>
+
+Comme l'adresse de ce paramètre est utilisée dans la macro
+<B>va_start</B>
+
+il ne doit pas être déclaré comme une variable en registre, ni comme un
+type fonction ou tableau.
+<A NAME="lbAF">&nbsp;</A>
+<H3>va_arg</H3>
+
+La macro
+<B>va_arg</B>
+
+se développe en une expression qui a le type et la valeur de l'argument
+suivant de l'appel. Le paramètre
+<I>ap</I>
+
+est la
+<B>va_list</B>
+
+<I>ap</I>
+
+initialisée par
+<B>va_start</B>.
+
+Chaque appel de
+<B>va_arg</B>
+
+modifie
+<I>ap</I>
+
+pour que l'appel suivant renvoie l'argument suivant. Le paramètre
+<I>type</I>
+
+est le nom du type, indiqué de telle manière qu'un pointeur sur un objet de
+ce type puisse être déclaré simplement en ajoutant un astérisque à
+<I>type</I>.
+
+<P>
+
+La première utilisation de la macro
+<B>va_arg</B>
+
+après celle de
+<B>va_start</B>
+
+renvoie l'argument suivant
+<I>last</I>.
+
+Les invocations successives renvient les valeurs des arguments restants.
+<P>
+
+S'il n'y a pas d'argument suivant, ou si
+<I>type</I>
+
+n'est pas compatible avec le type réel du prochain argument, des erreurs
+imprévisibles se produiront.
+<P>
+
+Si
+<I>ap</I>
+
+est passé à une fonction qui utilise
+<B>va_arg(</B><I>ap</I><B>,</B><I>type</I><B>)</B>
+
+alors la valeur de
+<I>ap</I>
+
+est indéfinie après le retour de cette fonction.
+<A NAME="lbAG">&nbsp;</A>
+<H3>va_end</H3>
+
+A chaque invocation de
+<B>va_start</B>
+
+doit correspondre une invocation de
+<B>va_end</B>
+
+dans la même fonction. Après l'appel
+<B>va_end(</B><I>ap</I><B>)</B>
+
+la variable
+<I>ap</I>
+
+est indéfinie. Plusieurs traversées de la liste sont possible, à
+condition que chacune soit encadrée par 
+<B>va_start</B>
+
+et
+<B>va_end</B>.
+
+<B>va_end</B>
+
+peut être une macro ou ue fonction.
+<A NAME="lbAH">&nbsp;</A>
+<H3>va_copy</H3>
+
+
+Une implémentation évidente est de représenter
+<B>va_list</B>
+
+par un pointeur dans la pile de la fonction variadique.
+Dans une telle situation (de loin la plus courante), rien ne semble
+s'opposer à une affectation
+<DL COMPACT><DT><DD>
+<PRE>
+        va_list aq = ap;
+</PRE>
+
+</DL>
+
+Malheureusement, il y a aussi des systèmes qui créent une table
+de pointeurs (de longueur 1), et on devrait écrire
+<DL COMPACT><DT><DD>
+<PRE>
+        va_list aq;
+        *aq = *ap;
+</PRE>
+
+</DL>
+
+De plus, sur les systèmes où les paramètres sont passé dans des registres,
+il peut être nécessaire pour
+<B>va_start</B>
+
+d'allouer de la mémoire, d'y enregistrer les paramètres ainsi que l'indication
+du paramètre suivant, afin que
+<B>va_arg</B>
+
+puisse balayer la liste. Ainsi
+<B>va_end</B>
+
+pourra libérer la mémoire allouée.
+Pour gérer ces situations, C99 ajoute une macro
+<B>va_copy</B>,
+
+afin que les affectations ci-dessus soient remplacées par
+<DL COMPACT><DT><DD>
+<PRE>
+        va_list aq;
+        va_copy(aq, ap);
+        ...
+        va_end(aq);
+</PRE>
+
+</DL>
+
+A chaque invocation de
+<B>va_copy</B>
+
+doit correspondre une invocation de
+<B>va_end</B>
+
+dans la même fonction.
+Certains systèmes qui ne disposent pas de
+<B>va_copy</B>
+
+ont une macro
+<B>__va_copy</B>
+
+à la place, puisque c'était le nom proposé auparavant.
+<A NAME="lbAI">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+La fonction
+<I>foo</I>
+
+prend une chaîne de caractères de mise en forme, et affiche les arguments
+associés avec chaque format correspondant au type indiqué.
+<DL COMPACT><DT><DD>
+<PRE>
+#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/stdarg.h">stdarg.h</A>&gt;
+
+void 
+foo (char *fmt, ...)
+{
+  va_list ap;
+  int     d;
+  char    c, *p, *s;
+
+  va_start  (ap, fmt);
+  while     (*fmt)
+    switch  (*fmt ++) {
+      case 's': /* chaîne */
+        s = va_arg (ap, char *);
+        printf (&quot;chaine %s\n&quot;, s);
+        break;
+      case 'd':  /* entier */
+        d = va_arg (ap, int);
+        printf (&quot;int %d\n&quot;, d);
+        break;
+      case 'c': /* caractère */
+        c = va_arg (ap, char);
+        printf (&quot;char %c\n&quot;, c);
+        break;
+    }
+  va_end (ap);
+}
+</PRE>
+
+</DL>
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Les macros
+<B>va_start</B>,
+
+<B>va_arg</B>,
+
+et
+<B>va_end</B>
+
+sont conformes à ANSI X3.159-1989 (&quot;C89&quot;).
+C99 définit la macro
+<B>va_copy</B>.
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>COMPATIBILITÉ</H2>
+
+Ces macros ne sont
+<I>PAS</I>
+
+compatibles avec les anciennes macros qu'elles remplacent.
+Une compatibilité de version peut être obtenue en incluant le fichier d'en-tête
+<I>varargs.h</I>.
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>COMPARAISON</H2>
+
+La mise en oeuvre historique est&nbsp;:
+<DL COMPACT><DT><DD>
+<PRE>
+#include &lt;<A HREF="file:///usr/include/varargs.h">varargs.h</A>&gt;
+ 
+void foo(va_alist) va_dcl {
+        va_list ap;
+ 
+        va_start(ap);
+        while(...) {
+                ...
+                x = va_arg(ap, type);
+                ...
+        }
+        va_end(ap);
+}
+</PRE>
+
+</DL>
+
+Sur certains systèmes, 
+<I>va_end</I>
+
+contient une accolade fermante '}' correspondant à l'accolade ouvrante '{' dans
+<I>va_start</I>,
+
+ainsi les deux macros doivent se trouver dans la même fonction, placées d'une
+manière qui permette ceci.
+<P>
+<A NAME="lbAM">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Contrairement aux macros
+<B>varargs</B>,
+
+les macros
+<B>stdarg</B>
+
+ne permettent pas aux programmeurs de coder une fonction sans aucun argument
+fixe. Ce probleme se pose principalement en convertissant directement
+du code utilisant
+<B>varargs</B>
+
+en code utilisant
+<B>stdarg</B>,
+
+mais il se pose également pour les fonctions qui désirent passer tous leurs
+arguments à une fonction utilisant un argument
+<B>va_list</B>
+
+comme
+<B><A HREF="/cgi-bin/man/man2html?3+vfprintf">vfprintf</A></B>(3).
+
+<A NAME="lbAN">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">va_start</A><DD>
+<DT><A HREF="#lbAF">va_arg</A><DD>
+<DT><A HREF="#lbAG">va_end</A><DD>
+<DT><A HREF="#lbAH">va_copy</A><DD>
+</DL>
+<DT><A HREF="#lbAI">EXEMPLES</A><DD>
+<DT><A HREF="#lbAJ">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAK">COMPATIBILITÉ</A><DD>
+<DT><A HREF="#lbAL">COMPARAISON</A><DD>
+<DT><A HREF="#lbAM">BOGUES</A><DD>
+<DT><A HREF="#lbAN">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:12 GMT, February 11, 2014
+</BODY>
+</HTML>

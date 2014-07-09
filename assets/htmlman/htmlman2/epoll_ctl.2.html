@@ -1,0 +1,264 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of EPOLL_CTL</TITLE>
+</HEAD><BODY>
+<H1>EPOLL_CTL</H1>
+Section: Maniel du programmeur Linux (2)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+epoll_ctl - Interface de contrôle pour un descripteur epoll.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/epoll.h">sys/epoll.h</A>&gt;</B>
+
+<P>
+<B>int epoll_ctl(int </B>epfd<B>, int </B>op<B>, int </B>fd<B>, struct epoll_event *</B>event<B>)</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Controle
+le descripteur
+<B>epoll </B>
+
+<I>epfd</I>,
+
+en demandant que l'opération
+<I>op</I>
+
+soit réalisée sur le descripteur cible
+<I>fd</I>.
+
+La structure
+<I>event</I>
+
+décrit l'objet lié au descripteur de fichier
+<I>fd</I>.
+
+La
+<B>struct epoll_event</B>
+
+est définie ainsi&nbsp;:
+<P>
+<PRE>
+
+        typedef union epoll_data {
+                void *ptr;
+                int fd;
+                __uint32_t u32;
+                __uint64_t u64;
+        } epoll_data_t;
+
+        struct epoll_event {
+                __uint32_t events;      /* Evénement epoll      */
+                epoll_data_t data;      /* Variable utilisateur */
+        };
+
+</PRE>
+
+<P>
+Le membre
+<I>events</I>
+
+est un masque de bits composés à partir des événéments disponibles
+suivants&nbsp;:
+<DL COMPACT>
+<DT><B>EPOLLIN</B>
+
+<DD>
+Le descripteur associé est disponible pour un
+appel
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2).
+
+<DT><B>EPOLLOUT</B>
+
+<DD>
+Le descripteur associé est disponible pour un
+appel
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2).
+
+<DT><B>EPOLLPRI</B>
+
+<DD>
+Il y a des données urgentes disponibles pour un
+appel
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2).
+
+<DT><B>EPOLLERR</B>
+
+<DD>
+Une erreur s'est produite sur le descripteur associé.
+<DT><B>EPOLLHUP</B>
+
+<DD>
+Une deconnexion s'est produite sur le descripteur associé.
+<DT><B>EPOLLET</B>
+
+<DD>
+Fixe le comportement en détection de changement d'état sur le
+descripteur. Par défaut
+<B>epoll</B>
+
+fonctionne en détection de niveau. Voir
+<B><A HREF="/cgi-bin/man/man2html?4+epoll">epoll</A></B>(4)
+
+pour plus de détails sur les comportements en détection de niveau
+et de changements d'état.
+</DL>
+<P>
+
+<P>
+L'interface
+<B>epoll</B>
+
+supporte tous les descripteurs de fichiers supportés par
+<B><A HREF="/cgi-bin/man/man2html?2+poll">poll</A></B>(2).
+
+Les valeurs valides pour le paramètre
+<I>op</I>
+
+sont&nbsp;:
+
+<DL COMPACT>
+<DT><B>EPOLL_CTL_ADD</B>
+
+<DD>
+Ajouter le descripteur de fichier
+<I>fd</I>
+
+dans le
+descripteur
+<B>epoll</B>
+
+<I>epfd</I>
+
+et associe l'événement
+<I>event</I>
+
+avec le fichier représenté par
+<I>fd</I>.
+
+<DT><B>EPOLL_CTL_MOD</B>
+
+<DD>
+Change l'événement
+<I>event</I>
+
+associé au descripteur de fichier
+<I>fd</I>.
+
+<DT><B>EPOLL_CTL_DEL</B>
+
+<DD>
+Supprime le descripteur de fichier
+<I>fd</I>
+
+dans le
+descripteur
+<B>epoll</B>
+
+<I>epfd</I>.
+
+
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Lorsqu'il réussit, l'appel
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_ctl">epoll_ctl</A></B>(2)
+
+renvoie zéro. Si une erreur se produit,
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_ctl">epoll_ctl</A></B>(2)
+
+renvoie -1 et
+<I>errno</I>
+
+contient le code approprié.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+Le descripteur de fichiers
+<I>epfd</I>
+
+n'est pas un descripteur valide.
+<DT><B>EPERM</B>
+
+<DD>
+Le fichier cible
+<I>fd</I>
+
+n'est pas supporté par
+<B>epoll</B>.
+
+<DT><B>EINVAL</B>
+
+<DD>
+Le descripteur de fichier
+<I>epfd</I>,
+
+n'est pas un descripteur
+<B>epoll</B>,
+
+ou l'opération demandée
+<I>op</I>
+
+n'est pas supportée par cette interface.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire dans le noyau pour traiter
+l'opération
+<I>op</I>.
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_ctl">epoll_ctl</A></B>(2)
+
+est une nouvelle API introduite dans Linux 2.5.44.
+Son interface est stabilisée depuis le 2.5.66.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_create">epoll_create</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+epoll_wait">epoll_wait</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?4+epoll">epoll</A></B>(4)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:59 GMT, February 11, 2014
+</BODY>
+</HTML>

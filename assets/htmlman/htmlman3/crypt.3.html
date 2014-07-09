@@ -1,0 +1,207 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CRYPT</TITLE>
+</HEAD><BODY>
+<H1>CRYPT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+crypt - Crytage de données ou de mot de passe.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#define _XOPEN_SOURCE_</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>char *crypt (const char *</B><I>clé</I><B>, const char *</B><I>salt</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>crypt</B>
+
+est celle utilisée pour le cryptage des mots-de-passe. Elle est basée sur
+l'algorithme DES (Data Encryption Standard) avec des variantes prévues entre
+autres choses pour éviter l'implémentation matérielle d'un casseur de code.
+<P>
+
+L'argument
+<I>clé</I>
+
+est le mot-de-passe saisi par l'utilisateur.
+<P>
+
+<I>salt</I>
+
+est une chaîne de deux caractères pris dans l'ensemble
+[<B>a</B>-<B>zA</B>-<B>Z0</B>-<B>9./</B>]. Cette chaîne est utilisée
+pour introduire une perturbation (parmi 4096) dans l'algorithme.
+<P>
+
+En utilisant les sept bits de poids faibles des huit premiers caractères de la
+<I>clé</I>,
+
+une clé de 56-bits est obtenue, qui est alors utilisée pour crypter de
+manière répétée une chaîne de caractères constante (souvent une chaîne de
+zéros).  La valeur renvoyée pointe sur le mot de passe crypté, une chaîne de 13
+caractères ASCII imprimables, les deux premiers caractères représentant
+l'argument <I>salt</I> lui-même.
+Cette valeur renvoyée pointe sur des données statiques dont le contenu
+est écrasé à chaque appel.
+<P>
+
+Attention : L'espace des clés consistent en
+
+2**56
+soient 7,2e16 valeurs possibles. Une recherche exhaustive est possible en
+utilisant des ordinateurs
+massivement parallèles. Certains logiciels sont disponibles, comme
+<B><A HREF="/cgi-bin/man/man2html?1+crack">crack</A></B>(1),
+
+qui exploreront la portion de l'espace des clés contenant les mots de
+passe habituellement utilisés par les humains.
+Ainsi, le choix d'un mot de passe doit au minimum éviter les noms propres ou
+communs. On recommande fortement l'utilisation d'un programme comme
+<B><A HREF="/cgi-bin/man/man2html?1+passwd">passwd</A></B>(1)
+
+pour vérifier la fiabilité des mots de passe dès la saisie.
+<P>
+
+L'algorithme DES lui-même a quelques inconvénients qui rendent
+l'utilisation de 
+<B>crypt (3)</B>
+
+peu recommandable pour autre chose que le
+cryptage de mots de passe.
+Si vous comptez développer un projet cryptographique en utilisant
+<B><A HREF="/cgi-bin/man/man2html?3+crypt">crypt</A>(3)</B>,
+
+abandonnez cette idée : achetez un bon bouquin sur la
+cryptographie, et utilisez une bibliothèque DES toute faite comme il en
+existe tant.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Un pointeur vers le mot de passe crypté.
+En cas d'erreur, NULL est renvoyé.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ENOSYS</B>
+
+<DD>
+La fonction
+<B>crypt</B>
+
+est absente, probablement en raison des restrictions d'exportation des
+Etats-Unis.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>EXTENSION GNU</H2>
+
+La version de cette fonction dans la GlibC 2 a quelques fonctionnalités
+supplémentaires&nbsp;:
+Si
+<I>salt</I>
+
+est une chaîne commençant par les trois caractères &quot;$1$&quot; suivis d'au plus
+huit caractères, et éventuellement terminée par &quot;$&quot;, alors au lieu d'utiliser
+la machine DES, la fonction crypt de la GlibC emploie un algorithme
+basé sur MD5 et sort jusqu'à 34 octets, plus précisément &quot;$1$&lt;chaine&gt;$&quot;,
+où &quot;&lt;chaine&gt;&quot; correspond aux 8 caractères maximum suivant le &quot;$1$&quot; dans
+<I>salt</I>,
+
+suivis de 22 octets de l'ensemble
+[<B>a</B>-<B>zA</B>-<B>Z0</B>-<B>9./</B>].
+La clé entière est significative ici, et non pas ses huit premiers octets.
+<P>
+
+Pour les programmes utilisant cette fonction, il faut employer l'option -lcrypt
+lors de l'édition des liens.
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID, X/OPEN, BSD 4.3, POSIX 1003.1-2001.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+login">login</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+passwd">passwd</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?3+encrypt">encrypt</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getpass">getpass</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+passwd">passwd</A></B>(5)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">EXTENSION GNU</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:22 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,345 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ARP</TITLE>
+</HEAD><BODY>
+<H1>ARP</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 16 mai 2005<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+arp - Manipuler le cache ARP du système.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>arp</B>
+
+[<B>-vn</B>]
+
+[<B>-H type</B>]
+
+[<B>-i if</B>]
+
+<B>-a</B>
+
+[<B>nom_hôte</B>]
+
+<P>
+
+<B>arp</B>
+
+[<B>-v</B>]
+
+[<B>-i if</B>]
+
+<B>-d nom_hôte</B>
+
+[<B>pub</B>]
+
+<P>
+
+<B>arp</B>
+
+[<B>-v</B>]
+
+[<B>-H type</B>]
+
+[<B>-i if</B>]
+
+<B>-s nom_hôte adr_matérielle</B>
+
+[<B>temp</B>]
+
+<P>
+
+<B>arp</B>
+
+[<B>-v</B>]
+
+[<B>-H type</B>]
+
+[<B>-i if</B>]
+
+<B>-s nom_hôte adr_matérielle</B>
+
+[<B>netmask nm</B>]
+
+<B>pub</B>
+
+<P>
+
+<B>arp</B>
+
+[<B>-v</B>]
+
+[<B>-H type</B>]
+
+[<B>-i if</B>]
+
+<B>-Ds nom_hôte ifa</B>
+
+[<B>netmask nm</B>]
+
+<B>pub</B>
+
+<P>
+
+<B>arp</B>
+
+[<B>-vnD</B>]
+
+[<B>-H type</B>]
+
+[<B>-i if</B>]
+
+<B>-f [nom_fichier]</B>
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>arp</B>
+
+manipule le cache ARP du noyau de différentes façons. Les options
+principales permettent d'effacer une correspondance d'adresses et
+d'en définir une manuellement. Pour les besoins de débogagel Le
+programme
+<B>arp</B>
+
+permet aussi d'effectuer un vidage complet du cache ARP.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-v</B>,<B> --verbose</B>
+
+<DD>
+Mode volubile.
+<DT><B>-n</B>,<B> --numeric</B>
+
+<DD>
+Afficher les adresses sous forme numérique au lieu d'essayer de
+déterminer les noms symboliques d'hôtes, de ports ou d'utilisateurs.
+<DT><B>-H type</B>,<B> --hw-type type</B>
+
+<DD>
+Lors de la configuration ou de la lecture du cache ARP,
+ce paramètre optionnel indique à
+<B>arp</B>
+
+les classes des entrées qu'il doit contrôler.
+La valeur par défaut de ce paramètre est
+<B>ether</B>
+
+(c'est-à-dire le code de matériel 0x01 pour IEEE 802.3 Ethernet 10Mbps).
+D'autres valeurs peuvent inclure des technologies de réseaux telles que
+ARCnet (<B>arcnet</B>)<B>,</B>
+
+PROnet (<B>pronet</B>)<B>,</B>
+
+AX.25 (<B>ax25</B>)
+
+et
+NET/ROM (<B>netrom</B>).
+
+<DT><B>-a [nom_hôte]</B>,<B> --display [nom_hôte]</B>
+
+<DD>
+Afficher les entrées des hôtes spécifiés. Si le paramètre
+<B>nom_hôte</B>
+
+n'est pas utilisé,
+<B>toutes</B>
+
+les entrées seront affichées.
+<DT><B>-d nom_hôte</B>,<B> --delete nom_hôte</B>
+
+<DD>
+Supprimer toute entrée de l'hôte spécifié. Ceci peut être utilisé
+si l'hôte indiqué ne fonctionne plus, par exemple.
+<DT><B>-D</B>,<B> --use-device</B>
+
+<DD>
+Utiliser l'adresse matérielle de l'interface
+<B>ifa</B>.
+
+<DT><B>-i if</B>,<B> --device if</B>
+
+<DD>
+Sélectionner une interface. Lors du vidage du cache ARP, seules les
+entrées correspondant à l'interface spécifiée seront affichées.
+Lorsque l'on définit une entrée permanente ou une entrée
+<B>temp</B>,
+
+cette interface lui sera associée&nbsp;; si cette option n'est pas utilisée,
+le noyau devinera l'interface à partir de la table de routage.
+Pour les entrées
+<B>pub</B>,
+
+l'interface spécifiée est celle pour laquelle les requêtes ARP
+auront trouvé une réponse.
+<BR>
+
+<B>NOTE&nbsp;:</B>
+
+Celle-ci devra être différente de l'interface vers laquelle les
+datagrammes IP seront routés.
+<DT><B>-s nom_hôte adr_matérielle</B>,<B> --set nom_hôte adr_matérielle</B>
+
+<DD>
+Créer manuellement une correspondance d'adresse ARP pour l'hôte
+<B>nom_hôte</B>
+
+avec l'adresse matérielle donnée.
+Le format de l'adresse matérielle est dépendant de la classe du matériel,
+mais pour la plupart, on peut considérer que la présentation classique
+peut être utilisée. Pour la classe Ethernet, c'est 6&nbsp;octets en hexadécimal,
+séparés par des double-points. Pour ajouter des entrées proxy-arp
+(ce sont celles avec l'indicateur
+<B>publish</B>
+
+positionné),
+un masque de réseau
+(<B>netmask</B>)
+
+peut être spécifié au proxy-arp pour le sous-réseau entier.
+Ceci n'est pas très recommandé, mais est pris en charge par d'anciens noyaux,
+car c'est utile dans certains cas.
+Si l'indicateur
+<B>temp</B>
+
+n'est pas fourni, les entrées du cache ARP seront permanentes.
+<BR>
+
+<B>NOTE&nbsp;:</B>
+
+À partir du noyau 2.2.0, il n'est plus possible de définir des entrées
+ARP pour un sous-réseau entier. À la place, Linux réalise du
+proxy-arp automagique quand une route existe et il réexpédie. Voir
+<B><A HREF="/cgi-bin/man/man2html?7+arp">arp</A></B>(7)
+
+pour plus de précision. De la même manière, depuis les noyaux 2.4,
+il n'est plus possible d'utiliser l'option
+<B>dontpub</B>
+
+qui permettait de supprimer et configurer les opérations.
+<DT><B>-f nom_de_fichier</B>,<B> --file nom_de_fichier</B>
+
+<DD>
+Similaire à l'option
+<B>-s</B>,
+
+mais cette fois, les informations d'adresses sont prises dans le fichier
+<B>nom_de_fichier</B>.
+
+Ceci peut être utilisé si les entrées ARP à configurer sont
+nombreuses. Le fichier de données est très souvent nommé
+<I>/etc/ethers</I>,
+
+mais ce n'est pas officiel.
+<P>
+Le format du fichier est simple&nbsp;: il contient seulement des lignes
+de texte ASCII avec, sur chaque ligne, un nom d'hôte et une adresse
+matérielle, séparés par des espaces. Les indicateurs
+<B>pub</B>,<B> temp</B> et<B> netmask</B>
+
+peuvent également être utilisés.
+</DL>
+<P>
+
+Dans tous les cas où un nom d'hôte
+(<B>nom_hôte</B>)
+
+est attendu, on peut aussi entrer une
+<B>adresse IP</B>
+
+en notation décimale pointée.
+<P>
+
+Pour une question de compatibilité, l'ordre du nom d'hôte et de
+l'adresse matérielle peut être échangé.
+<P>
+
+Chaque entrée complète se trouvant dans le cache ARP est marquée de
+l'indicateur
+<B>C</B>.
+
+Les entrées permanentes sont marquées de l'indicateur
+<B>M</B>
+
+et les entrées publiées («&nbsp;pub&nbsp;») ont l'indicateur
+<B>P</B>.
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/proc/net/arp</I>
+
+<BR>
+
+<I>/etc/networks</I>
+
+<BR>
+
+<I>/etc/hosts</I>
+
+<BR>
+
+<I>/etc/ethers</I>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+rarp">rarp</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+route">route</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ifconfig">ifconfig</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+netstat">netstat</A></B>(8)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Fred N. van Kempen, &lt;<A HREF="mailto:waltje@uwalt.nl.mugnet.org">waltje@uwalt.nl.mugnet.org</A>&gt; avec les améliorations
+apportées par le mainteneur des net-tools Bernd Eckenfels
+&lt;<A HREF="mailto:net-tools@lina.inka.de">net-tools@lina.inka.de</A>&gt;.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Jean Michel Vansteene
+&lt;vanstee&nbsp;AT&nbsp;worldnet&nbsp;DOT&nbsp;fr&gt; le 15&nbsp;mars&nbsp;1999,
+mise à jour par Guillaume Audirac en août 2004
+et révisée le 17&nbsp;août&nbsp;2006.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;8&nbsp;arp</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">AUTEURS</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

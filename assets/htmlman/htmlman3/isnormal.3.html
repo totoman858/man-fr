@@ -1,0 +1,115 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FPCLASSIFY</TITLE>
+</HEAD><BODY>
+<H1>FPCLASSIFY</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fpclassify, isfinite, isnormal, isnan - Macros de classification en virgule flottante.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/math.h">math.h</A>&gt;</B>
+
+<B>int fpclassify(</B><I>x</I><B>);</B>
+
+<B>int isfinite(</B><I>x</I><B>);</B>
+
+<B>int isnormal(</B><I>x</I><B>);</B>
+
+<B>int isnan(</B><I>x</I><B>);</B>
+
+<B>int isinf(</B><I>x</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les nombres en virgule flottante ont des valeurs spéciales, tels que
+les infinis ou NaN. Avec la macro
+<B>fpclassify(</B><I>x</I><B>)</B>
+
+vous pouvez connaître le type de
+<I>x</I>.
+
+La macro prend en argument n'importe quel type d'expression en virgule
+flottante. Le résultat est l'une des valeurs suivantes&nbsp;:
+<DL COMPACT>
+<DT>FP_NAN<DD>
+<I>x</I>
+
+est un &quot;non-nombre&quot;.
+<DT>FP_INFINITE<DD>
+<I>x</I>
+
+vaut plus ou moins l'infini.
+<DT>FP_ZERO<DD>
+<I>x</I>
+
+est nul.
+<DT>FP_SUBNORMAL<DD>
+<I>x</I>
+
+est trop petit pour être représenté en format normalisé.
+<DT>FP_NORMAL<DD>
+si aucun des cas précédents n'est vrai, alors c'est qu'il doit
+s'agir d'un nombre normal en virgule flottante;
+</DL>
+<P>
+
+Les autres macros fournissent une réponse courte à des questions standards.
+<DL COMPACT>
+<DT>isfinite(x)<DD>
+(fpclassify(x) != FP_NAN &amp;&amp; fpclassify(x) != FP_INFINITE)
+<DT>isnormal(x)<DD>
+(fpclassify(x) == FP_NORMAL)
+<DT>isnan(x)<DD>
+(fpclassify(x) == FP_NAN)
+<DT>isinf(x)<DD>
+(fpclassify(x) == FP_INFINITE)
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTE</H2>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+C99
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+isgreater">isgreater</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+isinf">isinf</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:40 GMT, February 11, 2014
+</BODY>
+</HTML>

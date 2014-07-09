@@ -1,0 +1,131 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PTS</TITLE>
+</HEAD><BODY>
+<H1>PTS</H1>
+Section: Manuel du programmeur Linux (4)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ptmx and pts - Pseudo-terminaux maître et esclave.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fichier <B>/dev/ptmx</B> est un fichier spécial caractère avec un numéro
+majeur 5 et un numéro mineur 2, habituellement en mode 0666, appartenant à root.root.
+Il sert à créer une paire de pseudo-terminaux maître et esclave.
+<P>
+
+Lorsqu'un processus ouvre <B>/dev/ptmx</B>, il reçoit un descripteur de
+fichier pour le pseudo-terminal maître (PTM), et un périphérique est créé
+pour le pseudo-terminal esclave (PTE) dans le répertoire
+<I>/dev/pts</I>.
+
+Chaque descripteur obtenu en ouvrant <B>/dev/ptmx</B> est un PTM indépendant
+avec son PTE associé, dont le chemin d'accès peut être obtenu en passant le
+descripteur à
+<B><A HREF="/cgi-bin/man/man2html?3+ptsname">ptsname</A></B>(3).
+
+<P>
+
+Avant d'ouvrir le pseudo-terminal esclave, vous devez passer de descripteur
+du maître à
+<B><A HREF="/cgi-bin/man/man2html?3+grantpt">grantpt</A></B>(3)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?3+unlockpt">unlockpt</A></B>(3).
+
+<P>
+
+Une fois que les deux pseudo-terminaux sont ouverts, l'esclave fournit
+une interface au processus qui est identique au vrai terminal.
+<P>
+
+Les données écrites sur l'esclave se retrouvent en entrée sur le descripteur
+du maître. Les données écrites sur le maître se retrouvent en entrée sur
+l'esclave.
+<P>
+
+En pratique, les pseudo-terminaux servent à implémenter des émulateurs
+de terminaux comme
+<B><A HREF="/cgi-bin/man/man2html?1+xterm">xterm</A></B>(1),
+
+dans lesquel les données lues sur le terminal maître sont interprétées par
+l'application de la même manière que le ferait un vrai terminal,
+et pour implémenter des programmes de connexion distante comme
+<B><A HREF="/cgi-bin/man/man2html?8+sshd">sshd</A></B>(8),
+
+dans lesquels les données lues sur le PTM sont envoyées sur le réseau
+à un programme client qui est connecté à un terminal ou un émulateur.
+<P>
+
+Les pseudo-terminaux servent aussi à envoyer des données aux programmes
+qui refusent de lire des données depuis des tubes (comme
+<B><A HREF="/cgi-bin/man/man2html?8+su">su</A></B>(8),
+
+et
+<B><A HREF="/cgi-bin/man/man2html?8+passwd">passwd</A></B>(8)).
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/dev/ptmx</I>,
+
+<I>/dev/pts/*</I>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le support Linux décrit ci-dessus (connu sous le nom de pty Unix98)
+est réalisé en utilisant le système de fichiers
+<I>devpts</I>,
+
+qui devrait être monté sous
+<I>/dev/pts</I>.
+
+<P>
+
+Avant le shéma Unix98, les PTYs maîtres étaient appelés
+<I>/dev/ptyp0</I>, ...
+
+et les esclaves
+<I>/dev/ttyp0</I>, ...
+
+et il fallait allouer au préalable des noeuds de périphériques.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+getpt">getpt</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+grantpt">grantpt</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+ptsname">ptsname</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+unlockpt">unlockpt</A></B>(3)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">FICHIERS</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:53 GMT, February 11, 2014
+</BODY>
+</HTML>

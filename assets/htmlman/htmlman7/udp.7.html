@@ -1,0 +1,261 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of UDP</TITLE>
+</HEAD><BODY>
+<H1>UDP</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+udp - Protocole UDP pour IPv4
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/netinet/in.h">netinet/in.h</A>&gt;</B>
+
+<BR>
+
+<B>udp_socket = socket(PF_INET, SOCK_DGRAM, 0); </B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Il s'agit d'une implémentation de l'User Datagram Protocol décrit dans la RFC 768. Elle
+implémente un service de paquets datagrammes non-fiables, sans connexion.
+Les paquets peuvent être réordonnées ou dupliqués avant leur arrivée.
+UDP créé et vérifie des sommes de contrôle pour détecter les erreurs de transmission.
+<P>
+Lorsqu'une socket UDP est créée, ses adresses locales et distantes sont indéterminées.
+Les datagrammes peuvent être envoyés immédiatement en utilisant
+<B><A HREF="/cgi-bin/man/man2html?2+sendto">sendto</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+sendmsg">sendmsg</A></B>(2)
+
+avec une adresse de destination valide en argument. Lorsque 
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2)
+
+est appelé sur une socket, l'adresse de destination par défaut est fixée, et les
+datagrammes pourront être envoyés avec
+<B><A HREF="/cgi-bin/man/man2html?2+send">send</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2)
+
+sans spécifier d'adresse de destination.
+Il restera possible d'envoyer des données à d'autres destinations en passant l'adresse à
+<B><A HREF="/cgi-bin/man/man2html?2+sendto">sendto</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+sendmsg">sendmsg</A></B>(2).
+
+Afin de recevoir les paquets, une socket doit être attachée à une adresse locale
+en utilisant
+<B><A HREF="/cgi-bin/man/man2html?2+bind">bind</A></B>(2).
+
+Sinon la couche socket affectera automatiquement une port local libre, hors de
+l'intervalle défini par
+<I>net.ipv4.ip_local_port_range</I>
+
+et attacher la socket à l'adresse
+<I>INADDR_ANY</I>.
+
+<P>
+Les opérations de réception ne renvoie qu'un seul paquet à la fois. Si le paquet est plus
+petit que le buffer transmis, il n'y aura pas plus de données renvoyées. S'il est plus grand
+le paquet sera tronqué et le drapeau
+<B>MSG_TRUNC</B>
+
+sera activé.
+<I>MSG_WAITALL</I>
+
+n'est pas supporté.
+<P>
+Les options IP peuvent être fixées ou lues en utilisant les options des sockets décrites dans
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7).
+
+Elles ne sont traitées par le noyau que lorsque le sysctl approprié est activé
+(mais sont quand même fournies à l'utilisateur quant il est inhibé). Voir
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7).
+
+<P>
+Quand l'attribut
+<B>MSG_DONTROUTE</B>
+
+est actif à l'émission, l'adresse de destination doit représenter une adresse d'interface
+locale, et le paquet n'est envoyé qu'à cette interface.
+<P>
+UDP fragmente un paquet quand sa longueur totale excède le MTU de l'interface
+(Maximum Transmission Unit). Une alternative plus efficace pour le réseau est d'utiliser
+la recherche du MTU du chemin, 
+comme indiqué dans la section
+<B>IP_PMTU_DISCOVER </B>
+
+de
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7).
+
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>FORMAT D'ADRESSE</H2>
+
+UDP utilise le format d'adresse IPv4
+<B>sockaddr_in </B>
+
+comme indiqué dans
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7).
+
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>GESTION D'ERREUR</H2>
+
+Toutes les erreurs fatales seront transmises à l'utilisateur comme un retour d'erreur même
+lorsque la socket n'est pas connectée. Ceci inclut les erreurs asynchrones reçues du réseau.
+Vous pouvez ainsi recevoir une erreur due à un paquet précédemment
+envoyé sur la même socket.
+Ce comportement diffère de celui de nombreuses autres implémentations des sockets BSD, qui
+ne transmettent pas d'erreur si la socket n'est pas connecté.
+Les comportement de Linux correspond à la
+<B>RFC 1122</B>.
+
+<P>
+Pour assurer la compatibilité avec du code ancien, on peut fixer l'option SOL_SOCKET
+<B>SO_BSDCOMPAT  </B>
+
+pour ne recevoir les erreurs distantes que si la socket a été
+connectée (sauf pour
+<B>EPROTO</B>
+
+et
+<B>EMSGSIZE</B>).
+
+Il vaut mieux corriger le code pour
+gérer les erreurs proprement plutôt que d'activer cette option.
+Les erreurs locales sont toujours transmises.
+<P>
+Lorsque l'option
+<B>IP_RECVERR</B>
+
+est active, toutes les erreurs sont stockées dans la file d'erreur de la socket
+et peuvent être lues avec
+<B><A HREF="/cgi-bin/man/man2html?2+recvmsg">recvmsg</A></B>(2)
+
+en activant son option
+<B>MSG_ERRQUEUE</B>.
+
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>IOCTLS</H2>
+
+Les ioctls sont accessible avec l'appel-système
+<B><A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A></B>(2).
+
+La syntaxe correcte est :
+<P>
+
+<DL COMPACT><DT><DD>
+<PRE>
+<B>int</B><I> value;</I>
+<I>error</I><B> = ioctl(</B><I>tcp_socket</I><B>, </B><I>ioctl_type</I><B>, &amp;</B><I>value</I><B>);</B>
+</PRE>
+
+</DL>
+
+<DL COMPACT>
+<DT><B>SIOCINQ</B>
+
+<DD>
+Prend en argument un pointeur sur un entier. Y écrit la taille en octets du prochain
+datagramme en attente, ou 0 si aucun datagramme n'est disponible.
+<DT><B>SIOCOUTQ</B>
+
+<DD>
+Renvoie le nombre d'octets de données dans la file d'émission locale. Seulement sur
+Linux 2.4 et ultérieurs.
+</DL>
+<P>
+
+De plus, les ioctls documenté dans
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7)
+
+sont supportés.
+<A NAME="lbAH">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Toutes les erreurs documentées pour
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7)
+
+peuvent être renvoyées lors d'une émission ou d'une réception sur une socket UDP.
+<P>
+<B>ECONNREFUSED</B>
+
+Aucun correspondant sur l'adresse destination associée à la socket. Ceci peut être
+causé par l'émission antérieure d'un paquet sur la socket.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>VERSIONS</H2>
+
+IP_RECVERR est une nouveauté de Linux 2.2.
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>CREDITS</H2>
+
+Cette page de manuel a été écrite par Andi Kleen.
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+raw">raw</A></B>(7).
+
+<P>
+RFC 768 pour le protocole UDP
+<BR>
+
+RFC 1122 pour les nécessité de l'hôte.
+<BR>
+
+RFC 1191 pour une description de la recherche du MTU par chemin.
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2001-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">FORMAT D'ADRESSE</A><DD>
+<DT><A HREF="#lbAF">GESTION D'ERREUR</A><DD>
+<DT><A HREF="#lbAG">IOCTLS</A><DD>
+<DT><A HREF="#lbAH">ERREURS</A><DD>
+<DT><A HREF="#lbAI">VERSIONS</A><DD>
+<DT><A HREF="#lbAJ">CREDITS</A><DD>
+<DT><A HREF="#lbAK">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:58 GMT, February 11, 2014
+</BODY>
+</HTML>

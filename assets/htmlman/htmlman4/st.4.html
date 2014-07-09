@@ -1,0 +1,863 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ST</TITLE>
+</HEAD><BODY>
+<H1>ST</H1>
+Section: Manuel du programmeur Linux (4)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+st - Lecteur de bandes SCSI.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/mtio.h">sys/mtio.h</A>&gt;</B>
+
+<B>int ioctl(int </B><I>fd</I><B>, int </B><I>request</I><B> [, (void *)</B><I>arg3</I><B>]);</B>
+<B>int ioctl(int </B><I>fd</I><B>, </B><FONT SIZE="-1"><B>MTIOCTOP</B></FONT><B>, (struct mtop *)</B><I>mt_cmd</I><B>);</B>
+<B>int ioctl(int </B><I>fd</I><B>, </B><FONT SIZE="-1"><B>MTIOCGET</B></FONT><B>, (struct mtget *)</B><I>mt_status</I><B>);</B>
+<B>int ioctl(int </B><I>fd</I><B>, </B><FONT SIZE="-1"><B>MTIOCPOS</B></FONT><B>, (struct mtpos *)</B><I>mt_pos</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le driver
+<B>st</B>
+
+fournit une interface vers un grand nombre de lecteurs de bandes SCSI.
+Actuellement, ce driver prend le contrôle de tous les périphériques détectés de
+type
+"accès séquentiel".
+Le driver
+<B>st</B>
+
+utilise un numéro majeur valant 9.
+<P>
+
+Chaque périphérique utilise huit numéros mineurs. Les 5 bits de poids
+faibles des numéros mineurs sont assignés séquentiellement dans l'ordre
+de détection. Les numéros mineurs peuvent être groupés en deux ensembles
+de quatre nombres : les numéros mineurs principaux des périphériques (auto-rewind),
+<I>n</I>,
+
+et les  numéros mineurs des périphériques "no-rewind"
+<I></I>(<I>n</I>+ 128).
+
+<P>
+Les périphériques ouverts avec le numéro principal recevront une commande
+<FONT SIZE="-1">REWIND</FONT> à la fermeture.
+Les périphériques ouverts avec le numéro "no-rewind" ne la recevront
+pas.
+(Notez qu'essayer de positionner la bande un périphérique auto-rewind en
+utilisant, par exemple, mt ne conduit pas au résultat désiré : la bande est
+à nouveau rembobinée après la commande mt et la commande suivante prend
+effet dès le début de la bande.
+<P>
+
+Au sein de chaque groupe, 4 numéros mineurs sont disponibles pour définir
+des périphériques avec des caractéristiques différentes (taille de bloc,
+compression, densité...) Lorsque le système démarre, seul le premier
+périphérique est disponible. Les 3 autres sont activés lorsque les
+caractéristiques par défaut sont définies (voir plus bas). (En modifiant
+les constantes à la compilation, on peut modifier la répartition entre
+le nombre maximal de lecteurs de bandes et le nombre de numéros mineurs
+pour chaque lecteur. Les allocations par défaut permettent de contrôler
+32 lecteurs de bandes, alors qu'il est possible de contrôler jusqu'à
+64 lecteurs avec deux numéros mineurs pour les options différentes.
+<P>
+
+Les fichiers spéciaux sont créés typiquement ainsi :
+<DL COMPACT><DT><DD>
+<PRE>
+mknod -m 660 /dev/st0   c 9 0
+mknod -m 660 /dev/st0l  c 9 32
+mknod -m 660 /dev/st0m  c 9 64
+mknod -m 660 /dev/st0a  c 9 96
+mknod -m 660 /dev/nst0  c 9 128
+mknod -m 660 /dev/nst0l c 9 160
+mknod -m 660 /dev/nst0m c 9 192
+mknod -m 660 /dev/nst0a c 9 224
+</PRE>
+
+</DL>
+
+<P>
+
+Il n'existe pas de périphériques blocs correspondants.
+<P>
+
+Le driver utilise une mémoire tampon interne qui doit être assez large pour
+contenir au moins un bloc de données de bande. Dans les noyaux précédents le
+2.1.121, le buffer était alloué sous forme de bloc continu. Ceci limitait la
+taille de bloc au plus grand espace contigu disponible pour l'allocation du
+noyau. Cette limite est actuellement de 128 Ko pour les architecture 32 bits
+et 254 Ko pour les 64 bits. Dans les noyaux plus récents, le driver alloue
+la mémoire tampon en plusieurs parties si nécessaire. Par défaut le nombre
+maximal de parties est 16. Ceci signifie que la taille maximale de bloc est
+très grande (2 Mo si l'allocation de 16 blocs de 128 Ko réussit).
+<P>
+
+La taille de la mémoire tampon interne est déterminée par une constante à la
+compilation du noyau, que l'on peut écraser par une option de démarrage du
+système. De plus, le driver essaie d'allouer un buffer temporaire plus grand
+lors de son exécution si cela s'avère nécessaire. Toutefois l'allocation à
+l'exécution de grands blocs contigus peut échouer, et il vaut mieux ne pas
+compter dessus avec les noyaux antérieurs au 2.1.121.
+<P>
+
+Le driver ne supporte pas spécifiquement un type ou une marque de lecteur
+de bande. Après le démarrage du système, les options du périphériques sont
+définies par le micro-code du périphérique. Par exemple si celui-ci réclame
+un mode de blocs fixes, le driver de bandes utilisera ce mode. Les options
+peuvent être modifiées par des appels
+<B>ioctl()</B>
+
+explicites, et restent effectives lorsque le périphérique est fermé puis
+rouvert. La configuration des options affecte aussi bien les périphériques
+auto-rewind que les non-rewind.
+<P>
+
+Des options différentes peuvent être fournies pour différents périphériques au
+sein du sous-groupe de quatre. Les options prennent effet quand le périphérique
+est ouvert. Par exemple un administrateur peut définir un dispositif qui
+écrit en mode blocs fixes avec une certaine taille, et un qui écrit avec des
+blocs de longueurs variables (si le périphérique accepte les deux modes).
+<P>
+
+Le driver supporte les
+<B>partitions de bandes</B>
+
+si elles sont acceptées par le lecteur. (Notez que les partitions de bande
+n'ont rien à voir avec les partitions de disques. Une bande partitionnée
+peut être vue comme un ensemble de bandes logiques dans le même support).
+Le support des partitions doit être activé par un ioctl. L'emplacement de
+la bande est sauvegardé au sein de chaque partition au cours des changements
+de partitions. La partition utilisée pour les opérations suivantes est
+sélectionnée avec un ioctl. Le changement de partition est exécuté au moment
+de la prochaine opération bande pour éviter les mouvements inutiles de la bande.
+Le nombre maximal de partitions sur une bande est défini par une constante à
+la compilation (4 à l'origine). Le driver contient un ioctl qui peut formater
+une bande avec une ou deux partitions.
+<P>
+
+Le fichier spécial de périphérique
+<B>/dev/tape</B>
+
+est généralement un lien symbolique, ou même un lien matériel sur
+le lecteur de bandes par défaut.
+<A NAME="lbAE">&nbsp;</A>
+<H2>TRANSFERT DES DONNÉES</H2>
+
+Le driver accepte un fonctionnement aussi bien dans un mode de blocs fixes que
+dans un mode de blocs de longueur variable (si c'est accepté par le lecteur). En
+mode de blocs fixes, le périphérique écrit les blocs de la taille indiquée et
+la taille des blocs ne dépend pas de la quantité de données transmise lors de
+l'appel système. Dans le mode de longueur variable, un bloc de donnée est écrit
+à chaque appel système write et le nombre d'octets transmis indique la taille
+du bloc correspondant sur la bande. Notez que les blocs sur bande ne contiennent
+aucune information sur le mode d'écriture utilisé. En lecture, la seule chose
+importante est d'utiliser une commande qui accepte la taille du bloc sur bande.
+<P>
+
+En mode variable, le nombre d'octets à lire n'a pas besoin de correspondre
+exactement à la taille du bloc sur bande. Si le nombre demandé est plus
+grand que la taille du bloc suivant sur la bande, l'appel système renverra
+la quantité de données effectivement lues. Si la taille de bloc est plus
+grande que le nombre demandé, l'appel système renverra la quantité voulue,
+et le reste des données est oublié.
+<P>
+
+En mode fixe, le nombre d'octets demandé peut être arbitraire si la mémoire
+tampon est activée, ou un multiple de la taille de bloc si ce tampon est
+désactivé. Les noyaux antérieurs au 2.1.121 permettent l'écriture avec un
+nombre quelconque si les tampons sont activés. Dans tous les autres cas (y
+compris les noyaux plus récents) le nombre d'octets à écrire doit être un
+multiple de la taille des blocs.
+<P>
+
+Une marque est automatique écrite sur la bande si la dernière opération
+avant fermeture était une écriture.
+<P>
+
+Lorsqu'une telle marque est rencontrée en lecture, les choses suivantes
+se produisent. S'il reste des données dans le tampon, lorsqu'on trouve la
+marque, les données en mémoire sont renvoyées. La lecture suivante
+renvoie zéro octets. La lecture suivante renvoie les données du fichier
+suivant. La fin des données enregistrées est signalée par un retour de
+zéro octets pour deux appels successifs en lecture. Le troisième appel
+renvoie une erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>IOCTLS</H2>
+
+Le driver supporte trois requêtes ioctl.
+Les requêtes non reconnues par
+<B>st</B>
+
+sont transmises au contrôleur
+<B>SCSI</B>.
+
+Les définitions ci-dessous sont extraites de
+<I>/usr/include/linux/mtio.h</I>:
+
+<A NAME="lbAG">&nbsp;</A>
+<H3><FONT SIZE="-1">MTIOCTOP</FONT> - Effectue une opération sur la bande.</H3>
+
+<P>
+
+Cette requête prend un argument du type
+<B>(struct mtop *)</B>
+
+indiquant l'opération à effectuer.
+Certains contrôleurs ne permettent pas toutes les opérations.
+Le contrôleur renvoie une erreur EIO s'il n'accepte pas l'opération.
+<P>
+
+<PRE>
+
+/* Structure <FONT SIZE="-1">MTIOCTOP</FONT> -  pour les opérations sur bande */
+struct mtop {
+    short  mt_op;    /* opérations définies ci-dessous */
+    int    mt_count; /* combien d'opérations           */
+};
+</PRE>
+
+<P>
+
+Opérations sur bande magnétique lors d'une utilisation normale&nbsp;:
+<P>
+[NDT] Je conserve les termes de <I>filemark</I>, et <I>setmark</I> à
+défaut de termes précis en français.
+<P>
+
+<DL COMPACT>
+<DT>MTBSF<DD>
+Reculer la bande de
+<B>mt_count</B>
+
+filemarks.
+<DT>MTBSFM<DD>
+Reculer la bande de
+<B>mt_count</B>
+
+filemarks.
+Repositionner la bande sur le côté EOT de la dernière filemark.
+<DT>MTBSR<DD>
+Reculer la bande de
+<B>mt_count</B>
+
+enregistrements (blocs bande).
+<DT>MTBSS<DD>
+Reculer la bande de
+<B>mt_count</B>
+
+setmarks.
+<DT>MTCOMPRESSION<DD>
+Valider la compression des données sur bande dans le lecteur si
+<B>mt_count</B>
+
+est non-nul, et désactiver la compression si
+<B>mt_count</B>
+
+est nul. Cette commande utilise la page MODE 15 supporté par la plupart des DATs.
+<DT>MTEOM<DD>
+Aller à la fin des enregistrements (ajouter des fichiers).
+<DT>MTERASE<DD>
+Effacer la bande.
+<DT>MTFSF<DD>
+Avancer la bande de
+<B>mt_count</B>
+
+filemarks.
+<DT>MTFSFM<DD>
+Avancer la bande de
+<B>mt_count</B>
+
+filemarks.
+Positionner la bande du côté BOT de la dernière filemark.
+<DT>MTFSR<DD>
+Avancer de
+<B>mt_count</B>
+
+enregistrements (blocs bande).
+<DT>MTFSS<DD>
+Avancer de
+<B>mt_count</B>
+
+setmarks.
+<DT>MTLOAD<DD>
+Exécuter la commande de chargement SCSI. Un cas particulier se présenter
+avec certains chargeurs automatiques HP. Si 
+<B>mt_count</B>
+
+correspond à somme de la constante MT_ST_HPLOADER_OFFSET et d'un nombre,
+ce dernier est envoyé au pilote pour contrôler le chargeur automatique.
+<DT>MTLOCK<DD>
+Verrouiller la porte du lecteur de bande.
+<DT>MTMKPART<DD>
+Formater la bande en une ou deux partitions. Si
+<B>mt_count</B>
+
+est non-nul, il correspond à la taille de la première partition, et
+la seconde partition correspond au reste de la bande. Si
+<B>mt_count</B>
+
+est nul, la bande n'est formatée qu'en une seule partition.
+Cette commande n'est autorisée que si le support de partitionnement
+est activé pour le lecteur (voir MT_ST_CAN_PARTITIONS plus bas).
+<DT>MTNOP<DD>
+Ne rien faire - Vider les buffers du driver - A utiliser
+avant de lire le statut avec <FONT SIZE="-1">MTIOCGET</FONT>.
+<DT>MTOFFL<DD>
+Rembobiner la bande et éteindre le lecteur.
+<DT>MTRESET<DD>
+Réinitialiser le lecteur.
+<DT>MTRETEN<DD>
+Retendre la bande.
+<DT>MTREW<DD>
+Rembobiner la bande.
+<DT>MTSEEK<DD>
+Rechercher sur la bande le bloc numéro
+<B>mt_count</B>.
+
+Cette opération nécessite soit un contrôleur SCSI-2 qui supporte la
+commande <FONT SIZE="-1">LOCATE</FONT> (adresse spécifique au périphérique), soit
+un lecteur SCSI-1 compatible Tandberg (Tandberg, Archive
+Viper, Wangtek, ... ).
+Le numéro de bloc devrait toujours être un numéro renvoyé précédemment
+par <FONT SIZE="-1">MTIOCPOS</FONT> si les adresses spécifiques au lecteur sont utilisées.
+<DT>MTSETBLK<DD>
+Positionner la longueur de blocs du lecteur à la valeur spécifiée dans
+<B>mt_count</B>.
+
+Une longueur de bloc nulle place le lecteur dans le mode de blocs de
+tailles variables.
+<DT>MTSETDENSITY<DD>
+Fixe la densité de la bande à celle codée dans
+<B>mt_count</B>.
+
+Les codes des densités acceptées par un lecteur sont disponibles
+dans la documentation de celui-ci.
+<DT>MTSETPART<DD>
+La partition active devient celle indiquée par
+<B>mt_count .</B>
+
+Les partitions sont numérotées depuis zéro. Cette commande n'est autorisée
+que si le support de partitionnement est activé pour le lecteur (voir
+MT_ST_CAN_PARTITIONS plus bas).
+<DT>MTUNLOAD<DD>
+Exécuter la commande de déchargement SCSI (n'éjecte pas la bande).
+<DT>MTUNLOCK<DD>
+Déverrouiller la porte du lecteur de bande.
+<DT>MTWEOF<DD>
+Écrire
+<B>mt_count</B>
+
+filemarks.
+<DT>MTWSM<DD>
+Écrire
+<B>mt_count</B>
+
+setmarks.
+
+</DL>
+<P>
+
+Fonctions de configuration du lecteur de bande magnétique
+(pour le Super-Utilisateur) :
+
+<DL COMPACT>
+<DT>MTSETDRVBUFFER<DD>
+Positionner diverses options du contrôleur ou du lecteur en fonction
+des bits encodés dans
+<B>mt_count</B>.
+
+Ces options concernent le type de buffer du lecteur, 13 options
+booléennes du contrôleur, le seuil d'écriture du buffer, les valeurs
+par défaut des tailles de blocs et de densité, ainsi que les délais
+(noyaux &gt;= 2.1).
+Une fonction n'agit que sur un seul des éléments de la liste ci-dessus
+à la fois.
+
+<DT><DD>
+Une valeur ayant ses 4 bits de poids forts à 0 sera utilisée pour indiquer le
+type de buffer du lecteur. Les types de buffer sont :
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>0<DD>
+Le contrôleur ne renverra pas le statut <FONT SIZE="-1">BON</FONT> en écriture avant que
+les données ne soient réellement écrites sur le support.
+
+<DT>1<DD>
+Le contrôleur peut renvoyer le statut <FONT SIZE="-1">BON</FONT> en écriture dès que les
+données ont été transmises aux buffers internes du lecteur de bande.
+<DT>2<DD>
+Le contrôleur peut renvoyer le statut <FONT SIZE="-1">BON</FONT> en écriture dès que les
+données ont été transmises aux buffers internes du lecteur de bande, si
+toutes les écritures précédentes des buffers 
+sur le support se sont déroulées correctement.
+
+</DL>
+</DL>
+
+<DT><DD>
+Pour contrôler le seuil d'écriture, on doit inclure dans 
+<B>mt_count</B>
+
+la constante
+<FONT SIZE="-1">MT_ST_WRITE_THRESHOLD</FONT> associée avec le nombre de blocs dans
+les 28 bits de poids faibles par un <I>OU</I> binaire ( | ).
+Le nombre de blocs concerne des blocs de 1024 octets, et non pas la
+taille physique des blocs sur la bande.
+Le seuil ne peut pas excéder la taille des buffers internes du contrôleur.
+(voir
+<B></B><FONT SIZE="-1"><B>DESCRIPTION</B></FONT><B></B>,
+
+plus bas).
+<DT><DD>
+Pour valider ou invalider les options booléennes, la valeur
+<B>mt_count</B>
+
+doit inclure l'une des constantes <FONT SIZE="-1">MT_ST_BOOLEANS</FONT>
+<FONT SIZE="-1">MT_ST_SETBOOLEANS</FONT>, <FONT SIZE="-1">MT_ST_CLEARBOOLEANS</FONT>, ou
+<FONT SIZE="-1">MT_ST_DEFBOOLEANS</FONT>
+associées par un <I>OU</I>
+binaire avec une combinaison des options décrites ci-dessous.
+<P>
+Avec <FONT SIZE="-1">MT_ST_BOOLEANS</FONT> les options sont définies avec les
+valeurs indiquées. Avec <FONT SIZE="-1">MT_ST_SETBOOLEANS</FONT> les options
+sont activées sélectivement et inhibées avec <FONT SIZE="-1">MT_ST_DEFBOOLEANS</FONT>.
+<DT><DD>
+Les options par défaut pour un contrôleur de bande sont choisies avec
+<FONT SIZE="-1">MT_ST_DEFBOOLEANS</FONT>. Un périphérique non-actif (par exemple avec
+un numéro mineur de 32 ou 160) est activé lorsque les options par défaut
+sont définies pour la première fois. Un périphérique actif hérite des
+options non fixées explicitement du périphérique actif au démarrage.
+<P>
+Les options booléennes sont :
+<DT><DD>
+
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><FONT SIZE="-1">MT_ST_BUFFER_WRITES</FONT>  (Défaut: vrai)<DD>
+opérations d'écriture dans la mémoire tampon en mode de blocs fixes.
+Si cette option est invalidée, et si l'enregistreur utilise une longueur
+de bloc fixe, toutes les opérations d'écriture doivent se faire avec une
+longueur multiple de celle du bloc.
+Cette option doit être fausse pour créer des archives multi-volumes
+fiables.
+<P>
+<DT><FONT SIZE="-1">MT_ST_ASYNC_WRITES</FONT>  (Défaut: vrai)<DD>
+Quand cette option est validée, les opérations d'écriture retournent
+immédiatement si les données tiennent dans le buffer du driver, sans 
+attendre que celles-ci soient effectivement transmises au lecteur de
+bande.
+Le seuil du buffer d'écriture détermine le taux de remplissage du
+buffer avant d'effectuer une commande SCSI.
+Toute erreur renvoyée par le périphérique sera conservée jusqu'à 
+l'opération suivante.
+Cette option doit être fausse pour créer des archives multi-volumes
+fiables.
+<P>
+<DT><FONT SIZE="-1">MT_ST_READ_AHEAD</FONT>  (Défaut: vrai)<DD>
+Cette option indique au driver de fournir un cache en lecture, ainsi
+qu'une lecture anticipée des données en mode de blocs fixes.
+Si cette option est invalidée, et que le lecteur utilise une taille de
+blocs fixe, toutes les opérations de lecture doivent se faire avec une
+taille multiple de celle du bloc.
+<P>
+<DT><FONT SIZE="-1">MT_ST_TWO_FM</FONT>  (Défaut: faux)<DD>
+Cette option modifie le comportement du driver quand un fichier est
+fermé. L'attitude normale consiste à écrire une seule filemark, néanmoins
+si cette option est validée, le driver écrira deux filemarks et
+replacera la tête au-dessus de la seconde.
+
+<DT><DD>
+Note:
+Cette option ne doit pas être utilisée avec les lecteurs de bandes QIC 
+car ils ne sont pas capables d'écraser une filemark.
+Ces lecteurs détectent la fin des données enregistrées en cherchant
+de la bande vierge à la place des deux filemarks consécutives habituelles.
+La plupart des autres lecteurs courants détectent également la présence
+de bande vierge, aussi l'utilisation des deux filemarks n'est généralement
+utile que lors d'échange de bandes avec d'autres systèmes.
+</DL>
+<P>
+
+
+<DL COMPACT>
+<DT><FONT SIZE="-1">MT_ST_DEBUGGING</FONT>  (Défaut: faux)<DD>
+Cette option valide les divers messages de débogage du driver, si
+celui-ci a été compilé avec la constante <FONT SIZE="-1">DEBUG</FONT> ayant une valeur non-nulle).
+<P>
+<DT><FONT SIZE="-1">MT_ST_FAST_EOM</FONT>  (Défaut: faux)<DD>
+Cette option indique que les opérations <FONT SIZE="-1">MTEOM</FONT> doivent être envoyées
+directement au lecteur, ce qui peut accélérer les opérations, mais aussi
+faire perdre au driver le compte des pistes du fichier en cours, normalement 
+renvoyé par la requête <FONT SIZE="-1">MTIOCGET</FONT>.
+Si <FONT SIZE="-1">MT_ST_FAST_EOM</FONT> est fausse, le contrôleur répondra à une
+requête <FONT SIZE="-1">MTEOM</FONT> en sautant en avant de fichiers en fichiers.
+<P>
+<DT><FONT SIZE="-1">MT_ST_AUTO_LOCK</FONT> (Défaut: faux)<DD>
+Lorsque cette option est vraie, la porte du lecteur est verrouillée lorsque
+le fichier périphérique est ouvert, et déverrouillée lorsque le périphérique
+est refermé.
+<P>
+<DT><FONT SIZE="-1">MT_ST_DEF_WRITES</FONT> (Défaut: faux)<DD>
+Les options de bande (taille de bloc, mode, compression...) peuvent varier
+lorsque l'on passe d'un périphérique lié à un lecteur à un autre
+périphérique correspondant au même lecteur.
+Cette option définit si les changements sont fournis au pilote en utilisant
+les commandes SCSI, et si les capacités d'auto-détection du lecteur sont
+fiables. Si l'option est fausse, le pilote envoie les commandes SCSI
+immédiatement lorsque le périphérique change. Si cette option est vraie, 
+les commandes SCSI ne sont pas envoyées avant une demande d'écriture.
+Dans ce cas, le micro-code est habilité à détecter la structure de la
+bande lors de la lecture, et les commandes SCSI ne sont utilisées que pour
+être sûrs que la bande soit écrite correctement.
+<P>
+<DT><FONT SIZE="-1">MT_ST_CAN_BSR</FONT> (Défaut: faux)<DD>
+Lorsque la lecture anticipée est utilisée, la bande doit parfois être ramenée
+en arrière en position correcte lors de la fermeture du périphérique, et 
+on utilise alors la commande SCSI pour sauter en arrière par dessus
+les enregistrements. Certains anciens lecteurs ne traitent pas correctement
+cette commande, et cette option permet d'en avertir le pilote. Le résultat
+final est qu'une bande avec bloc fixes et lecture anticipée peut être
+mal positionnée dans un fichier lors de la fermeture du périphérique.
+<P>
+<DT><FONT SIZE="-1">MT_ST_NO_BLKLIMS</FONT> (Défaut: faux)<DD>
+Certains lecteurs n'acceptent pas la commande de lecture des limites
+de blocs. Si l'on utilise cette option, le pilote n'invoque pas cette
+commande. L'inconvénient est que le pilote ne peut pas vérifier, avant
+d'envoyer des commandes, si la taille de bloc choisie est acceptée par
+le lecteur.
+<P>
+<DT><FONT SIZE="-1">MT_ST_CAN_PARTITIONS</FONT> (Défaut: faux)<DD>
+Cette option active le support des partitions multiples sur une bande.
+Cette option s'applique à tous les périphériques liés au lecteur.
+<P>
+<DT><FONT SIZE="-1">MT_ST_SCSI2LOGICAL</FONT> (Défaut: faux)<DD>
+Cette option indique au pilote d'utiliser les adresses de blocs logiques
+définies dans le standard SCSI-2, lors de opérations de positionnement
+et de lecture de la position (aussi bien lors des commandes MTSEEK et
+MTIOCPOS que lors des changements de partitions).
+Sinon il utilise les adresses spécifiques au périphérique.
+Il est très recommandé d'activer cette option si le lecteur supporte
+les adresses logiques car elles contiennent également les filemarks.
+Il existe d'ailleurs quelques lecteurs qui ne supportent que les
+adresses logiques.
+<P>
+<DT><FONT SIZE="-1">MT_ST_SYSV</FONT> (Défaut: faux)<DD>
+Lorsque cette option est validée, les périphériques de bande utilisent
+la sémantique Système V. Sinon ils utilisent la sémantique BSD. La
+différence principale est le comportement lors de la fermeture d'un
+périphérique en lecture. Avec Système V, la bande est positionnée en avant
+à la suite de la filemark suivante si cela n'a pas déjà eu lieu lors de la
+lecture. Dans la sémantique BSD, la position ne change pas.
+<DT><FONT SIZE="-1">EXEMPLE</FONT><DD>
+<PRE>
+
+<B>struct mtop </B><I>mt_cmd</I><B>;</B>
+<I>mt_cmd.mt_op</I><B> = </B><FONT SIZE="-1"><B>MTSETDRVBUFFER</B></FONT><B>;</B>
+<I>mt_cmd.mt_count</I><B> = </B><FONT SIZE="-1"><B>MT_ST_BOOLEANS</B></FONT><B> |</B>
+<B>          </B><FONT SIZE="-1"><B>MT_ST_BUFFER_WRITES</B></FONT><B> |</B>
+<B>          </B><FONT SIZE="-1"><B>MT_ST_ASYNC_WRITES</B></FONT><B>;</B>
+<B>ioctl(</B><I>fd</I><B>, </B><FONT SIZE="-1"><B>MTIOCTOP</B></FONT><B>, &amp;</B><I>mt_cmd</I><B>);</B>
+</PRE>
+
+</DL>
+</DL>
+
+
+<DT><DD>
+La taille de bloc par défaut pour un périphérique peut être configurée<BR>
+avec <FONT SIZE="-1">MT_ST_DEF_BLKSIZE</FONT> et le code de densité par défaut avec
+<FONT SIZE="-1">MT_ST_DEFDENSITY</FONT>. Les valeurs des paramètres sont associées par
+un OU logique avec le code opératoire.
+<DT><DD>
+Avec les noyaux 2.1.x et ultérieurs, la valeur de délai maximum peut
+être fournie avec la sous-commande <FONT SIZE="-1">MT_ST_SET_TIMEOUT</FONT> 
+associée par OU avec le délai en seconde.
+Le délai long (utilisé pour les rembobinages ou les commandes pouvant
+durer longtemps) peut être configuré avec <FONT SIZE="-1">MT_ST_SET_LONG_TIMEOUT</FONT>.
+Les valeurs par défaut du noyau sont très longues pour être sûre qu'une
+commande valide ne soit jamais interrompue pour dépassement de délai, et
+ceci quelque soit le lecteur. A cause de cela, le pilote peut parfois
+sembler gelé alors qu'il est en attente de dépassement de délai. Ces commandes
+permettent donc de fixer des valeurs plus pratiques pour un lecteur donné.
+Les délais fixés pour un périphérique s'appliquent à tous les périphériques
+liés au même lecteur.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H3><FONT SIZE="-1">MTIOCGET</FONT> - Obtenir le statut</H3>
+
+<P>
+
+Cette requête prend un argument du type
+<B>(struct mtget *)</B>.
+
+<P>
+
+<PRE>
+/* Structure pour <FONT SIZE="-1">MTIOCGET</FONT> - Statut d'une bande magnétique */
+struct mtget {
+    long   mt_type;
+    long   mt_resid;
+    /* Les registres suivants dépendent du matériel */
+    long   mt_dsreg;
+    long   mt_gstat;
+    long   mt_erreg;
+    /* Ces deux derniers champs sont parfois inutilisés */
+    daddr_t          mt_fileno;
+    daddr_t          mt_blkno;
+};
+</PRE>
+
+<DL COMPACT>
+<DT><B>mt_type</B><DD>
+Le fichier d'en-tête définit plusieurs valeurs pour
+<B>mt_type</B>,
+
+mais le driver actuel renvoie uniquement les types génériques
+<FONT SIZE="-1">MT_ISSCSI1</FONT> (lecteur SCSI-1 générique) et <FONT SIZE="-1">MT_ISSCSI2</FONT> (lecteur SCSI-2 générique).
+
+<DT><B>mt_resid</B><DD>
+contient le numéro de partition courante.
+<DT><B>mt_dsreg</B><DD>
+renvoie la configuration actuelle de la longueur de bloc (dans les 24 bits de poids faibles)
+et la densité (dans les 8 bits de poids forts).
+Ces champs sont définis par <FONT SIZE="-1">MT_ST_BLKSIZE_SHIFT</FONT>, <FONT SIZE="-1">MT_ST_BLKSIZE_MASK</FONT>,
+<FONT SIZE="-1">MT_ST_DENSITY_SHIFT</FONT>, et <FONT SIZE="-1">MT_ST_DENSITY_MASK</FONT>.
+<DT><B>mt_gstat</B><DD>
+renvoie des informations génériques de statut (indépendants du périphérique).
+Le fichier d'en-tête définit les macros suivantes pour tester les bits de statut :
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>
+<FONT SIZE="-1">GMT_EOF(</FONT><I>x</I><FONT SIZE="-1">)</FONT> :
+<DD>La bande est positionnée juste après une filemark (toujours faux après une
+opération <FONT SIZE="-1">MTSEEK</FONT>).
+<DT>
+<FONT SIZE="-1">GMT_BOT(</FONT><I>x</I><FONT SIZE="-1">)</FONT> :
+<DD>La bande est positionnée juste au début du premier fichier (toujours faux
+après une opération <FONT SIZE="-1">MTSEEK</FONT>).
+<DT>
+<FONT SIZE="-1">GMT_EOT(</FONT><I>x</I><FONT SIZE="-1">)</FONT> :
+<DD>Une opération a atteint la fin physique de la bande (End Of Tape).
+<DT>
+<FONT SIZE="-1">GMT_SM(</FONT><I>x</I><FONT SIZE="-1">)</FONT> :
+<DD>La bande est positionnée sur une setmark (toujours faux après une
+opération <FONT SIZE="-1">MTSEEK</FONT>).
+<DT>
+<FONT SIZE="-1">GMT_EOD(</FONT><I>x</I><FONT SIZE="-1">)</FONT> :
+<DD>La bande est positionnée à la fin des données enregistrées.
+<DT>
+<FONT SIZE="-1">GMT_WR_PROT(</FONT><I>x</I><FONT SIZE="-1">)</FONT> :
+<DD>La bande est protégée en écriture. Pour certains enregistreurs
+ceci signifie qu'ils ne supportent pas l'écriture sur ce type de bande.
+<DT>
+<FONT SIZE="-1">GMT_ONLINE(</FONT><I>x</I><FONT SIZE="-1">)</FONT> :
+<DD>La dernière opération
+<B>open()</B>
+
+a trouvé le lecteur prêt à agir, avec une bande à l'intérieur.
+<DT>
+<FONT SIZE="-1">GMT_D_6250(</FONT><I>x</I><FONT SIZE="-1">)</FONT>, <FONT SIZE="-1">GMT_D_1600(</FONT><I>x</I><FONT SIZE="-1">)</FONT>, <FONT SIZE="-1">GMT_D_800(</FONT><I>x</I><FONT SIZE="-1">)</FONT> :
+<DD>Ces informations "génériques" de statut renvoient la densité actuelle des lecteurs
+de bandes 9-pistes &#189;&quot; seulement.
+<DT>
+<FONT SIZE="-1">GMT_DR_OPEN(</FONT><I>x</I><FONT SIZE="-1">)</FONT>:
+<DD>Le lecteur ne contient pas de bande.
+<DT>
+<FONT SIZE="-1">GMT_IM_REP_EN(</FONT><I>x</I><FONT SIZE="-1">)</FONT>:
+<DD>Mode de rapport immédiat.
+Ce bit est activé lorsqu'il n'y a aucune assurance que les données aient été
+physiquement écrite sur la bande lors du retour de l'appel système. Le bit
+est à zéro seulement lorsque le lecteur ne cache pas les données et que
+le pilote est configuré pour ne pas faire de cache non plus.
+</DL>
+</DL>
+
+<DT><B>mt_erreg</B><DD>
+Le seul champ défini dans
+<B>mt_erreg</B>
+
+est le nombre d'erreurs corrigées, dans les 16 bits de poids faibles
+(comme défini par les masques <FONT SIZE="-1">MT_ST_SOFTERR_SHIFT</FONT> et <FONT SIZE="-1">MT_ST_SOFTERR_MASK</FONT>).
+A cause d'incompatibilités dans les méthodes utilisées par les lecteurs
+pour rendre compte des corrections d'erreur, cette valeur n'est pas toujours
+fournie (la plupart des lecteurs ne renvoient pas, par défaut, les erreurs
+corrigées, mais cela peut être modifié avec la commande SCSI MODE SELECT).
+<DT><B>mt_fileno</B><DD>
+renvoie le numéro du fichier en cours (commençant à 0). La valeur
+est mise a -1 si le numéro du fichier est inconnu (par exemple après
+un <FONT SIZE="-1">MTBSS</FONT> ou un <FONT SIZE="-1">MTSEEK</FONT>).
+<DT><B>mt_blkno</B><DD>
+renvoie le numéro de bloc (commençant à 0) à l'intérieur du fichier en cours.
+Cette valeur est mise à -1 quand le numéro de bloc est inconnu (par exemple
+après un <FONT SIZE="-1">MTBSF</FONT>, un <FONT SIZE="-1">MTBSS</FONT>, ou un <FONT SIZE="-1">MTSEEK</FONT>).
+
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H3><FONT SIZE="-1">MTIOCPOS</FONT> - Obtenir la position de la bande</H3>
+
+<P>
+
+Cette requête prend un argument du type
+<B>(struct mtpos *)</B>
+
+et renvoie une valeur, spécifique au lecteur, correspondant au numéro de bloc
+en cours, et qui n'est pas la même que
+<B>mt_blkno</B>
+
+renvoyée par <FONT SIZE="-1">MTIOCGET</FONT>.
+Ce lecteur doit être un SCSI-2 qui supporte la commande <FONT SIZE="-1">READ POSITION</FONT>
+ou un lecteur SCSI-1 compatible Tandberg (Tandberg, Archive Viper, Wangtek, ... ).
+<P>
+
+<PRE>
+/* Structure pour commande <FONT SIZE="-1">MTIOCPOS</FONT> - Obtenir la position */
+struct     mtpos {
+    long   mt_blkno; /* current block number */
+};
+
+</PRE>
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<DL COMPACT>
+<DT>EIO<DD>
+L'opération demandée a échoué.
+<DT>ENOSPC<DD>
+Une écriture a échoué car la fin de bande a été atteinte.
+<DT>EACCES<DD>
+Tentative d'écriture ou d'effacement sur une bande protégée en écriture.
+(Ceci ne peut pas être détecté lors de 
+<B>open()</B>.)
+
+<DT>EFAULT<DD>
+Le paramètre de commande pointe en dehors de la mémoire adressable par
+le processus appelant.
+<DT>ENXIO<DD>
+Durant l'ouverture, le lecteur de bande n'existe pas.
+<DT>EBUSY<DD>
+Le périphérique est déjà utilisé ou le driver n'a pas assez de mémoire.
+<DT>EOVERFLOW<DD>
+Tentative de lire ou d'écrire un bloc de longueur variable plus grand
+que la taille des buffers internes du contrôleur.
+<DT>EINVAL<DD>
+Un appel système
+<B>ioctl()</B>
+
+a un argument illégal, ou la taille de bloc demandée était incorrecte.
+<DT>ENOSYS<DD>
+Appel système
+<B>ioctl()</B>
+
+inconnu.
+<DT>EROFS<DD>
+On tente l'ouverture avec O_WRONLY ou O_RDWR alors que la bande est
+protégée en écriture.
+</DL>
+<A NAME="lbAK">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/dev/st*  : Les lecteurs de bandes SCSI à rembobinage automatique
+<BR>
+
+/dev/nst* : Les lecteurs de bandes SCSI sans rembobinage automatique
+<A NAME="lbAL">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Le pilote a été écrit par Kai M&auml;kisara (<A HREF="mailto:Kai.Makisara@metla.fi">Kai.Makisara@metla.fi</A>)
+à partir d'un pilote écrit par Dwayne Forsyth. Plusieurs autres personnes
+ont également collaboré à l'écriture du pilote.
+<A NAME="lbAM">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+mt">mt</A></B>(1)
+
+<P>
+
+Le fichier README.st dans les sources du noyau contient les informations
+les plus récentes à propos du pilote et de ses capacités de configuration.
+<A NAME="lbAN">&nbsp;</A>
+<H2>NOTES</H2>
+
+1. Lors d'un échange de données entre systèmes différents, il faut se
+mettre d'accord sur la taille des blocs. Les paramètres d'un lecteur
+après le démarrage sont souvent différents de ceux qu'utilisent la
+plupart des autres systèmes d'exploitation.
+La plupart utilisent un mode de blocs de longueur variable si le lecteur
+le permet. Ceci concerne la plupart des lecteurs modernes, y compris
+les DATs, les lecteurs 8mm hélicoïdaux, les DLTs... Il peut être
+judicieux d'utiliser ces lecteurs en mode de longueur variable sous
+Linux aussi (en utilisant MTSETLK ou MTSETDEFBLK au démarrage), du moins
+lors de l'échange de données avec des systèmes d'exploitation différents.
+L'inconvénient de ceci est qu'il faut utiliser une taille de bloc 
+assez grande pour obtenir des taux de transfert acceptable sur un bus SCSI.
+<P>
+
+2. Beaucoup de programmes (comme tar par exemple) permettent à l'utilisateur
+de spécifier le facteur de blocage sur la ligne de commande. Notez que ceci
+détermine la taille de bloc physique uniquement en mode de bloc de taille
+variable.
+<P>
+
+3. Pour utiliser les lecteurs de bandes SCSI, le pilote SCSI de base, un
+pilote d'adaptateur SCSI et le pilote du lecteur SCSI doivent tous être
+configurés dans le noyau ou chargés comme modules. Si le pilote 
+des bandes SCSI n'est pas présent, le lecteur est reconnu, mais le support
+de bande décrit dans cette page n'est pas disponible.
+<P>
+
+4. Le pilote écrit les messages d'erreur sur la console et/ou les fichiers
+de journalisation (log). Les codes SENSE présents dans certains messages
+sont automatiquement traduits en texte si les messages SCSI complets
+sont activés dans la configuration du noyau.
+<P>
+<A NAME="lbAO">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+1995 Robert K. Nichols.
+1999 Kai M&auml;kisara.
+<P>
+<A NAME="lbAP">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">TRANSFERT DES DONNÉES</A><DD>
+<DT><A HREF="#lbAF">IOCTLS</A><DD>
+<DL>
+<DT><A HREF="#lbAG"><FONT SIZE="-1">MTIOCTOP</FONT> - Effectue une opération sur la bande.</A><DD>
+<DT><A HREF="#lbAH"><FONT SIZE="-1">MTIOCGET</FONT> - Obtenir le statut</A><DD>
+<DT><A HREF="#lbAI"><FONT SIZE="-1">MTIOCPOS</FONT> - Obtenir la position de la bande</A><DD>
+</DL>
+<DT><A HREF="#lbAJ">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAK">FICHIERS</A><DD>
+<DT><A HREF="#lbAL">AUTEUR</A><DD>
+<DT><A HREF="#lbAM">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAN">NOTES</A><DD>
+<DT><A HREF="#lbAO">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAP">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:52 GMT, February 11, 2014
+</BODY>
+</HTML>

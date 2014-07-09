@@ -1,0 +1,441 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STAT</TITLE>
+</HEAD><BODY>
+<H1>STAT</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+stat, fstat, lstat - Obtenir le statut d'un fichier (file status).
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/stat.h">sys/stat.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int stat(const char *</B><I>file_name</I><B>, struct stat *</B><I>buf</I><B>);</B>
+
+<BR>
+
+<B>int fstat(int </B><I>filedes</I><B>, struct stat *</B><I>buf</I><B>);</B>
+
+<BR>
+
+<B>int lstat(const char *</B><I>file_name</I><B>, struct stat *</B><I>buf</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+Ces fonctions renvoient des informations à propos du fichier
+indiqué. Vous n'avez besoin d'aucun droit d'accès au fichier
+pour obtenir les informations, mais vous devez avoir le droit
+de parcours de tous les répertoires mentionnés dans le
+chemin menant au fichier.
+<P>
+
+<B>stat</B>
+
+récupère le statut du fichier pointé par
+<I>file_name</I>
+
+et remplit le buffer
+<I>buf</I>.
+
+<P>
+<B>lstat</B>
+
+est identique à
+<B>stat</B>,
+
+sauf que dans le cas d'un lien symbolique, il donne l'état du lien lui-même
+plutôt que celui du fichier visé.
+<P>
+<B>fstat</B>
+
+est identique à
+<B>stat</B>,
+
+sauf que le fichier ouvert est pointé
+par le descripteur
+<I>filedes</I>,
+
+obtenu avec
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A>(2)</B>.
+
+<P>
+<P>
+
+Les trois fonctions retournent une structure
+<I>stat</I>
+
+contenant les champs suivants :
+<P>
+
+<DL COMPACT><DT><DD>
+<PRE>
+struct stat {
+    dev_t         st_dev;      /* Périphérique                */
+    ino_t         st_ino;      /* Numéro i-noeud              */
+    mode_t        st_mode;     /* Protection                  */
+    nlink_t       st_nlink;    /* Nb liens matériels          */
+    uid_t         st_uid;      /* UID propriétaire            */
+    gid_t         st_gid;      /* GID propriétaire            */
+    dev_t         st_rdev;     /* Type périphérique           */
+    off_t         st_size;     /* Taille totale en octets     */
+    blksize_t     st_blksize;  /* Taille de bloc pour E/S     */
+    blkcnt_t      st_blocks;   /* Nombre de blocs alloués     */
+    time_t        st_atime;    /* Heure dernier accès         */
+    time_t        st_mtime;    /* Heure dernière modification */
+    time_t        st_ctime;    /* Heure dernier changement    */
+};
+</PRE>
+
+</DL>
+
+<P>
+
+Le champ
+<I>st_size</I>
+
+indique la taille du fichier (s'il s'agit d'un fichier régulier ou d'un lien 
+symbolique) en octets. La taille d'un lien symbolique est la longueur de la
+chaîne représentant le chemin d'accès qu'il vise, sans le caractère NUL final.
+<P>
+La valeur
+<I>st_blocks</I>
+
+donne la taille du fichier en blocs de 512 octets.
+(Cette valeur peut être plus petite que
+<I>st_size</I>/512
+
+par exemple si le fichier contient des trous).
+La valeur
+<I>st_blksize</I>
+
+indique la taille de bloc &quot;préférée&quot; pour les entrées/sorties du système
+(l'écriture dans un fichier par petits morceaux peut induire de nombreuses
+étapes lecture-modification-écriture peu efficaces).
+<P>
+
+Les systèmes de fichiers de Linux n'implémentent pas tous les
+champs &quot;time&quot;. Certains systèmes de fichiers autorise le montage de telle
+manière que les accès ne modifient pas le champ
+<I>st_atime</I>
+
+(voir l'option `noatime' de
+<B><A HREF="/cgi-bin/man/man2html?8+mount">mount</A></B>(8)).
+
+<BR>&nbsp;
+Le champ
+<I>st_atime</I>
+
+est modifié par les accès au fichier, c'est à dire avec
+<B><A HREF="/cgi-bin/man/man2html?2+exec">exec</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mknod">mknod</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+pipe">pipe</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+utime">utime</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2)
+
+(d'au moins un octet). D'autres routines, comme
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2),
+
+peuvent ou non mettre à jour ce champ
+<I>st_atime</I>.
+
+<P>
+Le champ
+<I>st_mtime</I>
+
+est modifié par des changements sur le fichier lui-même, c'est à dire
+<B><A HREF="/cgi-bin/man/man2html?2+mknod">mknod</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+truncate">truncate</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+utime">utime</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2)
+
+(d'au moins un octet).
+D'autre part le champ
+<I>st_mtime</I>
+
+d'un répertoire est modifié lors de la création ou la suppression de fichiers
+en son sein.
+Le champ
+<I>st_mtime</I>
+
+n'est généralement
+<I>pas</I>
+
+mis à jour lors de modification de propriétaire, groupe, mode ou nombre de liens physiques.
+<P>
+Le champ
+<I>st_ctime</I>
+
+est modifié lors d'une écriture, une lecture, ou une modification de données
+concernant l'i-noeud (propriétaire, groupe, mode, etc...)
+<P>
+
+Les macros POSIX suivantes sont fournies pour vérifier le type de fichier&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>S_ISREG(m)<DD>
+un fichier régulier&nbsp;?
+<DT>S_ISDIR(m)<DD>
+un répertoire&nbsp;?
+<DT>S_ISCHR(m)<DD>
+un péripherique en mode caractère&nbsp;?
+<DT>S_ISBLK(m)<DD>
+un périphérique en mode bloc&nbsp;?
+<DT>S_ISFIFO(m)<DD>
+une FIFO&nbsp;?
+<DT>S_ISLNK(m)<DD>
+est-ce un lien symbolique&nbsp;? (Pas dans POSIX.1-1996).
+<DT>S_ISSOCK(m)<DD>
+une socket&nbsp;? (Pas dans POSIX.1-1996).
+</DL>
+</DL>
+
+<P>
+
+Les attributs suivants correspondent au champ
+<I>st_mode&nbsp;:</I>
+
+<P>
+<P>
+
+<TABLE>
+<TR VALIGN=top><TD>S_IFMT</TD><TD>00170000</TD><TD>masque du type de fichier<BR></TD></TR>
+<TR VALIGN=top><TD>S_IFSOCK</TD><TD>0140000</TD><TD>socket<BR></TD></TR>
+<TR VALIGN=top><TD>S_IFLNK</TD><TD>0120000</TD><TD>lien symbolique<BR></TD></TR>
+<TR VALIGN=top><TD>S_IFREG</TD><TD>0100000</TD><TD>fichier régulier<BR></TD></TR>
+<TR VALIGN=top><TD>S_IFBLK</TD><TD>0060000</TD><TD>périphérique blocs<BR></TD></TR>
+<TR VALIGN=top><TD>S_IFDIR</TD><TD>0040000</TD><TD>répertoire<BR></TD></TR>
+<TR VALIGN=top><TD>S_IFCHR</TD><TD>0020000</TD><TD>périphérique caractères<BR></TD></TR>
+<TR VALIGN=top><TD>S_IFIFO</TD><TD>0010000</TD><TD>fifo<BR></TD></TR>
+<TR VALIGN=top><TD>S_ISUID</TD><TD>0004000</TD><TD>bit Set-UID<BR></TD></TR>
+<TR VALIGN=top><TD>S_ISGID</TD><TD>0002000</TD><TD>bit Set-Gid<BR></TD></TR>
+<TR VALIGN=top><TD>S_ISVTX</TD><TD>0001000</TD><TD>bit &quot;sticky&quot;<BR></TD></TR>
+<TR VALIGN=top><TD>S_IRWXU</TD><TD>00700</TD><TD>lecture/écriture/exécution du propriétaire<BR></TD></TR>
+<TR VALIGN=top><TD>S_IRUSR</TD><TD>00400</TD><TD>le propriétaire a le droit de lecture<BR></TD></TR>
+<TR VALIGN=top><TD>S_IWUSR</TD><TD>00200</TD><TD>le propriétaire a le droit d'écriture<BR></TD></TR>
+<TR VALIGN=top><TD>S_IXUSR</TD><TD>00100</TD><TD>le propriétaire a le droit d'exécution<BR></TD></TR>
+<TR VALIGN=top><TD>S_IRWXG</TD><TD>00070</TD><TD>lecture/écriture/exécution du groupe<BR></TD></TR>
+<TR VALIGN=top><TD>S_IRGRP</TD><TD>00040</TD><TD>le groupe a le droit de lecture<BR></TD></TR>
+<TR VALIGN=top><TD>S_IWGRP</TD><TD>00020</TD><TD>le groupe a le droit d'écriture<BR></TD></TR>
+<TR VALIGN=top><TD>S_IXGRP</TD><TD>00010</TD><TD>le groupe a le droit d'exécution<BR></TD></TR>
+<TR VALIGN=top><TD>S_IRWXO</TD><TD>00007</TD><TD>lecture/écriture/exécution des autres<BR></TD></TR>
+<TR VALIGN=top><TD>S_IROTH</TD><TD>00004</TD><TD>les autres ont le droit de lecture<BR></TD></TR>
+<TR VALIGN=top><TD>S_IWOTH</TD><TD>00002</TD><TD>les autres ont le droit d'écriture<BR></TD></TR>
+<TR VALIGN=top><TD>S_IXOTH</TD><TD>00001</TD><TD>les autres ont le droit d'exécution<BR></TD></TR>
+</TABLE>
+
+<P>
+
+Le bit Set-GID (S_ISGID) a plusieurs utilisations particulières&nbsp;:
+pour un répertoire, il indique que la sémantique BSD doit être appliquée
+en son sein, c'est à dire que les fichiers qui y sont créés héritent leur
+GID du répertoire et non pas du GID effectif du processus créateur, et les
+sous-répertoire auront automatiquement le bit S_ISGID actif. Pour les fichiers
+qui n'ont pas d'autorisation d'exécution pour le groupe (S_IXGRP non actif),
+ce bit indique qu'un verrouillage strict est en vigueur sur ce fichier.
+<P>
+
+Le bit `sticky' (S_ISVTX) sur un répertoire indique que les fichiers qui s'y
+trouvent ne peuvent être renommés ou effacés que par leur propriétaire, par le
+propriétaire du répertoire ou par root.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Ces fonctions
+retournent zéro si elles réussissent.
+En cas d'echec -1 est renvoyé, et
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+<I>filedes</I>
+
+est un mauvais descripteur.
+<DT><B>ENOENT</B>
+
+<DD>
+Un composant de
+<I>file_name</I>
+
+n'existe pas, ou il s'agit d'une chaine vide.
+<DT><B>ENOTDIR</B>
+
+<DD>
+Un composant du chemin d'accès n'est pas un répertoire.
+<DT><B>ELOOP</B>
+
+<DD>
+Trop de liens symboliques rencontrés dans le chemin d'accès.
+<DT><B>EFAULT</B>
+
+<DD>
+Un pointeur se trouve en dehors de l'espace d'adressage.
+<DT><B>EACCES</B>
+
+<DD>
+Autorisation refusée.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour le noyau.
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+Nom de fichier trop long
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Les appels
+<B>stat</B>
+
+et
+<B>fstat</B>
+
+sont conformes aux versions SVr4, POSIX, X/OPEN, BSD 4.3. L'appel
+<B>lstat</B>
+
+est conforme aux versions BSD 4.3 et SVr4.
+SVr4 mentionne des conditions d'erreurs supplémentaires pour
+<B>fstat</B>
+
+EINTR, ENOLINK, et EOVERFLOW.
+Pour
+<B>stat</B>
+
+et
+<B>lstat</B>
+
+SVr4 indique les conditions supplémentaires EACCES, EINTR, EMULTIHOP, ENOLINK,
+et EOVERLOW. L'utilisation des champs
+<I>st_blocks</I>
+
+et
+<I>st_blksize</I>
+
+risque d'être moins portable. Ils ont été introduit dans BSD,
+et ne sont pas mentionnée dans POSIX. Leur interprétation change
+suivant les systèmes, voire sur un même système s'il y a des montages NFS.
+<P>
+
+Posix ne décrit pas les bits S_IFMT, S_IFSOCK, S_IFLNK, S_IFREG, S_IFBLK,
+S_IFDIR, S_IFCHR, S_IFIFO, S_ISVTX, mais réclame d'utiliser les macros 
+S_ISDIR(), etc. Les macros S_ISLKNK et S_ISSOCK ne se trouvent pas dans
+POSI.1-1996 mais seront présentes dans le prochain standard POSIX. La première
+vient de SVID 4v2, la seconde de SUSv2.
+<P>
+
+Unix V7 (et les systèmes suivants) propose S_IREAD, S_IWRITE, S_IEXEC, là où POSIX
+préfère leurs synonymes S_IRUSR, S_IWUSR, S_IXUSR.
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTRES SYSTÈMES</H2>
+
+Voici quelques valeurs qui ont été (ou sont) utilisées sur d'autres systèmes
+<P>
+
+<TABLE>
+<TR VALIGN=top><TD>hex</TD><TD>nom</TD><TD>ls</TD><TD>octal</TD><TD>description<BR></TD></TR>
+<TR VALIGN=top><TD>f000</TD><TD>S_IFMT</TD><TD></TD><TD>170000</TD><TD>Masque du type de fichier<BR></TD></TR>
+<TR VALIGN=top><TD>0000</TD><TD></TD><TD></TD><TD>000000</TD><TD>SCO out-of-service inode, BSD unknown type<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD></TD><TD></TD><TD>SVID-v2 and XPG2 have both 0 and 0100000 for ordinary file<BR></TD></TR>
+<TR VALIGN=top><TD>1000</TD><TD>S_IFIFO</TD><TD>p|</TD><TD>010000</TD><TD>fifo (tube nommé)<BR></TD></TR>
+<TR VALIGN=top><TD>2000</TD><TD>S_IFCHR</TD><TD>c</TD><TD>020000</TD><TD>fichier spécial caractère (V7)<BR></TD></TR>
+<TR VALIGN=top><TD>3000</TD><TD>S_IFMPC</TD><TD></TD><TD>030000</TD><TD>fichier spécial caractère multiplexé (V7)<BR></TD></TR>
+<TR VALIGN=top><TD>4000</TD><TD>S_IFDIR</TD><TD>d/</TD><TD>040000</TD><TD>répertoire (V7)<BR></TD></TR>
+<TR VALIGN=top><TD>5000</TD><TD>S_IFNAM</TD><TD></TD><TD>050000</TD><TD>fichier spécial nommé XENIX avec deux<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD></TD><TD></TD><TD>sous-types distingués par st_rdev valant 1 ou 2:<BR></TD></TR>
+<TR VALIGN=top><TD>0001</TD><TD>S_INSEM</TD><TD>s</TD><TD>000001</TD><TD>sous-type sémaphore de IFNAM XENIX<BR></TD></TR>
+<TR VALIGN=top><TD>0002</TD><TD>S_INSHD</TD><TD>m</TD><TD>000002</TD><TD>sous-type données partagées de IFNAM XENIX<BR></TD></TR>
+<TR VALIGN=top><TD>6000</TD><TD>S_IFBLK</TD><TD>b</TD><TD>060000</TD><TD>fichier spécial bloc (V7)<BR></TD></TR>
+<TR VALIGN=top><TD>7000</TD><TD>S_IFMPB</TD><TD></TD><TD>070000</TD><TD>fichier spécial bloc multiplexé (V7)<BR></TD></TR>
+<TR VALIGN=top><TD>8000</TD><TD>S_IFREG</TD><TD>-</TD><TD>100000</TD><TD>fichier normal (V7)<BR></TD></TR>
+<TR VALIGN=top><TD>9000</TD><TD>S_IFCMP</TD><TD></TD><TD>110000</TD><TD>compressé VxFS<BR></TD></TR>
+<TR VALIGN=top><TD>9000</TD><TD>S_IFNWK</TD><TD>n</TD><TD>110000</TD><TD>fichier spécial réseau (HP-UX)<BR></TD></TR>
+<TR VALIGN=top><TD>a000</TD><TD>S_IFLNK</TD><TD>l@</TD><TD>120000</TD><TD>lien symbolique (BSD)<BR></TD></TR>
+<TR VALIGN=top><TD>b000</TD><TD>S_IFSHAD</TD><TD></TD><TD>130000</TD><TD>Fichier shadow Solaris pour l'ACL (invisible)<BR></TD></TR>
+<TR VALIGN=top><TD>c000</TD><TD>S_IFSOCK</TD><TD>s=</TD><TD>140000</TD><TD>socket (BSD; aussi &quot;S_IFSOC&quot; sur VxFS)<BR></TD></TR>
+<TR VALIGN=top><TD>d000</TD><TD>S_IFDOOR</TD><TD>D&gt;</TD><TD>150000</TD><TD>Solaris door<BR></TD></TR>
+<TR VALIGN=top><TD>e000</TD><TD>S_IFWHT</TD><TD>w%</TD><TD>160000</TD><TD>BSD whiteout (non utilisé pour les inoeuds)<BR></TD></TR>
+<TR VALIGN=top><TD><BR>&nbsp;</TD><TD></TD><TD></TD><TD></TD><TD><BR></TD></TR>
+<TR VALIGN=top><TD>0200</TD><TD>S_ISVTX</TD><TD></TD><TD>001000</TD><TD>`sticky bit': garder en mémoire après exécution (V7)<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD></TD><TD></TD><TD>réservé (SVID-v2)<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD></TD><TD></TD><TD>non-répertoires : ne pas swapper le fichier (SunOS)<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD></TD><TD></TD><TD>répertoires : restrictions d'effacement (SVID-v4.2)<BR></TD></TR>
+<TR VALIGN=top><TD>0400</TD><TD>S_ISGID</TD><TD></TD><TD>002000</TD><TD>Utiliser l'ID du groupe à l'exécution (V7)<BR></TD></TR>
+<TR VALIGN=top><TD></TD><TD></TD><TD></TD><TD></TD><TD>répertoires : sémantique BSD propageant le GID<BR></TD></TR>
+<TR VALIGN=top><TD>0400</TD><TD>S_ENFMT</TD><TD></TD><TD>002000</TD><TD>Verrouillage strict Système V (partage S_ISGID)<BR></TD></TR>
+<TR VALIGN=top><TD>0800</TD><TD>S_ISUID</TD><TD></TD><TD>004000</TD><TD>Utiliser l'ID utilisateur à l'exécution (V7)<BR></TD></TR>
+<TR VALIGN=top><TD>0800</TD><TD>S_CD</TD><TD></TD><TD>004000</TD><TD>Fichier répertoire dépendant du contexte (HP-UX)<BR></TD></TR>
+</TABLE>
+
+Une commande sticky est apparue dans la version 32V d'AT&amp;T UNIX.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+chmod">chmod</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+chown">chown</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+readlink">readlink</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+utime">utime</A></B>(2)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">AUTRES SYSTÈMES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:52 GMT, February 11, 2014
+</BODY>
+</HTML>

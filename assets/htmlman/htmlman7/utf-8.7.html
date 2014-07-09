@@ -1,0 +1,410 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of UTF-8</TITLE>
+</HEAD><BODY>
+<H1>UTF-8</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+UTF-8 - Un encodage Unicode multi-octets compatible ASCII.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le jeu de caractères
+<B>Unicode 3.0</B>
+
+(voir <B><A HREF="/cgi-bin/man/man2html?7+unicode">unicode</A></B>(7)) est constitué d'un codage sur 16 bits. 
+L'encodage Unicode le plus évident (connu sous le nom de
+<B>UCS-2</B>)
+
+consiste en une séquence de mots de 16 bits. De telles chaînes
+peuvent contenir, comme fragments de caractère 16 bits, des octets
+comme '\0' or '/' qui ont une signification particulière dans les noms
+de fichiers, et les paramètres de fonctions de bibliothèque C.
+De plus la majorité des outils UNIX attendent des fichiers ASCII et
+ne peuvent pas lire des caractères représentés par des mots de 16 bits
+sans subir des modifications majeures.
+<P>
+Pour ces raisons, 
+l'<B>UCS-2</B>
+
+n'est pas un encodage externe de
+l'<B>Unicode</B>
+
+utilisable dans les noms de fichiers, les variables d'environnement,
+les fichiers textes, etc...
+Le sur-ensemble d'Unicode
+<B>ISO 10646 Universal Character Set (UCS)</B>,
+
+occupe même un espace de codage sur 31 bits, et l'encodage évident
+<B>UCS-4</B>
+
+(une séquence de mots sur 32 bits) a les mêmes inconvénients.
+<P>
+L'encodage
+<B>UTF-8</B>
+
+de
+l'<B>Unicode</B>
+
+et de
+l'<B>UCS</B>
+
+n'a pas ces inconvénients et est un moyen d'utiliser le jeu de
+caractères
+<B>Unicode</B>
+
+sous les systèmes d'exploitation compatibles UNIX.
+<A NAME="lbAD">&nbsp;</A>
+<H2>PROPRIÉTÉS.</H2>
+
+L'encodage
+<B>UTF-8 </B>
+
+a les propriétés suivantes :
+<DL COMPACT>
+<DT>*<DD>
+Les caractères
+<B>UCS</B>
+
+0x00000000 à 0x0000007f (le jeu
+<B>US-ASCII</B>
+
+classique) sont encodés simplement par les octets 0x00 à 0x7f (compatibilité ASCII)
+Ceci signifie que les fichiers et les chaînes qui contiennent uniquement des
+caractères du jeu ASCII 7 bits ont exactement le même codage en
+<B>ASCII</B>
+
+et en
+<B>UTF-8</B>.
+
+<DT>*<DD>
+Tous les caractères
+<B>UCS</B>
+
+supérieurs à 0x7F sont encodés en séquences consistant uniquement
+en octets dans l'intervalle 0x80 a 0xFD, ainsi aucun octet
+ASCII n'apparaît en tant que partie d'un autre caractère (plus
+de problèmes avec '\0' ou '/').
+<DT>*<DD>
+L'ordre de tri lexicographique des chaînes
+<B>UCS-4</B>
+
+est préservé.
+<DT>*<DD>
+Tous les 2^31 caractères de l'UCS peuvent être encodés en utilisant
+<B>UTF-8</B>.
+
+<DT>*<DD>
+Les octets 0xFE et 0xFF ne sont jamais utilisés dans le codage
+<B>UTF-8</B>.
+
+<DT>* <DD>
+Le premier octet d'une séquence multi-octets représentant un 
+caractère
+<B>UCS</B>
+
+non-ASCII est toujours dans l'intervalle 0xC0 à 0xFD et indique la
+longueur de la séquence multi-octets.
+Tous les octets suivants de cette séquence sont dans l'intervalle 0x80 à 0xBF.
+Ceci permet une re-synchronisation aisée et rend l'encodage robuste
+face aux octets manquants.
+<DT>*<DD>
+Les caractères
+<B>UTF-8</B>
+
+codés en
+<B>UCS</B>
+
+peuvent avoir jusqu'à 6 octets de long, néanmoins le standard
+<B>Unicode</B>
+
+ne précise aucun caractère au-delà de 0x10ffff, ainsi les caractères
+Unicode ne peuvent avoir que 4 octets de long avec
+<B>UTF-8</B>.
+
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>ENCODAGE</H2>
+
+Les séquences d'octets suivantes sont utilisées pour représenter un
+caractère. Les séquences utilisées dépendent du numéro de code UCS
+du caractère :
+<DL COMPACT>
+<DT>0x00000000 - 0x0000007F:<DD>
+0<I>xxxxxxx</I>
+
+<DT>0x00000080 - 0x000007FF:<DD>
+110<I>xxxxx</I>
+
+10<I>xxxxxx</I>
+
+<DT>0x00000800 - 0x0000FFFF:<DD>
+1110<I>xxxx</I>
+
+10<I>xxxxxx</I>
+
+10<I>xxxxxx</I>
+
+<DT>0x00010000 - 0x001FFFFF:<DD>
+11110<I>xxx</I>
+
+10<I>xxxxxx</I>
+
+10<I>xxxxxx</I>
+
+10<I>xxxxxx</I>
+
+<DT>0x00200000 - 0x03FFFFFF:<DD>
+111110<I>xx</I>
+
+10<I>xxxxxx</I>
+
+10<I>xxxxxx</I>
+
+10<I>xxxxxx</I>
+
+10<I>xxxxxx</I>
+
+<DT>0x04000000 - 0x7FFFFFFF:<DD>
+1111110<I>x</I>
+
+10<I>xxxxxx</I>
+
+10<I>xxxxxx</I>
+
+10<I>xxxxxx</I>
+
+10<I>xxxxxx</I>
+
+10<I>xxxxxx</I>
+
+</DL>
+<P>
+
+Les positions de bits
+<I>xxx</I>
+
+sont remplies avec les bits du numéro de code du caractère en
+représentation binaire. Seule la plus petite séquence multi-octets
+permettant de représenter un numéro de code doit être utilisée.
+<P>
+
+Les codes
+<B>UCS</B>
+
+de valeur 0xd800-0xdfff (UTF-16) comme 0xfffe et 0xffff ne doivent
+pas apparaître dans un flux de données
+<B>UTF-8</B>.
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+Le caractère
+<B>Unicode</B>
+
+0xA9 = 1010 1001 (le symbole copyright) est encodé
+en UTF-8 comme :
+<P>
+
+<DL COMPACT><DT><DD>
+11000010 10101001 = 0xC2 0xA9
+</DL>
+
+<P>
+
+et le caractère 0x2260 = 0010 0010 0110 0000 (Le symbole &quot;non égal&quot;) est encodé ainsi :
+<P>
+
+<DL COMPACT><DT><DD>
+11100010 10001001 10100000 = 0xE2 0x89 0xA0
+</DL>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES APPLICATIVES</H2>
+
+Les utilisateurs doivent sélectionner une localisation
+<B>UTF-8</B>,
+
+par exemple
+<P>
+
+<DL COMPACT><DT><DD>
+export LANG=fr_FR.UTF-8
+</DL>
+
+<P>
+
+afin d'active le support
+<B>UTF-8</B>
+
+dans les applications.
+<P>
+
+Les logiciels applicatifs qui doivent connaître l'encodage utilisé devrait
+toujours fixer la localisation, par exemple
+<P>
+
+<DL COMPACT><DT><DD>
+setlocale(LC_CTYPE, &quot;&quot;)
+</DL>
+
+<P>
+
+et les programmeurs peuvent tester l'expression
+<P>
+
+<DL COMPACT><DT><DD>
+strcmp(nl_langinfo(CODESET), &quot;UTF-8&quot;) == 0
+</DL>
+
+<P>
+
+pour savoir si une localisation
+<B>UTF-8</B>
+
+a été sélectionnée, et si les entrées-sorties de texte, les
+communications avec les terminaux, le contenu des fichiers de texte, les noms
+de fichiers et les variables d'environnement sont encodés en
+<B>UTF-8</B>.
+
+<P>
+
+Les programmeurs habitués aux jeux de caractères mono-octet comme
+<B>US-ASCII</B>
+
+ou
+<B>ISO 8859</B>
+
+doivent savoir que deux suppositions valides jusque là ne le sont plus
+dans les localisation
+<B>UTF-8</B>.
+
+D'abord un octet seul ne correspond par nécessairement à un unique caractère.
+Ensuite, comme les émulateurs de terminaux modernes, en mode
+<B>UTF-8</B>
+
+supportent également les caractères en
+<B>double-largeur</B>
+
+du Chinois, du Japonais ou du Coréen, comme les 
+<B>caractères combinés</B>
+
+sans largeur, la sortie d'un unique caractère ne fait pas avancer
+obligatoirement le curseur d'une position comme c'était le cas en
+<B>ASCII</B>.
+
+Les fonctions de bibliothèque comme
+<B><A HREF="/cgi-bin/man/man2html?3+mbsrtowcs">mbsrtowcs</A></B>(3)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?3+wcswidth">wcswidth</A></B>(3)
+
+doivent servir à présent pour compter les caractères et les positions de 
+curseur.
+<P>
+
+La séquence ESC officielle pour basculer d'un encodage
+<B>ISO 2022</B>
+
+(comme utilisé par exemple par les terminaux VT100) en
+<B>UTF-8</B>
+
+est ESC % G
+(&quot;\x1b%G&quot;). La séquence de retour depuis
+<B>UTF-8</B>
+
+est ISO 2022 est ESC % @ (&quot;\x1b%@&quot;). D'autres séquences ISO 2022 (comme
+celle pour basculer entre les jeux G0 et G1) ne sont pas applicables en
+mode UTF-8.
+<P>
+
+On peut espérer que dans un futur proche,
+<B>UTF-8</B>
+
+remplacera
+<B>ASCII</B>
+
+et
+<B>ISO 8859</B>
+
+à tous les niveaux comme encodage des caractères sur les systèmes POSIX,
+ce qui conduira à un environnement sensiblement plus riche pour traiter
+des textes.
+<A NAME="lbAH">&nbsp;</A>
+<H2>SECURITÉ</H2>
+
+Les standards
+<B>Unicode</B> et <B>UCS</B>
+
+demande que le producteur
+<B>UTF-8</B>
+
+utilise la forme la plus courte possible, par exemple, produire une
+séquence de deux octets avec un premier octet 0xc0 n'est pas conforme.
+<B>Unicode 3.1</B>
+
+a ajouté la nécessité pour les programmes conformes de ne pas accepter
+les formes non minimales en entrée. Il s'agit de raisons de sécurité : si
+une saisie est examinée pour des problèmes de sécurité, un programme
+doit rechercher seulement la version
+<B>ASCII</B>
+
+de &quot;/../&quot; ou &quot;;&quot; ou NUL. Il y a de nombreuses manières
+non-<B>ASCII</B>
+
+de représenter ces choses dans un encodage
+<B>UTF-8</B>
+
+non minimal.
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ISO/IEC 10646-1:2000, Unicode 3.1, RFC 2279, Plan 9.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Markus Kuhn &lt;<A HREF="mailto:mgk25@cl.cam.ac.uk">mgk25@cl.cam.ac.uk</A>&gt;
+<A NAME="lbAK">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+nl_langinfo">nl_langinfo</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setlocale">setlocale</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?7+charsets">charsets</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+unicode">unicode</A></B>(7)
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">PROPRIÉTÉS.</A><DD>
+<DT><A HREF="#lbAE">ENCODAGE</A><DD>
+<DT><A HREF="#lbAF">EXEMPLES</A><DD>
+<DT><A HREF="#lbAG">NOTES APPLICATIVES</A><DD>
+<DT><A HREF="#lbAH">SECURITÉ</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">AUTEUR</A><DD>
+<DT><A HREF="#lbAK">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:58 GMT, February 11, 2014
+</BODY>
+</HTML>

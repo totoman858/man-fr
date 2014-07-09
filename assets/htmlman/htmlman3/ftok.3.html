@@ -1,0 +1,149 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FTOK</TITLE>
+</HEAD><BODY>
+<H1>FTOK</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ftok - Convertir un nom de fichier et un identificateur de projet en clé IPC système V.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/ipc.h">sys/ipc.h</A>&gt;</B>
+</PRE>
+
+<P>
+<B>key_t ftok (char * </B><I>pathname</I><B>, int </B><I>proj</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>ftok</B>
+
+utilise l'identité du fichier indiqué par
+<I>pathname</I>
+
+(qui doit exister et être accessible), et les huit bits de poids faible de
+<I>proj</I>
+
+(qui doit être non nul) pour créer une clé IPC Système V de type
+<B>key_t</B>,
+
+utilisable avec
+<B><A HREF="/cgi-bin/man/man2html?2+msgget">msgget</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+semget">semget</A></B>(2),
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+shmget">shmget</A></B>(2).
+
+<P>
+
+La valeur résultante est la même pour tous les chemins d'accès identifiant
+le même fichier, en utilisant une valeur identique pour
+<I>proj</I>.
+
+La valeur devrait être différente lorsque des fichiers différents (existants
+simultanément), ou des identificateur de projet différents sont employés.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Si elle réussit, la fonction <B>ftok</B> renvoie la valeur de type
+<B>key_t</B>
+
+créée, sinon elle renvoie -1, et <B>errno</B> contient un code d'erreur parmi
+ceux de l'appel-système
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2).
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+XPG4
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Avec les bibliothèques libc4 et libc5 (et également sous SunOS 4.x), le prototype
+était
+<DL COMPACT><DT><DD>
+<B>key_t ftok(char *</B><I>pathname</I><B>, char </B><I>proj</I><B>);</B>
+
+</DL>
+
+De nos jours
+<I>proj</I>
+
+est un
+<B>int</B>,
+
+mais seuls huit bits en sont utilisés. L'habitude veut qu'on utilise un caractère
+ASCII comme identifiant 
+<I>proj</I>,
+
+ce qui explique pourquoi le comportement est indéfini lorsque
+<I>proj</I>
+
+vaut zéro.
+<P>
+
+Naturellement aucune garantie ne peut être donné que la clé
+<B>key_t</B>
+
+résultante soit unique. En général on combine l'octet
+<I>proj</I>,
+
+les seize bits de poids faibles du numéro d'i-noeud, et les huit bits
+de poids faibles du numéro de périphérique pour obtenir un entier sur 32 bits.
+Des collisions peuvent se produire facilement
+(car on n'utilise pas le numéro majeur de
+périphérique), par exemple entre les fichiers se trouvant sur
+<I>/dev/hda1</I>
+
+et ceux sur
+<I>/dev/sda1</I>.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+ipc">ipc</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgget">msgget</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+semget">semget</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+shmget">shmget</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:41 GMT, February 11, 2014
+</BODY>
+</HTML>

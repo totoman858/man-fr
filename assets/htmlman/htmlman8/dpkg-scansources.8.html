@@ -1,0 +1,231 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DPKG-SCANSOURCES</TITLE>
+</HEAD><BODY>
+<H1>DPKG-SCANSOURCES</H1>
+Section: User Contributed Perl Documentation (1)<BR>Updated: perl 5.004, patch 04<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+dpkg-scansources - prog
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>dpkg-scansources</B> [switch]... <I>rep-de-binaires</I> [<I>fichier-d'-override</I> [<I>chemin-à-préfixer</I>]] &gt; Sources
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>dpkg-scansources</B> recherche les fichiers <I>.dsc</I> dans le répertoire
+<I>rep-de-binaires</I> donné.
+Ces fichiers servent à construire un index des sources Debian, lequel est
+envoyé sur la sortie standard.
+<P>
+
+Quand le fichier <I>fichier-d'-override</I> existe, il sert à fixer les 
+priorités des enregistrements pour l'index qui est construit et à remplacer 
+les champs «&nbsp;maintainer&nbsp;» donnés dans les fichiers <I>.dsc</I>. Voyez la 
+page de manuel <I>dpkg-scanpackages</I> pour connaître le format de ce fichier.
+NB&nbsp;: le fichier <I>fichier-d'-override</I> étant indexé par paquets binaires 
+et non par paquets sources, il y a un petit problème&nbsp;! Parmi tous les paquets 
+binaires produits par un fichier <I>.dsc</I>, l'implémentation actuelle 
+affecte la priorité la plus élevée au paquet source&nbsp;; et elle se sert de 
+l'entrée «&nbsp;override&nbsp;» du premier paquet binaire listé dans 
+le fichier <I>.dsc</I> pour modifier l'information sur le responsable du 
+paquet. Cela pourrait changer.
+<P>
+
+Quand <I>chemin-à-préfixer</I> existe, il est préfixé au champ répertoire dans
+l'index produit pour le source. On s'en sert communément pour ajouter
+au champ répertoire le chemin indiquant la racine de l'archive Debian.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+
+<BR>
+
+
+
+
+<DL COMPACT>
+<DT><B>--debug</B><DD>
+
+demande le débogage.
+
+<BR>
+
+
+
+
+<DT><B>--help</B><DD>
+
+Affiche une aide pour l'utilisation et se termine.
+
+<BR>
+
+
+
+
+<DT><B>-n</B>, <B>--no-sort</B><DD>
+
+Ne pas trier les enregistrements de l'index. Normalement, ils sont triés selon
+les noms des paquets source.
+
+<BR>
+
+
+
+
+<DT><B>-s</B>, <B>--source-override</B> <I>fichier</I><DD>
+
+Utiliser <I>fichier</I> comme le fichier source d'«&nbsp;override&nbsp;». Par défaut
+c'est le nom du fichier «&nbsp;override&nbsp;» indiqué auquel on 
+ajoute <I>.src</I>.
+
+
+<P>
+
+
+Le format du fichier source d'«&nbsp;override&nbsp;» diffère de celui du fichier binaire.
+Il contient seulement deux champs séparés par un espace&nbsp;: le premier est le nom
+du paquet source et le second la section. Lignes vides et commentaires sont
+ignorés. Quand un paquet apparaît dans les deux fichiers, le
+fichier source d'«&nbsp;override&nbsp;» décide du choix de la section.
+
+<BR>
+
+
+
+
+<DT><B>--version</B><DD>
+
+Affiche le numéro de la version et se termine.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOYEZ AUSSI</H2>
+
+dpkg-<I><A HREF="/cgi-bin/man/man2html?8+scanpackages">scanpackages</A></I>(8)
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Roderick Schertler &lt;<A HREF="mailto:roderick@argon.org">roderick@argon.org</A>&gt;
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Philippe Batailler, Janvier 2001.
+
+<A NAME="ixAAB"></A>
+<A NAME="ixAAC"></A>
+<P>
+<A NAME="ixAAD"></A>
+<P>
+<A NAME="ixAAE"></A>
+<P>
+<A NAME="ixAAF"></A>
+<P>
+<A NAME="ixAAG"></A>
+<P>
+<A NAME="ixAAH"></A>
+<P>
+<A NAME="ixAAI"></A>
+<P>
+<A NAME="ixAAJ"></A>
+<P>
+<A NAME="ixAAK"></A>
+<P>
+<A NAME="ixAAL"></A>
+<P>
+<A NAME="ixAAM"></A>
+<P>
+<A NAME="ixAAN"></A>
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">VOYEZ AUSSI</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:04 GMT, February 11, 2014
+</BODY>
+</HTML>

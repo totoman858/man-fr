@@ -1,0 +1,253 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TRUNCATE</TITLE>
+</HEAD><BODY>
+<H1>TRUNCATE</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+truncate, ftruncate - Tronquer un fichier à une longueur donnée.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<P>
+<B>int truncate(const char *</B><I>path</I><B>, off_t </B><I>length</I><B>);</B>
+
+<BR>
+
+<B>int ftruncate(int </B><I>fd</I><B>, off_t </B><I>length</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les appels
+<B>truncate</B>
+
+et
+<B>ftruncate</B>
+
+tronquent le fichier référencé par
+<I>path</I>
+
+ou par le descripteur
+<I>fd</I>
+
+à une longueur maximale de
+<I>length</I>
+
+octets.
+<P>
+
+Si le fichier était plus long, les données supplémentaires sont perdues.
+Si le fichier était plus court, il est étendu, et
+la portion supplémentaire est remplie de zéros.
+<P>
+
+Le pointeur de position n'est pas modifié.
+<P>
+
+Si la taille est modifiée, les champs ctime et mtime du fichier sont
+mis à jour, et les bits Set-UID et Set-GID sont effacés.
+<P>
+
+Avec
+<B>ftruncate</B>,
+
+le fichier doit être ouvert en écriture&nbsp;; avec
+
+il doit être accessible en écriture.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>truncate</B>,
+
+et
+<B>ftruncate</B>
+
+renvoient 0 s'ils réussissent et -1 s'ils échouent, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Pour
+<B>truncate</B>:
+
+<DL COMPACT>
+<DT><B>EACCES</B>
+
+<DD>
+Le fichier n'est pas accessible en écriture, ou un élément du chemin
+d'accès ne permet pas le parcours.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>Path</I>
+
+pointe en dehors de l'espace d'adressage accessible.
+<DT><B>EFBIG</B>
+
+<DD>
+L'argument
+<I>length</I>
+
+dépasse la taille maximum d'un fichier.
+<DT><B>EINTR</B>
+
+<DD>
+Un signal a été capturé durant l'exécution.
+<DT><B>EINVAL</B>
+
+<DD>
+L'argument
+<I>length</I>
+
+est négatif ou plus grand que la taille maximale d'un fichier.
+<DT><B>EIO</B>
+
+<DD>
+Une erreur d'entrée/sortie bas niveau s'est produite.
+<DT><B>EISDIR</B>
+
+<DD>
+Le fichier est en réalité un répertoire
+<DT><B>ELOOP</B>
+
+<DD>
+Le chemin contient une référence circulaire (à travers un lien symbolique)
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+Un composant du chemin dépasse 255 caractères ou
+le chemin complet dépasse 1023 caractères.
+<DT><B>ENOENT</B>
+
+<DD>
+Le fichier n'existe pas
+<DT><B>ENOTDIR</B>
+
+<DD>
+un composant du chemin d'accès n'est pas un répertoire
+<DT><B>EROFS</B>
+
+<DD>
+Le fichier se trouve sur un système de fichiers en lecture seule.
+<DT><B>ETXTBSY</B>
+
+<DD>
+Le fichier est un programme actuellement en cours d'exécution.
+</DL>
+<P>
+
+Pour
+<B>ftruncate</B>
+
+les mêmes erreurs sont possibles, sauf qu'au lieu des problèmes avec
+<I>path</I>,
+
+on peut en avoir avec
+<I>fd</I> :
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+L'argument
+<I>fd</I>
+
+n'est pas un descripteur valide.
+<DT><B>EBADF</B> ou <B>EINVAL</B>
+
+<DD>
+L'argument
+<I>fd</I>
+
+n'est pas ouvert en écriture.
+<DT><B>EINVAL</B>
+
+<DD>
+L'argument
+<I>fd</I>
+
+n'est pas un descripteur de fichier normal.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.4, SVr4 (cette fonction est apparue dans BSD 4.2).
+POSIX 1003.1-1996 décrit
+<B>ftruncate</B>.
+
+POSIX 1003.1-2001 décrit aussi
+<I>truncate</I>,
+
+en tant qu'extension XSI.
+<P>
+
+SVr4 mentionne des conditions d'erreurs supplémentaires pour
+<B>truncate</B>
+
+EMFILE, EMULTIHOP, ENFILE, ENOLINK. La version SVr4 de
+<B>ftruncate</B>
+
+dispose de l'erreur supplémentaire EAGAIN.
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+La description ci-dessus est celle des systèmes compatibles XSI.
+Pour les systèmes non compatiables,le standard POSIX autorise
+deux comportements pour
+<B>ftruncate</B>
+
+quand
+<I>length</I>
+
+dépasse la longueur du fichier
+(notez que
+<B>truncate</B>
+
+n'est pas du tout spécifié dans un tel environnement)&nbsp;:
+soit renvoyer une erreur, soit étendre le fichier.
+(La plupart des Unix suivent le comportement XSI).
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:58 GMT, February 11, 2014
+</BODY>
+</HTML>

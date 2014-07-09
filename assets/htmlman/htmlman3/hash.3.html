@@ -1,0 +1,200 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of HASH</TITLE>
+</HEAD><BODY>
+<H1>HASH</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+hash - Méthodes d'accès aux bases de données avec tables de hachage.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/db.h">db.h</A>&gt;
+</B></PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La routine
+<I>dbopen</I>
+
+est l'interface de bibliothèque pour les fichiers de base de données.
+L'un des formats de fichier supportés est la table de hachage.
+La description générale des méthodes d'accès à une base de données
+est fournie dans la page de manuel
+<I><A HREF="/cgi-bin/man/man2html?3+dbopen">dbopen</A></I>(3).
+
+La page présente ne décrit que les informations spécifiques aux tables
+de hachage.
+<P>
+
+Les structures de hachage représentent un schéma de base de données
+dynamique et extensible.
+<P>
+
+La structure de données spécifique aux tables de hachage que
+l'on transmet à
+<I>dbopen</I>
+
+est définie dans &lt;<A HREF="file:///usr/include/db.h">db.h</A>&gt; ainsi :
+<P>
+typedef struct {
+<DL COMPACT><DT><DD>
+u_int bsize;
+<BR>
+
+u_int ffactor;
+<BR>
+
+u_int nelem;
+<BR>
+
+u_int cachesize;
+<BR>
+
+u_int32_t (*hash)(const void *, size_t);
+<BR>
+
+int lorder;
+</DL>
+
+} HASHINFO;
+<P>
+
+Les éléments de cette structure sont les suivants :
+<DL COMPACT>
+<DT>bsize<DD>
+<I>Bsize</I>
+
+(bucket size) défini la taille des cases de la table, et vaut,
+par défaut, 256 octets. Il est préférable d'augmenter la taille de
+page pour les table situées sur disque ayant des éléments avec
+beaucoup de données.
+<DT>ffactor<DD>
+<I>Ffactor</I>
+
+indique une densité désirée au sein de la table. Il s'agit d'une
+approximation du nombre de clés pouvant s'accumuler dans une seule
+case, ce qui détermine le moment où la table doit s'aggrandir ou se
+rétrécir. La valeur par défaut est 8.
+<DT>nelem<DD>
+<I>Nelem</I>
+
+est une estimation de la taille finale de la table de hachage. S'il n'est
+pas configuré, ou s'il est configuré trop bas, la table s'aggrandira
+quand même correctement au fur et à mesure de l'entrée des clés,
+bien qu'une légère dégradation des performances puisse être observée.
+La valeur par défaut est 1.
+<DT>cachesize<DD>
+Une taille maximale suggérée de mémoire cache, en octets. Ceci n'a
+qu'une valeur
+<B>indicative</B>,
+
+et les méthodes d'accès alloueront plus de mémoire plutôt que d'échouer.
+<DT>hash<DD>
+<I>Hash</I>
+
+est une fonction définie par l'utilisateur.
+Comme aucune fonction de hachage ne se comporte parfaitement bien sur tout
+type de données, il peut arriver que la fonction interne soit particulièrement
+mauvaise sur un jeu particulier de données. La fonction de hachage fournie
+par l'utilisateur doit prendre deux arguments (un pointeur sur une chaîne
+d'octets et une longueur) et renvoyer une valeur sur 32 bits utilisable
+comme valeur de hachage.
+<DT>lorder<DD>
+L'ordre des octets pour les entiers stockés dans la base de données.
+Ce nombre doit représenter l'ordre sous forme d'entier. Par exemple l'ordre
+poids faible-poids fort (big endian) est représenté par le nombre 4321.
+Si
+<I>lorder</I>
+
+vaut 0 (pas d'ordre indiqué), on utilise l'ordre des octets du système hôte.
+</DL>
+<P>
+
+Si le fichier existe déjà, on utilise l'ordre des octets indiqués lors
+de sa création.
+<P>
+
+SI une fonction de hachage est indiquée,
+<I>hash_open</I>
+
+essayera de déterminer s'il s'agit de la même fonction que celle indiquée
+lors de la création de la base de donnée, et échouera si ce n'est pas le
+cas.
+<P>
+
+Des interfaces pour les routines décrites dans
+<I><A HREF="/cgi-bin/man/man2html?3+dbm">dbm</A></I>(3),
+
+et
+<I><A HREF="/cgi-bin/man/man2html?3+ndbm">ndbm</A></I>(3)
+
+sont fournies, toutefois ces interfaces ne sont pas compatibles avec
+les anciens formats de fichiers.
+<A NAME="lbAE">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Les routines des méthodes d'accès au
+<I>tables de hachage</I>
+
+peuvent échouer et remplir
+<I>errno</I>
+
+avec n'importe quelle erreur indiquée par la routine
+<I><A HREF="/cgi-bin/man/man2html?3+dbopen">dbopen</A></I>(3).
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Seuls les ordres d'octets big-endian et little-endian fonctionnent.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<I><A HREF="/cgi-bin/man/man2html?3+btree">btree</A></I>(3),
+
+<I><A HREF="/cgi-bin/man/man2html?3+dbopen">dbopen</A></I>(3),
+
+<I><A HREF="/cgi-bin/man/man2html?3+mpool">mpool</A></I>(3),
+
+<I><A HREF="/cgi-bin/man/man2html?3+recno">recno</A></I>(3)
+
+<P>
+<I>Dynamic Hash Tables</I>,
+
+Per-Ake Larson, Communications of the ACM, April 1988.
+<P>
+<I>A New Hash Package for UNIX</I>,
+
+Margo Seltzer, USENIX Proceedings, Winter 1991.
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1999-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">ERREURS</A><DD>
+<DT><A HREF="#lbAF">BOGUES</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:16 GMT, February 11, 2014
+</BODY>
+</HTML>

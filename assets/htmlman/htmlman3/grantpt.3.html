@@ -1,0 +1,126 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GRANTPT</TITLE>
+</HEAD><BODY>
+<H1>GRANTPT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+grantpt - Accéder à un pseudo-terminal esclave.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<B>int grantpt(int </B><I>fd</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>grantpt</B>()
+
+modifie le mode et l'appartenant du pseudo-terminal esclace correspondant
+au pseudo-terminal maître référencé par
+<I>fd</I>.
+
+L'UID de l'esclave est rempli avec l'UID réel du processus appelant.
+Le GID est rempli avec une valeur non spécifiée (par ex&nbsp;: tty).
+Le mode de l'esclave est mis à 0620 (crw--w----).
+<P>
+
+Le comportement de
+<B>grantpt</B>()
+
+est indéterminé si un gestionnaire de signal est installé pour capturer SIGCHLD.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Lorsqu'elle réussit, la fonction
+<B>grantpt</B>()
+
+renvoie 0. Sinon, elle renvoie -1 et configure
+<I>errno</I>
+
+avec le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS.</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+L'argument
+<I>fd</I>
+
+n'est pas un descripteur valide.
+<DT><B>EINVAL</B>
+
+<DD>
+L'argument
+<I>fd</I>
+
+est un descripteur mais pas associé avec un pseudo-terminal maître.
+<DT><B>EACCES</B>
+
+<DD>
+Le pseudo-terminal esclave n'est pas accessible.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX 1003.1-2001
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Il s'agit d'une partie du support pty d'Unix98, voir
+<B><A HREF="/cgi-bin/man/man2html?4+pts">pts</A></B>(4).
+
+De nombreux systèmes implémente cette fonction avec un assistant binaire Set-UID
+appelé &quot;pt_chown&quot;. Avec le mécanisme devpts de Linux aucun assistant n'est
+nécessaire.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getpt">getpt</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+ptsname">ptsname</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+unlockpt">unlockpt</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?4+pts">pts</A></B>(4)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS.</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:17 GMT, February 11, 2014
+</BODY>
+</HTML>

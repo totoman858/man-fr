@@ -1,0 +1,308 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PTHREAD_SIGNAL</TITLE>
+</HEAD><BODY>
+<H1>PTHREAD_SIGNAL</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<P>
+<P>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+pthread_sigmask, pthread_kill, sigwait - gestion des signaux dans les threads
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/pthread.h">pthread.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/signal.h">signal.h</A>&gt;</B>
+
+<P>
+<B>int pthread_sigmask(int </B><I>how</I><B>, const sigset_t *</B><I>newmask</I><B>, sigset_t *</B><I>oldmask</I><B>);</B>
+
+<P>
+<B>int pthread_kill(pthread_t </B><I>thread</I><B>, int </B><I>signo</I><B>);</B>
+
+<P>
+<B>int sigwait(const sigset_t *</B><I>set</I><B>, int *</B><I>sig</I><B>);</B>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+<B>pthread_sigmask</B>
+
+change le masque des signaux pour le thread appelant tel que décrit par les
+arguments
+<I>how</I>
+
+et <I>newmask</I>. Si
+<I>oldmask</I>
+
+ne vaut pas
+<B>NULL</B>,
+
+le précédent masque de signaux est sauvegardé dans l'emplacement pointé par
+<I>oldmask</I>.
+
+<P>
+La signification des arguments
+<I>how</I>
+
+et 
+<I>newmask</I>
+
+est la même que pour
+<B><A HREF="/cgi-bin/man/man2html?2+sigprocmask">sigprocmask</A></B>(2).
+
+Si 
+<I>how</I>
+
+vaut
+<B>SIG_SETMASK</B>,
+
+le masque de signal est positionné à
+<I>newmask</I>.
+
+Si 
+<I>how</I>
+
+vaut
+<B>SIG_BLOCK</B>,
+
+les signaux indiqués par
+<I>newmask</I>
+
+sont ajoutés au masque de signaux courant. Si
+<I>how</I>
+
+vaut
+<B>SIG_UNBLOCK</B>,
+
+les signaux indiqués par
+<I>newmask</I>
+
+sont retirés du masque courant.
+<P>
+N.B. : Les masques de signaux sont définis par thread, mais la gestion des
+signaux et les gestionnaires associés, tels que mis en place par
+<B><A HREF="/cgi-bin/man/man2html?2+sigaction">sigaction</A></B>(2),
+
+sont partagés par tous les threads.
+<P>
+<B>pthread_kill</B>
+
+envoie le signal numéro
+<I>signo</I>
+
+au thread
+<I>thread</I>.
+
+Le signal est reçu et géré tel que décrit dans
+<B><A HREF="/cgi-bin/man/man2html?2+kill">kill</A></B>(2).
+
+<P>
+<B>sigwait</B>
+
+suspend le thread appelant jusqu'à ce que l'un des signaux définis dans 
+<I>set</I>
+
+soit envoyé au thread appelant. Le numéro du signal reçu est alors sauvegardé
+dans l'emplacement pointé par
+<I>sig</I>
+
+et la fonction rend la main. Les signaux définis dans
+<I>set</I>
+
+doivent être bloqués et non ignorés lorsque l'on entre dans
+<B>sigwait</B>.
+
+Si l'un des signaux reçus possède un gestionnaire de signal, cette fonction
+<I>n'est pas</I>
+
+appelée.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>ANNULLATION</H2>
+
+<P>
+<B>sigwait</B>
+
+est un point d'annulation.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+En cas de succès, 0 est renvoyé. En cas d'échec, un code d'erreur non nul est
+renvoyé.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<P>
+La fonction
+<B>pthread_sigmask</B>
+
+renvoie l'un des codes d'erreur suivants en cas de problème&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+<I>how</I>
+
+n'est ni 
+<B>SIG_SETMASK</B>,
+
+ni
+<B>SIG_BLOCK</B>,
+
+ni 
+<B>SIG_UNBLOCK</B>
+
+<P>
+<DT><B>EFAULT</B>
+
+<DD>
+<I>newmask</I>
+
+ou 
+<I>oldmask</I>
+
+pointe en dehors de l'espace mémoire du processus.
+</DL>
+</DL>
+
+<P>
+La fonction
+<B>pthread_kill</B>
+
+renvoiz l'un des codes d'erreur suivants en cas de problème&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+<I>signo</I>
+
+n'est pas un masque de signaux valide.
+<P>
+<DT><B>ESRCH</B>
+
+<DD>
+le thread 
+<I>thread</I>
+
+n'existe pas (par exemple, il s'est déjà achevé)
+</DL>
+</DL>
+
+<P>
+La fonction
+<B>sigwait</B>
+
+ne renvoie jamais de code d'erreur.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Xavier Leroy &lt;<A HREF="mailto:Xavier.Leroy@inria.fr">Xavier.Leroy@inria.fr</A>&gt;
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigprocmask">sigprocmask</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+kill">kill</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigaction">sigaction</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigsuspend">sigsuspend</A></B>(2).
+
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>NOTES</H2>
+
+<P>
+Afin que
+<B>sigwait</B>
+
+fonctionne de manière fiable, les signaux que l'on attend doivent être bloqués
+dans tous les threads, pas seulement le thread appelant, sinon les sémantiques
+de POSIX concernant le traitement du signal ne garantissent pas que le thread
+appelant
+<B>sigwait</B>
+
+sera celui recevant le signal. La meilleur manière d'assurer cela est de
+bloquer ces signals avant de créer les threads puis de ne jamais débloquer ces
+signaux dans aucun de ces threads sauf en appelant
+<B>sigwait</B>.
+
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>BOGUES</H2>
+
+La gestion des signaux dans LinuxThreads ne respecte pas celle définie par le
+standard POSIX. Selon le standard, un signal &quot;asynchrone&quot; (externe) doit être
+dérouté vers le processus tout entier (c'est à dire vers tous les threads le
+composant) mais seul l'un d'eux doit le gérer. Celui-ci peut être n'importe
+lequel des threads ne bloquant pas le signal.
+<P>
+Dans LinuxThreads, chaque thread est un processus par rapport au noyau,
+possédant son propre PID, aussi les signaux extérieurs sont toujours envoyés
+vers un thread particulier. Si, par exemple, un autre thread est bloqué dans
+<B>sigwait</B>
+
+sur ce signal, il ne sera pas relancé.
+<P>
+L'implémentation de
+<B>sigwait</B>
+
+par LinuxThreads installe un gestionnaire de signaux vide pour les signaux
+définis dans
+<I>set</I>
+
+durant l'attente. Comme les gestionnaires de signaux sont partagés
+par tous les threads, les autres threads ne doivent pas attacher leurs propres
+gestionnaires sur ces signaux, mais doivent bloquer ces signaux (ce qui est
+de toute façon recommandé -- voir la rubrique NOTES).
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 2000
+
+<BR>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">ANNULLATION</A><DD>
+<DT><A HREF="#lbAF">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAG">ERREURS</A><DD>
+<DT><A HREF="#lbAH">AUTEUR</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">NOTES</A><DD>
+<DT><A HREF="#lbAK">BOGUES</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:07 GMT, February 11, 2014
+</BODY>
+</HTML>

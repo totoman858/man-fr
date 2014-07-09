@@ -1,0 +1,2518 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MOUNT</TITLE>
+</HEAD><BODY>
+<H1>MOUNT</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mount - Monter un système de fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>mount [-hV]</B>
+
+<P>
+
+<B>mount -a [-fFnrsvw] [-t </B><I>type</I><B>] [-o </B><I>options</I><B>]</B>
+
+<BR>
+
+<B>mount [-fnrsvw] [-o </B><I>options</I><B> [,...]] </B><I>périph </I><B>|</B><I> rép</I>
+
+<BR>
+
+<B>mount [-fnrsvw] [-t </B><I>type</I><B>] [-o </B><I>options</I><B>] </B><I>périph rép</I>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Tout fichier accessible par un système Unix est inséré dans une grande
+arborescence, la hiérarchie des fichiers, commençant à la racine
+<B>/</B>.
+
+Ces fichiers peuvent résider sur différents périphériques. La commande
+<B>mount</B>
+
+permet d'attacher un système de fichiers trouvé sur un périphérique
+quelconque à la grande arborescence du système. A l'inverse
+<B><A HREF="/cgi-bin/man/man2html?8+umount">umount</A></B>(8)
+
+le détachera à nouveau.
+<P>
+La forme standard de la commande
+<B>mount</B>
+
+est
+<DL COMPACT><DT><DD>
+<BR>
+
+<B>mount -t</B><I> type périphérique répertoire</I>
+
+</DL>
+
+Ceci indique au noyau d'attacher le système de fichiers se trouvant sur le
+<I>périphérique</I>
+
+mentionné (dont on précise le
+<I>type</I>)
+
+dans le 
+<I>répertoire</I>
+
+indiqué. Le contenu, le propriétaire et le mode d'accès précédents du
+<I>répertoire</I>
+
+deviennent invisibles, et, tant que le nouveau système de fichiers reste monté,
+le chemin d'accès du
+<I>répertoire</I>
+
+représente alors la racine du système de fichiers se trouvant sur le
+<I>périphérique</I>.
+
+<P>
+Il y a trois façons d'invoquer <B>mount</B> sans qu'il ne monte quoique ce soit&nbsp;:
+<DL COMPACT><DT><DD>
+<BR>
+
+<B>mount -h</B>
+
+</DL>
+
+affiche un message d'aide&nbsp;;
+<DL COMPACT><DT><DD>
+<BR>
+
+<B>mount -V</B>
+
+</DL>
+
+affiche un numéro de version&nbsp;; et simplemeng
+<DL COMPACT><DT><DD>
+<B>mount [-l] [-t</B><I> type</I><B>]</B>
+
+</DL>
+
+fournit la liste des systèmes de fichiers actuellement montés (du
+<I>type</I>
+
+indiqué uniquement). L'option -l ajoute les étiquettes (ext2, ext3, et XFS).
+Voir plus bas.
+<P>
+
+Depuis Linux 2.4.0 il est possible de remonter une partie de la hiérarchie
+des fichiers ailleurs. L'appel est&nbsp;:
+<DL COMPACT><DT><DD>
+<BR>
+
+<B>mount --bind olddir newdir</B>
+
+</DL>
+
+Ensuite, le même contenu est accessible en deux endroits.
+<P>
+Cet appel attache seulement (une partie de) un unique système de fichiers, et
+pas les éventuels sous-montages. La hiérarchie complète, y compris les
+sous-montages est attachée une seconde fois avec&nbsp;:
+<DL COMPACT><DT><DD>
+<BR>
+
+<B>mount --rbind olddir newdir</B>
+
+</DL>
+
+
+<P>
+Depuis Linux 2.5.1 il est possible de déplacer atomiquement une sous-arborescence
+à un autre endroit. L'appel est&nbsp;:
+<DL COMPACT><DT><DD>
+<BR>
+
+<B>mount --move olddir newdir</B>
+
+</DL>
+
+<P>
+Le système de fichiers
+<I>proc</I>
+
+n'est associé à aucun périphérique, et lorsqu'on le monte, un
+mot quelconque, par exemple
+<I>proc</I>
+
+peut être utilisé à la place de l'indication de périphérique. Le choix courant
+<I>none</I>
+
+(aucun) n'est pas très heureux, car un message d'erreur `none busy'
+(aucun occupé) lors d'un
+<B>umount</B>
+
+peut être mal interprété.
+<P>
+La plupart des périphériques sont indiqués sous forme de noms de fichiers
+(spécial bloc), comme
+<I>/dev/sda1</I>,
+
+mais il y a d'autres possibilités. Par exemple, pour un montage par NFS,
+<I>périphérique</I>
+
+peut ressembler à 
+<I>knuth.cwi.nl:/dir</I>.
+
+On peut indiquer un périphérique spécial boc par son étiquette de volume
+ou UUID (voir options -L et -U).
+<P>
+Le fichier
+<I>/etc/fstab</I>
+
+(voir
+<B><A HREF="/cgi-bin/man/man2html?5+fstab">fstab</A></B>(5)),
+
+contient des lignes décrivant les périphériques habituellement montés, leurs
+répertoires, et leurs options. Ce fichier est utilisé dans trois buts&nbsp;:
+<P>
+
+(i) La commande
+<DL COMPACT><DT><DD>
+<BR>
+
+<B>mount -a [-t </B><I>type</I><B> ] [-O </B><I>options</I><B>]</B>
+
+</DL>
+
+(généralement exécutée dans un script de démarrage) monte tous les systèmes de
+fichiers indiqués dans
+<I>fstab</I>
+
+(ou uniquement ceux du <I>type</I> indiqué), sauf ceux dont la ligne contient
+<B>noauto</B>.
+
+En ajoutant l'option
+<B>-F</B>,
+
+<A HREF="/cgi-bin/man/man2html?2+fork">fork</A>(2) sera invoqué pour que tous les systèmes soient montés simultanément.
+<P>
+
+(ii) Lorsque l'on monte un système de fichiers mentionné dans la
+<I>fstab</I>,
+
+il suffit d'indiquer le point de montage, ou le périphérique.
+<P>
+
+(iii) Normalement, seul le Super-Utilisateur peut monter des systèmes
+de fichiers. Néanmoins, si la ligne de la
+<I>fstab</I>
+
+contient l'option
+<B>user</B>,
+
+n'importe quel utilisateur peut monter le système de fichiers correspondant.
+<P>
+
+Ainsi, avec une ligne
+<DL COMPACT><DT><DD>
+<BR>
+
+<B>/dev/cdrom  /cd  iso9660  ro,user,noauto,unhide</B>
+
+</DL>
+
+n'importe quel utilisateur peut monter le système
+iso9660 se trouvant sur son CDROM en utilisant la commande
+<DL COMPACT><DT><DD>
+<BR>
+
+<B>mount /dev/cdrom</B>
+
+</DL>
+
+ou
+<DL COMPACT><DT><DD>
+<BR>
+
+<B>mount /cd</B>
+
+</DL>
+
+Pour plus de détails, voir
+<B><A HREF="/cgi-bin/man/man2html?5+fstab">fstab</A></B>(5).
+
+Seul l'utilisateur qui a monté un système de fichiers peut le démonter.
+Si tous les utilisateurs doivent pouvoir faire le démontage, alors utilisez
+<B>users</B>
+
+à la place de
+<B>user</B>
+
+dans le ligne de
+<I>fstab</I>.
+
+L'option
+<B>owner</B>
+
+est similaire à
+<B>user</B>,
+
+avec la contrainte que l'utilisateur doit être le propriétaire
+du fichier spécial. Ceci peut servir par exemple pour
+<I>/dev/fd</I>
+
+si un script de connexion rend l'utilisateur de la console propriétaire de
+ce fichier spécial.
+<P>
+Les programmes
+<B>mount</B>
+
+et
+<B>umount</B>
+
+maintiennent une liste des périphériques actuellement montés dans le fichier
+<I>/etc/mtab</I>.
+
+Si
+<B>mount </B>
+
+est invoqué sans arguments, cette liste est affichée.
+Quand le système
+<I>proc</I>
+
+est monté (disons sur
+<I>/proc</I>),
+
+les fichiers
+<I>/etc/mtab</I>
+
+et
+<I>/proc/mounts</I>
+
+sont très semblables. Le premier contient un peu plus d'informations,
+par exemple les options de montage, mais n'est pas obligatoirement à
+jour. (cf l'option
+<B>-n</B>
+
+plus bas). Il est possible de remplacer
+<I>/etc/mtab</I>
+
+par un lien symbolique vers
+<I>/proc/mounts</I>,
+
+mais on perd quelques informations ainsi, et en particulier le travail avec
+le périphérique loop sera moins aisé.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+L'ensemble exact des options utilisées lors d'une invocation de
+<B>mount</B>
+
+est déterminé d'abord en lisant les options
+de la table
+<I>fstab</I>
+
+pour ce système de fichiers, puis en appliquant les options de l'argument
+<B>-o</B>,
+
+et finalement en appliquant les options
+<B>-r</B> ou <B>-w</B>
+
+si elles sont mentionnées.
+<P>
+Les options valides pour la commande
+<B>mount</B>
+
+sont&nbsp;:
+<DL COMPACT>
+<DT><B>-V</B>
+
+<DD>
+Afficher un numéro de version.
+<DT><B>-h</B>
+
+<DD>
+Afficher un message d'aide.
+<DT><B>-v</B>
+
+<DD>
+Mode volubile.
+<DT><B>-a</B>
+
+<DD>
+Monter tous les systèmes de fichiers (d'un type donné) mentionnés dans
+<I>fstab</I>.
+
+<DT><B>-F</B>
+
+<DD>
+(utilisée conjointement avec
+<B>-a</B>).
+
+Lancer un processus mount pour chaque périphérique. Ceci effectuera le
+montage en parallèle des divers périphériques ou serveurs NFS.
+L'avantage est la rapidité&nbsp;; de plus les délais de NFS s'écoulent
+en parallèle. Un désavantage est que les montages ont lieu dans le
+désordre.
+Il ne faut donc pas utiliser cette option pour monter à la fois
+<I>/usr</I>
+
+et
+<I>/usr/spool</I>.
+
+<DT><B>-f</B>
+
+<DD>
+Fonctionnement normal sauf pour l'appel système final qui n'est pas
+exécuté. Ceci simule le montage du système de fichiers.
+Cette option, en conjonction avec
+<B>-v</B>
+
+permet de déterminer ce que la commande
+<B>mount</B>
+
+essaye de faire. Ceci peut aussi servir à ajouter des entrées pour les
+périphériques montés précédement avec l'option -n.
+<DT><B>-l</B>
+
+<DD>
+Ajoute les étiquettes ext2, ext3 et XFS en sortie de mount output. Il faut que
+mount ait la permission de lire le périphérique (par ex, Set-UID root).
+On peut écrire une étiquette ext2 ou ext3 avec l'utilitaire
+<B><A HREF="/cgi-bin/man/man2html?8+e2label">e2label</A></B>(8),
+
+et XFS en utilisant
+<B><A HREF="/cgi-bin/man/man2html?8+xfs_admin">xfs_admin</A></B>(8).
+
+<DT><B>-n</B>
+
+<DD>
+Montage sans écriture dans
+<I>/etc/mtab</I>.
+
+Ceci est nécessaire dans le cas où
+<I>/etc</I>
+
+réside sur un système de fichiers en lecture seule.
+<DT><B>-s</B>
+
+<DD>
+Tolérer les options invalides plutôt qu'échouer. Ceci permet d'ignorer les
+options non supportées par un type de système de fichiers. Tous les systèmes
+de fichiers ne supportent pas cette option. Elle existe pour le support
+de l'auto-monteur Linux basé sur autofs.
+<DT><B>-r</B>
+
+<DD>
+Montage du système de fichiers en lecture seule. Un synonyme est
+<B>-o ro</B>.
+
+<DT><B>-w</B>
+
+<DD>
+Montage du système en lecture/écriture (option par défaut) Un synonyme est
+<B>-o rw</B>.
+
+<DT><B>-L</B><I> label</I>
+
+<DD>
+Monter la partition qui a l'étiquette
+<I>label</I>.
+
+<DT><B>-U</B><I> uuid</I>
+
+<DD>
+Monter la partition avec
+l'<I>uuid</I>
+
+indiqué. Cette option nécessite que le fichier
+<I>/proc/partitions</I>
+
+existe (depuis Linux 2.1.116).
+<DT><B>-t</B><I> type</I>
+
+<DD>
+L'argument à la suite de
+<B>-t</B>
+
+est utilise pour préciser le type de système de fichier. Les types actuellement
+supportés sont&nbsp;:
+<I>adfs</I>,
+
+<I>affs</I>,
+
+<I>autofs</I>,
+
+<I>coda</I>,
+
+<I>coherent</I>,
+
+<I>cramfs</I>,
+
+<I>devpts</I>,
+
+<I>efs</I>,
+
+<I>ext</I>,
+
+<I>ext2</I>,
+
+<I>ext3</I>,
+
+<I>hfs</I>,
+
+<I>hpfs</I>,
+
+<I>iso9660</I>,
+
+<I>jfs</I>,
+
+<I>minix</I>,
+
+<I>msdos</I>,
+
+<I>ncpfs</I>,
+
+<I>nfs</I>,
+
+<I>ntfs</I>,
+
+<I>proc</I>,
+
+<I>qnx4</I>,
+
+<I>ramfs</I>,
+
+<I>reiserfs</I>,
+
+<I>romfs</I>,
+
+<I>smbfs</I>,
+
+<I>sysv</I>,
+
+<I>tmpfs</I>,
+
+<I>udf</I>,
+
+<I>ufs</I>,
+
+<I>umsdos</I>,
+
+<I>vfat</I>,
+
+<I>xenix</I>,
+
+<I>xfs</I>,
+
+<I>xiafs</I>.
+
+Notez que coherent, sysv et xenix sont équivalents et que
+<I>xenix</I>
+
+et
+<I>coherent</I>
+
+disparaîtront dans l'avenir --- utilisez
+<I>sysv</I>
+
+à leur place. Depuis Linux 2.1.21, les types
+<I>ext</I>
+
+et
+<I>xiafs</I>
+
+n'existent plus.
+<P>
+Pour la plupart des types,
+<B>mount </B>
+
+effectue seulement un appel-système
+<I><A HREF="/cgi-bin/man/man2html?2+mount">mount</A></I>(2),
+
+car aucune connaissance détaillée du système de fichiers n'est nécessaires.
+Pour certains type toutefois (comme nfs, smbfs, ncpfs) du code supplémentaire
+est indispensable. Le code nfs est intégré, mais smbfs et ncpfs ont un programme
+mount indépendant. Afin de rendre uniforme le traitement de tous
+les types, mount exécutera le programme
+<I>/sbin/mount.TYPE</I>
+
+(s'il existe) lorsqu'invoqué pour le type
+<I>TYPE</I>.
+
+Comme différentes versions de
+<I>smbmount </I>
+
+ont des conventions d'appels diverses,
+<I>/sbin/mount.smb</I>
+
+doit être un script shell qui réalise l'appel voulu.
+<P>
+Le type par défaut est
+<I>iso9660</I>.
+
+Si aucune option
+<B>-t</B>
+
+n'est mentionnée, ou si le type
+<B>auto</B>
+
+est précisé, la recherche de type est effectuée sur le superbloc
+(<I>adfs</I>,
+
+<I>bfs</I>,
+
+<I>cramfs</I>,
+
+<I>ext</I>,
+
+<I>ext2</I>,
+
+<I>ext3</I>,
+
+<I>hfs</I>,
+
+<I>hpfs</I>,
+
+<I>iso9660</I>,
+
+<I>jfs</I>,
+
+<I>minix</I>,
+
+<I>ntfs</I>,
+
+<I>qnx4</I>,
+
+<I>reiserfs</I>,
+
+<I>romfs</I>,
+
+<I>udf</I>,
+
+<I>ufs</I>,
+
+<I>vxfs</I>,
+
+<I>xfs</I>,
+
+<I>xiafs</I>
+
+sont supportés).
+Si cette recherche échoue, mount essaiera de lire le fichier
+<I>/etc/filesystems</I>
+
+ou, s'il n'existe pas,
+<I>/proc/filesystems</I>.
+
+Tous les types de systèmes de fichiers listés seront essayés,
+sauf ceux marqués &quot;nodev&quot; (par exemple
+<I>devpts</I>,
+
+<I>proc</I>
+
+et
+<I>nfs</I>).
+
+Si
+<I>/etc/filesystems</I>
+
+se termine par une ligne contenant un unique '*', mount lira
+<I>/proc/filesystems</I>
+
+à sa suite.
+<P>
+Le type
+<B>auto</B>
+
+peut être utile pour des disquettes montées par l'utilisateur.
+Créer un fichier
+<I>/etc/filesystmes</I>
+
+permet de changer l'ordre d'essai (par exemple vfat avant msdos) ou
+d'utiliser un autochargeur de modules pour le noyau. Attention&nbsp;: la
+détection s'appuie sur une heuristique (des nombres &quot;magiques&quot; précis) qui
+peut conduire à une mauvaise reconnaissance, avec des conséquences
+catastrophiques. Si vos données sont précieuses ne demandez pas à 
+<B>mount</B>
+
+d'essayer de deviner le type de leur support.
+<P>
+On peut indiquer plusieurs types, séparés par des virgules. Une liste
+de systèmes peut également être préfixée par 
+<B>no</B>
+
+pour indiquer les types qu'il ne faut pas tester.
+(Ceci prend son sens avec
+l'option
+<B>-a</B>).
+
+<P>
+Par exemple, la commande&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT><DT><DD>
+<B>mount -a -t nomsdos,ext</B>
+
+</DL>
+
+monte tous les systèmes de fichiers, à l'exception de ceux de type
+<I>msdos</I>
+
+et
+<I>ext</I>.
+
+</DL>
+
+<DT><B>-O</B>
+
+<DD>
+Utilisée conjointement avec
+<B>-a</B>,
+
+pour limiter l'ensemble des systèmes de fichiers auxquels
+<B>-a</B>
+
+s'applique. Comme
+<B>-t</B>
+
+sauf que c'est inutile hors du contexte
+<B>-a</B>.
+
+Par exemple, la commande&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT><DT><DD>
+<B>mount -a -O no_netdev</B>
+
+</DL>
+
+monte tous les systèmes sauf ceux qui ont l'option
+<I>_netdev</I>
+
+dans le champ option du
+fichier
+<I>/etc/fstab</I>.
+
+<P>
+C'est différent de
+<B>-t</B>
+
+en ceci que chaque option est vérifiée exactement&nbsp;; un
+<B>no</B>
+
+au début d'une option ne nie pas le reste.
+<P>
+Les options
+<B>-t</B>
+
+et
+<B>-O</B>
+
+se cumulent dans les faits. La commande
+<DL COMPACT><DT><DD>
+<B>mount -a -t ext2 -O _netdev</B>
+
+</DL>
+
+monte tous les systèmes ext2 avec l'option _netdev, et pas les systèmes qui
+sont seulement ext2 ou qui ont seulement l'option _netdev.
+</DL>
+
+<DT><B>-o</B>
+
+<DD>
+Les options de montage sont indiquées par l'argument
+<B>-o</B>
+
+suivi d'une liste d'options séparées par des virgules. Certaines
+d'entre-elles ne sont utiles que lorsqu'elles apparaissent dans le fichier
+<I>/etc/fstab</I>
+
+Les options suivantes sont communes au montage de tous les systèmes
+de fichiers (mais tous les systèmes ne les honorents pas, par exemple
+<B>sync</B>
+
+n'est effective que pour ext2, ext3 et ufs)&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>async</B>
+
+<DD>
+Toutes les entrées/sorties sur le système de fichiers seront asynchrones.
+<DT><B>atime</B>
+
+<DD>
+Mise à jour des horodatages d'accès à chaque accès. Option par défaut.
+<DT><B>auto</B>
+
+<DD>
+Peut être monté par
+l'option
+<B>-a</B>.
+
+<DT><B>defaults</B>
+
+<DD>
+Utilisation des options par défaut :
+<B>rw</B>, <B>suid</B>, <B>dev</B>, <B>exec</B>, <B>auto</B>, <B>nouser</B>, et <B>async.</B>
+
+<DT><B>dev</B>
+
+<DD>
+Interpréter les fichiers spéciaux de périphériques présents sur le système.
+<DT><B>exec</B>
+
+<DD>
+Permettre l'exécution de fichiers binaires.
+<DT><B>_netdev</B>
+
+<DD>
+Le système de fichier réside sur un périphérique nécessitant des accès réseau
+(pour éviter que le système essaye de monter ces systèmes de fichiers avant
+d'avoir activé le réseau).
+<DT><B>noatime</B>
+
+<DD>
+Ne pas mettre jour les horodatages d'accès à chaque accès (accélération pour
+des serveurs de news par exemple).
+<DT><B>noauto</B>
+
+<DD>
+Ne peut être monté qu'explicitement (l'invocation de mount avec l'argument
+<B>-a</B>
+
+ne montera pas le système de fichiers).
+<DT><B>nodev</B>
+
+<DD>
+Ne pas interpréter les fichiers spéciaux de périphériques présents sur
+le système de fichiers.
+<DT><B>noexec</B>
+
+<DD>
+Ne pas permettre l'exécution de fichiers binaires sur le système de
+fichiers monté. Ceci peut être utile sur un serveur qui contient des
+fichiers binaires pour des architectures autres que la sienne.
+<DT><B>nosuid</B>
+
+<DD>
+Ne pas tenir compte des bits Set-UID ou Set-GID. Ca peut paraître sûr,
+mais ne l'est pas si vous avez l'utilitaire
+<A HREF="/cgi-bin/man/man2html?1+suidperl">suidperl</A>(1) installé).
+<DT><B>nouser</B>
+
+<DD>
+Ne pas autoriser d'utilisateur ordinaire (non root) à monter le
+système de fichiers. C'est le comportement par défaut.
+<DT><B>remount</B>
+
+<DD>
+Remonter un système de fichiers déjà monté. Ceci est utilisé pour changer
+les attributs de montage, principalement pour autoriser l'écriture
+sur un système en lecture seule. Ne change ni le périphérique ni le répertoire.
+<DT><B>ro</B>
+
+<DD>
+Montage du système en lecture seule.
+<DT><B>rw</B>
+
+<DD>
+Montage du système en lecture/écriture.
+<DT><B>suid</B>
+
+<DD>
+Prendre en compte les bits Set-UID ou Set-GID des fichiers se trouvant sur le
+système monté.
+<DT><B>sync</B>
+
+<DD>
+Toutes les entrées/sorties sur le système de fichiers seront synchrones.
+<DT><B>dirsync</B>
+
+<DD>
+Faire les mises à jour des répertoires du système de fichiers immédiatement.
+Ceci affecte les appels-système&nbsp;: creat, link, unlink, symlink,
+mkdir, rmdir, mknod et rename.
+<DT><B>user</B>
+
+<DD>
+Autoriser les utilisateurs ordinaires à monter le système de fichiers.
+Le nom de l'utilisateur est noté dans mtab pour qu'il puisse le démonter
+ensuite. Ceci entraîne l'utilisation des options
+<B>noexec</B>, <B>nosuid</B>, et <B>nodev</B>
+
+(à moins qu'elles ne soient explicitement surchargées, comme dans
+une ligne d'option
+<B>user,exec,dev,suid</B>).
+
+<DT><B>users</B>
+
+<DD>
+Permettre à tous les utilisateurs de monter et démonter le système de fichiers.
+Cette option implique les options
+<B>noexec</B>, <B>nosuid</B>, et <B>nodev</B>
+
+(sauf s'il y a une surcharge par une option ultérieure, comme sur la ligne
+<B>users,exec,dev,suid</B>).
+
+</DL>
+</DL>
+
+<DT><B>--bind</B>
+
+<DD>
+Remonter une sous-arborescence ailleurs (le contenu sera disponible en deux
+points différents). Voir plus haut.
+<DT><B>--move</B>
+
+<DD>
+Déplacer une sous-arborescence aillers. Voir plus haut.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS DE MONTAGE SPÉCIFIQUES</H2>
+
+Les options suivantes ne s'appliquent qu'à certains systèmes de fichiers.
+Elles sont triées par type de système. Elles s'utilisent toutes à la suite
+d'un argument
+<B>-o</B>.
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>Options de montage pour adfs</H2>
+
+<DL COMPACT>
+<DT><B>uid=</B><I>value</I> and <B>gid=</B><I>value</I><DD>
+Fixerle propriétaire et le groupe des fichiers (défaut&nbsp;: uid=gid=0).
+<DT><B>ownmask=</B><I>value</I> and <B>othmask=</B><I>value</I><DD>
+Fixer le maque de permission pour le propriétaire et les autres respectivement
+(défaut&nbsp;: 0700 et 0077, respectivement).
+Voir aussi
+<I>/usr/src/linux/Documentation/filesystems/adfs.txt</I>.
+
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>Options de montage pour affs</H2>
+
+<DL COMPACT>
+<DT><B>uid=</B><I>value</I> et <B>gid=</B><I>value</I><DD>
+Positionner le propriétaire et le groupe de la racine du
+système de fichiers (par défaut : uid=gid=0, mais avec l'option
+<B>uid</B>
+
+ou
+<B>gid</B>
+
+sans valeur, l'uid et le gid du processus appelant seront utilisés).
+<DT><B>setuid=</B><I>value</I> et <B>setgid=</B><I>value</I><DD>
+Positionner le propriétaire et le groupe de tous les fichiers du système.
+<DT><B>mode=</B><I>valeur</I>
+
+<DD>
+Fixer le mode d'accès à tous les fichiers au mode
+<I>valeur</I> &amp; 0777
+
+sans s'occuper de leurs permissions originales.
+Ceci ajoute également l'autorisation de parcours dans les répertoires
+qui permettent la lecture. La <I>valeur</I> doit être mentionnée en octal.
+<DT><B>protect</B>
+
+<DD>
+N'autoriser aucune modification des bits d'accès aux fichiers du système.
+<DT><B>usemp</B>
+
+<DD>
+Utiliser l'uid et le gid du point de montage comme uid et gid de la
+racine du système de fichiers jusqu'au premier sync ou umount, puis
+ignorer cette option. Bizarre...
+<DT><B>verbose</B>
+
+<DD>
+Afficher des informations supplémentaires pour chaque montage réussi.
+<DT><B>prefix=</B><I>chaîne</I>
+
+<DD>
+Préfixe à utiliser avant le nom de volume lorsque l'on suit un lien.
+<DT><B>volume=</B><I>chaîne</I>
+
+<DD>
+Préfixe (30 car. au plus) à utiliser avant '/' quand on suit un lien symbolique.
+<DT><B>reserved=</B><I>valeur</I>
+
+<DD>
+(Par défaut : 2.) Nombre de blocs inutilisés au début du périphérique.
+<DT><B>root=</B><I>valeur</I>
+
+<DD>
+Fournir explicitement l'emplacement du bloc racine.
+<DT><B>bs=</B><I>valeur</I>
+
+<DD>
+Fournir la taille de bloc. Les valeurs autorisées sont 512, 1024, 2048, et 4096.
+<DT><B>grpquota</B> / <B>noquota</B> / <B>quota</B> / <B>usrquota</B>
+
+<DD>
+Ces options sont acceptées mais sans effet.
+(Toutefois les utilitaires de quota peuvent réagir à de telles chaînes dans
+<I>/etc/fstab</I>).
+
+<P>
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>Options de montage pour coherent</H2>
+
+Aucune.
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>Options de montage pour devpts</H2>
+
+Le système devpts est un pseudo système de fichiers, traditionnellement monté en
+<I>/dev/pts</I>.
+
+Pour acquérir un pseudo terminal, un processus ouvre
+<I>/dev/ptmx</I>;
+
+le numéro du pseudo terminal est rendu disponible pour le processus, et le
+pseudo terminal esclave est accessible via
+<I>/dev/pts/</I>&lt;numéro&gt;.
+
+<DL COMPACT>
+<DT><B>uid=</B><I>value</I> and <B>gid=</B><I>value</I><DD>
+Fixe le propriétaire et le groupe des PTYs nouvellement créés. Quand
+rien n'est spécifié, ils seront fixés avec l'UID et le GID du processus
+créateur. Par exemple s'il y a un groupe tty de GID 5,
+alors
+<B>gid=5</B>
+
+fera appartenir les PTYs créés au groupe tty.
+<DT><B>mode=</B><I>value</I>
+
+<DD>
+Fixe le mode des PTYs nouvellement créés.
+La valeur par défaut est 0600.
+Une valeur 
+<B>mode=620</B>
+
+et 
+<B>gid=5</B>
+
+correspond à un &quot;mesg y&quot; pour tous les PTYs nouvellement créés.
+<P>
+</DL>
+<A NAME="lbAK">&nbsp;</A>
+<H2>Options de montage pour ext</H2>
+
+Aucune.
+Notez que le type `ext' de système de fichiers est obsolète. Ne l'utilisez pas.
+Depuis Linux 2.1.21, extfs n'est plus dans les sources du noyau.
+<P>
+<A NAME="lbAL">&nbsp;</A>
+<H2>Options de montage pour ext2</H2>
+
+`ext2' est le type standard pour les systèmes de fichiers Linux.
+À cause d'un bogue du noyau (corrigé dans le 2.0.4), il peut être monté avec
+n'importe quelle option.
+<DL COMPACT>
+<DT><B>bsddf</B> / <B>minixdf</B>
+
+<DD>
+Indiquer le comportement à adopter lors de l'appel système
+<I>statfs</I>.
+
+Le comportement
+<B>minixdf</B>
+
+consiste à renvoyer dans le champ
+<I>f_blocks</I>
+
+le nombre total de blocs dans le système de fichiers, alors que le comportement
+<B>bsddf</B>
+
+(par défaut) consiste à soustraire les blocs utilisés par le système
+ext2 non disponibles pour le stockage. Ainsi on obtient :
+
+<PRE>
+
+% mount /k -o minixdf; df /k; umount /k
+Filesystem   1024-blocks  Used Available Capacity Mounted on
+/dev/sda6      2630655   86954  2412169      3%   /k
+% mount /k -o bsddf; df /k; umount /k
+Filesystem   1024-blocks  Used Available Capacity Mounted on
+/dev/sda6      2543714      13  2412169      0%   /k
+
+</PRE>
+
+(Remarquez que cet exemple montre que l'on peut, en ligne de commande,
+ajouter des options à celles mentionnées dans
+<I>/etc/fstab</I>.)
+
+<P>
+<DT><B>check</B> / <B>check=normal</B> / <B>check=strict</B>
+
+<DD>
+Fixer le niveau de vérification. Avec une au moins de ces options (et
+<B>check=normal</B>
+
+est configuré par défaut) les images des i-noeuds et des blocs sont
+vérifiées lors du montage (ce qui peut prendre une minute ou plus sur
+de gros disques). Avec une vérification stricte, la libération des
+blocs vérifie que le bloc à libérer se trouve bien dans une zone de données.
+<DT><B>check=none</B> / <B>nocheck</B>
+
+<DD>
+Pas de vérification. C'est rapide. Les noyaux récents n'ont plus d'option
+de vérification. L'emploi de
+
+est plus significatif.
+<DT><B>debug</B>
+
+<DD>
+Afficher des informations de débogage lors de chaque (re)mount.
+<DT><B>errors=continue</B> / <B>errors=remount-ro</B> / <B>errors=panic</B>
+
+<DD>
+Définir le comportement à adopter en cas d'erreur. On peut ignorer l'erreur
+en indiquant simplement que le système de fichier est corrompu, et continuer.
+On peut également remonter le système en lecture-seule. Ou l'on peut déclencher
+une panique du noyau et arrêter le système.  Le comportement par défaut est
+inscrit dans le superbloc du système et peut être configuré avec
+<B><A HREF="/cgi-bin/man/man2html?8+tune2fs">tune2fs</A></B>(8).
+
+<DT><B>grpid</B> ou <B>bsdgroups</B> / <B>nogrpid</B> ou <B>sysvgroups</B>
+
+<DD>
+Ces options définissent le GID que reçoit un nouveau fichier créé.
+Quand
+<B>grpid</B>
+
+est positionné, le fichier reçoit le GID du répertoire dans lequel
+il est créé. Sinon (par défaut), il prend le fsgid du processus
+appelant, à moins que le répertoire ait son bit Set-GID positionné,
+auquel cas il reçoit le GID du répertoire parent, et s'il s'agit
+d'un nouveau répertoire, voit son bit Set-GID positionné.
+<DT><B>resgid=</B><I>n</I> et <B>resuid=</B><I>n</I><DD>
+Le système de fichiers ext2 réserve un certain pourcentage de l'espace
+disponible (par défaut 5%, voir
+<B><A HREF="/cgi-bin/man/man2html?8+mke2fs">mke2fs</A></B>(8)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?8+tune2fs">tune2fs</A></B>(8)).
+
+Ces options déterminent qui peut utiliser ces blocs réservés
+(celui qui a l'UID indiqué, ou qui appartient au groupe mentionné).
+<DT><B>sb=</B><I>n</I>
+
+<DD>
+Utiliser le bloc
+<I>n</I>
+
+comme superbloc plutôt que le bloc 1. Ceci sert lorsque le système de fichiers
+a été endommagé. Avnt, des copies du superbloc étaient placées tous les
+8192 blocs&nbsp;: 1, 8193, 16385, ... (des centaines, voire des milliers de copies).
+Depuis la version 1.08
+<B>mke2fs</B>
+
+a une option -s (sparse) pour réduire le nombre de copies, et depuis la
+version 1.15 c'est l'option par défaut. Notez que cela peut signifier
+qu'un système ext2 créé par une version récente de
+<B>mke2fs</B>
+
+ne peut pas être monté en lecture/écriture avec Linux 2.0.*.
+Le numéro de bloc utilise des unités de 1&nbsp;k. Pour utiliser le bloc logique
+32678 sur un système de fichiers avec des blocs de 4&nbsp;ko&nbsp;: &quot;sb=131072&quot;.
+<DT><B>grpquota</B> / <B>noquota</B> / <B>quota</B> / <B>usrquota</B>
+
+<DD>
+Ces options sont acceptées mais ignorées.
+<P>
+<DT><B>nouid32</B>
+
+<DD>
+Désactivers les UID et GID 32-bits. Pour compatibilité avec les anciens noyaux
+qui ne stockent et n'attendent que des valeurs 16 bits.
+<P>
+<P>
+</DL>
+<A NAME="lbAM">&nbsp;</A>
+<H2>Options de montage pour ext3</H2>
+
+Le système de fichiers ext3 est une version de ext2 qui a été amélioré pour
+la journalisation. Il supporte les mêmes options que ext2 avec
+en plus&nbsp;:
+
+
+
+<DL COMPACT>
+<DT><B>journal=update</B>
+
+<DD>
+Mettre à jour le journal du système de fichiers avec le format actuel.
+<DT><B>journal=inum</B>
+
+<DD>
+Si un journal existe, cette option est ignorée. Sinon elle indique le numéro
+de l'i-noeud qui représente le fichier journal du système de fichier ext3&nbsp;;
+ext3 créera un journal en écrasant le contenu du fichier dont l'i-noeud vaut
+<I>inum</I>.
+
+<DT><B>noload</B>
+
+<DD>
+Ne pas charger le journal du système de fichier ext3 au montage.
+<DT><B>data=journal</B> / <B>data=ordered</B> / <B>data=writeback</B>
+
+<DD>
+Précise le mode de journalisation pour les données. Les méta-données sont
+toujours journalisées.
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>journal</B>
+
+<DD>
+Les données sont inscrites dans le journal avant d'être écrites dans le système
+de fichiers principal.
+<DT><B>ordered</B>
+
+<DD>
+(défaut). Les données sont envoyées dans le système de fichiers avant d'inscrire
+les méta-données dans le journal.
+<DT><B>writeback</B>
+
+<DD>
+L'ordre des données n'est pas préservé. Les données peuvent être écrites dans le
+système de fichiers après que les méta-données sont inscrites dans le journal.
+On soupconne que ce soit l'option à plus haut débit. Elle garantit l'intégrité
+interne du système de fichiers, mais ne récupère pas les anciennes données
+dans un fichier après un crash et une récupération du journal.
+<P>
+</DL>
+</DL>
+</DL>
+<A NAME="lbAN">&nbsp;</A>
+<H2>Options de montage pour fat</H2>
+
+(Note&nbsp;:
+<I>fat</I>
+
+n'est pas un système de fichiers séparés, mais une portion commune des
+systèmes
+<I>msdos</I>,
+
+<I>umsdos</I>
+
+et
+<I>vfat).</I>
+
+<DL COMPACT>
+<DT><B>blocksize=512</B> / <B>blocksize=1024</B>
+
+<DD>
+Indiquer la taille de bloc (par défaut 512).
+<DT><B>uid=</B><I>valeur</I> et <B>gid=</B><I>valeur</I><DD>
+Indiquer le propriétaire et le groupe de tous les fichiers (par défaut :
+l'uid et le gid du processus appelant).
+<DT><B>umask=</B><I>valeur</I>
+
+<DD>
+Fixer l'umask (c'est à dire le masque de bit des permissions qui ne sont 
+<B>pas</B>
+
+fournies). Par défaut il s'agit de l'umask du processus en cours.
+La valeur est donnée en octal.
+<DT><B>dmask=</B><I>valeur</I>
+
+<DD>
+Fixer l'umask appliqué aux répertoires seulement.
+Par défaut c'est l'umask du processus appelant.
+La valeur est donnée en octal. Présent depuis 2.5.43.
+<DT><B>fmask=</B><I>valeur</I>
+
+<DD>
+Fixer l'umask appliqué aux fichiers réguliers seulement.
+Par défaut c'est l'umask du processus appelant.
+La valeur est donnée en octal. Présent depuis 2.5.43.
+<DT><B>check=</B><I>valeur</I>
+
+<DD>
+Il y a trois niveaux de vérification des noms de fichiers&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>r[elaxed]</B>
+
+<DD>
+Les majuscules et minuscules sont acceptées et équivalentes. La partie
+excédentaire des noms longs est supprimée (par exemple
+<I>nombeaucouptroplong.foobar</I>
+
+devient
+<I>nombeauc.foo</I>).
+
+Les espaces en tête, et au sein des noms sont acceptés, tant dans le nom
+que dans l'extension.
+<DT><B>n[ormal]</B>
+
+<DD>
+Comme &quot;relaxed&quot;, mais de nombreux caractères spéciaux (*, ?, &lt;, espaces, etc...)
+sont refusés. C'est l'attitude par défaut.
+<DT><B>s[trict]</B>
+
+<DD>
+Comme &quot;normal&quot;, mais les noms ne peuvent pas contenir de partie longue,
+et les caractères spéciaux qui sont acceptés par Linux mais pas par MS-DOS
+sont rejetés (+, =, espaces, etc...)
+</DL>
+</DL>
+
+<DT><B>codepage=</B><I>valeur</I>
+
+<DD>
+Fixe la page de code pour convertir les caractères des noms courts des systèmes
+FAT et VFAT. Par défaut, la page 437 est utilisée.
+<DT><B>conv=b[inary]</B> / <B>conv=t[ext]</B> / <B>conv=a[uto]</B>
+
+<DD>
+Le système de fichiers
+<I>fat</I>
+
+peut effectuer automatiquement les conversions CRLF&lt;--&gt;NL
+(format de texte MS-DOS vers format de texte UNIX).
+Les modes de conversion suivants sont autorisés&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>binary</B>
+
+<DD>
+aucune conversion. C'est le comportement par défaut.
+<DT><B>text</B>
+
+<DD>
+Conversion CRLF&lt;--&gt;NL sur tous les fichiers.
+<DT><B>auto</B>
+
+<DD>
+Conversion CRLF&lt;--&gt;NL sur tous les fichiers qui n'ont pas
+une extension de &quot;binaire bien-connu&quot;. Cette liste, non exhaustive,
+se trouve au début de
+<I>fs/fat/misc.c</I>
+
+(dans Linux 2.0, la liste est : exe, com, bin, app, sys, drv, ovl, ovr, obj,
+lib, dll, pif, arc, zip, lha, lzh, zoo, tar, z, arj, tz, taz, tzp, tpz,
+gz, tgz, deb, gif, bmp, tif, gl, jpg, pcx, tfm, vf, gf, pk, pxl, dvi).
+</DL>
+<P>
+
+Les programmes qui calculent des positions avec lseek n'aiment pas la conversion
+text. Plusieurs personnes ont détruit des données ainsi. Faites attention&nbsp;!
+<P>
+Pour les systèmes montés en mode binaire, un outil de conversion
+(fromdos/todos) est disponible.
+</DL>
+
+<DT><B>cvf_format=</B><I>module</I>
+
+<DD>
+Oblige le pilote à utiliser le module CVF (Compressed Volume File)
+cvf_<I>module</I>
+
+plutôt que l'auto-détection. Si le noyau supporte kmod, l'option
+cvf_format=xxx commande le chargement du module CVF à la demande.
+<DT><B>cvf_option=</B><I>option</I>
+
+<DD>
+Option passée au module CVF.
+<DT><B>debug</B>
+
+<DD>
+Activer l'attribut de
+débogage.
+Un numéro de version, et une liste des paramètres du système de fichiers
+seront affichés (ces données seront également affichées si le système
+est incohérent).
+<DT><B>fat=12</B> / <B>fat=16</B>
+
+<DD>
+Préciser s'il s'agit d'une FAT 12 bits ou 16 bits. Ceci a priorité sur la
+détection automatique du type de FAT. A n'utiliser qu'avec précaution&nbsp;!
+<DT><B>iocharset=</B><I>valeur</I>
+
+<DD>
+Jeu de caractère pour les conversion entre les caractères 8 bits et les
+caractères 16 bitS Unicode. Par défaut c'est iso8859-1.
+Les noms de fichiers longs sont stockés sur le disque en format Unicode.
+<DT><B>quiet</B>
+
+<DD>
+Activer l'attribut de silence.
+Les tentatives de modification du propriétaire ou du mode d'accès aux fichiers
+ne renverront pas d'erreurs, bien qu'elles échouent. A utiliser avec
+précaution !
+<DT><B>sys_immutable, showexec, dots, nodots, dotsOK=[yes|no]</B>
+
+<DD>
+Diverses tentatives risquées de forcer un comportement Unix ou Dos dans
+un système de fichiers FAT.
+<P>
+</DL>
+<A NAME="lbAO">&nbsp;</A>
+<H2>Options de montage pour hpfs</H2>
+
+<DL COMPACT>
+<DT><B>uid=</B><I>valeur</I> et <B>gid=</B><I>valeur</I><DD>
+Fixer le propriétaire, et le groupe, de tous les fichiers (par défaut :
+l'uid et le gid du processus appelant).
+<DT><B>umask=</B><I>valeur</I>
+
+<DD>
+Fixer l'umask (c'est à dire le masque de bit des permissions qui
+ne sont 
+<B>pas</B>
+
+fournies). Par défaut il s'agit de l'umask du processus en cours.
+La valeur est donnée en octal.
+<DT><B>case=lower</B> / <B>case=asis</B>
+
+<DD>
+Convertir les noms de fichiers en minuscules (lower) ou les laisser
+tels quels (asis). Par défaut : 
+<B>case=lower</B>.
+
+<DT><B>conv=binary</B> / <B>conv=text</B> / <B>conv=auto</B>
+
+<DD>
+Avec
+<B>conv=text</B>,
+
+supprimer une partie des retour-chariots (en particulier tout ceux
+suivis par un saut-de-ligne) durant la lecture des fichiers.  Avec
+<B>conv=auto</B>,
+
+choisir, plus ou moins au hasard, entre
+<B>conv=binary</B> et <B>conv=text</B>.
+
+Avec
+<B>conv=binary</B>,
+
+lire le contenu des fichiers sans les modifier (option par défaut).
+<DT><B>nocheck</B>
+
+<DD>
+Ne pas interrompre le montage si le test de cohérence échoue.
+<P>
+</DL>
+<A NAME="lbAP">&nbsp;</A>
+<H2>Options de montage pour iso9660</H2>
+
+ISO 9660 est un standard décrivant la structure du système de fichiers pour les
+CD-Roms. (Ce type de systèmes apparaît aussi sur certains DVD&nbsp;; voir également
+le système de fichiers
+<I>udf</I>).
+
+<P>
+Les noms de fichiers
+<I>iso9660</I>
+
+normaux se présentent dans le format 8.3 (limite de longueur des noms
+comme sous Dos). Tous les caractères sont en majuscule. De plus, 
+rien n'est prévu pour stocker le propriétaire du fichier, le mode d'accès,
+le nombre de liens, les fichiers spéciaux blocs/caractères, etc...
+<P>
+Rock Ridge est une extension du format iso9660 qui permet d'offrir ces
+fonctionnalités Unix. En gros, des données sont ajoutées pour chaque entrée de
+chaque répertoire afin de fournir les informations désirées. Lorsque Rock Ridge
+est utilisée, le système de fichiers est totalement semblable à un système de
+fichiers Unix normal (sauf qu'il est en lecture seule évidemment).
+<DL COMPACT>
+<DT><B>norock</B>
+
+<DD>
+Ne pas utiliser les extensions Rock Ridge, même si elles sont disponibles. Voir
+<B>map</B>.
+
+<DT><B>nojoliet</B>
+
+<DD>
+Désactiver les extensions Microsoft Joliet même si elles sont disponibles. Cf.
+<B>map</B>.
+
+<DT><B>check=r[elaxed]</B> / <B>check=s[trict]</B>
+
+<DD>
+Avec
+<B>check=relaxed</B>,
+
+les noms de fichier sont convertis en minuscules. Ceci n'a probablement
+d'intérêt qu'avec les options
+<B>norock</B>
+
+et
+<B>map=normal</B>.
+
+(Par défaut :
+<B>check=strict</B>.)
+
+<DT><B>uid=</B><I>value</I> et <B>gid=</B><I>value</I><DD>
+Fixer le propriétaire, et le groupe, de tous les fichiers en écrasant
+éventuellement les informations trouvées dans les extensions Rock Ridge
+(par défaut : 
+<B>uid=0,gid=0</B>.)
+
+<DT><B>map=n[ormal]</B> / <B>map=o[ff]</B>
+
+<DD>
+Pour les volumes sans extension Rock Ridge, la traduction des noms de fichiers
+convertit les majuscules en minuscules, supprime l'éventuel `;1' final, et
+transforme `;' en `.'. Avec
+<B>map=off</B>
+
+il n'y a pas de traduction. Voir
+<B>norock</B>.
+
+(Par défaut&nbsp;:
+<B>map=normal</B>.)
+
+<B>map=acorn</B>
+
+est comme
+<B>map=normal</B>
+
+mais applique aussi les extensions Acorn si elles sont présentes.
+<DT><B>mode=</B><I>value</I>
+
+<DD>
+Pour les volumes non-Rock Ridge, donner le mode indiqué à tous
+les fichiers (Par défaut : lecture autorisée pour tous).
+Depuis Linux 2.1.37 on n'a plus besoin de spécifier le mode en décimal
+(l'octal est indiqué par un 0 en tête).
+<DT><B>unhide</B>
+
+<DD>
+Montrer également les fichiers cachés, et les fichiers d'extension.
+<DT><B>block=[512|1024|2048]</B>
+
+<DD>
+Fixer la taille de bloc
+(par défaut&nbsp;:
+<B>block=1024</B>).
+
+<DT><B>conv=a[uto]</B> / <B>conv=b[inary]</B> / <B>conv=m[text]</B> / <B>conv=t[ext]</B>
+
+<DD>
+(par défaut&nbsp;:
+<B>conv=binary</B>).
+
+Depuis Linux 1.3.54 cette option n'a plus d'effet.
+(les conversions autres que binaires étaient dangereuses, avec un
+risque important de corruption de données).
+<DT><B>cruft</B>
+
+<DD>
+Si l'octet de poids fort de la longueur d'un fichier contient 
+n'importe quoi, utilisez cette option pour indiquer à mount d'ignorer
+ces octets dans toutes les longueurs de fichiers. Ceci entraîne que
+la longueur maximale d'un fichier sera 16 Mo. L'option `cruft' est
+positionnée automatiquement quand la taille totale du CD-Rom est
+erronée (négative, supérieure à 800 Mo, ...), ou quand on rencontre des
+numéros de séquence de volume autres que 0 ou 1.
+<DT><B>session=x</B>
+
+<DD>
+Indique le numéro de session sur un CD multisession (Depuis 2.3.4).
+<DT><B>sbsector=xxx</B>
+
+<DD>
+La session commence au secteur xxx. (Depuis 2.3.4).
+<P>
+</DL>
+<A NAME="lbAQ">&nbsp;</A>
+<H2>Options de montage pour minix</H2>
+
+Aucune.
+<P>
+<A NAME="lbAR">&nbsp;</A>
+<H2>Options de montage pour msdos</H2>
+
+Voir les options de montage pour fat.
+Si le système de fichiers
+<I>msdos</I>
+
+présente des incohérences, une erreur sera indiquée, et le montage sera
+effectue en lecture seule. On peut réactiver l'écriture en remontant
+le système de fichiers.
+<P>
+<A NAME="lbAS">&nbsp;</A>
+<H2>Options de montage pour ncp</H2>
+
+Tout comme
+<I>nfs</I>, l'implémentation <I>ncp</I>
+
+nécessite un argument binaire (une structure
+<I>ncp_mount_data</I>)
+
+lors de l'appel système. Cet argument est construit par
+<B><A HREF="/cgi-bin/man/man2html?8+ncpmount">ncpmount</A></B>(8)
+
+et la version actuelle de
+<B>mount</B>
+
+(2.6h) ne connaît rien en ce qui concerne ncp.
+<P>
+<A NAME="lbAT">&nbsp;</A>
+<H2>Options de montage pour nfs</H2>
+
+Le noyau a besoin, pour monter un système
+<I>nfs</I>,
+
+d'un argument binaire lors de l'appel système (une
+<I>struct nfs_mount_data</I>.
+
+Néanmoins le programme
+<B>mount</B>
+
+peut analyser les arguments suivants, et préparer la structure nécessaire au
+noyau. Les options suivantes sont de type `option=valeur'&nbsp;:
+<B>rsize=</B><I>n,</I>
+
+<B>wsize=</B><I>n,</I>
+
+<B>timeo=</B><I>n,</I>
+
+<B>retrans=</B><I>n,</I>
+
+<B>acregmin=</B><I>n,</I>
+
+<B>acregmax=</B><I>n,</I>
+
+<B>acdirmin=</B><I>n,</I>
+
+<B>acdirmax=</B><I>n,</I>
+
+<B>actimeo=</B><I>n,</I>
+
+<B>retry=</B><I>n,</I>
+
+<B>port=</B><I>n,</I>
+
+<B>mountport=</B><I>n,</I>
+
+<B>mounthost=</B><I>nom,</I>
+
+<B>mountprog=</B><I>n,</I>
+
+<B>mountvers=</B><I>n,</I>
+
+<B>nfsprog=</B><I>n,</I>
+
+<B>nfsvers=</B><I>n,</I>
+
+<B>namlen=</B><I>n.</I>
+
+L'option
+<B>addr=</B><I>n</I>
+
+est acceptée, mais ignorée.
+On peut également employer les options booléennes suivantes,
+éventuellement précédées par 
+<B>no</B> :
+
+<B>bg</B>,
+
+<B>fg</B>,
+
+<B>soft</B>,
+
+<B>hard</B>,
+
+<B>intr</B>,
+
+<B>posix</B>,
+
+<B>cto</B>,
+
+<B>ac</B>,
+
+<B>tcp</B>,
+
+<B>udp</B>,
+
+<B>lock</B>.
+
+Pour plus de détails, voir
+<B><A HREF="/cgi-bin/man/man2html?5+nfs">nfs</A></B>(5).
+
+<P>
+Les options particulièrement utiles sont les suivantes&nbsp;:
+<DL COMPACT>
+<DT><B>rsize=8192,wsize=8192</B>
+
+<DD>
+qui améliorera la vitesse de votre connexion nfs (les tailles des buffers par
+défaut sont 4096 octets). NFSv2 ne marche pas avec des valeurs plus grandes de
+<B>rsize</B>
+
+et
+<B>wsize</B>).
+
+<DT><B>hard</B>
+
+<DD>
+Le programme accédant à un fichier sur un système monté par NFS sera suspendu
+si le serveur se plante. Le processus ne pas être interrompu ou tué sauf si
+on spécifie aussi l'option
+<B>intr</B>.
+
+Quand le serveur NFS revient en ligne, le programme reprendra sans perturbation
+où il en était. C'est probablement ce que vous désirez.
+<DT><B>soft</B>
+
+<DD>
+qui permet au noyau de renoncer au bout d'un moment si le serveur nfs
+ne répond pas (par défaut le noyau répète indéfiniment sa requête).
+On peut indiquer un délai avec
+<B>timeo=time</B>.
+
+Ceci est surtout utile s'il y a des chances pour que le serveur nfs
+soit arrêté, ou redémarre alors que des processus essayent d'accéder
+à ses fichiers.
+<DT><B>nolock</B>
+
+<DD>
+Ne pas utiliser de verrouillages, ne pas lancer lockd.
+<P>
+</DL>
+<A NAME="lbAU">&nbsp;</A>
+<H2>Options de montage pour ntfs</H2>
+
+<DL COMPACT>
+<DT><B>iocharset=</B><I>nom</I>
+
+<DD>
+Jeu de caractère à utiliser pour renvoyer les noms de fichiers.
+Contrairement à VFAT, NTFS supprime les noms qui contiennent des caractères
+non convertibles.
+<DT><B>utf8</B>
+
+<DD>
+Utiliser UTF-8 pour convertir les noms de fichiers.
+<DT><B>uni_xlate=[0|1|2]</B>
+
+<DD>
+Si 0 (ou `no' ou `false'), ne pas utiliser de séquences d'échappement pour les
+caractères Unicode inconnus. Si 1 (ou `yes', ou `true') ou 2, utiliser les
+séquences d'échappement sut quate octets de style vfat en commençant par
+&quot;:&quot;. Avec 2 on a un codage little-endian et avec 1 un codage
+big-endian.
+<DT><B>posix=[0|1]</B>
+
+<DD>
+Si actif (posix=1), le système de fichiers distingue entre majuscules et
+minuscules. Les noms d'alias 8.3 sont présentés sous forme de liens physiques
+plutôt qu'être supprimés.
+<DT><B>uid=</B><I>valeur</I>, <B>gid=</B><I>valeur</I> et <B>umask=</B><I>valeur</I><DD>
+Fixe les permissions des fichiers sur le système. La valeur d'umask est
+fournie en octal. Par défaut les fichiers appartiennet à root et ne sont
+lisibles par personne d'autre.
+<P>
+</DL>
+<A NAME="lbAV">&nbsp;</A>
+<H2>Options de montage pour proc</H2>
+
+<DL COMPACT>
+<DT><B>uid=</B><I>valeur</I> et <B>gid=</B><I>valeur</I><DD>
+Ces options sont reconnues, mais n'ont pas d'effet semble-t-il.
+<P>
+</DL>
+<A NAME="lbAW">&nbsp;</A>
+<H2>Options de montage pour ramfs</H2>
+
+Ramfs est un système de fichiers en mémoire. Montez-le et il existe. Démontez-le
+et il disparaît. Présent depuis Linux 2.3.99pre4.
+Il n'y a pas d'option de montage.
+<P>
+<A NAME="lbAX">&nbsp;</A>
+<H2>Options de montage pour reiserfs</H2>
+
+Reiserfs est un système de fichiers journalisé.
+Les options de montage resierfs sont décrites plus en détail à
+<I><A HREF="http://www.namesys.com/mount-options.html">http://www.namesys.com/mount-options.html</A></I>.
+
+<DL COMPACT>
+<DT><B>conv</B>
+
+<DD>
+Indique à la version 3.6 de reiserfs de monter un système de la version 3.5,
+avec le format 3.6 pour les nouveaux objets. Ce système ne sera plus compatible
+avec les outils reiserfs 3.5.
+<DT><B>hash=rupasov</B> / <B>hash=tea</B> / <B>hash=r5</B> / <B>hash=detect</B>
+
+<DD>
+Choisir la fonction de hachage pour retrouver les fichiers dans les
+répertoires.
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>rupasov</B>
+
+<DD>
+Une fonction inventée par Yuri Yu. Rupasov. Rapide et préserve la localité&nbsp;:
+les noms de fichiers proches lexicographiquement ont des valeurs de hachage
+proches. Ne devrait pas être utilisée à cause des probabilités élevées de
+collision dans la table de hachage.
+<DT><B>tea</B>
+
+<DD>
+Une fonction Davis-Meyer implémentée par Jeremy Fitzhardinge. Elle utilise
+des permutations de bits dans les noms. Elle obtient une grande dispersion
+et donc de faibles probabilités de collision, au prix d'un certain coût CPU.
+Elle peut être utilisée si des erreurs EHASHCOLLISION se produisent avec r5.
+<DT><B>r5</B>
+
+<DD>
+Une version modifiée de la fonction rupasov. Utilisée par défaut, et semble le
+meilleur choix sauf si le système de fichiers a d'énormes répertoires et des
+noms de fichiers très spéciaux.
+<DT><B>detect</B>
+
+<DD>
+Demande à 
+<I>mount</I>
+
+de rechercher la fonction de hachage à utiliser en examinant le système de
+fichiers à monter, et d'écrire cette information dans le superbloc
+reiserfs. Ceci ne sert qu'au premier montage d'un système de fichiers
+d'un ancien format.
+</DL>
+</DL>
+
+<DT><B>hashed_relocation</B>
+
+<DD>
+Ajuste l'allocation de blocs. Peut améliorer les performances dans certaines
+situations.
+<DT><B>no_unhashed_relocation</B>
+
+<DD>
+Ajuste l'allocation de blocs. Peut améliorer les performances dans certaines
+situations.
+<DT><B>noborder</B>
+
+<DD>
+Désactive l'algorithme d'allocation &quot;border&quot; de Yury Yu. Rupasov.
+Peut améliorer les performances dans certaines situations.
+<DT><B>nolog</B>
+
+<DD>
+Désactive la journalisation. Améliore légèrement les performances dans certains
+cas en perdant la possibilité de récupération rapide après un crash.
+Même avec cette option, reiserf effectue encore toutes les opérations
+de journalisation sauf l'écriture effecitve dans la zone journal.
+L'implémentation de
+<I>nolog</I>
+
+est en cours.
+<DT><B>notail</B>
+
+<DD>
+Par défaut, reiserf stocke les petits fichiers et les &quot;files tails&quot; directement
+dans son arborescence. Ceci perturbe certains utilitaires comme
+<B><A HREF="/cgi-bin/man/man2html?8+LILO">LILO</A></B>(8)<B>.</B>
+
+Cette option désactive le groupement de fichiers dans l'arborescence.
+<DT><B>replayonly</B>
+
+<DD>
+Rejouer les transactions dans le journal, sans monter véritablement le système
+de fichiers. Principalement utilisé par
+<I>reiserfsck</I>.
+
+<DT><B>resize=</B><I>nombre</I>
+
+<DD>
+Option de remontage permettant d'étendre en-ligne une partition reiserfs.
+Demande à reiserfs de supposer que le périphérique à le
+<I>nombre</I>
+
+indiqué de blocs.
+A utiliser avec des périphériques gérés sous système Logical
+Volume Management (LVM).
+Il y a un utilitaire spécial
+<I>resizer</I>
+
+que l'on trouve sur
+<I><A HREF="ftp://ftp.namesys.com/pub/reiserfsprogs">ftp://ftp.namesys.com/pub/reiserfsprogs</A></I>.
+
+<P>
+</DL>
+<A NAME="lbAY">&nbsp;</A>
+<H2>Mount options for romfs</H2>
+
+None.
+<P>
+<A NAME="lbAZ">&nbsp;</A>
+<H2>Options de montage pour smbfs</H2>
+
+Tout comme
+<I>nfs</I>, l'implémentation <I>smbfs</I>
+
+nécessite un argument binaire (une structure
+<I>smb_mount_data</I>)
+
+lors de l'appel système.  Cet argument est construit par
+<B><A HREF="/cgi-bin/man/man2html?8+smbmount">smbmount</A></B>(8)
+
+et la version actuelle de
+<B>mount</B>
+
+(2.9w) ne connaît rien en ce qui concerne smb.
+<P>
+<A NAME="lbBA">&nbsp;</A>
+<H2>Options de montage pour sysv</H2>
+
+Aucune.
+<P>
+<A NAME="lbBB">&nbsp;</A>
+<H2>Options de montage pour tmpfs</H2>
+
+La paramètres suivants acceptent un suffixe
+<B>k</B>,
+
+<B>m</B>
+
+ou
+<B>g</B>
+
+pour Ki, Mi, Gi (kilo, méga et giga binaires) et peuvent changer au remontage.
+<DL COMPACT>
+<DT><B>size=</B><I>nbytes</I>
+
+<DD>
+Taille du système de fichiers.
+La taille est en octets, arrondi par défaut à un nombre entier de pages.
+La valeur par défaut est la moitié de la mémoire.
+<DT><B>nr_blocks=</B>
+
+<DD>
+Fixe le nombre de blocs.
+<DT><B>nr_inodes=</B>
+
+<DD>
+Fixe le nombre d'i-noeuds.
+<DT><B>mode=</B>
+
+<DD>
+Fixe les permissions initiales pour le répertoire racine.
+<P>
+</DL>
+<A NAME="lbBC">&nbsp;</A>
+<H2>Options de montage pour udf</H2>
+
+udf est l'&quot;Universal Disk Format&quot; défini par l'Optical
+Storage Technology Association, et est souvent utilisé pour les DVD-ROM.
+Voir aussi
+<I>iso9660</I>.
+
+<DL COMPACT>
+<DT><B>gid=</B>
+
+<DD>
+Fixe le groupe par défaut.
+<DT><B>umask=</B>
+
+<DD>
+Fixe l'umask par défaut.
+La valeur est donnée en octal.
+<DT><B>uid=</B>
+
+<DD>
+Fixe l'utilisateur par défaut
+<DT><B>unhide</B>
+
+<DD>
+Montrer les fichiers normalement cachés.
+<DT><B>undelete</B>
+
+<DD>
+Montrer les fichiers effacés.
+<DT><B>strict</B>
+
+<DD>
+Utiliser une conformité stricte (inutilisé).
+<DT><B>utf8</B>
+
+<DD>
+(inutilisé).
+<DT><B>iocharset</B>
+
+<DD>
+(inutilisé).
+<DT><B>bs=</B>
+
+<DD>
+Fixe la taille de bloc (peut échouer si différent de 2048).
+<DT><B>novrs</B>
+
+<DD>
+Eviter la reconnaissance de volume.
+<DT><B>session=</B>
+
+<DD>
+Fixe la session de CDROM, numérotée à partir de 0. Par défaut&nbsp;: dernière.
+<DT><B>anchor=</B>
+
+<DD>
+Override standard anchor location. Default: 256.
+<DT><B>volume=</B>
+
+<DD>
+Surcharge la position du VolumeDesc (inutilisé).
+<DT><B>partition=</B>
+
+<DD>
+Surcharge la position du PartitionDesc (inutilisé).
+<DT><B>lastblock=</B>
+
+<DD>
+Fixe le dernier bloc du système de fichiers.
+<DT><B>fileset=</B>
+
+<DD>
+Surcharge l'emplacement du bloc fileset (inutilisé).
+<DT><B>rootdir=</B>
+
+<DD>
+Surcharge l'emplacement du répertoire racine (inutilisé).
+<P>
+</DL>
+<A NAME="lbBD">&nbsp;</A>
+<H2>Options de montage pour ufs</H2>
+
+<DL COMPACT>
+<DT><B>ufstype=</B><I>value</I>
+
+<DD>
+UFS est un système de fichiers largement utilisé sur différents système
+d'exploitation. Malgré tout il y a des différences suivant les implémentations.
+Certaines fonctionnalités sont mal documentées, et il est donc difficile de
+reconnaître automatiquement le type d'ufs.
+C'est pourquoi l'utilisateur doit spécifier le type d'ufs au montage.
+Les valeurs possibles sont&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>old</B>
+
+<DD>
+Ancien format d'ufs, par défaut, en lecture seule.
+(ne pas oublier l'option -r).
+<DT><B>44bsd</B>
+
+<DD>
+Pour les systèmes créés sous un BSD (NetBSD, FreeBSD, OpenBSD).
+<DT><B>sun</B>
+
+<DD>
+Pour les systèmes créés par SunOS ou Solaris sur Sparc.
+<DT><B>sunx86</B>
+
+<DD>
+Pour les systèmes créés par Solaris sur x86.
+<DT><B>nextstep</B>
+
+<DD>
+Pour les systèmes créés par NeXTStep (station NeXT) (lecture seule).
+<DT><B>nextstep-cd</B>
+
+<DD>
+Pour les CD-Roms NeXTStep (block_size == 2048) (lecture seule).
+<DT><B>openstep</B>
+
+<DD>
+Pour les systèmes créés par OpenStep (lecture seule).
+Même système utilisé par Mac OS X.
+</DL>
+</DL>
+
+<P>
+<DT><B>onerror=</B><I>value</I>
+
+<DD>
+Comportement en cas d'erreur&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>panic</B>
+
+<DD>
+déclencher une panique du noyau.
+<DT><B>[lock|umount|repair]</B>
+
+<DD>
+Ces options ne font rien pour le moment&nbsp;; seul un message est
+affiché sur la console en cas d'erreur.
+</DL>
+</DL>
+
+<P>
+</DL>
+<A NAME="lbBE">&nbsp;</A>
+<H2>Options de montage pour umsdos</H2>
+
+Voir les options de montage pour msdos.
+L'option
+<B>dotsOK</B>
+
+est explicitement supprimée par
+<I>umsdos</I>.
+
+<P>
+<A NAME="lbBF">&nbsp;</A>
+<H2>Options de montage pour vfat</H2>
+
+Tout d'abord les options de montage pour
+<I>fat</I>
+
+sont reconnues.
+L'option
+<B>dotsOK</B>
+
+est explicitement supprimée par
+<I>vfat</I>.
+
+De plus, il existe :
+<DL COMPACT>
+<DT><B>uni_xlate</B>
+
+<DD>
+Traduction des caractères Unicode non gérés en séquences d'échappement spéciales.
+Ceci permet de sauver et de restaurer des fichiers dont le nom contient
+n'importe quel caractère Unicode. Sans cette option, un '?' est utilisé à la
+place des caractères dont la traduction est impossible. Le caractère
+d'échappement est ':' puisqu'il est de toute manière illégal dans les noms de
+fichiers vfat. La séquence d'échappement utilisée pour remplacer le caractère
+unicode u est : ':', (u &amp; 0x3f), ((u&gt;&gt;6) &amp; 0x3f), (u&gt;&gt;12).
+<DT><B>posix</B>
+
+<DD>
+Autoriser l'existence de deux fichiers dont les noms ne diffèrent que
+par une distinction majuscule/minuscule.
+<DT><B>nonumtail</B>
+
+<DD>
+Essayer d'abord de créer un nom court sans numéro de séquence avant d'essayer
+<I>nom~num.ext</I>.
+
+<DT><B>utf8</B>
+
+<DD>
+UTF8 est l'encodage 8-bits de l'Unicode utilisé pour la console. On peut
+l'employer pour les noms de fichiers. Il est activé avec cette option.
+Si `uni_xlate' est activé, UTF8 est désactivé.
+<DT><B>shortname=[lower|win95|winnt|mixed]</B>
+
+<DD>
+<P>
+Définit le comportement pour la création et l'affichage des noms de fichiers qui
+tiennent dans 8.3 caractères. On préférera toujours l'affichage du nom long s'il
+existe pour un fichier. Il y a quatre modes&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><I>lower</I>
+
+<DD>
+Affiche le nom court en minuscules&nbsp;; enregistre un nom long quand le nom court
+n 'est pas entièrement en majuscules.
+<DT><I>win95</I>
+
+<DD>
+Affiche le nom court en majuscules&nbsp;; enregistre un nom long quand le nom court
+n 'est pas entièrement en majuscules.
+<DT><I>winnt</I>
+
+<DD>
+Affiche le nom court tel quel&nbsp;; enregistre un nom long quand le nom court
+n 'est pas entièrement en majuscules ou entièrement en minuscules.
+<DT><I>mixed</I>
+
+<DD>
+Affiche le nom court tel quel&nbsp;; enregistre un nom long quand le nom court
+n 'est pas entièrement en majuscules.
+</DL>
+</DL>
+
+<P>
+La comportement par défaut est &quot;lower&quot;.
+<P>
+</DL>
+<A NAME="lbBG">&nbsp;</A>
+<H2>Options de montage pour xenix</H2>
+
+Aucune.
+<P>
+<A NAME="lbBH">&nbsp;</A>
+<H2>Options de montage pour xfs</H2>
+
+<DL COMPACT>
+<DT><B>biosize=</B><I>taille</I>
+
+<DD>
+Fixe la taille désirée pour les buffers d'entrées/sorties (défaut 64&nbsp;ko). La
+<I>taille</I>
+
+est exprimée sous forme du logarithme en base 2 de la valeur voulue.
+Les valeurs valides sont 14 à  16 incluse, c'est-à-dire
+16&nbsp;ko, 32&nbsp;ko, et 64&nbsp;ko). Sur les machines avec des tailles de pages de 4&nbsp;ko,
+la valeur 13 (8&nbsp;ko) est aussi
+valide.
+Cette taille de buffer d'entrée/sortie peut aussi être modifiée pour
+chaque fichier individuellement en utilisant
+l'appel-système
+<B><A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A></B>(2).
+
+<DT><B>dmapi  /  xdsm</B>
+
+<DD>
+Activer les événements DMAPI (Data Management API).
+<DT><B>logbufs=</B><I>value</I>
+
+<DD>
+Fixe le nombre de buffers journaux en mémoire. Les nombres valides
+vont de 2 à 8 inclus. La valeur par défaut est de 8 buffers pour
+les systèmes avec une taille de bloc de 64&nbsp;ko,
+4 buffers pour les systèmes avec une taille de bloc de 32K,
+3 buffers pour les systèmes avec une taille de bloc de 16K,
+et 2 buffers pour les autres configurations.
+Augmenter le nombre de buffers pour améliorer les performances en charge,
+au prix de la mémoire utilisée pour les buffers journaux et leur
+structures de contrôle associées.
+<DT><B>logbsize=</B><I>valeur</I>
+
+<DD>
+Fixer la taille des buffers journaux en mémoire.
+Les tailles valides sont 16384 (16&nbsp;ko) et 32768 (32&nbsp;ko).
+Les valeurs par défaut sont 32768 pour les machines avec plus de 32&nbsp;Mo de
+mémoire et 16384 pour les autres.
+<DT><B>logdev=</B><I>périph</I> and <B>rtdev=</B><I>périph</I><DD>
+Utiliser une journalisation (des méta-données) externes ou un périphérique temps
+réel. Un système de fichiers XFS a trois composantes&nbsp;: une section de données,
+une section de journaux, et une section temps-réel.
+La section temps-réel est facultative, et la section de journalisation peut être
+séparée des données ou incluse dedans.
+Se reporter à
+<B><A HREF="/cgi-bin/man/man2html?5+xfs">xfs</A></B>(5).
+
+<DT><B>noalign</B>
+
+<DD>
+Les allocations de données ne seront pas alignées sur des frontières de bandes.
+<DT><B>noatime</B>
+
+<DD>
+L'horodatage d'ccès n'est pas mis à jour quand un fichier est lu.
+<DT><B>norecovery</B>
+
+<DD>
+Le système de fichiers sera monté sans lancer la récupération du journal. Si
+le système n'a pas été démonté proprement, il peut être
+incohérent quand on le monte
+en mode
+<B>norecovery</B>.
+
+Certans fichiers ou répertoire ne seront peut-être pas accessibles.
+Les systèmes montés en mode
+<B>norecovery</B>
+
+doivent être en lecture seule, ou le montage échouera.
+<DT><B>osyncisdsync</B>
+
+<DD>
+Les écritures dans le fichiers ouverts avec l'attribut O_SYNC se comporteront
+comme si l'attribut O_DSYNC était utilisé à la place. Ceci améliore les
+performances sans compromettre la sécurité
+des données.
+Toutefois, si cette option est active, les horodatages des écriture O_SYNC
+seront perdus en cas de crash système.
+<DT><B>quota</B> / <B>usrquota</B> / <B>uqnoenforce</B>
+
+<DD>
+Activer les quota utilisateur et imposer (facultativement) les limites.
+<DT><B>grpquota</B> / <B>gqnoenforce</B>
+
+<DD>
+Activer les quota de groupes et imposer (facultativement) les limites.
+<DT><B>sunit=</B><I>valeur</I> et <B>swidth=</B><I>valeur</I><DD>
+Précise l'unité et la largeur de la bande pour un périphérique RAID ou un
+volume stripe. La
+<I>valeur</I>
+
+est indiquée en blocs de 512 octets.
+Si cette optioin n'est pas indiquée et si le système appartient à un volume
+stripe, ou si la largeur ou l'unité de bande RAID ont été indiquées à mkfs,
+alors l'appel-système mount restituera les valeurs depuis le superbloc.
+Pour  les systèmes construits directement sur un périphérique
+RAID, ces options peuvent servir à surcharger les informations dans le
+superbloc, si la structure du disque sous-jacent change après la
+création du système de fichiers.
+L'option
+<B>swidth</B>
+
+est nécessaire si l'option
+<B>sunit</B>
+
+a été indiquée, et doit être 
+un multiple de la
+valeur de
+<B>sunit</B>.
+
+<P>
+</DL>
+<A NAME="lbBI">&nbsp;</A>
+<H2>Options de montage pour xiafs</H2>
+
+Aucune. xiafs n'est pas mauvais en soi, mais il n'est plus très répandu
+et n'est pas maintenu. Il vaut mieux éviter de l'utiliser.
+Depuis Linux 2.1.21, xiafs n'est plus intégré dans les sources du noyau.
+<P>
+<A NAME="lbBJ">&nbsp;</A>
+<H2>LE PÉRIPHÉRIQUE LOOP</H2>
+
+Il est possible de faire un montage au travers du périphérique loop (boucle).
+Par exemple la commande :
+<P>
+<PRE>
+<B>  mount /tmp/fdimage /mnt -t msdos -o loop=/dev/loop3,blocksize=1024</B>
+</PRE>
+
+<P>
+va faire correspondre le périphérique boucle
+<I>/dev/loop3</I>
+
+au fichier
+<I>/tmp/fdimage</I>,
+
+puis monter ce périphérique sur
+<I>/mnt</I>.
+
+Ce type de montage dispose de trois options, nommées
+<B>loop</B>, <B>offset</B> et <B>encryption</B>,
+
+qui sont en réalité des options pour
+<B><A HREF="/cgi-bin/man/man2html?8+losetup">losetup</A></B>(8).
+
+Si aucun périphérique loop n'est mentionné explicitement
+(uniquement l'option `<B>-o loop</B>'), alors
+<B>mount</B>
+
+essayera de trouver une boucle inutilisée et se l'attribuera.
+Si vous êtes assez casse-cou pour faire de
+<I>/etc/mtab</I>
+
+un lien symbolique sur
+<I>/proc/mounts</I>
+
+alors tout périphérique loop alloué par
+<B>mount</B>
+
+sera libéré par
+<B>umount</B>.
+
+On peut libérer un périphérique boucle manuellement avec `losetup -d', voir
+<B><A HREF="/cgi-bin/man/man2html?8+losetup">losetup</A></B>(8).
+
+<P>
+<A NAME="lbBK">&nbsp;</A>
+<H2>CODES DE RETOUR</H2>
+
+<B>mount</B>
+
+a les codes de retour suivants (les bits peuvent être associés par OU)&nbsp;:
+<DL COMPACT>
+<DT><B>0</B>
+
+<DD>
+Succès.
+<DT><B>1</B>
+
+<DD>
+Invocation ou permissions incorrectes.
+<DT><B>2</B>
+
+<DD>
+Erreur système (plus de mémoire, échec de fork(), plus de périphérique loop).
+<DT><B>4</B>
+
+<DD>
+Bogue interne de
+<B>mount</B>
+
+ou support
+<B>nfs</B>
+
+absent dans
+<B>mount</B>.
+
+<DT><B>8</B>
+
+<DD>
+Interruption.
+<DT><B>16</B>
+
+<DD>
+Problème d'écriture ou de verrouillage de /etc/mtab.
+<DT><B>32</B>
+
+<DD>
+Echec de montage.
+<DT><B>64</B>
+
+<DD>
+Succes de certains montages.
+<P>
+</DL>
+<A NAME="lbBL">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/etc/fstab</I>
+
+table des systèmes de fichiers
+<BR>
+
+<I>/etc/mtab</I>
+
+table des systèmes de fichiers montés
+<BR>
+
+<I>/etc/mtab~</I>
+
+fichier de verrouillage
+<BR>
+
+<I>/etc/mtab.tmp</I>
+
+fichier temporaire
+<A NAME="lbBM">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+mount">mount</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+umount">umount</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?5+fstab">fstab</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+umount">umount</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+swapon">swapon</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?5+nfs">nfs</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?5+xfs">xfs</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+e2label">e2label</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+xfs_admin">xfs_admin</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+mountd">mountd</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+nfsd">nfsd</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+mke2fs">mke2fs</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+tune2fs">tune2fs</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+losetup">losetup</A></B>(8)
+
+<A NAME="lbBN">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Le montage d'un système de fichiers corrompu peut déclencher un crash système.
+<P>
+
+Sous Linux, certains systèmes de fichiers ne supportent pas
+<B>-o sync et -o dirsync</B>
+
+(les systèmes ext2 et ext3
+<I>supportent</I>
+
+les mises à jour synchrones (à la manière BSD) lorsqu'il est
+monté avec l'option
+<B>sync</B>).
+
+<P>
+
+L'option
+<B>-o remount</B>
+
+peut s'avérer incapable de modifier les paramètres de montage (tous ceux de
+<I>ext2fs</I>,
+
+sauf
+<B>sb</B>,
+
+sont modifiables lors d'un remontage, mais vous ne pouvez pas modifier le
+<B>gid</B>
+
+ou
+l'<B>umask</B>
+
+pour un système
+<I>fatfs</I>).
+
+<A NAME="lbBO">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Une commande
+<B>mount</B>
+
+est apparue dans UNIX AT&amp;T Version 5.
+<A NAME="lbBP">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">OPTIONS DE MONTAGE SPÉCIFIQUES</A><DD>
+<DT><A HREF="#lbAG">Options de montage pour adfs</A><DD>
+<DT><A HREF="#lbAH">Options de montage pour affs</A><DD>
+<DT><A HREF="#lbAI">Options de montage pour coherent</A><DD>
+<DT><A HREF="#lbAJ">Options de montage pour devpts</A><DD>
+<DT><A HREF="#lbAK">Options de montage pour ext</A><DD>
+<DT><A HREF="#lbAL">Options de montage pour ext2</A><DD>
+<DT><A HREF="#lbAM">Options de montage pour ext3</A><DD>
+<DT><A HREF="#lbAN">Options de montage pour fat</A><DD>
+<DT><A HREF="#lbAO">Options de montage pour hpfs</A><DD>
+<DT><A HREF="#lbAP">Options de montage pour iso9660</A><DD>
+<DT><A HREF="#lbAQ">Options de montage pour minix</A><DD>
+<DT><A HREF="#lbAR">Options de montage pour msdos</A><DD>
+<DT><A HREF="#lbAS">Options de montage pour ncp</A><DD>
+<DT><A HREF="#lbAT">Options de montage pour nfs</A><DD>
+<DT><A HREF="#lbAU">Options de montage pour ntfs</A><DD>
+<DT><A HREF="#lbAV">Options de montage pour proc</A><DD>
+<DT><A HREF="#lbAW">Options de montage pour ramfs</A><DD>
+<DT><A HREF="#lbAX">Options de montage pour reiserfs</A><DD>
+<DT><A HREF="#lbAY">Mount options for romfs</A><DD>
+<DT><A HREF="#lbAZ">Options de montage pour smbfs</A><DD>
+<DT><A HREF="#lbBA">Options de montage pour sysv</A><DD>
+<DT><A HREF="#lbBB">Options de montage pour tmpfs</A><DD>
+<DT><A HREF="#lbBC">Options de montage pour udf</A><DD>
+<DT><A HREF="#lbBD">Options de montage pour ufs</A><DD>
+<DT><A HREF="#lbBE">Options de montage pour umsdos</A><DD>
+<DT><A HREF="#lbBF">Options de montage pour vfat</A><DD>
+<DT><A HREF="#lbBG">Options de montage pour xenix</A><DD>
+<DT><A HREF="#lbBH">Options de montage pour xfs</A><DD>
+<DT><A HREF="#lbBI">Options de montage pour xiafs</A><DD>
+<DT><A HREF="#lbBJ">LE PÉRIPHÉRIQUE LOOP</A><DD>
+<DT><A HREF="#lbBK">CODES DE RETOUR</A><DD>
+<DT><A HREF="#lbBL">FICHIERS</A><DD>
+<DT><A HREF="#lbBM">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbBN">BOGUES</A><DD>
+<DT><A HREF="#lbBO">HISTORIQUE</A><DD>
+<DT><A HREF="#lbBP">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:04 GMT, February 11, 2014
+</BODY>
+</HTML>

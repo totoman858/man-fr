@@ -1,0 +1,198 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of UMOUNT</TITLE>
+</HEAD><BODY>
+<H1>UMOUNT</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+umount - Démonter des systèmes de fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>umount [-hV]</B>
+
+<P>
+
+<B>umount -a [-dflnrv] [-t </B><I>typesf</I><B>] [-O </B><I>options</I><B>]</B>
+
+<BR>
+
+<B>umount [-dflnrv] </B><I>rép </I><B>|</B><I> périphérique </I><B>[...]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La commande
+<B>umount</B>
+
+détache le(s) système(s) de fichiers mentionné(s) de la hiérarchie des
+fichiers. Un système de fichiers est spécifié en donnant le nom du
+répertoire dans lequel il a été monté. Fournir le périphérique spécial
+sur lequel réside le système de fichiers peut également fonctionner,
+mais est obsolète, principalement parce cela échouera si ce périphérique
+a été monté dans plus d'un répertoire.
+<P>
+Notez qu'un système de fichiers ne peut être démonté quand il est «&nbsp;occupé&nbsp;»,
+par exemple quand il y a des fichiers ouverts dessus, quand certains
+processus y ont leur répertoire de travail, ou quand un fichier d'échange
+y est utilisé. L'un de ces processus «&nbsp;récalcitrants&nbsp;» pourrait même être
+<B>umount</B>
+
+lui-même&nbsp;: il ouvre la libc, qui peut ouvrir à son tour des fichiers
+locaux. Un démontage paresseux évite ce problème.
+<P>
+Options de la commande
+<B>umount</B>&nbsp;:
+
+<DL COMPACT>
+<DT><B>-V</B>
+
+<DD>
+Afficher le numéro de version et se terminer.
+<DT><B>-h</B>
+
+<DD>
+Afficher un message d'aide et se terminer.
+<DT><B>-v</B>
+
+<DD>
+Activer le mode verbeux.
+<DT><B>-n</B>
+
+<DD>
+Démonter sans écrire dans
+<I>/etc/mtab</I>.
+
+<DT><B>-r</B>
+
+<DD>
+Si le démontage échoue, essayer de remonter en lecture seule.
+<DT><B>-d</B>
+
+<DD>
+Dans le cas d'un montage via un périphérique boucle (loop), alors libérer
+aussi ce périphérique.
+<DT><B>-a</B>
+
+<DD>
+Démonter tous les systèmes de fichiers décrits dans
+<I>/etc/mtab</I>.
+
+(Avec
+<B>umount</B>
+
+versions 2.7 et ultérieures, le système de fichiers
+<I>proc</I>
+
+n'est pas démonté.)
+<DT><B>-t</B><I> typesf</I>
+
+<DD>
+Indiquer que les actions devraient uniquement être entreprises sur les
+systèmes de fichiers du type spécifié. Plusieurs types peuvent être
+spécifiés dans une liste, en les séparant par des virgules.
+La liste des types de systèmes de fichiers peut être préfixée par
+<B>no</B>
+
+pour spécifier les systèmes de fichiers pour lesquels aucune action ne
+doit être menée.
+<DT><B>-O</B><I> options</I>
+
+<DD>
+Indiquer que les actions ne devraient êtres entreprises que sur les
+systèmes de fichiers dont les <I>options</I> sont spécifiées dans
+<I>/etc/fstab</I>.
+
+Plusieurs options peuvent être spécifiées dans une liste, en les séparant par
+des virgules. Chaque option peut être préfixée par
+<B>no</B>
+
+pour spécifier les options pour lesquelles aucune action ne doit être menée.
+<DT><B>-f</B>
+
+<DD>
+Forcer le démontage (dans le cas d'un système NFS inaccessible).
+Requiert un noyau 2.1.116 ou ultérieur.
+<DT><B>-l</B>
+
+<DD>
+Démontage paresseux. Détacher maintenant le système de fichiers de la 
+hiérarchie de systèmes de fichiers, et nettoyer toutes les références vers le 
+système de fichiers dès qu'il n'est plus occupé. (Requiert un noyau 2.4.11 ou 
+ultérieur.)
+<P>
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>LE PÉRIPHÉRIQUE LOOP</H2>
+
+La commande
+<B>umount</B>
+
+libérera le périphérique loop (boucle) associé au mount (s'il existe),
+au cas où il trouve l'option «&nbsp;loop=...&nbsp;» dans
+<I>/etc/mtab</I>,
+
+ou si l'option -d est indiquée.
+Tous les périphériques loop restants peuvent être libérés en utilisant la
+commande «&nbsp;losetup -d&nbsp;»&nbsp;; voyez
+<B><A HREF="/cgi-bin/man/man2html?8+losetup">losetup</A></B>(8).
+
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/etc/mtab</I>
+
+table des systèmes de fichiers montés
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+umount">umount</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?8+mount">mount</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+losetup">losetup</A></B>(8).
+
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Une commande
+<B>umount</B>
+
+est apparue dans la Version 6 du UNIX AT&amp;T.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Frédéric Delanoy &lt;<I><A HREF="mailto:delanoy_f@yahoo.com">delanoy_f@yahoo.com</A></I>&gt;, 2002.
+<BR>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">LE PÉRIPHÉRIQUE LOOP</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

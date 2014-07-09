@@ -1,0 +1,186 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MLOCK</TITLE>
+</HEAD><BODY>
+<H1>MLOCK</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mlock - Désactiver la pagination pour certaines parties de la mémoire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/mman.h">sys/mman.h</A>&gt;</B>
+
+<B>int mlock(const void *</B><I>addr</I><B>, size_t </B><I>len</I><B>);
+</B></PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>mlock</B>
+
+désactive la pagination pour la portion de mémoire débutant à l'adresse
+<I>addr</I>
+
+avec une longueur de
+<I>len</I>
+
+octets.  Quand l'appel système
+<B>mlock</B>
+
+réussit, on a l'assurance que toutes les pages contenant une partie 
+de la zone mémoire spécifiée résident en mémoire vive (RAM) et y
+resteront jusqu'à un déverrouillage par la fonction
+<B>munlock</B>
+
+ou
+<B>munlockall,</B>
+
+jusqu'à ce que les pages soit libérées avec
+<B>munmap</B>,
+
+ou encore jusqu'à ce que le processus se termine ou démarre un programme avec
+<B>exec.</B>
+
+Les processus fils n'héritent pas du verrouillage des pages à travers un
+<B>fork.</B>
+
+<P>
+Il y a deux domaines principaux d'applications au verrouillage de pages&nbsp;:
+les algorithmes en temps réel, et le traitement de données confidentielles.
+Les applications temps réel réclament un comportement temporel déterministe, et
+la pagination est, avec l'ordonnancement, une cause majeure de délais imprévus.
+Ces algorithmes basculent habituellement sur un ordonnancement temps réel avec
+<B>sched_setscheduler.</B>
+
+Les logiciels de cryptographie manipulent souvent quelques octets hautement
+confidentiels, comme des mots de passe ou des clés privées. A cause de la
+pagination ces données secrètes risquent d'être transférées sur un support
+physique où elles pourraient être lues par un ennemi longtemps après que le
+logiciel se soit terminé. (Soyez toutefois conscient que le mode suspendu
+sur les portables et certains ordinateurs de bureau sauvegarde une copie
+de la mémoire sur le disque, quelques soient les verrouillages).
+<P>
+Il n'y a pas d'empilement des verrouillages mémoire, ce qui signifie qu'une
+page verrouillée plusieurs fois par
+<B>mlock</B>
+
+ou
+<B>mlockall</B>
+
+sera libérée en un seul appel à
+<B>munlock</B>
+
+pour la zone mémoire correspondante ou par un appel à
+<B>munlockall.</B>
+
+Les pages qui sont verrouillées par plusieurs zones, ou par plusieurs processus
+restent verrouillées en mémoire vive tant qu'il y a au moins un processus ou une
+zone qui les verrouille.
+<P>
+Sur les systèmes POSIX où
+<B>mlock</B>
+
+et
+<B>munlock</B>
+
+sont disponibles, la constante symbolique
+<B>_POSIX_MEMLOCK_RANGE</B>
+
+est définie dans &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt; et la valeur symbolique
+<B>PAGESIZE</B>
+
+de &lt;<A HREF="file:///usr/include/limits.h">limits.h</A>&gt; indique le nombre d'octets par page.
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+Dans l'appel-système de Linux,
+<I>addr</I>
+
+est automatiquement arrondie à la frontière de page la plus proche.
+Toutefois, POSIX 1003.1-2001 permet à l'implémentation d'imposer que
+<I>addr</I>
+
+soit alignée sur une frontière de page. Les programmes portable en prendront soin.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+L'appel
+<B>mlock</B>
+
+renvoie 0 si il réussit, ou -1 s'il échoue, auquel cas
+<I>errno</I>
+
+contient le code d'erreur, et rien n'est modifié sur les verrouillages
+de la mémoire du processus.
+<A NAME="lbAG">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ENOMEM</B>
+
+<DD>
+Une partie des adresses incluses dans la zone désirée ne correspond
+pas à une page de l'espace d'adressage accessible, ou le processus
+a essayé de dépasser le nombre maximal de pages verrouillées.
+<DT><B>EPERM</B>
+
+<DD>
+L'appelant n'a pas les privilèges appropriés, seul le Super-User 
+peut verrouiller des pages.
+<DT><B>EINVAL</B>
+
+<DD>
+<I>len</I>
+
+n'est pas un nombre positif.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ </H2>
+
+POSIX.1b, SVr4. SVr4 documente un code d'erreur EAGAIN supplémentaire.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+munlock">munlock</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mlockall">mlockall</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+munlockall">munlockall</A></B>(2).
+
+<B><A HREF="/cgi-bin/man/man2html?2+munmap">munmap</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setrlimit">setrlimit</A></B>(2)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAG">ERREURS</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ </A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:54 GMT, February 11, 2014
+</BODY>
+</HTML>

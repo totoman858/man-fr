@@ -1,0 +1,103 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of cupstestppd</TITLE>
+</HEAD><BODY>
+<H1>cupstestppd</H1>
+Section: Easy Software Products (1)<BR>Updated: Common UNIX Printing System<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+cupstestppd - Teste la conformité des fichiers PPD
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>cupstestppd</B>
+
+[ -v ] nom_fichier.ppd [ ... nom_fichierN.ppd ]
+<BR>
+
+<B>cupstestppd</B>
+
+[ -v ] -
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>cupstestppd</I> teste la conformité des fichiers PPD envers la
+spécification de format de fichier édictée par Adobe, dans sa version
+4.3. Cette commande peut également être utilisée pour voir la
+liste des options reconnues et des polices disponibles d'un
+fichier PPD. Toutes les sorties sont effectuées sur la sortie standard.
+<P>
+
+Le premier mode d'appel de <I>cupstestppd</I> nécessite la présence
+d'un ou plusieurs fichiers PPD dans la ligne de commandes. Le second
+mode d'appel affiche les caractéristiques des fichiers PPD fournis sur
+l'entrée standard. Il est possible d'envoyer des fichiers PPD compressés
+en utilisant les outils appropriés.
+<P>
+
+L'option <I>-v</I> indique qu'il faut afficher toutes les informations d'un fichier
+PPD en plus des résultats des tests de conformité.
+<A NAME="lbAE">&nbsp;</A>
+<H2>CODE DE RETOUR</H2>
+
+<I>cupstestppd</I> renvoie 0 en cas de réussite aux tests et une valeur différente de 0
+en cas d'échec. Les codes d'erreur sont les suivants&nbsp;:
+<DL COMPACT>
+<DT>1<DD>
+<BR>
+
+Arguments de la ligne de commandes incorrects ou fichier PPD non trouvé.
+<DT>2<DD>
+<BR>
+
+Impossible d'ouvrir ou de lire le fichier PPD.
+<DT>3<DD>
+<BR>
+
+Le fichier PPD contient des erreurs de format ne pouvant être ignorées.
+<DT>4<DD>
+<BR>
+
+Le fichier PPD n'est pas conforme à la spécification Adobe.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+CUPS Software Administrators Manual,
+CUPS Software Programmers Manual,
+<A HREF="http://localhost:631/documentation.html">http://localhost:631/documentation.html</A>
+<A NAME="lbAG">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright 1993-2003 Easy Software Products, All Rights Reserved.
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Gilles QUERRET &lt;<A HREF="mailto:gilles.querret@nerim.net">gilles.querret@nerim.net</A>&gt;
+
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">CODE DE RETOUR</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:44 GMT, February 11, 2014
+</BODY>
+</HTML>

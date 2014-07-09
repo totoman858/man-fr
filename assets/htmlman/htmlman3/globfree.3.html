@@ -1,0 +1,361 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GLOB</TITLE>
+</HEAD><BODY>
+<H1>GLOB</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+glob, globfree - Rechercher un chemin d'accès correspondant à un motif.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/glob.h">glob.h</A>&gt;</B>
+
+<B>int glob (const char * </B><I>pattern</I><B>, int </B><I>flags</I><B>,</B>
+<B>         int </B><I>(* errfunc)</I><B>(const char * </B><I>epath</I><B>, int </B><I>eerrno</I><B>),</B>
+<B>         glob_t </B><I>*pglob</I><B>);</B>
+<B>void globfree (glob_t *</B><I>pglob</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>glob()</B>
+
+recherche tous les chemins d'accès correspondants au motif
+<I>pattern</I>
+
+en utilisant les règles du shell (voir
+<B><A HREF="/cgi-bin/man/man2html?7+glob">glob</A></B>(7)).
+
+Aucun remplacement de tilde ou substitution de paramètre n'est effectué.
+Si vous avez besoin de ces fonctionnalités, voyez
+<B><A HREF="/cgi-bin/man/man2html?3+wordexp">wordexp</A></B>(3).
+
+<P>
+
+La fonction
+<B>globfree()</B>
+
+libère la mémoire allouée dynamiquement lors d'un appel précédent à
+<B>glob()</B>.
+
+<P>
+
+Les résultats d'un appel à
+<B>glob()</B>
+
+sont stockés dans une structure pointée par
+<I>pglob</I>,
+
+qui est du type
+<B>glob_t</B>
+
+défini dans
+<B>&lt;<A HREF="file:///usr/include/glob.h">glob.h</A>&gt;</B>
+
+en incluant les éléments définis par POSIX.2 (il peut y en avoir
+plus sous forme d'extension GNU) :
+<P>
+
+<BR>
+
+<PRE>
+typedef struct
+{
+    int    gl_pathc;    /* Nombre de chemins correspondant     */
+    char **gl_pathv;    /* Liste des chemins correspondant     */
+    int    gl_offs;     /* Entrées à réserver dans `gl_pathv'. */
+} glob_t;
+</PRE>
+
+<P>
+
+Le paramètre
+<I>flags</I>
+
+est constitué d'un OU binaire (|) entre zéro ou plus des constantes
+symboliques suivantes, modifiant le comportement de
+<B>glob()</B>:
+
+<DL COMPACT>
+<DT><B>GLOB_ERR</B>
+
+<DD>
+demande à <B>glob()</B> de se terminer dès qu'une erreur se produit (par
+exemple un répertoire non lisible).
+<DT><B>GLOB_MARK</B>
+
+<DD>
+Ajouter un slash final à chaque nom aboutissant à un répertoire.
+<DT><B>GLOB_NOSORT</B>
+
+<DD>
+Ne pas trier les chemins d'accès renvoyés (ils le sont par défaut).
+<DT><B>GLOB_DOOFFS</B>
+
+<DD>
+signifie que
+<I>pglob-&gt;gl_offs</I>
+
+points d'entrée seront réservés au début de la liste de chaînes dans
+<I>pglob-&gt;pathv</I>.
+
+<DT><B>GLOB_NOCHECK</B>
+
+<DD>
+demande à <B>glob()</B> de renvoyer le motif original si aucune correspondance
+n'est possible.
+<DT><B>GLOB_APPEND</B>
+
+<DD>
+ajoute les résultats à ceux d'un appel précédent. Ne pas indiquer cet
+attribut lors du premier appel de
+<B>glob()</B>.
+
+<DT><B>GLOB_NOESCAPE</B>
+
+<DD>
+Les méta-caractères ne peuvent pas être désactivés par un backslash.
+</DL>
+<P>
+
+On peut également utiliser les constantes suivantes, qui sont des
+extensions GNU, non définies dans POSIX.2 :
+<DL COMPACT>
+<DT><B>GLOB_PERIOD</B>
+
+<DD>
+Un point en tête de chemin peut correspondre à un méta-caractère.
+<DT><B>GLOB_ALTDIRFUNC</B>
+
+<DD>
+On utilisera comme alternatives aux fonctions normales de bibliothèque
+les fonctions
+<I>pglob-&gt;gl_closedir</I>,
+
+<I>pglob-&gt;gl_readdir</I>,
+
+<I>pglob-&gt;gl_opendir</I>,
+
+<I>pglob-&gt;gl_lstat</I>, et
+
+<I>pglob-&gt;gl_stat</I>.
+
+<DT><B>GLOB_BRACE</B>
+
+<DD>
+Les expressions de type <B>{a,b}</B> sont développées avec le style
+<B><A HREF="/cgi-bin/man/man2html?1+csh">csh</A></B>(1).
+
+<DT><B>GLOB_NOMAGIC</B>
+
+<DD>
+Le motif est renvoyé s'il ne contient pas de méta-caractères.
+<DT><B>GLOB_TILDE</B>
+
+<DD>
+L'expansion du tilde est prise en charge.
+<DT><B>GLOB_ONLYDIR</B>
+
+<DD>
+Seuls les répertoires sont mis en correspondance.
+</DL>
+<P>
+
+Si
+<I>errfunc</I>
+
+n'est pas
+<B>NULL</B>,
+
+elle sera appelée en cas d'erreur, avec les arguments
+<I>epath</I>
+
+un pointeur sur le chemin qui a échoué, et
+<I>eerrno</I>
+
+la valeur de
+<I>errno</I>
+
+telle qu'elle a été renvoyée par un appel à
+<B>opendir()</B>, <B>readdir()</B>, ou <B>stat()</B>.
+
+Si
+<I>errfunc</I>
+
+renvoie une valeur non nulle, ou si
+<B>GLOB_ERR</B>
+
+est positionné,
+<B>glob()</B>
+
+se terminera après l'appel de
+<I>errfunc</I>.
+
+<P>
+
+Si <B>glob()</B> réussit complètement,
+<I>pglob-&gt;gl_pathc</I>
+
+contient le nombre de chemins d'accès correspondants et
+<I>pglob-&gt;gl_pathv</I>
+
+est un pointeur sur une liste des chemins. Le premier pointeur
+après le dernier chemin vaut
+<B>NULL</B>.
+
+<P>
+
+Il est possible d'appeler
+<B>glob()</B>
+
+plusieurs fois. Dans ce cas, l'attribut
+<B>GLOB_APPEND</B>
+
+doit être indiqué dans
+<I>flags</I>
+
+durant le second appel et les suivants.
+<P>
+
+En tant qu'extension GNU, le champ
+<I>pglob-&gt;gl_flags</I>
+
+contient les attributs indiqués liés par un <B>OU</B> avec
+<B>GLOB_MAGCHAR</B>
+
+si un méta-caractère a été trouvé.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+S'il réussit complètement
+<B>glob()</B>
+
+renvoie zéro.
+Les autres valeurs renvoyées peuvent être :
+<DL COMPACT>
+<DT><B>GLOB_NOSPACE</B>
+
+<DD>
+pas assez de mémoire,
+<DT><B>GLOB_ABORTED</B>
+
+<DD>
+erreur de lecture,
+<DT><B>GLOB_NOMATCH</B>
+
+<DD>
+aucune correspondance trouvée.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+L'exemple d'utilisation suivant simule la frappe de
+
+<B>ls -l *.c ../*.c</B>
+
+
+dans un shell.
+<PRE>
+
+glob_t globbuf;
+
+globbuf.gl_offs = 2;
+glob(&quot;*.c&quot;, GLOB_DOOFS, NULL, &amp;globbuf);
+glob(&quot;../*.c&quot;, GLOB_DOOFS | GLOB_APPEND, NULL, &amp;globbuf);
+globbuf.gl_pathv[0] = &quot;ls&quot;;
+globbuf.gl_pathv[1] = &quot;-l&quot;;
+execvp(&quot;ls&quot;, &amp;globbuf.gl_pathv[0]);
+</PRE>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX.2
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+La fonction
+<B>glob()</B>
+
+peut échouer en cas d'erreur dans un appel de fonction sous-jacente, comme
+<B>malloc()</B> ou <B>opendir()</B>.
+
+Le code d'erreur sera alors stocké dans
+<I>errno</I>.
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les membres
+<I>gl_pathc</I>
+
+et 
+<I>gl_offs</I>
+
+de la structure glob_t
+sont des
+<B>size_t</B>
+
+dans GlibC 2.1, comme indiqué dans POSIX.2, mais sont déclarés sous forme de
+<B>int </B>
+
+dans LibC 4, LibC 5 et GlibC 2.0.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+ls">ls</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+sh">sh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+exec">exec</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+opendir">opendir</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+readdir">readdir</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+wordexp">wordexp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?7+glob">glob</A></B>(7)
+
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">EXEMPLES</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">NOTES</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:18 GMT, February 11, 2014
+</BODY>
+</HTML>

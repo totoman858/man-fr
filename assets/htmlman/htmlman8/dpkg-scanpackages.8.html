@@ -1,0 +1,185 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DPKG-SCANPACKAGES</TITLE>
+</HEAD><BODY>
+<H1>DPKG-SCANPACKAGES</H1>
+Section: Utilitaires de Dpkg (8)<BR>Updated: 1996-07-08<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+dpkg-scanpackages - créer des fichiers «&nbsp;Packages&nbsp;»
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>dpkg-scanpackages</B>
+
+<I>rep-de-binaires</I>
+
+<I>fichier-d'-override</I>
+
+[<I>chemin-à-préfixer</I>]
+
+<B>&gt;</B>
+
+<I>Packages</I>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>dpkg-scanpackages</B>
+
+trie une arborescence contenant des paquets binaires Debian et crée un fichier
+«&nbsp;Packages&nbsp;» qui permettra à
+<B><A HREF="/cgi-bin/man/man2html?8+dselect">dselect</A></B>(8)
+
+de dire à un utilisateur quels sont les paquets qu'il peut installer.
+Ces fichiers «&nbsp;Packages&nbsp;» sont semblables à ceux qu'on peut trouver sur les 
+sites d'archives Debian ou sur des cédéroms.
+Quand on crée un répertoire contenant des paquets qu'on veut installer sur
+un ensemble de machines, on peut se servir soi-même de
+<B>dpkg-scanpackages.</B>
+
+<P>
+
+<I>rep-de-binaires</I>
+
+est le nom de l'arborescence binaire (par exemple
+<B>contrib/binary-i386)</B>
+
+que l'on veut traiter.
+Il vaut mieux qu'elle soit relative à la racine de l'archive Debian&nbsp;;
+ainsi chaque champ «&nbsp;Filename&nbsp;» dans le nouveau fichier «&nbsp;Packages&nbsp;»
+commencera par cette chaîne.
+<P>
+
+<I>fichier-d'-override</I>
+
+est le nom du fichier qui contient les renseignements sur la manière dont le
+paquet s'insère dans la distribution&nbsp;; voir ci-dessous.
+<P>
+
+<I>chemin-à-préfixer</I>
+
+est une chaîne facultative qui préfixera les champs «&nbsp;Filename&nbsp;».
+<A NAME="lbAE">&nbsp;</A>
+<H2>LE FICHIER « OVERRIDE »</H2>
+
+Bien que l'on puisse trouver dans le fichier «&nbsp;control&nbsp;» la plupart
+des informations concernant un paquet, certaines doivent être inscrites
+par les tsars de la distribution plutôt que par le responsable du
+paquet : elles ont trait à l'organisation des fichiers en vue de la
+publication plutôt qu'aux dépendances réelles ou à la
+description du paquet. Ces informations se trouvent dans le fichier
+«&nbsp;override&nbsp;».
+<P>
+
+Les éléments du fichier «&nbsp;override&nbsp;» sont séparés simplement par un espace.
+Les commentaires commencent par un caractère
+<B>«&nbsp;#&nbsp;».</B>
+
+<P>
+
+
+<I>paquet</I>
+
+<I>priorité</I>
+
+<I>section</I>
+
+[<I>responsable</I>]
+
+
+<P>
+
+<I>paquet</I>
+
+est le nom du paquet. Les entrées du fichier «&nbsp;override&nbsp;» concernant des
+paquets qui ne sont pas dans l'arborescence sont ignorées.
+<P>
+
+Les éléments
+<I>priorité</I>
+
+et
+<I>section</I>
+
+placent le paquet dans l'arborescence&nbsp;; on ne devrait pas les trouver
+dans le  fichier «&nbsp;control&nbsp;». Quand le paquet se trouve dans un 
+sous-répertoire de  
+<I>rep-de-binaires,</I>
+
+on le compare avec le contenu de
+<I>section</I>.
+
+<P>
+
+L'élément
+<I>responsable,</I>
+
+quand il existe, peut représenter soit le nom du responsable quand il s'agit 
+d'un remplacement sans condition, soit la chaîne
+<I>ancienresponsable</I>
+
+<B>=&gt;</B>
+
+<I>nouveauresponsable</I>
+
+pour un changement de responsable.
+<P>
+
+On peut trouver les fichiers «&nbsp;override&nbsp;», dont on se sert pour établir les
+fichiers officiels «&nbsp;Packages&nbsp;», dans le répertoire
+<I>indices</I>
+
+des miroirs Debian.
+<A NAME="lbAF">&nbsp;</A>
+<H2>DIAGNOSTICS</H2>
+
+<B>dpkg-scanpackages</B>
+
+affiche les erreurs habituelles qui se comprennent d'elles-mêmes. Il
+affiche aussi des avertissements quand des paquets sont dans un mauvais
+sous-répertoire, existent en double exemplaire, ont des champs 
+«&nbsp;Filename&nbsp;» dans leur fichier «&nbsp;control&nbsp;», sont absents du fichier
+«&nbsp;override&nbsp;» ou bien dont les substitutions de responsable ne peuvent
+pas s'appliquer.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+dpkg">dpkg</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+dselect">dselect</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+dpkg-scansources">dpkg-scansources</A></B>(8).
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Philippe Batailler &lt;<A HREF="mailto:pbatailler@teaser.fr">pbatailler@teaser.fr</A>&gt;, Mai 2002.
+<P>
+<P>
+<P>
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">LE FICHIER « OVERRIDE »</A><DD>
+<DT><A HREF="#lbAF">DIAGNOSTICS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:04 GMT, February 11, 2014
+</BODY>
+</HTML>

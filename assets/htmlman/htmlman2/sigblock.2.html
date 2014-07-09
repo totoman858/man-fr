@@ -1,0 +1,140 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SIGBLOCK</TITLE>
+</HEAD><BODY>
+<H1>SIGBLOCK</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+sigblock, siggetmask, sigsetmask, sigmask - Manipuler les masquages de signaux.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/signal.h">signal.h</A>&gt;</B>
+
+<P>
+<B>int sigblock(int </B><I>mask</I><B>);</B>
+
+<P>
+<B>int siggetmask(void);</B>
+
+<P>
+<B>int sigsetmask(int </B><I>mask</I><B>);</B>
+
+<P>
+<B>int sigmask(</B><I>signum</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette interface est désormais obsolète, il vaut mieux utiliser
+<B><A HREF="/cgi-bin/man/man2html?2+sigprocmask">sigprocmask</A></B>(2).
+
+<P>
+L'appel
+<B>sigblock()</B>
+
+ajoute les signaux spécifiés par 
+<I>mask</I>
+
+dans l'ensemble des signaux à bloquer avant réception.
+<P>
+
+L'appel
+<B>sigsetmask()</B>
+
+remplace totalement l'ensemble des signaux bloqués par le nouveau masque
+<I>mask</I>.
+
+Les signaux sont bloqués si le bit leur correspondant dans
+<I>mask</I>
+
+est à 1.
+<P>
+
+L'ensemble des signaux actuellement bloqués peut être obtenu en utilisant
+<B>siggetmask()</B>.
+
+<P>
+
+La macro
+<B>sigmask</B>
+
+est fournie pour construire le masque depuis le numéro de signal
+<I>signum</I>.
+
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>siggetmask()</B>
+
+renvoie le masque actuel.
+<P>
+<B>sigsetmask() </B>
+
+et
+<B>sigblock()</B>
+
+renvoient le masque précédent
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les prototypes de ces fonctions ne sont disponibles que si la constante
+<B>_BSD_SOURCE</B>
+
+est définie avant l'inclusion des fichiers d'en-tête.
+<P>
+
+Il n'est possible de bloquer ni
+<B>SIGKILL</B>
+
+ni
+<B>SIGSTOP.</B>
+
+Ceci est imposé silencieusement par le système.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.4. Ces fonctions sont apparues dans BSD 4.3
+et sont maintenant déconseillées. Utilisez plutot la gestion POSIX
+des signaux pour vos nouveaux programmes.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+kill">kill</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigprocmask">sigprocmask</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?7+signal">signal</A></B>(7)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:57 GMT, February 11, 2014
+</BODY>
+</HTML>

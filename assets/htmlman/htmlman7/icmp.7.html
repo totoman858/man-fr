@@ -1,0 +1,186 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ICMP</TITLE>
+</HEAD><BODY>
+<H1>ICMP</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+icmp, IPPROTO_ICMP - Module ICMP IPv4 du noyau Linux.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ce module du noyau implémente le protocole ICMP (Internet Control Message Protocol)
+défini dans la RFC 792. Il sert pour diagnostiquer et indiquer des conditions d'erreurs.
+L'utilisateur n'interagit pas directement avec ce module, à la place il communique
+avec les autres protocoles dans le noyau, et ceux-ci transmettent les erreurs ICMP
+aux couches applicatives. Ce module répond également aux requêtes ICMP.
+<P>
+
+Un protocole utilisateur peut recevoir des paquets ICMP pour toutes les sockets locales
+en utilisant une socket <B>raw</B> avec le protocole
+<B>IPPROTO_ICMP</B>.
+
+Voir la page
+<B><A HREF="/cgi-bin/man/man2html?7+raw">raw</A></B>(7)
+
+pour plus de détails.
+Les types de paquets ICMP transmis à la socket peuvent être filtrés en utilisant l'option
+<B>ICMP_FILTER</B>
+
+de la socket. Les paquets ICMP sont toujours traités par le noyau aussi, même lorsqu'ils
+sont transmis à une socket utilisateur.
+<P>
+Linux limite le débit des paquets d'erreurs ICMP pour chaque destination.
+<B>ICMP_REDIRECT</B>
+
+et
+<B>ICMP_DEST_UNREACH</B>
+
+sont aussi limité par la route de destination des paquets entrants.
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>SYSCTLS</H2>
+
+ICMP dispose d'une interface sysctl pour configurer certains paramètres IP globaux.
+Cette interface est accessible en lisant ou écrivant les fichiers
+<B>/proc/sys/net/ipv4/* </B>
+
+ou à l'aide de l'appel-système
+<B><A HREF="/cgi-bin/man/man2html?2+sysctl">sysctl</A></B>(2).
+
+La plupart de ces sysctls sont des limitations de débit pour des types ICMP spécifiques.
+Linux 2.2 utilise un filtre à jeton pour limiter les ICMPs.
+
+La valeur est un délai en jiffies jusqu'à ce que le filtre soit vidé. Un
+jiffy est une unité de temps dépendant du système, en général 10ms sur un
+x86 et environ 1ms sur un alpha et un IA64.
+<DL COMPACT>
+<DT><B>icmp_destunreach_rate</B>
+
+<DD>
+Fréquence maximale pour envoyer des paquets ICMP &quot;Destination inaccessible&quot;. Ceci limite
+le débit avec lequel ces paquets sont émis vers des routes individuelles ou collectives.
+Cette limite n'affecte par l'envoi des paquets
+<B>ICMP_FRAG_NEEDED</B>
+
+nécessaire pour rechercher le MTU d'un chemin.
+<DT><B>icmp_echo_ignore_all</B>
+
+<DD>
+Si cette valeur est non-nulle, Linux ignorera toutes les requêtes 
+<B>ICMP_ECHO</B>.
+
+<DT><B>icmp_echo_ignore_broadcasts</B>
+
+<DD>
+Si cette valeur est non-nulle, Linux ignorera toutes les requêtes
+<B>ICMP_ECHO</B>
+
+envoyées à une adresse broadcast.
+<DT><B>icmp_echoreply_rate</B>
+
+<DD>
+Vitesse maximale pour envoyer les paquets
+<B>ICMP_ECHOREPLY</B>
+
+en réponse aux requêtes
+<B>ICMP_ECHOREQUEST</B>.
+
+<DT><B>icmp_paramprob_rate</B>
+
+<DD>
+Débit maximal pour émettre les paquets
+<B>ICMP_PARAMETERPROB</B>.
+
+Ceux-ci sont envoyés lorsqu'un paquet arrive avec un en-tête IP invalide.
+<DT><B>icmp_timeexceed_rate</B>
+
+<DD>
+Débit maximal pour émettre les paquets
+<B>ICMP_TIME_EXCEEDED</B>.
+
+Ceux-ci sont envoyés pour empêcher les boucles quand un paquet a réalisé trop de sauts.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+Comme beaucoup d'autres implémentation ne supportent pas les socket raw
+<B>IPPROTO_ICMP</B>,
+
+on ne doit pas se reposer sur cette fonctionnalité dans les programmes portables.
+
+
+
+<P>
+
+Les paquets
+<B>ICMP_REDIRECT</B>
+
+ne sont pas envoyés quand Linux ne fonctionne pas en routeur. Ils ne sont également
+acceptés que d'une passerelle précédemment définie dans la table de routage, et les
+routes de redirection expirent après un certain délai.
+<P>
+
+L'horodatage 64 bits renvoyé par
+<B>ICMP_TIMESTAMP</B>
+
+est en millisecondes depuis le 1er janvier 1970.
+<P>
+
+En interne, l'ICMP Linux utilise une socket raw pour envoyer les ICMPs. Cette socket
+peut apparaître dans la sortie de
+<B><A HREF="/cgi-bin/man/man2html?8+netstat">netstat</A></B>(8)
+
+avec un i-noeud nul.<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><BR>
+<P>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>VERSIONS</H2>
+
+Le support pour les requêtes
+<B>ICMP_ADDRESS</B>
+
+a été supprimé dans le noyau 2.2.
+<P>
+
+Le support pour 
+<B>ICMP_SOURCE_QUENCH</B>
+
+a été supprimé dans Linux 2.2.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7)
+
+<P>
+
+RFC 792 pour une description du protocole ICMP.
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">SYSCTLS</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">VERSIONS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:58 GMT, February 11, 2014
+</BODY>
+</HTML>

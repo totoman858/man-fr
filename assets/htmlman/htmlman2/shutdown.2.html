@@ -1,0 +1,131 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SHUTDOWN</TITLE>
+</HEAD><BODY>
+<H1>SHUTDOWN</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+shutdown - Terminer une commnication en full-duplex.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+
+<P>
+<B>int shutdown(int </B><I>s</I><B>, int </B><I>how</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<I>shutdown</I>
+
+termine tout ou partie d'une connexion full-duplex sur la socket
+<I>s.</I>
+
+Si
+<I>how</I>
+
+vaut
+<B>SHUT_RD</B>,
+
+la réception est désactivée. Si
+<I>how</I>
+
+vaut
+<B>SHUT_WR</B>,
+
+l'émission est désactivée. Si
+<I>how</I>
+
+vaut
+<B>SHUT_RDWR</B>,
+
+l'emission et la réception sont désactivées.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>shutdown</B>
+
+renvoie 0 s'il réussit, ou -1 s'il échoue, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><DT><B>EBADF</B>
+
+<DD>
+<DD>
+<I>s</I>
+
+n'est pas un descripteur valide.
+<DT><B>ENOTSOCK</B>
+
+<DD>
+<I>s</I>
+
+est un fichier, pas une socket.
+<DT><B>ENOTCONN</B>
+
+<DD>
+La socket
+<I>s</I>
+
+n'est pas connectée.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les constantes SHUT_RD, SHUT_WR, SHUT_RDWR ont pour valeur 0, 1, et 2
+respectivement, et sont définies dans
+<I>&lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</I>
+
+depuis la GlibC-2.1.91.
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.4, la fonction
+<B>shutdown</B>
+
+est apparue dans BSD 4.2.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2)
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:59 GMT, February 11, 2014
+</BODY>
+</HTML>

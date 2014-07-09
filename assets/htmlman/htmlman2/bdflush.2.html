@@ -1,0 +1,158 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of BDFLUSH</TITLE>
+</HEAD><BODY>
+<H1>BDFLUSH</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+bdflush - Démarrer, vider, ajuster le démon buffer-dirty-flush.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>int bdflush(int</B><I> func, </I><B>long *</B><I>address);</I>
+<B>int bdflush(int</B><I> func, </I><B>long </B><I>data);</I>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>bdflush</B>
+
+démarre, vide ou ajuste le démon bdflush (buffer-dirty-flush).
+Seul le Super-User peut appeler
+<B>bdflush</B>.
+
+<P>
+
+Si
+<I>func</I>
+
+est négatif ou nulle, et si aucun démon n'a démarré, alors
+<B>bdflush</B>
+
+bascule en fonctionnement démon, et ne revient pas.
+<P>
+
+Si
+<I>func</I>
+
+vaut 1,
+les buffers remplis sont écrits sur le disque.
+<P>
+
+Si
+<I>func</I>
+
+vaut 2 ou plus et est paire (bit poids faible à 0), alors
+<I>address</I>
+
+correspond à l'adresse d'un mot long et
+le paramètre numéro
+(<I>func</I>-2)/2
+
+est renvoyé à cette adresse.
+<P>
+
+Si
+<I>func</I>
+
+vaut 3 ou plus et est impair (bit poids faible à 1), alors
+<I>data</I>
+
+est un mot long et le noyau
+écrit cette valeur dans
+le paramètre numéro
+(<I>func</I>-3)/2<I>.</I>
+
+<P>
+
+Le jeu de paramètres, leurs valeurs, et leurs intervalles
+légaux sont définis dans les sources du noyau, dans le fichier
+<I>fs/buffer.c</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Si
+<I>func</I>
+
+est négative ou nulle, et si le démon démarre correctement,
+<B>bdflush</B>
+
+ne revient pas.
+Autrement la valeur renvoyée vaut 0 en réussite et -1 en échec auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+L'appelant n'est pas le Super-User.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>address</I>
+
+pointe en dehors de l'espace d'adressage accessible.
+<DT><B>EBUSY</B>
+
+<DD>
+On tente d'exécuter le code du démon après qu'un autre
+processus l'ait déjà démarré.
+<DT><B>EINVAL</B>
+
+<DD>
+Numéro de paramètre invalide, ou écriture d'une valeur
+invalide dans le paramètre.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<B>bdflush</B> est spécifique à Linux et ne doit pas être
+employé dans des programmes destinés à être portables.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+fsync">fsync</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sync">sync</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?8+update">update</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+sync">sync</A></B>(8).
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:58 GMT, February 11, 2014
+</BODY>
+</HTML>

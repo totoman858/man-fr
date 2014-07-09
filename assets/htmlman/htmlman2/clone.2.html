@@ -1,0 +1,613 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CLONE</TITLE>
+</HEAD><BODY>
+<H1>CLONE</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+clone - Créer un processus fils (child).
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/linux/sched.h">linux/sched.h</A>&gt;</B>
+
+<P>
+<B>int clone(int (*</B><I>fn</I><B>) (void *</B><I>arg</I><B>), void *</B><I>pile_fils</I><B>, int </B><I>flags</I><B>, void *</B><I>arg</I><B>)</B>
+
+<P>
+<B>_syscall2(int, </B><I>clone</I><B>, int, </B><I>flags</I><B>, void *, </B><I>pile_fils</I><B>);</B>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>clone</B>
+
+crée un nouveau processus, exactement comme le fait
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2).
+
+<B>clone</B>
+
+est une fonction de bibliothèque s'appuyant sur
+l'appel-système
+<B>sys_clone</B>
+
+sous-jacent.
+Une description de
+<B>sys_clone</B>
+
+se trouve plus bas sur cette page.
+<P>
+Contrairement à
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2),
+
+cette routine 
+permet le partage d'une partie du contexte d'exécution entre le processus fils
+et le processus appelant. Le partage peut s'appliquer sur l'espace mémoire, sur
+la table des descripteurs de fichiers, la table des gestionnaires de signaux...
+(Notez que sur cette page de manuel, le &quot;processus appelant&quot; correspond normalement
+au &quot;processus père&quot;, mais voyez quand même la description de
+<B>CLONE_PARENT</B>
+
+plus bas).
+<P>
+L'appel système
+<B>clone</B>
+
+est principalement utilisé pour permettre l'implémentation des threads : 
+un programme est scindé en plusieurs lignes de contrôle, s'exécutant
+simultanément dans un espace mémoire partagé.
+<P>
+Quand le processus fils est créé, avec
+<B>clone</B>,
+
+il exécute la fonction
+<I>fn</I>(<I>arg</I>)
+
+de l'application. (Ceci est différent de
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2)
+
+avec lequel l'exécution continue dans le fils au point de
+l'appel
+<B>fork</B>)
+
+L'argument
+<I>fn</I>
+
+est un pointeur sur la fonction appelée par le processus fils lors de son
+démarrage.
+L'argument
+<I>arg</I>
+
+est transmis à la fonction
+<I>fn</I>
+
+lors de son invocation.
+<P>
+Quand la fonction
+<I>fn</I>(<I>arg</I>)
+
+revient, le processus fils se termine.
+La valeur entière renvoyée par
+<I>fn</I>
+
+est utilisée comme code de retour du processus fils. Ce dernier peut
+également se terminer de manière explicite en invoquant la fonction
+<B><A HREF="/cgi-bin/man/man2html?2+exit">exit</A></B>(2)
+
+ou après la réception d'un signal fatal.
+<P>
+L'argument
+<I>pile_fils</I>
+
+indique l'emplacement de la pile utilisée par le processus fils.
+Comme les processus fils et appelant peuvent partager de la mémoire,
+il n'est généralement pas possible pour le fils d'utiliser la même
+pile que son père. Le processus appelant doit donc préparer un espace
+mémoire pour stocker la pile de son fils, et transmettre à
+<B>clone</B>
+
+un pointeur sur cet emplacement.
+Les piles croissent vers le bas sur tous les processeurs implémentant
+Linux (sauf le HP PA), donc
+<I>pile_fils</I>
+
+doit pointer sur la plus haute adresse de l'espace mémoire prévu pour 
+la pile du processus fils.
+<P>
+L'octet de poids faible de
+<I>flags</I>
+
+contient le numéro du signal qui sera envoyé au père lorsque le processus
+fils se terminera. Si ce signal est différent de 
+<B>SIGCHLD</B>,
+
+le processus parent doit également spécifier les options
+<B>__WALL</B>
+
+ou
+<B>__WCLONE</B>
+
+lorsqu'il attend la fin du fils avec
+<B><A HREF="/cgi-bin/man/man2html?2+wait">wait</A></B>(2).
+
+Si aucun signal n'est indiqué, le processus parent ne sera pas notifié
+de la terminaison du fils.
+<P>
+<I>flags</I>
+
+permet également de préciser ce qui sera partagé entre le père et le fils,
+en effectuant un OU binaire entre une ou plusieurs des
+constantes suivantes :
+<P>
+<DL COMPACT>
+<DT><B>CLONE_PARENT</B>
+
+<DD>
+(nouveauté Linux 2.4) Si
+<B>CLONE_PARENT</B>
+
+est présent, le père du nouveau fils (comme il est indiqué par
+<B><A HREF="/cgi-bin/man/man2html?2+getppid">getppid</A></B>(2))
+
+sera le même que celui du processus appelant.
+<BR>&nbsp;
+Si
+<B>CLONE_PARENT</B>
+
+n'est pas fourni, alors (comme pour
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2))
+
+le père du processus fils sera le processus appelant.
+<BR>&nbsp;
+Remarquez que c'est le processus père, tel qu'indiqué par
+<B><A HREF="/cgi-bin/man/man2html?2+getppid">getppid</A></B>(2),
+
+qui est notifié lors de la fin du fils.
+Ainsi si
+<B>CLONE_PARENT</B>
+
+est présent, alors c'est le père du processus appelant, et
+non ce dernier, qui sera notifié.
+<P>
+<DT><B>CLONE_FS</B>
+
+<DD>
+Si l'attribut
+<B>CLONE_FS</B>
+
+est positionné, les processus appelant et fils partagent les mêmes informations
+concernant le système de fichiers. Ceci inclue la racine du système de
+fichiers, le répertoire de travail, et l'umask. Tout appel à
+<B><A HREF="/cgi-bin/man/man2html?2+chroot">chroot</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+chdir">chdir</A></B>(2),
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+umask">umask</A></B>(2)
+
+effectué par un processus aura également influence sur
+l'autre processus.
+<P>
+Si
+<B>CLONE_FS</B>
+
+n'est pas choisi, le processus travaille sur une copie des informations de
+l'appelant concernant le système de fichiers. Cette copie est effectuée lors de
+l'invocation de
+<B>clone</B>.
+
+Les appels à
+<B><A HREF="/cgi-bin/man/man2html?2+chroot">chroot</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+chdir">chdir</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+umask">umask</A></B>(2)
+
+effectués par un processus n'affectent pas l'autre processus.
+<P>
+<DT><B>CLONE_FILES</B>
+
+<DD>
+Si l'attribut
+<B>CLONE_FILES</B>
+
+est positionné, les processus appelant et fils partagent la même table des
+descripteurs de fichiers. Les descripteurs feront alors toujours référence
+aux mêmes fichiers pour les deux processus. Tout descripteur créé par
+un processus est également valide pour l'autre processus. De même si
+un processus ferme un descripteur, ou modifie ses attributs, l'autre
+processus en est aussi affecté.
+<P>
+Si
+<B>CLONE_FILES</B>
+
+n'est pas positionné, le processus fils hérite d'une copie des descripteurs
+de fichiers ouverts par l'appelant au moment de l'appel
+<B>clone</B>.
+
+Les opérations effectuées ensuite sur un descripteur par un des processus
+n'affectent pas l'autre processus.
+<P>
+<DT><B>CLONE_NEWNS</B>
+
+<DD>
+(Nouveauté Linux 2.4.19)
+Démarrer le processus dans un nouvel espace de noms.
+<P>
+Chaque processus se trouve dans un espace de noms. Cet
+<I>espace de noms</I>
+
+du processus regroupe les données décrivant la hiérarchie des fichiers vus
+par le processus (l'ensemble des montages). Après un
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+clone">clone</A></B>(2)
+
+sans l'attribut
+<B>CLONE_NEWNS</B>
+
+le fils se déroule dans le même espace de nom que son père.
+Les appels-système
+<B><A HREF="/cgi-bin/man/man2html?2+mount">mount</A></B>(2)
+
+et 
+<B><A HREF="/cgi-bin/man/man2html?2+umount">umount</A></B>(2)
+
+modifient l'espace de noms du processus appelant, et affectent ainsi tous les
+processus se déroulant dans le même espace, sans affecter les processus se
+trouvant dans d'autres espaces.
+<P>
+Après un
+<B><A HREF="/cgi-bin/man/man2html?2+clone">clone</A></B>(2)
+
+avec l'attribut
+<B>CLONE_NEWNS</B>
+
+le fils cloné démarre dans un nouvel espace de noms, initialisé
+avec une copie de l'espace du père.
+<P>
+Seul un processus privilégié peut spécifier 
+l'attribut
+<B>CLONE_NEWNS</B>.
+
+
+Il n'est pas possible de spécifier à la fois
+<B>CLONE_NEWNS</B>
+
+et
+<B>CLONE_FS</B>
+
+pour le
+même appel
+<B>clone</B>.
+
+<P>
+<DT><B>CLONE_SIGHAND</B>
+
+<DD>
+Si l'attribut
+<B>CLONE_SIGHAND</B>
+
+est positionné, les processus appelant et fils partagent la même table des
+gestionnaires de signaux. Si l'appelant, ou le fils, appelle
+<B><A HREF="/cgi-bin/man/man2html?2+sigaction">sigaction</A></B>(2)
+
+pour modifier le comportement associé à un signal, ce comportement est
+également changé pour l'autre processus. Néanmoins, l'appelant et le
+fils ont toujours des masques de signaux distincts, et leurs ensembles
+de signaux bloqués sont indépendants.
+L'un des processus peut donc bloquer un signal en utilisant
+<B><A HREF="/cgi-bin/man/man2html?2+sigprocmask">sigprocmask</A></B>(2)
+
+sans affecter l'autre processus.
+<P>
+Si
+<B>CLONE_SIGHAND</B>
+
+n'est pas utilisé, le processus fils hérite d'une copie des gestionnaires
+de signaux de l'appelant lors de l'invocation de
+<B>clone</B>.
+
+Les appels à
+<B><A HREF="/cgi-bin/man/man2html?2+sigaction">sigaction</A></B>(2)
+
+effectués ensuite depuis un processus n'ont pas d'effets sur l'autre
+processus.
+<P>
+<DT><B>CLONE_PTRACE</B>
+
+<DD>
+Si l'attribut
+<B>CLONE_PTRACE</B>
+
+est positionné et si l'appelant est suivi par un débogueur, alors le
+fils sera également suivi (voir
+<B><A HREF="/cgi-bin/man/man2html?2+ptrace">ptrace</A></B>(2)).
+
+<P>
+<DT><B>CLONE_VFORK</B>
+
+<DD>
+Si le bit
+<B>CLONE_VFORK</B>
+
+est actif, l'exécution du processus appelant est suspendue jusqu'à ce
+que le fils libère ses ressources de mémoire virtuelle par un appel
+<B><A HREF="/cgi-bin/man/man2html?2+execve">execve</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+_exit">_exit</A></B>(2)
+
+(comme avec
+<B><A HREF="/cgi-bin/man/man2html?2+vfork">vfork</A></B>(2)).
+
+<P>
+Si
+<B>CLONE_VFORK</B>
+
+n'est pas indiqué, alors les deux processus sont ordonnancés à partir
+de la fin de l'appel, et l'application ne doit pas considéré que l'ordre
+d'exécution soit déterminé.
+<P>
+<DT><B>CLONE_VM</B>
+
+<DD>
+Si le bit
+<B>CLONE_VM</B>
+
+est actif, les processus père et fils s'exécutent dans le même espace mémoire.
+En particulier, les écritures en mémoire effectuées par l'un des processus sont
+visibles par l'autre.
+De même toute projection en mémoire, ou toute suppression de projection,
+effectuées avec
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+munmap">munmap</A></B>(2)
+
+par l'un des processus affectera également l'autre processus.
+<P>
+Si
+<B>CLONE_VM</B>
+
+n'est pas actif, le processus fils utilisera une copie distincte de l'espace
+mémoire de l'appelant. Le cliché étant réalisé lors de l'invocation de
+<B>clone</B>.
+
+Les écritures ou les projections de fichiers en mémoire effectuées par un processus
+n'affectent pas l'autre processus, comme cela se passe avec
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2).
+
+<P>
+<DT><B>CLONE_PID</B>
+
+<DD>
+Si l'attribut
+<B>CLONE_PID</B>
+
+est positionné, les processus appelant et fils ont le même numéro de processus.
+<P>
+Si
+<B>CLONE_PID</B>
+
+n'est pas sélectionné, le processus fils possède un identificateur unique,
+distinct de celui de l'appelant.
+<P>
+Cet attribut ne peut être utilisé que par le processus de démarrage du
+système (PID 0).
+<P>
+<DT><B>CLONE_THREAD</B>
+
+<DD>
+(Nouveauté Linux 2.4)
+Si
+<B>CLONE_THREAD</B>
+
+est présent, le fils est placé dans le même groupe de threads que le processus
+appelant.
+<P>
+Si
+<B>CLONE_THREAD</B>
+
+n'est pas indiqué, alors le fils est placé dans son propre (nouveau) groupe de
+threads, dont l'identificateur est identique au PID.
+<P>
+(Les groupes de threads sont une fonctionnalité ajoutées dans Linux 2.4 pour
+supporter la notion POSIX d'ensemble de threads partageant un même PID.
+Sous Linux 2.4, l'appel
+<B><A HREF="/cgi-bin/man/man2html?2+getpid">getpid</A></B>(2)
+
+renvoie l'identificateur du groupe de thread de l'appelant).
+<P>
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H3>sys_clone</H3>
+
+L'appel-système
+<B>sys_clone</B>
+
+ressemble plus à
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2),
+
+en ceci que l'exécution dans le processus fils continue à partir du point
+d'appel. Ainsi
+<B>sys_clone</B>
+
+ne nécessite que les arguments
+<I>flags</I>
+
+et
+<I>pile_fils</I>
+
+qui ont la même signification que pour
+<B>clone.</B>
+
+(Notez que l'ordre de ces arguments est différent de celui dans
+<B>clone</B>).
+
+<P>
+Une autre différence : pour
+<B>sys_clone</B>,
+
+l'argument
+<I>pile_fils</I>
+
+peut être nul, puisque la sémantique de copie-en-écriture assure
+que le fils recevra une copie indépendante des pages de la pile dès qu'un
+des deux processus la modifiera. Pour que cela fonctionne, il faut naturellement
+que
+<B>CLONE_VM</B>
+
+ne soit PAS présent.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+En cas de réussite, le PID du processus fils est renvoyé dans le fil d'exécution
+de l'appelant. En cas d'échec, -1 est renvoyé dans le contexte de l'appelant,
+aucun fils n'est créé, et
+<I>errno</I>
+
+contiendra le code d'erreur.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EAGAIN</B>
+
+<DD>
+Trop de processus en cours d'exécution.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour copier les parties du contexte du processus appelant
+qui doivent être dupliquée, ou pour allouer une structure de tâche pour
+le processus fils.
+<DT><B>EINVAL</B>
+
+<DD>
+Renvoyée par
+<B>clone</B>
+
+quand une valeur nulle a été indiquée pour le paramètre
+<I>pile_fils</I>.
+
+<DT><B>EINVAL</B>
+
+<DD>
+Les attributs
+<B>CLONE_NEWNS</B>
+
+et
+<B>CLONE_FS</B>
+
+ont été indiqués simultanément dans
+<I>flags</I>.
+
+<DT><B>EINVAL</B>
+
+<DD>
+<B>CLONE_THREAD</B>
+
+a été spécifié mais pas
+<B>CLONE_SIGHAND</B>
+
+(depuis Linux 2.5.35).
+<DT><B>EPERM</B>
+
+<DD>
+<B>CLONE_PID</B>
+
+a été réclamé par un processus au PID non-nul.
+<DT></DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<DD>
+Dans la version 2.1.97 du noyau,
+l'attribut
+<B>CLONE_PID</B>
+
+ne doit pas être utilisé, car d'autres parties du noyau et certaines
+applications considèrent que le PID est unique.
+<P>
+Il n'y a pas de définition pour
+<B>clone</B>
+
+dans la libc version 5. La version 6 (GlibC 2) fournit une définition de
+<B>clone</B>
+
+comme décrit ici.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>NOTES</H2>
+
+Pour les noyaux 2.4.7-2.4.18 l'attribut CLONE_THREAD entraîne l'attribut
+CLONE_PARENT.
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Les appels-système
+<B>clone</B>
+
+et
+<B>sys_clone</B>
+
+sont spécifiques à Linux et ne doivent pas être
+employés dans des programmes portables. Pour programmer des applications
+multithreads, il vaut mieux employer une bibliothèque qui implémente l'API
+des Threads Posix 1003.1c comme la bibliothèque LinuxThreads (incluse dans la GlibC 2). Voir
+<B>pthread_create</B>(3thr).
+
+<P>
+Cette page de manuel correspond aux noyaux 2.0.x, 2.1.x, 2.2.x, 2.4.x
+et aux GlibC 2.0.x et 2.1.x.
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+wait">wait</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+pthread_create">pthread_create</A></B>(3).
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">sys_clone</A><DD>
+</DL>
+<DT><A HREF="#lbAF">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAG">ERREURS</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">NOTES</A><DD>
+<DT><A HREF="#lbAJ">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAK">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:51 GMT, February 11, 2014
+</BODY>
+</HTML>

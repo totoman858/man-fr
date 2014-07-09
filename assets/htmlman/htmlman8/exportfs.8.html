@@ -1,0 +1,259 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of exportfs</TITLE>
+</HEAD><BODY>
+<H1>exportfs</H1>
+Section: Maintenance Commands (8)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+exportfs - gestion de la liste des systèmes de fichiers partagés par NFS
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>/usr/sbin/exportfs [-avi] [-o </B><I>options,..</I><B>] [</B><I>client:/chemin</I><B> ..]</B>
+<BR>
+
+<B>/usr/sbin/exportfs -r [-v]</B>
+<BR>
+
+<B>/usr/sbin/exportfs [-av] -u [</B><I>client:/chemin</I><B> ..]</B>
+<BR>
+
+<B>/usr/sbin/exportfs [-v]</B>
+<BR>
+
+<B>/usr/sbin/exportfs -f</B>
+<BR>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La commande <B>exportfs</B> est utilisée pour la gestion de la table courante 
+de systèmes de fichiers partagés par NFS.  Cette liste est enregistrée 
+dans un fichier spécifique nommé <B>/var/lib/nfs/xtab</B>. Ce fichier sera lu 
+par <B>mountd</B> dès qu'un client distant demandera l'accès pour le montage 
+d'une arborescence de fichier. Les parties de cette liste qui sont en cours 
+d'utilisation sont gardées dans la table des partages du noyau.
+<P>
+
+Ce fichier <B>xtab</B> est normalement initialisé avec la liste de tous les 
+systèmes de fichiers indiquée dans <B>/etc/exports</B> et ce, grâce à 
+l'utilisation de la commande <B>exportfs -a</B>.
+<P>
+
+Dans tous les cas, les administrateurs peuvent choisir, en utilisant 
+<B>exportfs</B>, d'ajouter ou de supprimer d'autres systèmes de fichiers sans 
+modifier le fichier <B>/etc/exports</B>.
+<P>
+
+<B>exportfs</B> et son programme associé <B>mountd</B> fonctionnent sous l'un des 
+deux modes suivants&nbsp;:&nbsp;le mode traditionnel, qui s'applique aux version 2.4 
+et précédentes du noyau Linux, et un mode plus récent sous les noyaux 2.6 
+et suivantes, accessible à la condition que le système de fichiers virtuel 
+de <B>nfsd</B> soit bien monté sous <B>/proc/fs/nfsd</B> ou <B>/proc/fs/nfs</B>. Si ce 
+système de fichiers n'est pas monté en 2.6, c'est le mode traditionnel qui 
+sera utilisé.
+<P>
+
+Dans le mode plus récent, <B>exportfs</B> ne donne aucune information au noyau, 
+il en fournit uniquement à <B>mountd</B> via le fichier <B>/var/lib/nfs/xtab</B>.  
+<B>mountd</B> écoutera les requêtes provenant du noyau, et fournira alors 
+l'information voulue.
+<P>
+
+Dans le mode traditionnel, toute demande de partage qui indique un hôte 
+spécifique (plutôt qu'un réseau ou un groupe de machines) est directement 
+inscrite dans la table des partages du noyau ainsi que dans le fichier 
+<B>/var/lib/nfs/xtab</B>. De plus, tout point de montage défini dans 
+<B>/var/lib/nfs/rmtab</B> correspondant à une demande de partage d'un hôte non 
+spécifique entraînera l'ajout, dans la table des partages du noyau, d'une 
+entrée correspondante à l'hôte indiqué dans <B>rmtab</B>.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-a</B><DD>
+Partage ou interrompt le partage de tous les répertoires.
+<DT><B>-o </B><I>options,...</I><DD>
+Stipule une liste d'options de partage, à la manière de <B><A HREF="/cgi-bin/man/man2html?5+exports">exports</A>(5)</B>.
+<DT><B>-i</B><DD>
+Ne tient aucun compte du fichier <B>/etc/exports</B>, de façon que les options 
+par défaut ou celles données sur la ligne de commande soient utilisées.
+<DT><B>-r</B><DD>
+Relance le partage de tous les répertoires. /var/lib/nfs/xtab est 
+synchronisé avec /etc/exports. Les entrées qui ont disparu de /etc/exports 
+seront supprimées de /var/lib/nfs/xtab. Dans la table des partages du 
+noyau, les entrées qui ne sont plus valables seront également enlevées.
+<DT><B>-u</B><DD>
+Interrompt le partage d'un ou plusieurs répertoires.
+<DT><B>-f</B><DD>
+Dans le mode plus récent, vide complètement la table des partages du 
+noyau. <B>mountd</B> générera une nouvelle entrée pour chaque client en 
+activité, dès que celui-ci fera sa prochaine requête.
+<DT><B>-v</B><DD>
+Mode verbeux. Lors d'un partage ou de l'arrêt d'un partage, affiche ce qui 
+se passe. Lors de l'affichage de la liste actuelle des partages, affiche 
+aussi la liste des options de partage.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>DISCUSSION</H2>
+
+
+<A NAME="lbAG">&nbsp;</A>
+<H3>Le partage de répertoires.</H3>
+
+Le premier synopsis montre comment utiliser la commande pour ajouter de 
+nouvelles entrées à la table des partages. Quand on lance <B>exportfs -a</B>, 
+tous les répertoires dans <B><A HREF="/cgi-bin/man/man2html?5+exports">exports</A>(5)</B> sont ajoutés à <B>xtab</B>, et la 
+liste résultante est entrée dans le noyau.
+<P>
+
+L'argument <I>host:/path</I> définit le répertoire à partager ainsi que 
+l'hôte ou les hôtes à qui il est offert. Tous les formats décrits dans 
+<B><A HREF="/cgi-bin/man/man2html?5+exports">exports</A>(5)</B> sont acceptés. Pour partager un répertoire à tout le monde, 
+indiquez tout simplement <I>:/path</I>.
+<P>
+
+Les options de partage pour un couple hôte/répertoire précis proviennent 
+de plusieurs sources. Il y a d'abord un jeu d'options par défaut, dont on 
+peut passer outre grâce aux entrées dans <B>/etc/exports</B> (sauf si l'option 
+<B>-i</B> a été utilisée). De surcroît, l'administrateur peut outrepasser 
+toute option de ces sources grâce à l'argument <B>-o</B>  qui attend une liste 
+d'options séparées par des virgules, présentée de la même façon que  
+dans <B><A HREF="/cgi-bin/man/man2html?5+exports">exports</A>(5)</B>. Ainsi, <B>exportfs</B> peut aussi être utilisé pour 
+modifier les options de partage d'un répertoire déjà partagé. 
+<P>
+
+Les modifications de la table des partages du noyau qu'utilise <B><A HREF="/cgi-bin/man/man2html?8+nfsd">nfsd</A>(8)</B> 
+sont prises en compte immédiatement après l'analyse de la ligne de 
+commande et la mise à jour du fichier <B>xtab</B>.
+<P>
+
+
+Les options de partage par défaut sont <B>sync,ro,root_squash,no_delay</B>.
+<A NAME="lbAH">&nbsp;</A>
+<H3>L'arrêt de partage de répertoires.</H3>
+
+Ce troisième synopsis montre comme arrêter le partage d'un répertoire 
+actuellement offert. Quand on lance <B>exportfs -ua</B>, toutes les entrées 
+présentes dans <B>xtab</B> sont retirées de la table des partages du noyau, 
+puis le fichier est vidé. Cela stoppe effectivement toute activité NFS.
+<P>
+
+Pour supprimer des entrées de partages particulières, vous pouvez indiquer 
+un couple <I>host:/path</I>. L'entrée indiquée sera supprimée de <B>xtab</B>, 
+ainsi que celle correspondante dans le noyau (si elle existe).
+<P>
+
+
+<A NAME="lbAI">&nbsp;</A>
+<H3>Afficher le contenu de la table des partages,</H3>
+
+
+L'usage de <B>exportfs</B> sans la moindre option affiche la liste actuelle des 
+systèmes de fichiers partagés. Lorsqu'on donne l'option <B>-v</B>, on obtient, 
+en plus, la liste des drapeaux spécifique à chaque partage.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+L'exemple suivant ajoute tous les répertoires indiqués dans <B>/etc/exports 
+à /var/lib/nfs/xtab</B>, puis les entrées de partages résultantes sont 
+inscrites dans le noyau :
+<P>
+
+<PRE>
+<B># exportfs -a</B>
+</PRE>
+
+<P>
+
+Pour offrir le répertoire <B>/usr/tmp</B> à l'hôte <B>djando</B>, en permettant 
+les écritures asynchrones, on pourrait faire cela :
+<P>
+
+<PRE>
+<B># exportfs -o async django:/usr/tmp</B>
+</PRE>
+
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>DÉPENDANCES</H2>
+
+Le partage à destination de réseaux IP, de domaines DNS ou NIS ne permet 
+pas l'accès NFS immédiat aux clients NFS de ces groupes. En fait, ce type 
+de partage est une indication pour <B><A HREF="/cgi-bin/man/man2html?8+mountd">mountd</A>(8)</B> d'honorer toute requête de 
+montage provenant de ces clients. Ce n'est normalement pas un gros 
+problème, puisque tout montage existant est préservé dans <B>rmtab</B> de 
+redémarrage en redémarrage.
+<P>
+
+Lors de l'arrêt d'un partage à destination de domaines ou de réseaux, 
+tout partage en cours pour les membres de ce groupe sera vérifié par 
+rapport à la liste des partages valides restants. Dans le cas où ce 
+partage n'est alors plus autorisé, il est supprimé.
+<P>
+
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+
+<B><A HREF="/cgi-bin/man/man2html?5+exports">exports</A>(5)</B>, <B><A HREF="/cgi-bin/man/man2html?8+mountd">mountd</A>(8)</B>
+<A NAME="lbAM">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Olaf Kirch, &lt;<A HREF="mailto:okir@monad.swb.de">okir@monad.swb.de</A>&gt;
+<BR>
+
+Neil Brown, &lt;<A HREF="mailto:neilb@cse.unsw.edu.au">neilb@cse.unsw.edu.au</A>&gt;
+<A NAME="lbAN">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Ce document est une traduction réalisée par Sylvain 
+Cherrier &lt;<A HREF="mailto:sylvain.cherrier@free.fr">sylvain.cherrier@free.fr</A>&gt; le 12 Janvier 2006.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité.
+<P>
+
+La version anglaise la plus à jour de ce document est toujours
+consultable via la commande : LANGUAGE=en man exportfs
+<P>
+
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas,
+toute erreur dans cette page de manuel.
+<P>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">DISCUSSION</A><DD>
+<DL>
+<DT><A HREF="#lbAG">Le partage de répertoires.</A><DD>
+<DT><A HREF="#lbAH">L'arrêt de partage de répertoires.</A><DD>
+<DT><A HREF="#lbAI">Afficher le contenu de la table des partages,</A><DD>
+</DL>
+<DT><A HREF="#lbAJ">EXEMPLES</A><DD>
+<DT><A HREF="#lbAK">DÉPENDANCES</A><DD>
+<DT><A HREF="#lbAL">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAM">AUTEURS</A><DD>
+<DT><A HREF="#lbAN">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:02 GMT, February 11, 2014
+</BODY>
+</HTML>

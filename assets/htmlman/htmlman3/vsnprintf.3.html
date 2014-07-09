@@ -1,0 +1,1338 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PRINTF</TITLE>
+</HEAD><BODY>
+<H1>PRINTF</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+printf, fprintf, sprintf, snprintf, vprintf, vfprintf, vsprintf, vsnprintf - Formatage des sorties.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<P>
+<B>int printf (const char *</B><I>format</I><B>, ...);</B>
+
+<BR>
+
+<B>int fprintf (FILE *</B><I>stream</I><B>, const char *</B><I>format</I><B>, ...);</B>
+
+<BR>
+
+<B>int sprintf (char *</B><I>str</I><B>, const char *</B><I>format</I><B>, ...);</B>
+
+<BR>
+
+<B>int snprintf (char *</B><I>str</I><B>, size_t </B><I>size</I><B>, const char *</B><I>format</I><B>, ...);</B>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/stdarg.h">stdarg.h</A>&gt;</B>
+
+<P>
+<B>int vprintf (const char *</B><I>format</I><B>, va_list </B><I>ap</I><B>);</B>
+
+<BR>
+
+<B>int vfprintf (FILE *</B><I>stream</I><B>, const char *</B><I>format</I><B>, va_list </B><I>ap</I><B>);</B>
+
+<BR>
+
+<B>int vsprintf (char *</B><I>str</I><B>, const char *</B><I>format</I><B>, va_list </B><I>ap</I><B>);</B>
+
+<BR>
+
+<B>int vsnprintf (char *</B><I>str</I><B>, size_t </B><I>size</I><B>, const char *</B><I>format</I><B>, va_list </B><I>ap</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les fonctions de la famille
+<B>printf</B>
+
+produisent des sorties en accord avec le
+<I>format</I>
+
+décrit plus bas. Les fonctions
+<B>printf</B>
+
+et
+<B>vprintf</B>
+
+écrivent leur sortie sur
+<I>stdout</I>,
+
+le flux de sortie standard.
+<B>fprintf</B>
+
+et
+<B>vfprintf</B>
+
+écrivent sur le flux
+<I>stream</I>indiqué.
+
+<B>sprintf</B>,
+
+<B>snprintf</B>,
+
+<B>vsprintf</B>
+
+et
+<B>vsnprintf</B>
+
+écrivent leurs sorties dans la chaîne de caractères
+<I>str</I>.
+
+<P>
+
+Les fontions
+<B>vprintf</B>,
+
+<B>vfprintf</B>,
+
+<B>vsprintf</B>,
+
+<B>vsnprintf</B>
+
+sont équivalentes aux fonctions
+<B>printf</B>,
+
+<B>fprintf</B>,
+
+<B>sprintf</B>,
+
+<B>snprintf</B>,
+
+respectivement, mais elles emploient un tableau va_list à la place
+d'un nombre variable d'arguments. Ces fonctions n'appellent pas la macro
+<I>va_end</I>,
+
+aussi la valeur de
+<I>ap</I>
+
+est-elle indéfinie après l'appel. Les applications devraient invoquer
+<I>va_end(ap)</I>
+
+elles-mêmes à la suites de ces routines.
+<P>
+
+Ces huit fonctions créent leurs sorties sous le contrôle d'une chaîne de
+<I>format</I>
+
+qui indique les conversions à apporter aux arguments suivants (ou
+accessibles à travers les arguments de taille variable
+de
+<B><A HREF="/cgi-bin/man/man2html?3+stdarg">stdarg</A></B>(3)).
+
+<A NAME="lbAE">&nbsp;</A>
+<H3>VALEUR RENVOYÉE</H3>
+
+Ces fonctions renvoient le nombre de caractères imprimés, sans compter
+le caractère nul `\0' final dans les chaînes.
+Les fonctions
+<B>snprintf</B> et <B>vsnprintf</B>
+
+n'écrivent pas plus de
+<I>size</I>
+
+octets (y compris le '\0' final).
+Si la sortie a été tronquée à cause de la limite, la valeur de retour
+est le nombre de caractères (sans le '\0' final) qui auraient été
+écrits dans la chaîne s'il y avait eu suffisament de place.
+Ainsi une valeur de retour
+<I>size</I>
+
+ou plus signifie que la sortie a été tronquée. (Voir aussi la section
+NOTES plus bas).
+Si une erreur de sortie s'est produite, une valeur négative est renvoyée.
+<A NAME="lbAF">&nbsp;</A>
+<H3>CHAÎNE DE FORMAT</H3>
+
+Le format de conversion est indiqué par une chaîne de caractères, commençant
+et se terminant dans son état de décalage initial.
+La chaîne de format est composée d'indicateurs : les caractères
+ordinaires (différents de
+<B>%</B>),
+
+qui sont copiés sans modification sur la sortie, et les spécifications
+de conversion, qui sont mises en correspondances avec les arguments suivants.
+Les spécifications de conversion sont introduites par le caractère
+<B>%</B>,
+
+et se terminent par un
+<I>indicateur de conversion</I>.
+
+Entre eux peuvent se trouver (dans l'ordre), zéro ou plusieurs
+<I>attributs</I>,
+
+une valeur optionnelle de
+<I>largeur minimal de champ</I>,
+
+une valeur optionnelle de
+<I>précision</I>,
+
+et un éventuel
+<I>modificateur de longueur</I>.
+
+<P>
+Les arguments doivent correspondre correctement (après les promotions
+de types) avec les indicateurs de conversion. Par défaut les arguments
+sont pris dans l'ordre indiqué, où chaque '*' et chaque indicateur de
+conversion réclament un nouvel argument (et où l'insuffisance en arguments
+est une erreur. On peut aussi préciser explicitement quel argument
+prendre, en écrivant, à chaque conversion, `%m$' au lieu de `%', et
+`*m$' au lieu de `*'. L'entier décimal m indique la position dans la liste
+d'arguments, l'indexation commençant à 1.
+Ainsi,
+<DL COMPACT><DT><DD>
+<PRE>
+        printf (&quot;%*d&quot;, width, num);
+</PRE>
+
+</DL>
+
+et
+<DL COMPACT><DT><DD>
+<PRE>
+        printf (&quot;%2$*1$d&quot;, width, num);
+</PRE>
+
+</DL>
+
+sont équivalents. La seconde notation permet de répéter plusieurs fois
+le même argument. Le standard C99 n'autorise pas le style utilisant `$',
+qui provient des Spécifications Single Unix. Si le style avec `$' est utilisé,
+il faut l'employer pour toutes conversions prenant un argument, et pour tous
+les arguments de largeur et de précision, mais on peut le mélanger avec des
+formats `%%' qui ne consomment pas d'arguments. Il ne doit pas y avoir de
+sauts dans les numéros des arguments spécifiés avec `$'. Par exemple si
+les arguments 1 et 3 sont spécifiés, l'argument 2 doit aussi être mentionné
+quelque part dans la chaîne de format.
+<P>
+Pour certaines conversions numériques, un caractère de séparation décimale
+(le point par défaut) est utilisé, ainsi qu'un caractère de regroupement par
+milliers '. Les véritables caractères dépendent de la localisation LC_NUMERIC.
+La localisation POSIX utilise `.' comme séparateur décimal, et n'a pas de caractère de regroupement.
+Ainsi,
+<DL COMPACT><DT><DD>
+<PRE>
+        printf (&quot;%'.2f&quot;, 1234567.89);
+</PRE>
+
+</DL>
+
+s'affichera comme 1234567.89 dans la localisation POSIX, 1234567,89 en
+localisation fr_FR, et 1.234.567,89 en localisation da_DK.
+<A NAME="lbAG">&nbsp;</A>
+<H3>CARACTÈRE D'ATTRIBUT</H3>
+
+Le caractère % peut être éventuellement suivi par un ou plusieurs attributs suivants :
+<DL COMPACT>
+<DT><B>#</B>
+
+<DD>
+indique que la valeur doit être convertie en une autre forme.
+Pour la conversion
+<B>o</B>
+
+le premier caractère de la chaîne de sortie vaudra zéro
+(en ajoutant un préfixe 0 si ce n'est pas déjà un zéro).
+Pour les conversions
+<B>x</B>
+
+et
+<B>X</B>
+
+une valeur non nulle reçoit le préfixe `0x' (ou `0X' pour l'indicateur
+<B>X</B>).
+
+Pour les conversions
+<B>a</B>,
+
+<B>A</B>,
+
+<B>e</B>,
+
+<B>E</B>,
+
+<B>f</B>,
+
+<B>g</B>,
+
+et
+<B>G</B>
+
+le résultat contiendra toujours un point décimal même si aucun chifre
+ne le suit (normalement, un point décimal n'est présent avec ces conversions
+que si des décimales le suivent). Pour les conversions
+<B>g</B>
+
+et
+<B>G</B>
+
+les zéros en tête ne sont pas éliminés, contrairement au comportement
+habituel.
+Pour les autres conversions, cet attribut n'a pas d'effet.
+<DT><B>0</B>
+
+<DD>
+indique le remplissage avec des zéros. Pour les conversions
+<B>d</B>,
+
+<B>i</B>,
+
+<B>o</B>,
+
+<B>u</B>,
+
+<B>x</B>,
+
+<B>X</B>,
+
+<B>a</B>,
+
+<B>A</B>,
+
+<B>e</B>,
+
+<B>E</B>,
+
+<B>f</B>,
+
+<B>F</B>,
+
+<B>g</B>,
+
+et
+<B>G</B>,
+
+la valeur est complétée à gauche avec des zéros plutot qu'avec des
+espaces.
+Si les attributs
+<B>0</B>
+
+et
+<B>-</B>
+
+apparaissent ensemble, l'attribut
+<B>0</B>
+
+est ignoré.
+Si une précision est fournie avec une conversion numérique
+<B></B>(<B>d</B>,
+
+<B>i</B>,
+
+<B>o</B>,
+
+<B>u</B>,
+
+<B>x</B>,
+
+et
+<B>X</B>),
+
+l'attribut
+<B>0</B>
+
+est ignoré.
+Pour les autres conversions, le comportement est indéfini.
+<DT><B>-</B>
+
+<DD>
+indique que la valeur doit être justifiée sur la limite gauche du champ
+(par défaut elle l'est à droite). Sauf pour la conversion
+<B>n</B>,
+
+les valeurs sont complétées à droite par des espaces, plutôt
+qu'a gauche par des zéros ou des blancs. Un attribut
+<B>-</B>
+
+surcharge un attribut
+<B>0</B>
+
+si les deux sont fournis.
+<DT><B>' '</B>
+
+<DD>
+(un espace) indique qu'un espace doit être laissé avant un nombre
+positif (ou une chaîne vide) produit par une conversion signée
+<DT><B>+</B>
+
+<DD>
+indique que le signe doit toujours être imprimé avant un nombre produit
+par une conversion signée. Un attribut
+<B>+</B>
+
+surcharge un attribut 'espace' si les deux sont fournis.
+</DL>
+<P>
+
+Les cinq caractères d'attributs ci-dessus sont définis dans le standard C,
+les spécifications SUSv2 en ajoute un :
+<DL COMPACT>
+<DT><B>'</B>
+
+<DD>
+Pour les conversions décimales
+<B></B>(<B>i</B>,
+
+<B>d</B>,
+
+<B>u</B>,
+
+<B>f</B>,
+
+<B>g</B>,
+
+<B>G</B>)
+
+indique que les chiffres d'un argument numérique doivent être groupés par millier
+en fonction de la localisation. Remarquez que de nombreuses versions de
+<B>gcc</B>
+
+n'accepte pas cet attribut et déclencheront un avertissement (warning). 
+SUSv2 n'inclue pas  %'F.
+</DL>
+<P>
+
+La GlibC 2.2 ajoute un caractère d'attribut supplémentaire.
+<DL COMPACT>
+<DT><B>I</B>
+
+<DD>
+Pour les conversions décimales
+<B></B>(<B>i</B>,
+
+<B>d</B>,
+
+<B>u</B>)
+
+la sortie emploie les chiffres alternatifs de la localisation s'il y en a.
+
+
+
+
+
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H3>LARGEUR DE CHAMP</H3>
+
+Un nombre optionnel ne commençant pas par un zéro, peut indiquer une largeur
+minimale de champ. Si la valeur convertie occupe moins de caractères que cette
+largeur, elle sera complétée par des espaces à gauche (ou à droite si l'attribut
+d'alignement à gauche a été fourni).
+À la place de la chaîne représentant le nombre décimal, on peut écrire `*' ou
+`*m$' (m étant entier) pour indiquer que la largeur du champ est fournie
+dans l'argument suivant, ou dans le m-ième argument, respectivement. 
+L'argument fournissant la largeur doit être de type
+<I>int</I>.
+
+Une largeur négative est considéré comme l'attribut `-' vu plus haut suivi
+d'une largeur positive.
+En aucun cas une largeur trop petite ne provoque la troncature du champ. Si
+le résultat de la conversion est plus grand que la largeur indiquée, le champ
+est élargi pour contenir le résultat.
+<A NAME="lbAI">&nbsp;</A>
+<H3>PRÉCISION</H3>
+
+Une précision eventuelle, sous la forme d'un point (`.')  suivi par
+un nombre.
+À la place de la chaîne représentant le nombre décimal, on peut écrire `*' ou
+`*m$' (m étant entier) pour indiquer que la précision est fournie
+dans l'argument suivant, ou dans le m-ième argument, respectivement. 
+L'argument fournissant la précision doit être de type
+<I>int</I>.
+
+Si la précision ne contient que le caractère `.', ou une valeur négative,
+elle est considérée comme nulle.
+Cette précision indique un nombre minimum de chiffres à faire apparaître lors des conversions
+<B>d</B>,
+
+<B>i</B>,
+
+<B>o</B>,
+
+<B>u</B>,
+
+<B>x</B>,
+
+et
+<B>X</B>,
+
+le nombre de décimales à faire apparaître pour les conversions
+<B>a</B>,
+
+<B>A</B>,
+
+<B>e</B>,
+
+<B>E</B>,
+
+<B>f,</B>
+
+et
+<B>F</B>,
+
+le nombre maximum de chiffres significatifs pour
+<B>g</B>
+
+et
+<B>G</B>,
+
+et le nombre maximum de caractères à imprimer depuis une chaîne
+pour les conversions
+<B>S</B>
+
+et
+<B>s</B>.
+
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H3>MODIFICATEUR DE LONGUEUR</H3>
+
+Ici, une conversion entière correspond à
+<B>d</B>,
+
+<B>i</B>,
+
+<B>o</B>,
+
+<B>u</B>,
+
+<B>x</B>,
+
+ou
+<B>X</B>.
+
+<P>
+<DL COMPACT>
+<DT><B>hh</B>
+
+<DD>
+La conversion entière suivante correspond à un
+<I>signed char</I>
+
+ou
+<I>unsigned char</I>,
+
+ou la conversion
+<B>n</B>
+
+suivante correspond à un argument pointeur sur un
+<I>signed char</I>.
+
+<P>
+<DT><B>h</B>
+
+<DD>
+La conversion entière suivante correspond à un
+<I>short int</I>
+
+ou
+<I>unsigned short int</I>,
+
+ou la conversion
+<B>n</B>
+
+suivante correspond à un argument pointeur sur un
+<I>short int</I>.
+
+<P>
+<DT><B>l</B>
+
+<DD>
+(elle) La conversion entière suivante correspond à un
+<I>long int</I>
+
+ou
+<I>unsigned long int</I>,
+
+ou la conversion
+<B>n</B>
+
+suivante correspond à un pointeur sur un
+<I>long int</I>,
+
+ou la conversion
+<B>c</B>
+
+suivante correspond à un argument
+<I>wint_t</I>,
+
+ou encore la conversion
+<B>s</B>
+
+suivante correspond à un pointeur sur un
+<I>wchar_t</I>.
+
+<P>
+<DT><B>ll</B>
+
+<DD>
+(elle-elle)
+La conversion entière suivante correspond à un
+<I>long long int</I>,
+
+ou
+<I>unsigned long long int</I>,
+
+ou la conversion
+<B>n</B>
+
+suivante correspond à un pointeur sur un
+<I>long long int</I>.
+
+<P>
+<DT><B>L</B>
+
+<DD>
+La conversion
+<B>a</B>,
+
+<B>A</B>,
+
+<B>e</B>,
+
+<B>E</B>,
+
+<B>f</B>,
+
+<B>F</B>,
+
+<B>g</B>,
+
+ou
+<B>G</B>
+
+suivante correspond à un argument
+<I>long double</I>.
+
+(C99 autorise %LF
+mais pas SUSv2).
+<DT><B>q</B>
+
+<DD>
+(`quad' BSD 4.4 et Linux sous libc5 seulement, ne pas utiliser)
+Il s'agit d'un synonyme pour
+<B>ll</B>.
+
+<DT><B>j</B>
+
+<DD>
+La conversion entière suivante correspond à un argument
+<I>intmax_t</I>
+
+ou
+<I>uintmax_t</I>.
+
+<P>
+<DT><B>z</B>
+
+<DD>
+La conversion entière suivante correspond à un argument
+<I>size_t</I>
+
+ou
+<I>ssize_t</I>.
+
+(La bibliothèque libc5 de Linux proposait l'argument
+<B>Z</B>
+
+pour cela, ne pas utiliser).
+<DT><B>t</B>
+
+<DD>
+La conversion entière suivante correspond à un argument
+<I>ptrdiff_t</I>.
+
+<P>
+</DL>
+<P>
+
+Les spécifications SUSv2 ne mentionnent que les modificateurs de longueur
+<B>h</B>
+
+(dans
+<B>hd</B>,
+
+<B>hi</B>,
+
+<B>ho</B>,
+
+<B>hx</B>,
+
+<B>hX</B>,
+
+<B>hn</B>),
+
+<P>
+<B>l</B>
+
+(dans
+<B>ld</B>,
+
+<B>li</B>,
+
+<B>lo</B>,
+
+<B>lx</B>,
+
+<B>lX</B>,
+
+<B>ln</B>,
+
+<B>lc</B>,
+
+<B>ls</B>)
+
+et
+<B>L</B>
+
+(dans
+<B>Le</B>,
+
+<B>LE</B>,
+
+<B>Lf</B>,
+
+<B>Lg</B>,
+
+<B>LG</B>).
+
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H3>INDICATEUR DE CONVERSION</H3>
+
+Un caractère indique le type de conversion à apporter. 
+Les indicateurs de conversion, et leurs significations sont :
+<DL COMPACT>
+<DT><B>d</B>, <B>i</B>
+
+<DD>
+L'argument
+<I>int</I>
+
+est convertie en un chiffre décimal signé.
+La précision, si elle est mentionné, correspond au nombre minimal de chiffres
+qui doivent apparaître. Si la conversion fournit moins de chiffres, le résultat
+est rempli à gauche avec des zéros. Par défaut la précision vaut 1.
+Lorsque 0 est converti avec une précision valant 0, la sortie est vide.
+<DT><B>o</B>, <B>u</B>, <B>x</B>, <B>X</B>
+
+<DD>
+L'argument 
+<I>unsigned int</I>
+
+est converti en un chiffre octal non-signé
+<B></B>(<B>o</B>),
+
+un chiffre décimal non-signé
+<B></B>(<B>u</B>),
+
+un chiffre héxadécimal non-signé 
+<B></B>(<B>x</B>
+
+et
+<B>X</B>).
+
+Les lettres
+<B>abcdef</B>
+
+sont utilisées pour les conversions avec
+<B>x</B>,
+
+les lettres
+<B>ABCDEF</B>
+
+sont utilisées pour les conversions avec
+<B>X</B>.
+
+La précision, si elle est indiquée, donne un nombre minimal de
+chiffres à faire apparaître. Si la valeur convertie nécessite moins
+de chiffres, elle est complétée à gauche avec des zéros.  La précision par défaut vaut 1.
+Lorsque 0 est converti avec une précision valant 0, la sortie est vide.
+<DT><B>e ,  E</B>
+
+<DD>
+L'argument réel, de type
+<I>double</I>,
+
+est arrondi et présenté avec la notation scientifique
+
+<B></B>[-]c<B>.</B>ccc<B>e</B>\*(Pmcc
+
+dans lequel se trouve un chiffre avant le point, puis un nombre de décimales
+égal à la précision demandée. Si la précision n'est pas indiquée, l'affichage
+contiendra 6 décimales. Si la précision vaut zéro, il n'y a pas de
+point décimal. Une conversion
+<B>E</B>
+
+utilise la lettre
+<B>E</B>
+
+(plutôt que
+<B>e</B>)
+
+pour introduire l'exposant.  Celui-ci contient toujours au moins deux chiffres.
+Si la valeur affichée est nulle, son exposant est 00.
+<DT><B>f</B>, <B>F</B>
+
+<DD>
+L'argument réel, de type
+<I>double</I>,
+
+est arrondi, et présenté avec la notation classique
+<B></B>[-]ccc<B>.</B>ccc,
+
+où le nombre de décimales est égal à la précision réclamée. Si la précision
+n'est pas indiquée, l'affichage se fera avec 6 décimales. Si la précision
+vaut zéro, aucun point n'est affiché. Lorsque le point est affiché, il y a
+toujours au moins un chiffre devant.
+<P>
+SUSv2 ne mentionne pas
+<B>F</B>
+
+et dit qu'il existe une chaîne de caractères représentant l'infini ou NaN.
+Le standard C99 précise `[-]inf' ou `[-]infinity' pour les infinis, et
+une chaîne commençant par `nan' pour NaN dans le cas d'une conversion
+<B>f</B>,
+
+et les chaînes `[-]INF' `[-]INFINITY' `NAN*' pour une conversion
+<B>F</B>.
+
+<P>
+<DT><B>g</B>, <B>G</B>
+
+<DD>
+L'argument réel, de type
+<I>double</I>,
+
+est converti en style
+<B>f</B>
+
+ou
+<B>e</B>
+
+(ou
+<B>E</B>
+
+pour la conversion
+<B>G</B>)
+
+La précision indique le nombre de décimales significatives. Si la précision
+est absente, une valeur par défaut de 6 est utilisée. Si la précision
+vaut 0, elle est considérée comme valant 1. La notation scientifique
+<B>e</B>
+
+est utilisée si l'exposant est inférieur à -4 ou supérieur ou égal à la
+précision démandée. Les zéros en fin de partie décimale sont supprimés.
+Un point decimal n'est affiché que s'il est suivi
+d'au moins un chiffre.
+<DT><B>a</B>, <B>A</B>
+
+<DD>
+(C99 mais pas SUSv2). Pour la conversion
+<B>a</B>,
+
+l'argument de type 
+<I>double</I>
+
+est transformé en notation hexadécimale (avec les lettres abcdef)
+dans le style
+<B></B>[-]<B>0x</B>h<B>.</B>hhhh<B>p</B>\*(Pmd;
+
+Pour la conversion
+<B>A</B>,
+
+le préfixe
+<B>0X</B>,
+
+les lettres ABCDEF et le séparateur d'exposant
+<B>P</B>
+
+sont utilisés.
+Il y a un chiffre hexadécimal avant la virgule, et le nombre de chiffres
+ensuite est égal à la précision. La précision par défaut suffit pour une
+représentation exacte de la valeur, si une représentation exacte est possible
+en base 2. Sinon elle est suffisament grande pour distinguer les valeurs de
+type
+<I>double</I>.
+
+Le chiffre avant le point décimal n'est pas spécifié pour les nombres
+non-normalisés, et il non-nul pour les nombres normalisés.
+<DT><B>c</B>
+
+<DD>
+S'il n'y a pas de modificateur
+<B>l</B>,
+
+l'argument entier, de type
+<I>int</I>,
+
+est converti en un
+<I>unsigned char</I>,
+
+et le caractère correspondant est affiché.
+Si un modificateur
+<B>l</B>
+
+est présent, l'argument de type
+<I>wint_t</I>
+
+(caractère large) est converti en séquence multi-octet par un appel
+à
+<B>wctomb</B>,
+
+avec un état de conversion débutant dans l'état initial. La chaîne
+multi-octet résultante est écrite.
+<DT><B>s</B>
+
+<DD>
+S'il n'y a pas de modificateur
+<B>l</B>,
+
+l'argument de type
+<I>const char *</I>
+
+est supposé être un pointeur sur un tableau de caractères (pointeur sur
+une chaîne). Les caractères du tableau sont écrits jusqu'au
+caractère
+<B>NUL</B>
+
+final, non compris. Si une précision est indiquée, seul ce nombre de
+caractères sont écrits. Si une précision est fournie, il n'y a pas
+besoin de caractère nul. Si la précision n'est pas donnée, ou si elle
+est supérieure à la longueur de la chaîne, le caractère 
+<B>NUL</B>
+
+final est nécessaire.
+<P>
+Si un modificateur
+<B>l</B>
+
+est présent, l'argument de type
+<I>const wchar_t *</I>
+
+est supposé être un pointeur sur un tableau de caractères larges.
+Les caractères larges du tableau sont convertis en une séquence
+de caractères multi-octets (chacun par un appel de
+<B>wctomb</B>,
+
+avec un état de conversion dans l'état initial avant le premier
+caractère large), ceci jusqu'au caractère large nul final compris.
+Les caractères multi-octets résultants sont écris jusqu'à l'octet
+nul final (non compris). Si une précision est fournie, il n'y a pas plus
+d'octets écrits que la précision indiquée, mais aucun caractère
+multi-octet n'est écrit partiellement. Remarquez que la précision
+concerne le nombre
+<I>d'octets</I>
+
+écrits, et non pas le nombre de
+<I>caractères larges</I>
+
+ou de
+<I>positions d'écrans</I>.
+
+La chaîne doit contenir un caractère large nul final, sauf si une précision
+est indiquée, suffisament petite pour que le nombre d'octets écrits
+la remplisse avant la fin de la chaîne.
+<DT><B>C</B>
+
+<DD>
+(dans SUSv2 mais pas dans C99)
+Synonyme de
+<B>lc</B>.
+
+Ne pas utiliser.
+<DT><B>S</B>
+
+<DD>
+(dans SUSv2 mais pas dans C99)
+Synonyme de
+<B>ls</B>.
+
+Ne pas utiliser.
+<DT><B>p</B>
+
+<DD>
+L'argument pointeur, du type
+<I>void *</I>
+
+est affiché en héxadécimal, comme avec
+<B>%#x</B>
+
+ou
+<B>%#lx</B>.
+
+<DT><B>n</B>
+
+<DD>
+Le nombre de caractères déjà écrits est stocké dans l'entier indiqué par
+l'argument pointeur de type
+<I>int *</I>.
+
+Aucun argument n'est converti.
+<DT><B>%</B>
+
+<DD>
+Un caractère `%' est écrit. Il n'y a pas de conversion. L'indicateur
+complet est `%%'.
+</DL>
+<P>
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+<BR>
+
+
+Pour afficher Pi avec cinq décimales :
+<DL COMPACT><DT><DD>
+<PRE>
+#include &lt;<A HREF="file:///usr/include/math.h">math.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;
+fprintf (stdout, &quot;pi = %.5f\n&quot;, 4 * atan (1.0));
+</PRE>
+
+</DL>
+
+<P>
+
+Pour afficher une date et une heure sous la forme `Sunday, July 3, 23:15',
+ou
+<I>jour_semaine</I>
+
+et
+<I>mois</I>
+
+sont des pointeurs sur des chaînes :
+<DL COMPACT><DT><DD>
+<PRE>
+#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;
+fprintf (stdout, &quot;%s, %s %d, %.2d:%.2d\n&quot;,
+         jour_semaine, mois, jour, heure, minute);
+</PRE>
+
+</DL>
+
+<P>
+
+De nombreux pays utilisent un format de date différent, comme jour-mois_année.
+Une version internationale doit donc être capable d'afficher
+les arguments dans l'ordre indiqué par le format&nbsp;:
+<DL COMPACT><DT><DD>
+<PRE>
+#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;
+fprintf(stdout, format,
+        jour_semaine, mois, day, hour, min);
+</PRE>
+
+</DL>
+
+où le
+<I>format</I>
+
+dépend de la localisation et peut permuter les argument. Avec la valeur
+<DL COMPACT><DT><DD>
+<PRE>
+&quot;%1$s, %3$d. %2$s, %4$d:%5$.2d\n&quot;
+</PRE>
+
+</DL>
+
+On peut obtenir `Dimanche, 3 Juillet, 23:15'.
+<P>
+
+Pour allouer une chaîne de taille suffisante et écrire dedans
+(code correct aussi bien pour GlibC 2.0 que GlibC 2.1)&nbsp;:
+<DL COMPACT><DT><DD>
+<PRE>
+#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/stdarg.h">stdarg.h</A>&gt;
+char *
+make_message(const char *fmt, ...) {
+   /* Supposons que 100 octets suffisent. */
+   int n, size = 100;
+   char *p;
+   va_list ap;
+   if ((p = malloc (size)) == NULL)
+      return NULL;
+   while (1) {
+      /* Essayons avec l'espace alloué. */
+      va_start(ap, fmt);
+      n = vsnprintf (p, size, fmt, ap);
+      va_end(ap);
+      /* Si ça marche, renvoyer la chaîne. */
+      if (n &gt; -1 &amp;&amp; n &lt; size)
+         return p;
+      /* Sinon réessayer avec plus de place */
+      if (n &gt; -1)    /* GlibC 2.1 */
+         size = n+1; /* ce qu'il fallait */
+      else           /* GlibC 2.0 */
+         size *= 2;  /* deux fois plus */
+      if ((p = realloc (p, size)) == NULL) 
+         return NULL;
+   }
+}
+</PRE>
+
+</DL>
+
+<P>
+<A NAME="lbAM">&nbsp;</A>
+<H2>NOTES</H2>
+
+L'implémentation des fonctions
+<B>snprintf</B>
+
+et
+<B>vsnprintf</B>
+
+de la GlibC se conforme au standard C99, et se comporte comme décrit plus
+haut depuis la GlibC 2.1. Jusqu'à la GlibC 2.0.6, elles renvoyaient
+-1 si la sortie avait été tronquée.
+<A NAME="lbAN">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Les fonctions
+<B>fprintf</B>,
+
+<B>printf</B>,
+
+<B>sprintf</B>,
+
+<B>vprintf</B>,
+
+<B>vfprintf</B>,
+
+et
+<B>vsprintf</B>
+
+sont conformes à ANSI X3.159-1989 (``ANSI C'') et ISO/IEC 9899:1999
+(``ISO C99''). 
+Les fonctions
+<B>snprintf</B>,
+
+et
+<B>vsnprintf</B>
+
+sont conformes à ISO/IEC 9899:1999.
+<P>
+
+En ce qui concerne la valeur de retour de
+<B>snprintf</B>,
+
+SUSv2 et C99 sont en contradiction : lorsque
+<B>snprintf</B>
+
+est appelée avec un argument
+<I>size</I>=<I>0</I>
+
+lors SUSv2 précise une valeur de retour indéterminée, autre que 1, alors
+que C99 autorise
+<I>str</I>
+
+à être NULL dans ce cas, et réclame en valeur de retour (comme toujours)
+le nombre de caractères qui auraient été écrits si la chaîne de sortie avait
+été assez grande.
+<P>
+
+La bibliothèque libc4 de Linux connaissait les 5 attributs standards du C.
+Elle connaissait les modificateurs de longueur h, l, L et les conversions
+cdeEfFgGinopsuxX, où F était synonyme de f.
+De plus elle acceptait D, O, U comme synonymes de ld, lo et lu.
+(Ce qui causa de sérieux bogues par la suite lorsque le support de
+%D disparut). Il n'y avait pas de séparateur décimal dépendant de la
+localisation, pas de séparateur des milliers, par de NaN ou d'infinis, et
+pas de %m$ ni *m$.
+<P>
+
+La bibliothèque libc5 de Linux connaissait les 5 attributs standards C, 
+l'attribut ', la
+localisation, %m$ et *m$. Elle connaissait les modificateurs de longueur
+h, l, L, Z, q, mais acceptait L et q pour les &quot;long double&quot; et les
+&quot;long long integer&quot; (ce qui est un bogue). Elle ne reconnaissait plus FDOU, mais ajoutait le caractère de conversion
+<B>m</B>,
+
+qui affiche
+<I>strerror (errno)</I>.
+
+<P>
+
+La bibliothèque GlibC 2.0 ajouta les caractères de conversion C et S.
+<P>
+
+La bibliothèque GlibC 2.1 ajouta les modificateurs de longueur hh, t, z, et les caractères de conversion a, A.
+<P>
+
+La bibliothèque GlibC 2.2. ajouta le caractère de conversion F avec la 
+sémantique C99, et le caractère d'attribut I.
+<A NAME="lbAO">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Unix V7 définissait les trois routines
+<B>printf</B>,
+
+<B>fprintf</B>,
+
+<B>sprintf</B>,
+
+et l'attribut -, la largeur ou la précision *, le modificateur de longueur l,
+et les conversions doxfegcsu, ainsi que D, O, U, X comme synonymes de ld, lo, lu, lx.
+Ceci est vrai pour BSD 2.9.1, mais BSD 2.10 avait les attributs
+#, + et &lt;espace&gt; mais ne mentionnait plus D, O, U, X.
+BSD 2.11 avait
+<B>vprintf</B>,
+
+<B>vfprintf</B>,
+
+<B>vsprintf</B>,
+
+et signalait le problème de D, O, U, X.
+BSD 4.3 Reno avait l'attribut 0, les modificateurs de longueur h et L,
+ainsi que les conversions n, p, E, G, X (avec sa signification actuelle),
+et dénonçait D, O, U.
+BSD 4.4 introduisit les fonctions
+<B>snprintf</B>
+
+et 
+<B>vsnprintf</B>,
+
+et le modificateur de longueur q.
+FreeBSD avait aussi les fonctions
+<I>asprintf</I>
+
+et
+<I>vasprintf</I>,
+
+qui allouaient un buffer assez grand pour
+<B>sprintf</B>.
+
+Dans la GlibC, il existe des fonctions
+<I>dprintf</I>
+
+et
+<I>vdprintf</I>
+
+qui affichent leur résultat sur un descripteur de fichier plutôt qu'un flux.
+<A NAME="lbAP">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Comme
+<B>sprintf</B>
+
+et
+<B>vsprintf</B>
+
+ne font pas de suppositions sur la longueur des chaînes, le programme appelant
+doit s'assurer de ne pas déborder l'espace d'adressage. C'est souvent difficile.
+Notez que la longueur des chaînes peut varier avec la localisation et être
+difficilement prévisible. Il faut alors utiliser
+<B>snprintf</B>
+
+ou
+<B>vsnprintf</B>
+
+à la place (ou encore
+<B>asprintf</B>
+
+et
+<B>vasprintf</B>).
+
+<P>
+
+La libc4.[45] de Linux n'avait pas
+<B>snprintf</B>,
+
+mais proposait une bibliothèque libbsd qui contenait un
+<B>snprintf</B>
+
+équivalent à
+<B>sprintf</B>,
+
+c'est à dire qui ignorait l'argument
+<I>size</I>.
+
+Ainsi, l'utilisation de
+<B>snprintf</B>
+
+avec les anciennes libc4 pouvait conduire à de sérieux problèmes de sécurité.
+<P>
+
+Un code tel que
+<B>printf(</B><I>foo</I><B>);</B>
+
+indique souvent un bogue, car
+<I>foo</I>
+
+peut contenir un caractère %. Si
+<I>foo</I>
+
+vient d'une saisie non sécurisée, il peut contenir %n, ce qui autorise
+<B>printf</B>
+
+à écrire dans la mémoire, et crée une faille de sécurité.
+
+
+
+<A NAME="lbAQ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+printf">printf</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?3+asprintf">asprintf</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+dprintf">dprintf</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+wcrtomb">wcrtomb</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+wprintf">wprintf</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+scanf">scanf</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+locale">locale</A></B>(5)
+
+<A NAME="lbAR">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CHAÎNE DE FORMAT</A><DD>
+<DT><A HREF="#lbAG">CARACTÈRE D'ATTRIBUT</A><DD>
+<DT><A HREF="#lbAH">LARGEUR DE CHAMP</A><DD>
+<DT><A HREF="#lbAI">PRÉCISION</A><DD>
+<DT><A HREF="#lbAJ">MODIFICATEUR DE LONGUEUR</A><DD>
+<DT><A HREF="#lbAK">INDICATEUR DE CONVERSION</A><DD>
+</DL>
+<DT><A HREF="#lbAL">EXEMPLES</A><DD>
+<DT><A HREF="#lbAM">NOTES</A><DD>
+<DT><A HREF="#lbAN">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAO">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAP">BOGUES</A><DD>
+<DT><A HREF="#lbAQ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAR">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:26 GMT, February 11, 2014
+</BODY>
+</HTML>

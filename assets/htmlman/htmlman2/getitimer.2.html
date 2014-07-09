@@ -1,0 +1,269 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETITIMER</TITLE>
+</HEAD><BODY>
+<H1>GETITIMER</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getitimer, setitimer - Lire / écrire la valeur d'une temporisation.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+
+<DL COMPACT>
+<DT>
+<B>#include &lt;<A HREF="file:///usr/include/sys/time.h">sys/time.h</A>&gt;</B>
+
+<P>
+<DT>
+<B>int getitimer(int</B>
+
+<I>which</I><B>,</B>
+
+<B>struct itimerval</B>
+
+<B>*</B><I>value</I><B>);</B>
+
+<DT>
+<B>int setitimer(int</B>
+
+<I>which</I><B>,</B>
+
+<B>const struct itimerval</B>
+
+<B>*</B><I>value</I><B>,</B>
+
+<B>struct itimerval</B>
+
+<B>*</B><I>ovalue</I><B>);</B>
+
+
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<DD>Le système fournit pour chaque processus trois temporisations, chacune avec
+un fonctionnement particulier.
+Lorsqu'une temporisation expire, un signal est envoyé au processus 
+et la temporisation redémarre éventuellement.
+<DL COMPACT>
+<DT><B>ITIMER_REAL</B>
+
+<DD>
+décroît en temps réel et un signal
+<B>SIGALRM</B>
+
+est émis à l'expiration du délai.
+<DT><B>ITIMER_VIRTUAL</B>
+
+<DD>
+décroît uniquement quand le processus s'exécute, et un signal
+<B>SIGVTALRM</B>
+
+est émis à l'expiration du délai.
+<DT><B>ITIMER_PROF</B>
+
+<DD>
+décroît à la fois quand le processus s'exécute, et quand le processeur
+exécute des fonctions systèmes à la demande du processus.
+Ce timer, utilisé conjointement avec
+<B>ITIMER_VIRTUAL,</B>
+
+est généralement utilisé pour obtenir le profil d'exécution du processus
+entre les fonctionnalités utilisateur et le noyau.
+<B>SIGPROF</B>
+
+est émis à l'expiration du délai.
+</DL>
+<P>
+
+Les valeurs des temporisations sont définies avec les structures suivantes :
+
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct itimerval {
+  struct timeval it_interval; /* valeur suivante */
+  struct timeval it_value;    /* valeur actuelle */
+};
+
+struct timeval {
+  long tv_sec;                /* secondes        */
+  long tv_usec;               /* micro secondes  */
+};
+</PRE>
+
+</DL>
+
+
+<P>
+
+La fonction
+<B><A HREF="/cgi-bin/man/man2html?2+getitimer">getitimer</A></B>(2)
+
+renseigne la structure pointée par
+<I>value</I>
+
+avec le paramétrage de la temporisation
+<I>which</I>
+
+(parmi
+<B>ITIMER_REAL</B>,
+
+<B>ITIMER_VIRTUAL</B>,
+
+ou
+<B>ITIMER_PROF</B>).
+
+L'élément
+<B>it_value</B>
+
+est rempli avec le délai restant dans la temporisation, ou zéro si la
+temporisation est désactivée. De même
+<B>it_interval</B>
+
+sera rempli avec la valeur originale de la temporisation.
+La fonction
+<B><A HREF="/cgi-bin/man/man2html?2+setitimer">setitimer</A></B>(2)
+
+positionne la temporisation avec les valeurs de
+<I>value</I>.
+
+Si
+<I>ovalue</I>
+
+est non nulle, les paramètres précédents de la temporisation y sont
+inscrits.
+<P>
+
+Les temporisations décroissent de
+<I>it_value</I>
+
+à zéro, déclenchent un signal, et sont replacées à
+<I>it_interval</I>.
+
+Une temporisation s'arrête si elle est mise à zéro
+(it_value
+
+vaut zéro) ou bien elle expire et
+<I>it_interval</I>
+
+vaut zéro.
+<P>
+
+Les deux champs
+<I>tv_sec</I>
+
+et
+<I>tv_usec</I>
+
+sont utilisés pour déterminer la durée d'une temporisation.
+<P>
+
+Les temporisations n'expirent jamais avant la fin du temps
+requis, et expirent plutôt avec un délai court et constant
+après la limite. Ce délai dépend de la résolution du timer
+système (actuellement 10 ms).
+A l'expiration un signal est déclenché puis la temporisation
+réinitialisée.
+Si la temporisation expire alors que le processus est actif
+(toujours vrai avec
+<B>ITIMER_VIRTUAL</B>)
+
+le signal sera délivré immédiatement. Autrement il y aura
+un petit délai avant réception du signal, dépendant de la
+charge du système.
+<P>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYEÉ</H2>
+
+<B>getitimer</B> et <B>setitimer</B>
+
+renvoient 0 s'ils réussissent, ou -1 s'ils échouent, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EFAULT</B>
+
+<DD>
+<I>value</I>
+
+ou
+<I>ovalue</I>
+
+pointent en dehors de l'espace d'adressage accessible.
+<DT><B>EINVAL</B>
+
+<DD>
+<I>which</I>
+
+n'est pas dans la liste
+<B>ITIMER_REAL</B>,
+
+<B>ITIMER_VIRT</B>,
+
+ou
+<B>ITIMER_PROF</B>.
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, 4.4BSD (Cet appel est apparu dans 4.2BSD).
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+gettimeofday">gettimeofday</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigaction">sigaction</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+signal">signal</A></B>(2).
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Sous Linux, l'émission et la réception d'un signal sont distincts, et
+un même signal ne peut pas être émis deux fois de suite si le premier
+n'a pas été reçu.
+Il est ainsi possible qu'avec une charge système très élevée, 
+une temporisation
+<B>ITIMER_REAL</B>
+
+expire avant que le signal d'une expiration précédente n'ait été reçu.
+Le second signal sera alors perdu.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYEÉ</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">BOGUES</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:52 GMT, February 11, 2014
+</BODY>
+</HTML>

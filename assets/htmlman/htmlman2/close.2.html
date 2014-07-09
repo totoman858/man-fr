@@ -1,0 +1,149 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CLOSE</TITLE>
+</HEAD><BODY>
+<H1>CLOSE</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+close - Fermer un descripteur de fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<B>int close(int </B><I>fd</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>close</B>
+
+ferme le descripteur
+<I>fd</I>,
+
+de manière à ce qu'il ne référence plus
+aucun fichier, et puisse être réutilisé. Tous les verrouillages sur le
+fichier qui lui était associé, appartenant au processus, sont supprimés
+(quelque soit le descripteur qui fut utilisé pour obtenir le verrouillage).
+<P>
+
+Si
+<I>fd</I>
+
+est la dernière copie d'un descripteur de fichier donné, les ressources
+qui lui sont associées sont libérées. 
+Si le descripteur était la dernière référence sur un
+fichier supprimé avec
+<B><A HREF="/cgi-bin/man/man2html?2+unlink">unlink</A></B>(2),
+
+le fichier est effectivement effacé.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>close</B>
+
+renvoie 0 s'il réussit, ou -1 en cas d'échec, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+Le descripteur de fichier
+<I>fd</I>
+
+est invalide
+<DT><B>EINTR</B>
+
+<DD>
+L'appel-système
+<B>close</B>()
+
+a été interrompu par un signal.
+<DT><B>EIO</B>
+
+<DD>
+Une erreur d'entrée-sortie s'est produit.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID, POSIX, X/OPEN, BSD 4.3. SVr4 documente une
+condition d'erreur supplémentaire ENOLINK.
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Ne pas vérifier la valeur de retour de close est une pratique courante
+mais également une grave erreur de programmation. Il est possible qu'une erreur
+correspondant à un appel
+<I><A HREF="/cgi-bin/man/man2html?2+write">write</A></I>(2)
+
+antérieur ne soit rapportée que lors du
+<B>close</B>
+
+final.
+Ne pas vérifier la valeur de retour lorsque l'on ferme un fichier peut
+conduire à une perte silencieuse de données. Ceci est principalement
+vrai dans le cas de systèmes de fichiers NFS, ou avec l'utilisation des
+quotas de disques.
+<P>
+
+Une fermeture sans erreur ne garantit pas que les données on été vraiment écrites sur le disque, car le noyau
+repousse les écritures le plus tard possible. Il n'est pas fréquent qu'un système de fichiers vide les buffers
+dès la fermeture d'un flux. Si vous désirez vous assurer que les informations sont en sûreté sur le disque,
+utilisez
+<B><A HREF="/cgi-bin/man/man2html?2+fsync">fsync</A></B>(2)
+
+(mais des considérations matérielles entrent en jeu à ce moment).<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><BR>
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+shutdown">shutdown</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+unlink">unlink</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fclose">fclose</A></B>(3).
+
+<B><A HREF="/cgi-bin/man/man2html?3+fsync">fsync</A></B>(3).
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:58 GMT, February 11, 2014
+</BODY>
+</HTML>

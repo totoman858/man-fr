@@ -1,0 +1,238 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FUSER</TITLE>
+</HEAD><BODY>
+<H1>FUSER</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fuser - Identifier les processus qui utilisent un fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>fuser</B>
+
+[<B>-a</B>|<B>-s</B>]
+
+[-4<B>|</B>-6]
+
+[<B>-n&nbsp;</B><I>espace</I>]
+
+[<B>-</B><I>signal</I><B></B>]
+
+[<B>-kmuv</B>]
+
+<I>nom ...</I>
+
+<BR>
+
+<B>fuser</B>
+
+-l
+
+<BR>
+
+<B>fuser </B>
+
+-V
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>fuser</B>
+
+affiche les PIDs des processus qui utilisent les fichiers ou les systèmes
+de fichiers indiqués.
+Par défaut, il affiche les PIDs suivis d'une lettre indiquant
+le type d'accès.
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>c</B><DD>
+répertoire courant.
+<DT><B>e</B><DD>
+programme en cours d'exécution.
+<DT><B>f</B><DD>
+fichier ouvert. <B>f</B> est omis par défaut.
+<DT><B>r</B><DD>
+répertoire racine
+<DT><B>m</B><DD>
+fichier projeté en mémoire, ou bibliothèque partagée.
+</DL>
+</DL>
+
+<P>
+
+<B>fuser</B> renvoie un code de retour non nul si aucun des fichiers
+mentionnés n'est utilisé, ou en cas d'erreur fatale. Si au moins
+un accès est détecté pour l'un des fichiers mentionnés, <B>fuser</B>
+renvoie zéro.
+<P>
+
+Pour rechercher les processus utilisant les sockets UDP ou TCP, l'espace de
+nom correspondant doit être sélectionné avec l'option <B>-n</B>. Par défaut
+<B>fuser</B> recherchera les socket IPv4 et IPv6. Pour modifier ceci, utilisez
+les options <B>-4</B> ou <B>-6</B>. Les sockets peuvent être spécifiées par
+leurs port local ou distant et l'adresse distante. Tous les champs sont
+facultatifs, mais il faut une virgule après un champ absent&nbsp;:
+<P>
+<B>[</B><I>port_lcl</I><B>][</B>,<B>[</B><I>hôte_dst</I><B>][</B>,<B>[</B><I>port_dst</I><B>]]]</B>
+
+<P>
+Pour les adresses IP et numéros de port, on peut utiliser des numéros ou
+des noms symboliques.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-a</B><DD>
+Montrer tous les fichiers mentionnés sur la ligne de commande. Par défaut seuls
+les fichiers utilisés par un processus au moins seront affichés.
+<DT><B>-k</B><DD>
+Envoyer un signal aux processus utilisant les fichiers. Si le modificateur
+<B>-</B><I>signal</I>, n'est pas mentionné, c'est le signal SIGKILL qui est
+envoyé. Un processus <B>fuser</B> ne se tue jamais lui-même, mais il peut
+tuer d'autres processus <B>fuser</B>.
+L'UID effectif du processus exécutant <B>fuser</B> est remplacé par
+son UID réel avant l'émission du signal.
+<DT><B>-l</B><DD>
+Afficher la liste des noms de signaux disponibles.
+<DT><B>-m</B><DD>
+<I>fichier</I> se trouve sur un système de fichiers monté, ou est un
+périphérique bloc monté.
+Tous les processus accédant aux fichiers sur ce système seront affichés.
+Si le nom d'un répertoire est mentionné, il est automatiquement
+remplacé par <I>fichier</I>/. pour inclure tous les systèmes de fichiers
+pouvant être montés en dessous de lui.
+<DT><B>-n&nbsp;</B><I>espace</I><DD>
+Sélectionner un espace de noms différent. Sont supportés&nbsp;: <B>file</B> (les
+noms de fichiers, par défaut), <B>udp</B> et <B>tcp</B> pour les ports locaux.
+Pour les ports on peut indiquer un numéro ou un nom de service. S'il n'y a
+pas d'ambiguïté, le raccourci <I>nom</I>/<I>espace</I> est accepté.
+<DT><B>-s</B><DD>
+Agir en silence. Les options <B>-a</B>, <B>-u</B> et <B>-v</B> sont alors
+ignorées.
+<DT><B>-</B><I>signal</I><DD>
+Envoyer le signal indiqué plutôt que SIGKILL. On peut mentionner soit le
+nom du signal (ex : <B>-HUP</B>), soit son numéro (ex : <B>-1</B>).
+<DT><B>-u</B><DD>
+Ajouter à chaque PID le nom d'utilisateur de son propriétaire.
+<DT><B>-v</B><DD>
+Mode volubile. Les processus sont présentés à la manière de <B>ps</B>.
+Les champs PID, USER et COMMAND sont similaires à ceux de <B>ps</B>.
+ACCESS indique le type d'utilisation du fichier.
+<DT><B>-V</B><DD>
+Afficher le numéro de version.
+<DT><B>-4</B><DD>
+Ne chercher que des sopckets IPv4. Cette option ne peut pas être utilisée
+avec <B>-6</B> et n'a d'effet que sur les espaces de nom tcp et udp.
+<DT><B>-6</B><DD>
+Ne chercher que des sopckets IPv6. Cette option ne peut pas être utilisée
+avec <B>-4</B> et n'a d'effet que sur les espaces de nom tcp et udp.
+<DT><B>-</B><DD>
+Remettre toutes les options à leurs valeurs par défaut, et le signal à SIGKILL.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<PRE>
+/proc   Emplacement du système de fichiers proc
+</PRE>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+<B>fuser -km /home</B> tue tous les processus accédant de quelque manière que ce
+soit au système de fichiers /home.
+<P>
+
+<B>if fuser -s /dev/ttyS1; then :; else </B><I>qqchose</I>; fi appelle
+<I>qqchose</I> si aucun autre processus n'utilise /dev/ttyS1.
+<P>
+
+<B>fuser telnet/tcp</B> affiche tous les processus du port (local) TELNET.
+<A NAME="lbAH">&nbsp;</A>
+<H2>RESTRICTIONS</H2>
+
+Les processus accédant plusieurs fois au même fichier, ou au même système
+de fichiers ne sont affichés qu'une fois.
+<P>
+
+Si le même objet est spécifié plusieurs fois sur la ligne de commande,
+certaines occurrences peuvent être ignorées.
+<P>
+
+<B>fuser</B> ne dispose de toutes les informations que s'il est exécuté
+avec les privilèges de root. Ainsi, des fichiers ouverts par des processus
+appartenant à d'autres utilisateurs n'apparaîtront peut-être pas, et des
+exécutables peuvent n'être vus qu'en tant que projection en mémoire.
+<P>
+
+L'installation de <B>fuser</B> en tant que SUID root évite les problèmes
+d'informations incomplètes, mais peut être gênant pour des raisons de
+sécurité et de discrétion.
+<P>
+
+Les espaces de nom <B>udp</B> et <B>tcp</B>, et les sockets du domaine UNIX
+ne fonctionnent pas avec les noyaux antérieurs au 1.3.78.
+<P>
+
+<B>udp</B> et <B>tcp</B> fonctionnent avec IPv6 et IPv4, mais les adresses
+sont uniquement du type IPv4.
+<P>
+
+Les accès par le noyau ne sont affichés qu'avec l'option <B>-v</B>.
+<P>
+
+L'option <B>-k</B> ne fonctionne que sur les processus. Si l'utilisateur est
+le noyau, <B>fuser</B> affichera un message mais ne fera rien de plus.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Werner Almesberger &lt;<A HREF="mailto:werner.almesberger@lrc.di.epfl.ch">werner.almesberger@lrc.di.epfl.ch</A>&gt;
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+kill">kill</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+killall">killall</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+lsof">lsof</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?1+ps">ps</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+kill">kill</A></B>(2)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">EXEMPLES</A><DD>
+<DT><A HREF="#lbAH">RESTRICTIONS</A><DD>
+<DT><A HREF="#lbAI">AUTEUR</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:43 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,351 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SYSCALLS</TITLE>
+</HEAD><BODY>
+<H1>SYSCALLS</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+liste - liste des appels-systèmes.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+Les appels systèmes de Linux 2.4.
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+L'appel-système est l'interface fondamentale entre une application et
+le noyau Linux. Avec Linux 2.4.17, il existe 1100 appels-système indiqués dans 
+<I>/usr/include/asm-*/unistd.h</I>.
+
+Cette page de manuel liste ceux communs à la plupart des plates-formes, et vous
+fournit donc des liens hypertexte si vous utilisez un logiciel de présentation
+du manuel permettant les parcours.
+<P>
+<A HREF="/cgi-bin/man/man2html?2+_llseek">_llseek</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+_newselect">_newselect</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+_sysctl">_sysctl</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+accept">accept</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+access">access</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+acct">acct</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+adjtimex">adjtimex</A>(2),
+afs_syscall,
+<A HREF="/cgi-bin/man/man2html?2+alarm">alarm</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+bdflush">bdflush</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+bind">bind</A>(2),
+break,
+<A HREF="/cgi-bin/man/man2html?2+brk">brk</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+cacheflush">cacheflush</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+capget">capget</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+capset">capset</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+chdir">chdir</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+chmod">chmod</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+chown">chown</A>(2), chown32,
+<A HREF="/cgi-bin/man/man2html?2+chroot">chroot</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+clone">clone</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+close">close</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+connect">connect</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+creat">creat</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+create_module">create_module</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+delete_module">delete_module</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+dup">dup</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+dup2">dup2</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+execve">execve</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+exit">exit</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+fchdir">fchdir</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+fchmod">fchmod</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+fchown">fchown</A>(2), fchown32,
+<A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A>(2), fcntl64,
+<A HREF="/cgi-bin/man/man2html?2+fdatasync">fdatasync</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+flock">flock</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+fork">fork</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+fstat">fstat</A>(2), fstat64,
+<A HREF="/cgi-bin/man/man2html?2+fstatfs">fstatfs</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+fsync">fsync</A>(2),
+ftime,
+<A HREF="/cgi-bin/man/man2html?2+ftruncate">ftruncate</A>(2), ftruncate64,
+<A HREF="/cgi-bin/man/man2html?2+get_kernel_syms">get_kernel_syms</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+getcwd">getcwd</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+getdents">getdents</A>(2), getdents64,
+<A HREF="/cgi-bin/man/man2html?2+getegid">getegid</A>(2), getegid32,
+<A HREF="/cgi-bin/man/man2html?2+geteuid">geteuid</A>(2), geteuid32,
+<A HREF="/cgi-bin/man/man2html?2+getgid">getgid</A>(2), getgid32,
+<A HREF="/cgi-bin/man/man2html?2+getgroups">getgroups</A>(2), getgroups32,
+<A HREF="/cgi-bin/man/man2html?2+getitimer">getitimer</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+getpagesize">getpagesize</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+getpeername">getpeername</A>(2),
+getpmsg,
+<A HREF="/cgi-bin/man/man2html?2+getpgid">getpgid</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+getpgrp">getpgrp</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+getpid">getpid</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+getppid">getppid</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+getpriority">getpriority</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+getresgid">getresgid</A>(2), getresgid32,
+<A HREF="/cgi-bin/man/man2html?2+getresuid">getresuid</A>(2), getresuid32,
+<A HREF="/cgi-bin/man/man2html?2+getrlimit">getrlimit</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+getrusage">getrusage</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+getsid">getsid</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+getsockname">getsockname</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+getsockopt">getsockopt</A>(2),
+gettid,
+<A HREF="/cgi-bin/man/man2html?2+gettimeofday">gettimeofday</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+getuid">getuid</A>(2), getuid32,
+gtty,
+idle,
+<A HREF="/cgi-bin/man/man2html?2+init_module">init_module</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+ioperm">ioperm</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+iopl">iopl</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+ipc">ipc</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+kill">kill</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+lchown">lchown</A>(2), lchown32,
+<A HREF="/cgi-bin/man/man2html?2+link">link</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+listen">listen</A>(2), 
+lock,
+<A HREF="/cgi-bin/man/man2html?2+lseek">lseek</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+lstat">lstat</A>(2), lstat64,
+<A HREF="/cgi-bin/man/man2html?2+madvise">madvise</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+mincore">mincore</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+mkdir">mkdir</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+mknod">mknod</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+mlock">mlock</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+mlockall">mlockall</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+modify_ldt">modify_ldt</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+mount">mount</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+mprotect">mprotect</A>(2),
+mpx,
+<A HREF="/cgi-bin/man/man2html?2+mremap">mremap</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+msync">msync</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+munlock">munlock</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+munlockall">munlockall</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+munmap">munmap</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+nanosleep">nanosleep</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+nfsservctl">nfsservctl</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+nice">nice</A>(2),
+oldfstat, oldlstat, oldolduname, oldstat, oldumount, olduname,
+<A HREF="/cgi-bin/man/man2html?2+open">open</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+pause">pause</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+personality">personality</A>(2),
+phys,
+<A HREF="/cgi-bin/man/man2html?2+pipe">pipe</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+pivot_root">pivot_root</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+poll">poll</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+prctl">prctl</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+pread">pread</A>(2),
+prof, profil,
+<A HREF="/cgi-bin/man/man2html?2+ptrace">ptrace</A>(2),
+putpmsg,
+<A HREF="/cgi-bin/man/man2html?2+pwrite">pwrite</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+query_module">query_module</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+quotactl">quotactl</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+read">read</A>(2),
+readahead,
+<A HREF="/cgi-bin/man/man2html?2+readdir">readdir</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+readlink">readlink</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+readv">readv</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+reboot">reboot</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+recv">recv</A>(2), <A HREF="/cgi-bin/man/man2html?2+recvfrom">recvfrom</A>(2), <A HREF="/cgi-bin/man/man2html?2+recvmsg">recvmsg</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+rename">rename</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+rmdir">rmdir</A>(2),
+rt_sigaction,
+rt_sigpending,
+rt_sigprocmask,
+rt_sigqueueinfo,
+rt_sigreturn,
+rt_sigsuspend,
+rt_sigtimedwait,
+<A HREF="/cgi-bin/man/man2html?2+sched_get_priority_max">sched_get_priority_max</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+sched_get_priority_min">sched_get_priority_min</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+sched_getparam">sched_getparam</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+sched_getscheduler">sched_getscheduler</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+sched_rr_get_interval">sched_rr_get_interval</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+sched_setparam">sched_setparam</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+sched_setscheduler">sched_setscheduler</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+sched_yield">sched_yield</A>(2),
+security,
+<A HREF="/cgi-bin/man/man2html?2+select">select</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+sendfile">sendfile</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+send">send</A>(2), <A HREF="/cgi-bin/man/man2html?2+sendmsg">sendmsg</A>(2), <A HREF="/cgi-bin/man/man2html?2+sendto">sendto</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+setdomainname">setdomainname</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+setfsgid">setfsgid</A>(2), setfsgid32,
+<A HREF="/cgi-bin/man/man2html?2+setfsuid">setfsuid</A>(2), setfsuid32,
+<A HREF="/cgi-bin/man/man2html?2+setgid">setgid</A>(2), setgid32,
+<A HREF="/cgi-bin/man/man2html?2+setgroups">setgroups</A>(2), setgroups32,
+<A HREF="/cgi-bin/man/man2html?2+sethostname">sethostname</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+setitimer">setitimer</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+setpgid">setpgid</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+setpriority">setpriority</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+setregid">setregid</A>(2), setregid32,
+<A HREF="/cgi-bin/man/man2html?2+setresgid">setresgid</A>(2), setresgid32,
+<A HREF="/cgi-bin/man/man2html?2+setresuid">setresuid</A>(2), setresuid32,
+<A HREF="/cgi-bin/man/man2html?2+setreuid">setreuid</A>(2), setreuid32,
+<A HREF="/cgi-bin/man/man2html?2+setrlimit">setrlimit</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+setsid">setsid</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+setsockopt">setsockopt</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+settimeofday">settimeofday</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+setuid">setuid</A>(2), setuid32,
+<A HREF="/cgi-bin/man/man2html?2+setup">setup</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+sgetmask">sgetmask</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+shutdown">shutdown</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+sigaction">sigaction</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+sigaltstack">sigaltstack</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+signal">signal</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+sigpending">sigpending</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+sigprocmask">sigprocmask</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+sigreturn">sigreturn</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+sigsuspend">sigsuspend</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+socket">socket</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+socketcall">socketcall</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+socketpair">socketpair</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+ssetmask">ssetmask</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+stat">stat</A>(2), stat64,
+<A HREF="/cgi-bin/man/man2html?2+statfs">statfs</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+stime">stime</A>(2),
+stty,
+<A HREF="/cgi-bin/man/man2html?2+swapoff">swapoff</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+swapon">swapon</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+symlink">symlink</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+sync">sync</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+sysfs">sysfs</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+sysinfo">sysinfo</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+syslog">syslog</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+time">time</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+times">times</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+truncate">truncate</A>(2), truncate64,
+ulimit,
+<A HREF="/cgi-bin/man/man2html?2+umask">umask</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+umount">umount</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+uname">uname</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+unlink">unlink</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+uselib">uselib</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+ustat">ustat</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+utime">utime</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+vfork">vfork</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+vhangup">vhangup</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+vm86">vm86</A>(2),
+vm86old,
+<A HREF="/cgi-bin/man/man2html?2+wait4">wait4</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+waitpid">waitpid</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+write">write</A>(2),
+<A HREF="/cgi-bin/man/man2html?2+writev">writev</A>(2).
+<P>
+<P>
+Sur l'ensemble de ces appels-système, 9 d'entre-eux sont obsolètes, 
+getrlimit, oldfstat, oldlstat, oldolduname, oldstat, olduname
+readdir, select et vm86old
+(voir
+<B><A HREF="/cgi-bin/man/man2html?2+obsolete">obsolete</A></B>(2)),
+
+et 15 ne sont pas implémentés,
+afs_syscall, break, ftime, getpmsg, gtty, idle, lock, mpx, phys,
+prof, profil, putpmsg, security, stty and ulimit (voir aussi
+<B><A HREF="/cgi-bin/man/man2html?2+unimplemented">unimplemented</A></B>(2)).
+
+Toutefois
+<B><A HREF="/cgi-bin/man/man2html?3+ftime">ftime</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+profil">profil</A></B>(3)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?3+ulimit">ulimit</A></B>(3)
+
+sont disponibles sous forme de fonctions de bibliothèque.
+L'entrée pour phys est utilisée pour umount depuis le 2.1.116, phys ne sera
+jamais implémenté. Les appels getpmsg et putpmsg sont pour les noyaux
+modifiés qui supportent les streams, et ne seront peut-être jamais dans le noyau
+standard. L'appel security servira dans le futur.
+<P>
+En général, le code implémentant l'appel-système ayant le numéro __NR_xxx 
+dans le fichier
+<I>/usr/include/asm/unistd.h</I>
+
+se trouve dans la routine
+<I>sys_xxx()</I>
+
+du noyau.
+(La table de distribution pour la version i386 se trouve dans
+<I>/usr/src/linux/arch/i386/kernel/entry.S</I>.)
+
+Il y a néanmoins plusieurs exceptions, principalement lorsque des anciens
+appels-systèmes ont été remplacés par des nouveaux. Ces cas n'ont pas été
+traités de manière homogène.
+Sur les plates-formes avec une émulation de système propriétaire, comme
+parisc, sparc, sparc64 et alpha, il y a de nombreux appels supplémentaires&nbsp;;
+mips64 contient aussi un jeu complet d'appels-système 32-bits.
+Voici des détails en vigueur pour Linux 2.4.17.
+<P>
+Les définitions __NR_oldstat et __NR_stat concernent les routines
+sys_stat() et sys_newstat(), et similairement
+<I>fstat</I>
+
+et
+<I>lstat</I>.
+
+De même, les définitions __NR_oldolduname, __NR_olduname et
+__NR_uname concernent les routines sys_olduname(), sys_uname()
+et sys_newuname().
+Quoiqu'il en soit, __NR_stat et __NR_uname se sont toujours rapportés
+à la dernière version de l'appel-système, et les versions plus anciennes
+ne sont conservées que pour assurer une compatibilité ascendante.
+<P>
+Les choses diffèrent avec
+<I>select</I>
+
+et
+<I>mmap</I>.
+
+Ces appels nécessitent 5 paramètres ou plus, ce qui a posé des problèmes
+avec les méthodes classiques de passage de paramètres sur i386.
+Ainsi, alors que les autres architectures disposent de
+sys_select() et sys_mmap() correspondant à __NR_select
+et __NR_mmap, on trouve sur les i386 old_select()
+et old_mmap() à leur place. Ce sont des routines utilisant un
+pointeur sur un bloc de paramètres. De nos jours, passer 5 paramètres
+n'est plus un problème, et il existe donc un __NR__newselect (utilisé
+par la libc 6) correspondant directement à sys_select().
+<P>
+Deux autres numéros d'appels systèmes, __NR__llseek et __NR__sysctl
+possèdent un underscore supplémentaire absent dans sys_llseek() et sys_sysctl().
+<P>
+Egalement, il existe un __NR_readdir correspondant à old_readdir(),
+qui lira au plus une entrée de répertoire à la fois, et qui est
+remplacé par sys_getdents().
+<P>
+Sur de nombreuses plates-formers, y compris les i386, les appels des sockets
+sont multiplexés à travers socketcall() et les IPC Système V via ipc().
+<P>
+Sur les plates-formes récentes qui n'ont que des accès aux fichiers 64-bits
+et des UID 32-bits (ex. alpha, ia64, s390x) il n'y a pas d'appel *64 ou *32.
+Quand les appels *64 et *32 existent, les autres versions sont obsolètes.
+<P>
+Les appels chown et lchown ont été échangés dans le 2.1.81. Les appels *64 et
+*32 ont été ajoutés dans le noyau 2.4, comme les nouvelles versions de
+getrlimit et mmap, et les nouveaux appels pivot_root, mincore, madvise,
+security, gettid et readahead.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:55 GMT, February 11, 2014
+</BODY>
+</HTML>

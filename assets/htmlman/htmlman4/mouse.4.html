@@ -1,0 +1,196 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MOUSE</TITLE>
+</HEAD><BODY>
+<H1>MOUSE</H1>
+Section: Manuel du programmeur Linux (4)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mouse - Interface de souris série.
+<A NAME="lbAC">&nbsp;</A>
+<H2>CONFIGURATION</H2>
+
+Les souris série sont connectées sur une ligne d'interface RS232/V24 
+voir
+<B><A HREF="/cgi-bin/man/man2html?4+ttys">ttys</A></B>(4)
+
+pour la description de ces lignes.
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<A NAME="lbAE">&nbsp;</A>
+<H3>Introduction</H3>
+
+Le brochage de la prise DB9 classique utilisée pour les souris est le suivant :
+<P>
+<CENTER><TABLE>
+<TR VALIGN=top><TD ALIGN=right>broche</TD><TD ALIGN=center>nom</TD><TD>utilisation<BR></TD></TR>
+<TR VALIGN=top><TD ALIGN=right>2</TD><TD ALIGN=center>RX</TD><TD>Donnees<BR></TD></TR>
+<TR VALIGN=top><TD ALIGN=right>3</TD><TD ALIGN=center>TX</TD><TD>-12 V, Imax = 10 mA<BR></TD></TR>
+<TR VALIGN=top><TD ALIGN=right>4</TD><TD ALIGN=center>DTR</TD><TD>+12 V, Imax = 10 mA<BR></TD></TR>
+<TR VALIGN=top><TD ALIGN=right>7</TD><TD ALIGN=center>RTS</TD><TD>+12 V, Imax = 10 mA<BR></TD></TR>
+<TR VALIGN=top><TD ALIGN=right>5</TD><TD ALIGN=center>GND</TD><TD>Masse<BR></TD></TR>
+</TABLE></CENTER>
+
+<P>
+Il ne s'agit que de spécifications, en réalite 9 V suffisent avec la plupart
+des souris.
+<P>
+
+Le driver peut s'assurer de la présence d'une souris en abaissant la tension sur
+la broche RTS et en la remontant. Environ 14 ms plus tard, la souris enverra
+l'octet 0x4D (`M') sur la ligne RX.
+Encore 63 ms plus tard, les souris compatible Microsoft enverront
+0x33 (`3') sur RX.
+<P>
+
+Le mouvement relatif de la souris est transmis en tant que <I>dx</I> (positif vers 
+la droite) et <I>dy</I> (positif vers le bas).  
+Diverses souris peuvent travailler avec des vitesses différentes. 
+Pour sélectionner la vitesse, il faut parcourir le cycle 9600, 4800, 2400 et
+1200 bit/sec, en envoyant chaque fois les deux caractères de la table
+ci-dessous, et attendre 0,1 seconde.
+La table ci-dessous montre les différentes vitesses, et les deux caractères
+correspondants :
+<P>
+<CENTER><TABLE>
+<TR VALIGN=top><TD>bit/sec</TD><TD>message<BR></TD></TR>
+<TR VALIGN=top><TD>9600</TD><TD>*q<BR></TD></TR>
+<TR VALIGN=top><TD>4800</TD><TD>*p<BR></TD></TR>
+<TR VALIGN=top><TD>2400</TD><TD>*o<BR></TD></TR>
+<TR VALIGN=top><TD>1200</TD><TD>*n<BR></TD></TR>
+</TABLE></CENTER>
+
+<P>
+Comme on peut le voir, le premier octet peut être utilisé pour se synchroniser.
+<A NAME="lbAF">&nbsp;</A>
+<H3>Protocole Microsoft</H3>
+
+Le protocole <B>Microsoft</B> utilise 1 bit de Start, 7 bits de données, pas de
+parité, et 1 bit de Stop, ceci a 1200 bits/sec. Les données sont envoyées sur
+RX par paquets de 3 octets.
+Les mouvements <I>dx</I> et <I>dy</I> sont envoyés sous forme de complément à 2.
+<I>lb</I> (<I>rb</I>) vaut 1 quand le bouton gauche (droit) est pressé :
+<P>
+<CENTER><TABLE>
+<TR VALIGN=top><TD ALIGN=right>octet</TD><TD ALIGN=center>d6</TD><TD ALIGN=center>d5</TD><TD ALIGN=center>d4</TD><TD ALIGN=center>d3</TD><TD ALIGN=center>d2</TD><TD ALIGN=center>d1</TD><TD ALIGN=center>d0<BR></TD></TR>
+<TR VALIGN=top><TD ALIGN=right>1</TD><TD ALIGN=center>1</TD><TD ALIGN=center>lb</TD><TD ALIGN=center>rb</TD><TD ALIGN=center>dy7</TD><TD ALIGN=center>dy6</TD><TD ALIGN=center>dx7</TD><TD ALIGN=center>dx6<BR></TD></TR>
+<TR VALIGN=top><TD ALIGN=right>2</TD><TD ALIGN=center>0</TD><TD ALIGN=center>dx5</TD><TD ALIGN=center>dx4</TD><TD ALIGN=center>dx3</TD><TD ALIGN=center>dx2</TD><TD ALIGN=center>dx1</TD><TD ALIGN=center>dx0<BR></TD></TR>
+<TR VALIGN=top><TD ALIGN=right>3</TD><TD ALIGN=center>0</TD><TD ALIGN=center>dy5</TD><TD ALIGN=center>dy4</TD><TD ALIGN=center>dy3</TD><TD ALIGN=center>dy2</TD><TD ALIGN=center>dy1</TD><TD ALIGN=center>dy0<BR></TD></TR>
+</TABLE></CENTER>
+
+<P>
+Les souris Microsoft originales n'avaient que 2 boutons. Néanmoins, il
+existe plusieurs souris à 3 boutons qui utilisent le protocole Microsoft.
+Une pression ou un relâchement sur le 3ème bouton (milieu) sont indiqués
+par un paquet sans aucun mouvement et sans bouton pressé. De plus, contrairement
+aux deux autres boutons, l'état du bouton central n'est pas indiqué dans
+chaque paquet.
+<A NAME="lbAG">&nbsp;</A>
+<H3>Logitech protocol</H3>
+
+Les souris série Logitech à trois boutons peuvent utiliser plusieurs extensions
+du protocole Microsoft : lorsque le bouton central est en haut, le paquet
+de 3 octets décrit ci-dessus est envoyé. Lorsque le bouton est en bas, un
+paquet de 4 octets est envoyé, dont le quatrième octet a la valeur
+0x20 (ou au moins le bit 0x20 à 1). En clair, une pression sur le bouton
+central seul est indiquée par 0, 0, 0, 0x20.
+<A NAME="lbAH">&nbsp;</A>
+<H3>Protocole Mousesystems</H3>
+
+Le protocole <B>Mousesystems</B> utilise 1 bit de Start, 8 bits de données, 
+pas de parité et 2 bits de Stop, ceci à la vitesse de 1200 bits/sec.  
+Les données sont envoyées sur RX par paquets de 5 octets.
+<I>dx</I> est émis comme la somme des deux valeurs en complément à 2.
+<I>dy</I> est émis comme inverse de la somme des deux valeurs en complément à 2.
+<I>lb</I> (<I>mb</I>, <I>rb</I>) sont mis à zéro quand le bouton gauche (central,
+droit) est pressé :
+<P>
+<CENTER><TABLE>
+<TR VALIGN=top><TD ALIGN=right>octet</TD><TD ALIGN=center>d7</TD><TD ALIGN=center>d6</TD><TD ALIGN=center>d5</TD><TD ALIGN=center>d4</TD><TD ALIGN=center>d3</TD><TD ALIGN=center>d2</TD><TD ALIGN=center>d1</TD><TD ALIGN=center>d0<BR></TD></TR>
+<TR VALIGN=top><TD ALIGN=right>1</TD><TD ALIGN=center>1</TD><TD ALIGN=center>0</TD><TD ALIGN=center>0</TD><TD ALIGN=center>0</TD><TD ALIGN=center>0</TD><TD ALIGN=center>lb</TD><TD ALIGN=center>mb</TD><TD ALIGN=center>rb<BR></TD></TR>
+<TR VALIGN=top><TD ALIGN=right>2</TD><TD ALIGN=center>0</TD><TD ALIGN=center>dxa6</TD><TD ALIGN=center>dxa5</TD><TD ALIGN=center>dxa4</TD><TD ALIGN=center>dxa3</TD><TD ALIGN=center>dxa2</TD><TD ALIGN=center>dxa1</TD><TD ALIGN=center>dxa0<BR></TD></TR>
+<TR VALIGN=top><TD ALIGN=right>3</TD><TD ALIGN=center>0</TD><TD ALIGN=center>dya6</TD><TD ALIGN=center>dya5</TD><TD ALIGN=center>dya4</TD><TD ALIGN=center>dya3</TD><TD ALIGN=center>dya2</TD><TD ALIGN=center>dya1</TD><TD ALIGN=center>dya0<BR></TD></TR>
+<TR VALIGN=top><TD ALIGN=right>4</TD><TD ALIGN=center>0</TD><TD ALIGN=center>dxb6</TD><TD ALIGN=center>dxb5</TD><TD ALIGN=center>dxb4</TD><TD ALIGN=center>dxb3</TD><TD ALIGN=center>dxb2</TD><TD ALIGN=center>dxb1</TD><TD ALIGN=center>dxb0<BR></TD></TR>
+<TR VALIGN=top><TD ALIGN=right>5</TD><TD ALIGN=center>0</TD><TD ALIGN=center>dyb6</TD><TD ALIGN=center>dyb5</TD><TD ALIGN=center>dyb4</TD><TD ALIGN=center>dyb3</TD><TD ALIGN=center>dyb2</TD><TD ALIGN=center>dyb1</TD><TD ALIGN=center>dyb0<BR></TD></TR>
+</TABLE></CENTER>
+
+Les octets 4 et 5 indiquent les changements qui se sont produits depuis le
+début d'émission des octets 2 et 3.
+<A NAME="lbAI">&nbsp;</A>
+<H3>Protocole Sun</H3>
+
+Le protocole <B>Sun</B> est la version 3 octets du protocole à 5 octets
+de MouseSystems : les deux derniers octets ne sont pas envoyés.
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H3>Protocole MM</H3>
+
+Le protocole <B>MM</B> utilise 1 bit de Start, 8 bits de données, 
+parité impaire et 1 bit de Stop, ceci à la vitesse de 1200 bits/sec.
+Les données sont envoyées sur RX par paquets de 5 octets.
+<I>dx</I> et <I>dy</I> sont émis comme des valeurs signées, le bit de signe
+indiquant une valeur négative.
+<I>lb</I> (<I>mb</I>, <I>rb</I>) sont mis à zéro quand le bouton gauche (central,
+droit) est pressé :
+<P>
+<CENTER><TABLE>
+<TR VALIGN=top><TD ALIGN=right>octet</TD><TD ALIGN=center>d7</TD><TD ALIGN=center>d6</TD><TD ALIGN=center>d5</TD><TD ALIGN=center>d4</TD><TD ALIGN=center>d3</TD><TD ALIGN=center>d2</TD><TD ALIGN=center>d1</TD><TD ALIGN=center>d0<BR></TD></TR>
+<TR VALIGN=top><TD ALIGN=right>1</TD><TD ALIGN=center>1</TD><TD ALIGN=center>0</TD><TD ALIGN=center>0</TD><TD ALIGN=center>dxs</TD><TD ALIGN=center>dys</TD><TD ALIGN=center>lb</TD><TD ALIGN=center>mb</TD><TD ALIGN=center>rb<BR></TD></TR>
+<TR VALIGN=top><TD ALIGN=right>2</TD><TD ALIGN=center>0</TD><TD ALIGN=center>dx6</TD><TD ALIGN=center>dx5</TD><TD ALIGN=center>dx4</TD><TD ALIGN=center>dx3</TD><TD ALIGN=center>dx2</TD><TD ALIGN=center>dx1</TD><TD ALIGN=center>dx0<BR></TD></TR>
+<TR VALIGN=top><TD ALIGN=right>3</TD><TD ALIGN=center>0</TD><TD ALIGN=center>dy6</TD><TD ALIGN=center>dy5</TD><TD ALIGN=center>dy4</TD><TD ALIGN=center>dy3</TD><TD ALIGN=center>dy2</TD><TD ALIGN=center>dy1</TD><TD ALIGN=center>dy0<BR></TD></TR>
+</TABLE></CENTER>
+
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>FICHIER</H2>
+
+<DL COMPACT>
+<DT><I>/dev/mouse</I>
+
+<DD>
+Un lien symbolique habituellement utilisé 
+pour pointer sur le périphérique souris.
+</DL>
+<A NAME="lbAL">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?4+ttys">ttys</A></B>(4),
+
+<B><A HREF="/cgi-bin/man/man2html?8+gpm">gpm</A></B>(8).
+
+<A NAME="lbAM">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">CONFIGURATION</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">Introduction</A><DD>
+<DT><A HREF="#lbAF">Protocole Microsoft</A><DD>
+<DT><A HREF="#lbAG">Logitech protocol</A><DD>
+<DT><A HREF="#lbAH">Protocole Mousesystems</A><DD>
+<DT><A HREF="#lbAI">Protocole Sun</A><DD>
+<DT><A HREF="#lbAJ">Protocole MM</A><DD>
+</DL>
+<DT><A HREF="#lbAK">FICHIER</A><DD>
+<DT><A HREF="#lbAL">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAM">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:53 GMT, February 11, 2014
+</BODY>
+</HTML>

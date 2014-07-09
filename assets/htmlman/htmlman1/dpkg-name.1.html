@@ -1,0 +1,181 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of dpkg-name</TITLE>
+</HEAD><BODY>
+<H1>dpkg-name</H1>
+Section: Utilitaires de dpkg (1)<BR>Updated: May 1996<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+dpkg-name - redonner aux paquets Debian leur nom complet
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>dpkg-name </B>
+
+[-a|--no-architecture] [-o|--overwrite] [-s|--subdir [rep]]
+[-c|--create-dir] [-h|--help] [-v|--version]
+[-l|--license] [-k|--symlink] [-[--] [fichiers]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+Cette page de manuel documente le script sh
+<B>dpkg-name. </B>
+
+Celui-ci fournit une façon simple de redonner aux paquets 
+<B>Debian</B>
+
+leur nom complet. Ce nom consiste en une chaîne 
+«&nbsp;&lt;package&gt;_&lt;version&gt;_&lt;architecture&gt;.deb&nbsp;» telle qu'elle est indiquée dans le
+fichier «&nbsp;control&nbsp;» du paquet. La partie &lt;version&gt; du nom est composée
+d'informations sur la version «&nbsp;originale&nbsp;» qui peuvent ou non être suivies 
+d'un trait d'union et d'informations sur la révision.
+<A NAME="lbAE">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+<DL COMPACT>
+<DT><B>dpkg-name bar-foo.deb</B>
+
+<DD>
+Le nom du fichier «&nbsp;bar-foo.deb&nbsp;» devient «&nbsp;bar-foo_1.0-2_i386.deb&nbsp;» ou
+quelque chose de similaire suivant les renseignements que contient
+la partie de contrôle de «&nbsp;bar-foo.deb&nbsp;».
+<DT><B>find /root/debian/ -name '*.deb' | xargs -n 1 dpkg-name -a</B>
+
+<DD>
+Cette commande redonne leur nom complet à tous les fichiers qui se trouvent 
+dans le répertoire /root/debian et ses sous-répertoires et qui possèdent une 
+extension «&nbsp;deb&nbsp;», mais supprime l'information sur l'architecture.
+<DT><B>find -name '*.deb' | xargs -n 1 dpkg-name -a -o -s -c</B>
+
+<DD>
+<B>Ne faites pas ça !</B>
+
+L'archive sera complètement gâchée par des paquets qui ne possèdent pas
+d'informations sur la section.
+<DT><B>dpkg --build debian-tmp &amp;&amp; dpkg-name -o -s .. debian-tmp.deb</B>
+
+<DD>
+On peut se servir de cette commande lors de la construction d'un nouveau
+paquet.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><B>-a, --no-architecture</B>
+
+<DD>
+Le nom du fichier n'aura pas d'information sur l'architecture.
+<DT><B>-k, --symlink</B>
+
+<DD>
+Faire un lien symbolique plutôt qu'une création de fichier.
+<DT><B>-o, --overwrite</B>
+
+<DD>
+Remplace des fichiers existants s'ils ont le même nom que le fichier
+de destination.
+<DT><B>-s, --subdir [rep]</B>
+
+<DD>
+Met les fichiers dans 
+<B>rep. </B>
+
+Si le répertoire donné comme argument existe, les fichiers sont déplacés dans
+ce répertoire ; sinon le répertoire cible, extrait du champ «&nbsp;section&nbsp;»
+que contient la partie de contrôle du paquet, sera 
+«&nbsp;unstable/binary-&lt;architecture&gt;/&lt;section&gt;&nbsp;». Quand la section est
+«&nbsp;non-free&nbsp;» ou «&nbsp;contrib&nbsp;», ou bien quand aucune information sur la
+section n'est trouvée dans le fichier «&nbsp;control&nbsp;», le répertoire cible
+est «&nbsp;&lt;section&gt;/binary-&lt;architecture&gt;&nbsp;». le champ «&nbsp;section&nbsp;»
+est facultatif ; aussi beaucoup de paquets sont dans la zone 
+«&nbsp;no-section&nbsp;». Utilisez cette option avec soin : elle est compliquée.
+<DT><B>-c, --create-dir</B>
+
+<DD>
+On peut utiliser cette option avec l'option -s. Quand un répertoire cible
+n'est pas trouvé, il est crée automatiquement.
+<B>Utilisez cette option avec soin.</B>
+
+<DT><B>-h, --help</B>
+
+<DD>
+Affiche une aide et se termine normalement.
+<DT><B>-v, --version</B>
+
+<DD>
+Affiche la version et se termine normalement.
+<DT><B>-l, --license</B>
+
+<DD>
+Affiche les informations sur le copyright (une référence à GNU) et
+se termine normalement.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Certains paquets ne respectent pas l'organisation
+&lt;package&gt;_&lt;version&gt;_&lt;architecture&gt;.deb. Les paquets traités par dpkg-name
+la respecte. Cela n'a pas de conséquence sur la façon dont dselect/dpkg
+installe les paquets, mais il se peut que d'autres systèmes d'installation
+aient besoin de cette organisation.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+deb">deb</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?5+deb-control">deb-control</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+dpkg">dpkg</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?1+dpkg-deb">dpkg-deb</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+find">find</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+xargs">xargs</A></B>(1).
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright 1995,1996 Erick Branderhorst.
+<B>dpkg-name</B>
+
+est un logiciel libre ; voyez la «&nbsp;GNU General Public Licence&nbsp;» version 2 
+ou supérieure pour le copyright. Il n'y a 
+<B>pas</B>
+
+de garantie.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Philippe Batailler, Janvier 2001.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">EXEMPLES</A><DD>
+<DL>
+<DT><A HREF="#lbAF">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:49 GMT, February 11, 2014
+</BODY>
+</HTML>

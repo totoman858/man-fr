@@ -1,0 +1,114 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TKILL</TITLE>
+</HEAD><BODY>
+<H1>TKILL</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+tkill - Envoyer un signal à un processus unique.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/linux/unistd.h">linux/unistd.h</A>&gt;</B>
+
+<B>_syscall2(int, tkill, pid_t, tid, int, sig)</B>
+
+<B>int tkill(pid_t tid, int sig);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+L'appel-système 
+<B>tkill</B>()
+
+est analogue à
+<B><A HREF="/cgi-bin/man/man2html?2+kill">kill</A></B>(2),
+
+sauf si le processus en question est membre d'un groupe de threads
+(créé en utilisant l'attribut CLONE_THREAD de l'appel-système
+<B><A HREF="/cgi-bin/man/man2html?2+clone">clone</A></B>(2)).
+
+Comme tous les processus d'un groupe de threads ont le même PID,
+ils ne peuvent pas être visés individuellement avec
+<B>kill</B>.
+
+Avec
+<B>tkill</B>
+
+toutefois, on peut s'adresse à un processus donné grâce à son
+TID unique.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+S'il réussit l'appel renvoie zéro, sinon il renvoie -1 et remplit
+<I>errno</I>
+
+avec le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+Le TID ou le numéro de signal sont invalides.
+<DT><B>ESRCH</B>
+
+<DD>
+Il n'y a pas de processus avec le TID indiqué.
+<DT><B>EPERM</B>
+
+<DD>
+L'appelant n'a pas la permission d'envoyer un signal au processus indiqué.
+Pour qu'un processus ait le droit d'envoyer un signal, il doit avoir les
+privilèges root, ou son UID réel ou effectif doit être égal à l'UID
+réel ou sauvé du processus récepteur.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<B>tkill</B>
+
+est spécifique à Linux et ne doit pas être utilisé dans un programme conçu
+pour être portable.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+gettid">gettid</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+kill">kill</A></B>(2)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:55 GMT, February 11, 2014
+</BODY>
+</HTML>

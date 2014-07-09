@@ -1,0 +1,266 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of RENAME</TITLE>
+</HEAD><BODY>
+<H1>RENAME</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+rename - Changer le nom ou l'emplacement d'un fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<P>
+<B>int rename(const char *</B><I>oldpath</I><B>, const char *</B><I>newpath</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>rename</B>
+
+renomme un fichier, en le déplaçant vers un autre répertoire si besoin est.
+<P>
+Tous les autres liens matériels (créés avec
+<B>link</B>)
+
+restent inchangés.
+<P>
+Si
+<I>newpath</I>
+
+existe déjà, il sera écrasé (avec quelques restrictions, voir le
+paragraphe ERREURS), de manière à ce qu'à aucun moment, un autre
+processus tentant d'accéder à
+<I>newpath</I>
+
+ne le voit absent. Si l'opération échoue pour une raison 
+quelconque, 
+<B>rename</B>
+
+garantit la présence d'une instance de 
+<I>newpath</I>
+
+en place.
+<P>
+Néanmoins, pendant un écrasement, il se trouve un court instant
+pendant lequel à la fois
+<I>oldpath</I>
+
+et
+<I>newpath</I>
+
+font référence au fichier.
+<P>
+Si
+<I>oldpath</I>
+
+correspond à un lien symbolique, le lien est renommé; si
+<I>newpath</I>
+
+correspond à un lien symbolique, le lien est écrasé.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>rename</B>
+
+renvoie 0 s'il réussit, ou -1 s'il échoue, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EISDIR</B>
+
+<DD>
+<I>newpath</I>
+
+est un répertoire existant mais
+<I>oldpath</I>
+
+n'est pas un répertoire
+<DT><B>EXDEV</B>
+
+<DD>
+<I>oldpath</I> et <I>newpath</I>
+
+ne sont pas sur le même système de fichiers.
+<DT><B>ENOTEMPTY</B> ou <B>EEXIST</B>
+
+<DD>
+<I>newpath</I>
+
+est un répertoire non vide (contient autre chose que &quot;.&quot; et &quot;..&quot;).
+<DT><B>EBUSY</B>
+
+<DD>
+Le renommage a échoué car
+<I>oldpath</I> ou <I>newpath</I>
+
+est un répertoire utilisé par un processus (peut-être comme répertoire
+de travail, ou comme répertoire racine, ou ouvert en lecture), ou
+il est utilisé par le système (comme point de montage par exemple).
+Le système a donc considéré qu'il y avait une erreur.
+(Notez qu'il n'est pas indispensable de renvoyer EBUSY dans un tel
+cas - rien n'empêche d'effectuer le renommage malgré tout - mais il
+est permis de retourner EBUSY si le système n'arrive pas à gérer
+une telle situation).
+<DT><B>EINVAL</B>
+
+<DD>
+Une partie du nouveau chemin contient en préfixe l'ancien chemin, ou
+plus généralement, un répertoire ne peut pas être déplacé dans ses
+propres sous-répertoires.
+<DT><B>EMLINK</B>
+
+<DD>
+<I>oldpath</I>
+
+a déjà un nombre maximal de liens, ou bien c'est un répertoire, et
+le répertoire contenant
+<I>newpath</I>
+
+a le nombre maximal de liens.
+<DT><B>ENOTDIR</B>
+
+<DD>
+Un élément utilisé dans
+<I>oldpath</I> ou <I>newpath</I>
+
+n'est pas un répertoire, ou
+<I>oldpath</I>
+
+est un répertoire et
+<I>newpath</I>
+
+existe mais n'est pas un répertoire.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>oldpath</I> ou <I>newpath</I> pointent en dehors de l'espace d'adressage accessible.
+
+<DT><B>EACCES</B>
+
+<DD>
+Les droits d'écriture dans le répertoire contenant
+<I>oldpath</I> ou <I>newpath</I>
+
+ne sont pas autorisés pour l'UID effectif du processus,
+ou bien un des répertoires de
+<I>oldpath</I> ou <I>newpath</I>
+
+ne permet pas le parcours, ou encore
+<I>oldpath</I>
+
+était un répertoire et ne permet pas l'écriture (nécessaire pour
+mettre à jour les entrées
+<B>`.'</B> et <B>`..'</B>
+
+).
+<DT>
+<DD>
+
+<B>EPERM</B>
+
+Le répertoire contenant
+<I>oldpath</I>
+
+a son Sticky-bit positionné, et l'UID effectif du processus n'est ni celui
+de Root, ni celui du fichier à déplacer, ni celui du répertoire
+le contenant, ou alors le système de fichiers contenant
+<I>pathname</I>
+
+ne permet pas le renommage de fichiers.
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+<I>oldpath</I> ou <I>newpath</I> est trop long.
+
+<DT><B>ENOENT</B>
+
+<DD>
+Un répertoire contenu dans 
+<I>oldpath</I> ou <I>newpath</I>
+
+n'existe pas, ou est un lien symbolique pointant nulle part.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour le noyau.
+<DT><B>EROFS</B>
+
+<DD>
+Le fichier est sur un système de fichiers en lecture seule.
+<DT><B>ELOOP</B>
+
+<DD>
+<I>oldpath</I> ou <I>newpath</I>
+
+contient une référence circulaire (à travers un lien symbolique).
+<DT><B>ENOSPC</B>
+
+<DD>
+Le périphérique contenant le fichier n'a pas de place pour une
+nouvelle entrée de répertoire.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX, BSD 4.3, ANSI C
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Sur les systèmes de fichiers NFS, ce n'est pas parce que l'opération a
+échoué que le fichier n'a pas été renommé. Si le serveur effectue
+le déplacement, et s'effondre, la RPC transmise qui sera traitée lorsque
+le serveur sera à nouveau en état va indiquer un échec. L'application
+doit supporter ce genre de problème. Voir
+<I><A HREF="/cgi-bin/man/man2html?2+link">link</A></I>(2)
+
+pour un cas similaire.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+link">link</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+unlink">unlink</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+symlink">symlink</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?1+mv">mv</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+link">link</A></B>(8).
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:53 GMT, February 11, 2014
+</BODY>
+</HTML>

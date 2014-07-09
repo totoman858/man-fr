@@ -1,0 +1,503 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STDIO</TITLE>
+</HEAD><BODY>
+<H1>STDIO</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+stdio - Bibliothèque standard de fonctions d'entrées/sorties.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<P>
+<B>FILE *stdin;</B>
+
+<BR>
+
+<B>FILE *stdout;</B>
+
+<BR>
+
+<B>FILE *stderr;</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette bibliothéque standard fournit une interface simple et efficace pour les
+entrées/sorties avec buffers. Les entrées et les sorties sont projetées dans
+des flux de données logiques, et les caractéristiques des entrées/sorties
+physiques sont masquées. Les fonctions et les macros sont présentées rapidement
+ci-dessous. Des informations supplémentaires sont disponibles dans leurs pages
+de manuel individuelles.
+<P>
+
+Un flux est associé avec un fichier externe (qui peut aussi être un dispositif
+physique) en
+<I>ouvrant</I>
+
+un fichier (ceci peut impliquer la création d'un nouveau fichier). La création
+d'un fichier déjà existant efface son contenu précédent. Si un fichier
+supporte les demandes de positionnement (par exemple un fichier sur disque,
+contrairement à un terminal), alors 
+<I>l'indicateur de position du fichier</I>
+
+associé au flux est placé au début du fichier (octet zéro), à moins que
+le fichier soit ouvert en mode d'ajout. Si le mode d'ajout est utilisé,
+l'indicateur de position est placé à la fin du fichier.
+L'indicateur de position est mis à jour après chaque lecture, écriture, ou
+repositionnement. Toutes les entrées se déroulent comme si les caractères
+étaient lus par des appels successifs à la fonction
+<B><A HREF="/cgi-bin/man/man2html?3+fgetc">fgetc</A></B>(3).
+
+Toutes les sorties ont lieu comme si les caractères étaient envoyés à
+des appels successifs à la fonction
+<B><A HREF="/cgi-bin/man/man2html?3+fputc">fputc</A></B>(3).
+
+<P>
+
+Un fichier est dissocié d'un flux en
+<I>fermant</I>
+
+le fichier. Les flux de sortie sont vidés (flush) avant que le flux soit
+dissocié du fichier. Ceci signifie que le contenu des buffers pas encore
+écrits est transféré dans l'environnement de l'hôte.
+La valeur d'un pointeur sur un objet
+<B>FILE</B>
+
+(fichier) est indéfinie après la fermeture d'un fichier.
+<P>
+
+Un fichier peut être réouvert plus tard par le même programme ou par un
+autre, et son contenu relu ou modifié (si l'on peut placer l'indicateur
+de positionnement au début).
+Si la fonction <B>main</B> se termine, ou si la fonction
+<B><A HREF="/cgi-bin/man/man2html?3+exit">exit</A></B>(3)
+
+est invoquée, tous les fichiers sont fermés (tous les buffers de sortie sont
+transférés par fflush) avant la fin du programe. Les autres méthodes
+d'abandon du programme, telles que
+<B><A HREF="/cgi-bin/man/man2html?3+abort">abort</A></B>(3)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+_exit">_exit</A></B>(2)
+
+ne s'occupent pas de fermer proprement les fichiers.
+<P>
+
+Au démarrage du programme, trois flux de texte sont prédéfinis et n'ont
+pas besoin d'être ouverts explicitement&nbsp;:
+<I>l'entrée standard</I>
+
+(pour la lecture des données),
+<I>la sortie standard</I>
+
+(pour l'écriture des données), et
+<I>le flux d'erreur standard</I>
+
+(pour les messages de diagnostique).
+Ces flux sont nommés
+<I>stdin</I>,<I>stdout</I>
+
+et
+<I>stderr</I>.
+
+A l'ouverture, le flux d'erreur n'a pas de buffer, l'entrée standard et la
+sortie standard ont des buffers complets si et seulement si ils ne se
+réfèrent pas à un périphérique interactif.
+<P>
+
+Les flux de sortie qui s'adressent à un peripherique terminal disposent
+toujours d'un buffer de ligne par défaut. Les caractères sont conservés
+dans le buffer jusqu'à un saut de ligne, ou jusqu'à ce qu'une lecture soit
+demandée sur un flux associé au même terminal. Il peut être nécessaire
+de déclencher intentionnellement l'écriture effective sur le terminal en
+invoquant
+<B><A HREF="/cgi-bin/man/man2html?3+fflush">fflush</A></B>(3).
+
+<P>
+
+La bibliothèque standard
+<B>stdio</B>
+
+fait partie de la bibliothèque
+<B>libc</B>
+
+et ses routines sont chargées automatiquement par les
+compilateurs
+<B><A HREF="/cgi-bin/man/man2html?1+cc">cc</A></B>(1)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?1+pc">pc</A></B>(1)
+
+si besoin est.
+Les sections
+<B>SYNOPSIS</B>
+
+des pages de manuel mentionnées plus bas indiquent les fichiers d'en-tête nécessaires,
+l'allure des déclarations de fonctions, et les variables externes utiles.
+<P>
+
+Les noms ci-dessous correspondent à des macros. On ne peut pas les réutiliser
+sans supprimer leur définition précédente avec
+<B>#undef</B>:
+
+<B>BUFSIZ</B>,
+
+<B>EOF</B>,
+
+<B>FILENAME_MAX</B>,
+
+<B>FOPEN_MAX</B>,
+
+<B>L_cuserid</B>,
+
+<B>L_ctermid</B>,
+
+<B>L_tmpnam,</B>
+
+<B>NULL</B>,
+
+<B>SEEK_END</B>,
+
+<B>SEEK_SET</B>,
+
+<B>SEE_CUR</B>,
+
+<B>TMP_MAX</B>,
+
+<B>clearerr</B>,
+
+<B>feof</B>,
+
+<B>ferror</B>,
+
+<B>fileno</B>,
+
+<B>fropen</B>,
+
+<B>fwopen</B>,
+
+<B>getc</B>,
+
+<B>getchar</B>,
+
+<B>putc</B>,
+
+<B>putchar</B>,
+
+<B>stderr</B>,
+
+<B>stdin</B>,
+
+<B>stdout</B>.
+
+Il existe des définitions sous forme de fonctions des macros
+<B>feof</B>,
+
+<B>ferror</B>,
+
+<B>clearerr</B>,
+
+<B>fileno</B>,
+
+<B>getc</B>,
+
+<B>getchar</B>,
+
+<B>putc</B>,
+
+et
+<B>putchar</B>
+
+qui seront utilisées si la definition de la macro est explicitement
+supprimée.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>LISTE DES FONCTIONS</H2>
+
+<DL COMPACT>
+<DT><B>Fonction</B>
+
+<DD>
+<B>Description</B>
+
+<DT><B>clearerr</B>
+
+<DD>
+vérifie et réinitialise le statut d'un flux.
+<DT><B>fclose</B>
+
+<DD>
+ferme un flux.
+<DT><B>fdopen</B>
+
+<DD>
+fonction d'ouverture d'un flux.
+<DT><B>feof</B>
+
+<DD>
+vérifie et réinitialise le statut d'un flux.
+<DT><B>ferror</B>
+
+<DD>
+vérifie et réinitialise le statut d'un flux.
+<DT><B>fflush</B>
+
+<DD>
+transfère les buffers d'un flux.
+<DT><B>fgetc</B>
+
+<DD>
+lit le caractère ou le mot suivant depuis un flux d'entrée.
+<DT><B>fgetline</B>
+
+<DD>
+lit une ligne depuis un flux d'entrée.
+<DT><B>fgetpos</B>
+
+<DD>
+lit la position courante d'un flux.
+<DT><B>fgets</B>
+
+<DD>
+lit une ligne depuis un flux d'entrée.
+<DT><B>fileno</B>
+
+<DD>
+vérifie et réinitialise le statut d'un flux.
+<DT><B>fopen</B>
+
+<DD>
+fonction d'ouverture d'un flux.
+<DT><B>fprintf</B>
+
+<DD>
+écriture de données formatées.
+<DT><B>fpurge</B>
+
+<DD>
+transfère les buffers d'un flux.
+<DT><B>fputc</B>
+
+<DD>
+écriture d'un caractère ou d'un mot dans un flux.
+<DT><B>fputs</B>
+
+<DD>
+écriture d'une ligne dans un flux.
+<DT><B>fread</B>
+
+<DD>
+entrées/sorties binaires.
+<DT><B>freopen</B>
+
+<DD>
+fonction d'ouverture d'un flux.
+<DT><B>fropen</B>
+
+<DD>
+fonction d'ouverture d'un flux.
+<DT><B>fscanf</B>
+
+<DD>
+lecture de données formatées.
+<DT><B>fseek</B>
+
+<DD>
+repositionner un flux.
+<DT><B>fsetpos</B>
+
+<DD>
+repositionner un flux.
+<DT><B>ftell</B>
+
+<DD>
+repositionner un flux.
+<DT><B>fwrite</B>
+
+<DD>
+entrées/sorties binaires.
+<DT><B>getc</B>
+
+<DD>
+lit le caractère ou le mot suivant depuis un flux d'entrée.
+<DT><B>getchar</B>
+
+<DD>
+lit le caractère ou le mot suivant depuis un flux d'entrée.
+<DT><B>gets</B>
+
+<DD>
+lit une ligne depuis un flux d'entrée.
+<DT><B>getw</B>
+
+<DD>
+lit le caractère ou le mot suivant depuis un flux d'entrée.
+<DT><B>mktemp</B>
+
+<DD>
+créer un fichier temporaire.
+<DT><B>perror</B>
+
+<DD>
+messages d'erreur système.
+<DT><B>printf</B>
+
+<DD>
+écriture de données formatées.
+<DT><B>putc</B>
+
+<DD>
+écriture d'un caractère ou d'un mot dans un flux.
+<DT><B>putchar</B>
+
+<DD>
+écriture d'un caractère ou d'un mot dans un flux.
+<DT><B>puts</B>
+
+<DD>
+écriture d'une ligne dans un flux.
+<DT><B>putw</B>
+
+<DD>
+écriture d'un caractère ou d'un mot dans un flux.
+<DT><B>remove</B>
+
+<DD>
+supprimer une entrée de répertoire.
+<DT><B>rewind</B>
+
+<DD>
+repositionner un flux.
+<DT><B>scanf</B>
+
+<DD>
+lecture de données formatées.
+<DT><B>setbuf</B>
+
+<DD>
+opérations sur les buffers.
+<DT><B>setbuffer</B>
+
+<DD>
+opérations sur les buffers.
+<DT><B>setlinebuf</B>
+
+<DD>
+opérations sur les buffers.
+<DT><B>setvbuf</B>
+
+<DD>
+opérations sur les buffers.
+<DT><B>sprintf</B>
+
+<DD>
+écriture de données formatées.
+<DT><B>sscanf</B>
+
+<DD>
+lecture de données formatées.
+<DT><B>strerror</B>
+
+<DD>
+messages d'erreur système.
+<DT><B>sys_errlist</B>
+
+<DD>
+messages d'erreur système.
+<DT><B>sys_nerr</B>
+
+<DD>
+messages d'erreur système.
+<DT><B>tempnam</B>
+
+<DD>
+créer un fichier temporaire.
+<DT><B>tmpfile</B>
+
+<DD>
+créer un fichier temporaire.
+<DT><B>tmpnam</B>
+
+<DD>
+créer un fichier temporaire.
+<DT><B>ungetc</B>
+
+<DD>
+remettre un caractère dans un flux d'entrée.
+<DT><B>vfprintf</B>
+
+<DD>
+écriture de données formatées.
+<DT><B>vfscanf</B>
+
+<DD>
+lecture de données formatées.
+<DT><B>vprintf</B>
+
+<DD>
+écriture de données formatées.
+<DT><B>vscanf</B>
+
+<DD>
+lecture de données formatées.
+<DT><B>vsprintf</B>
+
+<DD>
+écriture de données formatées.
+<DT><B>vsscanf</B>
+
+<DD>
+lecture de données formatées.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+La bibliothèque
+<B>stdio</B>
+
+est conforme à ANSI X3.159-1989 (``ANSI C'').
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+close">close</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+stdout">stdout</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">LISTE DES FONCTIONS</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:37 GMT, February 11, 2014
+</BODY>
+</HTML>

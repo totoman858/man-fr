@@ -1,0 +1,372 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DEPMOD</TITLE>
+</HEAD><BODY>
+<H1>DEPMOD</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+depmod - gestion des dépendances entre les modules du noyau.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>depmod</B>
+
+[-aA] [-ehnqrsuvV]
+[-C&nbsp;<I>configfile</I>] [-F&nbsp;<I>kernelsyms</I>] [-b <I>basedirectory</I>]
+
+[<I>forced_version</I>]
+
+<BR>
+
+<B>depmod </B>[-enqrsuv] [-F <I>kernelsyms</I>] module1.o module2.o ...
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les utilitaires
+<B>depmod</B>
+
+et
+<B>modprobe</B>
+
+ont été conçus pour rendre le noyau Linux
+modulaire, configurable pour tous les utilisateurs,
+administrateurs et concepteurs de distribution.
+<P>
+
+<B>depmod</B>
+
+crée un fichier de dépendances type &quot;Makefile&quot;, basé sur les symboles qu'il
+trouve dans les modules indiqués sur la ligne de commande ou dans les
+répertoires indiqués par le fichier de configuration.
+Ce fichier est ensuite utilisé par
+<B>modprobe</B>
+
+pour charger automatiquement le module ou l'ensemble de modules corrects.
+<P>
+
+L'invocation normale de
+<B>depmod</B>
+
+se fait en incluant la ligne
+<P>
+<BR>
+
+<B>/sbin/depmod -a</B>
+
+<BR>
+
+<P>
+dans un fichier de démarrage
+de
+<I>/etc/rc.d</I>,
+
+afin que les dépendances entre modules soient disponibles
+immédiatement après le démarrage du système.
+Notez que l'option
+<B>-a</B>
+
+est maintenant facultative.
+Pour le démarrage, l'option
+<B>-q</B>
+
+peut s'avérer plus appropriée car elle permet de laisser depmod silencieux
+malgré les symboles non résolus.
+<P>
+
+On peut aussi créer le fichier de dépendances immédiatement après avoir
+compilé un nouveau noyau.
+Si vous faites &quot;<B>depmod&nbsp;-a&nbsp;2.4.21</B>&quot; après avoir compilé le noyau
+2.4.21 et ses modules pour la première fois, tout
+en continuant de travailler avec par exemple le 2.4.20, le fichier sera
+créé à l'emplacement adéquat.
+Dans ce cas, toutefois les dépendances avec le nouveau
+noyau ne sont pas garanties.
+Voir les options
+<B>-F</B>, <B>-C</B>, et <B>-b</B>
+
+pour plus de détails sur ce problème.
+<P>
+
+Pour analyser les relations entre modules et symboles
+exportés,
+<B>depmod</B>
+
+ne tient pas compte du status GPL des modules ou des symboles exportés.
+Ceci signifie que depmod n'indiquera pas d'erreur si un module sans licence
+compatible GPL fait référence à un symbole &quot;GPL seulement&quot; (EXPORT_SYMBOL_GPL
+dans le noyau). Néanmoins insmod refusera de résoudre les symboles &quot;GPL seulement&quot;
+pour les modules non-GPL et le véritable chargement échouera.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-a</B>, <B>--all</B>
+
+<DD>
+Examine les modules dans tous les répertoires spécifiés dans le fichier
+(facultatif) de configuration
+<I>/etc/modules.conf</I>.
+
+<DT><B>-A</B>, <B>--quick</B>
+
+<DD>
+Comparer les horodatades des fichiers, et au besoin agir comme
+<B>depmod -a</B>.
+
+Cette option ne met à jour le fichier de dépendance qu'en cas de changement.
+<DT><B>-e</B>, <B>--errsyms</B>
+
+<DD>
+Affiche tous les symboles non résolus pour chaque module.
+<DT><B>-h</B>, <B>--help</B>
+
+<DD>
+Affiche une page d'aide et se termine immédiatement.
+<DT><B>-n</B>, <B>--show</B>
+
+<DD>
+Affiche les dépendances sur la sortie standard plutôt que <I>/lib/modules</I>.
+<DT><B>-q</B>, <B>--quiet</B>
+
+<DD>
+Demande une exécution silencieuse sans compte-rendu des fonctions manquantes.
+<DT><B>-r</B>, <B>--root</B>
+
+<DD>
+Quelques utilisateurs compilent les modules sans droits root et les installent
+en étant root. Ceci risque de créer des modules n'appartenant pas à root, même
+si le répertoire des modules est propriété du root.
+Si un tel compte utilisateur est piraté, un intrus peut modifier ces modules
+et les utiliser pour obtenir un accès
+root.
+<DT><I></I>
+
+<DD>
+Par défaut, modutils rejettera les demandes d'utilisation d'un module qui
+n'appartient à root. L'option <B>-r</B> supprimera l'erreur et autorisera le
+chargement de module n'appartenant pas à root.
+<DT><I></I>
+
+<DD>
+<B>L'utilisation de -r est un danger pour la sécurité et est déconseillée.</B>
+
+<DT><B>-s</B>, <B>--syslog</B>
+
+<DD>
+Envoie les messages d'erreurs au démon syslog plutôt que sur stderr.
+<DT><B>-u</B>, <B>--unresolved-error</B>
+
+<DD>
+<B>depmod</B> 2.4 ne donne pas de code de retour lorsqu'il y a des symboles non
+résolus. La version majeure suivante de modutils (2.5) fournira un code pour
+les symboles non-résolus. Certaines distributions préfèrent un code non-nul
+dans modutils 2.4 mais ceci pose des problèmes avec les utilisateurs qui
+comptent sur l'ancien comportement. Si vous voulez un code non-num pour depmod
+2.4, indiquez <B>-u</B>. <B>depmod</B> 2.5 ignorera silencieusement l'option
+<B>-u</B> et renverra toujours un code non-nul en cas de symboles non
+résolus;
+<DT><B>-v</B>, <B>--verbose</B>
+
+<DD>
+Affiche le nom de chaque module traité.
+<DT><B>-V</B>, <B>--version</B>
+
+<DD>
+Affiche la version de <B>depmod</B>.
+</DL>
+<P>
+
+Les options suivantes sont utiles aux développeurs ds distributions&nbsp;:
+<DL COMPACT>
+<DT><B>-b </B><I>basedirectory</I>, <B>--basedir </B><I>basedirectory<DD>
+Si l'arborescence sous
+/lib/modules</I>
+
+contenant les modules est déplacée ailleurs pour gérer les modules dans
+différents environnements, l'option
+<B>-b</B>
+
+indique à depmod où trouver l'image déplacée de
+l'arborescence
+<I>/lib/modules</I>.
+
+Les noms indiqués dans le fichier 
+<I>modules.dep</I>
+
+créé par depmod, ne contiendront
+pas
+<I>basedirectory</I>.
+
+Cela signifie que l'arborescence
+<I>basedirectory/lib/modules</I>
+
+pourra se retrouver dans
+<I>/lib/modules</I>
+
+dans la distribution, avec toutes les références correctes.
+<DT><B>-C </B><I>configfile</I>, <B>--config </B><I>configfile<DD>
+Utilise le fichier
+configfile</I>
+
+plutôt que le fichier
+<I>/etc/modules.conf</I>.
+
+La variable d'environnement
+<B>MODULECONF</B>
+
+peut aussi être utilisée pour sélectionner un fichier de configuration
+différent de celui par défaut
+<I>/etc/modules.conf</I>
+
+ou
+<I>/etc/conf.modules</I>
+
+(déconseillé).
+<DT>Quand la variable d'environnement<DD>
+<B>UNAME_MACHINE</B>
+
+est remplie, modutils l'utilisera à la place du champ &quot;machine&quot; de
+l'appel-système uname(). Ceci est surtout utile si vous compilez des modules
+64 bits dans un espace utilisateur 32 bits ou
+inversement&nbsp;; remplissez
+<B>UNAME_MACHINE</B>
+
+avec le type de modules construits.
+La version actuelle de modutils ne supporte pas la construction croisée complète
+de modules, elle est limitée au choix entre 32 et 64 bits de l'architecture
+hôte.
+<DT><B>-F kernelsyms</B>,<B>--filesyms </B><I>kernelsyms<DD>
+Quand on construit les fichiers des dépendances pour un noyau différent de
+celui en cours d'utilisation, il est important que
+</I><B>depmod</B>
+
+utilise le bon jeu de fonctions pour trouver les références du noyau dans
+chaque module.
+Ces fonctions peuvent être une copie de 
+<I>System.map</I>
+
+provenant d'un autre noyau,
+ou une copie de la sortie de
+<I>/proc/ksyms</I>.
+
+Si votre noyau utilise des symboles avec numéros de version, il vaut mieux
+utiliser une copie de la sortie de
+<I>/proc/ksyms</I>,
+
+car ce fichier contient les numéros de version des fonctions du noyau.
+Toutefois, vous pouvez utiliser
+<I>System.map</I>
+
+même avec les numéros de version.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFIGURATION</H2>
+
+Le comportement de
+<B>depmod</B>
+
+et de
+<B>modprobe</B>
+
+peut être ajusté par le fichier (optionnel) de configuration
+<B>/etc/modules.conf</B>
+
+<BR>
+
+Voir
+<I><A HREF="/cgi-bin/man/man2html?8+modprobe">modprobe</A>(8)</I>
+
+et
+<I><A HREF="/cgi-bin/man/man2html?5+modules.conf">modules.conf</A>(5)</I>
+
+pour une description complète.
+<P>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>STRATÉGIE</H2>
+
+Chaque fois que vous compilez un noyau, la commande <B>make modules_install</B>
+créera un nouveau répertoire, mais ne changera pas le répertoire par défaut.
+<P>
+
+Quand vous avez un module non relié à la distribution du noyau, vous devez le
+mettre dans un répertoire indépendant de la version
+sous
+<I>/lib/modules</I>.
+
+<P>
+
+C'est la stratégie par défaut, laquelle peut être remplacée dans
+<I>/etc/modules.conf</I>.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<PRE>
+<I>/etc/modules.conf&nbsp;</I>(aussi, mais déconseillé&nbsp;<I>/etc/conf.modules</I>)
+<I>/lib/modules/*/modules.dep</I>,
+<I>/lib/modules/*</I>
+</PRE>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+modules.conf">modules.conf</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+modprobe">modprobe</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+modinfo">modinfo</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+lsmod">lsmod</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ksyms">ksyms</A></B>(8)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<B>depmod</B> [ -V | --version ] devrait se terminer immédiatement. En fait,
+il affiche la version et se comporte comme s'il n'avait aucune option.
+<A NAME="lbAK">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Jacques Gelinas (<A HREF="mailto:jack@solucorp.qc.ca">jack@solucorp.qc.ca</A>)
+<BR>
+
+Bjorn Ekwall (<A HREF="mailto:bj0rn@blox.se">bj0rn@blox.se</A>)
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Jérome Signouret, 2000.
+<BR>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">CONFIGURATION</A><DD>
+<DT><A HREF="#lbAG">STRATÉGIE</A><DD>
+<DT><A HREF="#lbAH">FICHIERS</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">BOGUES</A><DD>
+<DT><A HREF="#lbAK">AUTEURS</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

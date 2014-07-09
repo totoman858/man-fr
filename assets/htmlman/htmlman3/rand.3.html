@@ -1,0 +1,141 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of RAND</TITLE>
+</HEAD><BODY>
+<H1>RAND</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+rand, srand - Générateur de nombres aléatoires.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<B>int rand (void);</B>
+
+<B>void srand (unsigned int </B><I>seed</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>rand()</B> renvoie un entier pseudo-aléatoire entre 0 et
+<B>RAND_MAX</B>.
+<P>
+
+La fonction <B>srand()</B> utilise son argument comme &quot;graine&quot; pour la génération
+d'une nouvelle séquence de nombres pseudo-aléatoires, qui seront fournis
+par <B>rand()</B>.
+Ces séquences sont reproductibles en appelant <B>srand()</B> avec la
+même valeur de graine.
+<P>
+
+Si aucune graine originale n'est fournie, la fonction <B>rand()</B> commence en
+utilisant la valeur 1.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>rand()</B> renvoie un nombre entier entre 0 et RAND_MAX.
+La fonction <B>srand()</B> ne renvoie aucune valeur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les versions de <B>rand()</B> et <B>srand()</B> de la bibliothèque C de Linux
+utilisent le même générateur de nombres aléatoires que <B>random()</B> et
+<B>srandom()</B>, ainsi les bits de poids faibles sont tout aussi imprévisibles
+que les bits de poids forts.
+Ceci n'est pas le cas avec les anciennes implémentations de
+<B>rand()</B>,
+
+où les bits de poids faibles n'étaient pas &quot;aussi aléatoires&quot; que ceux
+de poids forts.
+<P>
+
+Dans
+<I>Numerical Recipes in C: The Art of Scientific Computing</I>
+
+(William H. Press, Brian P. Flannery, Saul A. Teukolsky, William
+T. Vetterling; New York: Cambridge University Press, 1990 (1st ed,
+p. 207)), le commentaire suivant apparaît&nbsp;:
+<DL COMPACT><DT><DD>
+&quot;Si vous désirez engendrer un entier aléatoire entre 1 et 10, vous devez
+toujours procéder en utilisant les bits de poids forts, comme dans&nbsp;:
+<DL COMPACT><DT><DD>
+<P>
+j=1+(int) (10.0*rand()/(RAND_MAX+1.0));
+<P>
+</DL>
+
+et jamais ainsi&nbsp;:
+<DL COMPACT><DT><DD>
+<P>
+j=1+(rand() % 10);
+<P>
+</DL>
+
+(car cette derniere version utilise les bits de poids faibles).&quot;
+</DL>
+
+<P>
+
+La génération de nombres aléatoires est un domaine complexe. Le livre
+<I>Numerical Recipes in C</I>
+
+(référence ci-dessus)
+fournit une excellente présentation pratique d'un générateur aléatoire 
+dans le chapitre 1 (Random Numbers).
+<P>
+
+Pour une discussion plus théorique, qui aborde également en profondeur
+d'autres domaines, voir le chapitre 3 (Random Numbers) du livre de
+Donald E. Knuth
+<I>The Art of Computer Programming</I>,
+
+volume 2 (Seminumerical Algorithms), 2nd ed.; Reading, Massachusetts:
+Addison-Wesley Publishing Company, 1981.
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3, BSD 4.3, ISO 9899
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+random">random</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+srandom">srandom</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+initstate">initstate</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setstate">setstate</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:41 GMT, February 11, 2014
+</BODY>
+</HTML>

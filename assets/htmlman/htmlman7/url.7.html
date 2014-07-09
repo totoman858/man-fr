@@ -1,0 +1,835 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of URI</TITLE>
+</HEAD><BODY>
+<H1>URI</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+uri, url, urn - Identificateur de ressource uniforme (URI), comprenant URL ou URN
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<DL COMPACT>
+<DT><DD>URI = [ URI_absolu | URI_relatif ] [ &quot;#&quot; fragment ]
+<DT><DD>URI_absolu = mécanisme &quot;:&quot; ( partie_hiérarchique | partie_opaque )
+<DT><DD>URI_relatif = ( chemin_réseau | chemin_absolu | chemin_relatif ) [ &quot;?&quot; requête
+
+<DT><DD>mécanisme = &quot;http&quot; | &quot;ftp&quot; | &quot;gopher&quot; | &quot;mailto&quot; | &quot;news&quot; | &quot;telnet&quot; | &quot;file&quot; | &quot;man&quot; | &quot;info&quot; | &quot;whatis&quot; | &quot;ldap&quot; | &quot;wais&quot; | ...
+<DT><DD>partie_hierarchique = ( chemin_réseau | chemin_absolu ) [ &quot;?&quot; requête ]
+
+<DT><DD>chemin_réseau = &quot;//&quot; autorité [ chemin_absolu ]
+<DT><DD>chemin_absolu = &quot;/&quot;  segments_chemin
+<DT><DD>chemin_relatif = segment_relatif [ chemin_relatif ]
+</PRE>
+
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+Un Identificateur de Ressource Uniforme (URI) est une courte chaîne de
+caractères identifiant une ressource physique ou abstraite (par exemple
+une page web). Une Localisation de Ressource Uniforme (URL) est un URI
+qui identifie une ressource à travers son moyen d'accès (sa &quot;position&quot;
+réseau par exemple), plutôt que par son
+nom ou un autre attribut de la ressource.
+Un Nom de Ressource Uniforme (URN) est un URI qui doit
+rester globalement unique, et persister même si la ressource
+cesse d'exister ou devient indisponible.
+<P>
+
+Les URI constituent le mécanisme standard pour nommer les destinations des
+liens hypertextes pour les outils comme les navigateurs web.
+La chaîne &quot;<A HREF="http://www.kernelnotes.org">http://www.kernelnotes.org</A>&quot; est une URL (et donc un URI).
+Beaucoup de gens utilisent le terme URL comme vague synonyme de URI
+(bien que techniquement les URL soient un sous-ensemble des URI).
+<P>
+
+Les URI peuvent être absolus ou relatifs.
+Un identificateur absolu référence une ressource indépendamment du contexte,
+alors qu'un identificateur relatif référence une ressource
+en décrivant la différence par rapport
+au contexte courant.
+Dans les références de chemins relatifs, les segments complets &quot;.&quot; et &quot;..&quot;
+ont des significations particulières&nbsp;: &quot;le niveau actuel dans la
+hiérarchie&quot; et &quot;le niveau au-dessus dans la hiérarchie&quot;, respectivement
+tout comme dans les systèmes type Unix.
+Un segment de chemin qui contient un caractère deux-points ne peut pas être
+utilisé comme premier segment du chemin d'un URI (par exemple
+&quot;ceci:cela&quot;), car on le confondrait avec le mécanisme. Précédez un
+tel segment avec ./ (par exemple &quot;./ceci:cela&quot;). Notez que les
+descendants de Ms-Dos (par ex. Windows) remplacent le deux-points du nom de
+périphérique par une barre verticale dans les URI, ainsi &quot;C:&quot; devient &quot;C|&quot;.
+<P>
+
+Un identificateur de fragment, s'il est présent, référence une portion
+particulière de la ressource&nbsp;; le texte après le '#' identifie le fragment.
+Un URI commençant par '#' référence le fragment dans la ressource courante.
+<A NAME="lbAE">&nbsp;</A>
+<H2>USAGE</H2>
+
+Il y a plusieurs schémas d'URI différents, chacun ajoutant des règles
+et des significations spécifiques, mais ils sont volontairement rendus
+le plus ressemblants possible.
+Par exemple, plusieurs schémas d'URL permettent le format suivant pour
+décrire l'autorité d'un chemin réseau, que l'on appellera
+<I>serveur_ip</I>
+
+(les crochets encadrent les parties optionnelles)&nbsp;:
+<DL COMPACT>
+<DT>
+<I>serveur_ip = </I>[<I>user</I> [ : <I>password</I> ] @ ] <I>hôte</I> [ : <I>port</I>]
+
+</DL>
+<P>
+
+<DD>Ce format permet d'insérer éventuellement un nom d'utilisateur, suivi
+éventuellement d'un mot de passe, et/ou un numéro de port.
+La partie
+<I>hôte</I>
+
+est le nom de l'ordinateur, soit son nom déterminé par le DNS, soit son
+adresse IP (numéros séparés par des points).
+Ainsi l'URI
+&lt;<A HREF="http://fred:fredpassword@xyz.com:8080/">http://fred:fredpassword@xyz.com:8080/</A>&gt;
+se connecte dans le serveur web sur l'ordinateur xyz.com avec l'identité
+fred (et le mot de passe fredpassword) en utilisant le port 8080.
+Evitez d'utiliser les mots de passe dans les URI à cause des risques
+liés à la sécurité sitôt que l'on écrit un mot de passe.
+Si l'URL indique un nom d'utilisateur et pas de mot de passe, et si le
+serveur distant réclame un mot de passe, alors le programme interprétant
+l'URL peut en demander un à l'utilisateur.
+<P>
+
+Voici les mécanismes les plus courants utilisés sur les systèmes type Unix,
+compris par de nombreux outils.
+Notez que beaucoup d'outils gérant les URI ont aussi des mécanismes internes
+ou spécialisés&nbsp;; voyez la documentation de ces outils pour plus de détails.
+<A NAME="lbAF">&nbsp;</A>
+<H3>http - Serveur Web (HTTP)</H3>
+
+http://<I>serveur_ip</I>/<I>chemin</I>
+
+<BR>
+
+http://<I>serveur_ip</I>/<I>chemin</I>?<I>requête</I>
+
+<P>
+
+Il s'agit d'une URL accédant à un serveur web (HTTP).
+Le port par défaut est 80.
+Si le chemin référence un répertoire, le serveur choisira ce qu'il renverra.
+Habituellement, si un fichier nommé &quot;index.html&quot; ou &quot;index.htm&quot; est présent,
+son contenu est renvoyé. Sinon, il crée et renvoie une liste des fichiers
+dans le répertoire en cours avec les liens appropriés.
+Un exemple&nbsp;: &lt;<A HREF="http://lwn.net">http://lwn.net</A>&gt;.
+<P>
+
+Une requête peut être formulée dans le format archaïque &quot;isindex&quot;,
+consistant en mot ou phrase sans signe égal (=).
+Une requête peut aussi être dans le format &quot;GET&quot; plus long, qui a une ou
+plusieurs entrées de requêtes de la forme
+<I>clé</I>=<I>valeur</I>
+
+sépararées par un caractère &quot;et commercial&quot; (&amp;).
+Notez que la
+<I>clé</I>
+
+peut être répétée plusieurs fois, et c'est au serveur web et ses programmes
+applicatifs de déterminer s'il y a une signification pour cela.
+Il y a une interaction malheureuse avec HTML/XML/SGML et le format de
+requête GET. Quand une telle requête avec plusieurs clés est incluse dans
+un document SGML/XML (y compris HTML), le &quot;et commercial&quot; (&amp;) doit être
+réécrit sous forme &quot;&amp;amp;&quot;.
+Notez que toutes les requêtes n'utilisent pas ce format&nbsp;; elles peuvent
+être trop longues pour être stockée en URL et utilisent un mécanisme
+d'interaction différent (appelé POST) sans inclure les données dans l'URI.
+Voir la spécification Common Gateway Interface (CGI) à l'adresse
+&lt;<A HREF="http://www.w3.org/CGI">http://www.w3.org/CGI</A>&gt; pour plus de détails.
+<A NAME="lbAG">&nbsp;</A>
+<H3>ftp - File Transfer Protocol (FTP)</H3>
+
+ftp://<I>serveur_ip</I>/<I>chemin</I>
+
+<P>
+
+Cette URL accède à un fichier à travers le protocole FTP.
+Le port par défaut (pour les commandes) est 21.
+Si aucun nom d'utilisateur n'est inclus, l'utilisateur &quot;anonymous&quot; est 
+employé, et dans ce cas de nombreux clients fournissent l'adresse email
+du requérant en guise de mot de passe.
+Un exemple est
+&lt;<A HREF="ftp://ftp.is.co.za/rfc/rfc1808.txt">ftp://ftp.is.co.za/rfc/rfc1808.txt</A>&gt;.
+<A NAME="lbAH">&nbsp;</A>
+<H3>gopher - Serveur Gopher</H3>
+
+gopher://<I>serveur_ip</I>/<I>type_gopher sélecteur</I>
+
+<BR>
+
+gopher://<I>serveur_ip</I>/<I>type_gopher sélecteur</I>%09<I>recherche</I>
+
+<BR>
+
+gopher://<I>serveur_ip</I>/<I>type_gopher sélecteur</I>%09<I>recherche</I>%09<I>chaine_gopher+</I>
+
+<BR>
+
+<P>
+
+Le port gopher par défaut est 70. Le
+<I>type_gopher</I>
+
+est un champ composé d'un unique caractère indiquant le type de ressource
+Gopher à laquelle l'URL fait référence.
+Le chemin entier paut aussi être vide, auquel cas
+le délimiteur &quot;/&quot; est aussi optionnel et le type_gopher prend la valeur
+par défaut &quot;1&quot;.
+<P>
+
+<I>selecteur</I>
+
+est une chaîne de sélecteur Gopher. Dans le protocole Gopher, la chaîne
+de sélecteur est une séquence d'octets pouvant contenir tous les octets
+sauf 09 hexadécimal (HT Ascii ou Tabulation), 0A hexadécimal
+(LF Ascii), et 0D (CR Ascii).
+<A NAME="lbAI">&nbsp;</A>
+<H3>mailto - Adresse Email</H3>
+
+mailto:<I>adresse-email</I>
+
+<P>
+
+Il s'agit d'une adresse email, en principe de la forme
+<I>nom</I>@<I>nom_hôte</I>.
+
+Voir
+<B><A HREF="/cgi-bin/man/man2html?7+mailaddr">mailaddr</A></B>(7)
+
+pour plus d'informations sur le format correct d'une adresse email.
+Notez que les caractères % doivent être transformés en %25.
+Un exemple&nbsp;: &lt;mailto:<A HREF="mailto:dwheeler@dwheeler.com">dwheeler@dwheeler.com</A>&gt;.
+<A NAME="lbAJ">&nbsp;</A>
+<H3>news - Groupe ou message des news</H3>
+
+news:<I>nom-groupe-news</I>
+
+<BR>
+
+news:<I>id-message</I>
+
+<P>
+
+Un 
+<I>nom-groupe-news</I>
+
+est un nom hiérarchique délimité par des points, comme
+&quot;comp.infosystems.<A HREF="http://www.misc">www.misc</A>&quot;.
+Si nom-groupe-news est &quot;*&quot; (comme dans &lt;news:*&gt;), l'URL référence
+tous les groupes news disponibles.
+Un exemple&nbsp;: &lt;news:comp.lang.ada&gt;.
+<P>
+
+Un 
+<I>id-message</I>
+
+correspond au champ identificateur Message-ID de 
+la RFC 1036 de l'IETF
+
+
+sans les chevrons &quot;&lt;&quot;
+et &quot;&gt;&quot;&nbsp;; il prend la forme
+<I>unique</I>@<I>nom-domaine-complet</I>.
+
+Un identificateur de message peut être distingué d'un nom de groupe de news
+par la présence du caractère &quot;@&quot;.
+<A NAME="lbAK">&nbsp;</A>
+<H3>telnet - connexion Telnet</H3>
+
+telnet://<I>serveur_ip</I>/
+
+<P>
+
+Le mécanisme d'URL Telnet est utilisé pour afficher un service interactif
+accessible par le protocole Telnet. Le caractère &quot;/&quot; final peut être omis.
+Le port par défaut est 23.
+Un exemple&nbsp;: &lt;<A HREF="telnet://melvyl.ucop.edu/">telnet://melvyl.ucop.edu/</A>&gt;.
+<A NAME="lbAL">&nbsp;</A>
+<H3>file - Fichier normal</H3>
+
+file://<I>serveur_ip</I>/<I>segments_chemins</I>
+
+<BR>
+
+file:<I>segments_chemins</I>
+
+<P>
+
+Ceci représente un fichier ou un répertoire accessible localement.
+En particulier,
+<I>hôte</I>
+
+peut être la chaîne &quot;localhost&quot; ou une chaîne vide&nbsp;;
+elle est interprétée comme &quot;la machine sur laquelle l'URL est en
+cours d'interprétation&quot;.
+Si le chemin conduit à un répertoire, le navigateur devrait afficher le 
+contenu du répertoire avec des liens pour chaque élément.
+Tous les navigateurs ne le font pas encore.
+KDE supporte les fichiers générés par l'URL &lt;file:/cgi-bin&gt;.
+Si le fichier n'est pas trouvé, l'analyseur du navigateur peut essayer
+de développer le nom du fichier
+(voir
+<B><A HREF="/cgi-bin/man/man2html?7+glob">glob</A></B>(7)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?3+glob">glob</A></B>(3)).
+
+<P>
+
+Le second format (par ex. &lt;file:/etc/passwd&gt;) est le format
+correct pour référencer un fichier local.
+Toutefois les anciens standards ne le permettaient pas, et
+certains programmes ne le reconnaissent pas comme URI.
+Une syntaxe plus portable est d'utiliser une chaîne vide en guise de nom de
+serveur &lt;<A HREF="file:///etc/passwd">file:///etc/passwd</A>&gt;&nbsp;; cette forme à le même effet et est reconnue
+facilement comme un URI par les analyseurs des anciens programmes.
+Notez que si vous désirez vraiment écrire &quot;débuter de l'emplacement actuel&quot;,
+n'indiquez pas de mécanisme&nbsp;; utilisez une adresse relative comme
+&lt;../test.txt&gt;, qui est indépendante du mécanisme.
+Un exemple de ce mécanisme est &lt;<A HREF="file:///etc/passwd">file:///etc/passwd</A>&gt;.
+<A NAME="lbAM">&nbsp;</A>
+<H3>man - Pages de manuel</H3>
+
+man:<I>nom-commande</I>
+
+<BR>
+
+man:<I>nom_commande</I>(<I>section</I>)
+
+<P>
+
+Ceci référence les pages de documentation en-ligne (man) locales.
+Le nom de la commande peut être suivi éventuellement de parenthèses et
+d'un numéro de section. Voir
+<B><A HREF="/cgi-bin/man/man2html?7+man">man</A></B>(7)
+
+pour plus de renseignements sur la signification du numéro de section.
+Ce mécanisme d'URI est unique aux systèmes Unix (comme Linux) et n'est
+pas encore enregistré par l'IETF.
+Un exemple&nbsp;: &lt;<A HREF="/cgi-bin/man/man2html?1+man:ls">man:ls</A>(1)&gt;.
+<A NAME="lbAN">&nbsp;</A>
+<H3>info - Page de documentation Info</H3>
+
+info:<I>nom-de-fichier-virtuel</I>
+
+<BR>
+
+info:<I>nom-de-fichier-virtuel</I>#<I>nom-de-noeud</I>
+
+<BR>
+
+info:(<I>nom-de-fichier-virtuel</I>)
+
+<BR>
+
+info:(<I>nom-de-fichier-virtuel</I>)<I>nom-de-noeud</I>
+
+<P>
+
+Ce mécanisme référence les pages de documentation en-ligne info (créées par
+les fichiers texinfo), un format utilisé par les outils GNU.
+Ce mécanimse est spécifique aux systèmes Unix (comme Linux) et n'est pas
+encore enregistré par l'IETF.
+Actuellement, Gnome et Kde divergent dans la syntaxe d'URI et chacun rejete
+la syntaxe de l'autre.
+Les deux premiers formats sont ceux de Gnome&nbsp;; dans le nom de noeud, tous
+les espaces sont remplacés par des soulignés.
+Les deux formats suivants sont ceux de Kde&nbsp;; les espaces doivent rester
+tels quels, même si c'est interdit dans les standards d'URI.
+On peut espérer que dans l'avenir la plupart des outils comprendront les
+deux formats et accepteront des soulignés en remplacement des espaces.
+Dans tous les cas, le format sans nom de noeud est supposé viser le
+noeud &quot;Top&quot;.
+Exemples de format Gnome&nbsp;: &lt;info:gcc&gt; et &lt;info:gcc#G++_and_GCC&gt;.
+Exemples de format Kde&nbsp;: &lt;info:(gcc)&gt; et &lt;info:(gcc)G++ and GCC&gt;.
+<A NAME="lbAO">&nbsp;</A>
+<H3>whatis - Recherche de documentation</H3>
+
+whatis:<I>chaîne</I>
+
+<P>
+
+Ce mécanisme parcourt une base de données de courtes (une ligne) descriptions
+des commandes et renvoie une liste des descriptions contenant la chaîne.
+Seules les correspondances de mots complets sont renvoyées.
+Voir
+<B><A HREF="/cgi-bin/man/man2html?1+whatis">whatis</A></B>(1).
+
+Ce mécanisme est unique aux systèmes Unix (comme Linux) et n'est pas
+encore enregistré par l'IETF.
+<A NAME="lbAP">&nbsp;</A>
+<H3>ghelp - Documentation d'aide Gnome</H3>
+
+ghelp:<I>nom-application</I>
+
+<P>
+
+Ceci charge la documentation d'aide Gnome pour l'application indiquée.
+Notez qu'il n'y a pas encore beaucoup de documentation dans ce format.
+<A NAME="lbAQ">&nbsp;</A>
+<H3>ldap - Lightweight Directory Access Protocol</H3>
+
+ldap://<I>hostport</I>
+
+<BR>
+
+ldap://<I>hostport</I>/
+
+<BR>
+
+ldap://<I>hostport</I>/<I>dn</I>
+
+<BR>
+
+ldap://<I>hostport</I>/<I>dn</I>?<I>attributs</I>
+
+<BR>
+
+ldap://<I>hostport</I>/<I>dn</I>?<I>attributs</I>?<I>portée</I>
+
+<BR>
+
+ldap://<I>hostport</I>/<I>dn</I>?<I>attributs</I>?<I>portée</I>?<I>filtre</I>
+
+<BR>
+
+ldap://<I>hostport</I>/<I>dn</I>?<I>attributs</I>?<I>portée</I>?<I>filtre</I>?<I>extensions</I>
+
+<P>
+
+Ce mécanisme supporte les requêtes utilisant le protocole
+Lightweight Directory Access Protocol (LDAP), pour interroger un
+ensemble de serveurs à propos d'informations organisées hiérarchiquement
+(comme des gens ou des ressources de calcul).
+Des informations supplémentaires sur les mécanismes d'URL LDAP sont
+disponibles dans la RFC 2255&nbsp;:
+
+
+Les composants de l'URL sont&nbsp;:
+<DL COMPACT>
+<DT>hostport<DD>
+le serveur LDAP à interroger, écrit comme un nom d'hôte suivi éventuellement
+par un deux-points et un numéro de port.
+Le port TCP pour le LDAP est 389. 
+Si le nom est vide, le client détermine le serveur LDAP à utiliser.
+<DT>dn<DD>
+Le nom complet (Distinguished Name) LDAP, qui identifie l'objet de
+base de la recherche LDAP (voir
+
+RFC 2253
+
+section 3).
+<DT>attributs<DD>
+une liste d'attributs séparés par des virgule à renvoyer&nbsp;;
+voir la RFC 2251 section 4.1.5. Par défaut tous les attributs sont renvoyés..
+<DT>portée<DD>
+indique la portée de la recherche qui peut être
+&quot;base&quot; (recherche d'objet de base), &quot;one&quot; (recherche sur un niveau),
+ou &quot;sub&quot; (recherche dans un sous-arbre). Par défaut, on considère &quot;base&quot;.
+<DT>filtre<DD>
+indique le filtre de recherche (sous-ensemble des entrées à renvoyer).
+Par défaut, toutes les entrées sont renvoyées.
+Voir
+
+RFC 2254
+
+section 4.
+<DT>extensions<DD>
+une liste de paires type=valeur séparées par des virgules,
+où la portion =valeur peut être omise pour les options ne la nécessitant
+pas. Une extension préfixée par un '!' est critique (doit être supportée
+pour être valide), sinon elle est non-critique (facultative).
+</DL>
+<P>
+
+Les requêtes LDAP sont plus faciles à comprendre par l'exemple. Voici
+une requête demandant à ldap.itd.umich.edu des informations à propos
+de l'Université du Michigan aux U.S.&nbsp;:
+<DL COMPACT><DT><DD>
+<A HREF="ldap://ldap.itd.umich.edu/o=University%20of%20Michigan,c=US">ldap://ldap.itd.umich.edu/o=University%20of%20Michigan,c=US</A>
+</DL>
+
+<P>
+
+Pour n'obtenir que l'attribut Adresse Postale, on demanderait&nbsp;:
+<DL COMPACT><DT><DD>
+<A HREF="ldap://ldap.itd.umich.edu/o=University%20of%20Michigan,c=US?postalAddress">ldap://ldap.itd.umich.edu/o=University%20of%20Michigan,c=US?postalAddress</A>
+</DL>
+
+<P>
+
+Pour demander à host.com, sur le port 6666 des informations sur la personne
+de nom courant (cn) &quot;Babs Jensen&quot; à l'University du Michigan, demandez&nbsp;:
+<DL COMPACT><DT><DD>
+<A HREF="ldap://host.com:6666/o=University%20of%20Michigan,c=US??sub?(cn=Babs%20Jensen)">ldap://host.com:6666/o=University%20of%20Michigan,c=US??sub?(cn=Babs%20Jensen)</A>
+</DL>
+
+<A NAME="lbAR">&nbsp;</A>
+<H3>wais - Wide Area Information Servers</H3>
+
+wais://<I>hostport</I>/<I>base</I>
+
+<BR>
+
+wais://<I>hostport</I>/<I>base</I>?<I>recherche</I>
+
+<BR>
+
+wais://<I>hostport</I>/<I>base</I>/<I>wtype</I>/<I>wpath</I>
+
+<P>
+
+Ce mécanisme désigne une base de données WAIS, une recherche ou un document
+(voir
+
+IETF RFC 1625
+
+pour plus de renseignements sur WAIS).
+Hostport est le nom d'hôte, suivi éventuellement d'un deux-points et d'un
+numéro de port (par défaut 210).
+<P>
+
+La première forme désigne une base de données WAIS pour les recherches.
+La seconde désigne une recherche particulière dans la base WAIS
+indiquée.
+La troisième forme désigne un document particulier à retrouver dans la
+base de données WAIS.
+<I>wtype</I>
+
+est la désignation WAIS du type d'objet et
+<I>wpath</I>
+
+est l'identificateur WAIS du document.
+<A NAME="lbAS">&nbsp;</A>
+<H3>Autres mécanismes</H3>
+
+Il existe d'autres mécanismes URI. La plupart des outils traitant les
+URI acceptent un jeu d'URI internes (par exemple Mozilla a un mécanisme
+about: pour les informations internes, et le navigateur d'aide
+Gnome a un mécanisme toc: pour diverses opérations).
+Il y a de nombreux mécanismes qui ont été définis mais pas très
+utilisés pour l'instant
+(par exemple, prospero).
+Le mécanisme nntp: est déconseillé en faveur de celui news:.
+Les URN seront supportés par le mécanisme urn: avec des espaces de noms
+hierarchique (ex&nbsp;: urn:ietf:... pour les documents IETF). Pour le moment,
+les URN ne sont pas très largement implémentés.
+Touts les outils ne supportent pas tous les mécanismes.
+<A NAME="lbAT">&nbsp;</A>
+<H2>CODAGE DES CARACTÈRES</H2>
+
+<P>
+
+Les URI utilisent un nombre limité de caractères afin d'être saisis et
+utilisés dans de nombreuses situations.
+<P>
+
+Les caractères suivants sont réservés&nbsp;; ils peuvent appararaître dans un
+URI, mais leurs usages est limités aux fonctionnalités réservées
+(les données conflictuelles doivent être protégées avant de former l'URI)&nbsp;:
+<DL COMPACT>
+<DT><DD>
+<BR>&nbsp;&nbsp;&nbsp;;&nbsp;/&nbsp;?&nbsp;:&nbsp;@&nbsp;&amp;&nbsp;=&nbsp;+&nbsp;$&nbsp;,
+</DL>
+<P>
+
+Les caractères non-réservés peuvent être inclus dans un URI.
+Les caractères non-réservés incluent les majuscules et minuscules anglaises,
+les chiffres décimaux, et l'ensemble suivant de
+signes de ponctuation et de symboles&nbsp;:
+<DL COMPACT>
+<DT><DD>
+<BR>&nbsp;-&nbsp;_&nbsp;.&nbsp;!&nbsp;~&nbsp;*&nbsp;'&nbsp;(&nbsp;)
+</DL>
+<P>
+
+Tous les autres caractères doivent être protégés.
+Un octet protégé est encodé sous forme d'un triplet de caractères, consistant
+en un signe pourcent &quot;%&quot; suivi de deux chiffres hexadécimaux représentant
+le code de l'octet (les lettres hexadécimales peuvent être en majuscules
+ou en minuscules). Par exemple un espace blanc doit être protégé sous forme
+&quot;%20&quot;, une tabulation &quot;%09&quot; et le &quot;&amp;&quot; en &quot;%26&quot;.
+Comme le caractère &quot;%&quot; a toujours un rôle réservé pour potéger les autres
+caractères, il faut le protéger sous forme &quot;%25&quot;.
+Il est courant de protéger le caractère espace en symbole plus (+) dans les
+requêtes. Cette pratique n'est pas défini uniformément dans les RFC
+correspondantes (qui recommandent %20 plutôt) mais tous les outils acceptant
+les URI avec des requêtes préparées ainsi.
+Une URI est toujours montrée dans sa forme protégée.
+<P>
+
+Les caractères non-réservés peuvent être protégés sans modifier la sémantique
+de l'URI, mais il faut l'éviter sauf si l'URI est utilisé dans un contexte
+qui ne permet pas l'utilisation du caractère non protégé. Par exemple
+&quot;%7E&quot; est parfois utilisé à la place de &quot;~&quot; dans les URL HTTP mais les
+deux sont en réalité équivalents dans ce contexte.
+<P>
+
+Pour les URI qui doivent manipuler des caractères hors du jeu Ascii, les
+spécifications HTML 4.01 (section B.2) et la RFC 2718 (section 2.2.5)
+préconisent l'approche suivante&nbsp;:
+<DL COMPACT>
+<DT>1.<DD>
+traduire le caractère en séquence UTF-8 (RFC 2279) - voir
+<B><A HREF="/cgi-bin/man/man2html?7+utf-8">utf-8</A></B>(7)
+
+-  puis
+<DT>2.<DD>
+utiliser le mécanisme d'échappement d'URI, c'est-à-dire, utiliser
+les %HH pour coder les octets non-sûrs.
+</DL>
+<A NAME="lbAU">&nbsp;</A>
+<H2>ÉCRIRE UN URI</H2>
+
+Lorsqu'il est écrit, un URI doit être placé entre guillemets
+(&quot;<A HREF="http://www.kernelnotes.org">http://www.kernelnotes.org</A>&quot;),
+encadré par des chevronss (&lt;<A HREF="http://lwn.net">http://lwn.net</A>&gt;),
+ou placé sur une ligne indépendante.
+Un avertissement à propos des guillemets&nbsp;: Ne
+<B>jamais</B>
+
+introduire une ponctuation supplémentaire (comme le point final d'une
+phrase ou la virgule séparant les éléments d'une liste) à l'intérieur de
+l'URI, car cela modifierait sa valeur. [NDT&nbsp;: cet avertissement vaut
+surtout pour les anglo-saxons&nbsp;; en français l'usage veut que les éléments
+de ponctuations restent à l'extérieur des guillemets.]
+On peut utiliser les chevrons à la place, ou basculer sur un système
+de notation qui n'incopore aucun caractère supplémentaire à l'intérieur
+des marques de citation. Ce système [NDT&nbsp;: le nôtre&nbsp;!], appelé
+&quot;nouveau&quot; ou &quot;logique&quot; par les &quot;Hart's Rules&quot; et le &quot;Oxford Dictionnary
+for Writes and Editors&quot;, est la pratique préférée des hackers dans
+le monde entier. Voir la section sur le style d'écriture dans le Jargon File
+
+
+pour plus de détails.
+Les documentations anciennes suggèrent d'insérer le préfixe &quot;URL:&quot; juste
+avant un URI, mais cette forme n'a jamais été utilisée réellement.
+<P>
+
+La syntaxe des URI a été conçue pour éviter les ambiguïtés. Toutefois,
+comme les URI sont devenus de plus en plus répandus, les médias traditionnels
+télévision, radio, journaux et magazines...) ont utilisé de manière
+croissante des abréviations d'URI, consistant en la seule partie
+autorité et segments de chemin de la ressource
+(par exemple &lt;<A HREF="http://www.w3.org">www.w3.org</A>/Addressing&gt;).
+De tels références sont surtout prévues pour une interprétation humaine,
+avec la supposition que la compréhension du contexte permet de compléter
+l'URI (par exemple les noms d'hôtes commençant par &quot;www' se préfixent
+avec &quot;http://&quot; et les noms commençant par &quot;ftp&quot; doivent se préfixer
+avec &quot;ftp://&quot;).
+De nombreux clents résolvent ces références avec de telles heuristiques.
+Elle peuvent toutefois évoluer, particulièrement quand de nouveaux
+mécanismes sont introduits. Comme les URI abrégés ont la même syntaxe
+qu'un chemin d'URL relative, les références abrégées ne sont pas utilisables
+lorsque des URI relatifs sont autorisés.
+N'utilisez pas d'URI abrégés comme liens hypertexte dans un document&nbsp;;
+utilisez le format standard décrit ici.
+<A NAME="lbAV">&nbsp;</A>
+<H2>NOTES</H2>
+
+Un outil acceptant les URI (par exemple un navigateur web) sur un système
+Linux devrait être capable de traiter (directement ou indirectement) tous les
+mécanismes décrits ici, y compris man: et info:. Sous-traiter ces éléments
+à un autre programme est tout à fait acceptable, et même encouragé.
+<P>
+
+Techniquement, la notation d'un fragment ne fait pas partie de l'URI.
+<P>
+
+Pour savoir comment incorporer des URI (y compris des URL) dans un format de
+données, voir la documentation sur ce format. 
+HTML utilise le format &lt;A HREF=&quot;<I>uri</I>&quot;&gt;
+<I>text</I>
+
+&lt;/A&gt;.
+Les fichiers texinfo utilisent le format @uref{<I>uri</I>}.
+Man et mdoc ont une macro UR récemment ajoutée, ou incluent juste l'URI
+dans le texte (les visualiseurs doivent détecter le :// comme portion d'URI).
+<P>
+
+Les environnements Gnome et Kde divergent actuellement sur les URI qu'ils
+acceptent, en particulier dans leurs systèmes d'aide.
+Pour lister les pages de manuel, Gnome utilise &lt;toc:man&gt; alors que Kde
+utilise &lt;man:(index)&gt;. Pour lister les pages info, Gnome emploie &lt;toc:info&gt;
+et Kde &lt;info:(dir)&gt; (l'auteur de cette page préfère l'approche Kde, bien
+qu'un format plus régulier serait encore meilleur).
+En général, Kde utilise &lt;file:/cgi-bin/&gt; comme préfixe pour les fichiers
+générés. Kde préfère la documentation en Html, accessible avec
+&lt;file:/cgi-bin/helpindex&gt;.
+Gnome préfère le mécanisme ghelp pour stocker et retrouver la documentation.
+Aucun navigateur ne gèe les références file: vers un répertoire à l'heure
+où j'écris ces lignes, ce qui rend difficile de se référer à un répertoire
+avec un URI navigable.
+Comme indiqué plus haut, ces environnements diffèrent sur la gestion du
+mécanisme info:, probablement leur plus importante divergence.
+On espère que Gnome et Kde vont converger vers des formats d'URI communs,
+et la future version de cette page décrira le résultat de cette convergence.
+<A NAME="lbAW">&nbsp;</A>
+<H2>SECURITÉ</H2>
+
+<P>
+
+Un URI ne pose pas de problème de sécurité par lui-même. Il n'y a aucune
+garantie qu'une URL, qui localise une ressource à un moment donné
+contiuera de le faire. Pas plus qu'il n'y a de garantie qu'une URL ne
+localisera pas une ressource différente à un autre moment. Les seules
+garanties peuvent être fournies par les personnes qui gère l'espace de noms
+de la ressource en question.
+<P>
+
+Il est parfois possible de construire une URL de manière qu'une tentative
+de réaliser une opération apparement bénigne, comme accéder à la
+ressource associée, va en réalité produire une action éventuellement
+dommageable pour le correspondant. Les URL non sûres sont typiquement
+construites en indiquant un numéro de port différents de ceux réservés
+pour les protocoles en question. Le client, croyant contacter un site,
+va en réalité engager un autre protocole. Le contenu de l'URL contient
+des instructions, qui interprétées par l'autre protocole, produisent des
+résultats inattendus. Un exemple a été l'emploi d'une URL Gopher pour
+envoyer un message falsifié et indésiré sur un serveur SMTP.
+<P>
+
+Il faut être prudent en utilisant une URL qui indique un numéro de port
+différent de celui du protocole, particulièrement si ce numéro est
+dans l'espace réservé.
+<P>
+
+Il faut s'assurer que lorsque l'URI contient des délimiteurs
+protégés pour un protocole donné (par exemple CR et LF pour le protocole
+telnet) qu'ils ne soient pas &quot;dé-protégés&quot; avant la transmission. Ceci 
+peut violer le protocole, mais évite le risque que ces caractères servent
+à simuler une opération dans ce protocole, ce qui peut conduire à des
+actions distantes éventuellement nocives.
+<P>
+
+Il est clairement déraisonnable d'utiliser un URI qui contient un mot de
+passe censé être secret. En particulier, l'utilisation du mot de passe
+dans la partie &quot;info utilisateur&quot; de l'URI est fortement déconseillé, sauf
+s'il s'agit d'un de ces cas rares où le mot de passe est vraiment public.
+<A NAME="lbAX">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<P>
+
+
+IETF RFC 2396,
+
+
+HTML 4.0.
+
+<A NAME="lbAY">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<P>
+
+La documentation peut se trouver dans un grand nombre d'endroit, ainsi il
+n'y a pas encore de bon mécanisme d'URI pour la documentation générale
+en-ligne, dans des formats arbitraires.
+Les référence de la forme
+&lt;<A HREF="file:///usr/doc/ZZZ">file:///usr/doc/ZZZ</A>&gt; ne fonctionnent pas, car différentes distributions et
+installations locales peuvent placer les fichiers dans divers répertoires
+(cela peut être /usr/doc, ou /usr/local/doc, ou /usr/share, ou autre part).
+De même, le répertoire ZZZ change en principe avec le numéro de version (bien
+que le développement des noms de fichiers puisse partiellement couvrir ce
+problème). Finalement, l'utilisation du mécanisme file: n'est pas recommandée
+pour les gens qui consultent la documentation dynamiquement depuis Internet
+plutôt que de la télécharger sur leur système de fichiers local.
+Un mécanisme d'URI sera peut être ajouté dans l'avenir (ex: &quot;userdoc:&quot;) pour
+permettre aux programme d'inclure des références vers de la documentation
+plus détaillées sans avoir à connaître l'emplacement exact de celle-ci.
+Autrement, une version future des spécifications du système de fichiers peut
+décrire les emplacements de manière suffisament précise pour que le mécanisme
+file: soit capable de situer la documentation.
+<P>
+
+De nombreux programmes et formats de fichiers n'incluent aucune manière
+d'incorporer ou l'implémenter des liens utilisant les URI.
+<P>
+
+Beaucoup de programmes ne traitent pas tous les formats URI différents&nbsp;;
+il devrait y avoir un mécanisme standard pour charger un URI quelconque
+qui détecte automatiquement l'environnement utilisateur (ex : texte ou
+graphique, environnement graphique, localisation, outils disponibles) et
+invoque le bon outil quelque soit l'URI.
+<A NAME="lbAZ">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+David A. Wheeler (<A HREF="mailto:dwheeler@dwheeler.com">dwheeler@dwheeler.com</A>) a écrit cette page de manuel.
+<A NAME="lbBA">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+lynx">lynx</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?7+mailaddr">mailaddr</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+utf-8">utf-8</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?1+man2html">man2html</A></B>(1),
+
+
+IETF RFC 2255.
+
+<A NAME="lbBB">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">USAGE</A><DD>
+<DL>
+<DT><A HREF="#lbAF">http - Serveur Web (HTTP)</A><DD>
+<DT><A HREF="#lbAG">ftp - File Transfer Protocol (FTP)</A><DD>
+<DT><A HREF="#lbAH">gopher - Serveur Gopher</A><DD>
+<DT><A HREF="#lbAI">mailto - Adresse Email</A><DD>
+<DT><A HREF="#lbAJ">news - Groupe ou message des news</A><DD>
+<DT><A HREF="#lbAK">telnet - connexion Telnet</A><DD>
+<DT><A HREF="#lbAL">file - Fichier normal</A><DD>
+<DT><A HREF="#lbAM">man - Pages de manuel</A><DD>
+<DT><A HREF="#lbAN">info - Page de documentation Info</A><DD>
+<DT><A HREF="#lbAO">whatis - Recherche de documentation</A><DD>
+<DT><A HREF="#lbAP">ghelp - Documentation d'aide Gnome</A><DD>
+<DT><A HREF="#lbAQ">ldap - Lightweight Directory Access Protocol</A><DD>
+<DT><A HREF="#lbAR">wais - Wide Area Information Servers</A><DD>
+<DT><A HREF="#lbAS">Autres mécanismes</A><DD>
+</DL>
+<DT><A HREF="#lbAT">CODAGE DES CARACTÈRES</A><DD>
+<DT><A HREF="#lbAU">ÉCRIRE UN URI</A><DD>
+<DT><A HREF="#lbAV">NOTES</A><DD>
+<DT><A HREF="#lbAW">SECURITÉ</A><DD>
+<DT><A HREF="#lbAX">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAY">BOGUES</A><DD>
+<DT><A HREF="#lbAZ">AUTEUR</A><DD>
+<DT><A HREF="#lbBA">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbBB">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:59 GMT, February 11, 2014
+</BODY>
+</HTML>

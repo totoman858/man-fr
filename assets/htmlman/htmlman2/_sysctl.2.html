@@ -1,0 +1,203 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SYSCTL</TITLE>
+</HEAD><BODY>
+<H1>SYSCTL</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+sysctl - Lire / écrire les paramètres système.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/linux/unistd.h">linux/unistd.h</A>&gt;</B>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/linux/sysctl.h">linux/sysctl.h</A>&gt;</B>
+
+<P>
+<B>_syscall1(int, _sysctl, struct __sysctl_args *, args);</B>
+
+<P>
+<B>int _sysctl(struct __sysctl_args *</B><I>args</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+L'appel système
+<B>_sysctl</B>
+
+lit et/ou écrit les paramètres du noyau. Par exemple le nom d'hôte
+ou le nombre maximum de fichiers ouverts. L'argument a la forme
+<P>
+
+<PRE>
+struct __sysctl_args {
+        int *name;        /* integer vector describing variable */
+        int nlen;         /* length of this vector */
+        void *oldval;     /* 0 or address where to store old value */
+        size_t *oldlenp;  /* available room for old value,
+                             overwritten by actual size of old value */
+        void *newval;     /* 0 or address of new value */
+        size_t newlen;    /* size of new value */
+};
+</PRE>
+
+<P>
+
+Cet appel effectue une recherche dans la structure arborescente
+regroupée sous le repertoire
+<B>/proc/sys</B>,
+
+puis,
+si les valeurs réclamées y sont trouvées, appelle les routines
+appropriées pour lire ou modifier les valeurs.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+<PRE>
+#include &lt;<A HREF="file:///usr/include/linux/unistd.h">linux/unistd.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/linux/types.h">linux/types.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/linux/sysctl.h">linux/sysctl.h</A>&gt;
+
+_syscall1(int, _sysctl, struct __sysctl_args *, args);
+int sysctl(int *name, int nlen, void *oldval, size_t *oldlenp,
+           void *newval, size_t newlen)
+{
+        struct __sysctl_args args={name,nlen,oldval,oldlenp,newval,newlen};
+        return _sysctl(&amp;args);
+}
+
+#define SIZE(x) sizeof(x)/sizeof(x[0])
+#define OSNAMESZ 100
+
+char osname[OSNAMESZ];
+int osnamelth;
+int name[] = { CTL_KERN, KERN_OSTYPE };
+
+main(){
+        osnamelth = SIZE(osname);
+        if (sysctl(name, SIZE(name), osname, &amp;osnamelth, 0, 0))
+                perror(&quot;sysctl&quot;);
+        else
+                printf(&quot;Cette machine fonctionne avec %*s\n&quot;, osnamelth, osname);
+        return 0;
+}
+</PRE>
+
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>_sysctl</B>
+
+renvoie 0 s'il réussit, et -1 s'il échoue auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAG">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ENOTDIR</B>
+
+<DD>
+<I>name</I>
+
+non trouvé
+<DT><B>EPERM</B>
+
+<DD>
+pas de droits de parcours sur l'un des &quot;répertoires&quot; rencontrés, 
+ou pas de permission de lecture avec
+<I>oldval</I>
+
+non nul, ou encore pas de permission d'écriture avec
+<I>newval</I>
+
+non nul.
+<DT><B>EFAULT</B>
+
+<DD>
+Demande de lecture de la valeur précédente en fournissant
+<I>oldval</I>
+
+non NULL, mais pas de place disponible dans
+<I>oldlenp</I>.
+
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Cet appel système est spécifique Linux et ne doit pas être employé 
+dans les programmes destinés à être portables.
+Un appem
+<B>sysctl</B>
+
+est présent dans Linux depuis la version 1.3.57. Il existait
+dans BSD 4.4. Seul Linux dispose du mirroir
+<I>/proc/sys</I>
+
+et les conventions de noms d'objets diffèrent entre Linux et BSD 4.4,
+mais les déclarations de la fonction
+<B><A HREF="/cgi-bin/man/man2html?2+sysctl">sysctl</A></B>(2)
+
+sont identiques sur les deux systèmes.
+<A NAME="lbAI">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Les noms des objets peuvent varier d'une version à l'autre du noyau.
+CET APPEL-SYSTEME N'A AUCUN INTERET POUR LES APPLICATIONS. Utilisez
+l'interface
+<I>/proc/sys</I>
+
+à la place.
+<BR>
+
+Tous les objets disponibles ne sont pas proprement documentés.
+<BR>
+
+Il n'est pas possible de changer de système d'exploitation en écrivant dans
+<I>/proc/sys/kernel/ostype</I>.
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+proc">proc</A></B>(5)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">EXEMPLE</A><DD>
+<DT><A HREF="#lbAF">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAG">ERREURS</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">BOGUES</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:58 GMT, February 11, 2014
+</BODY>
+</HTML>

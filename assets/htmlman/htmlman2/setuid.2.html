@@ -1,0 +1,146 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SETUID</TITLE>
+</HEAD><BODY>
+<H1>SETUID</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+setuid - Fixer l'ID de l'utilisateur.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int setuid(uid_t </B><I>uid</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>setuid</B>
+
+fixe l'UID effectif du processus en cours. Si cet UID effectif
+est celui du Super-User, les UID réels et sauvés sont également fixés.
+<P>
+
+Sous Linux
+<B>setuid</B>
+
+est implémenté comme le spécifie Posix, avec l'option _POSIX_SAVED_IDS.
+Ceci permet à un programme Set-UID (autre que root) d'abandonner
+tous ses privilèges, d'effectuer des tâches
+non-privilégiée, et de retrouver son UID effectif de manière sécurisée.
+<P>
+
+Si l'utilisateur est le Super-User, ou si le programme est Set-UID
+root, des précautions particulières doivent être prises.
+La fonction
+<B>setuid</B>
+
+vérifie l'UID effectif de l'appelant et si c'est le Super-User,
+tous les UID du processus sont mis à
+<I>uid.</I>
+
+une fois ceci effectué, il est impossible au programme de retrouver
+ses privilèges de Super-User.
+<P>
+
+Ainsi un programme Set-UID root désireux d'abandonner temporairement
+ses privilèges, en prenant l'identité d'un utilisateur non-root, puis
+de récupérer ses privilèges par la suite ne doit pas utiliser
+<B>setuid</B>.
+
+On peut accomplir ceci en utilisant l'appel (non-POSIX, BSD)
+<B>seteuid.</B>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>setuid</B>
+
+renvoie 0 s'il réussit, ou -1 s'il échoue, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+L'utilisateur n'est pas Super-User et 
+<I>uid</I>
+
+ne correspond ni à l'UID réel, ni à l'UID sauvé du processus.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID, POSIX.1. Pas tout à fait compatible avec l'appel système BSD
+4.4, qui positionne l'ensemble des IDs réel, sauvé et effectif. SVr4 indique
+une condition d'erreur supplémentaire EINVAL.
+<A NAME="lbAH">&nbsp;</A>
+<H2>SPÉCIFICITÉS LINUX</H2>
+
+Linux dispose d'un concept d'UID de système de fichiers, qui est normalement
+égal à l'UID effectif. L'appel
+<B>setuid</B>
+
+peut également fixer l'UID de système de fichiers du processus en cours.
+Voir
+<B><A HREF="/cgi-bin/man/man2html?2+setfsuid">setfsuid</A></B>(2).
+
+<P>
+
+Si
+l'<I>uid</I>
+
+est différent de l'ancien UID effectif, le processus ne pourra pas laisser
+d'image mémoire (core dump) sur le disque.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+getuid">getuid</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setreuid">setreuid</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+seteuid">seteuid</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setfsuid">setfsuid</A></B>(2).
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">SPÉCIFICITÉS LINUX</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:52 GMT, February 11, 2014
+</BODY>
+</HTML>

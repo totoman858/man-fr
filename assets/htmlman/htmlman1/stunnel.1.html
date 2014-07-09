@@ -1,0 +1,890 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STUNNEL</TITLE>
+</HEAD><BODY>
+<H1>STUNNEL</H1>
+Section: User Contributed Perl Documentation (1)<BR>Updated: 2004-09-09<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+<A NAME="ixAAC"></A>
+stunnel - tunnel <FONT SIZE="-1">SSL</FONT> universel
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<A NAME="ixAAD"></A>
+<DL COMPACT>
+<DT><B>Unix:</B><DD>
+<A NAME="ixAAE"></A>
+<B>stunnel</B> [fichier] | -fd&nbsp;[n] | -help | -version | -sockets
+<DT><B></B><FONT SIZE="-1"><B>WIN32:</B></FONT><B></B><DD>
+<A NAME="ixAAF"></A>
+<B>stunnel</B> [fichier] | -install | -uninstall | -help | -version | -sockets
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<A NAME="ixAAG"></A>
+Le programme <B>stunnel</B> est conçu pour fonctionner comme une couche
+de chiffrement <I></I><FONT SIZE="-1"><I>SSL</I></FONT><I></I> entre des clients distants et des serveurs locaux
+(<I>inetd</I>-démarrables) ou distants. Le concept est qu'à partir de daemons
+non-SSL présents sur le système, on peut facilement les configurer pour
+communiquer avec des clients sur des liens sécurisés <FONT SIZE="-1">SSL</FONT>.
+<P>
+
+<B>stunnel</B> peut être utilisé pour ajouter des fonctionnalités <FONT SIZE="-1">SSL</FONT> à des
+daemons classiques <I>Inetd</I> tels que les serveurs <FONT SIZE="-1">POP-2</FONT>, <FONT SIZE="-1">POP-3</FONT> et <FONT SIZE="-1">IMAP</FONT>,
+à d'autres autonomes tels que <FONT SIZE="-1">NNTP</FONT>, <FONT SIZE="-1">SMTP</FONT> et <FONT SIZE="-1">HTTP</FONT>, ainsi que pour tunneliser
+<FONT SIZE="-1">PPP</FONT> sur des sockets réseau sans modification du code source.
+<P>
+
+Ce produit inclut du code de chiffrement écrit par
+Eric Young (<A HREF="mailto:eay@cryptsoft.com">eay@cryptsoft.com</A>)
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<A NAME="ixAAH"></A>
+<DL COMPACT>
+<DT><B>[fichier]</B><DD>
+<A NAME="ixAAI"></A>
+Utilisation du fichier de configuration spécifié.
+<DT><B>-fd [n]</B> (Unix seulement)<DD>
+<A NAME="ixAAJ"></A>
+Lecture du fichier de configuration depuis le descripteur de
+fichier indiqué.
+<DT><B>-help</B><DD>
+<A NAME="ixAAK"></A>
+Affiche le menu d'aide de <B>stunnel</B>.
+<DT><B>-version</B><DD>
+<A NAME="ixAAL"></A>
+Affiche la version de <B>stunnel</B> et les options de compilation.
+<DT><B>-sockets</B><DD>
+<A NAME="ixAAM"></A>
+Affiche les options socket par défaut.
+<DT><B>-install</B> (<FONT SIZE="-1">NT/2000/XP</FONT> seulement)<DD>
+<A NAME="ixAAN"></A>
+Installe un service <FONT SIZE="-1">NT</FONT>.
+<DT><B>-uninstall</B> (<FONT SIZE="-1">NT/2000/XP</FONT> only)<DD>
+<A NAME="ixAAO"></A>
+Désinstalle un service <FONT SIZE="-1">NT</FONT>.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIER DE CONFIGURATION</H2>
+
+<A NAME="ixAAP"></A>
+Chaque ligne du fichier de configuration peut être soit&nbsp;:
+<DL COMPACT>
+<DT>&bull;<DD>
+une ligne vide (ignorée)&nbsp;;
+<DT>&bull;<DD>
+un commentaire commençant par «&nbsp;#&nbsp;» (ignoré)&nbsp;;
+<DT>&bull;<DD>
+une paire «&nbsp;option = valeur&nbsp;»&nbsp;;
+<DT>&bull;<DD>
+«&nbsp;[service_name]&nbsp;» indiquant le début de la définition d'un service&nbsp;;
+
+<BR>
+
+
+
+</DL>
+<P>
+
+<B><FONT SIZE="-1">OPTIONS</FONT> <FONT SIZE="-1">GLOBALES</FONT></B>
+<P>
+
+
+<A NAME="ixAAQ"></A>
+<DL COMPACT>
+<DT><B>CApath</B> = répertoire<DD>
+<A NAME="ixAAR"></A>
+Répertoire des autorités de certification (<FONT SIZE="-1">CA</FONT>)
+
+
+<P>
+
+
+C'est le répertoire dans lequel <B>stunnel</B> cherche les certificats si
+l'on utilise <I>verify</I>. Les certificats doivent être dénommés selon la
+forme <FONT SIZE="-1">XXXXXXXX</FONT>.0, où <FONT SIZE="-1">XXXXXXXX</FONT> est la valeur de hachage du certificat.
+
+
+<P>
+
+
+Le cas échéant, le répertoire <I>CApath</I> est relatif au répertoire <I>chroot</I>.
+<DT><B>CAfile</B> = fichier<DD>
+<A NAME="ixAAS"></A>
+Fichier d'autorités de certification
+
+
+<P>
+
+
+Ce fichier, utilisé avec <I>verify</I>, contient plusieurs certificats de <FONT SIZE="-1">CA</FONT>.
+<DT><B>cert</B> = fichier<DD>
+<A NAME="ixAAT"></A>
+Fichier de chaîne de certificats <FONT SIZE="-1">PEM</FONT>
+
+
+<P>
+
+
+Une <FONT SIZE="-1">PEM</FONT> est toujours nécessaire en mode serveur.
+En mode client, cette option utilise cette <FONT SIZE="-1">PEM</FONT> comme une chaîne côté client.
+L'utilisation de certificats côté client est optionnelle. Les certificats
+doivent être au format <FONT SIZE="-1">PEM</FONT> et triés par ordre de niveau décroissant (<FONT SIZE="-1">CA</FONT> racine
+en premier).
+<DT><B>chroot</B> = répertoire (Unix seulement)<DD>
+<A NAME="ixAAU"></A>
+Répertoire de chroot du processus <B>stunnel</B>
+
+
+<P>
+
+
+<B>chroot</B> enferme <B>stunnel</B> dans une cellule chroot.  <I>CApath</I>, <I>CRLpath</I>, <I>pid</I>
+et <I>exec</I> sont situés à l'intérieur de la cellule et les répertoires doivent être
+relatifs au répertoire correspondant.
+
+
+<P>
+
+
+Pour que le contrôle de libwrap (wrappeur <FONT SIZE="-1">TCP</FONT>) soit effectif dans un environnement
+chroot, il faut aussi y recopier leurs fichiers de configuration (/etc/hosts.allow et
+/etc/hosts.deny).
+<DT><B>ciphers</B> = listes de chiffre<DD>
+<A NAME="ixAAV"></A>
+Sélection des chiffres <FONT SIZE="-1">SSL</FONT> autorisés
+
+
+<P>
+
+
+Liste délimitée par deux-points («&nbsp;:&nbsp;») des chiffres autorisés pour la connexion <FONT SIZE="-1">SSL</FONT>.
+Exemple&nbsp;:  <FONT SIZE="-1">DES-CBC3-SHA:IDEA-CBC-MD5</FONT>
+<DT><B>client</B> = yes | no<DD>
+<A NAME="ixAAW"></A>
+Mode client (Le service distant utilise <FONT SIZE="-1">SSL</FONT>)
+
+
+<P>
+
+
+Par défaut&nbsp;: no (mode server)
+<DT><B>CRLpath</B> = répertoire<DD>
+<A NAME="ixAAX"></A>
+Répertoire des listes de révocation de certificats (<FONT SIZE="-1">CRL</FONT>)
+
+
+<P>
+
+
+C'est le répertoire dans lequel <B>stunnel</B> recherche les <FONT SIZE="-1">CRL</FONT> avec
+l'option <I>verify</I>. Les <FONT SIZE="-1">CRL</FONT> doivent être dénommés selon la
+forme <FONT SIZE="-1">XXXXXXXX</FONT>.0 où <FONT SIZE="-1">XXXXXXXX</FONT> est la valeur de hachage de la <FONT SIZE="-1">CRL</FONT>.
+
+
+<P>
+
+
+Le cas échéant, le répertoire <I>CRLpath</I> est relatif au répertoire <I>chroot</I>.
+<DT><B>CRLfile</B> = fichier<DD>
+<A NAME="ixAAY"></A>
+Fichier de listes de révocation de certificats (<FONT SIZE="-1">CRL</FONT>)
+
+
+<P>
+
+
+Ce fichier, utilisé avec <I>verify</I>, contient plusieurs <FONT SIZE="-1">CRL</FONT>.
+<DT><B>debug</B> = [facilité.]niveau<DD>
+<A NAME="ixAAZ"></A>
+niveau de déverminage
+
+
+<P>
+
+
+Le niveau est un nom ou un numéro conforme à ceux de syslog&nbsp;:
+emerg (0), alert (1), crit (2), err (3), warning (4), notice (5),
+info (6) ou debug (7). Toutes les traces du niveau indiqué et des niveaux
+numériquement inférieurs seront affichées. <B>debug = debug</B> ou
+<B>debug = 7</B> donneront le maximum d'informations. La valeur par défaut
+est notice (5).
+
+
+<P>
+
+
+La facilité syslog «&nbsp;daemon&nbsp;» est utilisée, sauf si un autre nom est spécifié
+(Win32 ne permet pas l'usage des facilités.)
+
+
+<P>
+
+
+La casse est ignorée, aussi bien pour la facilité que pour le niveau.
+<DT><B></B><FONT SIZE="-1"><B>EGD</B></FONT><B></B> = chemin (Unix seulement)<DD>
+<A NAME="ixABA"></A>
+Emplacement du socket du daemon de recueil d'entropie (<FONT SIZE="-1">EGD</FONT> - Entropy Gathering Daemon)
+
+
+<P>
+
+
+Socket <FONT SIZE="-1">EGD</FONT> à utiliser pour alimenter le générateur d'aléatoires de OpenSSL (disponible
+seulement si la compilation a été effectuée avec OpenSSL 0.9.5a ou supérieur).
+<DT><B>foreground</B> = yes | no (Unix seulement)<DD>
+<A NAME="ixABB"></A>
+Mode avant-plan
+
+
+<P>
+
+
+Reste en avant-plan (sans fork) et dirige la trace sur stderr
+au lieu de syslog (sauf si <B>output</B> est spécifié).
+
+
+<P>
+
+
+Par défault&nbsp;: arrière-plan en mode daemon.
+<DT><B>key</B> = fichier<DD>
+<A NAME="ixABC"></A>
+Fichier de clef privée pour le certificat spécifié par <I>cert</I>
+
+
+<P>
+
+
+La clef privée est nécessaire pour authentifier le titulaire du
+certificat.
+Puisque ce fichier doit rester secret, il ne doit être lisible que
+par son propriétaire. Sur les systèmes Unix, on peut utiliser la
+commande suivante&nbsp;:
+
+
+<P>
+
+
+
+
+<PRE>
+    chmod 600 fichier
+
+</PRE>
+
+
+
+
+<P>
+
+
+Par défault&nbsp;: Valeur de <I>cert</I>
+<DT><B>options</B> = Options_SSL<DD>
+<A NAME="ixABD"></A>
+Options de la bibliothèque OpenSSL
+
+
+<P>
+
+
+Le paramètre est l'option OpenSSL décrite dans la page de man
+<I>SSL_CTX_set_options(3ssl)</I>, débarassée du préfixe <I></I><FONT SIZE="-1"><I>SSL_OP_</I></FONT><I></I>.
+Plusieurs <I>options</I> peuvent être spécifiées.
+
+
+<P>
+
+
+Par exemple, pour la compatibilité avec l'implantation <FONT SIZE="-1">SSL</FONT> défaillante
+d'Eudora, on peut utiliser&nbsp;:
+
+
+<P>
+
+
+
+
+<PRE>
+    options = DONT_INSERT_EMPTY_FRAGMENTS
+
+</PRE>
+
+
+<DT><B>output</B> = fichier<DD>
+<A NAME="ixABE"></A>
+Ajoute la trace à la fin d'un fichier au lieu d'utiliser syslog.
+
+
+<P>
+
+
+/dev/stdout peut être utilisé pour afficher les traces sur la sortie standard
+(par exemple pour les traiter avec les outils splogger).
+<DT><B>pid</B> = fichier (Unix seulement)<DD>
+<A NAME="ixABF"></A>
+Emplacement du fichier pid
+
+
+<P>
+
+
+Si l'argument est vide, aucun fichier ne sera créé.
+
+
+<P>
+
+
+Le cas échéant, le chemin <I>pid</I> est relatif au répertoire <I>chroot</I>.
+<DT><B>RNDbytes</B> = nombre<DD>
+<A NAME="ixABG"></A>
+Nombre d'octets à lire depuis les fichiers de «&nbsp;sel&nbsp;» aléatoire
+
+
+<P>
+
+
+Avec les <FONT SIZE="-1">SSL</FONT> de version inférieure à 0.9.5a, détermine aussi le nombre
+d'octets considérés comme suffisants pour «&nbsp;saler&nbsp;» le <FONT SIZE="-1">PRNG</FONT>. Les versions plus
+récentes d'OpenSSL ont une fonction intégrée qui détermine lorsque l'aléatoire
+est suffisant.
+<DT><B>RNDfile</B> = fichier<DD>
+<A NAME="ixABH"></A>
+chemin du fichier de données de «&nbsp;sel&nbsp;» aléatoire
+
+
+<P>
+
+
+La bibliothèque <FONT SIZE="-1">SSL</FONT> utilise prioritairement les données de ce fichier pour
+«&nbsp;saler&nbsp;» le générateur d'aléatoire.
+<DT><B>RNDoverwrite</B> = yes | no<DD>
+<A NAME="ixABI"></A>
+Recouvre les fichiers de «&nbsp;sel&nbsp;» avec de nouvelles données aléatoires.
+
+
+<P>
+
+
+Par défaut&nbsp;: yes
+<DT><B>service</B> = nom<DD>
+<A NAME="ixABJ"></A>
+Définit le nom de service à utiliser
+
+
+<P>
+
+
+<B>Sous Unix&nbsp;:</B> nom de service du mode <I>inetd</I> pour la bibliothèque <FONT SIZE="-1">TCP</FONT> Wrapper.
+
+
+<P>
+
+
+<B>Sous </B><FONT SIZE="-1"><B>NT/2000/XP</B></FONT><B>&nbsp;:</B> nom de service <FONT SIZE="-1">NT</FONT> dans le gestionnaire de tâches.
+
+
+<P>
+
+
+Par défaut&nbsp;: stunnel
+<DT><B>session</B> = timeout<DD>
+<A NAME="ixABK"></A>
+Timeout du cache de session
+<DT><B>setgid</B> = nom (Unix seulement)<DD>
+<A NAME="ixABL"></A>
+Nom de groupe utilisé en mode daemon (les éventuels autres noms de groupe attribués sont supprimés)
+<DT><B>setuid</B> = nom (Unix seulement)<DD>
+<A NAME="ixABM"></A>
+Nom d'utilisateur utilisé en mode daemon
+<DT><B>socket</B> = a|l|r:option=valeur[:valeur]<DD>
+<A NAME="ixABN"></A>
+Configure une option de socket accept (a), locale (l) ou distante (r)
+
+
+<P>
+
+
+Les valeurs de l'option linger sont&nbsp;: l_onof:l_linger.
+Les valeurs de l'option time   sont&nbsp;: tv_sec:tv_usec.
+
+
+<P>
+
+
+Exemples&nbsp;:
+
+
+<P>
+
+
+
+
+<PRE>
+    socket = l:SO_LINGER=1:60
+        définit un délai d'une minute pour la clôture des sockets locaux
+    socket = r:TCP_NODELAY=1
+        désactive l'algorithme Nagle pour les sockets distants
+    socket = r:SO_OOBINLINE=1
+        Place directement les données hors-bande dans le flux de réception
+        des sockets distants
+    socket = a:SO_REUSEADDR=0
+        désactive la réutilisation d'adresses (activée par défaut)
+    socket = a:SO_BINDTODEVICE=lo
+        limite l'acceptation des connexions sur la seule interface de bouclage
+
+</PRE>
+
+
+<DT><B>taskbar</B> = yes | no (<FONT SIZE="-1">WIN32</FONT> seulement)<DD>
+<A NAME="ixABO"></A>
+active l'icône de la barre de tâches
+
+
+<P>
+
+
+Par défaut&nbsp;: yes
+<DT><B>verify</B> = niveau<DD>
+<A NAME="ixABP"></A>
+Vérifie le certificat du correspondant
+
+
+<P>
+
+
+
+
+<PRE>
+    niveau 1 - vérifie le certificat s'il est présent
+    niveau 2 - vérifie le certificat
+    niveau 3 - contrôle le correspondant avec le certificat local
+
+</PRE>
+
+
+
+
+<P>
+
+
+Par défaut - pas de vérification
+
+<BR>
+
+
+
+</DL>
+<P>
+
+<B><FONT SIZE="-1">OPTIONS</FONT> <FONT SIZE="-1">DE</FONT> <FONT SIZE="-1">SERVICE</FONT></B>
+<P>
+
+
+<A NAME="ixABQ"></A>
+Chaque section de configuration commence par le nom du service entre crochets.
+Celui-ci est utilisé par le contrôle d'accès de libwrap (<FONT SIZE="-1">TCP</FONT> Wrappers) et sert
+à distinguer les services <B>stunnel</B> dans les fichiers de traces.
+<P>
+
+Si l'on souhaite utiliser <B>stunnel</B> en mode <I>inetd</I> (lorsqu'un socket lui est
+fourni par un serveur comme <I>inetd</I>, <I>xinetd</I> ou <I>tcpserver</I>), il faut se
+reporter à la section <I></I><FONT SIZE="-1"><I>MODE</I></FONT><I> </I><FONT SIZE="-1"><I>INETD</I></FONT><I></I> plus bas.
+<DL COMPACT>
+<DT><B>accept</B> = [hôte:]port<DD>
+<A NAME="ixABR"></A>
+Accepte des connexions sur le port spécifié
+
+
+<P>
+
+
+Si l'hôte n'est pas indiqué, le port est ouvert pour toutes les adresses <FONT SIZE="-1">IP</FONT> de
+la machine locale.
+<DT><B>connect</B> = [hôte:]port<DD>
+<A NAME="ixABS"></A>
+Se connecte au port distant indiqué
+
+
+<P>
+
+
+Par défaut, l'hôte est localhost.
+<DT><B>delay</B> = yes | no<DD>
+<A NAME="ixABT"></A>
+Retarde la recherche <FONT SIZE="-1">DNS</FONT> pour l'option «&nbsp;connect&nbsp;»
+<DT><B>exec</B> = chemin_exécutable (Unix seulement)<DD>
+<A NAME="ixABU"></A>
+Exécute un programme local de type inetd
+
+
+<P>
+
+
+Le cas échéant, le chemin <I>exec</I> est relatif au répertoire <I>chroot</I>.
+<DT><B>execargs</B> = $0 <TT>$1</TT> <TT>$2 ... (Unix seulement)<DD>
+
+
+<A NAME="ixABV"></A>
+Arguments pour </TT><I>exec</I>, y compris le nom du programme ($0)
+
+
+<P>
+
+
+Les quotes ne peuvent actuellement pas être utilisées.
+Les arguments sont séparés par un nombre quelconque d'espaces.
+<DT><B>ident</B> = nom<DD>
+<A NAME="ixABW"></A>
+Applique le contrôle d'identité d'utilisateur <FONT SIZE="-1">IDENT</FONT> (<FONT SIZE="-1">RFC</FONT> 1413)
+<DT><B>local</B> = hôte<DD>
+<A NAME="ixABX"></A>
+Adresse <FONT SIZE="-1">IP</FONT> de l'interface de sortie utilisée pour les connexions distantes.
+Cette option permet de relier une adresse statique locale.
+<DT><B>protocol</B> = protocole<DD>
+<A NAME="ixABY"></A>
+Négocie avec <FONT SIZE="-1">SSL</FONT> selon le protocole indiqué
+
+
+<P>
+
+
+Actuellement gérés&nbsp;: cifs, nntp, pop3, smtp
+<DT><B>pty</B> = yes | no (Unix seulement)<DD>
+<A NAME="ixABZ"></A>
+Alloue un pseudo-terminal pour l'option «&nbsp;exec&nbsp;»
+<DT><B>TIMEOUTbusy</B> = secondes<DD>
+<A NAME="ixACA"></A>
+Durée d'attente de données
+<DT><B>TIMEOUTclose</B> = secondes<DD>
+<A NAME="ixACB"></A>
+Durée d'attente du close_notify (mis à 0 pour <FONT SIZE="-1">MSIE</FONT> qui est bogué)
+<DT><B>TIMEOUTidle</B> = secondes<DD>
+<A NAME="ixACC"></A>
+Durée d'attente sur une connexion inactive
+<DT><B>transparent</B> = yes | no (Unix seulement)<DD>
+<A NAME="ixACD"></A>
+Mode mandataire transparent
+
+
+<P>
+
+
+Ré-écrit les adresses pour qu'elles apparaissent provenir de la
+machine client <FONT SIZE="-1">SSL</FONT> plutôt que de celle qui exécute <B>stunnel</B>.
+Cette option n'est disponible en mode local (option <I>exec</I>) qu'avec
+la bibliothèque partagée LD_PRELOADing env.so shared library et en mode
+distant (option <I>connect</I>) sur les noyaux Linux 2.2 compilés avec
+l'option <I>transparent proxy</I> et seulement en mode serveur. Cette
+option ne se combine pas au mode mandataire (<I>connect</I>) sauf si la
+route par défaut du client vers la cible passe par l'hôte qui fait
+tourner <B>stunnel</B>, qui ne peut être localhost.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VALEUR DE RETOUR</H2>
+
+<A NAME="ixACE"></A>
+<B>stunnel</B> renvoie zéro en cas de succès, une autre valeur en cas d'erreur.
+<A NAME="lbAH">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+<A NAME="ixACF"></A>
+Pour encapsuler votre service <I>imapd</I> local avec <FONT SIZE="-1">SSL</FONT>&nbsp;:
+<P>
+
+
+
+<PRE>
+    [imapd]
+    accept = 993
+    exec = /usr/sbin/imapd
+    execargs = imapd
+
+</PRE>
+
+
+<P>
+
+Pour tunneliser un daemon <I>pppd</I> sur le port 2020&nbsp;:
+<P>
+
+
+
+<PRE>
+    [vpn]
+    accept = 2020
+    exec = /usr/sbin/pppd
+    execargs = pppd local
+    pty = yes
+
+</PRE>
+
+
+<P>
+
+Configuration de <I>stunnel.conf</I> pour utiliser <B>stunnel</B> en mode <I>inetd</I>
+qui lance imapd à son tour (il ne doit pas y avoir de section <I>[service_name]</I>)&nbsp;:
+<P>
+
+
+
+<PRE>
+    exec = /usr/sbin/imapd
+    execargs = imapd
+
+</PRE>
+
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<A NAME="ixACG"></A>
+<DL COMPACT>
+<DT><I>stunnel.conf</I><DD>
+<A NAME="ixACH"></A>
+Fichier de configuration de <B>stunnel</B>
+<DT><I>stunnel.pem</I><DD>
+<A NAME="ixACI"></A>
+Certificat et clef privée de <B>stunnel</B>
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<A NAME="ixACJ"></A>
+L'option <I>execargs</I> n'admet pas les quotes.
+<A NAME="lbAK">&nbsp;</A>
+<H2>RESTRICTIONS</H2>
+
+<A NAME="ixACK"></A>
+<B>stunnel</B> ne peut être utilisé pour le daemon <FONT SIZE="-1">FTP</FONT> en raison de la nature
+du protocole <FONT SIZE="-1">FTP</FONT> qui utilise des ports multiples pour les transferts de données.
+Il existe cependant des versions <FONT SIZE="-1">SSL</FONT> de <FONT SIZE="-1">FTP</FONT> et de telnet.
+<A NAME="lbAL">&nbsp;</A>
+<H2>NOTES</H2>
+
+<A NAME="ixACL"></A>
+
+<BR>
+
+
+
+<P>
+
+<B><FONT SIZE="-1">MODE</FONT> <FONT SIZE="-1">INETD</FONT></B>
+<P>
+
+
+<A NAME="ixACM"></A>
+L'utilisation la plus commune de <B>stunnel</B> consiste à écouter un port
+réseau et à établir une communication, soit avec un nouveau port
+avec l'option <I>connect</I>, soit avec un programme avec l'option <I>exec</I>.
+On peut parfois cependant souhaiter qu'un autre programme reçoive les
+connexions entrantes et lance <B>stunnel</B>, par exemple avec <I>inetd</I>,
+<I>xinetd</I> ou <I>tcpserver</I>.
+<P>
+
+Si, par exemple, la ligne suivante se trouve dans <I>inetd.conf</I>&nbsp;:
+<P>
+
+
+
+<PRE>
+    imaps stream tcp nowait root /usr/sbin/stunnel stunnel /etc/stunnel/imaps.conf
+
+</PRE>
+
+
+<P>
+
+Dans ces cas, c'est le programme du genre <I>inetd</I>-style qui est
+responsable de l'établissement de la connexion (<I>imaps</I> ci-dessus) et de passer
+celle-ci à <B>stunnel</B>.
+Ainsi, <B>stunnel</B> ne doit alors avoir aucune option <I>accept</I>.
+Toutes les <I>options de niveau service</I> doivent être placées dans
+la section des options globales et aucune section <I>[service_name]</I> ne doit
+être présente. Voir la section <I></I><FONT SIZE="-1"><I>EXEMPLES</I></FONT><I></I> pour des exemples de configurations.
+
+<BR>
+
+
+
+<P>
+
+<B><FONT SIZE="-1">CERTIFICATS</FONT></B>
+<P>
+
+
+<A NAME="ixACN"></A>
+Chaque daemon à propriétés <FONT SIZE="-1">SSL</FONT> doit présenter un certificat X.509
+valide à son interlocuteur. Il a aussi besoin d'une clef privé pour
+déchiffrer les données entrantes. La méthode la plus simple pour
+obtenir un certificat et une clef est d'engendrer celles-ci avec
+le paquetage libre <I>OpenSSL</I>. Plus d'informations sur la génération de
+certificats se trouvent dans les pages indiquées plus bas.
+<P>
+
+Deux choses importantes lors de la génération de paires certificat-clef
+pour <B>stunnel</B>&nbsp;:
+<DL COMPACT>
+<DT>&bull;<DD>
+la clef privée ne peut être chiffrée puisque le serveur n'a aucun moyen
+d'obtenir le mot de passe de l'utilisateur&nbsp;; pour produire une clef non chiffrée,
+ajouter l'option <I>-nodes</I> à la commande <B>req</B> de <I>OpenSSL</I>&nbsp;;
+<DT>&bull;<DD>
+l'ordre du contenu du fichier <I>.pem</I> est significatif&nbsp;: il doit contenir d'abord
+une clef privée non chiffrée, puis un certificat signé (et non une demande de certificat).
+Il doit aussi y avoir des lignes vides après le certificat et après la clef privée.
+L'information textuelle ajoutée au début d'un certificat doit être supprimée afin que
+le fichier ait l'allure suivante&nbsp;:
+
+
+<P>
+
+
+
+
+<PRE>
+    -----BEGIN RSA PRIVATE KEY-----
+    [clef encodée]
+    -----END RSA PRIVATE KEY-----
+    [ligne vide]
+    -----BEGIN CERTIFICATE-----
+    [certificat encodé]
+    -----END CERTIFICATE-----
+    [ligne vide]
+
+</PRE>
+
+
+
+<BR>
+
+
+
+</DL>
+<P>
+
+<B><FONT SIZE="-1">ALEATOIRE</FONT></B>
+<P>
+
+
+<A NAME="ixACO"></A>
+<B>stunnel</B> doit «&nbsp;saler&nbsp;» le générateur de pseudo-aléatoires <FONT SIZE="-1">PRNG</FONT> (pseudo random
+number generator) afin que <FONT SIZE="-1">SSL</FONT> utilise un aléatoire de qualité. Les sources suivantes
+sont chargées dans l'ordre jusqu'à ce qu'une quantité suffisante de données soit lue&nbsp;:
+<DL COMPACT>
+<DT>&bull;<DD>
+le fichier spécifié par <I>RNDfile</I>&nbsp;;
+<DT>&bull;<DD>
+le fichier spécifié par la variable d'environnement <FONT SIZE="-1">RANDFILE</FONT>, à défaut
+le fichier .rnd du répertoire <TT>$HOME</TT> de l'utilisateur&nbsp;;
+<DT>&bull;<DD>
+le fichier spécifié par «&nbsp;--with-random&nbsp;» lors de la compilation&nbsp;;
+<DT>&bull;<DD>
+le contenu de l'écran (MS-Windows seulement)&nbsp;;
+<DT>&bull;<DD>
+le socket <FONT SIZE="-1">EGD</FONT> spécifié par <I></I><FONT SIZE="-1"><I>EGD</I></FONT><I></I>&nbsp;;
+<DT>&bull;<DD>
+le socket <FONT SIZE="-1">EGD</FONT> spécifié par «&nbsp;--with-egd-sock&nbsp;» lors de la compilation&nbsp;;
+<DT>&bull;<DD>
+le périphérique /dev/urandom.
+</DL>
+<P>
+
+Avec un OpenSSL récent (&gt;=OpenSSL 0.9.5a) le chargement de données s'arrête
+automatiquement lorsqu'un niveau d'entropie suffisant est atteint.
+Les versions précédentes continuent à lire toutes les sources puisqu'aucune
+fonction <FONT SIZE="-1">SSL</FONT> ne leur permet de savoir que suffisamment de données sont disponibles.
+<P>
+
+Sur les machines MS-Windows qui n'ont pas d'interaction utilisateur sur la console,
+(mouvements de souris, création de fenêtres, etc.), le contenu de l'écran n'est
+pas suffisamment changeant et il est nécessaire de fournir un fichier d'aléatoire
+par le biais de <I>RNDfile</I>.
+<P>
+
+Le fichier spécifié par <I>RNDfile</I> doit contenir des informations aléatoires ---
+c'est-à-dire des informations différentes à chaque lancement de <B>stunnel</B>.
+Cela est géré automatiquement sauf si l'option <I>RNDoverwrite</I> est utilisée.
+Si l'on souhaite procéder manuellement à la mise à jour de ce fichier, la
+commande <I>openssl rand</I> des versions récentes d'OpenSSL sera sans doute utile.
+<P>
+
+Note importante&nbsp;: si /dev/urandom est disponible, OpenSSL a l'habitude d'utiliser
+celui-ci pour «&nbsp;saler&nbsp;» le <FONT SIZE="-1">PRNG</FONT>  même lorsqu'il contrôle l'état de l'aléatoire&nbsp;;
+ainsi, même si /dev/urandom est dernier de la liste ci-dessus, il est vraisemblable
+qu'il soit utilisé s'il est présent.
+Ce n'est pas le comportement de <B>stunnel</B>, c'est celui d'OpenSSL.
+<A NAME="lbAM">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A NAME="ixACP"></A>
+<DL COMPACT>
+<DT><I><A HREF="/cgi-bin/man/man2html?8+tcpd">tcpd</A></I>(8)<DD>
+<A NAME="ixACQ"></A>
+Service de contrôle d'accès pour les services internet
+<DT><I><A HREF="/cgi-bin/man/man2html?8+inetd">inetd</A></I>(8)<DD>
+<A NAME="ixACR"></A>
+«&nbsp;super-serveur&nbsp;» internet
+<DT><I><A HREF="http://stunnel.mirt.net/">http://stunnel.mirt.net/</A></I><DD>
+<A NAME="ixACS"></A>
+Page de référence de <B>stunnel</B>
+<DT><I><A HREF="http://www.stunnel.org/">http://www.stunnel.org/</A></I><DD>
+<A NAME="ixACT"></A>
+Foire aux questions <B>stunnel</B>
+<DT><I><A HREF="http://www.openssl.org/">http://www.openssl.org/</A></I><DD>
+<A NAME="ixACU"></A>
+Site web du projet OpenSSL
+</DL>
+<A NAME="lbAN">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<A NAME="ixACV"></A>
+<DL COMPACT>
+<DT>Michal Trojnara<DD>
+<A NAME="ixACW"></A>
+&lt;<I><A HREF="mailto:Michal.Trojnara@mirt.net">Michal.Trojnara@mirt.net</A></I>&gt;
+</DL>
+<A NAME="lbAO">&nbsp;</A>
+<H2>ADAPTATION FRANÇAISE</H2>
+
+<A NAME="ixACX"></A>
+<DL COMPACT>
+<DT>Bernard Choppy<DD>
+<A NAME="ixACY"></A>
+&lt;<I>choppy </I><FONT SIZE="-1"><I>AT</I></FONT><I> free </I><FONT SIZE="-1"><I>POINT</I></FONT><I> fr</I>&gt;
+<P>
+</DL>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">FICHIER DE CONFIGURATION</A><DD>
+<DT><A HREF="#lbAG">VALEUR DE RETOUR</A><DD>
+<DT><A HREF="#lbAH">EXEMPLES</A><DD>
+<DT><A HREF="#lbAI">FICHIERS</A><DD>
+<DT><A HREF="#lbAJ">BOGUES</A><DD>
+<DT><A HREF="#lbAK">RESTRICTIONS</A><DD>
+<DT><A HREF="#lbAL">NOTES</A><DD>
+<DT><A HREF="#lbAM">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAN">AUTEUR</A><DD>
+<DT><A HREF="#lbAO">ADAPTATION FRANÇAISE</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:49 GMT, February 11, 2014
+</BODY>
+</HTML>

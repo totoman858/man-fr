@@ -1,0 +1,83 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STRCASECMP</TITLE>
+</HEAD><BODY>
+<H1>STRCASECMP</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+strcasecmp, strncasecmp - Comparer deux chaînes en ignorant les différences majuscules/minuscules.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/string.h">string.h</A>&gt;</B>
+
+<B>int strcasecmp (const char *</B><I>s1</I><B>, const char *</B><I>s2</I><B>);</B>
+
+<B>int strncasecmp (const char *</B><I>s1</I><B>, const char *</B><I>s2</I><B>, size_t </B><I>n</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>strcasecmp()</B> compare les deux chaînes <I>s1</I> et
+<I>s2</I>, en ignorant les différences entre majuscules et minuscules.
+Elle renvoie un entier négatif, nul, ou positif, si la
+chaîne <I>s1</I> est respectivement inférieure, égale ou supérieure à <I>s2</I>.
+<P>
+
+La fonction <B>strncasecmp()</B> est similaire, à la difference qu'elle ne
+prend en compte que les <I>n</I> premiers caractères de <I>s1</I>.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Les fonctions <B>strcasecmp()</B> et <B>strncasecmp()</B> renvoient un entier
+inférieur, égal ou supérieur à zéro si <I>s1</I> (ou éventuellement ses
+<I>n</I> premiers octets) est inférieure, égale ou supérieure à <I>s2</I>.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.4
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+bcmp">bcmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+memcmp">memcmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strcmp">strcmp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strcoll">strcoll</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strncmp">strncmp</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:23 GMT, February 11, 2014
+</BODY>
+</HTML>

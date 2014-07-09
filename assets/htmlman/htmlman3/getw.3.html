@@ -1,0 +1,84 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETW</TITLE>
+</HEAD><BODY>
+<H1>GETW</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getw, putw - Lecture et écriture de mots (ints).
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<B>int getw (FILE * </B><I>stream</I><B>);</B>
+<B>int putw (int </B><I>w</I><B>, FILE * </B><I>stream</I><B>);</B>
+</PRE><A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>getw</B> lit un mot (c'est à dire un entier <B>int</B>) depuis le flux
+<I>stream</I>. Cette fonction est fournie pour des raisons de compatibilité
+avec SVID.  Nous recommandons l'utilisation de <B><A HREF="/cgi-bin/man/man2html?3+fread">fread</A></B>(3) à sa place.
+<P>
+
+<B>putw</B> écrit un mot (c'est à dire un entier <B>int</B>) dans le flux
+<I>stream</I>. Cette fonction est fournie pour des raisons de compatibilité
+avec SVID.  Nous recommandons l'utilisation de <B><A HREF="/cgi-bin/man/man2html?3+fwrite">fwrite</A></B>(3) à sa place.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Normalement, <B>getw</B> renvoie le mot lu, et <B>putw</B> renvoie 0.
+En cas d'erreur ils renvoient <B>EOF</B>.
+<A NAME="lbAF">&nbsp;</A>
+<H2>BOGUES</H2>
+
+La valeur renvoyée en cas d'erreur est aussi une valeur légitime pour une
+donnée. On peut utiliser <B><A HREF="/cgi-bin/man/man2html?3+ferror">ferror</A></B>(3) pour distinguer ces cas.
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+fread">fread</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fwrite">fwrite</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+ferror">ferror</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getc">getc</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+putc">putc</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">BOGUES</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:51 GMT, February 11, 2014
+</BODY>
+</HTML>

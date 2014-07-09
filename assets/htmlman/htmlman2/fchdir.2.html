@@ -1,0 +1,182 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CHDIR</TITLE>
+</HEAD><BODY>
+<H1>CHDIR</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM </H2>
+
+chdir, fchdir - Changer le répertoire courant.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int chdir(const char *</B><I>path</I><B>);</B>
+
+<BR>
+
+<B>int fchdir(int </B><I>fd</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>chdir</B>
+
+remplace le répertoire courant par celui indiqué dans le chemin
+<I>path</I>.
+
+<P>
+
+<B>fchdir</B>
+
+est identique à
+<B>chdir</B>,
+
+sauf que le répertoire cible est fourni sous forme de descripteur de fichier.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE </H2>
+
+<B>chdir</B> et <B>fchdir</B>
+
+renvoient 0 s'ils réussissent, ou -1 s'ils échouent, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Suivant le type de système de fichiers, plusieurs erreurs peuvent
+être renvoyées, les plus courantes pour
+<B>chdir</B>
+
+sont les suivantes&nbsp;:
+<DL COMPACT>
+<DT><B>EFAULT</B>
+
+<DD>
+<I>path</I>
+
+pointe en dehors de l'espace d'adressage accessible.
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+<I>path</I>
+
+est trop long.
+<DT><B>ENOENT</B>
+
+<DD>
+Le fichier n'existe pas.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour le noyau.
+<DT><B>ENOTDIR</B>
+
+<DD>
+Un élément du chemin d'accès n'est pas un répertoire.
+<DT><B>EACCES</B>
+
+<DD>
+L'accès n'est pas autorisé sur un élément du chemin.
+<DT><B>ELOOP</B>
+
+<DD>
+<I>path</I>
+
+contient des références circulaires (à travers un lien symbolique).
+<DT><B>EIO</B>
+
+<DD>
+Une erreur d'entrée/sortie s'est produite.
+</DL>
+<P>
+
+Les erreurs courantes pour
+<B>fchdir</B>
+
+sont&nbsp;:
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+<I>fd</I>
+
+n'est pas un descripteur de fichier valide.
+<DT><B>EACCES</B>
+
+<DD>
+Le répertoire ouvert sur 
+<I>fd</I>
+
+n'autorise pas le parcours.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le prototype de
+<B>fchdir</B>
+
+n'est disponible que si
+<B>_BSD_SOURCE</B>
+
+est défini (soit explicitement, soit implicitement en ne définissant pas
+_POSIX_SOURCE ou en compilant avec l'attribut -ansi).
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+L'appel système
+<B>chdir</B>
+
+est compatible avec SVr4, SVID, POSIX, X/OPEN, et 4.4BSD.
+SVr4 décrit les conditions d'erreur supplémentaires EINTR, ENOLINK,
+et EMULTIHOP mais n'a pas d'erreur ENOMEM.
+POSIX.1 ne contient pas d'erreur ENOMEM ni ELOOP.
+X/OPEN ne décrit pas les erreurs EFAULT, ENOMEM ni EIO.
+<P>
+L'appel système
+<B>fchdir</B>
+
+est compatible avec SVr4, 4.4BSD et X/OPEN.
+SVr4 ajoute les conditions d'erreur EIO, EINTR, et ENOLINK.
+X/OPEN ajoute EINTR et EIO.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+getcwd">getcwd</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?2+chroot">chroot</A></B>(2).
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM </A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE </A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:59 GMT, February 11, 2014
+</BODY>
+</HTML>

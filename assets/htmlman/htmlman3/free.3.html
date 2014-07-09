@@ -1,0 +1,271 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MALLOC</TITLE>
+</HEAD><BODY>
+<H1>MALLOC</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+malloc, calloc, free, realloc - Allocation et libération dynamiques de mémoire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<B>void * calloc (size_t </B><I>nmemb</I><B>, size_t </B><I>size</I><B>);</B>
+<B>void * malloc (size_t </B><I>size</I><B>);</B>
+<B>void free (void * </B><I>ptr</I><B>);</B>
+<B>void * realloc (void * </B><I>ptr</I><B>, size_t </B><I>size</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>calloc()</B>
+
+alloue la mémoire nécessaire pour un tableau de
+<I>nmemb</I>
+
+éléments, chacun d'eux représentant
+<I>size</I>
+
+octets, et renvoie un pointeur vers la mémoire allouée.
+Cette zone est remplie avec des zéros.
+<P>
+
+<B>malloc()</B>
+
+alloue
+<I>size</I>
+
+octets, et renvoie un pointeur sur la mémoire allouée.
+Le contenu de la zone de mémoire n'est pas initialisé.
+<P>
+
+<B>free()</B>
+
+libère l'espace mémoire pointé par
+<I>ptr</I>,
+
+qui a été obtenu lors d'un appel antérieur à
+<B>malloc()</B>,
+
+<B>calloc()</B>
+
+ou
+<B>realloc()</B>.
+
+Si le pointeur
+<I>ptr</I>
+
+n'a pas été obtenu par l'un de ces appels, ou si il a déjà été
+libéré avec
+<B>free()</B>,
+
+le comportement est indéterminé.
+Si
+<I>ptr</I>
+
+est
+<B>NULL</B>,
+
+aucune tentative de libération n'a lieu.
+<P>
+
+<B>realloc()</B>
+
+modifie la taille du bloc de mémoire pointé par
+<I>ptr</I>
+
+pour l'amener à une taille de
+<I>size</I>
+
+octets.
+<B>realloc()</B>
+
+conserve le contenu de la zone mémoire minimum entre la nouvelle et l'ancienne
+taille. Le contenu de la zone de mémoire nouvellement allouée n'est pas initialisé.
+Si
+<I>ptr</I>
+
+est
+<B>NULL</B>,
+
+l'appel de <B>realloc()</B> est équivalent à
+<B>malloc(size)</B>.
+
+Si <I>size</I> vaut zéro, l'appel est équivalent à
+<B>free(</B><I>ptr</I><B>)</B><I>.</I>
+
+Si
+<I>ptr</I>
+
+n'est pas
+<B>NULL</B>,
+
+il doit avoir été obtenu par un appel antérieur à
+<B>malloc()</B>,
+
+<B>calloc()</B>
+
+ou
+<B>realloc()</B>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Pour
+<B>calloc()</B> et <B>malloc()</B>,
+
+la valeur renvoyée est un pointeur sur la mémoire allouée, qui est
+correctement alignée pour n'importe quel type de variable, ou
+<B>NULL</B>
+
+si la demande échoue.
+<P>
+
+<B>free()</B>
+
+ne renvoie pas de valeur.
+<P>
+
+<B>realloc()</B>
+
+renvoie un pointeur sur la mémoire nouvellement allouée, qui est
+correctement alignée pour n'importe quel type de variable, et qui
+peut être différent de
+<I>ptr</I>,
+
+ou
+<B>NULL</B>
+
+si la demande échoue. Si
+<I>size</I>
+
+vaut zéro, realloc renvoie NULL ou un pointeur acceptable pour
+<I>free</I>().
+
+Si
+<B>realloc()</B>
+
+échoue, le bloc mémoire original reste intact, il n'est ni libéré ni
+déplacé.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ANSI-C
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+brk">brk</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+posix_memalign">posix_memalign</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le standard Unix98 réclame que
+<B>malloc()</B>,
+
+<B>calloc()</B>,
+
+et
+<B>realloc</B>()
+
+positionne
+<I>errno</I>
+
+à ENOMEM en cas d'échec. La Glibc suppose qu'il en est ainsi
+(et les versions glibc de cette routine le font). Si vous utilisez
+une implémentation personnelle de malloc qui ne positionne pas
+<I>errno</I>,
+
+certaines routines de bibliothèques peuvent échouer sans
+donner de raison dans
+<I>errno</I>.
+
+<P>
+
+Lorsqu'un programme se plante durant un appel à 
+<B>malloc()</B>,
+
+<B>calloc()</B>
+
+ou
+<B>realloc()</B>,
+
+ceci est presque toujours le signe d'une corruption du tas (zone de mémoire
+dans laquelle sont allouées les variables dynamiques).
+Ceci survient généralement en cas de débordement d'un bloc mémoire alloué,
+ou en libérant deux fois le même pointeur.
+<P>
+
+Les versions récentes de la bibliothèque C de Linux (libc postérieures à
+5.4.23) et la bibliothèque GNU libc 2.x incluent une implémentation de
+<B>malloc()</B>
+
+dont on peut configurer le comportement à l'aide de variables d'environnement.
+Quand la variable
+<B>MALLOC_CHECK_</B>
+
+existe, les appels à
+<B>malloc()</B>
+
+emploient une implémentation spéciale, moins efficace mais plus tolérante
+à l'encontre des bugs simples comme le double appel de
+<B>free()</B>
+
+avec le même argument, ou un débordement de buffer d'un seul octet (bugs
+de surpassement d'une unité, ou oubli d'un caractère nul final d'une chaîne).
+Il n'est toutefois pas possible de pallier toutes les erreurs de ce type, 
+et l'on risque de voir des fuites de mémoire se produire.
+<P>
+Si la variable
+<B>MALLOC_CHECK_</B>
+
+vaut zéro, toutes les corruptions du tas détectées sont ignorées
+silencieusement; Si elle vaut 1 un message de diagnostique est affiché
+sur <I>stderr</I>. Si cette variable vaut 2, la fonction <B>abort</B>()
+est appelée immédiatement. Ce comportement est particulièrement utile car
+un crash pourrait sinon se produire ultérieurement, et serait très difficile
+à diagnostiquer.
+<P>
+
+Linux suit une stratégie d'allocation optimiste. Ceci signifie que lorsque
+<B>malloc ()</B>
+
+renvoie une valeur non-NULL, il n'y a aucune garantie que la mémoire soit
+véritablement disponible. Dans le cas où le système manque de mémoire, un ou
+plusieurs processus seront tués par l'infâme exterminateur de gestion
+mémoire.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:41 GMT, February 11, 2014
+</BODY>
+</HTML>

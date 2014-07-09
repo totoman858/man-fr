@@ -1,0 +1,85 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETPT</TITLE>
+</HEAD><BODY>
+<H1>GETPT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getpt - Ouvre un pseudo-terminal maître (PTM).
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<B>int getpt()</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>getpt</I>()
+
+ouvre un pseudo-terminal maître et renvoie son descripteur de fichier.
+C'est équivalent à
+<B>open(</B><I>/dev/ptmx</I><B>,</B><I>O_RDWR|O_NOCTTY</I><B>)</B>
+
+sur les systèmes Linux, mais le pseudo-terminal peut être situé ailleurs
+sur cetains systèmes qui emploient aussi la GlibC Gnu.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<I>getpt</I>()
+
+renvoie un descripteur de fichier ouvert s'il réussit. Sinon il renvoie
+-1 et remplit
+<I>errno</I>
+
+avec un code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<I>getpt</I>()
+
+est spécifique à la GlibC GNU.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?4+ptmx">ptmx</A></B>(4),
+
+<B><A HREF="/cgi-bin/man/man2html?3+grantpt">grantpt</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+unlockpt">unlockpt</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+ptsname">ptsname</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:08 GMT, February 11, 2014
+</BODY>
+</HTML>

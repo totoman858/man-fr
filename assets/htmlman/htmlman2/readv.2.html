@@ -1,0 +1,206 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of READV</TITLE>
+</HEAD><BODY>
+<H1>READV</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+readv, writev - Lire ou écrire dans plusieurs buffers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/uio.h">sys/uio.h</A>&gt;</B>
+
+<B>int readv(int </B><I>fd</I><B>, const struct iovec * </B><I>vecteur</I><B>, int </B><I>nb</I><B>);</B>
+
+<B>int writev(int </B><I>fd</I><B>, const struct iovec * </B><I>vecteur</I><B>, int </B><I>nb</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>readv</B>()
+
+lit
+<I>nb</I>
+
+blocs depuis le descripteur de fichier
+<I>fd</I>
+
+dans les multiples buffers décrits par le
+<I>vecteur</I>.
+
+<P>
+
+La fonction
+<B>writev</B>()
+
+écrit au plus
+<I>nb</I>
+
+blocs décrits par le
+<I>vecteur</I>
+
+dans le fichier associé au descripteur
+<I>fd</I>.
+
+<P>
+
+Le
+<I>vecteur</I>
+
+pointe sur une
+<B>struct iovec</B>
+
+définie dans
+<B>&lt;<A HREF="file:///usr/include/sys/uio.h">sys/uio.h</A>&gt;</B>
+
+ainsi&nbsp;:
+<P>
+
+<BR>
+
+<PRE>
+struct iovec {
+void *iov_base;   /* Adresse de début */
+size_t iov_len;   /* Nombre d'octets  */
+};
+</PRE>
+
+<P>
+
+Les buffers sont traités dans l'ordre indiqué.
+<P>
+
+La fonction
+<B>readv</B>()
+
+travaille comme
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2)
+
+sauf que plusieurs buffers sont remplis.
+<P>
+
+La fonction
+<B>writev</B>()
+
+travaille comme
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2)
+
+sauf que plusieurs buffers sont écrits.
+<P>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+S'ils réussissent
+<B>readv</B>
+
+renvoie le nombre d'octets lus et
+<B>writev</B>
+
+renvoie le nombre d'octets écrits.
+En cas d'échec -1 est renvoyé, et
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Les erreurs indiquées pour
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2)
+
+et
+<B>write</B>(2à
+
+sont susceptibles de se produire.
+De plus il peut survenir&nbsp;:
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+La somme des
+<I>iov_len</I>
+
+valeurs déborde du type
+<B>ssize_t</B>,
+
+ou le nombre
+<I>nb</I>
+
+de vecteur est nul ou supérieur à
+<B>MAX_IOVEC</B>.
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.4 (les fonctions
+<B>readv</B>
+
+et
+<B>writev</B>
+
+sont apparues dans BSD 4.2), Unix98. La libc5 de Linux utilisait
+les types
+<B>size_t</B>
+
+pour le paramètre
+<I>count</I>
+
+et
+<B>int</B>
+
+en retour de ces fonctions.
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Il est déconseillé de mélanger les appels
+<B>readv</B>()
+
+ou
+<B>writev</B>()
+
+qui agissent sur les descripteurs avec les fonctions de la bibliothèque
+stdio&nbsp;; les résultats sont indéfinis et probablement différents de ce que
+l'on attend
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:01 GMT, February 11, 2014
+</BODY>
+</HTML>

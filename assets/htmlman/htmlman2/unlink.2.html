@@ -1,0 +1,196 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of UNLINK</TITLE>
+</HEAD><BODY>
+<H1>UNLINK</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+unlink - Détruire un nom et éventuellement le fichier associé.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int unlink(const char *</B><I>pathname</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>unlink</B>
+
+détruit un nom dans le système de fichiers. Si ce nom était le
+dernier lien sur un fichier, et si aucun processus n'a ouvert ce fichier,
+ce dernier est effacé, et l'espace qu'il utilisait est rendu disponible.
+<P>
+Si le nom était le dernier lien sur un fichier, mais qu'un
+processus conserve encore le fichier ouvert, celui continue d'exister
+jusqu'à ce que le dernier descripteur le référençant soit fermé.
+<P>
+Si le nom correspond à un lien symbolique, le lien est effacé.
+<P>
+Si le nom correspond à une socket, une Fifo, ou un périphérique,
+le nom est effacé mais les processus qui ont ouvert l'objet
+peuvent continuer à l'utiliser.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>unlink</B>
+
+renvoie 0 s'il réussit ou -1 s'il échoue, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EACCES</B>
+
+<DD>
+L'accès en écriture au répertoire contenant
+<I>pathname</I>
+
+n'est pas autorisé pour l'UID effectif du processus, ou bien
+l'un des répertoires de
+<I>pathname</I>
+
+n'autorise pas le parcours.
+<DT><B>EPERM</B> ou <B>EACCESS</B>
+
+<DD>
+Le répertoire contenant
+<I>pathname</I>
+
+a son Sticky-Bit à 1, et l'UID effectif du processus n'est
+ni celui du fichier ni celui du répertoire.
+<DT><B>EPERM</B> (spécifique Linux)
+
+<DD>
+Le système de fichiers ne permet pas la destruction avec unlink.
+<DT><B>EPERM</B>
+
+<DD>
+Le système ne permet pas la destruction des répertoires avec unlink, ou
+cette destruction nécessite des privilèges que le processus appelant
+n'a pas.
+(Il s'agit d'une erreur conseillée par POSIX).
+<DT><B>EISDIR</B>
+
+<DD>
+<I>pathname</I> est un répertoire.
+
+(Il s'agit d'une erreur non-POSIX renvoyée par Linux depuis le 2.1.132).
+<DT><B>EBUSY</B> (spécifique Linux)
+
+<DD>
+Le fichier
+<I>pathname</I>
+
+ne peut pas être détruit avec unlink car il est utilisé par le système ou
+par un autre processus, et l'implémentation considère que c'est une erreur.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>pathname</I> pointe en dehors de l'espace d'adressage accessible
+
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+<I>pathname</I> est trop long.
+
+<DT><B>ENOENT</B>
+
+<DD>
+Un répertoire dans le chemin d'accès
+<I>pathname</I>
+
+n'existe pas ou est un lien symbolique pointant nulle part.
+<DT><B>ENOTDIR</B>
+
+<DD>
+Un élément du chemin d'accès
+<I>pathname</I>
+
+n'est pas un répertoire.
+<B>ENOMEM</B>
+
+pas assez de mémoire pour le noyau
+<DT><B>EROFS</B>
+
+<DD>
+<I>pathname</I>
+
+est placé sur un système de fichiers en lecture seule.
+<DT><B>ELOOP</B>
+
+<DD>
+Trop de liens symboliques dans le chemin d'accès
+<I>pathname</I>.
+
+<DT><B>EIO</B>
+
+<DD>
+une erreur d'entrée/sortie bas-niveau s'est produite.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID, POSIX, X/OPEN, BSD 4.3. SVr4 mentionne les conditions
+d'erreur supplémentaires  EINTR, EMULTIHOP, ETXTBSY, ENOLINK.
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Des problèmes dans le protocole sous-jacent à NFS peuvent
+causer la disparition inattendue de fichiers encore en
+utilisation.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+link">link</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+rename">rename</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+rmdir">rmdir</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mknod">mknod</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+mkfifo">mkfifo</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+remove">remove</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?1+rm">rm</A></B>(1).
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:56 GMT, February 11, 2014
+</BODY>
+</HTML>

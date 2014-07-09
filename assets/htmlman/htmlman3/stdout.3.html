@@ -1,0 +1,153 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STDIN</TITLE>
+</HEAD><BODY>
+<H1>STDIN</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+stdin, stdout, stderr - Flux d'entrées / sorties standards.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<B>extern FILE *</B><I>stdin</I><B>;</B>
+<B>extern FILE *</B><I>stdout</I><B>;</B>
+<B>extern FILE *</B><I>stderr</I><B>;</B>
+</PRE><A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Normalement, tout programme Unix démarre avec 3 flux déjà ouverts, l'un
+pour l'entrée des données, un autre pour la sortie des données, et un
+troisième pour l'affichage des messages de diagnostique ou d'erreur.
+Ces trois flux sont typiquement attachés au terminal de l'utilisateur
+(voir <B><A HREF="/cgi-bin/man/man2html?4+tty">tty</A></B>(4)), mais peuvent également être redirigés vers des
+fichiers ou vers d'autres périphériques suivant les choix du processus
+parent. (Voir le paragraphe &quot;Redirection&quot; dans <B><A HREF="/cgi-bin/man/man2html?1+sh">sh</A></B>(1)).
+<P>
+
+Le flux d'entrée est appelé &quot;entrée standard&quot; (standard input), le flux
+de sortie, &quot;sortie standard&quot; (standard output), et le flux d'erreur est
+souvent appelé &quot;erreur standard&quot; (standard error).
+Ces noms sont abrégés dans les dénominations symboliques de ces fichiers :
+<I>stdin</I>, <I>stdout</I>, et <I>stderr</I>.
+<P>
+
+Chacun des ces symboles est une macro de <B><A HREF="/cgi-bin/man/man2html?3+stdio">stdio</A></B>(3) de type pointeur
+sur un FILE, et peut être utilisé dans des fonctions comme
+<B><A HREF="/cgi-bin/man/man2html?3+fprintf">fprintf</A></B>(3) ou <B><A HREF="/cgi-bin/man/man2html?3+fread">fread</A></B>(3).
+<P>
+
+Comme les FILEs sont simplement des coquilles entourant les descripteurs
+de fichiers en ajoutant une mémoire tampon, il est également possible
+d'accéder aux fichiers Unix &quot;bruts&quot;, avec des fonctions comme
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2) ou <B><A HREF="/cgi-bin/man/man2html?2+lseek">lseek</A></B>(2).
+Les descripteurs des fichiers associés aux flux
+<I>stdin</I>, <I>stdout</I>, et <I>stderr</I> sont respectivement
+0, 1, et 2.
+Les constantes symboliques STDIN_FILENO, STDOUT_FILENO, et STDERR_FILENO
+sont définies avec ces valeurs dans &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;.
+<P>
+
+Notez que l'utilisation conjointe des FILEs et des descripteurs bruts
+risque de produire des résultats inattendus, et doit être généralement
+évitée.
+Pour les plus masochistes d'entre-vous, POSIX.1 décrit en détail, dans son
+paragraphe 8.2.3, comment ces interactions sont censées fonctionner.
+<P>
+Une règle générale est que les descripteurs de fichiers sont manipulés
+par le noyau, alors que <B>stdio</B> est simplement une bibliothèque.
+Ceci signifie par exemple qu'après un <B>exec</B>, le processus fils
+hérite de tous les descripteurs de fichiers ouverts, mais que les flux
+deviennent inaccessibles.
+<P>
+
+Comme les symboles <I>stdin</I>, <I>stdout</I>, et <I>stderr</I>
+sont définis comme des macros, il est interdit de leur assigner
+une valeur.
+On peut utiliser la fonction de bibliothèque <B><A HREF="/cgi-bin/man/man2html?3+freopen">freopen</A></B>(3)
+pour réassigner les fluux standars de manière portable.
+<P>
+
+Les flux standards sont fermés lors d'un appel à <B><A HREF="/cgi-bin/man/man2html?3+exit">exit</A></B>(3), ou
+lors d'une fin normale de programme.
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le flux
+<B>stderr</B>
+
+n'a pas de buffer. Le flux
+<B>stdout</B>
+
+a un buffer de ligne lorsqu'il est dirigé vers un terminal. Les lignes
+partielles n'apparaîtront pas avant que
+<B><A HREF="/cgi-bin/man/man2html?3+fflush">fflush</A></B>(3) ou <B><A HREF="/cgi-bin/man/man2html?3+exit">exit</A></B>(3) ne soient invoqués, ou qu'un
+retour-chariot soit écrit.
+<P>
+Ceci a parfois des effets inattendus, principalement lors du debugging
+des programmes. 
+La gestion des buffers des flux standards (et des autres flux également)
+peut être modifiée en utilisant
+<B><A HREF="/cgi-bin/man/man2html?3+setbuf">setbuf</A></B>(3) ou <B><A HREF="/cgi-bin/man/man2html?3+setvbuf">setvbuf</A></B>(3).
+<P>
+Remarquez que dans le cas où <I>stdin</I> est associé à un terminal,
+il peut également y avoir un buffer d'entrée dans le pilote de terminal, 
+sans aucune relation avec le buffer de stdio. En fait, normalement,
+la saisie depuis un terminal est gérée avec un buffer de ligne dans
+le noyau. Cette gestion par le noyau peut être configurée en utilisant
+des appels systèmes comme <B><A HREF="/cgi-bin/man/man2html?3+tcsetattr">tcsetattr</A></B>(3). Voir également <B><A HREF="/cgi-bin/man/man2html?1+stty">stty</A></B>(1)
+ou <B><A HREF="/cgi-bin/man/man2html?3+termios">termios</A></B>(3).
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Les macros <I>stdin</I>, <I>stdout</I>, et <I>stderr</I>
+sont conformes au standard
+<B>Ansi C</B>,
+
+et celui-ci stipule également que ces trois flux doivent être
+ouverts au démarrage du programme.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+sh">sh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+csh">csh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fopen">fopen</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+stdio">stdio</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1998-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:08 GMT, February 11, 2014
+</BODY>
+</HTML>

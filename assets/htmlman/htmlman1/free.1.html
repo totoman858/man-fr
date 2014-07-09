@@ -1,0 +1,102 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FREE</TITLE>
+</HEAD><BODY>
+<H1>FREE</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 15 Avril 1997<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+free - Afficher les quantités de mémoires libres et utilisées.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>free </B>[<B>-b</B> | <B>-k</B> | <B>-m</B>] [<B>-o</B>] [<B>-s</B>
+
+<I>nb_sec</I>
+
+] [<B>-t</B>] [<B>-V</B>]
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>free</B> affiche les quantités totales de mémoire et de zone de swap
+libres et utilisées dans le système, ainsi que la mémoire partagée et
+les buffers utilisés par le noyau.
+<A NAME="lbAE">&nbsp;</A>
+<H3>Options</H3>
+
+L'option <B>-b</B> affiche les quantités en octets, l'option <B>-k</B> en
+kilo-octets (affichage par défaut), et <B>-m</B> en méga-octets.
+<P>
+
+L'option <B>-t</B> affiche une ligne contenant le total de la mémoire
+du système.
+<P>
+
+L'option <B>-o</B> empêche l'affichage de la ligne des buffers. Sans cette
+option,  <B>free</B> soustrait/additionne la mémoire des buffers des quantités
+de mémoire utilisée/libre (respectivement).
+<P>
+
+L'option <B>-s</B> active un affichage continu toutes les <I>nb_sec</I> secondes.
+En fait vous pouvez indiquer une valeur décimale pour <I>nb_sec</I>, puisque
+<B><A HREF="/cgi-bin/man/man2html?3+usleep">usleep</A></B>(3)
+
+est utilisé pour obtenir un délai avec une résolution en micro-secondes.
+<P>
+
+L'option <B>-V</B> affiche le numéro de version.
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+
+
+<I>/proc/meminfo</I>-- informations sur la mémoire
+
+
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+ps">ps</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+top">top</A>(1)</B>
+
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Ecrit par Brian Edmonds.
+<P>
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">Options</A><DD>
+</DL>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">AUTEURS</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:47 GMT, February 11, 2014
+</BODY>
+</HTML>

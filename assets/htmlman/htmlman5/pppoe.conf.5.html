@@ -1,0 +1,256 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PPPOE.CONF</TITLE>
+</HEAD><BODY>
+<H1>PPPOE.CONF</H1>
+Section: File Formats (5)<BR>Updated: 21 février 2000<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+pppoe.conf - Fichier de configuration utilisé par <B><A HREF="/cgi-bin/man/man2html?8+pppoe-start">pppoe-start</A></B>(8),
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-stop">pppoe-stop</A></B>(8), <B><A HREF="/cgi-bin/man/man2html?8+pppoe-status">pppoe-status</A></B>(8) et <B><A HREF="/cgi-bin/man/man2html?8+pppoe-connect">pppoe-connect</A></B>(8).
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>/etc/ppp/pppoe.conf</B> est un script shell qui contient les informations de
+configuration pour les scripts PPPoE de Roaring Penguin. Notez que
+<B>pppoe.conf</B> est utilisé seulement par les différents scripts pppoe-*, pas
+par <B>pppoe</B> lui-même.
+<P>
+<B>pppoe.conf</B> consiste en une séquence d'affectation de variables shell.
+Les variables et leur signification sont&nbsp;:
+<P>
+<DL COMPACT>
+<DT><B>ETH</B>
+
+<DD>
+L'interface Ethernet connectée au modem DSL (par exemple, eth0).
+<P>
+<DT><B>USER</B>
+
+<DD>
+L'indentificateur utilisateur PPPoE (par exemple, <A HREF="mailto:b1xxnxnx@sympatico.ca">b1xxnxnx@sympatico.ca</A>).
+<P>
+<DT><B>SERVICENAME</B>
+
+<DD>
+Si elle n'est pas vierge, alors elle est passée avec l'option <B>-S</B> à
+<B>pppoe</B>. Elle spécifie un nom de service à demander. D'ordinaire, vous
+devriez la laisser vierge.
+<P>
+<DT><B>ACNAME</B>
+
+<DD>
+Si elle n'est pas vierge, alors elle est passée avec l'option <B>-C</B> à
+<B>pppoe</B>. Elle spécifie le nom du concentrateur d'accès auquel se
+connecter. D'ordinaire, vous devriez la laisser vierge.
+<P>
+<DT><B>DEMAND</B>
+
+<DD>
+<P>
+Si elle est affectée par un nombre, le lien est activé à la demande et est rompu
+au bout de <B>DEMAND</B> secondes. Si elle est affectée par <B>no</B>, le lien
+est tout le temps entretenu plutôt que d'être activé à la demande.
+<P>
+<DT><B>DNSTYPE</B>
+
+<DD>
+Une valeur parmi <B>NOCHANGE</B>, <B>SPECIFY</B> ou <B>SERVER</B>. Si c'est
+<B>NOCHANGE</B>, <B>pppoe-connect</B> n'ajustera en aucune façon le paramétrage
+DNS. Si c'est <B>SPECIFY</B>, cela réécrira /etc/resolv.conf avec les valeurs
+de DNS1 et DNS2. Si c'est <B>SERVER</B>, cela fournira l'option <I>usepeerdns</I>
+à <B>pppd</B>, et créera un lien symbolique de /etc/resolv.conf vers
+/etc/ppp/resolv.conf.
+<P>
+<DT><B>DNS1, DNS2</B>
+
+<DD>
+Les adresses IP des serveurs DNS si vous utilisez DNSTYPE=SPECIFY.
+<P>
+<DT><B>NONROOT</B>
+
+<DD>
+Si la ligne <B>NONROOT=OK</B> (exactement comme ceci&nbsp;; pas d'espace ni
+commentaire) apparaît dans le fichier de configuration, alors <B>pppoe-wrapper</B>
+autorisera les utilisateurs autres que root à établir ou couper la
+connexion. L'enveloppe est installée seulement si vous avez installé le
+paquetage rp-pppoe-gui.
+<P>
+<DT><B>USEPEERDNS</B>
+
+<DD>
+Si elle est affectée par «&nbsp;yes&nbsp;», alors <B>pppoe-connect</B> fournira l'option
+<I>usepeerdns</I> à <B>pppd</B>, qui le forcera à obtenir les adresses des serveurs
+DNS à partir du vis-à-vis et créera un nouveau fichier
+<B>/etc/resolv.conf</B>. Autrement, <B>pppoe-connect</B> ne fournira pas cette
+option, et <B>pppd</B> ne modifiera pas <B>/etc/resolv.conf</B>.
+<P>
+<DT><B>CONNECT_POLL</B>
+
+<DD>
+Durée (en secondes) au bout de laquelle <B>pppoe-start</B> doit vérifier si une
+nouvelle interface PPP a été montée. Si celle-ci est établie à 0,
+<B>pppoe-start</B> initiera simplement la session PPP, mais n'attendra pas de voir
+si elle a été montée avec succès.
+<P>
+<DT><B>CONNECT_TIMEOUT</B>
+
+<DD>
+Durée (en secondes) pendant laquelle <B>pppoe-start</B> doit attendre le montage
+d'une nouvelle interface PPP avant de conclure que <B>pppoe-connect</B> a échoué
+et de tuer la session.
+<P>
+<DT><B>PING</B>
+
+<DD>
+Un caractère qui est renvoyé en écho chaque <B>CONNECT_POLL</B> secondes pendant
+que <B>pppoe-start</B> attend que l'interface soit montée.
+<P>
+<DT><B>FORCEPING</B>
+
+<DD>
+Un caractère qui est renvoyé en écho chaque <B>CONNECT_POLL</B> secondes pendant
+que <B>pppoe-start</B> attend que l'interface soit montée. Comparable à
+<B>PING</B>, mais le caractère est renvoyé en écho même si la sortie standard
+d'<B>pppoe-start</B> n'est pas un terminal tty.
+<P>
+<DT><B>PIDFILE</B>
+
+<DD>
+Un fichier dans lequel écrire l'identificateur de processus du processus
+<B>pppoe-connect</B> (par exemple, <B>/var/run/pppoe.pid</B>). Deux fichiers
+supplémentaires ($PIDFILE.pppd et $PIDFILE.pppoe) conservent respectivement les
+identificateurs de processus des processus <B>pppd</B> et <B>pppoe</B>.
+<P>
+<DT><B>SYNCHRONOUS</B>
+
+<DD>
+Une indication sur l'utilisation du PPP synchrone (<B>yes</B> ou
+<B>no</B>). Le PPP synchrone est sûr sur les machines Linux utilisant
+le mode n_hdlc de gestion de ligne. (Si vous avez un fichier nommé &quot;n_hdlc.o&quot;
+dans le répertoire des modules, vous avez une gestion de ligne). Il <I>n'est
+pas recommandé</I> sur d'autres machines ou sur des machines Linux sans la
+gestion de ligne à cause des problèmes connus et insolubles d'accès concurrents
+d'un client en mode utilisateur.
+<P>
+<DT><B>CLAMPMSS</B>
+
+<DD>
+La valeur à laquelle fixer le MSS recommandé pour les sessions TCP. La
+valeur par défaut de 1412 devrait être retenue.
+<P>
+<DT><B>LCP_INTERVAL</B>
+
+<DD>
+Durée (en secondes) au bout de laquelle <B>pppd</B> émet des paquets
+«&nbsp;Écho&nbsp;-&nbsp;Demande&nbsp;» LCP.
+<P>
+<DT><B>LCP_FAILURE</B>
+
+<DD>
+Nombre de paquets «&nbsp;Écho&nbsp;-&nbsp;Demande&nbsp;» LCP sans réponse avant que <B>pppd</B>
+ne considère que le lien est mort.
+<P>
+<DT><B>PPPOE_TIMEOUT</B>
+
+<DD>
+Si ces secondes s'écoulent sans que <B>pppoe</B> ne voie la moindre activité,
+alors <B>pppoe</B> s'achève.
+<P>
+<DT><B>FIREWALL</B>
+
+<DD>
+Une valeur parmi <B>NONE</B>, <B>STANDALONE</B> ou <B>MASQUERADE</B>. Si
+<B>NONE</B>, alors <B>pppoe-connect</B> n'ajoute aucune règle pare-feu. Si
+<B>STANDALONE</B>, alors cela efface les règles pare-feu existantes et établit
+des règles de base pour une machine autonome. Si <B>MASQUERADE</B>, alors cela
+efface les règles pare-feu existantes et établit des règles de base pour une
+passerelle Internet. Si vous exécutez des services sur votre machine, ces
+simples scripts pare-feu sont inadéquats&nbsp;; vous devez fabriquer vos propres
+règles pare-feu et configurer <B>FIREWALL</B> à <B>NONE</B>.
+<P>
+<DT><B>PPPOE_EXTRA</B>
+
+<DD>
+Tous arguments supplémentaires à passer à <B>pppoe</B>
+<P>
+<DT><B>PPPD_EXTRA</B>
+
+<DD>
+Tous arguments supplémentaires à passer à <B>pppd</B>
+<P>
+<DT><B>LINUX_PLUGIN</B>
+
+<DD>
+Si non vierge, le chemin d'accès complet du module d'extension PPPoE Linux en
+mode noyau (typiquement <B>/etc/ppp/plugins/rp-pppoe.so</B>). Cela force
+<B>pppoe-connect</B> à utiliser PPPoE en mode noyau sur les systèmes Linux 2.4.x.
+Ce code est expérimental et n'est pas soutenu. L'utilisation du module
+d'extension fait que <B>pppoe-connect</B> ignore <B>CLAMPMSS</B>, <B>PPPOE_EXTRA</B>,
+<B>SYNCHRONOUS</B> et <B>PPPOE_TIMEOUT</B>.
+<P>
+</DL>
+<P>
+
+En utilisant différents fichiers de configuration avec des réglages PIDFILE
+différents, vous pouvez gérer plusieurs connexions PPPoE. Spécifiez simplement
+le fichier de configuration comme argument à <B>pppoe-start</B> et
+<B>pppoe-stop</B>.
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal AT univ-montp2 DOT fr&gt; le 3&nbsp;février&nbsp;2003
+et révisée le 18&nbsp;janvier&nbsp;2006.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=en&nbsp;man&nbsp;5&nbsp;pppoe.conf</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe">pppoe</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-connect">pppoe-connect</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-start">pppoe-start</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-stop">pppoe-stop</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppd">pppd</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-setup">pppoe-setup</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-wrapper">pppoe-wrapper</A></B>(8)
+
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">TRADUCTION</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:54 GMT, February 11, 2014
+</BODY>
+</HTML>

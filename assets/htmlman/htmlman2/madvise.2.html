@@ -1,0 +1,227 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MADVISE</TITLE>
+</HEAD><BODY>
+<H1>MADVISE</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+madvise - Configure l'utilisation de la mémoire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/mman.h">sys/mman.h</A>&gt;</B>
+
+<P>
+<B>int madvise(void *</B><I>start</I><B>, size_t </B><I>length</I><B>, int </B><I>advice</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+L'appel système
+<B>madvise</B>
+
+conseille le noyau sur la façon de gérer la pagination sur l'intervalle 
+d'adresses débutant à l'adresse
+<I>start</I>
+
+et de taille
+<I>length</I>
+
+(en octets). Il permet à une application d'indiquer au noyau l'utilisation
+qu'elle compte faire de certaines zones de mémoire partagée ou projetée de
+façon à ce que le noyau puisse choisir les techniques de lecture 
+anticipée et de mise en cache appropriées.
+Cet appel ne modifie pas la sémantique de l'application (sauf dans le cas de
+<B>MADV_DONTNEED</B>),
+
+mais peut avoir un impact sur ses performances. Le noyau est libre d'ignorer
+le conseil.
+<P>
+
+Le conseil est spécifié par le paramètre 
+<I>advice</I>
+
+qui peut prendre les valeurs 
+<DL COMPACT>
+<DT><B>MADV_NORMAL</B>
+
+<DD>
+Pas de traitement particulier. Il s'agit du comportement par défaut.
+<DT><B>MADV_RANDOM</B>
+
+<DD>
+prévoit des accès aux pages dans un ordre aléatoire.
+(Ainsi, la lecture anticipée sera moins utile qu'elle ne l'est en général.)
+<DT><B>MADV_SEQUENTIAL</B>
+
+<DD>
+prévoit des accès aux pages dans un ordre séquentiel.
+(Aussi, les pages d'un intervalle donné peuvent être systématiquement lues par
+anticipation, et peuvent être libérées rapidement après avoir été accédées.)
+<DT><B>MADV_WILLNEED</B>
+
+<DD>
+prévoit un accès dans un futur proche.
+(Ainsi, lire quelques pages de façon anticipée peut être une bonne idée.)
+<DT><B>MADV_DONTNEED</B>
+
+<DD>
+Ne prévoit pas d'accès dans un futur proche.
+(pour l'instant, l'application en a fini avec l'intervalle considéré,
+ainsi le noyau peut-il libérer les ressources associées à ce dernier.)
+Les accès ultérieurs aux pages de l'intervalle réussiront, mais résulteront
+soit par un rechargement du fichier projeté sous-jacent (void
+<B>mmap</B>),
+
+soit par un remplissage avec des zéros pour les pages sans fichier.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+En cas de succès
+<B>madvise</B>
+
+renvoie zéro. En cas d'erreur, il renvoie -1 et 
+<I>errno</I>
+
+est positionné de façon adéquate.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+la valeur
+<I>len</I>
+
+est négative,
+
+
+<I>start</I>
+
+n'est pas aligné sur une page,
+<I>advice </I>
+
+n'a pas une valeur valide, ou bien l'application tente
+de libérer des pages verrouillées ou partagées (avec MADV_DONTNEED).
+<DT><B>ENOMEM</B>
+
+<DD>
+les adresses de l'intervalle spécifié ne sont pas mappées actuellement,
+ou n'appartiennent pas à l'espace d'adressage du processus.
+<DT><B>ENOMEM</B>
+
+<DD>
+(pour MADV_WILLNEED) Mémoire insuffisante - Echec de pagination.
+<DT><B>EIO</B>
+
+<DD>
+(pour MADV_WILLNEED) suivre la consigne de pagination sur cette zone dépaserait
+la limite maximale de mémoire physique utilisable par le processus.
+<DT><B>EBADF</B>
+
+<DD>
+La projection existe, mais la zone n'est pas associé à un fichier.
+<DT><B>EAGAIN</B>
+
+<DD>
+une ressource du noyau est temporairement indisponible.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES SUR LINUX</H2>
+
+<P>
+
+L'implémentation Linux actuelle (2.4.0) perçoit davantage cet appel-système comme
+une commande que comme un conseil et est ainsi susceptible de renvoyer une erreur
+quand elle ne parvient pas à réaliser ce qu'elle devrait accomplir en réponse à
+ce conseil. (Voir la description des ERREURS ci dessus.)
+Il s'agit d'un comportement non standard.
+<P>
+
+L'implémentation Linux nécessite que l'adresse
+<I>start</I>
+
+soit alignée sur une page, et permet que 
+<I>length</I>
+
+vaille zéro. S'il y a des parties de l'intervalle d'adresses spécifié
+qui ne sont pas mappées, la version Linux de  
+<B>madvise</B>
+
+les ignore et applique l'appel au reste de l'intervalle (mais renvoie
+<B>ENOMEM</B>
+
+comme il se doit).
+<A NAME="lbAH">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+La fonction 
+<B>madvise</B>
+
+est apparue pour la première fois dans BSD 4.4.
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉS</H2>
+
+POSIX.1b (POSIX.4).
+POSIX 1003.1-2001 spécifie l'appel
+<B>posix_madvise</B>
+
+avec des constantes POSIX_MADV_NORMAL, etc.
+et un comportement proche de celui décrit ici. Il existe un appel similaire
+<I>posix_fadvise</I>
+
+pour les accès aux fichiers.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+getrlimit">getrlimit</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mincore">mincore</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mprotect">mprotect</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msync">msync</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+munmap">munmap</A></B>(2)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Stéphan Rafin, 2002
+<BR>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES SUR LINUX</A><DD>
+<DT><A HREF="#lbAH">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉS</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:53 GMT, February 11, 2014
+</BODY>
+</HTML>

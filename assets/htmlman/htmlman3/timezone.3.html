@@ -1,0 +1,231 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TZSET</TITLE>
+</HEAD><BODY>
+<H1>TZSET</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+tzset, tzname, timezone, daylight - Initialisation des données pour les conversions de temps.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/time.h">time.h</A>&gt;</B>
+
+<B>void tzset (void);</B>
+
+<B>extern char *</B><I>tzname</I><B>[2]</B>
+<B>extern long </B><I>timezone</I><B>;</B>
+<B>extern int </B><I>daylight</I><B>;</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>tzset()</B> initialise la variable <I>tzname</I> en utilisant
+la variable d'environnement TZ. Cette fonction est appelée automatiquement
+par les autres fonctions de conversion dépendant du fuseau horaire.
+Dans un environnement type Système V, elle remplira également les variables <I>timezone</I>
+(secondes à l'ouest de Greenwich) et <I>daylight</I> (0 si le fuseau n'a pas de changement
+d'heure saisonnier, une valeur non nulle s'il y a des périodes durant l'année où
+le changement horaire s'applique).
+<P>
+
+Si la variable TZ n'apparaît pas dans l'environnement, <I>tzname</I>
+est initialisée avec la meilleure approximation possible de l'heure
+locale, comme indiqué dans le fichier
+<I>localtime</I>,
+
+au format
+<B><A HREF="/cgi-bin/man/man2html?5+tzfile">tzfile</A></B>(5),
+
+se trouvant dans le répertoire système des fuseaux horaires (voir plus bas).
+(on utilise souvent
+<I>/etc/localtime</I>
+
+ici, en tant que lien symbolique vers le répertoire système des fuseaux horaires).
+<P>
+
+Si la variable TZ est présente dans l'environnement, mais que sa valeur
+est `NULL', ou si sa valeur ne peut pas être interprétée en utilisant le format
+indiqué plus bas, l'heure TU (temps universel) est utilisée.
+<P>
+
+La valeur de TZ peut prendre trois formats différents. Le premier correspond
+à un endroit où il n'y a pas de décalage heure d'hiver/heure d'été :
+<P>
+<DL COMPACT><DT><DD>
+<I>std offset</I>
+
+</DL>
+
+<P>
+la chaîne <I>std</I> indique le nom du fuseau horaire, constitué d'au moins
+trois caractères alphabétiques. La chaîne <I>offset</I> suivant immédiatement
+<I>std</I> indique la valeur à ajouter à l'heure locale pour obtenir l'heure
+TU. La valeur <I>offset</I> est positive si l'emplacement est à l'Ouest du
+méridien 0, et négative si elle est à l'Est.
+L'heure doit être entre 0 et 24, les minutes et les secondes
+entre 0 et 59.
+<P>
+
+Le deuxième format est utilisé lorsqu'il existe des heures d'hiver et d'été différentes :
+<P>
+<DL COMPACT><DT><DD>
+<I>std offset dst [offset],start[/time],end[/time]</I>
+
+</DL>
+
+<P>
+Les champs <I>std</I> et <I>offset</I> initiaux indiquent le fuseau horaire
+comme précisé ci-dessus.
+Les chaines <I>dst</I> et <I>offset</I> indiquent le fuseau et le décalage
+de la zone correspondant à l'heure d'été. Si l'offset est omis, une valeur
+par défaut est utilisée, correspondant à une heure de décalage vers l'avant.
+<P>
+
+Le champ <I>start</I> indique la date de début de l'heure d'été,
+et <I>end</I> indique la date de retour à l'heure d'hiver. Ces deux champs
+utilisent l'un des formats suivants :
+<DL COMPACT>
+<DT>J<I>n</I><DD>
+Indique le jour Julien, avec <I>n</I> compris entre 1 et 365. Le 29
+Février n'est jamais compté, même pendant les années bissextiles.
+<DT><I>n</I>
+
+<DD>
+Indique le jour Julien, avec <I>n</I> compris entre 1 et 366. Le 29
+Février est compté pendant les années bissextiles.
+<DT>M<I>m</I>.<I>s</I>.<I>j</I><DD>
+Indique le jour <I>j</I> (0 &lt;= <I>j</I> &lt;= 6) de la semaine <I>s</I> 
+(1 &lt;= <I>s</I> &lt;= 5) du mois <I>m</I> (1 &lt;= <I>m</I> &lt;= 12).  La semaine 1 est
+la première semaine du mois dans laquelle le jour <I>j</I> apparaît
+et la semaine 5  la dernière où le jour <I>j</I> apparaît. Le jour 0 est Dimanche.
+</DL>
+<P>
+
+Le champ <I>time</I> indique l'heure du changement, sous forme d'heure locale
+courante. Par défaut, la valeur est 02:00:00.
+<P>
+
+Le troisième format est utilisé pour indiquer que les informations de fuseau
+horaire doivent être lues depuis un fichier :
+<P>
+<DL COMPACT><DT><DD>
+:[filespec]
+</DL>
+
+<P>
+Si le fichier <I>filespec</I> n'est pas indiqué, les informations sont
+lues dans le fichier
+<I>localtime</I>
+
+se trouvant dans le répertoire système des fuseaux horaires, habituellement
+<I>/usr/share/zoneinfo</I>.
+
+Ce fichier est au format
+<B><A HREF="/cgi-bin/man/man2html?5+tzfile">tzfile</A></B>(5)
+
+Si <I>filespec</I> est indique, il doit correspondre à un autre fichier au format
+<B><A HREF="/cgi-bin/man/man2html?5+tzfile">tzfile</A></B>(5)
+
+où on lira les informations.
+Si <I>filespec</I> ne commence pas par un `/', le chemin d'accès est
+considéré à partir du répertoire système des fuseaux horaires.
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+Le répertoire système employé pour les fuseaux horaires dépend de la
+version de la bibliothèque C. Les libc4 et libc5 utilisaient
+<I>/usr/lib/zoneinfo</I>,
+
+puis, à partir de la libc-5.4.6 le répertoire
+<I>/usr/share/zoneinfo</I>
+
+si le premier n'existait pas.
+La bibliothèque GlibC 2 utilise le contenu de la variable
+d'environnement TZDIR lorsqu'elle existe. Par défaut c'est normalement
+<I>/usr/share/zoneinfo</I>.
+
+<P>
+
+Les fichiers se trouvant dans le répertoire sont :
+<PRE>
+localtime      fichier d'information horaire locale
+posixrules     règles pour les TZ au format POSIX
+</PRE>
+
+<P>
+
+Souvent,
+<I>/etc/localtime</I>
+
+est un lien symbolique vers
+<I>localtime</I>
+
+ou vers le fichier correct dans le répertoire système des fuseaux horaires.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3, POSIX, BSD 4.3
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Remarquez que la variable <I>daylight</I> n'indique pas si le changement d'heure
+saisonnier s'applique au moment de l'appel. Elle indique simplement le numéro d'un
+algorithme (voyez la variable <I>tz_dsttime</I> dans
+<B><A HREF="/cgi-bin/man/man2html?2+gettimeofday">gettimeofday</A></B>(2)).
+
+C'est obsolète depuis longtemps, mais obligatoire avec SUSv2.
+<P>
+
+BSD4.3 a une routine <I>char *timezone(zone,dst)</I> qui renvoie le nom du
+fuseau horaire correspondant à son premier argument (minutes à l'ouest de Greenwich).
+Si le second argument est 0, le nom standard est fourni, sinon c'est le nom avec
+changement horaire saisonnier.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+date">date</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+gettimeofday">gettimeofday</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+time">time</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+ctime">ctime</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getenv">getenv</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+tzfile">tzfile</A></B>(5)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:50 GMT, February 11, 2014
+</BODY>
+</HTML>

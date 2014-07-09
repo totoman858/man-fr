@@ -1,0 +1,238 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of WAVELAN</TITLE>
+</HEAD><BODY>
+<H1>WAVELAN</H1>
+Section: Manuel du programmeur Linux (4)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+wavelan - Gestionnaire de périphériques AT&amp;T GIS WaveLAN ISA.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>insmod wavelan_cs.o [io=</B><I>B,B..</I><B>] [ irq=</B><I>I,I..</I><B>] [name=</B><I>N,N..</I><B>]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>wavelan</I>
+
+est un pilote de périphérique bas-niveau pour les adaptateurs ethernet
+sans câble
+<B>WaveLAN ISA</B>
+
+de NCR / AT&amp;T / Lucent
+et
+<B>RoamAbout DS</B>
+
+de Digital (DEC).
+Ce pilote est disponible sous forme de module ou peut être compilé
+directement dans le noyau. Il gère des cartes multiples (jusqu'à 4),
+sous ses deux formes, et associe à chaque carte trouvée le
+périphérique ethernet suivant (eth0 ... eth#), sauf si l'on
+réclame explicitement un nom de périphérique précis (voir plus bas).
+Le nom du périphérique sera mentionné dans le fichier de journalisation
+du noyau, avec son adresse MAC, son NWID, et la fréquence utilisée par
+la carte.
+<A NAME="lbAE">&nbsp;</A>
+<H2>PARAMÈTRES</H2>
+
+Cette section correspond à la forme module du pilote. Les paramètres
+sont transmis sur la ligne de commande de
+<I><A HREF="/cgi-bin/man/man2html?8+insmod">insmod</A></I>(8).
+
+Si le pilote est inclus dans le noyau, utilisez la syntaxe
+<I>ether=IRQ,IO,NOM</I>
+
+sur la ligne de commande du noyau.
+<DL COMPACT>
+<DT><B>io</B>
+
+<DD>
+Indique la liste des adresses de base ou rechercher les cartes wavelan
+(cette adresse est sélectionnée par des switchs sur la carte). Si aucune
+adresse d'entrée/sortie n'est mentionnée, le pilote examinera les
+adresses 0x390 et 0x3E0, ce qui peut engendrer un conflit avec d'autres
+périphériques.
+<DT><B>irq</B>
+
+<DD>
+Indique la liste des IRQ que chaque carte doit utiliser (la valeur est
+stockée en mémoire permanente sur la carte pour tout usage ultérieur).
+<DT><B>nom</B>
+
+<DD>
+Indique la liste des noms de périphériques à utiliser pour chaque
+carte (le nom correspond à celui utilisé par
+<I><A HREF="/cgi-bin/man/man2html?8+ifconfig">ifconfig</A></I>(8)).
+
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXTENSIONS SPÉCIFIQUES SANS-CÂBLE</H2>
+
+Utilisez
+<I><A HREF="/cgi-bin/man/man2html?8+iwconfig">iwconfig</A></I>(8)
+
+pour manipuler les extensions spécifiques à l'aspect ``sans-câble'' de
+ces cartes.
+<A NAME="lbAG">&nbsp;</A>
+<H3>NWID (ou domaine)</H3>
+
+Indique l'ID réseau
+[<I>0</I>
+
+à
+<I>FFFF</I>]
+
+ou le désactive
+[<I>off</I>].
+
+Comme le NWID est stocké dans une zone de mémoire permanente de la carte,
+il sera réutilisé à chaque appel ultérieur du pilote.
+<A NAME="lbAH">&nbsp;</A>
+<H3>Fréquence et canal</H3>
+
+Pour les cartes 2.4 GHz 2.00
+vous pouvez fixer la fréquence en utilisant l'un des 10 canaux prédéfinis
+(<I>2.412,</I>
+
+<I>2.422, 2.425, 2.4305, 2.432, 2.442, 2.452, 2.460, 2.462</I>
+
+ou
+<I>2.484</I>)
+
+ou en indiquant directement sa valeur.
+La fréquence est changée immédiatement, et de façon permanente.
+La disponibilité des fréquences varie en fonction des réglementations
+en vigueur.
+<A NAME="lbAI">&nbsp;</A>
+<H3>Statistiques</H3>
+
+On peut fournir une liste d'adresses MAC (jusqu'à 8) au pilote, et
+obtenir la dernière valeur de qualité de liaison pour chacune
+d'entre elles (voir)
+<I><A HREF="/cgi-bin/man/man2html?8+iwspy">iwspy</A></I>(8)).
+
+<A NAME="lbAJ">&nbsp;</A>
+<H3>/proc/net/wireless</H3>
+
+<I>status</I>
+
+est la valeur d'état renvoyée par le modem.
+<I>Link quality</I>
+
+correspond à la qualité de la modulation  (direct sequence
+spread spectrum) [max = 16].
+<I>Level</I>
+
+et
+<I>Noise</I>
+
+correspondent aux niveaux de signal et de bruit [max = 64].
+Les compteurs
+<I>crypt discarded packet</I>
+
+et
+<I>misc discarded packet</I>
+
+ne sont pas encore implémentés.
+<A NAME="lbAK">&nbsp;</A>
+<H2>IOCTL PRIVÉES</H2>
+
+Vous pouvez utiliser
+<I><A HREF="/cgi-bin/man/man2html?8+iwpriv">iwpriv</A></I>(8)
+
+pour manipuler les requêtes d'ioctls privées.
+<A NAME="lbAL">&nbsp;</A>
+<H3>Seuils de qualité et de niveau.</H3>
+
+Vous permettent de définir les seuils de qualité et de niveau utilisés
+par le modem (les paquets en-dessous de ces seuils seront rejetés).
+<A NAME="lbAM">&nbsp;</A>
+<H3>Histogramme</H3>
+
+Cette fonctionnalité d'indiquer un nombre d'intervalle dans les signaux
+de niveaux, et de compter le nombre de paquets reçus dans chacun des ces
+intervalles. Cette distribution permet de calculer une moyenne et un
+écart-type pour le niveau de signal.
+<A NAME="lbAN">&nbsp;</A>
+<H2>NOTES SPÉCIFIQUES</H2>
+
+Le pilote échouera en tentant de détecter certaines cartes Wavelan
+<B>non NCR/ATT&amp;T/Lucent</B>.
+
+Si cela vous arrive, vous devrez regarder le code source pour trouver le
+moyen d'ajouter une routine de détection de votre carte.
+<P>
+
+Certaines fonctionnalités mentionnées ici sont optionnelles, vous pouvez
+les désactiver en modifiant des drapeaux dans l'en-tête du pilote et en
+le recompilant.
+<A NAME="lbAO">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Bruce Janson - <A HREF="mailto:bruce@cs.usyd.edu.au">bruce@cs.usyd.edu.au</A>
+<BR>
+
+Jean Tourrilhes - <A HREF="mailto:jt@hplb.hpl.hp.com">jt@hplb.hpl.hp.com</A>
+<BR>
+
+(et d'autres - voir le code source pour la liste)
+<A NAME="lbAP">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?4+wavelan_cs">wavelan_cs</A></B>(4),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ifconfig">ifconfig</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+insmod">insmod</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+iwconfig">iwconfig</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+iwspy">iwspy</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+iwpriv">iwpriv</A></B>(8).
+
+<P>
+<P>
+<A NAME="lbAQ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">PARAMÈTRES</A><DD>
+<DT><A HREF="#lbAF">EXTENSIONS SPÉCIFIQUES SANS-CÂBLE</A><DD>
+<DL>
+<DT><A HREF="#lbAG">NWID (ou domaine)</A><DD>
+<DT><A HREF="#lbAH">Fréquence et canal</A><DD>
+<DT><A HREF="#lbAI">Statistiques</A><DD>
+<DT><A HREF="#lbAJ">/proc/net/wireless</A><DD>
+</DL>
+<DT><A HREF="#lbAK">IOCTL PRIVÉES</A><DD>
+<DL>
+<DT><A HREF="#lbAL">Seuils de qualité et de niveau.</A><DD>
+<DT><A HREF="#lbAM">Histogramme</A><DD>
+</DL>
+<DT><A HREF="#lbAN">NOTES SPÉCIFIQUES</A><DD>
+<DT><A HREF="#lbAO">AUTEURS</A><DD>
+<DT><A HREF="#lbAP">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAQ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:52 GMT, February 11, 2014
+</BODY>
+</HTML>

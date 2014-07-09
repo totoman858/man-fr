@@ -1,0 +1,196 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MBTOWC</TITLE>
+</HEAD><BODY>
+<H1>MBTOWC</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mbtowc - Convertir une séquences multi-octets en caractères étendus.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<B>int mbtowc (wchar_t *</B><I>pwc</I><B>, const char *</B><I>s</I><B>, size_t </B><I>n</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+L'utilisation habituelle de cette fonction est avec
+<I>s</I>
+
+et
+<I>pwc</I>
+
+tous deux différents
+<B>NULL</B>.
+
+Dans ce cas, la fonction
+<B>mbtowc</B>
+
+examine au plus
+<I>n</I>
+
+octets de la chaîne multi-octets commençant à l'adresse
+<I>s</I>,
+
+extrait le premier caractère multi-octets complet, le convertit en  caractère
+large et le stocke dans
+<I>*pwc</I>.
+
+Elle met à jour l'état interne de décalage, connu d'elle seule. Si
+<I>s</I>
+
+ne pointe pas sur un octet nul, elle renvoie le nombre d'octets qui ont été
+consommés dans
+<I>s</I>,
+
+sinon, elle renvoie zéro.
+<P>
+
+Si les
+<I>n</I>
+
+octets débutant en
+<I>s</I>
+
+ne contiennent pas un caractère multi-octets complet, ou s'il s'agit d'une
+séquence invalide,
+<B>mbtowc</B>
+
+renvoie -1. Ceci peut se produire même si
+<I>n</I>
+
+est supérieur ou égal à
+<B>MB_CUR_MAX</B>,
+
+si la chaîne multi-octets contient des séquences de décalage redondantes.
+<P>
+
+Un autre cas possible se présent si
+<I>s</I>
+
+est non
+<B>NULL</B>,
+
+mais 
+<I>pwc</I>
+
+est
+<B>NULLL</B>.
+
+Dans ce cas, la fonction
+<B>mbtowc</B>()
+
+se comporte comme ci-dessus, mais ne stocke par le caractère large en mémoire.
+<P>
+
+Un troisième cas est possible si
+<I>s</I>
+
+est
+<B>NULL</B>.
+
+Alors,
+<I>pwc</I>
+
+et
+<I>n</I>
+
+sont ignorés.
+La fonction
+<B>mbtowc</B>()
+
+réinitialise l'état de décalage, qu'elle seule connait, et renvoie une valeur
+non-nulle si l'encodage à un état de décalage non trivial, ou zéro si
+l'encodage est sans état.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Si
+<I>s</I>
+
+est non
+<B>NULL</B>,
+
+la fonction
+<B>mbtowc</B>()
+
+renvoie le nombre d'octets consommés à partir de
+<I>s</I>,
+
+ou zéro si
+<I>s</I>
+
+pointe sur un octet nul, ou encore -1 en cas d'erreur.
+<P>
+
+Si
+<I>s</I>
+
+est
+<B>NULL</B>,
+
+la fonction
+<B>mbtowc</B>()
+
+renvoie une valeur non-nulle si l'encodage a un état de décalage non trivial,
+ou zéro si l'encodage est sans état.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ISO/ANSI C, UNIX98
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+mbrtowc">mbrtowc</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+mbstowcs">mbstowcs</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+MB_CUR_MAX">MB_CUR_MAX</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le comportement de
+<B>mbtowc</B>()
+
+dépend de la catégorie
+<B>LC_CTYPE</B>
+
+de la localisation en cours.
+<P>
+
+Cette fonction n'est pas sûre en contexte multi-threads. La fonction
+<B>mbrtowc</B>()
+
+fournit une meilleure interface pour la même fonctionnalité.
+SH TRADUCTION
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:48 GMT, February 11, 2014
+</BODY>
+</HTML>

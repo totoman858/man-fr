@@ -1,0 +1,88 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SIGINTERRUPT</TITLE>
+</HEAD><BODY>
+<H1>SIGINTERRUPT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+siginterrupt - Permettre aux signaux d'interrompre les appels-système.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/signal.h">signal.h</A>&gt;</B>
+
+<B>int siginterrupt (int </B><I>sig</I><B>, int </B><I>flag</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>siginterrupt()</B> modifie le comportement d'un appel système
+interrompu par le signal <I>sig</I>.  Si l'argument <I>flag</I>  vaut zéro,
+l'appel système recommencera après la réception d'un signal <I>sig</I>.
+C'est le comportement par défaut sous Linux.
+Néanmoins, quand un nouveau gestionnaire de signaux est installé avec la
+fonction <B><A HREF="/cgi-bin/man/man2html?2+signal">signal</A></B>(2), l'appel système est interrompu par défaut.
+<P>
+
+Si l'argument <I>flags</I> vaut 1 et qu'aucun transfert de données n'a commencé,
+un appel système interrompu renverra -1 et la variable globale <I>errno</I>
+contiendra le code d'erreur <B>EINTR</B>.
+<P>
+
+Si flag <I>flags</I> vaut 1, et si un transfert de données a commencé, alors
+l'appel système interrompu renverra le nombre réel de données transférées.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>siginterrupt()</B> renvoie 0 si elle réussit, ou -1 si le
+numéro de signal <I>sig</I> est invalide.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+Le numéro de signal indique est invalide.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.3
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+signal">signal</A></B>(2)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:48 GMT, February 11, 2014
+</BODY>
+</HTML>

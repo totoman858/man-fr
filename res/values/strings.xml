@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">man fr</string>
+    <string name="about_popup_name">Pages de manuel linux en Français</string>
+    <string name="about_popup_desc">Cette app est un fork du projet de chmod0 (https://github.com/chmod0)</string>
+    <string name="about_popup_licence">Licence BSD</string>
+    <string name="search">Chercher</string>
+    <string name="sections_title">sections des pages man : </string>
+    <string name="sections_1_title">1. Programmes</string>
+    <string name="sections_1_desc">Programmes exécutables ou commandes de l interpréteur de commandes (shell)</string>
+    <string name="sections_2_title">2. Appels systèmes</string>
+    <string name="sections_2_desc">Fonctions fournies par le noyau</string>
+    <string name="sections_3_title">3. Appels de bibliothèque</string>
+    <string name="sections_3_desc">fonctions fournies par des bibliothèques</string>
+    <string name="sections_4_title">4. Fichiers spéciaux</string>
+    <string name="sections_4_desc">situés généralement dans /dev</string>
+    <string name="sections_5_title">5. Formats des fichiers et conventions</string>
+    <string name="sections_5_desc">par exemple /etc/passwd</string>
+    <string name="sections_6_title">6. Jeux</string>
+    <string name="sections_7_title">7. Divers y compris les macropaquets et les conventions</string>
+    <string name="sections_7_desc">par exmeple man(7), groff(7)</string>
+    <string name="sections_8_title">8. Commandes de gestion du système</string>
+    <string name="sections_8_desc">généralement réservées au superutilisateur</string>
+    <string name="no_external_storage">No storage found… retry later</string>
+    <string name="error_writing">Error while writing file… retry later</string>
+</resources>

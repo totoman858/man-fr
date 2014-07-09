@@ -1,0 +1,245 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FILESYSTEMS</TITLE>
+</HEAD><BODY>
+<H1>FILESYSTEMS</H1>
+Section: Manuel de l administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fs - Systèmes de fichiers de Linux : minix, ext, ext2, ext3, xia, msdos, umsdos, vfat, proc, nfs, iso9660, hpfs, sysv, smb, ncpfs.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Quand le système de fichiers
+<B>proc</B>
+
+est monté, comme c'est l'usage sur
+<I>/proc</I>,
+
+vous pouvez trouver dans le fichier
+<I>/proc/filesystems</I>
+
+la liste des systèmes de fichiers supportés par le noyau
+actuellement en exécution.
+Si vous avez besoin d'utiliser un système listé ci-dessous et
+non supporté, vous pouvez insérer le module correspondant dans
+votre noyau, ou bien le recompiler avec l'option correspondante.
+<P>
+Pour pouvoir utiliser un système de fichiers, vous devez le
+<I>monter</I>,
+
+voir
+<B><A HREF="/cgi-bin/man/man2html?8+mount">mount</A></B>(8)
+
+pour la commande mount et les options de montage.
+<P>
+Voici une description des divers types de systèmes de fichiers.
+<P>
+<DL COMPACT>
+<DT><B>minix</B>
+
+<DD>
+est le système de fichiers utilisé par l'OS Minix, le premier à avoir
+fonctionné sous Linux. Il a de nombreuses limitations (64 Mo maxi par
+partition, noms de fichiers courts, un seul horodatage, etc...)
+<P>
+Néanmoins il reste très appréciable pour les disquettes et les
+disques RAM.
+
+<DT><B>ext</B>
+
+<DD>
+est une extension assez élaborée du système de fichiers 
+<B>minix</B>.
+
+Il a été complètement remplacé par sa seconde version
+(<B>ext2</B>)
+
+et supprimé du noyau depuis la version 2.1.21.
+
+<DT><B>ext2</B>
+
+<DD>
+est un système de fichiers de haute performance, utilisé par Linux pour
+les disques fixes tout autant que pour les supports amovibles.
+<P>
+le second système de fichiers étendu a été conçu comme une extension
+du système
+(<B>ext</B>).
+
+<B>ext2</B>
+
+offre les meilleurs performances de tous les systèmes supportés par
+Linux (en termes de vitesse et de consommation CPU).
+<DT><B>ext3</B>
+
+<DD>
+est une version de ext2 supportant la journalisation. On peut
+basculer facilement de ext2 à ext3, et inversement.
+<DT><B>xiafs</B>
+
+<DD>
+a été conçu et implémenté pour être un système de fichiers
+sûr et stable, à partir du code du système Minix. Il fournit
+les fonctionnalités essentielles sans complications excessives.
+Le système de fichiers
+<B>xia</B>
+
+n'est plus développé ni maintenu. Il a été retiré du noyau depuis
+la version 2.1.21.
+<DT><B>msdos</B>
+
+<DD>
+est le système de fichiers utilisé sous DOS, Windows, et
+quelques ordinateurs OS/2. Les noms de fichiers sous
+<B>msdos</B>
+
+sont limités à 8 caractères suivis éventuellement d'un point et
+jusqu'à 3 caractères d'extension.
+<DT><B>umsdos</B>
+
+<DD>
+est un système de fichier DOS étendu utilisé par Linux. Il ajoute
+la possibilité d'utiliser des noms de fichier longs, les UID/GID,
+les autorisations POSIX, les fichiers spéciaux (périphériques, 
+tubes, etc...) sur le système de fichiers DOS, sans sacrifier la
+compatibilité avec celui-ci.
+<DT><B>vfat</B>
+
+<DD>
+est un système de fichiers DOS étendu utilisé par Microsoft Windows95 et
+Windows NT.
+VFAT ajoute la possibilité d'utiliser des noms de fichiers longs sur
+le système de fichiers MSDOS.
+<DT><B>proc</B>
+
+<DD>
+est un pseudo-système de fichiers qui permet une interface avec
+les structures de données du noyau plus simple que la lecture
+et l'interprétation de
+<I>/dev/kmem</I>.
+
+En particulier, ses fichiers ne prennent aucun espace disque.
+Voir 
+<I><A HREF="/cgi-bin/man/man2html?5+proc">proc</A></I>(5).
+
+<DT><B>iso9660</B>
+
+<DD>
+est un système de fichiers pour CD-ROM, conforme au standard ISO 9660.
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>High Sierra</B>
+
+<DD>
+Linux supporte le format &quot;High Sierra&quot;, précurseur du standard ISO 9660
+pour les CD-ROM. Ce format est automatiquement reconnu à l'intérieur
+du support pour systèmes
+<B>iso9660</B>.
+
+<DT><B>Rock Ridge</B>
+
+<DD>
+Linux supporte également le format &quot;System Use Sharing Protocol&quot;
+indiqué par le &quot;Rock Ridge Interchange Protocol&quot;. 
+Ils sont utilisés pour décrire les fichiers contenus dans
+un système
+<B>iso9660</B>
+
+à destination d'un hôte UNIX, et fournir des informations telles que
+les noms de fichiers longs, UID/GID, autorisations POSIX, et les
+périphériques. Ce format est automatiquement reconnu au sein
+du support de système de fichiers
+<B>iso9660</B>.
+
+</DL>
+</DL>
+
+<DT><B>hpfs</B>
+
+<DD>
+est le système &quot;High Performance Filesystem&quot; utilisé par OS/2.
+Ce système de fichiers est uniquement en lecture-seule sous Linux
+à cause du manque de documentation disponible.
+<DT><B>sysv</B>
+
+<DD>
+est une implémentation du système de fichiers SystemV/Coherent pour Linux.
+Il implémente tous les protocoles Xenix FS, SystemV/386 FS, et Coherent FS.
+<DT><B>nfs</B>
+
+<DD>
+est le système de fichiers en réseau utilisé pour accéder à
+des disques situés sur des ordinateurs distants.
+<DT><B>smb</B>
+
+<DD>
+est un système de fichiers en réseau supportant le protocole SMB,
+utilisé par Windows for Workgroups, Windows NT, et Lan Manager.
+<P>
+Pour utiliser le système
+<B>smb,</B>
+
+il vous faut un programme spécial de montage, disponible dans le
+package ksmbfs à :
+<I><A HREF="ftp://sunsite.unc.edu">ftp://sunsite.unc.edu</A></I>
+
+<I>/pub/Linux/system/Filesystems/smbfs</I>.
+
+<P>
+NDT : Commencez par chercher sur les sites-miroirs en France comme 
+<I><A HREF="ftp://ftp.lip6.fr">ftp.lip6.fr</A></I>.
+
+<DT><B>ncpfs</B>
+
+<DD>
+est un système de fichiers réseau supportant le protocole NCP,
+utilisé par Novell NetWare.
+<P>
+pour utiliser le système
+<B>ncpfs</B>,
+
+il vous faut un package spécial disponible à&nbsp;:
+<I><A HREF="ftp://linux01.gwdg.de">ftp://linux01.gwdg.de</A></I>
+
+<I>/pub/ncpfs</I>.
+
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+proc">proc</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+fsck">fsck</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+mkfs">mkfs</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+mount">mount</A></B>(8)
+
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAE">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:54 GMT, February 11, 2014
+</BODY>
+</HTML>

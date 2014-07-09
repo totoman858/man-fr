@@ -1,0 +1,232 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of WPRINTF</TITLE>
+</HEAD><BODY>
+<H1>WPRINTF</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+wprintf, fwprintf, swprintf, vwprintf, vfwprintf, vswprintf - Formatage de chaînes de caractères larges.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/wchar.h">wchar.h</A>&gt;</B>
+
+<B>int wprintf (const wchar_t* </B><I>format</I><B>, ...);</B>
+<B>int fwprintf (FILE * </B><I>flux</I><B>, const wchar_t* </B><I>format</I><B>, ...);</B>
+<B>int swprintf (wchar_t* </B><I>wcs</I><B>, size_t </B><I>maxlen</I><B>,</B>
+<B>              const wchar_t* </B><I>format</I><B>, ...);</B>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdarg.h">stdarg.h</A>&gt;</B>
+
+<B>int vwprintf (const wchar_t* </B><I>format</I><B>, va_list </B><I>args</I><B>);</B>
+<B>int vfwprintf (FILE * </B><I>flux</I><B>, const wchar_t* </B><I>format</I><B>, va_list </B><I>args</I><B>);</B>
+<B>int vswprintf (wchar_t* </B><I>wcs</I><B>, size_t </B><I>maxlen</I><B>,</B>
+<B>               const wchar_t* </B><I>format</I><B>, va_list </B><I>args</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La famille de fonctions <B>wprintf</B> est l'équivalent pour les caractères
+étendus de la famille de fonctions <B>printf</B>. Elle réalise une mise en forme
+de ses arguments.
+<P>
+
+Les fonctions <B>wprintf</B> et <B>vwprintf</B> réalisent le traitement et la
+sortie de chaînes de caractères larges sur <B>stdout</B>. <B>stdout</B> ne doit
+pas être un périphérique spécial orienté caractères (voir la fonction <B>fwide</B>
+pour plus d'informations).
+<P>
+
+Les fonctions <B>fwprintf</B> and <B>vfwprintf</B> réalisent la mise en forme de
+chaînes de caractères en vue d'une écriture dans le fichier <I>flux</I>.
+<I>flux</I> ne doit pas être un périphérique spécial orienté caractères
+(voir la fonction <B>fwide</B> pour plus d'informations).
+<P>
+
+Les fonctions <B>swprintf</B> and <B>vswprintf</B> réalisent la mise en forme d'une
+chaîne de caractères longs avant de l'écrire dans un tableau de caractères
+larges. Le programmeur doit s'assurer qu'il y ait assez de place pour au moins
+<I>maxlen</I> caractères larges dans <I>wcs</I>.
+<P>
+
+Ces fonctions se comportent de la même manière que les fonctions <B>printf</B>,
+<B>vprintf</B>, <B>fprintf</B>,<B>vfprintf</B>, <B>sprintf</B> et <B>vsprintf</B>,
+hormis les différences suivantes&nbsp;:
+<DL COMPACT>
+<DT><B>&bull;</B>
+
+<DD>
+La chaîne <I>format</I> est composée de caractères larges.
+<DT><B>&bull;</B>
+
+<DD>
+La sortie est faite de caractères larges, pas d'octets.
+<DT><B>&bull;</B>
+
+<DD>
+<B>swprintf</B> et <B>vswprintf</B> prennent un argument <I>maxlen</I>, au
+contraire de <B>sprintf</B> et <B>vsprintf</B>. (<B>snprintf</B> et <B>vsnprintf</B>
+prennent un argument <I>maxlen</I>, mais ces fonctions ne renvoient pas -1 en
+cas de débordement mémoire sous Linux).
+</DL>
+<P>
+
+Le traitement des caractères de conversion <B>c</B> et <B>s</B> est différent&nbsp;:
+<DL COMPACT>
+<DT><B>c</B>
+
+<DD>
+Si aucun modificateur
+<B>l</B>
+
+n'est présent, l'argument
+<I>int</I>
+
+est converti en un caractère large par un appel à la fonction
+<B>btowc</B>
+
+et le caractère large en résultant est écrit.
+Si un modificateur 
+<B>l</B>
+
+est présent, l'argument
+<I>wint_t</I>
+
+(caractère large) est écrit.
+<DT><B>s</B>
+
+<DD>
+Si aucun modificateur
+<B>l</B>
+
+est présent, l'argument
+modifier is present: The
+<I></I>``<I>const char *</I>''
+
+est interprété comme un pointeur sur un tableau de caractères (une chaîne)
+contenant une séquence de caractères larges commençant à l'état initial. Les
+caractères du tableau sont convertis en caractères larges (un par un par
+l'appel de la fonction
+<B>mbrtowc</B>
+
+avec un état de conversion réinitialisé avant le premier octet).
+La chaîne de caractères larges en résultant est écrite jusqu'au dernier
+caractère (non compris le caractère nul finl). Si la taille est donnée,
+le nombre de caractères écrits ne la dépassera pas.
+Notez bien que la taille détermine le nombre de 
+<I>caractères larges</I>
+
+écrit et non le nombre
+d'<I>octets</I>
+
+ou de
+<I>positions d'écran</I>.
+
+Le tableau doit contenir un caractère nul final, à moins que la taille
+donnée soit si petite que le nombre de caractères larges est atteint avant la
+fin du tableau. -- Si un modificateur
+<B>l</B>
+
+est présenti&nbsp;: L'argument
+<I></I>``<I>const wchar_t *</I>''
+
+est interprété comme un pointeur sur un tableau de caractères (une chaîne).
+Les caractères larges du tableau sont écrits jusqu'au dernier (non compris le
+caractère nul final). Si la taille est indiquée, le nombre de caractères
+écrits ne la dépassera pas. Le tableau doit contenir un caractère nul final
+à moins que la taille donnée soit inférieure ou égale au nombre de
+caractères larges du tableau.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Ces fonctions renvoient le nombre de caractères larges écrits, non compris le
+caractère nul final dans le cas des fonctions <B>swprintf</B> et <B>vswprintf</B>.
+Elles renvoient -1 en cas d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ISO/ANSI C, UNIX98
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+printf">printf</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fprintf">fprintf</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+snprintf">snprintf</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fputwc">fputwc</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fwide">fwide</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+wscanf">wscanf</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le comportement de <B>wprintf</B> et compagnie dépend de la catégorie LC_CTYPE
+de la locale courante.
+<P>
+
+Si la chaîne <I>format</I> contient des caractères larges non ASCII, le
+programme ne fonctionnera correctement que si la catégorie LC_CTYPE de la
+localisation courante lors de l'exécution est la même que lors de la compilation. En
+effet, la représentation de 
+<B>wchar_t</B>
+
+dépend de l'architecture et de la localisation. (La LibC de GNU représente les
+caractères larges à l'aide de leurs codes Unicode (ISO-10646), mais les autres
+architectures ne font pas de mêmes. De plus, l'utilisation des noms de
+caractères universels de la norme ISO C99 (de la forme \unnnn) ne résoud pas
+ce problème.). Aussi, la chaîne <I>format</I> ne devrait être constituée que de
+caractères larges dans les programmes internationalisés, ou alors elle doit
+être construite à l'exécution de manière internationalisée (en
+utilisant
+<B>gettext</B>
+
+ou
+<B>iconv</B>,
+
+suivi de
+<B>mbstowcs</B>).
+
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 1999
+
+<BR>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:23 GMT, February 11, 2014
+</BODY>
+</HTML>

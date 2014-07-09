@@ -1,0 +1,177 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of UPDATE-MODULES</TITLE>
+</HEAD><BODY>
+<H1>UPDATE-MODULES</H1>
+Section: Maintenance Commands (8)<BR>Updated: Debian GNU/Outils Linux<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+update-modules - (re)fabrique /etc/modules.conf et /etc/chandev.conf
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>update-modules</B>
+
+[force]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>update-modules</B>
+
+est un outil simple permettant de fabriquer les fichiers
+<I>/etc/modules.conf</I>
+
+et
+<I>/etc/chandev.conf</I>
+
+pour la plate-forme s390.
+Les outils de gestion des modules Linux utilisent un seul fichier de 
+configuration pour configurer tous les modules. Au sein de ce fichier,
+un paquet peut difficilement configurer dynamiquement ses propres
+modules.
+<B>update-modules</B>
+
+permet de rendre cette manipulation plus aisée.
+<P>
+
+<B>update-modules</B>
+
+tente de résoudre le problème en fabriquant le fichier de configuration
+à partir de fichiers distincts, situés dans le répertoire
+<I>/etc/modutils</I>.
+
+Tous les fichiers de ce répertoire sont assemblés pour former
+<I>/etc/modules.conf</I>
+
+et
+<I>/etc/chandev.conf</I>.
+
+Il y a aussi le répertoire spécial
+(<I>/etc/modutils/arch</I>)
+
+contenant des informations dédiées aux plates-formes particulières. 
+<B>update-modules</B>
+
+détermine la plate-forme et choisit le fichier à utiliser.
+<P>
+
+Après sa fabrication, l'ancien fichier de configuration
+est copié dans le fichier
+<I>/etc/modules.conf.old</I>
+
+ou bien dans le fichier
+<I>/etc/chandev.conf.old</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+Vous pouvez placer deux sortes de fichiers dans
+<I>/etc/modutils</I>,
+
+les fichiers normaux et les fichiers exécutables. Les fichiers normaux contiennent
+la configuration des modules standard et utilisent une syntaxe identique à
+celle de
+<B><A HREF="/cgi-bin/man/man2html?5+modules.conf">modules.conf</A></B>(5).
+
+Les fichiers d'extension .chandev contiennent les paramètres des modules et
+utilisent la même syntaxe que celle de
+<B><A HREF="/cgi-bin/man/man2html?8+chandev">chandev</A></B>(8).
+
+Le fichier spécial 0chandev.chandev contient les options des canaux de la couche
+périphérique.
+Les fichiers exécutables sont lancés et leur sortie est utilisée en tant
+qu'information de configuration complémentaire. Les messages d'erreurs envoyés
+sur la sortie d'erreur standard ne sont pas redirigés.
+<P>
+
+<B>update-modules</B>
+
+ignore les fichiers correspondant à l'expression rationnelle suivante&nbsp;:
+<DL COMPACT><DT><DD>
+<B>*\(\.dpkg-[a-z]*\|~\)$</B>
+
+</DL>
+
+(par exemple les fichiers d'extensions
+<I>.dpkg-new</I>,
+
+<I>.dpkg-orig</I>,
+
+<I>.dpkg-dist</I>,
+
+<I>.dpkg-old</I>,
+
+ou ceux dont le nom se termine par 
+<I>~</I>).
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><I>force</I>
+
+<DD>
+<B>update-modules</B>
+
+vérifie qu'il a bien fabriqué les fichiers actuels
+<I>/etc/modules.conf et</I>
+
+<I>/etc/chandev.conf</I>
+
+, en s'assurant de la présence d'un marqueur
+particulier sur la première ligne. Si le marqueur n'est pas présent, la
+fabrication est abandonnée. En fournissant le paramètre
+<I>force</I>
+
+, seul un avertissement est affiché.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+depmod">depmod</A></B>(1)
+
+<B><A HREF="/cgi-bin/man/man2html?5+modules.conf">modules.conf</A></B>(5)
+
+<B><A HREF="/cgi-bin/man/man2html?8+modprobe">modprobe</A></B>(8)
+
+<B><A HREF="/cgi-bin/man/man2html?8+chandev">chandev</A></B>(8),
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Aucun bien sûr&nbsp;! :)
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Cette page de manuel a été écrite par Wichert Akkerman &lt;<A HREF="mailto:wakkerma@debian.org">wakkerma@debian.org</A>&gt;
+pour Debian GNU/Linux.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Antoine Gémis &lt;<A HREF="mailto:agemis@netuup.com">agemis@netuup.com</A>&gt;.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">OPTIONS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">AUTEUR</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:03 GMT, February 11, 2014
+</BODY>
+</HTML>

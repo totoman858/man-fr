@@ -1,0 +1,402 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of INSTALL-INFO</TITLE>
+</HEAD><BODY>
+<H1>INSTALL-INFO</H1>
+Section: Utilitaires de dpkg (8)<BR>Updated: 29th November 1995<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+install-info - création ou mise à jour d'une entrée dans le répertoire Info
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>install-info</B>
+
+[--version] [--help] [--debug] [--maxwidth=nnn]
+[--section regexp title] [--infodir=xxx] [--align=nnn]
+[--quiet] [--menuentry=xxx] [--description=xxx]
+[--remove | --remove-exactly ]
+[--] nom-de-fichier
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+<B>install-info</B>
+
+crée, met à jour ou supprime des entrées dans le fichier
+<B>dir</B>
+
+du répertoire Info.
+Quand, pour la création ou la mise à jour d'une entrée, on ne donne aucune
+description sur la ligne de commande ou dans le fichier Info, 
+<B>install-info</B>
+
+essaye d'en deviner une à travers le contenu du fichier.
+<P>
+Voyez la description de l'option
+<B>--section</B>
+
+pour des précisions sur l'emplacement choisi pour l'entrée et sur le format attendu du
+fichier
+<B>dir.</B>
+
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><B>[--] </B><I>nom-de-fichier</I>
+
+<DD>
+Donne le nom du fichier Info dont l'entrée de menu doit être créée, mise à
+jour ou supprimée. Si l'option
+<B>--remove-exactly</B>
+
+est précisée,
+<I>nom-de-fichier sera le nom exact de l'entrée à supprimer (p.ex. </I>
+
+«&nbsp;emacs-20/emacs&nbsp;» ou «&nbsp;gcc&nbsp;»)&nbsp;; dans les autres cas, la partie principale
+de ce nom sert de référent pour l'entrée de menu qui est créée, à moins qu'il 
+y ait, dans le fichier donné, une entrée START-INFO-DIR. Ce fichier doit donc 
+exister (ou bien être sur le point d'être installé, ou bien doit avoir existé 
+en cas de suppression d'entrée) dans le même répertoire que le fichier
+<B>dir (voyez l'option</B>
+
+<B>--infodir).</B>
+
+<P>
+Quand
+<I>nom-de-fichier</I>
+
+se termine par
+<B>.gz</B>
+
+on considère qu'il renvoie à un fichier comprimé avec «&nbsp;GNU gzip&nbsp;»&nbsp;; s'il 
+n'existe pas, mais qu'il y a un
+<I>nom-de-fichier</I><B>.gz</B>
+
+on utilisera ce dernier.
+<P>
+Quand on ajoute ou on met à jour des entrées, ce fichier doit exister dans le 
+chemin spécifié (si possible avec l'extension 
+<B>.gz</B>
+
+supplémentaire).
+<DT><B>--remove</B>
+
+<DD>
+Demande que l'entrée pour le fichier
+<I>nom-de-fichier</I>
+
+soit détruite&nbsp;; par défaut les entrées sont créées ou mises à jour.
+<P>
+Quand la suppression d'une entrée vide une section, l'en-tête (et la ligne 
+blanche détachée) de la section est supprimée aussi, à moins que ce ne soit la
+dernière section du fichier ou bien que l'option
+<B>--keep-old</B>
+
+soit indiquée. Voyez l'option
+<B>--section</B>
+
+pour des précisions sur le format attendu du fichier
+<B>dir.</B>
+
+<P>
+Quand il y a plusieurs entrées possibles dans le fichier
+<B>dir,</B>
+
+seules celles qui appartiennent au premier groupe contigu correspondant
+sont supprimées&nbsp;; les autres sont silencieusement ignorées.
+<P>
+Ne pas trouver d'entrée possible n'est pas une erreur, bien que
+<B>install-info</B>
+
+avertisse du problème quand l'option
+<B>--quiet</B>
+
+n'a pas été demandée.
+<P>
+Quand 
+<B>--remove</B>
+
+est spécifié, les options de formatage
+<B>--maxwidth</B>, <B>--align</B> et <B>--calign</B>
+
+sont silencieusement ignorées.
+<DT><B>--remove-exactly</B>
+
+<DD>
+Cette option est pratiquement identique à 
+<B>--remove</B>
+
+mais
+<I>nom-de-fichier </I>
+
+est compris comme le nom exact de l'entrée à supprimer plutôt que comme le 
+nom d'un fichier existant. Cela peut être important quand on essaye de
+supprimer des entrées pour des fichiers info dans des sous-répertoires
+(p.ex. «&nbsp;emacs-20/emacs&nbsp;»)&nbsp;: 
+<B>--remove </B>
+
+opère sur la partie principale du
+<I>nom-de-fichier</I>
+
+plutôt que sur le nom exact. (p.ex.
+<B>--remove </B>
+
+«&nbsp;emacs-20/emacs&nbsp;» forcerait
+<B>install-info</B>
+
+à chercher «&nbsp;emacs&nbsp;», pas «&nbsp;emacs-20/emacs&nbsp;»).
+<DT><B>--section </B><I>exp-reg titre</I>
+
+<DD>
+Indique que l'entrée qui doit être créée sera placée dans la section du fichier
+<B>dir</B>
+
+dont le titre correspond à
+<I>exp-reg</I>.
+
+Si une telle section n'existe pas, une nouvelle dernière section 
+(voyez ci-après) est créée dans le fichier, avec un titre égal à
+<I>titre.</I>
+
+Une section est un choix possible dans le menu de
+<B>dir ;</B>
+
+les choix sont séparés par des lignes blanches ; la première ligne est 
+supposée représenter le titre.
+<P>
+Quand une nouvelle entrée doit être créée,
+<B>install-info</B>
+
+essaye de l'insérer dans la section selon l'ordre alphabétique ; si les
+entrées de la section ne sont pas déjà triées, on ne peut prévoir
+l'emplacement qui sera choisi. L'ordre existant des entrées n'est pas
+modifié.
+<P>
+Par défaut, les entrées nouvelles sont ajoutées à la fin du fichier.
+La dernière section doit toujours exister (même si elle consiste en une
+simple ligne de titre) de manière que les nouvelles sections puissent être 
+créées au bon endroit. Le titre de la dernière section devrait refléter le fait
+que des fichiers Info sans emplacement bien défini sont ajoutés à la fin de
+cette section.
+<P>
+Quand le fichier Info que l'on doit installer possède déjà une entrée, celle-ci
+est remplacée in situ par la nouvelle entrée.
+<P>
+Quand on supprime une entrée, une section spécifiée est ignorée et un
+avertissement est produit.
+<P>
+Quand on ajoute une entrée et qu'une section est spécifiée, mais que le
+fichier ne contient aucun en-tête de section, 
+<B>install-info</B>
+
+crée à la fois la section demandée et une section «&nbsp;Miscellaneous&nbsp;» à la fin
+du fichier.
+<DT><B>--infodir=</B><I>rep-info</I>
+
+<DD>
+Spécifie que le fichier
+<B>dir</B>
+
+est situé dans
+<I>rep-info</I>,
+
+ou que la copie installée du nouveau fichier Info était, est ou sera située
+dans
+<I>rep-info</I>.
+
+Par défaut, c'est
+<B>/usr/info</B>.
+
+<DT><B>--align=</B><I>nnn</I><B> [déconseillé]</B>
+
+<DD>
+Précise que l'espace d'indentation de la première ligne de la description
+sera d'au moins
+<I>nnn</I>
+
+caractères ; des espaces supplémentaires peuvent être ajoutés.
+Quand la longueur des éléments de l'entrée du menu
+<B>dir</B>
+
+le demande, on peut le décaler davantage. Par défaut ce nombre est égal à 27.
+<DT><B>--calign=</B><I>nnn</I><B> [déconseillé]</B>
+
+<DD>
+Précise que l'espace d'indentation de la deuxième ligne et des lignes 
+suivantes de la description sera d'au moins
+<I>nnn</I>
+
+caractères. Par défaut ce nombre est égal à 29.
+<DT><B>--maxwidth=</B><I>nnn</I><B> [déconseillé]</B>
+
+<DD>
+Précise que la largeur maximale d'une ligne du fichier Info est de
+<I>nnn</I>.
+
+Cela sert pour «&nbsp;couper&nbsp;» automatiquement les lignes du texte descriptif.
+Par défaut ce nombre est égal à 79.
+<DT><B>--quiet</B>
+
+<DD>
+Empêche l'affichage normal de la nouvelle entrée du menu juste avant qu'elle 
+soit insérée et l'affichage de messages annonçant le remplacement ou la
+suppression d'entrées existantes ou la création ou la suppression de 
+section.
+<DT><B>--help</B>
+
+<DD>
+option pour afficher une aide sur l'utilisation de
+<B>install-info</B>
+
+<DT><B>--version</B>
+
+<DD>
+option pour afficher la version et le copyright de
+<B>install-info</B>
+
+<DT><B>--description=</B><I>xxx</I>
+
+<DD>
+Précise que la description employée après l'entrée du menu pour une nouvelle 
+entrée ou bien pour une entrée mise à jour sera
+<I>xxx</I>.
+
+Par défaut, on emploie la valeur indiquée par le fichier Info lui-même&nbsp;;
+on peut la trouver en cherchant une section de la forme suivante&nbsp;:
+<BR>
+
+<B>START-INFO-DIR-ENTRY</B>
+
+<BR>
+
+<B>* Auto-PGP: (auto-pgp).  PGP under GNU Emacs.</B>
+
+<BR>
+
+<B>END-INFO-DIR-ENTRY</B>
+
+<P>
+Quand l'entrée trouvée dans le fichier Info lui-même s'étend sur plusieurs
+lignes, chacune donnant une entrée du menu, on reprend le texte trouvé 
+« verbatim ». Dans ce cas, on ne tient pas compte de l'ordre alphabétique et
+les entrées sont insérées au début de la section en question.
+Et les options
+<B>--menuentry</B>, <B>--maxwidth</B>, <B>--align</B>, <B>--calign</B>
+
+sont ignorées.
+<P>
+Quand il n'y a pas d'entrée pour
+<B>dir</B>
+
+dans le fichier, le programme essaye de trouver un paragraphe au début du
+fichier qui commence par
+<B>this file documents</B>.
+
+Il met une capitale au premier caractère de la suite et l'utilise comme
+description.
+<P>
+C'est une erreur si aucune de ces méthodes ne peut donner une description.
+<P>
+Quand l'option
+<B>--remove</B>
+
+est donnée, l'argument pour l'option «&nbsp;description&nbsp;» est ignoré et un
+avertissement est produit.
+<DT><B>--menuentry=</B><I>xxx</I>
+
+<DD>
+Précise que l'entrée de menu sera
+<I>xxx</I>.
+
+Par défaut, on emploie la valeur indiquée par le fichier Info lui-même.
+Quand elle n'est pas présente, la partie principale du nom du fichier Info
+est utilisée 
+(tout fichier <B>.info </B>est supprimé et la première lettre de l'entrée 
+
+est capitalisée).
+Voyez ci-dessus pour des précisions sur le format attendu pour l'entrée de 
+menu dans le fichier Info.
+<P>
+Quand on supprime des entrées, la valeur de l'option 
+<B>--menuentry</B>
+
+doit correspondre au champ réel de l'entrée de menu qui doit être supprimée
+(peu importe la casse).
+Quand l'option
+<B>--menuentry</B>
+
+est omise, aucune vérification sur l'entrée de menu n'est faite.
+<DT><B>--keep-old</B>
+
+<DD>
+Empêche le remplacement d'entrées existantes et la suppression des sections
+vides.
+<P>
+Quand le fichier qu'on doit installer possède déjà une entrée dans le
+répertoire, l'ancienne entrée est laissée seule plutôt que d'être remplacée.
+Par défaut, toute entrée ancienne trouvée est remplacée par la nouvelle.
+<P>
+Quand l'option
+<B>--remove</B> est indiquée ,<B>--keep-old</B>
+
+empêche la suppression de l'en-tête de section qui sans cela serait
+supprimé si la suppression vidait la section.
+<DT><B>--test</B>
+
+<DD>
+met en mode test, lequel empêche la mise à jour du fichier dir.
+<DT><B>--debug</B>
+
+<DD>
+met en mode débogage, lequel montre les résultats de certaines étapes du 
+traitement.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+emacs">emacs</A>(1), <A HREF="/cgi-bin/man/man2html?1+info">info</A>(1), <A HREF="/cgi-bin/man/man2html?1+gzip">gzip</A>(1)
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Philippe Batailler. Dec 2000
+<A NAME="lbAH">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright 1994, Ian Jackson.
+<B>install-info</B>
+
+est un logiciel libre&nbsp;; voyez la «&nbsp;GNU General Public License&nbsp;» version 2 ou
+supérieure pour le copyright. Il
+<I>n'y a pas</I>
+
+de garantie.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+<DT><A HREF="#lbAH">COPYRIGHT</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:03 GMT, February 11, 2014
+</BODY>
+</HTML>

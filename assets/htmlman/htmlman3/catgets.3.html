@@ -1,0 +1,126 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CATGETS</TITLE>
+</HEAD><BODY>
+<H1>CATGETS</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+catgets - Obtenir un message contenu dans un catalogue.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/nl_types.h">nl_types.h</A>&gt;
+</B></PRE>
+
+<P>
+
+<B>char *catgets (nlcatd </B><I>catalog</I><B>, int </B><I>set_number</I>
+
+<B>, int </B><I>message_number</I><B>, char *</B><I>message</I><B>)</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>catgets()</B>
+
+lit le message numéro
+<I>message_number</I>,
+
+dans la section
+<I>set_number</I>,
+
+d'un catalogue de messages identifié par
+<I>catalog</I>.
+
+Ce dernier est un descripteur qui doit avoir été renvoyé par
+un appel précédent à
+<B><A HREF="/cgi-bin/man/man2html?3+catopen">catopen</A></B>(3).
+
+Le quatrième argument,
+<I>message</I>
+
+pointe sur une chaîne de caractères par défaut qui sera renvoyée par
+<B>catgets()</B>
+
+si le catalogue indiqué n'est pas accessible.
+Le texte du message renvoyé est contenu dans une zone de buffer interne, et
+doit être recopié par l'application si l'on désire le modifier, ou le
+sauvegarder.
+La chaine renvoyée se termine toujours par un caractère nul.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<P>
+
+S'il réussit,
+<B>catgets()</B>
+
+renvoie un pointeur sur un buffer interne contenant le message, terminé par
+un caractère nul.
+S'il échoue,
+<B>catgets()</B>
+
+renvoie un pointeur sur l'argument
+<I>message</I>.
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Ces fonctions ne sont disponibles qu'à partir de la version 4.4.4c de libc.so.
+Le Guide de Portabilité X/Open de Janvier 1987 indique un retour d'erreur
+plus subtile : 
+<I>message</I>
+
+est renvoyé si le catalogue indiqué par l'argument
+<I>catalog</I>
+
+n'est pas disponible, et une chaîne vide si le
+catalogue est disponible mais ne contient pas le message demandé.
+Les deux retours d'erreurs semblent avoir été éliminés de XPG4.2
+en faveur d'un retour constant de
+<I>message</I>.
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+XPG4.2
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+catopen">catopen</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setlocale">setlocale</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:04 GMT, February 11, 2014
+</BODY>
+</HTML>

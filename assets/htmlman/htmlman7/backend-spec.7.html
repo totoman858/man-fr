@@ -1,0 +1,135 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of BACKEND-SPEC</TITLE>
+</HEAD><BODY>
+<H1>BACKEND-SPEC</H1>
+Section:  (7)<BR>Updated: 11 February 2004<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+backend-spec - interface entre jw et ses backends
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?1+jw">jw</A></B>(1) appelle les backends comme
+<I>backends/html</I> pour effectuer le travail de conversion «&nbsp;réel&nbsp;».
+Le backend récupère toutes les données nécessaires via les variables
+d'environnements prêtes à être utilisées.
+<P>
+
+Cette documentation décrit ces variables d'environnement.
+<P>
+
+Le backend est lancé dans le répertoire où les fichiers de sortie seront créés.
+Il devrait retourner 0 s'il n'y a eu aucun problème,
+et retourner une valeur positive autrement.
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>VARIABLES</H2>
+
+<DL COMPACT>
+<DT><B>          SGML_FILE_NAME </B><DD>
+Le nom simple du fichier source
+</DL>
+<P>
+
+<DL COMPACT>
+<DT><B>          SGML_FILE </B><DD>
+Le nom complet et le chemin du fichier source
+</DL>
+<P>
+
+<DL COMPACT>
+<DT><B>          SGML_JADE </B><DD>
+Le nom de l'analyseur syntaxique (habituellement
+<B>Jade</B> ou <B>OpenJade</B>)
+</DL>
+<P>
+
+<DL COMPACT>
+<DT><B>          SGML_ARGUMENTS </B><DD>
+La chaîne d'arguments complète pour
+<B>Jade</B> ou <B>OpenJade</B>
+</DL>
+<P>
+
+<DL COMPACT>
+<DT><B>          SGML_CATALOG_FILES </B><DD>
+La liste des fichiers catalogues nécessaires à
+<B>Jade</B> ou <B>OpenJade</B>
+</DL>
+<P>
+
+<DL COMPACT>
+<DT><B>          SGML_STYLESHEET </B><DD>
+La feuille de style à utiliser
+</DL>
+<P>
+
+<DL COMPACT>
+<DT><B>          SGML_BASE_DIR </B><DD>
+Le répertoire de base du système SGML (par défaut, c'est
+<I>/usr/share/sgml</I>)
+<P>
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<P>
+
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?7+frontend-spec">frontend-spec</A></B>(7)
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<P>
+
+Jochem Huhmann &lt;<A HREF="mailto:joh@revier.com">joh@revier.com</A>&gt;
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal AT univ-montp2 DOT fr&gt; 12 février 2003 et révisée le
+19 novembre 2004.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=en&nbsp;man&nbsp;7&nbsp;backend-spec</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">VARIABLES</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:57 GMT, February 11, 2014
+</BODY>
+</HTML>

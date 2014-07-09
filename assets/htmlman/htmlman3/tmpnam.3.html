@@ -1,0 +1,139 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TMPNAM</TITLE>
+</HEAD><BODY>
+<H1>TMPNAM</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+tmpnam - Créer un nom de fichier temporaire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<B>char *tmpnam (char *</B><I>s</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction 
+<B>tmpnam()</B>
+
+renvoie un pointeur sur une chaîne qui représente un nom de fichier valide,
+qui n'existait pas il y a quelques instants. Ainsi un programmeur
+naïf peut croire qu'il s'agit d'un nom correct pour
+créer un fichier temporaire. Si l'argument
+<I>s</I>
+
+est NULL, ce nom est stocké dans un buffer interne qui pourra
+être écrasé lors du prochain appel à
+<B>tmpnam()</B>.
+
+Si 
+<I>s</I>
+
+est non NULL, le nom y est copié (le buffer
+doit faire au moins
+<I>L_tmpnam</I>
+
+octets )
+et la valeur de
+<I>s</I>
+
+est renvoyée si
+la fonction
+réussit.
+<P>
+
+Le nom de fichier qui est créé est préfixé par
+<I>P_tmpdir</I>.
+
+(Les constantes
+<I>L_tmpnam</I>
+
+et
+<I>P_tmpdir</I>
+
+sont définies dans
+<I>&lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</I>
+
+comme TMP_MAX mentionné plus bas).
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>tmpnam()</B> renvoie un pointeur sur un nom de fichier temporaire
+unique, ou NULL si l'unicité n'a pas pu être assurée.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Aucune erreur n'est définie.
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les applications portables qui utilisent les threads ne peuvent pas appeler
+<B>tmpnam()</B>
+
+avec un paramètre NULL si
+_POSIX_THREAD_SAFE_FUNCTIONS ou _POSIX_THREADS sont définies.
+<P>
+
+La fonction
+<B>tmpnam()</B>
+
+engendre une nouvelle chaîne à chaque appel, jusqu'à TMP_MAX fois.
+Si on l'invoque
+plus de TMP_MAX fois, le comportement dépend de l'implémtation.
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+N'utilisez jamais cette routine. Utilisez
+<B><A HREF="/cgi-bin/man/man2html?3+mkstemp">mkstemp</A></B>(3)
+
+à la place.
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3, POSIX, BSD 4.3, ISO 9899
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR  mktemp (3),</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+mkstemp">mkstemp</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+tempnam">tempnam</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+tmpfile">tmpfile</A></B>(3)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">VOIR  mktemp (3),</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:33 GMT, February 11, 2014
+</BODY>
+</HTML>

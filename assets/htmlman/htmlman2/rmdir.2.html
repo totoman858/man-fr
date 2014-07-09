@@ -1,0 +1,183 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of RMDIR</TITLE>
+</HEAD><BODY>
+<H1>RMDIR</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+rmdir - Supprimer un répertoire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int rmdir(const char *</B><I>pathname</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>rmdir</B>
+
+supprime le répertoire
+<I>pathname,</I>
+
+lequel doit être vide.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>rmdir</B>
+
+renvoie 0 s'il réussit, ou -1 s'il échoue, auquel cas
+<I>errno</I>
+
+est renseigné comme il faut.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+Le système de fichier contenant
+<I>pathname</I>
+
+ne permet pas la suppression de répertoires.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>pathname</I> pointe en dehors de l'espace d'adressage accessible.
+
+<DT><B>EACCES</B>
+
+<DD>
+Les droits d'écriture dans le répertoire contenant
+<I>pathname</I>
+
+ne sont pas autorisés pour l'U-ID effectif du processus,
+ou bien un des répertoires de
+<I>pathname</I>
+
+ne permet pas le parcours
+<DT><B>EPERM</B>
+
+<DD>
+Le répertoire contenant
+<I>pathname</I>
+
+a son Sticky-bit positionné, 
+(<B>S_ISVTX</B>)
+
+et l'U-ID effectif du processus
+n'est pas le même que celui du répertoire à supprimer, ou celui du répertoire
+le contenant.
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+<I>pathname</I> est trop long.
+
+<DT><B>ENOENT</B>
+
+<DD>
+Un répertoire contenu dans 
+<I>pathname</I>
+
+n'existe pas, ou est un lien symbolique pointant nulle part.
+<DT><B>ENOTDIR</B>
+
+<DD>
+<I>pathname</I>,
+
+ou un élément contenu dans
+<I>pathname</I>,
+
+n'est pas un répertoire.
+<DT><B>ENOTEMPTY</B>
+
+<DD>
+<I>pathname</I>
+
+contient d'autres éléments que
+<B>.</B> and <B>..</B> .
+
+<DT><B>EBUSY</B>
+
+<DD>
+<I>pathname</I>
+
+est le répertoire de travail, ou le répertoire racine,
+d'un autre processus.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour le noyau.
+<DT><B>EROFS</B>
+
+<DD>
+<I>pathname</I>
+
+correspond à un répertoire sur un système de fichiers en lecture seule.
+<DT><B>ELOOP</B>
+
+<DD>
+<I>pathname</I>
+
+contient une référence circulaire (à travers un lien symbolique).
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID, POSIX, BSD 4.3
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Des problèmes avec le protocole sous-jacent des systèmes de fichiers
+NFS peuvent provoquer la disparition inattendue de répertoires
+encore utilisés.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+rename">rename</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mkdir">mkdir</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+chdir">chdir</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+unlink">unlink</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?1+rmdir">rmdir</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+rm">rm</A></B>(1)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:02 GMT, February 11, 2014
+</BODY>
+</HTML>

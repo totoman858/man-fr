@@ -1,0 +1,86 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DIFFTIME</TITLE>
+</HEAD><BODY>
+<H1>DIFFTIME</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+difftime - Calculer des intervalles de temps.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/time.h">time.h</A>&gt;</B>
+
+<B>double difftime (time_t </B><I>time1</I><B>, time_t </B><I>time0</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>difftime()</B> renvoie le nombre de secondes écoulées
+entre les instants <I>time0</I> et <I>time1</I>.  
+Les deux arguments sont de type <B>time_t</B>, ce qui représente le
+temps écoulé depuis le 1er Janvier 1970 à 00h 00m 00s, en Temps Universel TU.
+<A NAME="lbAE">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3, BSD 4.3, ISO 9899
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Cette fonction est réclamée par le C ANSI.
+Sur un système POSIX, time_t est un type arithmétique, et on peut définir
+directement
+<DL COMPACT><DT><DD>
+<PRE>
+#define difftime(t1,t0) (double)(t1 - t0)
+</PRE>
+
+</DL>
+
+si les risques de débordement dans la soustraction ne sont pas gènants.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+date">date</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+gettimeofday">gettimeofday</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+time">time</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+ctime">ctime</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+gmtime">gmtime</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+localtime">localtime</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:49 GMT, February 11, 2014
+</BODY>
+</HTML>

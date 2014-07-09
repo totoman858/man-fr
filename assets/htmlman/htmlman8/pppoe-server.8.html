@@ -1,0 +1,281 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PPPOE-SERVER</TITLE>
+</HEAD><BODY>
+<H1>PPPOE-SERVER</H1>
+Section: Maintenance Commands (8)<BR>Updated: 3 juillet 2000<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+pppoe-server - serveur PPPoE espace utilisateur.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>pppoe-server </B>[<I>options</I>]
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>pppoe-server</B> est un serveur espace utilisateur pour PPPoE (Point-to-Point
+Protocol over Ethernet) pour Linux et autres systèmes UNIX. <B>pppoe-server</B>
+travaille de concert avec le client <B>pppoe</B> pour répondre aux paquets de
+découverte PPPoE et établir des sessions PPPoE.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-F</B>
+
+<DD>
+L'option <B>-F</B> empêche <B>pppoe-server</B> de se dédoubler et devenir
+démon. Par défaut, il crée un processus fils et devient un démon.
+<P>
+<DT><B>-I </B><I>interface</I>
+
+<DD>
+L'option <B>-I</B> spécifie l'interface Ethernet à utiliser. Sous Linux,
+celle-ci est typiquement <I>eth0</I> ou <I>eth1</I>. L'interface devrait être
+«&nbsp;montée&nbsp;» avant que vous ne démarriez <B>pppoe-server</B>, mais <I>ne</I>
+devrait <I>pas</I> être configurée pour avoir une adresse IP. Vous pouvez
+fournir plusieurs options <B>-I</B> si vous voulez que le serveur réponde à
+plus d'une interface.
+<P>
+<DT><B>-T </B><I>timeout</I>
+
+<DD>
+Cette option est passée directement à <B>pppoe</B>&nbsp;; voir <B><A HREF="/cgi-bin/man/man2html?8+pppoe">pppoe</A></B>(8) pour
+les détails. Si vous utilisez PPPoE en mode noyau, cette option est
+<I>sans effet</I>.
+<P>
+<DT><B>-C </B><I>nom_ca</I>
+
+<DD>
+Spécifie quel nom rapporter comme nom de concentrateur d'accès. S'il n'est pas
+fourni, le nom de l'hôte est utilisé.
+<P>
+<DT><B>-S </B><I>nom</I>
+
+<DD>
+Offre un service nommé <I>nom</I>. Plusieurs options <B>-S</B> peuvent être
+spécifiées&nbsp;; chacune d'elles provoque l'inscription du service nommé dans une
+balise Nom-Service de la trame PADO. La première option <B>-S</B> spécifie le
+service par défaut, et est utilisée si le client PPPoE sollicite un Nom-Service
+de longueur zéro.
+<P>
+<DT><B>-m </B><I>MSS</I>
+
+<DD>
+Cette option est passée directement à <B>pppoe</B>&nbsp;; voir <B><A HREF="/cgi-bin/man/man2html?8+pppoe">pppoe</A></B>(8) pour
+les détails. Si vous utilisez PPPoE en mode noyau, cette option est
+<I>sans effet</I>.
+<P>
+<DT><B>-s</B>
+
+<DD>
+Cette option est passée directement à <B>pppoe</B>&nbsp;; voir <B><A HREF="/cgi-bin/man/man2html?8+pppoe">pppoe</A></B>(8) pour
+les détails. De plus, elle force <B>pppd</B> à être lancé avec l'option
+<I>sync</I>.
+<P>
+<DT><B>-L </B><I>ip</I>
+
+<DD>
+Fixe l'adresse IP locale. Elle est passée au processus <B>pppd</B> engendré.
+Si elle n'est pas spécifiée, l'adresse par défaut est 10.0.0.1.
+<P>
+<DT><B>-R </B><I>ip</I>
+
+<DD>
+Fixe l'adresse IP distante de départ. Une fois les sessions établies,
+les adresses IP sont allouées à partir de <I>ip</I>. <B>pppoe-server</B>
+conserve automatiquement la trace du groupe d'adresses et transmet une adresse
+IP distante valide à <B>pppd</B>. Si elle n'est pas spécifiée, l'adresse de
+départ 10.67.15.1 est utilisée.
+<P>
+<DT><B>-O </B><I>nom_fichier</I>
+
+<DD>
+Force <B>pppoe-server</B> à dire à <B>pppd</B> d'utiliser le fichier d'options
+<I>nom_fichier</I> à la place de celui par défaut <I>/etc/ppp/pppoe-server-options</I>.
+<P>
+<DT><B>-N </B><I>nb</I>
+
+<DD>
+Autorise au plus <I>nb</I> sessions PPPoE simultanées. Si elle n'est pas
+spécifiée, la valeur par défaut est 64.
+<P>
+<DT><B>-p </B><I>nom_fichier</I>
+
+<DD>
+Lit le fichier <I>nom_fichier</I> spécifié qui est un fichier texte consistant en
+une adresse IP par ligne. Ces adresses IP seront affectées aux clients. Le
+nombre de sessions permises sera égal au nombre d'adresses trouvées dans le
+fichier. L'option <B>-p</B> annule les options <B>-R</B> et <B>-N</B>.
+<P>
+En plus de contenir des adresses IP, ce fichier peut contenir des lignes de la
+forme&nbsp;:
+<P>
+<PRE>
+        a.b.c.d-e
+</PRE>
+
+<P>
+qui inclut toutes les adresses IP de a.b.c.d à a.b.c.e. Par exemple,
+la ligne&nbsp;:
+<P>
+<PRE>
+        1.2.3.4-7
+</PRE>
+
+<P>
+est équivalent à&nbsp;:
+<P>
+<PRE>
+        1.2.3.4
+        1.2.3.5
+        1.2.3.6
+        1.2.3.7
+</PRE>
+
+<P>
+<DT><B>-r</B>
+
+<DD>
+Demande au serveur PPPoE de permuter aléatoirement les numéros de sessions. Au
+lieu de remettre les sessions dans l'ordre, les numéros de sessions sont
+affectés dans un ordre imprévisible.
+<P>
+<DT><B>-u</B>
+
+<DD>
+Demande au serveur d'invoquer <B>pppd</B> avec l'option <I>unit</I>. Notez que
+cette option ne fonctionne qu'avec la version 2.4.0 ou supérieure de <B>pppd</B>.
+<P>
+<DT><B>-o </B><I>offset</I>
+
+<DD>
+Au lieu de débuter la numérotation des sessions PPPoE à 1, la numérotation
+débutera à <I>offset</I>+1. Cela vous permet de lancer plusieurs serveurs sur
+une machine donnée&nbsp;; assurez-vous simplement que les numéros de sessions ne se
+recouvrent pas.
+<P>
+<DT><B>-f disc:sess</B>
+
+<DD>
+L'option <B>-f</B> règle les types de trame Ethernet pour la découverte PPPoE
+et les trames de session. Les types sont spécifiés par des nombres hexadécimaux
+séparés par deux points. Le standard PPPoE utilise des types de trames 8863:8864.
+<I>Vous ne devriez pas utiliser cette option</I> à moins d'être absolument certain
+que le vis-à-vis auquel vous ayez affaire utilise des types de trame non
+normalisés.
+<P>
+<DT><B>-k</B>
+
+<DD>
+L'option <B>-k</B> demande au serveur d'utiliser PPPoE en mode noyau sous Linux.
+Cette option est disponible seulement pour les noyaux linux 2.4.0 ou supérieurs,
+et seulement si le serveur a été construit avec le support du mode noyau.
+<P>
+<DT><B>-h</B>
+
+<DD>
+L'option <B>-h</B> affiche un court message d'usage et quitte.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FONCTIONNEMENT</H2>
+
+<P>
+<B>pppoe-server</B> se met à l'écoute de paquets de découverte PPPoE
+entrants. Quand une session est établie, un processus <B>pppd</B> est
+engendré. Les options suivantes sont passées à <B>pppd</B>&nbsp;:
+<P>
+<PRE>
+nodetach noaccomp nobsdcom nodeflate nopcomp novj novjccomp
+default-asyncmap
+</PRE>
+
+<P>
+De plus, les adresses IP locale et distante sont configurées en fonction des
+options <B>-L</B> et <B>-R</B>. L'option <B>pty</B> est fournie à une commande
+<B>pppoe</B> pour initier la session PPPoE. Enfin, des options <B>pppd</B>
+supplémentaires peuvent être placées dans le fichier
+<B>/etc/ppp/pppoe-server-options</B> (qui doit exister, même s'il est vide&nbsp;!)
+<P>
+Notez que <B>pppoe-server</B> est principalement conçu pour le test de clients
+PPPoE. Ce <I>n</I>'est <I>pas</I> un serveur à hautes performances conçu pour une
+utilisation en production.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<B>pppoe-server</B> a été écrit par David F. Skoll &lt;<A HREF="mailto:dfs@roaringpenguin.com">dfs@roaringpenguin.com</A>&gt;.
+<P>
+La page d'accueil <B>pppoe</B> est <I><A HREF="http://www.roaringpenguin.com/pppoe/">http://www.roaringpenguin.com/pppoe/</A></I>.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal AT univ-montp2 DOT fr&gt; le 3&nbsp;février&nbsp;2003
+et révisée le 18&nbsp;janvier&nbsp;2006.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=en&nbsp;man&nbsp;8&nbsp;pppoe-server</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-start">pppoe-start</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-stop">pppoe-stop</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-connect">pppoe-connect</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppd">pppd</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?5+pppoe.conf">pppoe.conf</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe">pppoe</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-setup">pppoe-setup</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-status">pppoe-status</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-sniff">pppoe-sniff</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppoe-relay">pppoe-relay</A></B>(8)
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">FONCTIONNEMENT</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:05 GMT, February 11, 2014
+</BODY>
+</HTML>

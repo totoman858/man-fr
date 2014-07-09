@@ -1,0 +1,337 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DD</TITLE>
+</HEAD><BODY>
+<H1>DD</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+dd - Convertir et copier un fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>dd</B>
+
+<B>[--help] [--version]</B>
+
+<B>[if=</B><I>fichier</I><B>]</B>
+
+<B>[of=</B><I>fichier</I><B>]</B>
+
+<B>[ibs=</B><I>octets</I><B>]</B>
+
+<B>[obs=</B><I>octets</I><B>]</B>
+
+<B>[bs=</B><I>octets</I><B>]</B>
+
+<B>[cbs=</B><I>octets</I><B>]</B>
+
+<B>[skip=</B><I>blocs</I><B>]</B>
+
+<B>[seek=</B><I>blocs</I><B>]</B>
+
+<B>[count=</B><I>blocs</I><B>]</B>
+
+<B>[conv={ascii,ebcdic,ibm,block,unblock,lcase,ucase,swab,noerror,notrunc,sync}]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>dd</B>
+
+copie un fichier (par défaut, depuis l'entrée standard vers la sortie
+standard) en permettant de sélectionner la taille de bloc, et d'effectuer
+des conversions.
+<P>
+
+Il lit son entrée bloc par bloc, en utilisant la taille des blocs d'entrée
+mentionnée (par défaut 512 octets).
+Si l'option
+<B>bs=</B><I>octets</I>
+
+est présente, et si aucune autre conversion que
+<B>sync</B>, <B>noerror</B> ou <B>notrunc</B>
+
+n'est indiquée, il écrit la quantité de données lues (qui peut être plus petite
+que celle demandée) dans un bloc de sortie indépendant. Ce bloc a exactement
+la même taille que les données lues, sauf si la conversion
+<B>sync</B>
+
+a été réclamée, auquel cas les données sont complétées avec des octets nuls,
+ou des espaces (voir plus bas).
+<P>
+
+Sinon, l'entrée, lue un bloc à la fois, est traitée et les résultats sont
+regroupés et écrits par blocs de la taille indiquée. La taille finale des
+blocs de sortie peut être inférieure à celle des blocs d'entrée.
+<P>
+
+Les options prenant une valeur numérique peuvent être suivies d'un
+multiplicateur : `k'=1024, `b'=512, `w'=2, `c'=1. `w' et `c' sont des
+extensions GNU, et `w' ne devrait jamais être utilisé car il signifie 2
+sur le Système V et 4 sur 4.2BSD).
+Deux expressions numériques, ou plus, peuvent être multipliées en insérant
+un `x' entre elles.
+La version GNU fileutils-4.0 accepte également les multiplicateurs suivants
+dans les tailles de blocs (bs=, cbs=, ibs=, obs=) :
+M=1048576, G=1073741824, et ainsi de suite avec T, P, E, Z, et Y.
+Un suffixe `D' arrondit ces multiplicateurs en décimal :
+kD=1000, MD=1000000, GD=1000000000, etc.
+(Notez que pour les commandes ls, df, du, la taille des M, G, etc. est
+déterminée par l'environnement, mais qu'elle est fixe pour dd).
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>if=</B><I>fichier</I>
+
+<DD>
+Lire les données depuis le
+<I>fichier</I>
+
+indiqué plutôt que depuis l'entrée standard.
+<DT><B>of=</B><I>fichier</I>
+
+<DD>
+Écrire les données dans le
+<I>fichier</I>
+
+mentionné, et non pas sur la sortie standard.
+Si
+<B>conv=notrunc</B>
+
+n'est pas indiqué, le
+<I>fichier</I>
+
+est initialement tronqué à la taille spécifiée par
+<B>seek=</B>
+
+(0 octets si
+<B>seek=</B>
+
+n'est pas fourni).
+<DT><B>ibs=</B><I>nombre</I>
+
+<DD>
+Lire le
+<I>nombre</I>
+
+indiqué d'octets en une fois. Par défaut 512.
+<DT><B>obs=</B><I>nombre</I>
+
+<DD>
+Écrire le
+<I>nombre</I>
+
+indiqué d'octets en une fois. Par défaut 512.
+<DT><B>bs=</B><I>nombre</I>
+
+<DD>
+Lire et écrire le
+<I>nombre</I>
+
+indiqué d'octets en une fois. A priorité sur ibs et obs.
+(et indiquer
+<B>bs</B>
+
+n'est pas équivalent à indiquer la même valeur pour
+<B>ibs</B>
+
+et
+<B>obs</B>
+
+du moins lorsqu'aucune autre conversion que
+<B>sync,</B>
+
+<B>noerror</B>
+
+et
+<B>notrunc</B>
+
+n'est indiquée, car cela indique que chaque bloc d'entrée doit être
+copié dans un bloc de sortie indépendant, sans regrouper les blocs plus
+courts).
+<DT><B>cbs=</B><I>nombre</I>
+
+<DD>
+Indique la taille des blocs pour les conversion
+<B>block</B>
+
+et 
+<B>unblock</B>.
+
+<DT><B>skip=</B><I>nombre</I>
+
+<DD>
+Ignorer le
+<I>nombre</I>
+
+indiqué de blocs (dont la taille est fournie par ibs) au début de la lecture.
+<DT><B>seek=</B><I>nombre</I>
+
+<DD>
+Ignorer le
+<I>nombre</I>
+
+indiqué de blocs (dont la taille est fournie par ibs) au début de l'écriture.
+<DT><B>count=</B><I>nombre</I>
+
+<DD>
+Copier seulement le
+<I>nombre</I>
+
+indiqué de blocs (dont la taille est fournie par ibs), et non pas tout jusqu'à
+la fin du fichier.
+<DT><B>conv=</B><I>conversion</I><B>[,</B><I>conversion</I><B>]...</B>
+
+<DD>
+Modifier le fichier comme indiqué par l'argument
+<I>conversion</I>,
+
+qui peut prendre les valeurs suivantes (pas d'espace autour des virgules
+lorsque plusieurs arguments sont fournis) :
+<DL COMPACT><DT><DD>
+<P>
+
+<DL COMPACT>
+<DT><B>ascii</B>
+
+<DD>
+Convertir l'EBCDIC en ASCII.
+<DT><B>ebcdic</B>
+
+<DD>
+Convertir l'ASCII en EBCDIC.
+<DT><B>ibm</B>
+
+<DD>
+Convertir l'ASCII en EBCDIC IBM.
+<DT><B>block</B>
+
+<DD>
+Compléter les blocs se terminant par un saut de ligne avec des espaces,
+jusqu'à atteindre la taille mentionnée par cbs.
+<DT><B>unblock</B>
+
+<DD>
+Remplacer les espaces en fin de blocs (de taille cbs) par un saut de ligne.
+<DT><B>lcase</B>
+
+<DD>
+Transformer les majuscules en minuscules.
+<DT><B>ucase</B>
+
+<DD>
+Transformer les minuscules en majuscules.
+<DT><B>swab</B>
+
+<DD>
+Échanger par paire les octets lus en entrée. Contrairement à la commande
+dd d'Unix, la version GNU fonctionne également lorsqu'on copie un nombre impair
+d'octets. Dans ce cas, le dernier octet est tout simplement copié.
+[POSIX 1003.2b, interprétations PASC 1003.2 #3 and #4]
+<DT><B>noerror</B>
+
+<DD>
+Continuer même après des erreurs de lecture.
+<DT><B>notrunc</B>
+
+<DD>
+Ne pas limiter la taille du fichier de sortie.
+<DT><B>sync</B>
+
+<DD>
+Compléter chaque bloc lu avec des NULs pour atteindre la taille
+<B>ibs</B>.
+
+</DL>
+</DL>
+
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS STANDARDS GNU</H2>
+
+<DL COMPACT>
+<DT><B>--help</B>
+
+<DD>
+Afficher un message d'aide sur la sortie standard, et se terminer correctement.
+<DT><B>--version</B>
+
+<DD>
+Afficher un numéro de version sur la sortie standard, et se terminer
+correctement.
+<DT><B>--</B>
+
+<DD>
+Fin de la liste d'options.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+Les variables LANG, LC_ALL, LC_CTYPE et LC_MESSAGES
+ont leurs significations habituelles.
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX 1003.2.
+<A NAME="lbAI">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+Souvent, un lecteur de bandes n'accepte pas des blocs de tailles arbitraires,
+et
+<B>dd</B>
+
+recevra une erreur d'entrée/sortie pour le dernier morceau de données qui
+ne rentre pas intégralement dans un bloc. Utilisez `dd if=mon_fic  of=/dev/ma_bande conv=sync' pour que tout soit écrit sur la bande. Bien sûr, la lecture
+fournira un fichier légèrement plus grand, avec des octets nuls ajoutés à la
+fin.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Les commandes du type `dd if=mon_fic of=/dev/fd0 bs=1k seek=172' échouent
+sur certains systèmes car
+<B>dd</B>
+
+essaye de tronquer le fichier de sortie, mais cela n'est pas possible sur
+un périphérique de type bloc. Dans ce cas, utilisez l'option `conv=notrunc'.
+<A NAME="lbAK">&nbsp;</A>
+<H2>NOTES</H2>
+
+Cette page de manuel documente la version de
+<B>dd</B>
+
+se trouvant dans le paquetage fileutils-4.0. D'autres versions peuvent
+varier légèrement.
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">OPTIONS STANDARDS GNU</A><DD>
+<DT><A HREF="#lbAG">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">EXEMPLE</A><DD>
+<DT><A HREF="#lbAJ">BOGUES</A><DD>
+<DT><A HREF="#lbAK">NOTES</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:47 GMT, February 11, 2014
+</BODY>
+</HTML>

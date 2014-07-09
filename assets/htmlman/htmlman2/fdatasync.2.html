@@ -1,0 +1,127 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FDATASYNC</TITLE>
+</HEAD><BODY>
+<H1>FDATASYNC</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fdatasync - synchronise des données en mémoire avec un fichier sur disque.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>#ifdef _POSIX_SYNCHRONIZED_IO</B>
+
+<P>
+<B>int fdatasync(int </B><I>fd</I><B>);</B>
+
+<P>
+<B>#endif</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>fdatasync</B>
+
+vide tous les buffers de données du fichier vers le disque (avant que l'appel
+ne revienne). Il ressemble à
+<B>fsync</B>
+
+mais ne met pas nécessaire à jour les méta-données comme l'heure d'accès.
+<P>
+Les applications accédant à des bases de données ou des fichiers journaux
+écrivent souvent de petits fragments de données (une ligne de texte par exemple)
+et appellent
+<B>fsync</B>
+
+immédiatement pour être sûr du stockage sur disque. Malheureusement,
+<B>fsync</B>
+
+va déclencher deux écritures&nbsp;: une pour les données et une pour
+mettre à jour la date de modification enregistrée dans l'i-noeud.
+Si la date de modification n'est pas importante pour l'application, 
+alors
+<B>fdatasync</B>
+
+peut être invoquée pour éviter l'accès inutile à l'i-noeud.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+L'appel renvoie zéro s'il réussit et -1 s'il échoue auquel cas
+<I>errno</I>
+
+contient le code d'erreur
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+<I>fd</I>
+
+n'est pas un descripteur de fichier ouvert en écriture.
+<DT><B>EROFS</B>, <B>EINVAL</B>
+
+<DD>
+<I>fd</I>
+
+correspond à un fichier spécial ne supportant pas la synchronisation.
+<DT><B>EIO</B>
+
+<DD>
+Une erreur d'entrée/sortie s'est produite.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Actuellement (Linux 2.2)
+<B>fdatasync</B>
+
+est équivalent à
+<B>fsync</B>.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX1b (anciennement POSIX.4)
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+fsync">fsync</A></B>(2)
+
+<P>
+B.O. Gallmeister, POSIX.4, O'Reilly, pp. 220-223 and 343.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:55 GMT, February 11, 2014
+</BODY>
+</HTML>

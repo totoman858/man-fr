@@ -1,0 +1,187 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SWAPON</TITLE>
+</HEAD><BODY>
+<H1>SWAPON</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+swapon, swapoff - Activer / désactiver un fichier ou un péripherique de swap.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/asm/page.h">asm/page.h</A>&gt;     /* pour avoir PAGE_SIZE */</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/swap.h">sys/swap.h</A>&gt;</B>
+
+<P>
+<B>int swapon(const char *</B><I>path</I><B>, int </B><I>swapflags</I><B>);</B>
+
+<BR>
+
+<B>int swapoff(const char *</B><I>path</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>swapon</B>
+
+active le swap sur le fichier ou le périphérique en mode bloc indiqué dans
+<I>path</I>.
+
+<B>swapoff</B>
+
+arrête le swap sur le fichier ou le périphérique en mode bloc indiqué dans
+<I>path</I>.
+
+<P>
+
+<B>swapon</B>
+
+utilise un argument
+<I>swapflags</I>.
+
+Si cet argument
+a son bit
+<I>SWAP_FLAG_PREFER</I>
+
+à 1, la nouvelle zone de swap disposera d'une priorité plus
+élevée que la zone de swap par défaut.
+La priorité est codée ainsi :
+<BR>
+
+<P>
+<I>    (prio &lt;&lt; SWAP_FLAG_PRIO_SHIFT) &amp; SWAP_FLAG_PRIO_MASK</I>
+
+<BR>
+
+<P>
+
+Cette fonction ne peut être appelée que par le Super-User.
+<A NAME="lbAE">&nbsp;</A>
+<H2>PRIORITÉ</H2>
+
+Chaque zone de swap a une priorité, haute ou basse. La priorité
+par defaut est basse.
+Parmi les zones de basses priorités, les nouvelles zones
+sont toujours affectées d'une priorité inférieure à celle
+des zones précédentes.
+<P>
+
+Toutes les priorités fixées avec l'argument
+<I>swapflags</I>
+
+sont plus élevées que la priorité par défaut.
+Elles peuvent prendre n'importe quelle valeur positive ou 
+nulle choisie par l'appelant.
+Plus la valeur est haute, plus la priorité est élevée.
+<P>
+
+Les pages de swap sont allouées dans les zones par ordre décroissant
+de priorité. Pour des zones de priorité différentes, la plus haute
+sera toujours remplie entièrement avant d'utiliser la zone
+de priorité plus faible.
+Si deux ou plus de zones ont la même priorite, et qu'il s'agit de
+la plus haute priorité disponible, les pages sont allouées en
+utilisant un algorithme Round-Robin entre elles.
+<P>
+
+Sur linux 1.3.6, le noyau suit généralement ces règles, mais il
+y a parfois des exceptions.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+En cas de réussite 0 est renvoyé, sinon -1 est renvoyé et
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAG">&nbsp;</A>
+<H2>ERREURS</H2>
+
+De nombreuses erreurs peuvent survenir si
+<I>path</I>
+
+n'est pas valide.
+<P>
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+L'utilisateur n'est pas Super-User ou il y a plus de
+<B>MAX_SWAPFILES</B>
+
+zones de swap actives (8 sous Linux 1.3.6).
+<DT><B>EINVAL</B>
+
+<DD>
+<I>path </I>
+
+existe mais n'est ni un chemin régulier, ni un périphérique bloc.
+<DT><B>ENOENT</B>
+
+<DD>
+<I>path </I>
+
+n'existe pas.
+<DT><B>ENOMEM </B>
+
+<DD>
+Pas assez de mémoire pour démarrer le swapping.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Ces fonctions sont spécifiques à Linux et ne doivent pas être employées
+dans des programmes destinés à être portables.
+<A NAME="lbAI">&nbsp;</A>
+<H2>NOTES</H2>
+
+La partition ou le fichier doivent être préparés par 
+<B><A HREF="/cgi-bin/man/man2html?8+mkswap">mkswap</A></B>(8).
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+mkswap">mkswap</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+swapon">swapon</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+swapoff">swapoff</A></B>(8)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">PRIORITÉ</A><DD>
+<DT><A HREF="#lbAF">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAG">ERREURS</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">NOTES</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:01 GMT, February 11, 2014
+</BODY>
+</HTML>

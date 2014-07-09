@@ -1,0 +1,520 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CAPABILITIES</TITLE>
+</HEAD><BODY>
+<H1>CAPABILITIES</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+capabilities - Présentation des capacités Linux.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+Pour vérifier les permissions, les implémentations Unix traditionnelles
+distinguent deux catégories de processus&nbsp;: Les processus
+<I>privilégiés</I>
+
+(dont l'UID effectif est nul, appelés Super-Utilisateur, ou root), et
+et les processus
+<I>non-privilégiés</I>
+
+(dont l'UID effectif est non-nul).
+Les processus privilégiés contournent les vérifications de permissions
+du noyau, alors que les processus non-privilégiés sont soumis à une
+vérification complète basée sur l'identification du processus
+(habituellement&nbsp;: UID effectif, GID effectif, et liste des groupes).
+<P>
+À partir du noyau 2.2, Linux propose un mécanisme
+(encore impcomplet) de
+<I>capacités</I>,
+
+qui scinde les privilèges traditionnement associés au Super-utilisateur
+en unités distinctes que l'on peut activer ou inhiber individuellement.
+<A NAME="lbAD">&nbsp;</A>
+<H3>Liste des capacités</H3>
+
+<P>
+Sous Linux 2.4.20, les capacités suivantes sont implémentées&nbsp;:
+
+
+
+
+
+<DL COMPACT>
+<DT><B>CAP_CHOWN</B>
+
+<DD>
+Permet de modifier arbitrairement les UID et GID des fichiers (voir
+<B><A HREF="/cgi-bin/man/man2html?2+chown">chown</A></B>(2)).
+
+<DT><B>CAP_DAC_OVERRIDE</B>
+
+<DD>
+Contourne les permissions de lecture, écriture et exécution.
+(DAC = &quot;discretionary access control&quot;, contrôle d'accès à volonté).
+<DT><B>CAP_DAC_READ_SEARCH</B>
+
+<DD>
+Contourne les permissions de lecture de fichiers et celles de
+lecture et exécution des répertoires.
+<DT><B>CAP_FOWNER</B>
+
+<DD>
+Contourne les vérifications pour les opérations qui demandent que le
+FS-UID du processus corresponde à l'UID du
+fichier (par exemple
+<B><A HREF="/cgi-bin/man/man2html?2+utime">utime</A></B>(2)),
+
+à l'exclusion des opérations couvertes par les
+<B>CAP_DAC_OVERRIDE</B>
+
+et
+<B>CAP_DAC_READ_SEARCH</B> ;
+
+Ignorer le bit sticky pour supprimer un fichier.
+<DT><B>CAP_FSETID</B>
+
+<DD>
+Ne pas effacer les bits Set-UID et Set-GID quand un fichier est modifié&nbsp;;
+autoriser le positionnement du bit Set-GID sur un fichier dont le GID
+ne correspond à aucun GID du processus appelant.
+<DT><B>CAP_IPC_LOCK</B>
+
+<DD>
+Permer le verrouillage de page mémoire
+(<B><A HREF="/cgi-bin/man/man2html?2+mlock">mlock</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mlockall">mlockall</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+shmctl">shmctl</A></B>(2)).
+
+<DT><B>CAP_IPC_OWNER</B>
+
+<DD>
+Contourne les vérifications pour les opérations sur les IPC Système V.
+<DT><B>CAP_KILL</B>
+
+<DD>
+Contourne les vérifications pour l'émission de signaux (voir
+<B><A HREF="/cgi-bin/man/man2html?2+kill">kill</A></B>(2)).
+
+
+
+<DT><B>CAP_LEASE</B>
+
+<DD>
+(Depuis Linux 2.4) Autorise la demande de bail sur n'importe quel
+fichier (voir
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2)).
+
+<DT><B>CAP_LINUX_IMMUTABLE</B>
+
+<DD>
+Autorise le positionnement des attributs étendus
+<B>EXT2_APPEND_FL</B>
+
+et
+<B>EXT2_IMMUTABLE_FL</B>
+
+du système de fichiers
+<I>ext2</I>.
+
+<DT><B>CAP_MKNOD</B>
+
+<DD>
+(Depuis Linux 2.4)
+Autorise la création de fichiers spéciaux avec
+<B><A HREF="/cgi-bin/man/man2html?2+mknod">mknod</A></B>(2).
+
+<DT><B>CAP_NET_ADMIN</B>
+
+<DD>
+Permet certaines opérations résaeu
+(par ex. obtenir des options privilégiées sur les sockets, activer
+le multicast, configurer les interfaces, modifier les
+tables de routage).
+<DT><B>CAP_NET_BIND_SERVICE</B>
+
+<DD>
+Autorise l'attachement d'une socket sur un port réservé
+(numéro de port inférieur à 1024).
+<DT><B>CAP_NET_BROADCAST</B>
+
+<DD>
+(Inutilisé) Permet le broadcast et l'écoute multicast sur les sockets.
+<DT><B>CAP_NET_RAW</B>
+
+<DD>
+Autorise l'utilisation des sockets RAW et PACKET.
+<DT><B>CAP_SETGID</B>
+
+<DD>
+Accès toute les manipulations des GID du processus et de la liste de groupes
+supplémentaires, permet l'utilisation de faux GID sur les socket Unix.
+<DT><B>CAP_SETPCAP</B>
+
+<DD>
+Autorise le transfert de toutes capacités de l'ensemble des capacités autorisées
+de l'appelant à partir ou vers n'importe quel processus.
+<DT><B>CAP_SETUID</B>
+
+<DD>
+Permer la manipulation arbitraire des UID du processus
+(<B><A HREF="/cgi-bin/man/man2html?2+setuid">setuid</A></B>(2)...)
+
+permet de transmettre un faux UID
+sur une socket dans le domaine Unix.
+
+<DT><B>CAP_SYS_ADMIN</B>
+
+<DD>
+Autorise un ensemble d'opérations d'aministration système, comprenant&nbsp;:
+<B><A HREF="/cgi-bin/man/man2html?2+quotactl">quotactl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mount">mount</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+swapon">swapon</A></B>(2)<B>,</B>
+
+<B><A HREF="/cgi-bin/man/man2html?2+sethostname">sethostname</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setdomainname">setdomainname</A></B>(2),
+
+<B>IPC_SET</B>
+
+et
+<B>IPC_RMID</B>
+
+sur n'importe quel objet IPC Système V&nbsp;; permet d'utiliser un faux
+UID pour les authentifications des sockets.
+<DT><B>CAP_SYS_BOOT</B>
+
+<DD>
+Autorise l'appel
+<B><A HREF="/cgi-bin/man/man2html?2+reboot">reboot</A></B>(2).
+
+<DT><B>CAP_SYS_CHROOT</B>
+
+<DD>
+Autorise l'appel
+<B><A HREF="/cgi-bin/man/man2html?2+chroot">chroot</A></B>(2).
+
+<DT><B>CAP_SYS_MODULE</B>
+
+<DD>
+Permet le chargement ou le déchargement de modules du noyaux&nbsp;;
+permet la modification des limitations de capacités.
+<DT><B>CAP_SYS_NICE</B>
+
+<DD>
+Autorise la diminution de la courtoisie
+(<B><A HREF="/cgi-bin/man/man2html?2+nice">nice</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setpriority">setpriority</A></B>(2))
+
+et la modification de la valeur de courtoisie de
+n'importe quel processus&nbsp;; autorise l'utilisation des
+ordonnancements temps-réel pour le processus appelant,
+et la modification de l'ordonnancement de n'importe quel processus.
+(<B><A HREF="/cgi-bin/man/man2html?2+sched_setscheduler">sched_setscheduler</A></B>(2), <B><A HREF="/cgi-bin/man/man2html?2+sched_setparam">sched_setparam</A></B>(2)).
+
+<DT><B>CAP_SYS_PACCT</B>
+
+<DD>
+Autorise l'appel
+<B><A HREF="/cgi-bin/man/man2html?2+acct">acct</A></B>(2).
+
+<DT><B>CAP_SYS_PTRACE</B>
+
+<DD>
+Permet de suivre n'importe quel processus avec
+<B><A HREF="/cgi-bin/man/man2html?2+ptrace">ptrace</A></B>(2)
+
+<DT><B>CAP_SYS_RAWIO</B>
+
+<DD>
+Autorise les opérations d'entrées/sorties
+(<B><A HREF="/cgi-bin/man/man2html?2+iopl">iopl</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+ioperm">ioperm</A></B>(2)).
+
+<DT><B>CAP_SYS_RESOURCE</B>
+
+<DD>
+Permet&nbsp;: l'utilisation de l'espace réservé sur un système ext2&nbsp;; l'appel
+<B><A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A></B>(2)
+
+pour configurer la journalisation ext3&nbsp;; le
+dépassement des quotas de disque&nbsp;;
+l'augmentation des limites de ressources (voir
+<B><A HREF="/cgi-bin/man/man2html?2+setrlimit">setrlimit</A></B>(2));
+
+la surcharge de la limite
+<B>RLIMIT_NPROC</B> ;
+
+l'augmentation de la limite
+<I>msg_qbytes</I>
+
+pour une file de messages au-dessus de la limite dans
+<I>/proc/sys/kernel/msgmnb</I>
+
+(voir
+<B><A HREF="/cgi-bin/man/man2html?2+msgop">msgop</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+msgctl">msgctl</A></B>(2)).
+
+<DT><B>CAP_SYS_TIME</B>
+
+<DD>
+Autorise la modification de l'heure système
+(<B><A HREF="/cgi-bin/man/man2html?2+settimeofday">settimeofday</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+adjtimex">adjtimex</A></B>(2)) ;
+
+permet la modification de l'horloge temps-réel (matérielle).
+<DT><B>CAP_SYS_TTY_CONFIG</B>
+
+<DD>
+Autorise l'appel de
+<B><A HREF="/cgi-bin/man/man2html?2+vhangup">vhangup</A></B>(2).
+
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H3>Capacités d'un processus</H3>
+
+Chaque processus a trois ensembles contenant zéro ou plus des
+capacités ci-dessus&nbsp;:
+<DL COMPACT>
+<DT><I>Effectif</I> :
+
+<DD>
+Les capacités utilisées par le noyau pour vérifier
+les permissions du processus.
+<DT><I>Autorisé</I> :
+
+<DD>
+Les capacités auxquelles le processus peut accéder
+(un sur-ensemble limite pour les ensembles
+effectif et héritable).
+Si un processus supprime une capacité de son ensemble autorisé,
+il ne plus jamais la récupérer (sauf s'il exécute un programme
+Set-UID root).
+<DT><I>Héritable</I> :
+
+<DD>
+les capacités qui sont conservées au cours d'un
+<B><A HREF="/cgi-bin/man/man2html?2+execve">execve</A></B>(2).
+
+</DL>
+<P>
+
+Dans l'implémentation actuelle, un processus reçoit toutes les capacités
+dans ses ensembles autorisé et effectif (à travers les limites
+décrites ci-dessous)
+lorsqu'il exécute un programme Set-UID-root,
+ou si un processus avec un UID réel nul exécute un nouveau programme.
+<P>
+
+Un enfant créé par
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2)
+
+reçoit une copie des ensembles de capacité de son père.
+<P>
+
+En utilisant
+<B><A HREF="/cgi-bin/man/man2html?2+capset">capset</A></B>(2),
+
+un processus peut manipuler ses propres ensembles, ou s'il a la capacité
+<B>CAP_SETPCAP</B>,
+
+celles d'un autre processus.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H3>Limitation des des capacités</H3>
+
+Quand un programme est exécuté, les capacités effectives et autorisées sont
+filtrées par un ET binaire avec la valeur en cours de 
+<I>la limitation des capacités</I>,
+
+définie dans le fichier
+<I>/proc/sys/kernel/cap-bound</I>.
+
+Ce paramètre peut servir à fixer une limite au niveau système sur les
+capacités disponibles pour tous les programmes exécutés ultérieurement.
+(Le masque de bits est exprimé comme un nombre décimal signé dans
+<I>/proc/sys/kernel/cap-bound</I>,
+
+ce qui entretient les confusion).
+<P>
+Seul le processus
+<B>init</B>
+
+peut fixer l'ensemble des limitations&nbsp;; sinon, le Super-Utilisateur
+peut uniquement effacer des bits dans cet ensemble.
+<P>
+Sur un système standard, la limitation élimine toujours la capacité
+<B>CAP_SETPCAP</B>.
+
+Pour supprimer cette restriction
+modifiez la définition de
+<B>CAP_INIT_EFF_SET</B>
+
+dans
+<I>include/linux/capability.h</I>
+
+et recompilez le noyau.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H3>Implémentations actuelle et à venir</H3>
+
+Une implémentation complète des capacités réclame&nbsp;:
+<DL COMPACT>
+<DT>1.<DD>
+que pour toutes les opérations privilégiées, le
+noyau vérifie que le processus dispose de la capacité
+nécessaire dans son ensemble effectif.
+<DT>2.<DD>
+que le noyau fournisse un appel-système
+permettant de changer et récupérer les ensembles de
+capacités d'un processus.
+<DT>3.<DD>
+le support du système de fichiers pour attacher des capacités aux fichiers
+exécutables, pour qu'un processus en dispose en lançant le programme.
+</DL>
+<P>
+
+Sous Linux 2.4.20, seules les deux premières clauses sont remplies.
+<P>
+Il pourrait même être possible d'associer trois ensembles de capacité
+avec un fichier exécutable, lesquels, en conjonction avec les
+ensembles de capacité du procesus, déterminera les capacités
+dont un processus disposera après un
+<I>exec</I> :
+
+<DL COMPACT>
+<DT><I>Autorisé</I> :
+
+<DD>
+ce ensemble est combiné par un ET avec l'ensemble héritable du processus
+pour savoir quelles capacités seront héritées après l'appel exec().
+<DT><I>Forcé</I> :
+
+<DD>
+les capacités automatiquement fournies au processus,
+quelques soient ses capacités héritables.
+<DT><I>Effectif</I> :
+
+<DD>
+les capacités qui du nouvel ensemble autorisé seront
+aussi placées dans l'ensemble effectif.
+(F(effectif) est normalement entièrement composé de zéros ou de uns).
+</DL>
+<P>
+
+En attendant, comme l'implémentation actuelle ne supporte pas
+les ensemble de capacités sur les fichiers, au cours d'un exec&nbsp;:
+<DL COMPACT>
+<DT>1.<DD>
+Les trois ensembles du fichier sont supposés vides.
+<DT>2.<DD>
+Si on exécute un programme Set-UID root, ou si l'UID réel est nul,
+alors les ensembles Forcé et Autorisé du fichier sont remplis de uns
+(toutes les capacités activées).
+<DT>3.<DD>
+Si un programme Set-UID root est exécuté, alors l'ensemble
+effectif du fichier est rempli avec des uns.
+</DL>
+<P>
+
+Durant un exec(), le noyau calcule les nouvelles capacités du
+processus en utilisant l'algorithme suivant&nbsp;:
+
+<PRE>
+
+P'(autorisé) = (P(héritable) &amp; F(autorisé) | (F(forcé) &amp; cap_bset)
+
+P'(effectif) = P'(autorisé) &amp; F(effectif)
+
+P'(héritable) = P(héritable)    [inchangé]
+
+</PRE>
+
+
+avec&nbsp;:
+<DL COMPACT>
+<DT>P<DD>
+indique la valeur d'une capacité du processus avant le exec()
+<DT>P'<DD>
+indique la valeur d'une capacité du processus après le exec()
+<DT>F<DD>
+indique la valeur d'une capacité du fichier
+<DT>cap_bset<DD>
+est la valeur de la limitation de capacité.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le paquetage
+<I>libcap</I>
+
+fournit un ensemble de routines pour écrire et lire
+les capacités d'un processus, de manière plus simple et moins
+susceptible de changer que l'interface fournie par
+<B><A HREF="/cgi-bin/man/man2html?2+capset">capset</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+capget">capget</A></B>(2).
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Il n'y a pas de véritable standard pour les capacités, mais l'implémentation
+Linux est basé sur une interprétation du projet POSIX 1003.1e.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Il n'y a pas encore de support dans le système de fichiers permettant
+d'associer les capacités et les fichiers exécutables.
+<A NAME="lbAK">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+capget">capget</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+prctl">prctl</A></B>(2)
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAD">Liste des capacités</A><DD>
+<DT><A HREF="#lbAE">Capacités d'un processus</A><DD>
+<DT><A HREF="#lbAF">Limitation des des capacités</A><DD>
+<DT><A HREF="#lbAG">Implémentations actuelle et à venir</A><DD>
+</DL>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">BOGUES</A><DD>
+<DT><A HREF="#lbAK">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:58 GMT, February 11, 2014
+</BODY>
+</HTML>

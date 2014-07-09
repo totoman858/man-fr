@@ -1,0 +1,268 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of latex2rtf</TITLE>
+</HEAD><BODY>
+<H1>latex2rtf</H1>
+Section: User Commands  (1)<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+latex2rtf - Convertit un fichier LaTeX en fichier RTF
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNTAXE</H2>
+
+latex2rtf [-hlSV] [-d#] [-M#]
+[&nbsp;-a&nbsp;fichier_auxiliaire<I>&nbsp;]</I>
+
+[&nbsp;-b&nbsp;fichier_bbl<I>&nbsp;]</I>
+
+[&nbsp;-C&nbsp;page_de_code<I>&nbsp;]</I>
+
+[&nbsp;-D&nbsp;points_par_pouce<I>&nbsp;]</I>
+
+[&nbsp;-i&nbsp;langage<I>&nbsp;]</I>
+
+[&nbsp;-o&nbsp;fichier_de_sortie<I>&nbsp;]</I>
+
+[&nbsp;-P&nbsp;/chemin/vers/cfg<I>&nbsp;]</I>
+
+[&nbsp;~fichier_source<I>&nbsp;]</I>
+
+<P>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La commande
+<I>latex2rtf</I>
+
+convertit un fichier LaTeX en format texte RTF. Le texte et la plupart des
+informations de mise en page sont traduits en RTF.
+<DL COMPACT>
+<DT><B>-a fichier_auxiliaire</B>
+
+<DD>
+Utilisé pour spécifier un fichier auxiliaire particulier.
+Quand cette option est absente, le
+<I>fichier_auxiliaire</I>
+
+est supposé être le même que le
+<I>fichier_source</I>
+
+en remplaçant l'extension .tex par .aux.
+<DT><B>-b fichier_bbl</B>
+
+<DD>
+Utilisé pour spécifier un fichier de bibliographie particulier.
+Quand cette option est absente, le
+<I>fichier_bbl</I>
+
+est supposé être le même que le
+<I>fichier_source</I>
+
+en remplaçant l'extension .tex par .bbl.
+<DT><B>-C page_de_code</B>
+
+<DD>
+Utilisé pour spécifier le jeu de caractères (page de code) utilisé dans le
+document LaTeX pour les caractères non-ansi.
+<I>page_de_code</I>
+
+peut prendre une des valeurs suivantes&nbsp;:
+ansinew, applemac, cp437, cp437de, cp850, cp852, cp865, decmulti,
+cp1250, cp1252, latin1, latin2, latin3, latin4, latin5, latin9,
+et suivants. Par défaut, ansinew (identique à cp1252) sera utilisé.
+<DT><B>-d#</B>
+
+<DD>
+Envoie des informations supplémentaires de diagnostic vers stderr.
+Plus le chiffre est élevé, plus il y aura de messages de diagnostic.
+Chiffre qui va de 0 (uniquement les erreurs) à 6 (beaucoup, beaucoup de messages). La
+valeur par défaut est 1 (uniquement les Avertissements et les Erreurs).
+<DT><B>-D points_par_pouce</B>
+
+<DD>
+Utilisé pour spécifier le nombre de points par pouce dans les équations converties
+en matrices de bits et pour les graphismes devant être convertis. La valeur par défaut
+est 300 dpi (dots per inch&nbsp;=&nbsp;points par pouce).
+<DT><B>-h</B>
+
+<DD>
+Affiche une aide à l'utilisation succincte
+<DT><B>-i langage</B>
+
+<DD>
+Utilisé pour définir l'idiome ou le langage utilisé dans le document LaTeX
+<I>langage</I>
+
+peut prendre une des valeurs suivantes&nbsp;:
+afrikaans, german, nynorsk, spanish, bahasa, dutch, icelandic, polish,
+swedish, basque, english, portuges, turkish, brazil, esperanto, irish,
+romanian, usorbian, breton, estonian, italian, samin, welsh, catalan,
+finnish, latin, scottish, croatian, lsorbian, serbian, czech, french,
+magyar, slovak, danish, galician, norsk, slovene. English est le langage par défaut.
+<DT><B>-l</B>
+
+<DD>
+Suppose que le source LaTeX utilise les caractères spéciaux ISO 8859-1 (Latin-1)
+(comportement par défaut).
+<DT><B>-o fichier_de_sortie</B>
+
+<DD>
+Redirige la sortie vers
+<I>fichier_de_sortie</I>.
+
+Si
+<I>fichier_de_sortie</I>
+
+n'est pas spécifié par l'option -o, le document RTF est enregistré dans un fichier avec
+l'extension .rtf à la place de .tex.
+<DT><B>-M#</B>
+
+<DD>
+dans laquelle # définit le type de conversion d'équation. -M3 est le défaut et
+convertit aussi bien les équations en ligne que hors-texte en RTF. -M6 convertit
+les équations en ligne en RTF et les équations hors-texte en matrices de bits. -M12
+convertit les équations en ligne et hors-texte en matrice de bits. La conversion
+en matrice de bits nécessite l'exécution d'un script latex2png. La génération de
+matrice de bits prend du temps.
+<DT><B>-P /chemin/vers/cfg</B>
+
+<DD>
+utilisé pour spécifier le répertoire contenant les fichiers de configuration .cfg
+<DT><B>-S</B>
+
+<DD>
+Utiliser le point-virgule pour séparer les arguments dans les champs RTF.
+Cette fonctionnalité est utile lorsque la version de Word, sur la machine où
+sera lu le fichier RTF, utilise la virgule comme séparateur décimal.
+<DT><B>-V</B>
+
+<DD>
+Affiche la version sur le fichier de sortie standard puis se termine.
+<DT><B>-W</B>
+
+<DD>
+Enregistre les avertissements directement dans le fichier RTF. Pratique pour détecter
+les éléments qui ne sont pas convertis correctement.
+<DT><B>-Z#</B>
+
+<DD>
+Ajoute # accolades de fermeture à la fin du fichier RTF. (Pratique lorsque la conversion
+s'est mal passé et que le fichier ne peut pas être ouvert dans un autre traitement de texte.)
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS DE CONFIGURATION</H2>
+
+La recherche des fichiers de configuration commence tout d'abord dans le répertoire
+spécifié par l'option -P, puis à l'endroit vers lequel pointe la variable d'environnement
+RTFPATH, et enfin là où pointait LIBDIR au moment où
+<I>latex2rtf</I>
+
+a été compilé. S'il ne trouve pas de fichier de configuration, alors
+<I>latex2rtf</I>
+
+s'arrête. Les fichiers de configuration permettent de rajouter de nouvelles polices
+de caractères, de traduire des commandes supplémentaires, et de faire ignorer d'autres commandes.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ATTENTION</H2>
+
+Le fichier source doit être un fichier LaTeX correct. LaTeX doit être utilisé
+pour chercher et corriger les erreurs avant d'exécuter
+<I>latex2rtf</I>.
+
+<P>
+
+Les fichiers de configuration
+<B>direct.cfg</B>
+
+et
+<B>fonts.cfg</B>
+
+sont placés dans le bon répertoire.
+Il est possible que vous deviez déplacer
+<B>fonts.cfg</B>
+
+ou
+<B>direct.cfg</B>
+
+pour répondre à vos besoins.
+<A NAME="lbAG">&nbsp;</A>
+<H2>ANOMALIES DE FONCTIONNEMENT</H2>
+
+D'aucuns peuvent penser que RTF est une anomalie.
+<P>
+
+Actuellement, certains environnements ne sont pas supportés.
+<P>
+
+S'il n'y a pas de fichier .aux créé par LaTeX, la conversion est mauvaise.
+<P>
+
+Pour le moment, la conversion de tableaux fonctionne mal.
+<A NAME="lbAH">&nbsp;</A>
+<H2>REMONTÉE DE PROBLÈMES</H2>
+
+Transmettez les anomalies de fonctionnement au système de remontée de problèmes via <A HREF="http://sourceforge.net/projects/latex2rtf/.">http://sourceforge.net/projects/latex2rtf/.</A>
+Ne transmettez que des problèmes concernant la dernière version disponible de
+<I>latex2rtf</I>.
+
+Merci de préciser votre système d'exploitation.
+<P>
+<P>
+
+Si le programme génère une sortie erronée ou bien ne fonctionne pas, veuillez inclure
+un
+<I>petit</I>
+
+fichier LaTeX ainsi qu'une description du problème. Plus le fichier LaTeX sera petit,
+plus vite votre problème sera traité.
+Ne prenez pas la peine d'envoyer de fichiers RTF, car généralement ils n'apportent rien de plus.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+rtf2LaTeX">rtf2LaTeX</A>(1), LaTeX User's Guide &amp; Reference Manual de Leslie Lamport
+<P>
+
+Pour une documentation complète et à jour, veuillez consulter le fichier Info
+<B>latex2rtf.info,</B>
+
+le fichier PDF
+<B>latex2rtf.pdf</B>
+
+ou bien le fichier HTML
+<B>latex2rtf.html</B>
+
+générés à partir du fichier source TeXInfo
+<B>latex2rtf.texi.</B>
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+René FERRAND, Octobre 2002.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNTAXE</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">FICHIERS DE CONFIGURATION</A><DD>
+<DT><A HREF="#lbAF">ATTENTION</A><DD>
+<DT><A HREF="#lbAG">ANOMALIES DE FONCTIONNEMENT</A><DD>
+<DT><A HREF="#lbAH">REMONTÉE DE PROBLÈMES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:46 GMT, February 11, 2014
+</BODY>
+</HTML>

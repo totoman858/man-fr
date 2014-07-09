@@ -1,0 +1,343 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of NETLINK</TITLE>
+</HEAD><BODY>
+<H1>NETLINK</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+netlink, PF_NETLINK - Communication entre noyau et utilisateur.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/asm/types.h">asm/types.h</A>&gt;</B>
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/linux/netlink.h">linux/netlink.h</A>&gt; </B>
+<BR>
+
+<B>netlink_socket = socket(PF_NETLINK, </B><I>socket_type</I><B>, </B><I>netlink_family</I><B>);</B>
+</PRE><A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Netlink sert à transférer des informations entre les modules du noyau et les
+processus de l'espace utilisateur. Il consiste en une interface basée sur 
+les sockets standards pour les processus utilisateur et d'une API interne
+pour les modules du noyau. Cette interface n'est pas documentée dans cette
+page de manuel. Il existe aussi une interface obsolète via un périphérique
+caractère netlink, réservée pour compatibilité et non documentée ici.
+<P>
+Netlink est un service orienté datagramme. Les deux types
+<B>SOCK_RAW </B>
+
+et
+<B>SOCK_DGRAM</B>
+
+sont des valeurs possibles pour
+<I>socket_type</I> ;
+
+toutefois, le protocole netlink ne distingue pas les sockets raw et
+datagrammes.
+<P>
+<I>netlink_family</I>
+
+sélectionne le module du noyau ou le groupe netlink avec qui communiquer.
+Les familles netlink actuellement affectée sont&nbsp;:
+<DL COMPACT>
+<DT><B>NETLINK_ROUTE</B>
+
+<DD>
+Reçoit les modifications de routage et peut être utilisé pour mettre
+à jour les tables de routage IPv4 (voir
+<B><A HREF="/cgi-bin/man/man2html?7+rtnetlink">rtnetlink</A></B>(7)).
+
+<DT><B>NETLINK_FIREWALL </B>
+
+<DD>
+Reçoit les paquets envoyés par le code du firewall IPv4.
+<DT><B>NETLINK_ARPD</B>
+
+<DD>
+Pour gérer la table Arp dans l'espace utilisateur.
+<DT><B>NETLINK_ROUTE6</B>
+
+<DD>
+Reçoit et envoie les mise à jour de la table de routage IPv6.
+<DT><B>NETLINK_IP6_FW</B>
+
+<DD>
+Pour recevoir les paquets rejetés par le firewall IPv6 (pas encore
+implémenté).
+<DT><B>NETLINK_TAPBASE</B>...<B>NETLINK_TAPBASE+15</B>
+
+<DD>
+sont les instances du périphérique
+<B>ethertap</B>.
+
+Ce périphérique est un tunnel pour pseudo-réseau qui permet de simuler
+un pilote Ethernet depuis l'espace utilisateur.
+<DT><B>NETLINK_SKIP</B>
+
+<DD>
+Réservé pour ENskip.
+<DT><B>NETLINK_USERSOCK</B>
+
+<DD>
+Réservé pour les futurs protocoles dans l'espace utilisateur.
+</DL>
+<P>
+
+Les messages netlink consistent en un flux d'octets avec un ou plusieurs
+en-têtes
+<B>nlmsghdr</B>
+
+et les contenus associés. Pour les messages multi-parties, tous les en-têtes
+ont l'attribut
+<B>NLM_F_MULTI</B>
+
+actif, sauf le dernier en-tête qui a le type
+<B>NLMSG_DONE</B>.
+
+Le flux d'octets ne doit être accédé qu'à travers les macros standards
+<B>NLMSG_*</B>
+
+voir
+<B><A HREF="/cgi-bin/man/man2html?3+netlink">netlink</A></B>(3).
+
+<P>
+Netlink n'est pas un protocole fiable. Il fait de son mieux pour conduire
+les messages à destination, mais peut abandonner des messages s'il n'a pas
+assez de mémoire ou si une erreur se produit. Pour un transfert fiable,
+l'émetteur peut demander un acquittement du récepteur en activant l'attribut
+<B>NLM_F_ACK</B>.
+
+Un acquittement est un paquet
+<B>NLMSG_ERROR </B>
+
+avec le champ erreur à zéro. L'application doit envoyer des acquittements
+pour les messages eux-même. Le noyau essaye d'envoyer un message
+<B>NLMSG_ERROR</B>
+
+pour chaque paquet échoué. Le processus utilisateur devrait suivre aussi
+cette convention.
+<P>
+Chaque famille netlink a un ensemble de 32 groupes multicast.
+Quand on appelle
+<B><A HREF="/cgi-bin/man/man2html?2+bind">bind</A></B>(2)
+
+sur la socket, le champ
+<B>nl_groups</B>
+
+de la structure
+<B>sockaddr_nl</B>
+
+doit contenir un masque de bits des groupes que l'on désire écouter.
+La valeur par défaut pour ce champ est zéro, ce qui signifie qu'aucun
+groupe multicast ne sera reçu.
+Une socket peut envoyer un message sur n'importe quel groupe multicast
+en remplissant le champ
+<B>nl_groups</B>
+
+avec un masque de bit des groupes visés, lors de l'appel
+<B><A HREF="/cgi-bin/man/man2html?2+sendmsg">sendmsg</A></B>(2)
+
+ou lors du
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2).
+
+Seul les processus avec un UID effectif nul ou la capacité
+<B>CAP_NET_ADMIN</B>
+
+peuvent envoyer ou recevoir sur un
+groupe multicast netlink.
+Toute réponse pour un message reçu sur un groupe multicast
+doit être renvoyée au PID émetteur et au groupe multicast. 
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct nlmsghdr
+{
+    __u32    nlmsg_len;  /* Longueur y compris en-tête */
+    __u16    nlmsg_type; /* Contenu message            */
+    __u16    nlmsg_flags;/* Attributs supplémentaires  */
+    __u32    nlmsg_seq;  /* Numéro de séquence         */
+    __u32    nlmsg_pid;  /* PID du créateur socket     */
+};
+
+
+struct nlmsgerr
+{
+    int      error;      /* errno négatif ou 0 pour acquit. */
+    struct nlmsghdr msg; /* en-tête message causant l'erreur */ 
+};
+
+</PRE>
+
+</DL>
+
+<P>
+Après chaque
+<B>nlmsghdr</B>
+
+le contenu du message suit.
+<B>nlmsg_type</B>
+
+peut être l'un des types standards de message&nbsp;:
+<B>NLMSG_NOOP</B>
+
+message à ignorer,
+<B>NLMSG_ERROR</B>
+
+message indiquant une erreur, son contenu est une
+structure
+<I>nlmsgerr</I>,
+
+<B>NLMSG_DONE</B>
+
+message final d'un ensemble multiparties.
+
+
+
+<P>
+Une famille netlink contient des types supplémentaires de message, voir
+la page de manuel apprpriée, par exemple
+<B><A HREF="/cgi-bin/man/man2html?7+rtnetlink">rtnetlink</A></B>(7)
+
+pour
+<I>NETLINK_ROUTE</I>.
+
+<P>
+<TABLE>
+<TR VALIGN=top><TD><B>Attribut standards dans nlmsg_flags</B><BR></TD></TR>
+<TR VALIGN=top><TD COLSPAN=2>NLM_F_REQUEST:pour toutes les requêtes<BR></TD></TR>
+<TR VALIGN=top><TD>NLM_F_MULTI:T{<BR></TD><TD><BR></TD></TR>
+<TR VALIGN=top><TD>le message est multi-parties, temrinée par <BR></TD><TD><BR></TD></TR>
+<TR VALIGN=top><TD>NLMSG_DONE<BR></TD><TD><BR></TD></TR>
+<TR VALIGN=top><TD>T}<BR></TD><TD><BR></TD></TR>
+<TR VALIGN=top><TD>NLM_F_ACK:envoyer un acquittement de réussite<BR></TD><TD><BR></TD></TR>
+<TR VALIGN=top><TD>NLM_F_ECHO:renvoyer cette requête<BR></TD><TD><BR></TD></TR>
+</TABLE>
+
+<P>
+<TABLE>
+<TR VALIGN=top><TD COLSPAN=2>Attributs supplémentaires pour requêtes GET<BR></TD></TR>
+<TR VALIGN=top><TD>NLM_F_ROOT</TD><TD>Renvoyer toute la table plutôt qu'une seule entrée.<BR></TD></TR>
+<TR VALIGN=top><TD>NLM_F_MATCH</TD><TD>Pas encore implémenté.<BR></TD></TR>
+<TR VALIGN=top><TD>NLM_F_ATOMIC</TD><TD>Renvoyer une image instantanée de la table.<BR></TD></TR>
+<TR VALIGN=top><TD>NLM_F_DUMP</TD><TD>Pas encore documenté.<BR></TD></TR>
+</TABLE>
+
+<P>
+<TABLE>
+<TR VALIGN=top><TD COLSPAN=2>Attributs supplémentaires pour requêtes NEW<BR></TD></TR>
+<TR VALIGN=top><TD>NLM_F_REPLACE</TD><TD>Ecraser l'objet existant.<BR></TD></TR>
+<TR VALIGN=top><TD>NLM_F_EXCL</TD><TD>Ne pas remplacer l'objet s'il existe déjà.<BR></TD></TR>
+<TR VALIGN=top><TD>NLM_F_CREATE</TD><TD>Créer un objet s'il n'existe pas.<BR></TD></TR>
+<TR VALIGN=top><TD>NLM_F_APPEND</TD><TD>Ajouter à la fin de la liste d'objets.<BR></TD></TR>
+</TABLE>
+
+<P>
+Notez que NLM_F_ATOMIC nécessite la capacité CAP_NET_ADMIN ou les droits root.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>FORMAT D'ADRESSE</H2>
+
+La structure
+<B>sockaddr_nl</B>
+
+décrit un client netlink dans l'espace utilisateur ou dans le noyau.
+une sockaddr_nl peut être soit unicast (un seul destinataire) ou décrire
+un groupe netlink (nl_groups différent de 0). 
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+struct sockaddr_nl
+{
+    sa_family_t nl_family;    /* AF_NETLINK               */
+    unsigned short nl_pad;    /* zéro                     */
+    pid_t       nl_pid;       /* PID                      */
+    __u32       nl_groups;    /* masque groupes multicast */
+};
+</PRE>
+
+</DL>
+
+<P>
+<B>nl_pid</B>
+
+est le PID du processus propriétaire de la socket de destination ou zéro
+si la destination est dans le noyau.
+<B>nl_groups </B>
+
+est un masque de bits représentant les groupes netlink.
+
+<P>
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Cette page de manuel n'est pas complète.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Il est souvent plus facile d'utiliser netlink à travers la bibliothèque
+<B>libnetlink</B>
+
+que vial l'interface bas-niveau du noyau.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>VERSIONS</H2>
+
+L'interface par socket de netlink est une nouveauté dans Linux 2.2.
+<P>
+Linux 2.0 supporte une interface plus primitive, basée sur un périphérique
+caractère (toujours valable pour compatibilité). Cette interface obsolète
+n'est pas décrite ici.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+cmsg">cmsg</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?7+rtnetlink">rtnetlink</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?3+netlink">netlink</A></B>(3)
+
+<P>
+
+<A HREF="ftp://ftp.inr.ac.ru/ip-routing/iproute2*">ftp://ftp.inr.ac.ru/ip-routing/iproute2*</A> 
+pour libnetlink
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">FORMAT D'ADRESSE</A><DD>
+<DT><A HREF="#lbAF">BOGUES</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">VERSIONS</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:57 GMT, February 11, 2014
+</BODY>
+</HTML>

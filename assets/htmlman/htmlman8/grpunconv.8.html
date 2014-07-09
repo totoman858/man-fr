@@ -1,0 +1,149 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PWCONV</TITLE>
+</HEAD><BODY>
+<H1>PWCONV</H1>
+Section: Maintenance Commands (8)<BR>Updated: 26 septembre 1997<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+pwconv, pwunconv, grpconv, grpunconv - convertit de et vers les fichiers de
+mots de passe et groupes masqués.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>pwconv</B>
+
+<BR>
+
+<B>pwunconv</B>
+
+<BR>
+
+<B>grpconv</B>
+
+<BR>
+
+<B>grpunconv</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ces quatre programmes opèrent tous sur les fichiers mots de passe et groupes
+normaux et masqués&nbsp;:
+<I>/etc/passwd</I>, <I>/etc/group</I>, <I>/etc/shadow</I>, et <I>/etc/gshadow</I>.
+
+<P>
+<B>pwconv</B>
+
+crée <I>shadow</I> à partir de <I>passwd</I> et optionnellement d'un <I>shadow</I> existant.
+
+<BR>
+
+<B>pwunconv</B>
+
+crée <I>passwd</I> à partir de <I>passwd</I> et <I>shadow</I> puis supprime <I>shadow</I>.
+
+<BR>
+
+<B>grpconv</B>
+
+crée <I>gshadow</I> à partir de <I>group</I> et optionnellement d'un <I>gshadow</I> existant.
+
+<BR>
+
+<B>grpunconv</B>
+
+crée <I>group</I> à partir de <I>group</I> et <I>gshadow</I> puis supprime <I>gshadow</I>.
+
+<P>
+Chaque programme acquiert les verrouillages nécessaires avant la conversion.
+<P>
+<B>pwconv</B> et <B>grpconv</B>
+
+sont similaires. D'abord, les entrées du fichier caché qui n'existent pas dans
+le fichier principal sont supprimées. Ensuite, les entrées cachées qui n'ont
+pas «&nbsp;x&nbsp;» comme mot de passe dans le fichier principal sont mises à jour.
+Toutes les entrées cachées manquantes sont ajoutées. Enfin, les mots de passe
+dans le fichier principal sont remplacés par «&nbsp;x&nbsp;». Ces programmes peuvent
+être utilisés aussi bien pour une première conversion que pour une mise à jour
+du fichier caché si le fichier principal a été édité à la main.
+<P>
+<B>pwconv</B>
+
+utilisera les valeurs
+<B>PASS_MIN_DAYS</B>, <B>PASS_MAX_DAYS</B>, et <B>PASS_WARN_AGE</B>
+
+de
+<I>/etc/login.defs</I>
+
+lors de l'ajout de nouvelles entrées dans
+<I>/etc/shadow</I>.
+
+<P>
+De la même manière, <B>pwunconv</B> et <B>grpunconv</B>
+
+sont similaires. Les mots de passe du fichier principal sont mis à jour
+à partir du fichier caché. Les entrées qui existent dans le fichier principal
+mais pas dans le fichier caché sont laissées de coté. Le fichier caché est
+ensuite supprimé.
+Certaines informations vieillissantes sur les mots de passe sont perdues par
+<B>pwunconv</B>.
+
+Il convertira ce qu'il pourra.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Des erreurs dans les fichiers mots de passe ou groupes (comme les entrées
+invalides ou dupliquées) peuvent entrainer ces programmes dans des boucles
+infinies ou les faire échouer de manière étrange. Veuillez lancer <B>pwck</B>
+et <B>grpck</B> pour corriger de telles erreurs avant de convertir
+de ou vers les mots de passe ou groupes cachés.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+login.defs">login.defs</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+grpck">grpck</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pwck">pwck</A></B>(8)
+
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction, réalisée par Alain Portal &lt;aportal AT univ-montp2 DOT fr&gt; le Novembre 2004.
+<P>
+L'équipe de traduction a fait le maximum pour réaliser une adaptation française de qualité.
+<P>
+La version anglaise la plus à jour de ce document est toujours consultable via la commande&nbsp;: LANGUAGE=en man xxxx
+<P>
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute erreur dans de cette page de manuel.
+<P>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">BOGUES</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:00 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,188 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of RARP</TITLE>
+</HEAD><BODY>
+<H1>RARP</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 4 août 1997<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+rarp - Manipuler la table système RARP.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>rarp [-V] [--version] [-h] [--help]</B>
+
+<BR>
+
+<B>rarp -a</B>
+
+<BR>
+
+<B>rarp [-v] -d nom_hôte ...</B>
+
+<BR>
+
+<B>rarp [-v] [-t type] -s nom_hôte adr_matériel</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>NOTE</H2>
+
+<P>
+
+Ce programme est obsolète. À partir de la version 2.3, le noyau Linux
+ne prend plus en charge RARP. Pour remplacer le daemon RARP, consultez
+<I><A HREF="ftp://ftp.dementia.org/pub/net-tools">ftp://ftp.dementia.org/pub/net-tools</A></I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>rarp</B>
+
+manipule la table RARP du noyau de différentes façons. Les options de base
+permettent d'effacer une entrée de correspondance d'adresses et d'en
+définir une manuellement. Pour des besoins de débogage, le programme
+<B>rarp</B>
+
+permet aussi de vider complètement la table RARP.
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-V</B>
+
+<DD>
+Afficher la version de RARP utilisée.
+<DT><B>-v</B>
+
+<DD>
+Mode volubile.
+<DT><B>-t type</B>
+
+<DD>
+En définissant ou lisant la table RARP, ce paramètre optionnel dit à
+<B>rarp</B>
+
+quelles classes d'entrées il doit contrôler. La valeur par défaut de
+ce paramètre est
+<B>ether</B>
+
+(c'est-à-dire, code matériel
+<B>0x01</B>
+
+pour
+<B>IEEE 802.3 10Mbps Ethernet</B>).
+
+D'autres valeurs correspondent à des technologies de réseau telles que
+<B>AX.25 (ax25)</B>
+
+et
+<B>NET/ROM (netrom)</B>.
+
+<DT><B>-a</B>
+
+<DD>
+<DT><B>--list</B>
+
+<DD>
+Afficher les entrées de la table RARP.
+<DT><B>-d nom_hôte</B>
+
+<DD>
+<DT><B>--delete nom_hôte</B>
+
+<DD>
+Supprimer toutes les entrées RARP relatives à l'hôte spécifié.
+<DT><B>-s nom_hôte adr_matériel</B>
+
+<DD>
+<DT><B>--set nom_hôte adr_matériel</B>
+
+<DD>
+Créer manuellement une correspondance d'adresses RARP pour l'hôte
+<B>nom_hôte</B>
+
+avec l'adresse du matériel
+<B>adr_matériel</B>.
+
+Le format de l'adresse du matériel est dépendant de la classe de matériel,
+mais pour la plupart, on peut considérer que la présentation classique
+peut être utilisée. Pour la classe Ethernet, l'adresse est donnée sur
+6&nbsp;octets en hexadécimal, séparés par des double-points.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>ATTENTION</H2>
+
+Certains systèmes (notamment des vieux Sun) supposent que l'hôte
+répondant à une requête RARP peut aussi fournir des services
+de démarrage à distance. Par conséquent, n'ajoutez jamais
+d'entrées RARP à la légère, à moins que vous ne souhaitiez affronter
+la colère de votre administrateur de réseau.
+<A NAME="lbAH">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/proc/net/rarp</I>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+arp">arp</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ifconfig">ifconfig</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+netstat">netstat</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+route">route</A></B>(8)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Ross D. Martin, &lt;<A HREF="mailto:martin@trcsun3.eas.asu.edu">martin@trcsun3.eas.asu.edu</A>&gt;
+<BR>
+
+Fred N. van Kempen, &lt;<A HREF="mailto:waltje@uwalt.nl.mugnet.org">waltje@uwalt.nl.mugnet.org</A>&gt;
+<BR>
+
+Phil Blundell, &lt;<A HREF="mailto:Philip.Blundell@pobox.com">Philip.Blundell@pobox.com</A>&gt;
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Jean Michel Vansteene
+&lt;vanstee&nbsp;AT&nbsp;worldnet&nbsp;DOT&nbsp;fr&gt; le 15&nbsp;mars&nbsp;1999,
+mise à jour par Guillaume Audirac en août 2004
+et révisée le 17&nbsp;août&nbsp;2006.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;8&nbsp;rarp</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">NOTE</A><DD>
+<DT><A HREF="#lbAE">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAF">OPTIONS</A><DD>
+<DT><A HREF="#lbAG">ATTENTION</A><DD>
+<DT><A HREF="#lbAH">FICHIERS</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">AUTEURS</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

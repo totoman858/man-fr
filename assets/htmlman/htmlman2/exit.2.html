@@ -1,0 +1,141 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of _EXIT</TITLE>
+</HEAD><BODY>
+<H1>_EXIT</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM </H2>
+
+_exit, _Exit - Mettre fin au processus en cours d'exécution.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>void _exit (int </B><I>code</I><B>);</B>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<P>
+<B>void _Exit (int </B><I>code</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>_exit</B>
+
+met fin &quot;immédiatement&quot; au processus en cours, les descripteurs de
+fichiers lui appartenant sont fermés, tous ses fils
+éventuels sont hérités par le processus 1 (init),
+et son père reçoit un signal
+<B>SIGCHLD.</B>
+
+<P>
+
+La valeur
+<I>code</I>
+
+est renvoyée au processus père comme valeur de sortie et peut
+être récupérée en utilisant un appel-système de
+la famille
+<B>wait.</B>
+
+<P>
+
+La fonction
+<B>_Exit</B>
+
+est équivalente à
+<B>_exit</B>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Ces fonctions ne reviennent jamais.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID, POSIX, X/OPEN, BSD 4.3
+La fonction <I>_Exit()</I> a été introduite par C99.
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Pour une discussion sur les effets de exit, la transmission de la valeur de
+retour, les processus zombie, les signaux envoyés, etc. reportez-vous à
+<B><A HREF="/cgi-bin/man/man2html?3+exit">exit</A></B>(3).
+
+<P>
+
+L'appel-système
+<B>_exit</B>
+
+n'appelle aucune fonction programmée par la routine
+ANSI C
+<B><A HREF="/cgi-bin/man/man2html?3+atexit">atexit</A></B>(3),
+
+ni aucun gestionnaire de signal. Le fait qu'elle vide ou non les
+buffers d'entrée-sortie, ou qu'elle efface les fichiers temporaires créés avec
+<B><A HREF="/cgi-bin/man/man2html?3+tmpfile">tmpfile</A></B>(3)
+
+dépend de l'implémentation.
+En revanche,
+<B>_exit</B>
+
+ferme les descripteurs de fichiers, ce qui peut retarder son exécution durant
+le temps où des écritures se terminent. Si ce retard est génant, on peut
+invoquer <I>tcflush()</I> avant
+d'appeler <B>_exit()</B>.
+Savoir si certaines entrées/sorties en attente sont annulées lors d'un
+<B>_exit()</B>, et lesquelles, dépend de l'implémentation.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+execve">execve</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+waitpid">waitpid</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+wait4">wait4</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+kill">kill</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+wait">wait</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+exit">exit</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+termios">termios</A></B>(3).
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM </A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:50 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,816 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LS</TITLE>
+</HEAD><BODY>
+<H1>LS</H1>
+Section: Manuel de l'utilisateur Linux (1L)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ls, dir, vdir - Afficher le contenu d'un répertoire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>ls [</B><I>options</I><B>] [</B><I>fichier...</I><B>]</B>
+
+<BR>
+
+<B>dir [</B><I>fichier...</I><B>]</B>
+
+<BR>
+
+<B>vdir [</B><I>fichier...</I><B>]</B>
+
+<P>
+Options POSIX :
+<B>[-CFRacdilqrtu1] [--]</B>
+
+<P>
+Options GNU (forme courte) :
+<B>[-1abcdfgiklmnopqrstuvwxABCDFGHLNQRSUX]</B>
+
+<B>[-w </B><I>cols</I><B>]</B>
+
+<B>[-T </B><I>cols</I><B>]</B>
+
+<B>[-I </B><I>motif</I><B>]</B>
+
+<B>[--full-time]</B>
+
+<B>[--show-control-chars]</B>
+
+<B>[--block-size=</B><I>taille</I><B>]</B>
+
+<B>[--format={long,verbose,commas,across,vertical,single-column}]</B>
+
+<B>[--sort={none,time,size,extension}]</B>
+
+<B>[--time={atime,access,use,ctime,status}]</B>
+
+<B>[--color[={none,auto,always}]]</B>
+
+<B>[--help] [--version] [--]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La commande
+<B>ls</B>
+
+affiche tout d'abord l'ensemble de ses arguments
+<I>fichiers</I>
+
+autres que des répertoires. Puis <B>ls</B> affiche l'ensemble des
+fichiers contenus dans chaque répertoire indiqué. Si aucun argument autre
+qu'une option n'est fourni, l'argument `.' (répertoire en cours) est pris
+par défaut. Avec l'option -d, les répertoires fournis en argument ne sont
+pas considérés comme des répertoires (on affiche leurs noms et pas leurs
+contenus). Un fichier n'est affiché que si son nom ne commence pas par un
+point, ou si l'option  -a est fournie.
+<P>
+
+Chacune des listes de fichiers (fichiers autres que des répertoires, et 
+contenu de chaque répertoire) est triée séparément en fonction de la
+séquence d'ordre de la localisation en cours. Lorsque l'option -l est
+fournie, chaque liste est précédée d'une ligne indiquant la taille totale
+des fichiers de la liste, exprimée en blocs de 512 octets.
+<P>
+
+Le résultat est envoyé sur la sortie standard, un élément par ligne, sauf
+si un affichage multi-colonnes est demandé avec l'option -C. Toutefois, lorsque
+la sortie standard est un terminal, l'affichage peut se faire sur une ou
+plusieurs colonnes suivant l'implémentation. Les options -1 et -C forcent
+un affichage sur une seule colonne ou plusieurs, respectivement.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS POSIX</H2>
+
+<DL COMPACT>
+<DT><B>-C</B>
+
+<DD>
+Présenter les fichiers en colonnes, triés verticalement.
+<DT><B>-F</B>
+
+<DD>
+Ajouter un caractère à chaque nom de fichier pour indiquer son type.
+les fichiers réguliers exécutables sont suivis d'un `*'. Les répertoires
+sont suivis de `/', les liens symboliques d'un `@', les FIFOs d'un `|'.
+Les fichiers réguliers non-exécutables ne sont suivis d'aucun caractère.
+<DT><B>-R</B>
+
+<DD>
+Afficher récursivement le contenu des sous-répertoires.
+<DT><B>-a</B>
+
+<DD>
+Afficher tous les fichiers des répertoires, y compris les fichiers commençant
+par un `.'.
+<DT><B>-c</B>
+
+<DD>
+Employer la date de changement de statut des fichiers plutôt que la date de modification,
+autant pour l'affichage (option -l) que pour le tri (option -t).
+<DT><B>-d</B>
+
+<DD>
+Afficher les répertoires avec la même présentation que les fichiers, sans
+lister leur contenu.
+<DT><B>-i</B>
+
+<DD>
+Afficher le numéro d'index (i-noeud) de chaque fichier à gauche de son nom.
+<DT><B>-l</B>
+
+<DD>
+En plus du nom, afficher le type du fichier, les permissions d'accès,
+le nombre de liens physiques, le nom du propriétaire et du groupe, la
+taille en octets, et l'horodatage.
+Les types de fichiers sont indiqués par les caractères suivants :
+<B>-</B>
+
+pour les fichiers ordinaires,
+<B>d</B>
+
+pour un répertoire (directory),
+<B>b</B>
+
+pour un fichier spécial en mode bloc,
+<B>c</B>
+
+pour un fichier spécial en mode caractère,
+<B>l</B>
+
+pour un lien symbolique,
+<B>p</B>
+
+pour une fifo (named pipe),
+<B>s</B>
+
+pour une socket.
+Par défaut l'horodatage présenté est celui de la dernière modification du
+fichier. Les options -c et -u réclament les autres horodatages. Pour les fichiers
+spéciaux, le champ de taille est généralement remplacé par les numéros majeur et
+mineur du périphérique.
+<DT><B>-q</B>
+
+<DD>
+Afficher des points d'interrogation à la place des caractères non-imprimables
+dans les noms de fichiers. Il est possible que cela soit le cas par défaut lorsque la
+sortie standard est un terminal.
+<DT><B>-r</B>
+
+<DD>
+Inverser le tri du contenu des répertoires.
+<DT><B>-t</B>
+
+<DD>
+Trier le contenu des répertoires en fonction de la date et non
+pas en ordre alphabétique. Les fichiers les plus récents sont
+présentés en premier.
+<DT><B>-u</B>
+
+<DD>
+Employer la date des derniers accès aux fichiers plutôt que la date de modification,
+autant pour l'affichage (option -l) que pour le tri (option -t).
+<DT><B>-1</B>
+
+<DD>
+Présenter un fichier par ligne.
+<DT><B>--</B>
+
+<DD>
+Indique la fin explicite des options.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>PARTICULARITÉS GNU</H2>
+
+Si la sortie standard est un terminal, la sortie est en colonnes (triées verticalement).
+<P>
+
+<B>dir</B>
+
+(parfois installé sous le nom
+<B>d</B>)
+
+est équivalent à `ls&nbsp;-C&nbsp;-b'. C'est-à-dire que les fichiers sont par défaut
+présentés en colonnes, triés verticalement.
+<B>dir</B>
+
+(parfois installé sous le nom
+<B>v</B>)
+
+est équivalent à `ls&nbsp;-l&nbsp;-b'. C'est-à-dire que les fichiers sont par défaut
+affichés en format long.
+<A NAME="lbAG">&nbsp;</A>
+<H2>OPTIONS GNU</H2>
+
+<DL COMPACT>
+<DT><B>-1, --format=single-column</B>
+
+<DD>
+Présenter un fichier par ligne. C'est le comportement par défaut lorsque la sortie
+standard n'est pas un terminal (un pipeline vers une autre commande par exemple).
+<DT><B>-a, --all</B>
+
+<DD>
+Afficher tous les fichiers des répertoires, y compris les fichiers commençant
+par un `.'.
+<DT><B>-b, --escape</B>
+
+<DD>
+Présenter les caractères non-affichables des noms de fichiers en utilisant
+des séquences alphabétiques ou octales commençant par un backslash `\' comme
+en C. Cette option est identique à
+<B>-Q</B>
+
+avec la différence que les noms de fichiers ne sont pas encadrés de guillemets.
+<DT><B>-c, --time=ctime, --time=status</B>
+
+<DD>
+Trier le contenu des répertoires en fonction des dates de changement
+des statuts de fichiers, plutôt qu'en fonction de la date de modification.
+S'il s'agit d'un format long, afficher la date de changement de statut
+plutôt que la date de modification du fichier.
+<DT><B>-d, --directory</B>
+
+<DD>
+Afficher les répertoires avec la même présentation que les fichiers, sans
+lister leur contenu.
+<DT><B>-f</B>
+
+<DD>
+Ne pas trier le contenu des répertoires, l'afficher dans l'ordre où il
+se présente sur le disque.
+Active les options
+<B>-a</B>
+
+et
+<B>-U</B>
+
+et désactive
+<B>-l,</B>
+
+<B>--color</B>
+
+<B>-s,</B>
+
+et 
+<B>-t.</B>
+
+<DT><B>-g</B>
+
+<DD>
+Option sans effet, conservée pour assurer la compatibilité avec Unix.
+<DT><B>-h, --human-readable</B>
+
+<DD>
+Ajouter une lettre indiquant l'unité de taille, comme
+<B>M</B>
+
+pour méga-octets. (Nouveauté dans fileutils-4.0).
+<DT><B>-i, --inode</B>
+
+<DD>
+Afficher le numéro d'index (i-noeud) de chaque fichier à gauche de son nom.
+Ce numéro identifie un fichier de manière unique au sein d'un
+système de fichiers donné.
+<DT><B>-k, --kilobytes</B>
+
+<DD>
+Si la taille des fichiers est affichée, la mesurer en kilo-octets.
+<DT><B>-l, --format=long, --format=verbose</B>
+
+<DD>
+En plus du nom, afficher le type du fichier, les permissions d'accès,
+le nombre de liens physiques, le nom du propriétaire et du groupe, la
+taille en octets, et l'horodatage (de la dernière modification, sauf si
+une autre date est réclamée).
+Pour les fichiers vieux de plus de 6 mois, ou en avance sur la date de plus
+d'une heure, l'horodatage contient l'année à la place de l'heure.
+<P>
+Pour chaque répertoire indiqué, les fichiers sont précédés d'une
+ligne `total
+<I>nb_blocs</I>',
+
+ou <I>nb_blocs</I> est l'espace disque utilisé par l'ensemble des fichiers
+du répertoire. Par défaut on utilise des blocs de 1024 octets. Si la variable
+d'environnement
+<B>POSIXLY_CORRECT</B>
+
+est configurée, on utilise des blocs de 512 octets (sauf si l'option
+<B>-k</B>
+
+est fournie). Le calcul de <I>nb_blocs</I> se fait en comptant séparement
+chaque lien physique. On peut trouver cela dommage.
+<P>
+Les autorisations d'accès listées sont similaires aux spécifications de modes,
+mais <B>ls</B> regroupe plusieurs bits dans le troisième caractère de chaque
+jeu de permissions.
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>s</B>
+
+<DD>
+si le bit setuid ou setgid et le bit d'exécution correspondant sont tous
+deux valides.
+<DT><B>S</B>
+
+<DD>
+si le bit setuid ou setgid est actif mais le bit d'exécution correspondant
+n'est pas configuré.
+<DT><B>t</B>
+
+<DD>
+Si les bits `Sticky' et `Exécution pas les autres' sont actifs.
+<DT><B>T</B>
+
+<DD>
+Si le bit `Sticky' est actif mais pas le bit `Exécution par les autres'.
+<DT><B>x</B>
+
+<DD>
+Si le bit d'exécution est actif mais aucun de ceux cités ci-dessus.
+<DT><B>-</B>
+
+<DD>
+Sinon.
+</DL>
+</DL>
+
+<DT><B>-m, --format=commas</B>
+
+<DD>
+Afficher sur chaque ligne autant de fichiers que possible, séparés par
+des virgules.
+<DT><B>-n, --numeric-uid-gid</B>
+
+<DD>
+Afficher les UID et GID numériques plutôt que les noms.
+<DT><B>-o</B>
+
+<DD>
+Produire un listing de répertoire sous forme longue mais sans les informations
+de groupe. C'est équivalent à
+<B>--format=long --no-group</B>.
+
+Cette option sert à assurer la compatibilité avec d'autres versions de
+<B>ls</B>.
+
+<DT><B>-p, --file-type, --indicator-style=file-type</B>
+
+<DD>
+Ajouter un caractère à chaque nom de fichier pour indiquer son type. Cette option est identique à
+<B>-F</B>
+
+sauf que les exécutables ne sont pas marqués. En fait, la version fileutils-4.0 traite l'option
+--file-	ype comme --classify.
+<DT><B>-q, --hide-control-chars</B>
+
+<DD>
+Afficher des points d'interrogation à la place des caractères non-imprimables
+dans les noms de fichiers. C'est le comportement par défaut.
+<DT><B>-r, --reverse</B>
+
+<DD>
+Inverser le tri du contenu des répertoires.
+<DT><B>-s, --size</B>
+
+<DD>
+Afficher la taille de chaque fichier, mesurée en bloc de 1 Ko, à gauche
+du nom. Si la variable d'environnement POSIXLY_CORRECT est configurée,
+la taille est mesurée en blocs de 512 octets (sauf si l'option
+<B>-k</B>
+
+est fournie).
+<DT><B>-t, --sort=time</B>
+
+<DD>
+Trier le contenu des répertoires en fonction de la date et non
+pas en ordre alphabétique. Les fichiers les plus récents sont
+présentés en premier.
+<DT><B>-u, --time=atime, --time=access, --time=use</B>
+
+<DD>
+Trier le contenu des répertoires en fonction de la date de dernier
+accès au fichier plutôt que selon la date de modification. Si le
+format d'affichage est large, c'est la date de dernier accès
+qui est affichée.
+<DT><B>-v</B>
+
+<DD>
+Trier le contenu des répertoires en fonction de la version des fichiers. Ceci prend en compte
+le fait que les noms de fichiers utilisent fréquemment des indices ou des numéros de version. Les
+fonctions de tri standards ne fournissent pas en général l'ordre attendu car les comparaisons ont
+lieu caractère par caractère. Le tri de version gère ce problème, et est particulièrement utile
+lorsque l'on parcourt des répertoires contenant de nombreux indices ou numéros de version dans les
+noms de fichier. Par exemple :
+<PRE>
+     $ ls -1            $ ls -1v
+     foo.zml-1.gz       foo.zml-1.gz
+     foo.zml-100.gz     foo.zml-12.gz
+     foo.zml-12.gz      foo.zml-25.gz
+     foo.zml-25.gz      foo.zml-100.gz
+</PRE>
+
+Remarquez que les parties numériques commençant par des zéros sont considérées comme
+des décimales :
+<PRE>
+     $ ls -1            $ ls -1v
+     abc-1.007.tgz      abc-1.007.tgz
+     abc-1.012b.tgz     abc-1.01a.tgz
+     abc-1.01a.tgz      abc-1.012b.tgz
+</PRE>
+
+(Ceci est une nouveauté des fileutils-4.0).
+<DT><B>-w, --width cols</B>
+
+<DD>
+Supposer que l'écran dispose de
+<I>cols</I>
+
+colonnes en largeur. La valeur par défaut est réclamée si possible
+au gestionnaire de terminal. Sinon la variable d'environnement
+<B>COLUMNS</B>
+
+est utilisée si elle est positionnée. Sinon, la valeur par
+défaut est 80.
+<DT><B>-x, --format=across, --format=horizontal</B>
+
+<DD>
+Présenter les fichiers en colonnes, triés horizontalement.
+<DT><B>-A, --almost-all</B>
+
+<DD>
+Afficher tous les fichiers du répertoire sauf `.' et `..'.
+<DT><B>-B, --ignore-backups</B>
+
+<DD>
+Ne pas afficher les fichiers se terminant par `~', à moins qu'ils
+ne soient mentionnés sur la ligne de commande.
+<DT><B>-C, --format=vertical</B>
+
+<DD>
+Présenter les fichiers en colonnes, triés verticalement.
+<DT><B>-D, --dired</B>
+
+<DD>
+Avec le format long
+<B>-l</B>,
+
+imprimer une ligne supplémentaire après les données principales:
+<BR>
+
+<B>//DIRED//</B>
+
+<I>DEBUT_1 FIN_1 DEBUT_2 FIN_2 ...</I>
+
+<BR>
+
+<P>
+Les valeurs
+<I>DEBUT_n</I> et <I>FIN_n</I>
+
+sont des entiers non-signés qui enregistrent la position en octets 
+de chaque noms de fichier dans la sortie. Ceci permet à Emacs de
+trouver facilement les noms de fichiers, même ceux qui contiennent
+des caractères inhabituels comme espace ou retour-chariot.
+<P>
+Si les répertoires sont listés de manière récursive
+<B>-R</B>,
+
+une ligne similaire est affichée après chaque sous-répertoires :
+<BR>
+
+<B>//SUBDIRED//</B>
+
+<I>DEBUT_1 FIN_1 ...</I>
+
+<DT><B>-F, --classify</B>
+
+<DD>
+Ajouter un caractère à chaque nom de fichier pour indiquer son type.
+les fichiers réguliers exécutables sont suivis d'un `*'. Les répertoires
+sont suivis de `/', les liens symboliques d'un `@', les FIFOs d'un `|'.
+Les fichiers réguliers non-exécutables ne sont suivis d'aucun caractère.
+<DT><B>-G, --no-group</B>
+
+<DD>
+Ne pas afficher les informations de groupe dans le format large.
+<DT><B>-H, --si</B>
+
+<DD>
+Fonctionne comme
+<B>-h</B>,
+
+mais en utilisant les unités du Système International (avec des puissances
+1000 et pas de 1024). Ainsi M correspond à 1000000 à la place de 1048576.
+Ceci est une nouveauté des fileutils-4.0
+<DT><B>-I, --ignore motif</B>
+
+<DD>
+Ne pas afficher les fichiers dont le nom correspond au
+<I>motif</I>
+
+(suivant l'interprétation du shell), à moins qu'ils ne soient explicitement mentionnés
+sur la ligne de commande. Comme avec le shell, les noms de fichiers commençant par un
+point `.' ne sont pas supposés correspondre avec un
+<I>motif</I>
+
+commençant par un caractère générique. Pour les root-kits élémentaires : ajoutez une
+ligne LS_OPTIONS=&quot;$LS_OPTIONS -I mes_trucs&quot; dans /etc/profile et compagnie pour cacher vos répertoires.
+<DT><B>-L, --dereference</B>
+
+<DD>
+Afficher les informations concernant les fichiers pointés par les
+liens symboliques et non pas celles concernant les liens eux-mêmes.
+<DT><B>-N, --literal</B>
+
+<DD>
+Afficher les noms de fichiers sans modification.
+<DT><B>-Q, --quote-name</B>
+
+<DD>
+Encadrer les noms de fichiers avec des guillemets, et citer les
+caractères non-imprimables par des séquences semblables à celles
+utilisées en C.
+<DT><B>-R, --recursive</B>
+
+<DD>
+Afficher récursivement le contenu des sous-répertoires.
+<DT><B>-S, --sort=size</B>
+
+<DD>
+Trier les répertoires en fonction de la taille de fichier et non pas
+en ordre alphabétique. Les fichiers les plus gros sont affichés en
+premier.
+<DT><B>-T, --tabsize cols</B>
+
+<DD>
+Supposer que les tabulations sont espacées de
+<I>cols</I>
+
+colonnes. La valeur par défaut est 8, mais elles peut être modifiée par
+la variable d'environnement TABSIZE lorsque la variable POSIXLY_CORRECT n'est
+pas validée.
+<B>ls</B>
+
+utilise des tabulations pour accélérer l'affichage, mais si 
+<I>cols</I>
+
+vaut zéro, aucune tabulation ne sera employée.
+<DT><B>-U, --sort=none</B>
+
+<DD>
+Ne pas trier le contenu des répertoires. Les présenter dans l'ordre
+des fichiers sur le disque. La différence entre
+<B>-U</B> et <B>-f</B>
+
+est que le premier ne modifie pas d'options. Ceci sert surtout lorsqu'on liste
+de gros répertoires, car le tri sera notablement plus rapide.
+<DT><B>-X, --sort=extension</B>
+
+<DD>
+Trier le contenu des répertoires en fonction de l'extension du nom de fichier
+(les caractères après le dernier `.'). Les fichiers sans extension sont affichés en
+premier.
+<DT><B>--block-size=</B><I>nombre</I>
+
+<DD>
+Afficher les tailles de fichiers en blocs ayant le
+<I>nombre</I>
+
+indiqué d'octets.
+(Nouveauté de fileutils-4.0).
+<DT><B>--color[=</B><I>manière</I><B>]</B>
+
+<DD>
+Spécifie comment utiliser les couleurs pour distinguer les types de fichiers.
+Les couleurs sont définie en utilisant la variable d'environnement LS_COLORS.
+Pour avoir des précisions sur la configuration de cette variable, voir
+<B><A HREF="/cgi-bin/man/man2html?1+dircolors">dircolors</A></B>(1).
+
+La
+<I>manière</I>,
+
+si elle est indiquée, peut prendre l'une des valeurs suivantes :
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>none</B>
+
+<DD>
+Ne pas utiliser de couleurs. C'est le comportement par défaut.
+<DT><B>auto</B>
+
+<DD>
+N'utiliser de couleurs que si la sortie standard est un terminal.
+<DT><B>always</B>
+
+<DD>
+Toujours utiliser des couleurs. Indiquer seulement
+<B>--color</B>
+
+sans indiquer de
+<I>manière</I>
+
+est équivalent à
+<B>--color=always</B>.
+
+</DL>
+</DL>
+
+<DT><B>--full-time</B>
+
+<DD>
+Afficher les temps de manière complète, sans utiliser les heuristiques
+habituelles d'abréviation. Le format est celui par défaut de
+<B><A HREF="/cgi-bin/man/man2html?1+date">date</A></B>(1).
+
+On ne peut pas le modifier, mais on peut au besoin l'extraire avec
+<B><A HREF="/cgi-bin/man/man2html?1+cut">cut</A></B>(1)
+
+et de passer le résultat à `date -d'.
+<P>
+Ceci est surtout utile car l'affichage contient les secondes (les systèmes
+de fichiers Unix utilisent un horodatage à la seconde la plus proche, aussi
+vous disposez ici de toutes les informations existantes). Par exemple
+cela peut servir à corriger un Makefile qui ne régénère pas correctement
+les fichiers.
+<DT><B>--quoting-style=</B><I>style</I>
+
+<DD>
+Utiliser le
+<I>style</I>
+
+indiqué pour présenter les noms de fichiers. Le
+<I>style </I>
+
+peut être :
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>literal</B>
+
+<DD>
+Afficher les noms tels quels. C'est le comportement par défaut de
+<B>ls</B>.
+
+<DT><B>shell</B>
+
+<DD>
+Protéger les noms avec des apostrophes s'ils contiennent des caractères
+spéciaux ambigus pour le shell.
+<DT><B>shell-always</B>
+
+<DD>
+Protéger les noms avec des apostrophes même s'ils n'ont a priori pas
+besoin de protection.
+<DT><B>c</B>
+
+<DD>
+Encadrer les noms avec des guillemets, comme des chaînes pour le langage C.
+C'est équivalent à l'option
+<B>-Q</B>.
+
+<DT><B>escape</B>
+
+<DD>
+Protéger comme le style
+<I>c</I>
+
+en évitant les guillemets. Ceci est équivalent à l'option
+<B>-b</B>.
+
+
+</DL>
+<P>
+
+Une valeur par défaut peut être indiquée dans la variable d'environnement
+QUOTING_STYLE (Voir le paragraphe
+<B>ENVIRONNEMENT</B>
+
+plus bas).
+</DL>
+
+<DT><B>--show-control-chars</B>
+
+<DD>
+Afficher les caractère non-graphiques tels quels dans les noms de fichiers. C'est
+le comportement par défaut, sauf si la sortie standard est un terminal et si le
+programme invoqué est
+<B>ls</B>.
+
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>OPTIONS STANDARDS GNU</H2>
+
+<DL COMPACT>
+<DT><B>--help</B>
+
+<DD>
+Afficher un message d'aide sur la sortie standard, et se terminer normalement.
+<DT><B>--version</B>
+
+<DD>
+Afficher un numéro de version sur la sortie standard, et se terminer normalement.
+<DT><B>--</B>
+
+<DD>
+Terminer la liste des options.
+<P>
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+La variable d'environnement POSIXLY_CORRECT détermine le choix des unités.
+Si elle n'est pas configurée, alors la variable TABSIZE détermine le nombre
+de caractères par saut de tabulation.
+La variable COLUMNS (lorsqu'elle contient un entier décimal) déterminer le
+nombre de colonnes pour la largeur de sortie (option -C).
+Les noms de fichiers ne doivent pas être tronqués pour tenir dans une sortie
+multi-colonnes.
+<P>
+
+Les variables LANG, LC_ALL, LC_COLLATE, LC_CTYPE, LC_MESSAGES et LC_TIME ont
+leurs significations habituelles.
+La variable TZ indique le fuseau horaire pour les chaînes de caractères
+représentant des horodatages.
+La variable LS_COLORS est utilisée pour préciser les couleurs utilisées.
+La variable LS_OPTIONS contient les options par défaut.
+
+<P>
+
+La variable QUOTING_STYLE indique le comportement par défaut correspondant à
+l'option
+<B>--quoting-style</B>.
+
+Par défaut elle prend actuellement la valeur
+<B>literal</B>,
+
+mais les auteurs préviennent que cela peut basculer vers la valeur
+<B>shell</B>
+
+dans des versions à venir.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Sur les systèmes BSD, l'option
+<B>-s</B>
+
+affiche des tailles correspondant à la moitié de la taille réelle pour
+les fichiers situés sur un système HP-UX monté par NFS.
+Sur les systèmes HP-UX, les tailles sont doublées pour les fichiers
+monté par NFS depuis un système BSD.
+Ceci est dû à un défaut d'HP-UX, qui affecte également la version
+HP-UX de la commande
+<B>ls</B>.
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX 1003.2
+<A NAME="lbAL">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+dircolors">dircolors</A></B>(1)
+
+<A NAME="lbAM">&nbsp;</A>
+<H2>NOTES</H2>
+
+Cette page documente la version de
+<B>ls</B>
+
+du paquetage fileutils-4.0. D'autres versions peuvent diverger légèrement.
+<BR>&nbsp;
+<A NAME="lbAN">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS POSIX</A><DD>
+<DT><A HREF="#lbAF">PARTICULARITÉS GNU</A><DD>
+<DT><A HREF="#lbAG">OPTIONS GNU</A><DD>
+<DT><A HREF="#lbAH">OPTIONS STANDARDS GNU</A><DD>
+<DT><A HREF="#lbAI">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAJ">BOGUES</A><DD>
+<DT><A HREF="#lbAK">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAL">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAM">NOTES</A><DD>
+<DT><A HREF="#lbAN">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:43 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,104 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of INITGROUPS</TITLE>
+</HEAD><BODY>
+<H1>INITGROUPS</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+initgroups - Initialiser la liste de groupes supplémentaires.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/grp.h">grp.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<B>int initgroups (const char *</B><I>user</I><B>, gid_t </B><I>group</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>initgroups()</B> initialise la liste des groupes supplémentaires
+en recherchant dans la base de données <I>/etc/group</I> tous les groupes dont
+<I>user</I> est membre.  Le groupe supplémentaire <I>group</I> est également
+ajouté à la liste.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>initgroups()</B> renvoie 0 si elle réussit, ou -1 si elle
+échoue, auquel cas <I>errno</I> contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+Le processus appelant n'a pas les privilèges adéquats.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour allouer la structure d'information de groupe.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<PRE>
+<I>/etc/group</I>  Base de données des groupes.
+</PRE>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3, BSD 4.3
+<A NAME="lbAI">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le prototype de
+<B>initgroups</B>
+
+n'est uniquement disponible que si la constante
+<B>_BSD_SOURCE</B>
+
+est définie (soit explicitement, soit implicitement en ne définissant pas
+_POSIX_SOURCE ou en compilant avec l'option -ansi). 
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+getgroups">getgroups</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setgroups">setgroups</A></B>(2)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">NOTES</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:24 GMT, February 11, 2014
+</BODY>
+</HTML>

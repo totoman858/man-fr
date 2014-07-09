@@ -1,0 +1,151 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DOCBOOK2TEXI-SPEC.PL</TITLE>
+</HEAD><BODY>
+<H1>DOCBOOK2TEXI-SPEC.PL</H1>
+Section:  (1)<BR>Updated: 11 February 2004<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+docbook2texi-spec.pl - convertit des «&nbsp;Book&nbsp;» DocBook vers des documents Texinfo
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<B>sgmlspl</B> <B>docbook2man-spec.pl</B>
+<P>
+<P>
+<B>nsgmls</B> [ <B></B><I>document_sgml</I><B></B> ]<B>| sgmlspl</B> <B>docbook2texi-spec.pl</B> [ <B></B><I>basename</I><B></B> ]
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+<B>docbook2texi</B> est un fichier de spécifications sgmlspl qui produit
+des documents GNU Texinfo à partir de documents DocBook.
+<P>
+
+Le programme lit les données «&nbsp;ESIS&nbsp;» produit par nsgmls (ou tout autre analyseur
+syntaxique SGML) à partir de l'entrée standard.  Actuellement l'élément de
+document doit être «&nbsp;Book&nbsp;», autrement le résultat est indéfini.
+<P>
+
+Le document Texinfo converti résultant est écrit sur la sortie standard.
+<P>
+
+Le fichier <I>basename.refs</I> sera également créé, il contient tous les
+n½uds du document et leurs n½uds «&nbsp;enfants&nbsp;» immédiats.  Comme le traitement
+des n½uds nécessitent toujours des références en aval, <B>docbook2texi</B>
+doit être invoqué deux fois sur chacun des documents&nbsp;: la première fois pour
+construire les références, et la seconde pour générer effectivement un document
+valide.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>PRÉ-REQUIS</H2>
+
+Le paquetage SGMLSpm du CPAN.  Ce paquetage inclut le script sgmlspl qui est
+également nécessaire.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>LIMITATIONS</H2>
+
+<P>
+
+Tester <B>docbook2man</B> sur des fichiers qui ne sont pas au format DocBook
+ou SGML provoque un comportement indéfini. :-)
+<P>
+
+Ce programme est un script Perl lent et «&nbsp;vite fait, mal fait&nbsp;».
+<P>
+
+Ce programme ne prétend pas accepter tous les marquages possibles de
+DocBook, et peut produire des sorties erronées, dans certains cas, avec
+le marquage supporté.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>À FAIRE</H2>
+
+<DL COMPACT>
+<DT>&bull;<DD>
+Quel enfer pour représenter la barre oblique inverse «&nbsp;\&nbsp;» dans Texinfo!!@?
+J'ai essayé «&nbsp;\\&nbsp;» mais TeX s'en plaint.
+<DT>&bull;<DD>
+Corriger les plantages sur les documents de test.
+<DT>&bull;<DD>
+Ajouter une nouvelle manipulation d'élément et corriger les manipulations
+existantes. Être solide.
+<DT>&bull;<DD>
+Le rendre plus rapide. Je pense que la plupart des problèmes de rapidité
+jusqu'ici sont dus à l'analyse syntaxique d'ESIS. Réécrire <I>SGMLS.pm</I>
+en C et/ou récupérer directement l'entrée à partir de <B>SP</B>.
+<DT>&bull;<DD>
+Il y a des dépendances sur des éléments qui surviennent alors que ceux-ci
+sont en fait optionnels (en accord avec la DTD). Nous devons corriger ceci
+(de préférence) ou en faire éminemment état dans les exigences.
+<DT>&bull;<DD>
+Permettre d'autres éléments de document plus courants.
+<DT>&bull;<DD>
+Séparer le référencement des n½uds dans un script à part. Non seulement cela
+le rendrait plus rapide/facile à maintenir car il serait séparé du code
+principal, mais également je voudrais le faire évoluer vers un générateur
+automatique de table des matières DocBook.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+<P>
+<P>
+
+Copyright (C) 1998-1999 Steve Cheng &lt;<A HREF="mailto:steve@ggi-project.org">steve@ggi-project.org</A>&gt;
+<P>
+
+Ce programme est libre, vous pouvez le redistribuer et/ou le modifier selon
+les termes de la Licence Publique Générale GNU telle que publiée par la
+Free Software Foundation; soit la version 2 de cette licence, soit (à vous
+de voir...) toute autre version ultérieure.
+<P>
+
+Vous devez avoir reçu une copie de la Licence Publique Générale GNU avec ce
+programme; voir le fichier <I>COPYING</I>. Si ce n'est pas le cas, écrivez
+à la Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal AT univ-montp2 DOT fr&gt; 12 février 2003 et révisée le
+19 novembre 2004.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=en&nbsp;man&nbsp;1&nbsp;docbook2texi-spec.pl</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">PRÉ-REQUIS</A><DD>
+<DT><A HREF="#lbAF">LIMITATIONS</A><DD>
+<DT><A HREF="#lbAG">À FAIRE</A><DD>
+<DT><A HREF="#lbAH">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:41 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,323 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FOPEN</TITLE>
+</HEAD><BODY>
+<H1>FOPEN</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fopen, fdopen, freopen - Fonctions d'ouverture de flux.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<P>
+<B>FILE *fopen (const char *</B><I>path</I><B>, const char *</B><I>mode</I><B>);</B>
+
+<BR>
+
+<B>FILE *fdopen (int </B><I>fildes</I><B>, const char *</B><I>mode</I><B>);</B>
+
+<BR>
+
+<B>FILE *freopen (const char *</B><I>path</I><B>, const char *</B><I>mode</I><B>, FILE *</B><I>stream</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>fopen</B>
+
+ouvre le fichier dont le nom est contenu dans la chaine pointée par
+<I>path</I>
+
+et lui associe un flux.
+<P>
+
+L'argument
+<I>mode</I>
+
+pointe vers une chaîne commençant par l'une des séquences suivantes
+(d'autres caractères peuvent suivre la séquence) :
+<DL COMPACT>
+<DT><B>r</B>
+
+<DD>
+Ouvre le fichier en lecture. Le pointeur de flux est placé au début du
+fichier.
+<DT><B>r+</B>
+
+<DD>
+Ouvre le fichier en lecture et écriture. Le pointeur de flux est placé au début du
+fichier.
+<DT><B>w</B>
+
+<DD>
+Ouvre le fichier en écriture. Le fichier est créé s'il n'existait pas. 
+S'il existait déjà, sa longueur est ramenée à 0.
+Le pointeur de flux est placé au début du fichier.
+<DT><B>w+</B>
+
+<DD>
+Ouvre le fichier en lecture et écriture. Le fichier est créé s'il n'existait pas.
+S'il existait deja, sa longueur est ramenée à 0.
+Le pointeur de flux est placé au début du fichier.
+<DT><B>a</B>
+
+<DD>
+Ouvre le fichier en ajout (écriture à la fin du fichier). Le fichier est créé s'il n'existait pas. Le pointeur
+de flux est placé à la fin du fichier.
+<DT><B>a+</B>
+
+<DD>
+Ouvre le fichier en lecture et ajout (écriture en fin de fichier). 
+Le fichier est créé s'il n'existait pas. Le pointeur
+de flux est placé à la fin du fichier.
+</DL>
+<P>
+
+La chaîne
+<I>mode</I>
+
+peut également inclure la lettre ``b'' comme 3ème caractere, ou même entre
+les deux caractères d'une des séquences à 2 lettres vues ci-dessus.
+Ce mode sert uniquement à assurer la compatibilité avec ANSI X3.159-1989
+(``ANSI C'') et n'a aucun effet. Le ``b'' est ignoré sur tous les systèmes
+compatibles POSIX, y compris Linux. (D'autres systèmes peuvent traiter les
+fichiers de texte et les fichiers binaires différement, et l'ajout du ``b''
+peut être une bonne idée si vous faites des entrées-sorties binaires et que
+votre programme risque d'être porté sur un environnement non-Unix).
+<P>
+
+Tout fichier créé aura le mode
+<B>S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH</B>
+
+(0666), qui sera ensuite modifié par la valeur d'umask du processus. Voir
+<B><A HREF="/cgi-bin/man/man2html?2+umask">umask</A></B>(2).
+
+<P>
+
+Les lectures et les écritures peuvent être mélangées sur les flux en lecture
+et écriture, dans un ordre quelconque, et sans besoin de positionnement entre
+les entrées et les sorties, à moins qu'une lecture atteigne la fin du fichier.
+(Sinon sur certains systèmes la lecture peut renvoyer les données provenant
+d'une écriture autre que la dernière).
+Une bonne habitude consiste donc à intercaler un
+<B>fseek</B>
+
+ou
+<B>fgetpos</B>
+
+entre les lectures et les écritures sur le même flux. Ces opérations peuvent
+être visiblement sans effet comme fseek(..., 0L, SEEK_CUR) et ne servant que
+pour l'effet de bord de synchronisation.
+<P>
+
+Ouvrir un fichier en mode ajout (<B>a</B> en premier caractère dans le
+<I>mode</I>)
+
+feront agir toutes les opérations d'écriture à la fin du flux, comme
+si elles étaient précédées par un appel
+<DL COMPACT><DT><DD>
+fseek(stream,0,SEEK_END);
+</DL>
+
+systèmatique.
+<P>
+
+La fonction
+<B>fdopen</B>
+
+associe un flux avec un descripteur de fichier
+<I>fildes</I>
+
+existant.
+Le
+<I>mode</I>
+
+du flux (&quot;r&quot;, &quot;r+&quot;, &quot;w&quot;, &quot;w+&quot;, &quot;a&quot;, ou &quot;a+&quot;) doit être compatible avec
+celui du descripteur de fichier. L'indicateur de position du nouveau flux
+prend la même valeur que celui de
+<I>fildes</I>,
+
+et les indicateurs d'erreur et de fin-de-fichier sont effacés.
+Les modes &quot;w&quot; et &quot;w+&quot; ne tronquent pas le fichier.
+Le descripteur n'est pas dupliqué par <B><A HREF="/cgi-bin/man/man2html?2+dup">dup</A></B>(2), et sera refermé lorsque
+le flux créé par 
+<B>fdopen</B>
+
+sera refermé.
+L'appel de 
+<B>fdopen</B>
+
+sur un objet en mémoire partagée est indéfini.
+<P>
+
+La fonction
+<B>freopen</B>
+
+ouvre le fichier dont le nom se trouve dans la chaîne de caractères pointée par
+<I>path</I>
+
+et lui associe le flux pointé par
+<I>stream</I>.
+
+Le flux original, s'il existe, est fermé. L'argument
+<I>mode</I>
+
+est utilisé exactement comme avec
+<B>fopen</B>.
+
+La principale utilisation de
+<B>freopen</B>
+
+est de modifier le fichier associé avec les flux standards de texte
+<I></I>(<I>stderr</I>, <I>stdin</I>, ou <I>stdout</I>).
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+S'il réussissent intégralement
+<B>fopen</B>,
+
+<B>fdopen</B>
+
+et
+<B>freopen</B>
+
+renvoient un pointeur sur un fichier, de type
+<B>FILE</B>.
+
+Sinon, ils renvoient
+<B>NULL</B>
+
+et
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+Le
+<I>mode</I>
+
+fourni à
+<B>fopen</B>,
+
+<B>fdopen</B>,
+
+ou
+<B>freopen</B>
+
+était invalide.
+</DL>
+<P>
+
+Les fonctions
+<B>fopen</B>,
+
+<B>fdopen</B>
+
+et
+<B>freopen</B>
+
+peuvent également échouer et positionner dans
+<I>errno</I>
+
+une des erreurs susceptibles de se produire avec
+<B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></B>(3).
+
+<P>
+
+La fonction
+<B>fopen</B>
+
+peut aussi échouer et positionner dans
+<I>errno</I>
+
+une des erreurs susceptibles de se produire avec
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2).
+
+<P>
+
+La fonction
+<B>fdopen</B>
+
+peut aussi échouer et positionner dans
+<I>errno</I>
+
+une des erreurs susceptibles de se produire avec
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2).
+
+<P>
+
+La fonction
+<B>freopen</B>
+
+peut aussi échouer et positionner dans
+<I>errno</I>
+
+une des erreurs susceptibles de se produire avec
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fclose">fclose</A></B>(3)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?3+fflush">fflush</A></B>(3).
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Les fonctions
+<B>fopen</B>
+
+et
+<B>freopen</B>
+
+sont conformes à ANSI X3.159-1989 (``ANSI C'').  La fonction
+<B>fdopen</B>
+
+est conforme à IEEE Std1003.1-1988 (``POSIX.1'').
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fclose">fclose</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fileno">fileno</A></B>(3).
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:36 GMT, February 11, 2014
+</BODY>
+</HTML>

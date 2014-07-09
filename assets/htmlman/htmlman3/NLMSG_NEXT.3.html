@@ -1,0 +1,130 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of NETLINK</TITLE>
+</HEAD><BODY>
+<H1>NETLINK</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+netlink - Macros pour netlink.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/asm/types.h">asm/types.h</A>&gt;</B>
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/linux/netlink.h">linux/netlink.h</A>&gt; </B>
+<BR>
+<B>int NLMSG_ALIGN(size_t </B><I>taille</I><B>);</B>
+<BR>
+<B>int NLMSG_LENGTH(size_t </B><I>taille</I><B>);</B>
+<BR>
+<B>int NLMSG_SPACE(size_t </B><I>taille</I><B>);</B>
+<BR>
+<B>void *NLMSG_DATA(struct nlmsghdr *</B><I>nlh</I><B>);</B>
+<BR>
+<B>struct nlmsghdr *NLMSG_NEXT(struct nlmsghdr *</B><I>nlh</I><B>, int </B><I>taille</I><B>);</B>
+<BR>
+<B>int NLMSG_OK(struct nlmsghdr *</B><I>nlh</I><B>, int </B><I>taille</I><B>);</B>
+<BR>
+<B>int NLMSG_PAYLOAD(struct nlmsghdr *</B><I>nlh</I><B>, int </B><I>taille</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>netlink.h </I>
+
+définit plusieurs macros standards pour accéder ou créer un datagramme
+netlink. Elles sont similaires dans leurs principes aux macros définies dans
+<B><A HREF="/cgi-bin/man/man2html?3+cmsg">cmsg</A></B>(3)
+
+pour les données auxiliaires. Le tampon passé à une socket netlink ne devrait
+pas être manipulé autrement que par ces macros.
+<DL COMPACT>
+<DT><DT>NLMSG_ALIGN<DD>
+<DD>
+Arrondit la taille du message netlink pour avoir un alignement correct.
+<DT>NLMSG_LENGTH<DD>
+Prend la taille de message comme argument et retourne la taille alignée à
+stocker dans le champs
+<B>nlmsg_len</B>
+
+de
+<I>nlmsghdr</I>.
+
+<P>
+<DT>NLMSG_SPACE<DD>
+Renvoie le nombre d'octets qu'un message netlink occuperait pour la quantité
+de données indiquée.
+<DT>NLMSG_DATA<DD>
+Retourne un pointeur sur l'objet associé au
+<I>nlmsghdr</I>
+
+passé.
+<DT>
+<DD>
+NLMSG_NEXT
+Récupère la structure
+<I>nlmsghdr</I>
+
+suivante d'un message multiple. L'appellant doit vérifier que le nlmsghdr en cours
+n'a pas l'attribut NLMSG_DONE positionné - cette fonction ne retourne pas NULL à
+la fin. Le paramètre taille est une lvalue contenant la taille restante du
+tampon du message. La macro diminue cette aille der celle de l'en-tête de message.
+<DT>NLMSG_OK<DD>
+Renvoie vrai si le message netlink n'est pas tronqué et prêt à être traité.
+<DT>NLMSG_PAYLOAD<DD>
+Retourne la taille des données associées à
+<I>nlmsghdr</I>.
+
+<P>
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+Il vaut souvent mieux utiliser la bibliothèque netlink via
+<B>libnetlink</B>
+
+que par les interfaces de bas niveau du noyau.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?7+netlink">netlink</A></B>(7)
+
+<P>
+
+et <A HREF="ftp://ftp.inr.ac.ru/ip-routing/iproute2*">ftp://ftp.inr.ac.ru/ip-routing/iproute2*</A>  pour libnetlink.
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 1999
+
+<BR>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:49 GMT, February 11, 2014
+</BODY>
+</HTML>

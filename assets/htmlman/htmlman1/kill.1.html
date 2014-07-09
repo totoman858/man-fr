@@ -1,0 +1,161 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of KILL</TITLE>
+</HEAD><BODY>
+<H1>KILL</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+kill - Envoyer un signal à un processus.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>kill</B> [ -s signal | -p ] <B> [ -a ] [ -- ] </B>pid ...
+
+<BR>
+
+<B>kill -l [ signal ]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La commande
+<B>kill</B>
+
+envoie le signal indiqué aux processus mentionnés. Si on ne précise pas de
+signal, TERM est envoyé. Ce dernier tuera les processus qui ne l'interceptent
+pas. Pour les autres processus, il peut être nécessaire d'envoyer le
+signal KILL (9), qui ne peut pas être
+intercepté.
+<P>
+
+La plupart des shells modernes ont une commande <B>kill</B> intégrée avec un
+fonctionnement à peu près identique. Les options `-a' et `-p', et la possibilité
+de préciser les processus par le nom de commande sont des extensions.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>pid</B>...
+
+<DD>
+Indique la liste des PID auxquels
+<B>kill</B>
+
+doit envoyer un signal.  Chaque
+<I>pid</I>
+
+peut prendre l'une des cinq formes suivantes&nbsp;:
+<P>
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><I>n</I>
+
+<DD>
+avec
+<I>n</I>
+
+supérieur à 0.  Le processus de PID
+<I>n</I>
+
+recevra le signal.
+<DT><B>0</B>
+
+<DD>
+Tous les processus du groupe de processus de l'appelant seront visés.
+<DT><B>-1</B>
+
+<DD>
+Tous les processus avec un PID supérieur à 1 recevront le signal.
+<DT><B>-</B><I>n</I>
+
+<DD>
+où
+<I>n</I>
+
+est supérieur à 1.
+Tous les processus du goupe
+<I>n</I>
+
+sont visés. Quand on utilise un argument de la forme `-n', pour
+indiquer un groupe de processus, il faut soit avoir indiqué un
+signal au préalable, soit faire précéder l'argument de l'option `--'.
+Sinon il sera considéré comme le numéro du signal à envoyer.
+<DT><I>nom_commande</I>
+
+<DD>
+Tous les processus invoqués en utilisant cette commande recevront le signal.
+</DL>
+</DL>
+
+<DT><B>-s</B>
+
+<DD>
+Indique le signal à envoyer. Celui-ci peut être spécifié par son nom
+ou par son numéro.
+<DT><B>-l</B>
+
+<DD>
+Affiche une liste des noms de signaux connus. Ceux-ci sont fournis dans
+<I>/usr/include/linux/signal.h</I>
+
+<DT><B>-a</B>
+
+<DD>
+Ne pas restreindre la conversion nom_commande en PID aux seuls processus
+ayant le même UID que l'appelant.
+<DT><B>-p</B>
+
+<DD>
+Indique que
+<B>kill</B>
+
+doit simplement afficher le PID du processus dont le nom
+est fourni, sans lui envoyer de signal.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+bash">bash</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+tcsh">tcsh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+kill">kill</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigvec">sigvec</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?7+signal">signal</A></B>(7)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Inspiré de BSD 4.4.  La possibilité de traduire le nom du processus
+en PID a été ajoutée par Salvatore Valente &lt;<A HREF="mailto:svalente@mit.edu">svalente@mit.edu</A>&gt;.
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:41 GMT, February 11, 2014
+</BODY>
+</HTML>

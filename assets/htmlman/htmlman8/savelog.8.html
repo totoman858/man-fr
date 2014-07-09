@@ -1,0 +1,231 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SAVELOG</TITLE>
+</HEAD><BODY>
+<H1>SAVELOG</H1>
+Section: Maintenance Commands (8)<BR>Updated: 03 janvier 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+savelog - sauvegarde un fichier journal
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>savelog</B>
+
+[-m mode] [-u utilisateur] [-g groupe] [-t] [-p] [-c cycle] [-l] [-j]
+[-C] [-d] [-l] [-r répertoire] [-n] [-q] fichier...
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le programme
+<B>savelog</B>
+
+sauvegarde un fichier journal et éventuellement, compresse
+les anciens fichiers. Les anciennes versions de 
+<I>fichier</I>
+
+sont renommées&nbsp;:
+<DL COMPACT><DT><DD>
+<P>
+<I>fichier</I>.<I>&lt;numéro&gt;</I><I>&lt;extension_de_compression&gt;</I>
+
+<P>
+</DL>
+
+ou
+<I>&lt;numéro&gt;</I>
+
+est le numéro de version, la version la plus récente portant le numéro 0. Si
+l'option
+<B>-l </B>
+
+n'est pas spécifiée, les versions dont le numéro
+est &gt; 0 sont compressées.
+La version 0 n'est pas compressée car le
+<I>fichier</I>
+
+est peut-être utilisé par un programme. 
+L'argument 
+<I>cycle</I>
+
+indique le nombre de versions à conserver.
+<P>
+Si le fichier n'existe pas et que l'option 
+<B>-t</B>
+
+est utilisée, le fichier est créé.
+<P>
+Les actions suivantes sont effectuées pour les fichiers existants, dont la taille
+est supérieure à zéro&nbsp;:
+<P>
+<DL COMPACT>
+<DT>1)<DD>
+La version change, le fichier de version
+<I>cycle</I>-2
+
+est renommé version
+<I>cycle</I>-1,
+
+la version
+<I>cycle</I>-3
+
+est renommée version
+<I>cycle</I>-2 ,
+
+et ainsi de suite. Finalement, la version 0 est renommée version 1 et la 
+version
+<I>cycle</I>
+
+est supprimée. Même en spécifiant l'option 
+<B>-l</B>,
+
+les fichiers compressés et non 
+compressés sont renommés.
+Les versions manquantes sont ignorées.
+<P>
+<DT>2)<DD>
+Le nouveau
+<I>fichier.1</I>
+
+est compressé sauf si l'option 
+<B>-l</B>
+
+est utilisée. Il est modifié en tenant compte des arguments des options
+<B>-m</B>, <B>-u</B>, et <B>-g</B>.
+
+<P>
+<DT>3)<DD>
+Le fichier principal est renommé 
+<I>fichier.0</I>.
+
+<P>
+<DT>4)<DD>
+Si les options
+<B>-m</B>, <B>-u</B>, <B>-g</B>, <B>-t</B>, ou <B>-p</B>
+
+sont utilisées, alors un 
+<I>fichier</I>
+
+vide est créé en tenant compte des arguments de ces options.
+En utilisant l'option
+<B>-p</B>
+
+, le fichier est créé avec le même utilisateur, groupe et permissions que 
+l'ancien fichier.
+<P>
+<DT>5)<DD>
+Le nouveau
+<I>fichier.0</I>
+
+est modifié en fonction des arguments des options
+<B>-m</B>, <B>-u</B>, et <B>-g</B>.
+
+<P>
+Comme le numéro de version commence à 0, 
+<I>cycle</I>
+
+n'est jamais atteint. La valeur de 
+<I>cycle</I>
+
+doit être supérieure ou égale à 2.
+<P>
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-m mode</B>
+
+<DD>
+Modifie les autorisations d'accès des fichiers journaux (chmod mode).
+<DT><B>-u utilisateur</B>
+
+<DD>
+Attribue les fichiers journaux à utilisateur (chown utilisateur).
+<DT><B>-g groupe</B>
+
+<DD>
+Attribue les fichiers journaux au groupe groupe (chgrp groupe).
+<DT><B>-c cycle</B>
+
+<DD>
+Sauvegarde cycle versions du fichier journal (7 par défaut).
+<DT><B>-t</B>
+
+<DD>
+Si nécessaire, crée le fichier journal.
+<DT><B>-l</B>
+
+<DD>
+Ne compresse pas les fichiers journaux (par défaut, les fichiers sont
+compressés).
+<DT><B>-p</B>
+
+<DD>
+Conserve le propriétaire, le groupe et les permissions du fichier journal.
+<DT><B>-j</B>
+
+<DD>
+Compresse avec bzip2 au lieu de gzip.
+<DT><B>-C</B>
+
+<DD>
+Force la suppression des sauvegardes.
+<DT><B>-d</B>
+
+<DD>
+Utilise la date (YYMMDDhhmmss) au lieu du numéro de version.
+<DT><B>-r</B>
+
+<DD>
+Sauvegarde les fichiers journaux dans le répertoire
+<I>répertoire</I>
+
+au lieu de .
+<DT><B>-n</B>
+
+<DD>
+Ne sauvegarde pas les fichiers vides.
+<DT><B>-q</B>
+
+<DD>
+N'affiche pas de message.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Si un programme est en train d'écrire 
+<I>fichier.0</I>,
+
+et que savelog le renomme
+<I>fichier.1</I>
+
+et le compresse, des données peuvent être perdues.
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Antoine Gémis &lt;<A HREF="mailto:agemis@netuup.com">agemis@netuup.com</A>&gt;.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">BOGUES</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:03 GMT, February 11, 2014
+</BODY>
+</HTML>

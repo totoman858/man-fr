@@ -1,0 +1,168 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of USLEEP</TITLE>
+</HEAD><BODY>
+<H1>USLEEP</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+usleep - Interrompre le programme durant un nombre donné de microsecondes.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+/* version BSD */
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<B>void usleep (unsigned long </B><I>usec</I><B>);</B>
+
+/* SUSv2 version */
+<B>#define _XOPEN_SOURCE 500</B>
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<B>int usleep(unsigned long </B><I>usec</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>usleep()</B> suspend l'exécution du programme appelant durant
+(au moins) <I>usec</I> microsecondes.  La période de sommeil peut être
+allongée par la charge système, par le temps passé à traiter l'appel de
+fonction, ou par la granularité des temporisations système.
+<A NAME="lbAE">&nbsp;</A>
+<H2>RETURN VALUE</H2>
+
+Aucune (BSD). En succès : zéro, en erreur -1 (SUSv2).
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINTR</B>
+
+<DD>
+Sommeil interrompu par un signal.
+<DT><B>EINVAL</B>
+
+<DD>
+<I>usec</I> est plus grand que 1.000.000 (sur les systèmes où cela
+représente une erreurà.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.3.
+La version SUSv2 renvoie un int, et c'est également le prototype de la
+GlibC 2.2.2.
+Seule l'erreur EINVAL est doncumentée par SUSv2.
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le type
+<B>useconds_t</B>
+
+est un entier non-signé capable de contenir des entiers
+dans l'intervalle [0,1000000]. Les programmes gagneront en portabiblité en
+évitant de mentionner ce type explicitement. Utilisez
+<DL COMPACT><DT><DD>
+<PRE>
+
+
+#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;
+...
+        unsigned int usecs;
+...
+        usleep(usecs);
+
+</PRE>
+
+</DL>
+
+Ce type est défini dans
+<I>&lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</I>
+
+inclus par
+<I>&lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</I>
+
+mais la GlibC ne le définit que si _XOPEN_SOURCE a une valeur supérieure ou
+égale à 500, ou si _XOPEN_SOURCE et _XOPEN_SOURCE_EXTENDED sont définies.
+
+<P>
+
+L'interaction entre cette fonction et SIGALRM, ou d'autres fonctions comme
+<I>alarm</I>(),
+
+<I>sleep</I>(),
+
+<I>nanosleep</I>(),
+
+<I>setitimer</I>(),
+
+<I>timer_create</I>(),
+
+<I>timer_delete</I>(),
+
+<I>timer_getoverrun</I>(),
+
+<I>timer_gettime</I>(),
+
+<I>timer_settime</I>(),
+
+<I>ualarm</I>()
+
+est indéfinie.
+<P>
+
+Cette fonction est obsolète. Utilisez
+<B><A HREF="/cgi-bin/man/man2html?2+nanosleep">nanosleep</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+setitimer">setitimer</A></B>(2)
+
+à la place.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+alarm">alarm</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getitimer">getitimer</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+nanosleep">nanosleep</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+select">select</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setitimer">setitimer</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+sleep">sleep</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">RETURN VALUE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:23 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,428 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MOUNT</TITLE>
+</HEAD><BODY>
+<H1>MOUNT</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mount, umount, umount2 - Monter / démonter des systèmes de fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/mount.h">sys/mount.h</A>&gt;</B>
+
+<P>
+<B>int mount(const char *</B><I>source</I><B>, const char * </B><I>cible</I>
+
+<B>, const char * </B><I>filesystemtype</I><B>, unsigned long </B><I>mountflags</I>
+
+<B>, const void * </B><I>data</I><B>);</B>
+
+<P>
+<B>int umount(const char *</B><I>cible</I><B>);</B>
+
+<P>
+<B>int umount2(const char *</B><I>target</I><B>, int </B><I>flags</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>mount</B>
+
+attache le système de fichiers spécifié par 
+<I>source</I>
+
+(qui est généralement un nom de périphérique, mais peut aussi être un répertoire
+ou un objet fictif) au
+répertoire indiqué par
+<I>cible</I>.
+
+<P>
+<B>umount</B> et <B>umount2</B>
+
+suppriment l'attachement du système de fichiers monté sur le répertoire
+<I>cible</I>.
+
+<P>
+Seul le Super-User peut monter ou démonter des systèmes de fichiers.
+Depuis Linux 2.4 un même système de fichiers peut être visible en différents
+points, et plusieurs montages peuvent être empilés au même 
+point.
+<P>
+L'argument
+<I>filesystemtype</I>
+
+prend une des valeurs listées dans
+<I>/proc/filesystems</I>
+
+(par exemple &quot;ext2&quot;, &quot;minix&quot;, &quot;msdos&quot;, &quot;proc&quot;, &quot;nfs&quot;, &quot;iso9660&quot; etc).
+Des types supplémentaires peuvent être disponibles lorsque les modules
+appropriés sont chargés.
+<P>
+L'argument
+<I>mountflags</I>
+
+peut avoir le nombre magique 0xC0ED (<B>MS_MGC_VAL</B>) dans ses 16 bits de poids
+forts (ceci était obligatoire dans les versions antérieures à la 2.4, mais
+ne l'est plus), et certains attributs de montage (définis dans &lt;<A HREF="file:///usr/include/linux/fs.h">linux/fs.h</A>&gt; pour
+libc4 ou libc5 et dans &lt;<A HREF="file:///usr/include/sys/mount.h">sys/mount.h</A>&gt; pour GlibC2)
+comme bits de poids faibles&nbsp;:
+<DL COMPACT>
+<DT><B>MS_BIND </B>
+
+<DD>
+(Depuis Linux 2.4)
+
+Effectuer un montage lié, rendant un fichier ou une arborescence visibles en
+un autre point du système de fichiers.
+Les montages liés peuvent traverses les froontières entre systèmes de fichiers
+et ouvrir une porte dans une prison
+<B><A HREF="/cgi-bin/man/man2html?2+chroot">chroot</A></B>(2).
+
+Les arguments
+<I>filesystemtype</I>, <I>mountflags</I>, et <I>data</I>
+
+sont ignorés.
+
+<DT><B>MS_DIRSYNC</B>
+
+<DD>
+(Depuis Linux 2.5.19.)
+Rendre synchrones les modifications sur les répertoires du système de fichiers.
+(Cette propriété peut-être obtenue pour les répertoires individuels ou
+les sous-arborescences en utilisant
+<B><A HREF="/cgi-bin/man/man2html?8+chattr">chattr</A></B>(8)).
+
+<DT><B>MS_MANDLOCK</B>
+
+<DD>
+Autoriser les verrouillages impératifs sur le système de fichiers.
+(Le verrouillage impératif devra tooutefois être validé fichier par fichier,
+comme décrit dans
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2)).
+
+
+<DT><B>MS_MOVE</B>
+
+<DD>
+Déplace une sous-arborescence.
+<I>source </I>
+
+indique un point de montage existant et
+<I>target </I>
+
+indique son nouvel emplacement.
+Le déplacement est atomique, à aucun moment la sous-arborescence est démontée.
+Les arguments
+<I>filesystemtype</I>, <I>mountflags</I>, et <I>data</I>
+
+sont ignorés.
+<DT><B>MS_NOATIME </B>
+
+<DD>
+Ne pas mettre à jour les dates d'accès pour (tous) les fichiers du
+système de fichiers.
+<DT><B>MS_NODEV</B>
+
+<DD>
+Ne pas autoriser la présence de fichiers spéciaux de périphérique sur le
+système de fichier.
+<DT><B>MS_NODIRATIME</B>
+
+<DD>
+Ne pas mettre à jour les dates d'accès pour les répertoires du système
+de fichiers.
+<DT><B>MS_NOEXEC</B>
+
+<DD>
+Ne pas permettre l'exécution de programme depuis le système de fichiers.
+
+
+
+<DT><B>MS_NOSUID</B>
+
+<DD>
+Ne pas tenir compte des bits Set-UID et Set-GID lors de l'exécution de programmes
+sur le système de fichiers.
+
+
+<DT><B>MS_RDONLY</B>
+
+<DD>
+Monter le système de fichiers en lecture seule.
+<DT><B>MS_REMOUNT</B>
+
+<DD>
+Reinitialiser un montage ezxistant. Ceci permet de modifier les attributs
+<I>mountflags</I>
+
+et
+<I>data</I>
+
+d'un montage existant sans avoir besoin de démonter et remonter le système
+de fichiers
+<I>source</I>
+
+et
+<I>target</I>
+
+doivent avoir les mêmes valeurs que durant l'appel
+<B>mount</B>()
+
+initial&nbsp;;
+<I>filesystemtype</I>
+
+est ignoré.
+<DT><B>MS_SYNCHRONOUS</B>
+
+<DD>
+Rendre synchrones les écitures sur le système de fichiers (comme si l'option
+<B>O_SYNC</B>
+
+de
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2)
+
+était indiqué à chaque ouverture sur ce système de fichiers).
+</DL>
+<P>
+
+Depuis Linux 2.4, les attributs
+<B>MS_NODEV</B>, <B>MS_NOEXEC</B>, et <B>MS_NOSUID</B>
+
+sont configurables de manière variable sur chaque point de montage.
+<P>
+
+L'argument
+<I>data</I>
+
+est interprété différemment suivant le type de système de fichiers.
+Typiquement, c'est une chaîne d'options comprises par le système de
+fichiers, séparées par des virgules.
+Voir
+<B><A HREF="/cgi-bin/man/man2html?8+mount">mount</A></B>(8)
+
+pour des détails sur les options disponibles pour chaque type de système.
+<P>
+
+
+
+
+Depuis Linux 2.1.116 l'appel-système
+<B>umount2</B>()
+
+fonctionne comme
+<B>umount</B>(),
+
+mais dispose d'options supplémentaire
+<I>flags</I>
+
+configurant le comportement de l'opération&nbsp;:
+<DL COMPACT>
+<DT><B>MNT_FORCE</B>
+
+<DD>
+Forcer le démontage, même si le système de fichiers est occupé.
+(Depuis 2.1.116. Seulement pour les montages NFS).
+<DT><B>MNT_DETACH</B>
+
+<DD>
+Faire un détachement paresseux&nbsp;: rendre le point de montage invalide pour
+les nouveaux accès, et réaliser le démontage complet lorsque le point
+ne sera plus occupé (Depuis 2.4.11).
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>mount</B>et<B>umount</B>
+
+renvoient 0 s'ils réussissent, ou -1 s'ils échouent, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.  
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Les erreurs détaillées ici sont indépendantes du type de système de fichiers.
+Chaque type de système peut avoir des codes d'erreurs spécifiques, et un
+comportement particulier. Voir les sources du noyau pour plus de details...
+<P>
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+L'utilisateur n'est pas le Super-User
+<DT><B>ENODEV</B>
+
+<DD>
+<I>Filesystemtype</I>
+
+n'est pas configuré dans le noyau
+<DT><B>ENOTBLK</B>
+
+<DD>
+<I>Source</I>
+
+n'est pas un fichier spécial en mode bloc.
+<DT><B>EBUSY</B>
+
+<DD>
+<I>Source</I>
+
+est déjà monté, ou ne peut pas être remonté en lecture seule
+car il y a des fichiers ouverts en écriture, ou ne peut
+pas être monté sur
+<I>cible</I>
+
+car
+<I>cible</I>
+
+est occupé (c'est le répertoire de travail d'un processus, le point de
+montage d'un autre périphérique, des fichiers y sont ouverts, etc...)
+Ou le démontage est impossible car le point est occupé.
+<DT><B>EINVAL</B>
+
+<DD>
+<I>Source</I>
+
+a un superbloc invalide, ou on tente un remontage alors que
+<I>source</I>
+
+n'était pas encore monté sur
+<I>cible</I>.
+
+Ou un démontage est demandé sur
+<I>cible</I>
+
+qui n'est pas un point de montage.
+Ou un déplacement est demandé alors que
+<I>source</I>
+
+n'est pas un point de montage ou est '/'.
+<DT><B>ENOTDIR</B>
+
+<DD>
+Le second argument, ou un préfixe du premier argument n'est
+pas un répertoire.
+<DT><B>EFAULT</B>
+
+<DD>
+L'un des arguments pointe en-dehors de l'espace d'adressage accessible.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour le noyau.
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+Un des arguments est plus long que MAXPATHLEN.
+<DT><B>ENOENT</B>
+
+<DD>
+Un répertoire des arguments n'existe pas ou est un lien symbolique pointant nulle part.
+<DT><B>ELOOP</B>
+
+<DD>
+Trop de liens symboliques rencontrés dans un chemin, ou
+un déplacement a été tenté dans lequel
+<I>cible</I>
+
+est un descendant de
+<I>source</I>.
+
+<DT><B>EACCES</B>
+
+<DD>
+Un élément de chemin d'accès n'est pas consultable,
+<BR>
+
+ou on tente de monter un système de fichier en lecture seule sans
+préciser l'attribut MS_RDONLY,
+<BR>
+
+ou le fichier périphérique 
+<I>Source</I>
+
+est sur un système de fichiers monté avec l'attribut MS_NODEV.
+<DT><B>ENXIO</B>
+
+<DD>
+Le nombre majeur du périphérique
+<I>source</I>
+
+est invalide.
+<DT><B>EMFILE</B>
+
+<DD>
+Table de montage pleine.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Ces fonctions sont spécifiques à Linux et ne doivent pas être
+employées dans des programmes conçus pour être portables.
+<A NAME="lbAH">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+La fonction
+<B>umount</B>
+
+originale était invoquée <I>umount(device)</I> et renvoyait ENOTBLK si
+l'argument était autre chose qu'un périphérique en mode bloc.
+Dans Linux 0.98p4 un appel <I>umount(répertoire)</I> fut ajouté, afin de
+gérer des périphériques anonymes.
+Dans Linux 2.3.99-pre7 l'appel <I>umount(device)</I> fut supprimé, en ne gardant
+que <I>umount(répertoire)</I> (car maintenant les périphériques peuvent être
+montés en plusieurs endroits, et l'indication du périphérique ne suffit plus).
+<P>
+
+L'attribut original MS_SYNC a été renommé MS_SYNCHRONOUS dans Linux 1.1.69
+car un MS_SYNC différent existait dans &lt;<A HREF="file:///usr/include/mman.h">mman.h</A>&gt;.
+<P>
+
+Avant Linux 2.4, une tentative d'exécution d'un programme Set-UID ou Set-GID
+sur un système de fichier monté avec l'attribut
+<B>MS_NOSUID</B>
+
+échouait avec l'erreur
+<B>EPERM</B>.
+
+Depuis Linux 2.4 les bits Set-UID et Set-GID sont juste ignorés silencieusement
+dans ce cas.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+mount">mount</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+umount">umount</A></B>(8)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:56 GMT, February 11, 2014
+</BODY>
+</HTML>

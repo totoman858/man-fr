@@ -1,0 +1,163 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of HOST.CONF</TITLE>
+</HEAD><BODY>
+<H1>HOST.CONF</H1>
+Section: Manuel de l administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+host.conf - Configuration de la résolution de noms.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le fichier
+<I>/etc/host.conf</I>
+
+contient des informations spécifiques pour la configuration de la bibliothèque de résolution de noms.
+Elle doit contenir un mot-clé de configuration par ligne, suivi par l'information
+appropriée. Les mots-clés reconnus sont
+<I>order</I>, <I>trim</I>, <I>multi</I>, <I>nospoof</I> et <I>reorder</I>.
+
+Chaque mot-clé est décrit individuellement ci-dessous.
+<P>
+<DL COMPACT>
+<DT><I>order</I>
+
+<DD>
+Ce mot-clé indique dans quel ordre la résolution des noms d'hôtes doit avoir lieu.
+Il doit être suivi par une ou plusieurs méthodes séparées par des virgules. 
+Ces méthodes sont
+<I>bind</I>, <I>hosts</I> et <I>nis</I>.
+
+<DT><I>trim </I>
+
+<DD>
+Ce mot-clé peut être indiqué à plusieurs reprises. À chaque fois, il doit être suivi 
+par un nom de domaine unique, débutant par un point. Lorsqu'il est actif, la bibliothèque
+resolv+ enlèvera automatiquement ce domaine des noms d'hôtes résolus par le DNS.
+Ceci est prévu pour être employé avec des noms d'hôtes ou de domaines locaux.
+(Note : trim n'affectera pas les noms d'hôtes gérés par NIS ou
+par le fichier <I>hosts</I>. Il faut prendre soin pour chaque nom d'hôte
+se trouvant dans le fichier <I>hosts</I> que la première entrée soit
+complète (fully qualified) ou au contraire limitée au nom d'hôte, suivant les 
+usages de l'installation.)
+<DT><I>multi</I>
+
+<DD>
+Les valeurs valides sont
+<I>on</I> et <I>off</I>.
+
+Si cette option est sur
+<I>on</I>,
+
+la bibliothèque resolv+ renverra toutes les adresses valides pour un hôte
+apparaissant dans le fichier
+<I>/etc/hosts</I>
+
+plutôt que de ne renvoyer
+que la première. Par défaut elle est sur
+<I>off</I>
+
+car cela peut causer des dégradations sensibles des performances sur les
+sites ayant un gros fichier <I>hosts</I>.
+<DT><I>nospoof</I>
+
+<DD>
+Les valeurs valides sont 
+<I>on</I> et <I>off</I>.
+
+Si cette options est sur
+<I>on</I>,
+
+la bibliothèque resolv+ essayera d'empêcher toute falsification des
+noms d'hôtes, pour améliorer la sécurité de
+<B>rlogin</B> et <B>rsh</B>.
+
+Elle fonctionne comme suit : après avoir réalisé une résolution de nom d'hôte, resolv+
+effectuera une demande de nom pour cette adresse. Si les deux noms d'hôtes ne
+correspondent pas, la recherche échouera.
+<DT><I>spoofalert</I>
+
+<DD>
+Si cette options est sur
+<I>on</I>
+
+et si l'option
+<I>nospoof</I>
+
+est aussi active, resolv+ journalisera un message d'erreur avec les fonctionnalités syslog.
+La valeur par défaut est
+<I>off</I>.
+
+<DT><I>reorder</I>
+
+<DD>
+Les valeurs valides sont
+<I>on</I> et <I>off</I>.
+
+Si cette option est sur 
+<I>on</I>,
+
+resolv+ essayera de réordonner les adresses d'hôtes afin que l'adresse locale
+(sur le même sous-réseau) soit présentée en premier lors d'un appel à
+<B><A HREF="/cgi-bin/man/man2html?3+gethostbyname">gethostbyname</A></B>(3).
+
+La remise en ordre est assurée pour toutes les méthodes de recherche. Par défaut
+la valeur est
+<I>off</I>.
+
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/etc/host.conf</I>
+
+<DD>
+Fichier de configuration de la résolution de noms
+<DT><I>/etc/resolv.conf</I>
+
+<DD>
+Fichier de configuration de la résolution de noms
+<DT><I>/etc/hosts</I>
+
+<DD>
+Base de données locale des noms d'hôtes.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+gethostbyname">gethostbyname</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?7+hostname">hostname</A></B>(7),
+
+<B>resolv+</B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+named">named</A></B>(8)
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">FICHIERS</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:54 GMT, February 11, 2014
+</BODY>
+</HTML>

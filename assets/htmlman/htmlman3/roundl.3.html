@@ -1,0 +1,111 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ROUND</TITLE>
+</HEAD><BODY>
+<H1>ROUND</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+round, roundf, roundl -Arrondir à l'entier le plus proche en s'éloignant de zéro.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/math.h">math.h</A>&gt;</B>
+
+<B>double round(double </B><I>x</I><B>);</B>
+<BR>
+<B>float roundf(float </B><I>x</I><B>);</B>
+<BR>
+<B>long double roundl(long double </B><I>x</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ces fonctions arrondissent leur argument à l'entier le plus proche en
+s'éloignant de zéro (sans tenir compte de la direction d'approximation en
+cours), à la différence de l'arrondi vers l'entier pair le plus proche
+comme rint().
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La valeur arrondie. Si <I>x</I> est entier ou infini,
+la valeur renvoyée est <I>x</I> lui-même.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Seules les erreurs EDOM et ERANGE peuvent se produire.
+Si <I>x</I> est NaN, alors la valeur renvoyée est NaN et
+<I>errno</I>
+
+peur contenir EDOM.
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les Spécifications SUSv2 et Posix 1003.1-2001 contiennent un passage sur
+les débordements (qui peuvent remplir
+<I>errno</I>
+
+avec ERANGE ou déclencher une exception). En pratique, aucun débordement
+ne peut se produire sur les machines actuelles, ce qui rend inutile cette
+gestion d'erreur. Plus précisément, le débordement ne peut se produire que
+si la valeur maximale de l'exposant est plus petite que le nombre de de
+bits de la mantisse. Pour les standards 32 bits et 64 bits IEEE-754 la
+valeur maximale de l'exposant est 128 (respectivement 1024) et le nombre
+de bits de la mantisse est 24 (respectivement 53).
+<P>
+
+Pour utiliser les fonctions de la bibliothèque mathématique, il ne faut
+pas oublier d'ajouter l'argument <I>-lm</I> sur la ligne de commande de
+<B><A HREF="/cgi-bin/man/man2html?1+cc">cc</A></B>(1) ou <B><A HREF="/cgi-bin/man/man2html?1+ld">ld</A></B>(1), lors de l'édition des liens.
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+C99.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+ceil">ceil</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+floor">floor</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+lround">lround</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+nearbyint">nearbyint</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+rint">rint</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+trunc">trunc</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2001-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:45 GMT, February 11, 2014
+</BODY>
+</HTML>

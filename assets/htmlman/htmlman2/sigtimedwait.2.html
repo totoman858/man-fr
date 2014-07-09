@@ -1,0 +1,229 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SIGWAITINFO</TITLE>
+</HEAD><BODY>
+<H1>SIGWAITINFO</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+sigwaitinfo, sigtimedwait - Attente synchrone de signaux.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/signal.h">signal.h</A>&gt;</B>
+
+<P>
+<B>int sigwaitinfo(const sigset_t *</B><I>set</I><B>, siginfo_t *</B><I>info</I><B>);</B>
+
+<P>
+<B>int sigtimedwait(const sigset_t *</B><I>set</I><B>, siginfo_t *</B><I>info</I><B>, </B>
+
+<B>const struct timespec </B><I>timeout</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>sigwaitinfo</B>()
+
+suspend l'exécution du processus appelant jusqu'à ce que l'un des signaux
+de l'ensemble
+<I>set</I>
+
+soit reçu. (Si l'un des signaux de l'ensemble
+<I>set</I>
+
+est déjà en attente pour le processus appelant,
+<B>sigwaitinfo</B>()
+
+revient immédiatement avec les informations concernant le signal).
+<P>
+<B>sigwaitinfo</B>()
+
+retire le signal de la liste des signaux en attente pour le processus, 
+et renvoie le numéro du signal en retour de fonction.
+Si l'argument
+<I>info</I>
+
+n'est pas
+<B>NULL</B>,
+
+alors il sera rempli avec une structure du type
+<I>siginfo_t</I>
+
+(voir
+<B><A HREF="/cgi-bin/man/man2html?2+sigaction">sigaction</A></B>(2))
+
+contenant les informations concernant le signal.
+<P>
+
+Les signaux reçus via
+<B>sigwaitinfo</B>()
+
+sont délivrés dans l'ordre habituel, voir
+<B><A HREF="/cgi-bin/man/man2html?7+signal">signal</A></B>(7)
+
+pour plus de détails.
+<P>
+
+<B>sigtimedwait</B>()
+
+opère exactement commee
+<B>sigwaitinfo</B>()
+
+mais elle a un argument supplémentaire,
+<I>timeout</I>,
+
+qui permet de fixer une limite maximale au temps
+d'attente.
+Cet argument est du type&nbsp;:
+<P>
+
+<PRE>
+struct timespec {
+    long    tv_sec;         /* secondes */
+    long    tv_nsec;        /* nanosecondes */
+}
+</PRE>
+
+
+<P>
+Si les deux champs de cette structure sont nuls, 
+<B>sigtimedwait</B>()
+
+revient tout de suite, soit avec des informations sur un signal déjà en
+attente, soit avec une erreur si aucun
+signaux de l'ensemble
+<I>set</I>
+
+n'étaient disponibles.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+S'ils réussissent
+<B>sigwaitinfo</B>()
+
+et
+<B>sigtimedwait</B>()
+
+renvoient un numéro de signal (une valeur supérieure à zéro).
+S'ils échouent, ils renvoient -1, et
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EAGAIN</B>
+
+<DD>
+Aucun signal de l'ensemble
+<I>set</I>
+
+n'a été reçu avant expiration du délai
+<I>timeout</I>
+
+indiqué pour
+<B>sigtimedwait</B>().
+
+<DT><B>EINVAL</B>
+
+<DD>
+<I>timeout</I>
+
+etait invalide.
+<DT><B>EINTR</B>
+
+<DD>
+L'appel a été interrompu par un gestionaire de signal
+(un signal autre que ceux présents dans l'ensemble
+<I>set</I>.)
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+En utilisation habituelle, l'appelant bloque les signaux de l'ensemble
+<I>set</I>
+
+au préalable avec un appel
+<B>sigprocmask</B>()
+
+(afin que la délivrance des signaux ne se produise pas en dehors
+de l'appel
+<B>sigwaitinfo</B>()
+
+ou
+<B>sigtimedwait())</B>
+
+et n'installe pas de gestionnaire pour ces signaux.
+<P>
+
+POSIX ne spécifie as le comportement si une valeur
+<B>NULL</B>
+
+est indiquée pour l'argument
+<I>timeout</I>
+
+de
+<B>sigtimedwait</B>()
+
+permettant par exemple d'avoir le même comportement
+que celui de
+<B>sigwaitinfo</B>(),
+
+ce qui est le cas sous Linux.
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX 1003.1-2001
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+kill">kill</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigaction">sigaction</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+signal">signal</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigpending">sigpending</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigprocmask">sigprocmask</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigqueue">sigqueue</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?7+signal">signal</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?3+sigsetops">sigsetops</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:54 GMT, February 11, 2014
+</BODY>
+</HTML>

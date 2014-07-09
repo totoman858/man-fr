@@ -1,0 +1,259 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETDATE</TITLE>
+</HEAD><BODY>
+<H1>GETDATE</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getdate, getdate_r - Conversion d'une chaîne de caractères en structure tm.
+<BR>
+
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#define _XOPEN_SOURCE</B>
+
+<BR>
+
+<B>#define _XOPEN_SOURCE_EXTENDED</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/time.h">time.h</A>&gt;</B>
+
+<P>
+<B>struct tm *getdate (const char *</B><I>string</I><B>);</B>
+
+<P>
+<B>extern int getdate_err;</B>
+
+<P>
+<B>#define _GNU_SOURCE</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/time.h">time.h</A>&gt;</B>
+
+<P>
+<B>int getdate_r (const char *</B><I>string</I><B>, struct tm *</B><I>res</I><B>);</B>
+
+<BR>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>getdate() </B>
+
+convertit une chaîne de caractères pointée par
+<I>string</I>
+
+en une structure tm qu'elle renvoie.
+Cette structure tm est susceptible d'être allouée de façon statique et d'être
+ainsi écrasée lors du prochain appel.
+<P>
+Contrairement à
+<B><A HREF="/cgi-bin/man/man2html?3+strptime">strptime</A></B>(3),
+
+( qui a un argument 
+<I>format</I>
+
+),
+<B>getdate()</B>
+
+utilise les formats présents dans le fichier 
+dont le chemin d'accès complet est donné par la variable d'environnement
+<B>DATEMSK</B>.
+
+La première ligne du fichier qui peut être mise en correspondance avec la chaîne passée en paramètre d'entrée
+est utilisée pour la conversion.
+<P>
+La correspondance n'est pas sensible à la casse.
+Les espaces superflus, qu'ils soient dans le motif ou dans la chaîne à convertir, sont ignorés.
+<P>
+Les paramètres de conversion qu'un motif peut contenir sont les mêmes que pour
+<B><A HREF="/cgi-bin/man/man2html?3+strptime">strptime</A></B>(3).
+
+Un indicateur de conversion supplémentaire est accepté :
+<DL COMPACT>
+<DT><B>%Z</B>
+
+<DD>
+Nom du fuseau horaire.
+</DL>
+<P>
+
+Lorsque
+<B>%Z</B>
+
+est spécifié, la valeur renvoyée est initialisée à l'heure sous forme structure tm
+correspondant à l'heure courante sous le fuseau horaire indiqué.
+Sinon, elle est initialisée à l'heure sous forme de structure tm correspondant à l'heure locale actuelle.
+<P>
+
+Lorsque seul le jour de la semaine est donné, le jour pris en compte sera le premier jour correspondant à partir d'aujourd'hui inclus.
+<P>
+
+Lorsque seul le mois est spécifié (et pas l'année), le mois pris 
+en compte est le premier mois correspondant à partir du mois courant inclus.
+Si aucun jour n'est indiqué, le premier jour du mois est pris par défaut.
+<P>
+
+Lorsque les heures, minutes et secondes ne sont pas indiquées, l'heure 
+courante (heures, minutes et secondes) est prise par défaut. 
+<P>
+
+Si aucune date n'est indiquée, mais que l'on connaît l'heure, l'heure prise en compte sera la première occurrence de l'heure correspondante à partir de l'heure courante incluse.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+En cas de succès, cette fonction renvoie un pointeur vers une structure
+<B>struct tm</B>.
+
+sinon elle renvoie NULL et positionne la variable globale
+<B>getdate_err</B>.
+
+La modification éventuelle de 
+<I>errno</I>
+
+est indéfinie.
+<B>getdate_err </B>
+
+peut prendre les valeurs suivantes&nbsp;:
+<DL COMPACT>
+<DT><B>1</B>
+
+<DD>
+La variable d'environnement DATEMSK vaut null ou n'est pas définie.
+<DT><B>2</B>
+
+<DD>
+Le fichier patron (template) ne peut être ouvert pour être lu.
+<DT><B>3</B>
+
+<DD>
+Impossible de lire l'état du fichier.
+<DT><B>4</B>
+
+<DD>
+Le fichier patron n'est pas un fichier régulier.
+<DT><B>5</B>
+
+<DD>
+Une erreur est survenue en cours de lecture du fichier patron.
+<DT><B>6</B>
+
+<DD>
+Echec d'allocation mémoire (pas assez de mémoire disponible).
+<DT><B>7</B>
+
+<DD>
+Il n'y a pas de ligne dans le fichier qui puisse être mise en correspondance avec l'entrée.
+<DT><B>8</B>
+
+<DD>
+Paramètres d'entrée invalides.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Puisque 
+<B>getdate() </B>
+
+n'est pas ré-entrante à cause de l'utilisation de
+<B>getdate_err</B>
+
+et du tampon statique utilisé pour stocker le résultat renvoyé, la glibc
+fournit une variante utilisable en contexte multithread. La fonctionnalité 
+est la même. Le résultat est renvoyé dans le tampon pointé par
+<I>res</I>
+
+et, en cas d'erreur, le code de retour est différent de zéro avec 
+les mêmes valeurs que celles données précédemment pour
+<I>getdate_err</I>.
+
+<P>
+
+La spécification POSIX 1003.1-2001 pour
+<B>strptime()</B>
+
+contient des spécifications de conversion utilisant les modificateurs
+<B>%E</B>
+
+ou
+<B>%O</B>
+
+alors que de tels modificateurs ne sont pas indiqués pour
+<B>getdate()</B>.
+
+L'implantation glibc de
+<B>getdate()</B>
+
+utilise
+<B>strptime()</B>
+
+si bien que les deux fonctions supportent exactement les mêmes conversions automatiquement.
+<P>
+
+L'implantation glibc ne supporte pas l'indicateur de conversion :
+<B>%Z</B>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+<DL COMPACT>
+<DT><B>DATEMSK </B>
+
+<DD>
+Fichier contenant les motifs de formatage.
+<DT><B>TZ</B>, <B>LC_TIME</B>
+
+<DD>
+Variables utilisées par <B>strptime()</B>.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ISO 9899, POSIX 1003.1-2001
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+localtime">localtime</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strftime">strftime</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strptime">strptime</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+time">time</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Stéphan Rafin, 2002.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:30 GMT, February 11, 2014
+</BODY>
+</HTML>

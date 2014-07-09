@@ -1,0 +1,172 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CONFSTR</TITLE>
+</HEAD><BODY>
+<H1>CONFSTR</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+confstr - Lire une chaîne de caractères dépendant de la configuration.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#define _POSIX_C_SOURCE 2</B>
+or
+<B>#define _XOPEN_SOURCE</B>
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<B>size_t confstr (int </B><I>name</I><B>, char *</B><I>buf</I><B>, size_t </B><I>len</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>confstr</B>()
+
+fournit la valeur d'une chaîne de caractères dépendante de la configuration.
+<P>
+
+L'argument 
+<I>name</I>
+
+est la variable système réclamée.
+Les variables suivantes sont supportées&nbsp;:
+<DL COMPACT>
+<DT><B>_CS_PATH</B>
+
+<DD>
+Une valeur de la variable
+<B>PATH</B>
+
+indiquant les emplacements ou les
+utilitaires standards POSIX.2 peuvent être trouvés.
+</DL>
+<P>
+
+Si
+<I>buf</I>
+
+n'est pas
+<B>NULL</B>,
+
+et si
+<I>len</I>
+
+est différent de 0, alors
+<B>confstr</B>()
+
+copie la valeur de la chaîne dans le buffer
+<I>buf</I>,
+
+en limitant la longueur à
+<I>len - 1</I>
+
+caractères, terminée par un caractère nul.
+On peut détecter la troncature de la chaîne en comparant le résultat de
+<B>confstr</B>()
+
+avec le paramètre
+<I>len</I>.
+
+<P>
+
+Si
+<I>len</I>
+
+est nulle, et si
+<I>buf</I>
+
+vaut
+<B>NULL</B>,
+
+alors
+<B>confstr ()</B>
+
+renvoie simplement la longueur de la variable système.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Si
+<I>name</I>
+
+ne correspond à aucune variable de configuration valide,
+<B>confstr</B>()
+
+renvoie 0.
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+Le fragment de code ci-dessous détermine le chemin d'accès aux utilitaires
+POSIX.2 :
+<BR>
+
+<PRE>
+
+char *pathbuf; size_t n;
+
+n = confstr(_CS_PATH,NULL,(size_t)0);
+if ((pathbuf = <A HREF="/cgi-bin/man/man2html?n+malloc">malloc</A>(n)) == NULL) abort();
+confstr(_CS_PATH, pathbuf, n);
+</PRE><A NAME="lbAG">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Si la valeur de
+<I>name</I>
+
+est invalide,
+<I>errno</I>
+
+contient
+<B>EINVAL</B>.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+proposition POSIX.2
+<A NAME="lbAI">&nbsp;</A>
+<H2>BOGUES</H2>
+
+POSIX.2 n'est pas encore un standard établi, les informations contenues dans
+cette page de manuel peuvent changer.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+sh">sh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?3+exec">exec</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+system">system</A></B>(3)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">EXEMPLES</A><DD>
+<DT><A HREF="#lbAG">ERREURS</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">BOGUES</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:26 GMT, February 11, 2014
+</BODY>
+</HTML>

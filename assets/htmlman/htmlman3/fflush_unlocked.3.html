@@ -1,0 +1,120 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of UNLOCKED_STDIO</TITLE>
+</HEAD><BODY>
+<H1>UNLOCKED_STDIO</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+*_unlocked - Fonctions stdio non bloquantes.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<B>int getc_unlocked(FILE *</B><I>stream</I><B>);</B>
+<B>int getchar_unlocked(void);</B>
+<B>int putc_unlocked(int </B><I>c</I><B>, FILE *</B><I>stream</I><B>);</B>
+<B>int putchar_unlocked(int </B><I>c</I><B>);</B>
+
+<B>#define _BSD_SOURCE</B> /* or _SVID_SOURCE or _GNU_SOURCE */
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<B>void clearerr_unlocked(FILE *</B><I>stream</I><B>);</B>
+<B>int feof_unlocked(FILE *</B><I>stream</I><B>);</B>
+<B>int ferror_unlocked(FILE *</B><I>stream</I><B>);</B>
+<B>int fileno_unlocked(FILE *</B><I>stream</I><B>);</B>
+<B>int fflush_unlocked(FILE *</B><I>stream</I><B>);</B>
+<B>int fgetc_unlocked(FILE *</B><I>stream</I><B>);</B>
+<B>int fputc_unlocked(int </B><I>c</I><B>, FILE *</B><I>stream</I><B>);</B>
+<B>size_t fread_unlocked(void *</B><I>ptr</I><B>, size_t </B><I>size</I><B>, size_t </B><I>n</I><B>,</B>
+<B>  FILE *</B><I>stream</I><B>);</B>
+<B>size_t fwrite_unlocked(const void *</B><I>ptr</I><B>, size_t </B><I>size</I><B>, size_t </B><I>n</I><B>,</B>
+<B>  FILE *</B><I>stream</I><B>);</B>
+
+<B>#define _GNU_SOURCE</B>
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<B>char *fgets_unlocked(char *</B><I>s</I><B>, int </B><I>n</I><B>, FILE *</B><I>stream</I><B>);</B>
+<B>int fputs_unlocked(const char *</B><I>s</I><B>, FILE *</B><I>stream</I><B>);</B>
+
+<B>#define _GNU_SOURCE</B>
+<B>#include &lt;<A HREF="file:///usr/include/wchar.h">wchar.h</A>&gt;</B>
+
+<B>wint_t getwc_unlocked(FILE *</B><I>stream</I><B>);</B>
+<B>wint_t getwchar_unlocked(void);</B>
+<B>wint_t fgetwc_unlocked(FILE *</B><I>stream</I><B>);</B>
+<B>wint_t fputwc_unlocked(wchar_t </B><I>wc</I><B>, FILE *</B><I>stream</I><B>);</B>
+<B>wint_t putwc_unlocked(wchar_t </B><I>wc</I><B>, FILE *</B><I>stream</I><B>);</B>
+<B>wint_t putwchar_unlocked(wchar_t </B><I>wc</I><B>);</B>
+<B>wchar_t *fgetws_unlocked(wchar_t *</B><I>ws</I><B>, int </B><I>n</I><B>, FILE *</B><I>stream</I><B>);</B>
+<B>int fputws_unlocked(const wchar_t *</B><I>ws</I><B>, FILE *</B><I>stream</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Toutes ces fonctions se comportent de la même façon que leurs homonymes sans
+le suffixe `_unlocked', si ce n'est qu'elles n'utilisent pas de verrouillage
+(elles ne positionnent pas les verrous elles-mêmes, et ne testent pas la
+présence éventuelle de verrous positionnés par les autres)
+et ne sont donc pas adaptées à une contexte multi-threads
+Voir
+<B><A HREF="/cgi-bin/man/man2html?3+flockfile">flockfile</A></B>(3).
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Les quatre fonctions <I>getc_unlocked</I>(), <I>getchar_unlocked</I>(),
+<I>putc_unlocked</I>(), <I>putchar_unlocked</I>() apparaissent dans POSIX.1.
+Les variantes 
+<B>*_unlocked()</B>
+
+non standards sont présentes sur quelques systèmes Unix et sont disponibles 
+dans les versions récentes de la glibc.
+
+
+
+
+
+
+
+
+
+
+
+Elles ne devraient sans doute pas être utilisées.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+flockfile">flockfile</A></B>(3)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Stéphan Rafin, 2002.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:12 GMT, February 11, 2014
+</BODY>
+</HTML>

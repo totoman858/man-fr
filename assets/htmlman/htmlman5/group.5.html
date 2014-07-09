@@ -1,0 +1,97 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GROUP</TITLE>
+</HEAD><BODY>
+<H1>GROUP</H1>
+Section: Manuel de l administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+group - Fichier des groupes d'utilisateurs.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>/etc/group</B> est un fichier ASCII qui définit les groupes
+auxquels appartient chaque utilisateur.
+<P>
+Il y a une ligne par groupe, et chaque ligne a le format :
+<P>
+<DL COMPACT><DT><DD>
+nom_du_groupe:mot_de_passe:GID:liste_utilisateurs
+</DL>
+
+<P>
+Les champs sont les suivants :
+<DL COMPACT>
+<DT>nom_du_groupe<DD>
+Le nom du groupe (!).
+<DT>mot_de_passe<DD>
+Le mot de passe encrypté du groupe. Si ce champ est vide (presque toujours),
+aucun mot de passe n'est nécessaire.
+<DT>GID<DD>
+L'ID numérique du groupe.
+<DT>liste_utilisateurs<DD>
+Tous les noms des membres du groupe, séparés par des virgules.
+<P>
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+<P>
+<PRE>
+$ ls -l /etc/group 
+-rw-r--r--   1 root     root          336 Aug 18 18:19 /etc/group
+$ cat /etc/group
+root::0:root
+bin::1:root,bin,daemon
+daemon::2:root,bin,daemon
+sys::3:root,bin,adm
+adm::4:root,adm,daemon
+tty::5:
+  ...
+ftp::50:
+nobody::99:
+users::500:adr,ast,ccb,chris,fred,jm2
+local::501:adr,ast,jm2
+</PRE>
+
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/etc/group
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+login">login</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+newgrp">newgrp</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?5+passwd">passwd</A></B>(5)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">EXEMPLE</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:55 GMT, February 11, 2014
+</BODY>
+</HTML>

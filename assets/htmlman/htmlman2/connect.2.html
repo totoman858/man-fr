@@ -1,0 +1,278 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CONNECT</TITLE>
+</HEAD><BODY>
+<H1>CONNECT</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+connect - Débuter une connexion sur une socket.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+
+<P>
+<B>int connect(int </B><I>sockfd</I><B>, struct sockaddr *</B><I>serv_addr</I><B>,</B>
+
+<B>socklen_t </B><I>addrlen</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le paramètre
+<I>sockfd</I>
+
+est une socket.
+Si la socket est du type
+<B>SOCK_DGRAM</B>,
+
+alors
+<I>serv_adr</I>
+
+est l'adresse à laquelle les datagrammes seront envoyés par défaut, et
+la seule adresse depuis laquelle ils seront reçus. Si la socket est du type
+<B>SOCK_STREAM</B>
+
+ou
+<B>SOCK_SEQPACKET</B>,
+
+cette fonction tente de se connecter à une autre socket. L'adresse de
+l'autre socket est indiquée par
+<B>serv_addr,</B>
+
+qui doit être une adresse (de longueur
+<I>addrlen</I>)
+
+dans le même domaine que la socket.
+Chaque domaine de communication interprète le paramètre
+<B>serv_addr,</B>
+
+à sa manière.
+<P>
+
+En général, les sockets des protocoles orientés connexion ne réussissent un appel
+<B>connect</B>
+
+qu'une seule fois, alors qu'une socket d'un protocole sans connexion peut appeler
+<B>connect</B>
+
+plusieurs fois pour changer son affectation. Une socket sans connexion
+peut interrompre son affectation en se connectant sur une adresse avec le membre
+<I>sa_family</I>
+
+de la structure
+<B>sockaddr</B>
+
+à la valeur
+<B>AF_UNSPEC</B>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>connect</B>
+
+renvoie 0 s'il réussit, ou -1 s'il échoue, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Voici une liste d'erreurs générales concernant les sockets, il
+peut en exister d'autres spécifiques au domaine employé.
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+Mauvais descripteur.
+<DT><B>EFAULT</B>
+
+<DD>
+La structure d'adresse pointe en dehors de l'espace d'adressage.
+<DT><B>ENOTSOCK</B>
+
+<DD>
+Le descripteur ne correspond pas à une socket.
+<DT><B>EISCONN</B>
+
+<DD>
+La socket est déjà connectée.
+<DT><B>ECONNREFUSED</B>
+
+<DD>
+La connexion est refusée par le serveur.
+<DT><B>ETIMEDOUT</B>
+
+<DD>
+Dépassement du délai maximum pendant la connexion. Le serveur peut être trop
+chargé pour accepter une nouvelle connexion. Remarquez que pour les sockets
+IP, le délai peut être très long si les syncookies sont activés sur le serveur.
+<DT><B>ENETUNREACH</B>
+
+<DD>
+Le réseau est inaccessible.
+<DT><B>EADDRINUSE</B>
+
+<DD>
+L'adresse est déjà utilisée.
+<DT><B>EINPROGRESS</B>
+
+<DD>
+La socket est non-bloquante, et la connexion ne peut pas être établie
+immédiatement. Il est alors possible d'utiliser
+<B><A HREF="/cgi-bin/man/man2html?2+select">select</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+poll">poll</A></B>(2)
+
+pour attendre que la socket soit disponible en écriture. Une fois que
+<B>select</B>
+
+confirme la possibilité d'écrire, utilisez
+<B><A HREF="/cgi-bin/man/man2html?2+getsockopt">getsockopt</A></B>(2)
+
+pour lire l'option 
+<B>SO_ERROR</B>
+
+du niveau 
+<B>SOL_SOCKET</B>
+
+et déterminer si
+<B>connect</B>
+
+s'est terminé avec succès
+(<B>SO_ERROR</B>
+
+vaut zéro) ou en échec
+(<B>SO_ERROR</B>
+
+contient l'un des codes d'erreurs listés ici,
+indiquant le problème).
+<DT><B>EALREADY</B>
+
+<DD>
+La socket est non-bloquante et une tentative de connexion précédente ne
+s'est pas encore terminée.
+<DT><B>EAGAIN</B>
+
+<DD>
+Pas de port local disponible, ou pas assez de place dans les tables de routage. Pour
+<B>PF_INET</B>
+
+voir l'appel sysctl
+<B>net.ipv4.ip_local_port_range</B>
+
+dans
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7)
+
+pour savoir comment augmenter le nombre de ports locaux.
+<DT><B>EAFNOSUPPORT</B>
+
+<DD>
+L'adresse transmise n'appartient pas à la famille indiquée dans
+son champ
+<I>sa_family</I>.
+
+<DT><B>EACCES, EPERM</B>
+
+<DD>
+L'utilisateur a tenté de connecter une adresse broadcast sans avoir activé
+l'attribut broadcast, ou la demande de connexion a échoué à cause des
+règles d'un firewall local.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, 4.4BSD (La fonction
+<B>connect</B>
+
+est apparue en premier dans BSD 4.2).  SVr4 décrit des erreurs
+générales
+<B>EADDRNOTAVAIL</B>,
+
+<B>EINVAL</B>,
+
+<B>EAFNOSUPPORT</B>,
+
+<B>EALREADY</B>,
+
+<B>EINTR</B>,
+
+<B>EPROTOTYPE</B>,
+
+et
+<B>ENOSR</B>.
+
+Il décrit
+également plusieurs causes d'erreurs non présentées ici.
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTE</H2>
+
+Le troisième argument de
+<B>connect</B>
+
+est en fait un int (et c'est ce qu'utilisent BSD 4.*, libc4 et libc5).
+Une certaine confusion POSIX résulte du &quot;socklen_t&quot; actuel. Les propositions
+de standard n'ont pas encore été adoptées, mais glibc2 les suit déjà et
+utilise socklen_t. Pour plus de détails voir
+<B><A HREF="/cgi-bin/man/man2html?2+accept">accept</A></B>(2).
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>BOGUES</H2>
+
+La déconnexion d'une socket en appelant
+<B>connect</B>
+
+avec un adresse de type
+<B>AF_UNSPEC</B>
+
+n'est pas encore implémentée.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+accept">accept</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+bind">bind</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+listen">listen</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getsockname">getsockname</A></B>(2)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTE</A><DD>
+<DT><A HREF="#lbAI">BOGUES</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:03 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,183 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of IO_GETEVENTS</TITLE>
+</HEAD><BODY>
+<H1>IO_GETEVENTS</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+io_getevents - Lire les évenements d'E/S asynchrones terminés.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+
+
+<P>
+#include &lt;<A HREF="file:///usr/include/linux/time.h">linux/time.h</A>&gt;
+<P>
+<P>
+<P>
+#include &lt;<A HREF="file:///usr/include/linux/aio.h">linux/aio.h</A>&gt;
+<P>
+<P>
+<DL COMPACT>
+<DT>
+<DD>long&nbsp;<B>io_getevents</B>&nbsp;(aio_context_t&nbsp;<I>ctx_id</I>, long&nbsp;<I>min_nr</I>, long&nbsp;<I>nr</I>, struct&nbsp;io_event&nbsp;<I>*events</I>, struct&nbsp;timespec&nbsp;<I>*timeout</I>);
+
+
+<P>
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+<P>
+
+<B>io_getevents</B>
+
+essaye de lire au moins
+<I>min_nr</I>
+
+et au plus
+<I>nr</I>
+
+évènements de la liste de terminaison du contexte d'entrées/sorties asynchrones
+<I>ctx_id</I>.
+
+<I>timeout</I>
+
+indique une durée maximale d'attente pour les évènements. S'il est NULL, l'attente
+dure jusqu'à avoir au moins
+<I>min_nr</I>
+
+évènements.
+Notez que
+<I>timeout</I>
+
+est relatif et sera mis à jour si l'opération bloque et qu'il n'est pas NULL.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<P>
+<P>
+
+<B>io_getevents</B>
+
+renvoie le nombre d'évènements lus, zéro s'il y en a moins de
+<I>min_nr</I>
+
+et si le délai
+<I>timeout</I>
+
+a expiré.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<P>
+<DL COMPACT>
+<DT>EINVAL<DD>
+<I>ctx_id</I>
+
+est invalide,
+<I>min_nr</I>
+
+ou
+<I>nr</I>
+
+est incorrect.
+<P>
+<DT>EFAULT<DD>
+<I>events</I>
+
+ou
+<I>timeout</I>
+
+est un pointeur invalide.
+<P>
+<DT>ENOSYS<DD>
+<B>io_getevents</B>
+
+n'est pas implémenté sur cette architecture.
+<P>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<P>
+<P>
+
+<B>io_getevents</B>
+
+est spécifique à Linux et ne doit pas être utilisé dans des programmes
+conçus pour être portables.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+<P>
+<P>
+
+Les appels-systèmes d'entrées/sorties asynchrones sont apparus dans Linux 2.5
+en août 2002.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<P>
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?2+io_setup">io_setup</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+io_cancel">io_cancel</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+io_destroy">io_destroy</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+io_submit">io_submit</A></B>(2)
+
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>NOTES</H2>
+
+<P>
+<P>
+
+Les appels d'E/S asynchrones ont été écrits par Be,jam LaHaise.
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Kent Yoder.
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">NOTES</A><DD>
+<DT><A HREF="#lbAK">AUTEUR</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:51 GMT, February 11, 2014
+</BODY>
+</HTML>

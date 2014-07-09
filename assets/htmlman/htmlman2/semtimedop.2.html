@@ -1,0 +1,609 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SEMOP</TITLE>
+</HEAD><BODY>
+<H1>SEMOP</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+semop, semtimedop - Opérations sur les sémaphores.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/ipc.h">sys/ipc.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/sem.h">sys/sem.h</A>&gt;</B>
+</PRE>
+
+<P>
+<B>int semop (int </B><I>semid</I><B>,</B>
+
+<B>struct sembuf *</B><I>sops</I><B>,</B>
+
+<B>unsigned </B><I>nsops</I><B>);</B>
+
+<P>
+<B>int semtimedop (int </B><I>semid</I><B>,</B>
+
+<B>struct sembuf *</B><I>sops</I><B>,</B>
+
+<B>unsigned </B><I>nsops</I><B>,</B>
+
+<B>struct timespec *</B><I>timeout</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Un sémaphore est représenté par une structure anonyme
+incluant les membres suivants&nbsp;:
+<P>
+
+<PRE>
+unsigned short  semval;   /* valeur du sémaphore   */
+unsigned short  semzcnt;  /* # Attente pour zéro   */
+unsigned short  semncnt;  /* # Attente d'incrément */
+pid_t           sempid;   /* dernier processus agissant */
+
+</PRE>
+
+La fonction
+<B>semop</B>
+
+effectue des opérations sur les membres de l'ensemble de sémaphores identifié par
+<I>semid</I>.
+
+Chacun des
+<I>nsops</I>
+
+éléments dans le tableau pointé par
+<I>sops</I>
+
+indique une opération à effectuer sur un sémaphore 
+en utilisant une structure
+<B>struct sembuf</B>
+
+définie comme suit:
+<P>
+
+<PRE>
+  short sem_num;  /* Numéro du sémaphore (0=premier) */ 
+  short sem_op;   /* Opération sur le sémaphore      */
+  short sem_flg;  /* Options pour l'opération        */
+
+</PRE>
+
+Les options possibles pour
+<B>sem_flg</B>
+
+sont
+<B>IPC_NOWAIT</B>
+
+et
+<B>SEM_UNDO</B>.
+
+Si une opération indique l'option
+<B>SEM_UNDO</B>,
+
+elle sera annulée lorsque le processus se terminera.
+<P>
+
+L'ensemble des opérations contenues dans
+<I>sops</I>
+
+est effectué
+<I>atomiquement</I>.
+
+Les opérations sont toutes réalisées en même temps, et seulement si elle
+peuvent toutes être effectuées.
+Le comportement de l'appel-système si toutes les opérations ne sont pas
+réalisables dépend de la présence de l'attribut
+<B>IPC_NOWAIT</B>
+
+dans les champs
+<I>sem_flg</I>
+
+décrits plus bas.
+<P>
+Chaque opération est effectuée sur le
+<B>sem_num</B>-ième
+
+sémaphore de l'ensemble. Le premier sémaphore est le
+numéro
+<B>0 .</B>
+
+Pour chaque sémaphore l'opération est l'une des trois décrites
+ci-dessous.
+<P>
+
+Si l'argument
+<B>sem_op</B>
+
+est un entier positif, la fonction ajoute cette
+valeur à
+<B>semval</B>.
+
+De plus si
+<B>SEM_UNDO</B>
+
+est demandé, le système met à jour le compteur &quot;undo&quot; du sémaphore
+(<I>semadj</I>).
+
+Cette opération n'est jamais bloquante.
+Le processus appelant doit avoir l'autorisation de modification
+sur le jeu de sémaphores.
+<P>
+
+Si 
+<B>sem_op</B>
+
+vaut zéro le processus attend que 
+<B>semval</B>
+
+soit nul. Plusieurs cas sont possibles :
+Si
+<B>semval</B>
+
+vaut zéro, l'appel système continue immédiatement
+Sinon, si l'on a réclamé
+<B>IPC_NOWAIT</B>
+
+dans
+<B>sem_flg</B>,
+
+l'appel système échoue (en annulant les actions précédentes)
+et
+<B>errno</B>
+
+contient
+le code d'erreur
+<B>EAGAIN</B>.
+
+Autrement
+<B>semzcnt</B>
+
+est incrémenté
+de 1 et le processus s'endort jusqu'à ce que l'un
+des évènements suivants se produise&nbsp;:
+<DL COMPACT>
+<DT>&bull;<DD>
+<I>semval</I>
+
+devient égal à 0, alors
+<I>semzcnt</I>
+
+est décrémenté. L'appel système continue
+<DT>&bull;<DD>
+Le jeu de sémaphores est supprimé. L'appel système
+échoue et
+<I>errno</I>
+
+contient le code d'erreur
+<B>EIDRM</B>.
+
+<DT>&bull;<DD>
+Le processus reçoit un signal à intercepter, la
+valeur de 
+<I>semzcnt</I>
+
+est décrémentée et l'appel système échoue avec
+<I>errno</I>
+
+contenant le code d'erreur
+<B>EINTR</B>.
+
+<DT>&bull;<DD>
+La limite temporelle indiquée par
+<I>timeout</I>
+
+dans un
+<B>semtimedop</B>
+
+a expiré&nbsp;: l'appel-système échoue avec
+<I>errno</I>
+
+contenant
+<B>EAGAIN</B>.
+
+</DL>
+<P>
+
+Si
+<B>sem_op</B>
+
+est inférieur à zéro, le processus appelant doit avoir 
+l'autorisation de modification sur le jeu de sémaphores.
+Si
+<B>semval</B>
+
+est supérieur ou égal à la valeur absolue de
+<B>sem_op</B>,
+
+la valeur absolue de 
+<B>sem_op</B>
+
+est soustraite de
+<B>semval</B>.
+
+Si 
+<B>SEM_UNDO</B>
+
+est indiqué, le système met à jour le compteur &quot;undo&quot; du
+sémaphore. Puis l'appel système continue.
+Autrement si l'on a réclamé
+<B>IPC_NOWAIT</B>
+
+dans
+<B>sem_flg</B>,
+
+l'appel système échoue (annulant les actions précédentes
+et
+<B>errno</B>
+
+contient le code d'erreur
+<B>EAGAIN</B>.
+
+Sinon
+<B>semncnt</B>
+
+est décrémenté de un et le processus s'endort jusqu'à ce
+que l'un des évènements suivants se produise :
+<DL COMPACT>
+<DT>&bull;<DD>
+<I>semval</I>
+
+devient supérieur ou égal à la valeur absolue de 
+<I>sem_op</I>,
+
+alors la valeur
+<I>semncnt</I>
+
+est décrémentée, la valeur absolue de
+<I>sem_op</I>
+
+est soustraite de
+<I>semval</I>
+
+et si
+<B>SEM_UNDO</B>
+
+est demandé le système met à jour le compteur &quot;undo&quot; du
+sémaphore. Puis l'appel système continue.
+<DT>&bull;<DD>
+Le jeu de sémaphores est supprimé. L'appel système
+échoue et
+<B>errno</B>
+
+contient le code d'erreur
+<B>EIDRM</B>.
+
+<DT>&bull;<DD>
+Le processus reçoit un signal à intercepter, la
+valeur de 
+<B>semncnt</B>
+
+est décrémentée et l'appel système échoue avec
+<B>errno</B>
+
+contenant le code d'erreur
+<B>EINTR</B>.
+
+<DT>&bull;<DD>
+La limite temporelle indiqué par
+<I>timeout</I>
+
+dans un
+<B>semtimedop</B>
+
+a expiré&nbsp;: l'appel-système échoue avec
+<I>errno</I>
+
+contenant
+<B>EAGAIN</B>.
+
+</DL>
+<P>
+
+en cas de succès, le membre 
+<B>sempid</B>
+
+de la structure
+<B>sem</B>
+
+de chacun des sémaphores indiqués dans le tableau pointé par
+<I>sops</I>
+
+est rempli avec le PID du processus appelant.
+Enfin
+<B>sem_otime</B>
+
+est fixé à l'heure actuelle.
+<P>
+
+La fonction
+<B>semtimedop</B>
+
+se comporte comme
+<B>semop</B>
+
+sauf que dans le cas où le processus doit dormir, la
+durée maximale du sommeil est limitée par la valeur
+spécifiée dans la structure
+<B>timespec</B>
+
+dont l'adresse est transmise dans le paramètre
+<I>timeout</I>.
+
+Si la limite indiquée a été atteint,
+l'appel-système échoue avec
+<I>errno</I>
+
+contenant
+<B>EAGAIN</B>
+
+(et aucune opération de
+<I>sops</I>
+
+n'est réalisée).
+Si le paramètre
+<I>timeout</I>
+
+est
+<B>NULL</B>,
+
+alors
+<B>semtimedop</B>
+
+se comporte exactement comme
+<B>semop</B>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+
+renvoie la valeur
+<B>0</B>,
+
+s'il réussit et
+<B>-1</B>
+
+s'il échoue auquel cas 
+<B>errno</B>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>E2BIG</B>
+
+<DD>
+l'argument
+<I>nsops</I>
+
+est supérieur à
+<B>SEMOPM</B>,
+
+le nombre maximal d'opérations par appel système.
+<DT><B>EACCES</B>
+
+<DD>
+Le processus appelant n'a pas les permissions d'accès nécessaires.
+<DT><B>EAGAIN</B>
+
+<DD>
+Une opération a échoué et
+<B>IPC_NOWAIT</B>
+
+a été indiqué dans l'argument
+<I>sem_flg</I>,
+
+ou la durée limite indiquée dans
+<I>timeout</I>
+
+a expiré.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>sops</I>
+
+pointe en dehors de l'espace d'adressage accessible.
+<DT><B>EFBIG</B>
+
+<DD>
+La valeur de
+<B>sem_num</B>
+
+est inférieure à 0 ou supérieure ou égale au nombre de
+sémaphores dans l'ensemble.
+<DT><B>EIDRM</B>
+
+<DD>
+Le jeu de sémaphores a été supprimé.
+<DT><B>EINTR</B>
+
+<DD>
+Un signal a été reçu pendant l'attente.
+<DT><B>EINVAL</B>
+
+<DD>
+L'ensemble de sémaphores n'existe pas ou
+<I>semid</I>
+
+est inférieur à zéro, ou
+<I>nsops</I>
+
+n'a pas une valeur positive.
+<DT><B>ENOMEM</B>
+
+<DD>
+L'argument
+<I>sem_flg</I>
+
+de certaines opérations demande
+<B>SEM_UNDO</B>
+
+et le système n'a pas assez de mémoire pour allouer les structures nécessaires.
+<DT><B>ERANGE</B>
+
+<DD>
+<B>semop + semval</B>
+
+est supérieur à
+<B>SEMVMX.</B>
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les structures
+<B>sem_undo</B>
+
+d'un processus ne sont pas héritées par ses enfants lors d'un
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2).
+
+par contre elles sont transmises lors d'un
+<B><A HREF="/cgi-bin/man/man2html?2+execve">execve</A></B>(2).
+
+<P>
+
+<B>semop</B>
+
+n'est jamais relancé automatiquement après avoir été interrompu par un gestionnaire
+de signal quelque soit l'attribut
+<B>SA_RESTART</B>
+
+durant l'installation du gestionnaire.
+<P>
+
+<I>semadj</I>
+
+est un entier pour le processus qui représente simplement le compte (négatif)
+des opérations sur le sémaphore réalisées par
+l'attribut
+<B>SEM_UNDO</B>.
+
+Quand la valeur d'un sémaphore est fixée directement par une requête
+<B>SETVAL</B>
+
+ou
+<B>SETALL</B>
+
+de
+<B><A HREF="/cgi-bin/man/man2html?2+semctl">semctl</A></B>(2),
+
+la valeur
+<I>semadj</I>
+
+correspondante est effacée dans tous les processus.
+<P>
+
+Les valeurs <I>semval</I>, <I>sempid</I>, <I>semzcnt</I>, et <I>semnct</I>
+pour un sémaphore peuvent être retrouvées avec des appels
+<B><A HREF="/cgi-bin/man/man2html?2+semctl">semctl</A></B>(2)
+
+spécifiques.
+<P>
+
+Les limites système suivantes concernent
+<B>semop :</B>
+
+<DL COMPACT>
+<DT><B>SEMOPM</B>
+
+<DD>
+Nombre maximal d'opérations pour un appel système
+<B>semop</B>(32).
+
+<DT><B>SEMVMX</B>
+
+<DD>
+Valeur maximale pour
+<B>semval</B> :
+
+dépendante de l'implémentation (32767).
+</DL>
+<P>
+
+L'implémentation n'a pas de limites intrinsèques pour
+la valeur maximale d'effacement en sortie
+(<B>SEMAEM</B>),
+
+le nombre de structure d'annulation sur le système
+(<B>SEMMNU</B>),
+
+et le nombre maximal de structures d'annulation pour un processus.
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Quand un processus se termine, l'ensemble des structures
+<I>semadj</I>
+
+qui lui sont associées servent à annuler les effets de toutes les opérations
+sur les sémaphores réalisées avec
+l'attribut.
+<B>SEM_UNDO</B>.
+
+Ceci pose un problème&nbsp;: si l'une (ou plusieurs) des modifications sur les
+sémaphores demande une descente du compteur d'un sémaphore en-dessous de
+zéro, que doit faire l'implémentation&nbsp;?
+Une approche possible consiste à bloquer jusqu'à ce que la modification
+du sémaphore soit possible.
+C'est néanmoins peu désirable car la terminaison du processus peut
+bloquer pendant une période arbitrairement longue.
+Une autre possibilité est d'ignorer la modification
+du sémaphore (comme un échec lorsque
+<B>IPC_NOWAIT</B>
+
+est spécifié durant une opération).
+Linux adopte une troisième approche&nbsp;: décroître la valeur du sémaphore
+autant que possible (jusqu'à zéro) et permettre au processus de
+se terminer immédiatement.
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID.  SVr4 documente les conditions d'erreur supplémentaires
+EINVAL, EFBIG, et ENOSPC.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+ipc">ipc</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?2+semctl">semctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+semget">semget</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigaction">sigaction</A></B>(2)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:55 GMT, February 11, 2014
+</BODY>
+</HTML>

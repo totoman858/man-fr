@@ -1,0 +1,401 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ACCEPT</TITLE>
+</HEAD><BODY>
+<H1>ACCEPT</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+accept - Accepter une connexion sur une socket.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+
+<P>
+<B>int accept(int </B><I>sock</I><B>, struct sockaddr *</B><I>adresse</I><B>, socklen_t *</B><I>longueur</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>accept</B>
+
+est utilisé généralement avec des processus serveurs orientés-connexion.
+Cet appel système est employé avec les sockets utilisant un protocole
+en mode connecté 
+(<B>SOCK_STREAM</B>,
+
+<B>SOCK_SEQPACKET</B>
+
+et
+<B>SOCK_RDM</B>)
+
+Il extrait la première connexion de la file des connexions en attente,
+crée une nouvelle socket avec essentiellement les mêmes propriétés que
+<I>sock</I>
+
+et alloue pour cette socket un nouveau descripteur de fichier qu'il renvoie.
+La nouvelle socket n'est plus en état d'écoute.
+La socket originale
+<I>sock</I>
+
+n'est pas modifiée par l'appel-système. Remarquez que les attributs du
+descripteur de fichier (tout ce qu'on peut configurer avec l'option
+<B>F_SETFL </B>
+
+de fcntl() comme l'état non-bloquant ou asynchrone), ne sont pas hérités
+durant un
+<I>accept</I>.
+
+<P>
+
+L'argument
+<I>sock</I>
+
+est une socket qui a été créée avec la fonction
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2).
+
+attachée à une adresse avec
+<B><A HREF="/cgi-bin/man/man2html?2+bind">bind</A></B>(2).
+
+et attend des connextions après un appel
+<B><A HREF="/cgi-bin/man/man2html?2+listen">listen</A></B>(2).
+
+<P>
+L'argument
+<I>adresse</I>
+
+est un pointeur sur une structure sockaddr. La structure sera remplie avec
+l'adresse du correspondant se connectant, telle qu'elle est
+connue par la couche de communication. Le format exact du
+paramètre
+<I>adresse</I>
+
+dépend du domaine dans lequel la communication s'établit. (Voir 
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2)
+
+et la page de manuel correspondant au protocole). 
+L'argument
+<I>longueur</I>
+
+est un paramètre-résultat&nbsp;: il doit contenir initialement la
+taille de la structure pointée par
+<I>adresse</I>,
+
+et est renseigné au retour par la longueur réelle (en octet) de
+l'adresse remplie. Quand
+<I>adresse</I>
+
+vaut NULL, rien n'est rempli.
+<P>
+
+S'il n'y a pas de connexion en attente dans la file,
+et si la socket n'est
+pas marquée comme non-bloquante,
+<B>accept</B>
+
+se met en attente d'une connexion. Si la socket est 
+non-bloquante, et qu'aucune connexion n'est présente dans la file,
+<B>accept</B>
+
+retourne une erreur EAGAIN.
+<P>
+
+Pour être prévenu de l'arrivée d'une connexion sur une socket on peut utiliser
+<B><A HREF="/cgi-bin/man/man2html?2+select">select</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+poll">poll</A></B>(2).
+
+Un évènement &quot;lecture&quot; sera délivré lorsqu'une tentative de connexion
+aura lieu, et on pourra alors appeler
+<B>accept</B>
+
+pour la valider. Autrement, on peut configurer la socket pour qu'elle
+envoie un signal
+<B>SIGIO</B>
+
+lorsqu'une activité la concernant se produit, voir
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7)
+
+pour plus de détails.
+<P>
+
+Pour certains protocoles nécessitant une confirmation explicite,
+comme
+DECNet,
+<B>accept</B>
+
+peut être considéré comme extrayant simplement la connexion suivante de
+la file, sans demander de confirmation. On peut effectuer la confirmation
+par une simple lecture ou écriture sur le nouveau descripteur, et le rejet
+en fermant la nouvelle socket. Pour le moment, seul
+DECNet
+se comporte ainsi sous Linux.
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+Il n'y a pas nécessairement de connexion en attente après la réception de
+<B>SIGIO</B>
+
+ou après que
+<B><A HREF="/cgi-bin/man/man2html?2+select">select</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+poll">poll</A></B>(2)
+
+indiquent quelque chose à lire. En effet la connexion peut avoir été annulée
+à cause d'une erreur réseau asynchrone ou par un autre thread avant que
+<B>accept</B>
+
+ne se termine.
+Si cela se produit, l'appel bloquera en attendant une autre connexion.
+Pour s'assurer
+que
+<B>accept</B>
+
+ne bloquera jamais, la socket
+<I>sock</I>
+
+transmise doit avoir l'attribut
+<B>O_NONBLOCK</B>
+
+(voir
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7)).
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+L'appel renvoie -1 en cas d'erreur. S'il réussit il renvoie
+un entier non-négatif, constituant un descripteur pour la nouvelle socket.
+<A NAME="lbAG">&nbsp;</A>
+<H2>GESTION DES ERREURS</H2>
+
+Sous Linux,
+<B>accept</B>
+
+renvoie les erreurs réseau déjà en attente sur la socket comme
+une erreur de 
+l'appel-système.
+Ce comportement diffère d'autres implémentations des sockets BSD.
+Pour un comportement fiable, une application doit détecter les
+erreurs réseau définies par le protocole après le
+<B>accept</B>
+
+et les traiter
+comme des erreurs
+<B>EAGAIN</B>,
+
+en réitérant le mécanisme. Dans le cas de TCP/IP, ces erreurs sont
+<B>ENETDOWN</B>,
+
+<B>EPROTO</B>,
+
+<B>ENOPROTOOPT</B>,
+
+<B>EHOSTDOWN</B>,
+
+<B>ENONET</B>,
+
+<B>EHOSTUNREACH</B>,
+
+<B>EOPNOTSUPP</B>,
+
+et
+<B>ENETUNREACH</B>.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<B>accept</B>
+
+doit échouer si&nbsp;:
+<DL COMPACT>
+<DT><B>EAGAIN </B>ou<B> EWOULDBLOCK</B>
+
+<DD>
+La socket est non-bloquante et aucune connexion n'est
+présente dans la file.
+<DT><B>EBADF</B>
+
+<DD>
+Le descripteur est invalide.
+<DT><B>ENOTSOCK</B>
+
+<DD>
+Le descripteur n'est pas celui d'une socket.
+<DT><B>EOPNOTSUPP</B>
+
+<DD>
+La socket de référence n'est pas de type
+<B>SOCK_STREAM</B>.
+
+<DT><B>EINTR</B>
+
+<DD>
+L'appel-système a été interrompu par l'arrivée d'un
+signal avant qu'une connexion valide ne survienne.
+<DT><B>ECONNABORTED</B>
+
+<DD>
+Une connexion a été abandonnée.
+<DT><B>EINVAL</B>
+
+<DD>
+La socket n'est pas en attente de connexions.
+<DT><B>EMFILE</B>
+
+<DD>
+La limite des descripteurs ouverts pour le processus a été atteinte.
+<DT><B>ENFILE</B>
+
+<DD>
+Le nombre maximal de descripteurs sur le système a été atteint.
+</DL>
+<P>
+
+<B>accept</B>
+
+peut échouer si&nbsp;:
+<DL COMPACT>
+<DT><B>EFAULT</B>
+
+<DD>
+<I>adresse</I>
+
+n'est pas dans l'espace d'adressage accessible
+en écriture.
+<DT><B>ENOBUFS, ENOMEM</B>
+
+<DD>
+Par assez de mémoire disponible. En général, cette erreur
+due à la taille limitée du buffer des sockets, et pas à la mémoire
+système proprement dite.
+<DT><B>EPROTO</B>
+
+<DD>
+Erreur de protocole.
+</DL>
+<P>
+
+La version Linux de
+<B>accept</B>
+
+peut échouer si&nbsp;:
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+Les règles du firewall interdisent la connexion.
+</DL>
+<P>
+
+De plus il peut se produire des erreurs réseau dépendant du protocole
+de la socket. Certains noyaux Linux peuvent renvoyer d'autres erreurs
+comme
+<B>ENOSR,</B>
+
+<B>ESOCKTNOSUPPORT</B>,
+
+<B>EPROTONOSUPPORT</B>,
+
+<B>ETIMEDOUT.</B>
+
+L'erreur 
+<B>ERESTARTSYS</B>
+
+peut être rencontrée durant un suivi dans un débogueur.
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, BSD 4.4 (La fonction
+<B>accept</B>
+
+est apparue dans BSD 4.2).
+La page de manuel BSD documente cinq erreurs possibles
+(EBADF, ENOTSOCK, EOPNOTSUPP, EWOULDBLOCK, EFAULT).
+SUSv3 documente les erreurs EAGAIN, EBADF, ECONNABORTED, EINTR, EINVAL, EMFILE,
+ENFILE, ENOBUFS, ENOMEM, ENOTSOCK, EOPNOTSUPP, EPROTO, EWOULDBLOCK, De
+Plus, SUSv2 documentait EFAULT et ENOSR.
+<P>
+
+La version Linux de <B>accept</B> ne fait <B>pas</B> hériter les attributs comme
+<B>O_NONBLOCK</B>.
+
+Ce comportement est différent d'autres implémentations BSD. Les
+programmes portables ne doivent pas s'appuyer sur cette particularité,
+et doivent reconfigurer les attributs sur la socket renvoyée par accept.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>NOTE</H2>
+
+Le troisième argument de
+<B>accept</B>
+
+était, à l'origine, déclaré comme un `int *' (ceci dans libc4 et libc5
+ainsi que pour beaucoup d'autres systèmes comme BSD 4.*, SunOS 4, SGI).
+Une proposition de standard POSIX 1003.1g l'a modifié en `size_t *' et c'est
+ce qu'utilise SunOS. Les dernières propositions POSIX en ont fait un
+`socklen_t *', ce que suivent les spécifications Single Unix, et la glibc2.
+Pour citer Linus Torvalds:
+<P>
+<I>_Toute_ bibliothèque sensée _doit_ garder &quot;socklen_t&quot; équivalent à un int.
+Toute autre chose invaliderait tout le niveau des sockets BSD.
+POSIX l'avait d'abord remplacé par un size_t, et je m'en suis plaint violemment
+(ainsi que d'autres heureusement, mais bien entendu pas tant que ça). Le
+remplacement par un size_t est complètement inutile car size_t à exactement
+la même taille qu'un int sur les architectures 64 bits par exemple. Et il
+_a_ la même taille qu'un &quot;int&quot; parce que c'était l'interface des sockets BSD. 
+Quoiqu'il en soit, les gens de POSIX ont compris et ont créé un &quot;socklen_t&quot;.
+Ils n'auraient jamais dû y toucher, mais une fois commencé, ils ont décidé de
+créer un type spécifique, pour des raisons inavouées (probablement quelqu'un
+qui ne veut pas perdre la face en expliquant que le premier travail était
+stupide et ils ont simplement renommé leur bricolage).</I>
+<A NAME="lbAK">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+bind">bind</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+listen">listen</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+select">select</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2)
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAG">GESTION DES ERREURS</A><DD>
+<DT><A HREF="#lbAH">ERREURS</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">NOTE</A><DD>
+<DT><A HREF="#lbAK">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:01 GMT, February 11, 2014
+</BODY>
+</HTML>

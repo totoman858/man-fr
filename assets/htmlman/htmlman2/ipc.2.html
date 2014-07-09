@@ -1,0 +1,92 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of IPC</TITLE>
+</HEAD><BODY>
+<H1>IPC</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ipc - Appeler les fonctions IPC du Système V.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>int ipc(unsigned int </B><I>call</I><B>, int </B><I>first</I><B>, int </B><I>second,</I>
+
+<B>int </B><I>third</I><B>, void *</B><I>ptr</I><B>, long </B><I>fifth);</I>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>ipc()</B>
+
+est un point commun d'entrée dans le noyau pour les appels systèmes
+IPC du Système V qui concernent les messages, les sémaphores et la
+mémoire partagée.
+<I>call</I>
+
+indique la fonction IPC à invoquer.
+Les autres arguments sont transmis à l'appel système approprié.
+<P>
+
+Les programmes utilisateurs doivent appeler les fonctions par leurs
+noms habituels. Seuls les implémenteurs de bibliothèques standards et
+les hackers Linux peuvent avoir besoin d'employer
+<B>ipc()</B>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<B>ipc()</B> est spécifique à Linux et ne doit pas être utilisé dans
+des programmes conçus pour être portables.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgctl">msgctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgget">msgget</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgrcv">msgrcv</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgsnd">msgsnd</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+semctl">semctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+semget">semget</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+semop">semop</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+shmat">shmat</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+shmctl">shmctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+shmdt">shmdt</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+shmget">shmget</A></B>(2)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:02 GMT, February 11, 2014
+</BODY>
+</HTML>

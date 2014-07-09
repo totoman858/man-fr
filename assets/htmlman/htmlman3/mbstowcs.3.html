@@ -1,0 +1,157 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MBSTOWCS</TITLE>
+</HEAD><BODY>
+<H1>MBSTOWCS</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mbstowcs - Convertir une chaîne de caractères multi-octets en une chaîne de caractères étendus.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<B>size_t mbstowcs (wchar_t *</B><I>pwcs</I><B>, const char *</B><I>s</I><B>, size_t </B><I>n</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Si
+<I>dest</I>
+
+n'est pas un pointeur
+<B>NULL</B>,
+
+la fonction
+<B>mbstowcs</B>()
+
+convertit la chaîne multi-octets
+<I>src</I>
+
+en chaîne de caractères larges
+<I>dest</I>.
+
+Elle écrira au plus
+<I>n</I>
+
+octets dans
+<I>dest</I>.
+
+L'état de conversion est initialisé. La conversion peut s'arrêter pour l'une
+des trois raisons suivantes&nbsp;:
+<P>
+
+1. Une séquence multi-octets invalide a été rencontrée. Dans ce cas, elle
+renvoie (size_t)(-1).
+<P>
+
+2. <I>n</I> caractères larges non-nuls ont été stockés dans
+<I>dest</I>.
+
+Dans ce cas le nobre de caractères écrits dans
+<I>dest</I>
+
+est renvoyé, mais l'état de décalage en ce point est perdu.
+<P>
+
+2. La chaîne multi-octets a été complètement convertie, y compris le
+caractère nul final. Dans ce cas, le nombre de caractères larges écrits dans
+<I>dest</I>,
+
+sans compter le caractère nul final, est renvoyé.
+<P>
+
+Le programmeur doit s'assurer qu'il y a assez de place pour au moins
+<I>n</I>
+
+caractères larges dans
+<I>dest</I>.
+
+<P>
+
+Si
+<I>dest</I>
+
+est
+<B>NULL</B>,
+
+<I>n</I>
+
+est ignoré, et la conversion se présente comme au-dessus, excepté que les
+caractères larges ne sont pas écris en mémoire et qu'aucune limite de longueur
+n'existe.
+<P>
+
+Afin d'éviter la situation numéro 2 ci-dessus, le programmeur doit s'assurer que
+<I>n</I>
+
+est supérieur ou égal a
+<I>mbstowcs(NULL,src,0)+1</I>.
+
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction
+<B>mbstowcs</B>()
+
+renvoie le nombre de caractères larges qui constituent la partie convertie
+de la chaîne, sans compter le caractère nul final. Si une séquence multi-octets
+invalide est rencontrée, elle renvoie (size_t)(-1).
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ISO/ANSI C, UNIX98
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+mbsrtowcs">mbsrtowcs</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le comportement de
+<B>mbstowcs</B>
+
+dépend de la catégorie
+<B>LC_CTYPE</B>
+
+de la localisation en cours.
+<P>
+
+La fonction
+<B><A HREF="/cgi-bin/man/man2html?2+mbsrtowcs">mbsrtowcs</A></B>(2)
+
+fournit une meilleure interface pour la même fonctionnalité.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:41 GMT, February 11, 2014
+</BODY>
+</HTML>

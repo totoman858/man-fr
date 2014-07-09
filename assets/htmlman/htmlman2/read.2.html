@@ -1,0 +1,211 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of READ</TITLE>
+</HEAD><BODY>
+<H1>READ</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+read - Lire le contenu d'un fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<B>ssize_t read(int </B><I>fd</I><B>, void *</B><I>buf</I><B>, size_t </B><I>count</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>read</B>
+
+lit jusqu'à
+<I>count</I>
+
+octets depuis le descripteur de fichier
+<I>fd</I>
+
+dans le buffer pointé par
+<I>buf.</I>
+
+<P>
+
+Si
+<I>count</I>
+
+vaut zéro, 
+<B>read</B>
+
+renvoie zéro et n'a pas d'autres effets.
+Si
+<I>count</I>
+
+est supérieur à SSIZE_MAX, le résultat est indéfini.
+<P>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>read</B>
+
+renvoie -1 s'il échoue, auquel cas
+<I>errno</I>
+
+contient le code d'erreur, et la position de la tête
+de lecture est indéfinie.
+Sinon, 
+<B>read</B>
+
+renvoie le nombre d'octets lus (0 en fin de fichier), et avance la
+tête de lecture de ce nombre. Le fait que le nombre renvoyé soit
+plus petit que le nombre demandé n'est pas une erreur. Ceci se
+produit à la fin du fichier, ou si on lit depuis un tube ou un
+terminal, ou encore si
+<B>read</B>
+
+a été interrompu par un signal.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINTR</B>
+
+<DD>
+<B>read</B>
+
+a été interrompu par un signal avant d'avoir eu le temps de lire quoi que ce soit.
+<DT><B>EAGAIN </B>
+
+<DD>
+On utilise une lecture non bloquante (attribut
+<B>O_NONBLOCK</B>
+
+du descripteur de fichier) et aucune donnée n'était disponible.
+<DT><B>EIO</B>
+
+<DD>
+Erreur d'entrée/sortie. Ceci arrive si un processus est dans un groupe
+en arrière-plan et tente de lire depuis le terminal. Il reçoit
+un signal
+SIGTTIN mais il l'ignore ou le bloque. Ceci se produit également si une
+erreur d'entrée/sortie bas-niveau s'est produite pendant la lecture d'un
+disque ou d'une bande.
+<DT><B>EISDIR</B>
+
+<DD>
+<I>fd</I>
+
+est un répertoire.
+<DT><B>EBADF</B>
+
+<DD>
+<I>fd</I>
+
+n'est pas un descripteur valide, ou n'est pas ouvert en lecture.
+<DT><B>EINVAL</B>
+
+<DD>
+<I>fd</I>
+
+correspond à un objet ne permettant pas la lecture.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>buf</I>
+
+pointe en dehors de l'espace d'adressage accessible.
+</DL>
+<P>
+
+D'autres erreurs peuvent se produire, suivant le type d'objet associé à 
+<I>fd</I>.
+
+POSIX permet à un 
+<B>read</B>
+
+interrompu par un signal de renvoyer soit le nombre d'octets lus à ce point,
+soit -1, et de placer 
+<I>errno</I>
+
+à 
+<B>EINTR</B>.
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID, AT&amp;T, POSIX, X/OPEN, BSD 4.3
+<A NAME="lbAH">&nbsp;</A>
+<H2>RESTRICTIONS</H2>
+
+Sur un système de fichiers NFS, la lecture de petites quantités de données
+ne mettra à jour l'horodatage du fichier que lors de la première lecture.
+Les lectures suivantes ne modifieront pas cette heure. En effet la plupart,
+si ce n'est tous les clients NFS disposent d'un cache des attributs de
+fichiers et n'effectuent pas la mise à jour du champ 'atime' du côté serveur.
+La véritable sémantique UNIX peut être obtenue en désactivant le cache des
+attributs du côté client, mais généralement ceci augmente sensiblement
+la charge du serveur, et dégrade ses performances.
+<P>
+
+Beaucoup de disques et systèmes de fichiers ont été considérés comme suffisamment
+rapides pour que l'implémentation de
+<B>O_NONBLOCK</B>
+
+soit jugée inutile. Ainsi cet attribut peut ne pas être disponibles sur
+les fichiers et/ou les disques.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+close">close</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+lseek">lseek</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+readdir">readdir</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+readlink">readlink</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+select">select</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fread">fread</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+readv">readv</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">RESTRICTIONS</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:02 GMT, February 11, 2014
+</BODY>
+</HTML>

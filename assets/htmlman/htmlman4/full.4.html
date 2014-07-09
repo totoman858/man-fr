@@ -1,0 +1,76 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FULL</TITLE>
+</HEAD><BODY>
+<H1>FULL</H1>
+Section: Manuel du programmeur Linux (4)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+full - Périphérique toujours plein.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION   </H2>
+
+Le fichier <B>/dev/full</B> a un numéro de périphérique majeur valant 1
+et un numéro mineur valant 7.
+<P>
+
+Les écritures vers le périphérique <B>/dev/full</B> échouent toujours
+avec l'erreur ENOSPC.
+<P>
+Les lectures depuis le périphérique <B>/dev/full</B> renvoient toujours
+des caractères \0.
+<P>
+Les positionnements (avec seek) sur <B>/dev/full</B> réussissent toujours.
+<A NAME="lbAD">&nbsp;</A>
+<H2>CONFIGURATION</H2>
+
+Si votre système ne dispose pas encore du fichier <B>/dev/full</B>, vous
+pouvez le créer avec les commandes suivantes:
+<PRE>
+
+        mknod -m 666 /dev/full c 1 7
+        chown root:root /dev/full
+
+</PRE>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/dev/full
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+mknod">mknod</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?4+null">null</A></B>(4),
+
+<B><A HREF="/cgi-bin/man/man2html?4+zero">zero</A></B>(4)
+
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1998-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION   </A><DD>
+<DT><A HREF="#lbAD">CONFIGURATION</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:53 GMT, February 11, 2014
+</BODY>
+</HTML>

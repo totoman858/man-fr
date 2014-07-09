@@ -1,0 +1,211 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SLATTACH</TITLE>
+</HEAD><BODY>
+<H1>SLATTACH</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 4 septembre 2005<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+slattach - Attacher une interface réseau à une ligne série.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>slattach [-dehlLmnqv] [-c commande] [-p proto] [-s vitesse] [tty]</B>
+
+<BR>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>slattach</B>
+
+est un minuscule programme qui peut être utilisé pour attacher
+un terminal normal («&nbsp;série&nbsp;») dans un des différents modes «&nbsp;réseau&nbsp;»,
+ceci vous permettant de l'utiliser pour des liaisons point-à-point
+vers d'autres systèmes.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-c commande</B>
+
+<DD>
+Exécuter
+«<B>&nbsp;commande&nbsp;</B>»
+
+lorsque la ligne est suspendue. Ceci permet de lancer
+des scripts ou de rétablir des connexions quand un lien est rompu.
+<DT><B>-d</B>
+
+<DD>
+Activer l'affichage de débogage. C'est utile pour déterminer
+pourquoi une configuration ne fonctionne pas.
+<DT><B>-h</B>
+
+<DD>
+Quitter lorsque la porteuse est perdue. Ceci fonctionne à la fois sur
+les périphériques
+<I>/dev/tty</I>
+
+et
+<I>/dev/cua</I>
+
+en contrôlant directement l'état de la porteuse toutes les 15&nbsp;secondes.
+<DT><B>-v</B>
+
+<DD>
+Activer le mode volubile. Utile pour les scripts shell.
+<DT><B>-q</B>
+
+<DD>
+Opérer en mode silencieux - aucun message n'est généré.
+<DT><B>-l</B>
+
+<DD>
+Créer un fichier de verrouillage pour le périphérique comme pour UUCP dans
+<I>/var/lock</I>.
+
+<DT><B>-n</B>
+
+<DD>
+Équivalent à la commande «&nbsp;mesg n&nbsp;».
+<DT><B>-m</B>
+
+<DD>
+<I>Ne pas</I>
+
+initialiser la ligne en mode raw 8&nbsp;bits.
+<DT><B>-e</B>
+
+<DD>
+Quitter juste après l'initialisation du périphérique,
+au lieu d'attendre que la ligne soit suspendue.
+<DT><B>-L</B>
+
+<DD>
+Activer le mode 3&nbsp;fils. Le terminal est mis en mode CLOCAL,
+la surveillance de porteuse est désactivée.
+<DT><B>-p proto</B>
+
+<DD>
+Définir précisément un protocole à utiliser sur la ligne.
+La valeur par défaut est
+<B>cslip</B>,
+
+c'est-à-dire SLIP compressé. Les autres valeurs possibles sont&nbsp;:
+<B>slip</B>
+
+(SLIP normal),
+<B>adaptive</B>
+
+(CSLIP/SLIP adaptatifs),
+<B>ppp</B>
+
+(Protocole Point-à-Point)
+et
+<B>kiss</B>
+
+(un protocole utilisé pour communiquer avec des contrôleurs
+de terminaux radio pour paquets AX.25).
+L'argument spécifique
+<B>tty</B>
+
+peut être utilisé pour refaire passer le périphérique en
+fonctionnement série normal. L'utilisation du mode «&nbsp;ppp&nbsp;» n'est en
+principe pas utile puisque ppp nécessite qu'un démon supplémentaire
+<B>pppd</B>
+
+soit actif sur la ligne. Pour les connexions «&nbsp;kiss&nbsp;», le programme
+<B>axattach</B>
+
+doit être utilisé.
+<DT><B>-s vitesse</B>
+
+<DD>
+Définir la vitesse de la ligne, différente de la valeur par défaut.
+</DL>
+<P>
+
+Si aucun argument n'est donné, la ligne du terminal actuel
+(habituellement lié au login) est utilisée. Autrement, une tentative
+est effectuée pour obtenir le port du terminal indiqué, puis il est
+verrouillé et ouvert.
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/dev/cua*</I>
+
+<BR>
+
+<I>/var/lock/LCK.*</I>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+axattach">axattach</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+dip">dip</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pppd">pppd</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+sliplogin">sliplogin</A></B>(8)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Fred N. van Kempen, &lt;<A HREF="mailto:waltje@uwalt.nl.mugnet.org">waltje@uwalt.nl.mugnet.org</A>&gt;
+<BR>
+
+Alan Cox, &lt;<A HREF="mailto:Alan.Cox@linux.org">Alan.Cox@linux.org</A>&gt;
+<BR>
+
+Miquel van Smoorenburg, &lt;<A HREF="mailto:miquels@drinkel.ow.org">miquels@drinkel.ow.org</A>&gt;
+<BR>
+
+George Shearer, &lt;<A HREF="mailto:gshearer@one.net">gshearer@one.net</A>&gt;
+<BR>
+
+Yossi Gottlieb, &lt;<A HREF="mailto:yogo@math.tau.ac.il">yogo@math.tau.ac.il</A>&gt;
+<BR>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Jean Michel Vansteene
+&lt;vanstee&nbsp;AT&nbsp;worldnet&nbsp;DOT&nbsp;fr&gt; le 15&nbsp;mars&nbsp;1999,
+mise à jour par Guillaume Audirac en août 2004
+et révisée le 17&nbsp;août&nbsp;2006.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;8&nbsp;slattach</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">AUTEURS</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:02 GMT, February 11, 2014
+</BODY>
+</HTML>

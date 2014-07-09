@@ -1,0 +1,381 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STTY</TITLE>
+</HEAD><BODY>
+<H1>STTY</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+stty - Modifier et afficher la configuration de la ligne de terminal.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>stty</B>
+
+[configuration...]
+<BR>
+
+<B>stty</B>
+
+{-a,--all,-f,--file,-g,--help,--save,--version}
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>stty</B>.
+
+<P>
+Si aucun argument n'est fourni,
+<B>stty</B>
+
+affiche la vitesse de communication, le numéro de discipline de ligne
+(sur les systèmes le supportant) et les éléments de configuration modifiés
+par rapport aux valeurs fixées par  `stty sane'.
+<P>
+La configuration en question est celle de la ligne tty connectée sur l'entrée
+standard.
+<P>
+
+<B>stty</B>
+
+accepte les arguments suivants, qui modifient le comportement de la ligne.
+<P>
+Un `[-]' devant un argument signifie que l'on peut l'inhiber en le faisant
+précéder d'un `-'.  Certains arguments ne sont pas disponibles sur tous les
+systèmes, car il s'agit d'extensions non-POSIX. Ils sont indiqués par `(np)'.
+<P>
+
+Paramètres de contrôle :
+<P>
+<DL COMPACT>
+<DT>[-]parenb<DD>
+Transmet un bit de parité en sortie, et en attend un en entrée.
+<DT>[-]parodd<DD>
+Indique une parité impaire (paire si précédé de `-').
+<DT>cs5 cs6 cs7 cs8<DD>
+Indique une taille de caractère de 5, 6, 7, ou 8 bits.
+<DT>[-]hupcl [-]hup<DD>
+Envoie un signal de déconnexion (Hangup) lorsque le dernier processus referme
+la ligne tty.
+<DT>[-]cstopb<DD>
+Utilise deux bits d'arrêt par caractère (un seul avec `-').
+<DT>[-]cread<DD>
+Permet la réception de données.
+<DT>[-]clocal<DD>
+Désactive les signaux de contrôle propres aux modems.
+<DT>[-]crtscts (np)<DD>
+Active le contrôle de flux RTS/CTS.
+</DL>
+<P>
+
+Paramètres d'entrée:
+<P>
+<DL COMPACT>
+<DT>[-]ignbrk<DD>
+Ignorer les signaux breaks.
+<DT>[-]brkint<DD>
+Un break déclenche un signal d'interruption.
+<DT>[-]ignpar<DD>
+Ignorer les erreurs de parité.
+<DT>[-]parmrk<DD>
+Signaler les erreurs de parité par une séquence 255-0-caractère.
+<DT>[-]inpck<DD>
+Active la vérification de parité.
+<DT>[-]istrip<DD>
+Effacer le bit de poids fort (8ème) des caractères en entrée.
+<DT>[-]inlcr<DD>
+Traduire les Sauts-de-ligne (NewLine) en Retours-Chariots (Carriage Return).
+<DT>[-]igncr<DD>
+Ignorer les Retours-Chariot (Carriage Return).
+<DT>[-]icrnl<DD>
+Traduire les Retours-Chariots (Carriage Return) en Sauts-de-ligne (NewLine).
+<DT>[-]ixon<DD>
+Activer le contrôle de flux XON/XOFF.
+<DT>[-]ixoff [-]tandem<DD>
+Activer l'émission d'un caractère d'arrêt lorsque le buffer d'entrée est
+presque plein, et d'un caractère de redémarrage lorsqu'il est à nouveau vide
+<DT>[-]iuclc (np)<DD>
+Convertir les majuscules en minuscules.
+<DT>[-]ixany (np)<DD>
+Permet l'utilisation de n'importe quel caractère pour redémarrer la sortie
+(si l'on utilise `-', seul le caractère Start sera actif).
+<DT>[-]imaxbel (np)<DD>
+Valider l'émission d'un signal sonore lorsqu'un caractère arrive alors
+que le buffer d'entrée est plein, dans ce cas le buffer n'est pas purgé.
+</DL>
+<P>
+
+Paramètres de sortie :
+<P>
+<DL COMPACT>
+<DT>[-]opost<DD>
+Postprocess output ([NDT] ???).
+<DT>[-]olcuc (np)<DD>
+Traduire les minuscules en majuscules ([NDT] Ceci ne fonctionne pas avec les
+caractères accentués...)
+<DT>[-]ocrnl (np)<DD>
+Convertir les Retours-Chariot (Carriage Return) en Sauts-de-ligne (Newline).
+<DT>[-]onlcr (np)<DD>
+Convertir les Sauts-de-ligne (Newline) en Retours-Chariot (Carriage Return).
+<DT>[-]onocr (np)<DD>
+Ne pas afficher les Retours-Chariots en première colonne.
+<DT>[-]onlret (np)<DD>
+Ajouter un Retour-Chariot au Saut-de-ligne.
+<DT>[-]ofill (np)<DD>
+Utiliser des caractères de remplissage plutôt que des délais d'attente.
+<DT>[-]ofdel (np)<DD>
+Utiliser l'effacement (Delete) comme caractère de remplissage, à la place
+du caractère Null.
+<DT>nl1 nl0 (np)<DD>
+Type de délai pour le Saut-de-ligne.
+<DT>cr3 cr2 cr1 cr0 (np)<DD>
+Type de délai pour le Retour-chariot.
+<DT>tab3 tab2 tab1 tab0 (np)<DD>
+Type de délai pour la Tabulation horizontale.
+<DT>bs1 bs0 (np)<DD>
+Type de délai pour le Retour en arrière (BackSpace).
+<DT>vt1 vt0 (np)<DD>
+Type de délai pour la Tabulation verticale.
+<DT>ff1 ff0 (np)<DD>
+Type de délai pour le Saut-de-page (Form Feed).
+</DL>
+<P>
+
+Paramètres locaux :
+<P>
+<DL COMPACT>
+<DT>[-]isig<DD>
+Valider les caractères spéciaux Interrupt, Quit, et Suspend.
+<DT>[-]icanon<DD>
+Valider les caractères spéciaux Erase, Kill, Werase, et Rprnt.
+<DT>[-]iexten<DD>
+Valider les caractères spéciaux non-Posix.
+<DT>[-]echo<DD>
+Activer l'écho des caractères saisis.
+<DT>[-]echoe, [-]crterase<DD>
+Effectuer l'écho du caractère d'effacement sous forme BackSpace-Espace-BackSpace.
+<DT>[-]echok<DD>
+Ajouter l'écho d'un Saut-de-Ligne (NewLine) après le caractère Kill.
+<DT>[-]echonl<DD>
+Effectuer l'écho des Sauts-de-Ligne (NewLine) même si l'écho des autres
+caractères est désactive.
+<DT>[-]noflsh<DD>
+Désactiver la purge du buffer après les caractères spéciaux Interrupt et Quit.
+<DT>[-]xcase (np)<DD>
+Activer l'entrée et la sortie de caractères majuscules en faisant précéder
+leur équivalent minuscule par `\', si l'option ICANNON est active.
+<DT>[-]tostop (np)<DD>
+Arrêter les travaux en arrière-plan qui tentent d'écrire sur leur terminal.
+<DT>[-]echoprt [-]prterase (np)<DD>
+Effectuer l'écho des caractères effacés entre `\' et '/'.
+<DT>[-]echoctl [-]ctlecho (np)<DD>
+Afficher l'écho des caractères de contrôle avec la notation (`^c')
+plutôt que sous leur forme littérale.
+<DT>[-]echoke [-]crtkill (np)<DD>
+Effectuer l'écho du caractère spécial Kill en effaçant chaque caractère
+sur la ligne comme indiqué par les paramètres Echoprt et Echoe, à la place
+des paramètres Echoctl et Echok.
+</DL>
+<P>
+
+Paramètres combinés :
+<P>
+<DL COMPACT>
+<DT>[-]evenp [-]parity<DD>
+Identique à parenb -parodd cs7.  Avec `-', identique à -parenb cs8.
+<DT>[-]oddp<DD>
+Identique à parenb parodd cs7.  Avec `-', identique à -parenb cs8.
+<DT>[-]nl<DD>
+Identique à -icrnl -onlcr.  Avec `-', identique à icrnl -inlcr -igncr
+onlcr -ocrnl -onlret.
+<DT>ek<DD>
+Réinitialise les caractères spéciaux Erase et Kill à leurs valeurs par défaut.
+<DT>sane<DD>
+Identique à cread -ignbrk brkint -inlcr -igncr icrnl -ixoff
+-iuclc -ixany imaxbel opost -olcuc -ocrnl onlcr -onocr -onlret
+-ofill -ofdel nl0 cr0 tab0 bs0 vt0 ff0 isig icanon iexten echo echoe echok
+-echonl -noflsh -xcase -tostop -echoprt echoctl echoke.
+Réinitialise également tous les caractères de contrôle à leurs valeurs
+par défaut.
+<DT>[-]cooked<DD>
+Identique à brkint ignpar istrip icrnl ixon opost isig icanon.
+Réinitialise également les caractères Eof et Eol
+à leurs valeurs par défaut si ce sont les mêmes que
+les caractères Min et Time (voir plus bas).
+Avec `-', identique à raw.
+<DT>[-]raw<DD>
+Identique à  -ignbrk -brkint -ignpar -parmrk -inpck -istrip -inlcr
+-igncr -icrnl -ixon -ixoff -iuclc -ixany -imaxbel
+-opost -isig -icanon -xcase min 1 time 0.
+Avec `-', identique à  cooked.
+<DT>[-]cbreak<DD>
+Identique à  -icanon.
+<DT>[-]pass8<DD>
+Identique à  -parenb -istrip cs8.  avec `-', identique à parenb istrip cs7.
+<DT>[-]litout<DD>
+Identique à -parenb -istrip -opost cs8.  Avec `-', Identique à parenb
+istrip opost cs7.
+<DT>[-]decctlq (np)<DD>
+Identique à -ixany.
+<DT>[-]tabs (np)<DD>
+Identique à tab0.  Avec `-', identique à tab3.
+<DT>[-]lcase [-]LCASE (np)<DD>
+Identique à xcase iuclc olcuc.
+<DT>crt<DD>
+Identique à echoe echoctl echoke.
+<DT>dec<DD>
+Identique à echoe echoctl echoke -ixany.
+Configure également les caractères spéciaux Interrupt avec la valeur Ctrl-C,
+Erase avec Del, et Kill avec Ctrl-U.
+</DL>
+<P>
+
+Caractères spéciaux :
+<P>
+<P>
+
+Les valeurs par défaut des caractères spéciaux varient suivant les
+systèmes. Ils sont configurés en utilisant la syntaxe `nom valeur'.
+Les noms sont indiqués ci-dessous, et les valeurs peuvent être fournies
+soit littéralement en utilisant la notation (`^c'), soit avec un
+entier commençant par `0x' pour une valeur hexadécimale, `0' pour 
+une valeur octale, ou tout autre chiffre pour une valeur décimale.
+Indiquer la valeur `^-' ou `undef' permet de désactiver le caractère
+spécial.
+<P>
+<DL COMPACT>
+<DT>intr<DD>
+Envoie le signal Intr.
+<DT>quit<DD>
+Envoie le signal Quit.
+<DT>erase<DD>
+Efface le dernier caractère saisi.
+<DT>kill<DD>
+Efface la ligne en cours.
+<DT>eof<DD>
+Signale une fin de fichier (terminer la saisie).
+<DT>eol<DD>
+Fin de ligne.
+<DT>eol2 (np)<DD>
+Autre caractère pour terminer la ligne.
+<DT>swtch (np)<DD>
+Basculer à un autre niveau de shell.
+<DT>start<DD>
+Redémarrage de la sortie après un arrêt.
+<DT>stop<DD>
+Arrêt de la sortie.
+<DT>susp<DD>
+Émission d'un signal Terminal Stop
+<DT>dsusp (np)<DD>
+Émission d'un signal Terminal Stop après avoir vidé le buffer d'entrée.
+<DT>rprnt (np)<DD>
+Réafficher la ligne en cours.
+<DT>werase (np)<DD>
+Effacement du dernier mot saisi.
+<DT>lnext (np)<DD>
+Lire le caractère suivant littéralement, même s'il s'agit d'un
+caractère spécial.
+</DL>
+<P>
+
+Paramètres spéciaux :
+<P>
+<DL COMPACT>
+<DT>min N<DD>
+Lorsque -icanon est configuré, indique le nombre minimal de caractères
+à lire pendant la durée `time' avant que la lecture n'échoue.
+<DT>time N<DD>
+Lorsque -icanon est configuré, indique la durée (en dixièmes de secondes)
+pour lire `min' caractères avant que la lecture n'échoue.
+<DT>ispeed N<DD>
+Configure la vitesse d'entrée à la valeur N
+<DT>ospeed N<DD>
+Configure la vitesse de sortie à la valeur N
+<DT>rows N (np)<DD>
+Indique au noyau que le terminal dispose de N lignes.
+<DT>cols N columns N (np)<DD>
+Indique au noyau que le terminal dispose de N colonnes.
+<DT>size (np)<DD>
+Affiche le nombre de lignes et de colonnes dont dispose le terminal
+selon les informations fournies par le noyau. Les systèmes ne permettant pas la configuration
+de rows et cols dans le noyau utilisent généralement les variables
+d'environnement
+<B>LINES</B>
+
+et
+<B>COLUMNS</B>
+
+à la place. Toutefois, la version GNU de
+<B>stty</B>
+
+ne les utilise pas.
+<DT>line N (np)<DD>
+Utiliser la discipline de ligne N.
+<DT>speed<DD>
+Affiche la vitesse du terminal.
+<DT>N<DD>
+Fixe les vitesses d'entrée et de sortie à la valeur N.
+N peut prendre les valeurs suivantes : 0 50 75 110
+134 134.5 150 200 300 600 1200 1800 2400 4800 9600 19200 38400 exta
+extb.  exta est équivalent à 19200, extb a 38400.  0 raccroche la
+ligne si -clocal est configuré.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><I>-a, --all</I>
+
+<DD>
+Afficher la configuration en cours de manière lisible par un humain.
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et se terminer normalement.
+<DT><I>-g, --save</I>
+
+<DD>
+Afficher la configuration en cours de manière utilisable comme argument
+pour une autre commande
+<B>stty</B>
+
+qui restituera le même paramétrage.
+<DT><I>-F, --file=FICHIER</I>
+
+<DD>
+Utiliser le périphérique représenté par le FICHIER spécial plutôt
+que l'entrée standard.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et se terminer normalement.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:46 GMT, February 11, 2014
+</BODY>
+</HTML>

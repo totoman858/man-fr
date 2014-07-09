@@ -1,0 +1,165 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of WATCH</TITLE>
+</HEAD><BODY>
+<H1>WATCH</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 3 avril 1999<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+watch - exécute un programme périodiquement, en affichant le résultat à l'écran
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>watch</B>
+
+<I>[-dhv] [-n &lt;secondes&gt;] [--differences[=cumulative]] [--help] [--interval=&lt;secondes&gt;] [--version] &lt;commande&gt;</I>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>watch</B>
+
+exécute la
+<I>commande</I>
+
+de manière répétée, et en affiche le résultat (le premier en plein écran).  Cela vous permet d'observer
+les changements du résultat du programme au fil du temps.  Par défaut, le programme est exécuté
+toutes les deux secondes&nbsp;; utilisez 
+<I>-n</I>
+
+ou
+<I>--interval</I>
+
+pour spécifier un intervalle différent.
+<P>
+
+L'option
+<I>-d</I>
+
+ou
+<I>--differences</I>
+
+mettra en évidence les différences entre les affichages successifs.  L'utilisation conjointe de
+<I>=cumulative</I>
+
+permet de garder les mises en évidence des exécutions précédentes, offrant l'affichage de tout ce
+qui a changé depuis la première exécution.
+<P>
+
+<B>watch</B>
+
+s'exécutera jusqu'à ce qu'il soit interrompu par l'utilisateur.
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+Notez que
+<I>commande</I>
+
+est passée en paramètre à «&nbsp;sh&nbsp;-c&nbsp;»
+ce qui signifie que vous devrez parfois utiliser des guillemets supplémentaires
+pour obtenir l'effet désiré.
+<P>
+
+Notez que pour la reconnaissance des options, la norme POSIX est utilisée (le traitement des options
+s'arrête à la découverte du premier argument qui ne soit pas une option).  Ça signifie que les options
+se trouvant après la
+<I>commande</I>
+
+ne seront pas interprétés par
+<B>watch</B>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+<P>
+
+Pour vérifier les mails, vous pouvez faire
+<DL COMPACT>
+<DT><DD>
+watch&nbsp;-n&nbsp;60 from
+</DL>
+<P>
+
+Afficher les changements dans le contenu d'un répertoire~:
+<DL COMPACT>
+<DT><DD>
+watch&nbsp;-d&nbsp;ls&nbsp;-l
+</DL>
+<P>
+
+Si seuls les fichiers appartenant à joe vous intéressent, utilisez
+<DL COMPACT>
+<DT><DD>
+watch&nbsp;-d 'ls&nbsp;-l&nbsp;|&nbsp;fgrep joe'
+</DL>
+<P>
+
+Pour vérifier l'utilité des guillemets, essayez
+<DL COMPACT>
+<DT><DD>
+watch echo $$
+<DT><DD>
+watch echo '$$'
+<DT><DD>
+watch echo &quot;'&quot;'$$'&quot;'&quot;
+</DL>
+<P>
+
+Vous pouvez vérifier si votre administrateur a installé le nouveau noyau avec
+<DL COMPACT>
+<DT><DD>
+watch uname&nbsp;-r
+</DL>
+<P>
+
+(Je rigole.)
+<A NAME="lbAG">&nbsp;</A>
+<H2>BUGS</H2>
+
+Lors d'un redimensionnement du terminal, l'écran ne sera pas redessiné correctement, 
+jusqu'à la prochaine exécution.  Les mises en évidence dues à 
+<I>--differences</I>
+
+sont également perdues.
+<P>
+
+Les caractères non imprimables de la sortie du programme sont ignorés. Utilisez &quot;cat&nbsp;-v&quot;
+si vous désirez les voir.  
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Le programme 
+<B>watch</B>
+
+original a été écrit par Tony Rems &lt;<A HREF="mailto:rembo@unisoft.com">rembo@unisoft.com</A>&gt; en 1991 et des modifications
+et corrections ont été apportées par François Pinard.  Mike Coleman &lt;<A HREF="mailto:mkc@acm.org">mkc@acm.org</A>&gt; l'a
+retravaillé et y a ajouté des fonctionnalités en 1999. 
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Amand Tihon &lt;<A HREF="mailto:amand@alrj.org">amand@alrj.org</A>&gt;, 2001
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">EXEMPLES</A><DD>
+<DT><A HREF="#lbAG">BUGS</A><DD>
+<DT><A HREF="#lbAH">AUTEURS</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:42 GMT, February 11, 2014
+</BODY>
+</HTML>

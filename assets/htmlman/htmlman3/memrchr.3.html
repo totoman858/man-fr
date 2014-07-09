@@ -1,0 +1,93 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MEMCHR</TITLE>
+</HEAD><BODY>
+<H1>MEMCHR</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+memchr - Rechercher un caractère dans une zone mémoire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/string.h">string.h</A>&gt;</B>
+
+<B>void *memchr (const void *</B><I>s</I><B>, int </B><I>c</I><B>, size_t </B><I>n</I><B>);</B>
+
+<B>void *memrchr(const void *</B><I>s</I><B>, int </B><I>c</I><B>, size_t </B><I>n</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>memchr()</B> examine les <I>n</I> premiers octets de la zone
+mémoire pointée par <I>s</I> à la recherche du caractère <I>c</I>.
+Le premier octet correspondant à <I>c</I> (interprété comme un unsigned char)
+arrête l'operation.
+<P>
+
+La fonction <B>memrchr()</B> travaille comme <B>memchr()</B>, sauf qu'elle
+recherche en arrière depuis la fin de la zone de <I>n</I> octets
+pointée par <I>s</I> plutôt que depuis le début.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Les fonctions <B>memchr()</B> et <B>memrchr()</B> renvoient un pointeur sur
+l'octet correspondant, ou  NULL si le caractère n'est pas présent dans la zone de
+memoire concernée.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+La fonction <B>memchr()</B> est conforme à SVID 3, BSD 4.3, ISO 9899 et
+POSIX. La fonction <B>memrchr()</B> est une extension GNU disponible depuis
+la GlibC 2.1.91.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+index">index</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+rindex">rindex</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strchr">strchr</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strpbrk">strpbrk</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strrchr">strrchr</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strsep">strsep</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strspn">strspn</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strstr">strstr</A></B>(3)
+
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:23 GMT, February 11, 2014
+</BODY>
+</HTML>

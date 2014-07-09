@@ -1,0 +1,150 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of POSIX_FADVISE</TITLE>
+</HEAD><BODY>
+<H1>POSIX_FADVISE</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+posix_fadvise - Prédéclarer des accès aux données d'un fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/fcntl.h">fcntl.h</A>&gt;</B>
+
+<B>int posix_fadvise(int </B><I>fd</I><B>, off_t </B><I>offset</I><B>, size_t </B><I>len</I><B>, int </B><I>advice</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les programmes peuvent utiliser <B>posix_fadvise</B> pour annoncer leur intention
+d'accéder aux données d'un fichier suivant un certain ordre, permettant ainsi au
+noyau de réaliser les optimisations appropriées.
+<P>
+L'indication
+<I>advice</I>
+
+s'applique à une région (pas nécessairement existante) débutant à <I>offset</I>
+et s'étendant sur <I>len</I> octets (ou jusqu'à la fin du fichier si <I>len</I>
+vaut zéro) dans le fichier référencé par <I>fd</I>.
+L'indication n'oblige à rien, il s'agit seulement d'une supposition concernant
+le comportement futur de l'application.
+<P>
+Les valeurs possibles pour <I>advice</I> incluent&nbsp;:
+<DL COMPACT>
+<DT><B>POSIX_FADV_NORMAL</B>
+
+<DD>
+Indique que l'application n'a pas d'indice particulier concernant les accès aux
+données du fichier. Le noyau appliquera son comportement pa défaut.
+<DT><B>POSIX_FADV_SEQUENTIAL</B>
+
+<DD>
+L'application pense accéder aux données séquentiellement (dans l'ordre de
+offsets croissants).
+<DT><B>POSIX_FADV_RANDOM</B>
+
+<DD>
+Les accès se feront de manière aléatoire.
+<DT><B>POSIX_FADV_NOREUSE</B>
+
+<DD>
+Les données ne seront accédées qu'une seule fois.
+<DT><B>POSIX_FADV_WILLNEED</B>
+
+<DD>
+Les données seront accédées dans le futur proche.
+<DT><B>POSIX_FADV_DONTNEED</B>
+
+<DD>
+Les données ne seront pas accédées dans le futur proche.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+L'appel renvoie zéro s'il réussit, ou -1 s'il échoue auquel cas <I>errno</I>
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+L'argument <I>fd</I> n'est pas un descripteur de fichier valide.
+<DT><B>EINVAL</B>
+
+<DD>
+L'indication <I>advice</I> est invalide.
+<DT><B>ESPIPE</B>
+
+<DD>
+Le descripteur correspond à un tube ou une FIFO. (Linux renvoie en fait
+EINVAL dans ce cas).
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Sous Linux, <B>POSIX_FADV_NORMAL</B> configure la fenêtre de lecture anticipée à
+sa taille par défaut pour le périphérique concerné. <B>POSIX_FADV_SEQUENTIAL</B>
+double cette taille, et <B>POSIX_FADV_RANDOM</B> désactive la lecture anticipée.
+Ces modifications affectent le fichier entier, pas seulement la région indiquée
+(mais les autres descripteurs ouverts sur le même fichier ne sont pas modifiés).
+<P>
+<B>POSIX_FADV_WILLNEED</B> et <B>POSIX_FADV_NOREUSE</B> initialisent tous deux une
+lecture non-bloquante de la région indiquée dans le cache. La quantité de données
+lues peut être diminuée suivant la charge mémoire (quelques méga-octets seront
+en général disponibles et souvent suffisants).
+<P>
+<B>POSIX_FADV_DONTNEED</B> essaye de libérer les pages de cache associées avec la
+région indiquée. Ceci est utile par exemple lors du parcours de très gros
+fichiers. Un programme peut ainsi demander régulièrement au noyau de libérer
+les pages déjà utilisées, pour éviter que des pages plus utiles ne soit
+éliminées à leur place.
+<P>
+Les pages qui n'ont pas encore été écrites ne sont pas affectées, ainsi si une
+application veut s'assurer que les pages seront relâchées, elle devrait
+appeler <B>fsync</B> ou <B>fdatasync</B> d'abord.
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SUSv3 (Advanced Realtime Option)
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+posix_fallocate">posix_fallocate</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+posix_madvise">posix_madvise</A></B>(2)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:57 GMT, February 11, 2014
+</BODY>
+</HTML>

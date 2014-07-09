@@ -1,0 +1,247 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of HSEARCH</TITLE>
+</HEAD><BODY>
+<H1>HSEARCH</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+hsearch, hcreate, hdestroy - Gestion de table de hachage.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/search.h">search.h</A>&gt;</B>
+
+<P>
+<B>ENTRY *hsearch (ENTRY </B><I>item</I><B>, ACTION </B><I>action</I><B>);</B>
+
+<P>
+<B>int hcreate (unsigned </B><I>nel</I><B>);</B>
+
+<P>
+<B>void hdestroy (void);</B>
+
+<P>
+<B>#define _GNU_SOURCE</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/search.h">search.h</A>&gt;</B>
+
+<P>
+<B>int hcreate_r(size_t </B><I>nel</I><B>, struct hsearch_data *</B><I>tab</I><B>);</B>
+
+<P>
+<B>int *hsearch_r(ENTRY </B><I>item</I><B>, ACTION </B><I>action</I><B>,</B>
+
+<B>ENTRY **</B><I>ret</I><B>, struct hsearch_data *</B><I>tab</I><B>);</B>
+
+<P>
+<B>void hdestroy_r(struct hsearch_data *</B><I>tab</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les trois fonctions
+<B>hcreate</B>,
+
+<B>hsearch</B>,
+
+et
+<B>hdestroy</B>
+
+permettent à l'utilisateur de céeer une table (une seule à la fois) de
+hachage du type <I>ENTRY</I> (definie dans <B>&lt;<A HREF="file:///usr/include/search.h">search.h</A>&gt;</B>) qui associe
+une clé avec des données quelconques.
+Les fonctions
+<B>hcreate_r</B>,
+
+<B>hsearch_r</B>,
+
+<B>hdestroy_r</B>
+
+sont des versions réentrantes qui permettent d'utiliser plusieurs tables simultanément.
+<P>
+
+La table doit d'abord être créée avec la fonction <B>hcreate()</B>.
+<I>nel</I> est une estimation du nombre d'éléments dans la table.
+La fonction <B>hcreate()</B> permet d'augmenter cette valeur, afin
+d'améliorer les performances de la table de hachage.
+<P>
+
+La fonction <I>hdestroy()</I> libère la mémoire occupée par la table, afin
+de pouvoir en construire une nouvelle.
+<P>
+
+L'argument <I>item</I> est du type <B>ENTRY</B>, qui est définie dans <I>&lt;<A HREF="file:///usr/include/search.h">search.h</A>&gt;</I> 
+ainsi:
+<P>
+<PRE>
+  typedef struct entry { 
+      char *<I>key</I>;
+      void *<I>data</I>; 
+  } ENTRY;
+</PRE>
+
+<P>
+Le champ <I>key</I> pointe sur une chaîne de caractères ASCII terminée par un
+caractère nul. Cette chaîne est la clé de recherche.
+Le champ <I>data</I> pointe sur les données associées à cette clé.
+La fonction <B>hsearch()</B> recherche dans la table un élément associé
+à la même clé que <I>item</I> (comparées avec
+<B><A HREF="/cgi-bin/man/man2html?3+strcmp">strcmp</A></B>(3)),
+
+et si elle réussit, elle renvoie un pointeur sur cet élément.
+Le paramètre <I>action</I> détermine ce que fera <B>hsearch()</B> si la
+recherche est infructueuse.
+Si <I>action</I> vaut <B>ENTER</B> alors <B>hsearch()</B> insèrera une copie
+de <I>item</I>. Si <I>action</I> vaut <B>FIND</B> alors elle renverra
+<B>NULL</B>.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>hcreate()</B> et <B>hcreate_r</B> renvoie zéro si la table ne peut PAS être installée.
+<P>
+
+<B>hsearch()</B> renvoie <I>NULL</I> si l'action est <I>ENTER</I> et si la
+table est pleine ou si l'action est <I>FIND</I> et si l'<I>item</I> n'est
+pas trouvé dans la table.
+<P>
+
+<B>hsearch_r()</B> renvoie zéro si <I>action</I> est <B>ENTER</B> et si
+la table de hachage est pleine, ou zéro sinon.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ENOMEM</B>
+
+<DD>
+Plus de mémoire.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Les fonctions
+<B>hcreate</B>,
+
+<B>hsearch</B>,
+
+et
+<B>hdestroy</B>
+
+viennent de SVID, et sont décrites dans POSIX 1003.1-2001.
+Les fonctions
+<B>hcreate_r</B>,
+
+<B>hsearch_r</B>,
+
+<B>hdestroy_r</B>
+
+sont des extensions GNU.
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+SVID et POSIX 1003.1-2001 précisent que <I>action</I> n'est significative que
+pour les recherches infructueuses&nbsp;; ainsi ENTER ne devrait avoir aucune
+influence pour une recherche réussie. Les implémentations libC et GlibC
+mettent à jour <I>data</I> de la clé <I>key</I> fournie dans ce cas.
+<P>
+
+Les entrées ne peuvent être qu'ajoutées dans la table, on ne peut pas les
+supprimer individuellement.
+<A NAME="lbAI">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+<P>
+
+Le programme suivant insère 24 éléments dans une table de hachage, puis
+affiche quelques uns d'entre-eux.
+<PRE>
+
+  #include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;
+  #include &lt;<A HREF="file:///usr/include/search.h">search.h</A>&gt;
+  char *data[]= { &quot;alpha&quot;,   &quot;bravo&quot;,  &quot;charlie&quot;, &quot;delta&quot;,    &quot;echo&quot;,
+                  &quot;foxtrot&quot;, &quot;golf&quot;,   &quot;hotel&quot;,   &quot;india&quot;    &quot;juliette&quot;,
+                  &quot;kilo&quot;,    &quot;lima&quot;,   &quot;mike&quot;,    &quot;novembre&quot;, &quot;oscar&quot;,
+                  &quot;papa&quot;,    &quot;quebec&quot;, &quot;romeo&quot;,   &quot;sierra&quot;,   &quot;tango&quot;,
+                  &quot;uniforme&quot;, &quot;victor&quot;, &quot;whisky&quot;,  &quot;x-ray&quot;,    &quot;yankee&quot;
+                  &quot;zoulou&quot; 
+  };
+
+int 
+main ()
+{
+    ENTRY e, *ep;
+    int i;
+     
+    /* On commence avec une petite table, qu'on agrandit ensuite */
+    
+    hcreate(30);
+    for (i = 0; i &lt; 24; i++) {
+        e.key = data[i]; 
+        /* Les données sont de simples entiers, pas des pointeur */
+        e.data = (char *)i;
+        ep = hsearch(e, ENTER);
+        /* Il ne devrait pas y avoir d'échec */
+        if (ep == NULL) {
+            fprintf (stderr, &quot;Echec\n&quot;);
+            <A HREF="/cgi-bin/man/man2html?1+exit">exit</A>(1);
+        }
+    }
+    for (i = 22; i &lt; 26; i++)  {
+    /* Afficher 2 entrées, et vérifier que 2 autres sont absentes */
+        e.key = data[i];
+        ep = hsearch(e, FIND);
+        printf (&quot;%9.9s -&gt; %9.9s:%d\n&quot;, e.key,
+                ep?ep-&gt;key:&quot;NULL&quot;, 
+                ep ? (int)(ep-&gt;data) : 0);
+    }
+    return (0);
+}
+</PRE>
+
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+bsearch">bsearch</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+lsearch">lsearch</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></B>(3)
+
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">EXEMPLE</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:19 GMT, February 11, 2014
+</BODY>
+</HTML>

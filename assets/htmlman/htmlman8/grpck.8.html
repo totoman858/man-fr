@@ -1,0 +1,159 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GRPCK</TITLE>
+</HEAD><BODY>
+<H1>GRPCK</H1>
+Section: User Commands  (1)<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<P>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+grpck - vérifie l'intégrité des fichiers de groupes
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>grpck</B> [<B>-rs</B>] [<I>group</I> <I>shadow</I>]
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>grpck</B> vérifie l'intégrité des informations d'authentification du système.
+Toutes les entrées des fichiers <I>/etc/group</I> et <I>/etc/gshadow</I> sont
+vérifiées pour voir si elles ont un format correct et si les données de chaque
+champ sont valides. Il sera demandé à l'utilisateur d'effacer les entrées qui
+ne sont pas correctement formatées, ou s'il y a des erreurs incorrigibles.
+<P>
+
+Les vérifications sont faites pour être certain que chaque entrée possède&nbsp;:
+<P>
+
+- un nombre correct de champs
+<BR>
+
+- un nom de groupe unique
+<BR>
+
+- une liste valide de membres et d'administrateurs
+
+<P>
+<P>
+
+Les vérifications sur le nombre correct de champs et sur l'unicité du nom de
+groupe sont fatales. Si l'entrée n'a pas un nombre correct de champs, il sera
+demandé à l'utilisateur d'effacer la ligne complète.
+Si l'utilisateur ne répond pas par l'affirmative, toutes les autres
+vérifications ne seront pas effectuées.
+Dans le cas d'une entrée avec un nom de groupe dupliqué, l'effacement sera
+proposé à l'utilisateur, mais les vérifications restantes seront effectuées.
+Toutes les autres erreurs seront indiquées sous forme d'avertissement et
+l'utilisateur se voit encouragé à lancer la commande <B>groupmod</B> pour
+corriger les erreurs.
+<P>
+
+Les commandes qui opèrent sur le fichier <I>/etc/group</I> ne sont pas capables
+d'altérer les entrées corrompues ou dupliquées.
+Dans certaines circonstances, <B>grpck</B> devrait être utilisé pour effacer
+l'entrée fautive.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+Par défaut, <B>grpck</B> opère sur les fichiers <I>/etc/group</I> et
+<I>/etc/gshadow</I>.
+L'utilisateur peut choisir des fichiers alternatifs avec les paramètres
+<I>group</I> et <I>shadow</I>.
+De plus, l'utilisateur peut exécuter la commande en mode lecture seule en
+utilisant l'option <B>-r</B>.
+Cette option fait qu'il sera répondu <B>non</B> à toutes les questions
+relatives à des modifications, sans intervention de l'utilisateur.
+<B>grpck</B> peut aussi classer les entrées dans les fichiers <I>/etc/group</I>
+et <I>/etc/gshadow</I> par GID. Pour lancer la commande avec le mode de tri,
+passez-lui l'option <B>-s</B>. Aucune vérification n'est effectuée, cela
+effectue simplement le tri.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/etc/group - informations sur les comptes de groupes
+<BR>
+
+/etc/gshadow - mots de passe masqués et informations de l'administrateur de groupe
+<BR>
+
+/etc/passwd - informations sur les utilisateurs
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+group">group</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?5+passwd">passwd</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?5+shadow">shadow</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+groupmod">groupmod</A></B>(8)
+
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>DIAGNOSTICS</H2>
+
+La commande <B>grpck</B> renvoie les valeurs suivantes en quittant&nbsp;:
+<DL COMPACT>
+<DT>0<DD>
+Succès
+<DT>1<DD>
+Erreur de syntaxe
+<DT>2<DD>
+Une ou plusieurs mauvaises entrées de groupe
+<DT>3<DD>
+Impossible d'ouvrir les fichiers de groupes
+<DT>4<DD>
+Impossible de verrouiller les fichiers de groupes
+<DT>5<DD>
+Impossible de mettre à jour les fichiers de groupes
+<P>
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Julianne Frances Haugh (<A HREF="mailto:jockgrrl@ix.netcom.com">jockgrrl@ix.netcom.com</A>)
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction, réalisée par Alain Portal &lt;aportal AT univ-montp2 DOT fr&gt; le Novembre 2004.
+<P>
+L'équipe de traduction a fait le maximum pour réaliser une adaptation française de qualité.
+<P>
+La version anglaise la plus à jour de ce document est toujours consultable via la commande&nbsp;: LANGUAGE=en man xxxx
+<P>
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute erreur dans de cette page de manuel.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">DIAGNOSTICS</A><DD>
+<DT><A HREF="#lbAI">AUTEUR</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

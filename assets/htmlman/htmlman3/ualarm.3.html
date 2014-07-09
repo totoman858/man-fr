@@ -1,0 +1,169 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of UALARM</TITLE>
+</HEAD><BODY>
+<H1>UALARM</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ualarm - Programme un signal après un nombre donné de microsecondes.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+/* version BSD */
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<B>unsigned int</B>
+<BR>
+<B>ualarm(unsigned int </B><I>usecs</I><B>, unsigned int </B><I>interval</I><B>);</B>
+
+/* version SUSv2 */
+<B>#define _XOPEN_SOURCE 500</B>
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<B>useconds_t ualarm(useconds_t </B><I>usecs</I><B>, useconds_t </B><I>interval</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>ualarm()</B> programme le signal SIGALRM pour qu'il soit
+envoyé au processus appelant après (au moins)
+<I>usecs</I>
+
+micro-secondes.
+Le délai peut être alongé légèrement par la charge système, par le temps
+passé à traiter l'appel-système, ou par la granularité des
+timers système.
+<P>
+
+À moins d'être capturé ou ignoeé, ce signal terminera le processus.
+<P>
+
+Si l'argument
+<I>interval</I>
+
+est non-nul, d'autres signaux SIGALR seront envoyés toutes les
+<I>interval</I>
+
+micro-secondes après le premier.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Cette fonction renvoie le nombre de micro-secondes restant de l'appel
+précédent, ou zéro si aucune alarme n'est en attente.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT>EINTR<DD>
+Interruption par un signal.
+<DT>EINVAL<DD>
+<I>usecs</I> ou <I>interval</I> est plus grand que 1000000 (1 seconde)
+(sur les systèmes qui considèrent qu'il s'agit d'une erreur).
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.3.
+BSD 4.3 et SUSv2 ne définissent pas d'erreurs.
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le type
+<B>useconds_t</B>
+
+est un entier non signé capable de contenir des entiers dans 
+l'intervalle [0,1000000].
+Ce type est défini dans
+<I>&lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</I>
+
+inclu par
+<I>&lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</I>
+
+mais GlibC ne le définit que si _XOPEN_SOURCE a une valeur supérieure ou
+égale à 500, ou si _XOPEN_SOURCE et _XOPEN_SOURCE_EXTENDED sont toutes deux
+définies.
+
+Les programmes seront plus portables s'ils évitent d'utiliser ce type.
+<P>
+
+Les interactions entre cette fonction et les autres temporisations
+comme
+<I>alarm</I>(),
+
+<I>sleep</I>(),
+
+<I>nanosleep</I>(),
+
+<I>setitimer</I>(),
+
+<I>timer_create</I>(),
+
+<I>timer_delete</I>(),
+
+<I>timer_getoverrun</I>(),
+
+<I>timer_gettime</I>(),
+
+<I>timer_settime</I>(),
+
+<I>usleep</I>()
+
+n'est pas spécifiée.
+<P>
+
+Cette fonction est obsolète, utilisez
+<B><A HREF="/cgi-bin/man/man2html?2+nanosleep">nanosleep</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+setitimer">setitimer</A></B>(2)
+
+à sa place.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+alarm">alarm</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getitimer">getitimer</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+nanosleep">nanosleep</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+select">select</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setitimer">setitimer</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+usleep">usleep</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:26 GMT, February 11, 2014
+</BODY>
+</HTML>

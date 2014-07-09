@@ -1,0 +1,203 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETLINE</TITLE>
+</HEAD><BODY>
+<H1>GETLINE</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getline, getdelim - Saisie de chaîne délimitée.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#define _GNU_SOURCE</B>
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<B>ssize_t getline(char **</B><I>lineptr</I><B>, size_t *</B><I>n</I><B>, FILE *</B><I>stream</I><B>);</B>
+<B>ssize_t getdelim(char **</B><I>lineptr</I><B>, size_t *</B><I>n</I><B>, int </B><I>delim</I><B>, FILE *</B><I>stream</I><B>);</B>
+</PRE><A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>getline()</B>
+
+lit une ligne entière et stocke l'adresse du tampon contenant 
+le texte dans
+<I>*lineptr.</I>
+
+Le tampon se termine par un 0 terminal et inclut le caractère saut-de-ligne, 
+si un tel séparateur a été trouvé.
+<P>
+
+
+Si
+<I>*lineptr</I>
+
+vaut
+<B>NULL,</B>
+
+la routine
+<B>getline()</B>
+
+alloue un tampon pour recevoir la ligne, ce tampon devra être libéré par le programme
+utilisateur.
+Alternativement, avant d'appeler
+<B>getline(),</B>
+
+<I>*lineptr</I>
+
+peut contenir un pointeur vers un tampon alloué par
+<B>malloc()</B>
+
+et de taille 
+<I>*n</I>
+
+octets. Si le buffer n'est pas suffisant pour recevoir la ligne saisie,
+<B>getline()</B>
+
+redimensionne le tampon afin de s'adapter grâce à 
+<B>realloc(),</B>
+
+mettant à jour
+<I>*lineptr</I>
+
+et
+<I>*n</I>
+
+comme il se doit. Quoi qu'il en soit, en cas de succès,
+<I>*lineptr</I>
+
+et
+<I>*n</I>
+
+seront adaptés afin de rendre compte respectivement de l'adresse et 
+de la taille du tampon.
+<P>
+<B>getdelim()</B>
+
+fonctionne comme 
+<B>getline(),</B>
+
+si ce n'est qu'un séparateur différent de saut-de-ligne peut être spécifié
+en tant qu'argument 
+<I>delimiter.</I>
+
+Tout comme avec
+<B>getline(),</B>
+
+aucun séparateur n'est ajouté s'il n'y en avait pas
+dans l'entrée avant que la fin du fichier ne soit atteinte.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+En cas de succès,
+<B>getline()</B>
+
+et
+<B>getdelim()</B>
+
+renvoient le nombre de caractères lus, séparateur inclus,
+mais sans compter le zéro terminal. Cette valeur peut être utilisée
+afin de traiter les caractères null insérés dans la ligne lue.
+<P>
+Les deux fonctions renvoient -1 en cas d'échec de lecture de la ligne (condition de fin de fichier incluse)
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+Paramètres erronés
+(<I>n</I>
+
+ou
+<I>lineptr</I>
+
+valent NULL, ou bien
+<I>stream</I>
+
+n'est pas valide).
+<P>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+<PRE>
+#define _GNU_SOURCE
+#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;
+
+int main(void)
+{
+        FILE * fp;
+        char * line = NULL;
+        size_t len = 0;
+        ssize_t read;
+        fp = fopen(&quot;/etc/motd&quot;, &quot;r&quot;);
+        if (fp == NULL)
+                exit(EXIT_FAILURE);
+        while ((read = getline(&amp;line, &amp;len, fp)) != -1) {
+                printf(&quot;Retrieved line of length %zu :\n&quot;, read);
+                printf(&quot;%s&quot;, line);
+        }
+        if (line)
+                free(line);
+        return EXIT_SUCCESS;
+}
+</PRE>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+getline() tout comme getdelim() sont des extensions GNU.
+Elles sont disponibles depuis la libc 4.6.27.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fopen">fopen</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fread">fread</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+gets">gets</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fgets">fgets</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+scanf">scanf</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Stéphan Rafin, 2002.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">EXEMPLE</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:39 GMT, February 11, 2014
+</BODY>
+</HTML>

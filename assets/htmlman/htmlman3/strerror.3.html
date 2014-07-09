@@ -1,0 +1,140 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STRERROR</TITLE>
+</HEAD><BODY>
+<H1>STRERROR</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+strerror, strerror_r - Obtenir le libellé d'un code d'erreur.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/string.h">string.h</A>&gt;</B>
+
+<B>char *strerror (int </B><I>errnum</I><B>);</B>
+<BR>
+<B>int strerror_r(int </B><I>errnum</I><B>, char *</B><I>buf</I><B>, size_t </B><I>n</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>strerrror()</B>
+
+renvoie une chaîne décrivant le code d'erreur passé en argument
+<I>errnum</I>,
+
+en utilisant éventuellement la catégorie LC_MESSAGES de la localisation
+pour sélectionner la langue appropriée.
+Cette chaîne ne doit pas être modifiée par l'application, mais peut
+être écrasée par un appel ultérieur à
+<B>perror()</B>
+
+ou
+<B>strerror()</B>.
+
+Aucune autre fonction de bibliothèque ne modifie cette chaîne.
+<BR>&nbsp;
+La fonction
+<B>strerror_r()</B>
+
+est identique à
+<B>strerror()</B>
+
+mais fonctionne correctement dans un environnement multi-threads, puisqu'elle
+renvoie la chaîne dans le buffer
+<I>buf</I>
+
+de longueur
+<I>n</I>
+
+fourni par l'appelant.
+<BR>&nbsp;
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>strerror()</B> renvoie la description correspondant au code
+transmis, ou un message d'erreur inconnue si le code n'existe pas.
+La valeur de <I>errno</I> n'est pas modifiée lors des appels réussi, mais
+contient une valeur non-nulle en cas d'erreur.
+<P>
+La fonction <B>strerror_r()</B> renvoie 0 si elle réussit et -1 sinon,
+en remplissant <I>errno</I>.
+<BR>&nbsp;
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+La valeur de
+<I>errnum</I>
+
+n'est pas un code d'erreur valide.
+<DT><B>ERANGE</B>
+
+<DD>
+Le buffer fourni n'est pas assez grand.
+<BR>&nbsp;
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3, POSIX, BSD 4.3, ISO/IEC 9899:1990 (C89).
+<P>
+La fonction
+<B>strerror_r</B>()
+
+avec le prototype décrit ci-dessus est spécifiée par SUSv3, et était utilisée
+sous Digital Unix et HP Unix. Une fonction incompatible, avec le prototype
+<P>
+<B>char *strerror_r(int </B><I>errnum</I><B>, char *</B><I>buf</I><B>, size_t </B><I>n</I><B>);</B>
+
+<P>
+était une extension GNU utilisée par la GlibC, et doit être considérée comme
+obsolète en regard de SUS v3.
+La version GNU pouvait, sans y être obligée, utiliser le buffer fourni par
+l'utilisateur. Si elle le faisait, le résultat pouvait être tronqué si
+le buffer était trop petit. Le résultat était toujours terminé par un NUL.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+errno">errno</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+perror">perror</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strsignal">strsignal</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:28 GMT, February 11, 2014
+</BODY>
+</HTML>

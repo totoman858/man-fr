@@ -1,0 +1,110 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of BOSSKILL</TITLE>
+</HEAD><BODY>
+<H1>BOSSKILL</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+bosskill - Envoyer un signal éventuellement mortel à votre chef.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>bosskill </B>
+
+<I>[ -signal ] &lt;chef&gt;</I>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>bosskill</B>
+
+envoie le signal TERM (terminer, 15) au 
+<I>chef</I>
+
+indiqué.
+On peut indiquer un nom, ou un numéro de signal précédé par `-'
+en premier argument, pour remplacer le signal TERM. Le chef
+visé doit appartenir à la hiérarchie de l'administrateur-système.
+<P>
+Voici la liste de tous les signaux avec leurs effets, tels qu'ils sont
+décrits dans &lt;<A HREF="file:///usr/include/signal.h">signal.h</A>&gt;&nbsp;:
+<DL COMPACT>
+<DT>
+<DD>SIGHUP<TT>&nbsp;&nbsp;</TT>1    Reprendre. Oblige le<BR>
+<I>chef</I>
+
+à relire les clauses de son contrat et à se rendre compte qu'il ne
+connaît rien à l'administration-système, ni à la vie en général d'ailleurs.
+<DT>
+<DD>SIGINT<TT>&nbsp;&nbsp;</TT>2    Interruption. Protège pendant une heure l'administrateur-système<BR>
+des interruptions dues au
+<I>chef</I>.
+
+<DT>
+<DD>SIGQUIT<TT>&nbsp;</TT>3    Quitter. Oblige le chef à démissionner sans explication.<BR>
+<DT>
+<DD>SIGILL<TT>&nbsp;&nbsp;</TT>4    Instruction illégale. Le chef craint d'avoir donné un ordre<BR>
+illégal et sa conscience le tourmente.
+<DT>
+<DD>SIGTRAP<TT>&nbsp;</TT>5    Débogage. Affiche l'emplacement exact du chef.<BR>
+<DT>
+<DD>SIGABRT<TT>&nbsp;</TT>6    Abandon. Le chef arrête son travail en cours, rentre chez<BR>
+lui et reprendra demain.
+<DT>
+<DD>SIGKILL<TT>&nbsp;</TT>9    Tuer. Au suivant !<BR>
+<DT>
+<DD>SIGBUS<TT>&nbsp;&nbsp;</TT>10   Erreur de bus. Le chef n'arrive pas à se rendre à son lieu de travail.<BR>
+<DT>
+<DD>SIGSEGV<TT>&nbsp;</TT>11   Débordement de segment. Le chef réalise qu'il essaye de faire un<BR>
+travail pour lequel il n'est pas compétent, et il abandonne.
+<DT>
+<DD>SIGSYS<TT>&nbsp;&nbsp;</TT>12   Mauvais argument. Le chef a perdu.<BR>
+<DT>
+<DD>SIGPIPE<TT>&nbsp;</TT>13   Fumer la pipe. Le chef inhale quelques bouffées d'une fumée<BR>
+aux reflets verdâtres, et se met à planer.
+<DT>
+<DD>SIGALRM<TT>&nbsp;</TT>14   Alarme. Le chef sursaute et tombe à la renverse. A utiliser quand<BR>
+le chef est en face de son propre chef.
+<DT>
+<DD>SIGTERM<TT>&nbsp;</TT>15   Signal de fin. Le chef est viré.<BR>
+<P>
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>BOGUES</H2>
+
+L'envoi du signal SIGABRT à un chef qui se trouve déjà chez lui a pour conséquence
+de le voir tourner en rond, désoeuvré pendant deux heures environ.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Ecrit par Eric L. Pederson &lt;<A HREF="mailto:eric@bofh.org.uk">eric@bofh.org.uk</A>&gt;.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1999.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">BOGUES</A><DD>
+<DT><A HREF="#lbAF">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:03 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,75 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CONSOLE</TITLE>
+</HEAD><BODY>
+<H1>CONSOLE</H1>
+Section: Manuel du programmeur Linux (4)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ttys - Lignes de communication série.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>ttyS[0-3]</B> sont des fichier spéciaux de périphériques caractères 
+utilisés pour
+la connexion de terminaux série.
+<P>
+
+Ils sont créés typiquement ainsi&nbsp;:
+<P>
+<PRE>
+mknod -m 660 /dev/ttyS0 c 4 64 # adresse de base 0x03f8
+<BR>
+mknod -m 660 /dev/ttyS1 c 4 65 # adresse de base 0x02f8
+<BR>
+mknod -m 660 /dev/ttyS2 c 4 66 # adresse de base 0x03e8
+<BR>
+mknod -m 660 /dev/ttyS3 c 4 67 # adresse de base 0x02e8
+<BR>
+chown root:tty /dev/ttyS[0-3]
+</PRE>
+
+<P>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/dev/ttyS[0-3]
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+mknod">mknod</A></B>(1)
+
+<B><A HREF="/cgi-bin/man/man2html?1+chown">chown</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+getty">getty</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?4+tty">tty</A></B>(4)
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">FICHIERS</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:53 GMT, February 11, 2014
+</BODY>
+</HTML>

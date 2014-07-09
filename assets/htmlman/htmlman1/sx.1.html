@@ -1,0 +1,242 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of OSX</TITLE>
+</HEAD><BODY>
+<H1>OSX</H1>
+Section: osx (1)<BR>Updated: Novembre 2002<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+osx - Un système SGML conforme à la norme internationale ISO 8879 -- Standard
+Generalized Markup Language (Langage de balisage généralisé normalisé)
+Un système SGML étendu conforme à l'annexe A de la norme
+internationale ISO/IEC 10744 -- Hypermedia/Time-based Structuring Language
+(Langage de structuration hypermédia/événementiel)
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<PRE>
+<B>osx</B> [<B>-CeghnRvx</B>] [<B>-a</B><I>nom</I>] [<B>-A</B><I>architecture</I>] [<B>-b</B><I>encodage</I>]
+    [<B>-c</B><I>fichier_catalogue</I>] [<B>-d</B><I>répertoire</I>] [<B>-D</B><I>répertoire</I>]
+    [<B>-i</B><I>nom</I>] [<B>-f</B><I>fichier</I>] [<B>-l</B><I>répertoire</I>] [<B>-w</B><I>type_avertissement</I>]
+    [<B>-x</B><I>option_sortie_xml</I>...] [<B></B><I>sysid</I>...]
+
+</PRE>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+<P>
+
+<B>osx</B> convertit des documents SGML en documents XML.
+<B>osx</B> analyse et valide le document SGML contenu dans <I>sysid</I> et écrit
+un document XML équivalent sur la sortie standard. <B>osx</B> avertira des
+constructions SGML qui n'ont pas leurs équivalents XML.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<P>
+<P>
+
+Les options suivantes sont disponibles&nbsp;:
+<P>
+<DL COMPACT>
+<DT><B>-a</B><I>nom</I>, <B>--activate=</B><I>nom</I><DD>
+Active le type de document ou de lien <I>nom</I>.
+<P>
+<DT><B>-A</B><I>nom</I>, <B>--architecture=</B><I>nom</I><DD>
+Analyse par rapport à l'architecture <I>nom</I>.
+<P>
+<DT><B>-b</B><I>encodage</I>, <B>--encoding=</B><I>encodage</I><DD>
+Utilise le BCTF <I>encodage</I> pour produire la sortie.
+Par défaut <B>osx</B> utilise UTF-8.
+<P>
+<DT><B>-c</B><I>sysid</I>, <B>--catalog=</B><I>sysid</I><DD>
+Met en correspondance les identificateurs publics et les noms d'entités avec
+les identificateurs système en utilisant le fichier d'entrées catalogue dont
+l'identificateur système est <I>sysid</I>.
+<P>
+<DT><B>-C</B>, <B>--catalogs</B><DD>
+Elle a le même effet qu'avec <B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>.
+<P>
+<DT><B>-d</B><I>répertoire</I>, <B>--entity_output_location=</B><I>répertoire</I><DD>
+Met les fichiers de sortie dans <I>répertoire</I>.
+<P>
+<DT><B>-D</B><I>répertoire</I>, <B>--directory=</B><I>répertoire</I><DD>
+Recherche dans <I>répertoire</I> les fichiers spécifiés dans les identificateurs
+système. Elle a le même effet qu'avec <B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>.
+<P>
+<DT><B>-e</B>, <B>--open-entities</B><DD>
+Décrit les entités ouvertes dans les messages d'erreur.
+<P>
+<DT><B>-E</B><I>erreurs_max</I>, <B>--max-errors=</B><I>erreurs_max</I><DD>
+Quitte après <I>erreurs_max</I> erreurs.
+<P>
+<DT><B>-f</B><I>fichier</I>, <B>--error-file=</B><I>fichier</I><DD>
+Redirige les erreurs dans <I>fichier</I>. C'est pratique surtout avec les shells qui
+ne gèrent pas la redirection de la sortie d'erreur standard «&nbsp;stderr&nbsp;».
+<P>
+<DT><B>-g</B>, <B>--open-elements</B><DD>
+Décrit les éléments ouverts dans les messages d'erreur.
+<P>
+<DT><B>-h</B>, <B>--help</B><DD>
+Affiche un texte d'aide et quitte.
+<P>
+<DT><B>-i</B><I>nom</I>, <B>--include=</B><I>nom</I><DD>
+Elle a le même effet qu'avec <B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>.
+<P>
+<DT><B>-l</B><I>fichier-dtd</I>, <B>--dtd_location=</B><I>fichier-dtd</I><DD>
+Spécifie que le fichier XML résultant doit être conforme à la DTD décrite
+dans <I>fichier-dtd</I>.
+<P>
+<DT><B>-n</B>, <B>--error-numbers</B><DD>
+Affiche les numéros d'erreur dans les messages d'erreur.
+<P>
+<DT><B>--references</B><DD>
+Affiche les références dans les messages d'erreur.
+<P>
+<DT><B>-R</B>, <B>--restricted</B><DD>
+Elle a le même effet qu'avec <B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>.
+<P>
+<DT><B>-v</B>, <B>--version</B><DD>
+Affiche le numéro de version et quitte.
+<P>
+<DT><DT><B>-w</B><I>type_avertissement</I>, <B>--warning=</B><I>type_avertissement</I><DD>
+<DD>
+Contrôle les avertissements et les erreurs en fonction de <I>type_avertissement</I>.
+Elle a le même effet qu'avec <B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>.
+<P>
+<DT><B>-x</B><I>option_sortie_xml</I>, <B>--xml-output-option=</B><I>option_sortie_xml</I><DD>
+Contrôle la sortie XML selon la valeur de <I>option_sortie_xml</I>
+comme suit&nbsp;:
+<P>
+<B>no-nl-in-tag</B> N'utilise pas de nouvelles lignes dans les balises ouvrantes.
+Habituellement <B>osx</B> utilise des nouvelles lignes dans les balises
+ouvrantes et réduit ainsi la probabilité de lignes excessivement longues.
+<P>
+<B>id</B> Produit en sortie les déclarations d'attribut pour les attributs ID.
+<P>
+<B>notation</B> Produit en sortie les déclarations pour les notations.
+<P>
+<B>ndata</B> Produit en sortie les déclarations pour les entités de données externes.
+XML requiert qu'elles soient «&nbsp;NDATA&nbsp;». <B>osx</B> avertira de la présence
+d'entités données externes «&nbsp;CDATA&nbsp;» et «&nbsp;SDATA&nbsp;» et les produira en tant
+qu'entités «&nbsp;NDATA&nbsp;».
+<P>
+<B>cdata</B> Utilise les sections XML «&nbsp;CDATA&nbsp;» pour les sections marquées
+«&nbsp;CDATA&nbsp;» et pour les éléments avec un contenu déclaré de «&nbsp;CDATA&nbsp;».
+<P>
+<B>comment</B> Produit en sortie les déclarations de commentaires. Les
+déclarations de commentaires dans la DTD ne sont pas produites en sortie.
+<P>
+<B>lower</B> Préférer les minuscules. Les noms qui pouvaient être soumis à une
+substitution de majuscules par SGML seront ramenés à des minuscules. Ceci
+n'inclut pas les noms réservés&nbsp;; XML requiert que ceux-ci soient en majuscules.
+<P>
+<B>pi-escape</B> Échappe &amp;&lt;&gt; dans le contenu des instructions de traitement en
+utilisant les entités «&nbsp;amp&nbsp;», «&nbsp;lt&nbsp;» et «&nbsp;gt&nbsp;». Cela permet aux
+instructions de traitement de contenir la chaine &gt;?, mais nécessite que les
+applications prennent en charge les échappements.
+<P>
+<B>empty</B> Utilise la syntaxe &lt;e/&gt; pour les types d'éléments «&nbsp;e&nbsp;» déclarés
+comme «&nbsp;EMPTY&nbsp;».
+<P>
+<B>attlist</B> Produit en sortie une déclaration «&nbsp;ATTLIST&nbsp;» pour chaque élément
+spécifiant le type de tous les attributs. La valeur par défaut sera toujours
+«&nbsp;#IMPLIED&nbsp;».
+<P>
+<B>report-input-sources</B> Produit en sortie une instruction de traitement qui
+indique qu'un fichier source d'entrée, autre que le fichier principal, est
+ouvert ou fermé dans l'instance. N'indique aucune modification des sources
+d'entrée dans la DTD.
+<P>
+<B>report-entities</B> Produit en sortie une instruction de traitement qui
+indique qu'un appel d'une entité externe a été résolu dans l'instance.
+N'indique aucune résolution d'entité dans la DTD.
+<P>
+<B>no-expand-external</B> Préserve les entités externes, crée un fichier pilote
+de déclaration nommé &quot;extEntities.dtf&quot;, et inclut ce fichier dans le sous-ensemble
+interne de l'instance.
+<P>
+<B>no-expand-internal</B> Préserve les entités internes, crée un fichier pilote
+de déclaration nommé &quot;intEntities.dtf&quot;, et inclut ce fichier dans le sous-ensemble
+interne de l'instance.
+<P>
+<B>no-external-decl</B> N'inclut pas le fichier pilote de déclaration des
+entités externes dans le sous-ensemble interne de l'instance.
+<P>
+<B>no-internal-decl</B> N'inclut pas le fichier pilote de déclaration des
+entités internes dans le sous-ensemble interne de l'instance.
+<P>
+<B>sdata-as-pis</B> Lors de la traduction des entités SDATA (soit en les
+développant, soit en leur fournissant une définition dans le sous-ensemble
+interne de sortie), les exprime sous forme d'instructions de traitement plutôt
+que sous forme d'entités internes générales.
+<P>
+Plusieurs options <B>-x</B> sont autorisées.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<P>
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?1+onsgmls">onsgmls</A>(1)</B>
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+James Clark, Ian Castle &lt;<A HREF="mailto:ian.castle@openjade.org">ian.castle@openjade.org</A>&gt;.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Alain Portal &lt;aportal AT univ-montp2 DOT fr&gt;, 16 juin 2004
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>RELECTURE</H2>
+
+<P>
+
+Jean-Marc Destabeaux &lt;jmdestabeaux AT free DOT fr&gt;
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>AVERTISSEMENT SUR LA TRADUCTION</H2>
+
+<P>
+Il est possible que cette traduction soit imparfaite ou périmée.
+En cas de doute, veuillez vous reporter au document original en langue anglaise
+fourni avec le programme.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">AUTEURS</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+<DT><A HREF="#lbAI">RELECTURE</A><DD>
+<DT><A HREF="#lbAJ">AVERTISSEMENT SUR LA TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:44 GMT, February 11, 2014
+</BODY>
+</HTML>

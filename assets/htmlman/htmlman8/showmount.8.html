@@ -1,0 +1,128 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SHOWMOUNT</TITLE>
+</HEAD><BODY>
+<H1>SHOWMOUNT</H1>
+Section: Maintenance Commands (8)<BR>Updated: 6 octobre 1993<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+showmount - affiche des informations de montage sur un serveur NFS
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>/usr/sbin/showmount</B>
+
+<B>[&nbsp;-adehv&nbsp;]</B>
+
+<B>[&nbsp;--all&nbsp;]</B>
+
+<B>[&nbsp;--directories&nbsp;]</B>
+
+<B>[&nbsp;--exports&nbsp;]</B>
+
+<B>[&nbsp;--help&nbsp;]</B>
+
+<B>[&nbsp;--version&nbsp;]</B>
+
+<B>[&nbsp;host&nbsp;]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>showmount</B>
+
+demande des informations via le démon charge des exportations sur une machine
+distante. Exécuté sans aucune option,
+<B>showmount</B>
+
+affiche la liste des clients ayant monté des systèmes de fichiers NFS depuis ce
+serveur. L'affichage produit par
+<B>showmount</B>
+
+est conçu pour apparaître tel que filtré par «&nbsp;sort -u&nbsp;».
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-a</B> ou <B>--all</B>
+
+<DD>
+Affiche à la fois le nom du client et le répertoire monté sous la forme
+machine:répertoire.
+<DT><B>-d</B> ou <B>--directories</B>
+
+<DD>
+Affiche seulement les répertoires montés par un client.
+<DT><B>-e</B> ou <B>--exports</B>
+
+<DD>
+Affiche la liste des répertoires exportés par le serveur NFS.
+<DT><B>-h</B> ou <B>--help</B>
+
+<DD>
+Fournit un court résumé de l'aide.
+<DT><B>-v</B> ou <B>--version</B>
+
+<DD>
+Renvoie le numéro de version du programme.
+<DT><B>--no-headers</B>
+
+<DD>
+Supprime les en-têtes de description de l'affichage.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+rpc.mountd">rpc.mountd</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+rpc.nfsd">rpc.nfsd</A></B>(8)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+La précision et les informations renvoyées par
+<B>showmount</B>
+
+dépendent de l'implémentation du serveur NFS.
+<P>
+
+Comme
+<B>showmount</B>
+
+trie ce qu'il affiche (sort|uniq), il est impossible de déterminer si un client
+a monté le même répertoire une fois ou plus.
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Rick Sladkey &lt;<I><A HREF="mailto:jrs@world.std.com">jrs@world.std.com</A></I>&gt;
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 2000
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">AUTEUR</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:04 GMT, February 11, 2014
+</BODY>
+</HTML>

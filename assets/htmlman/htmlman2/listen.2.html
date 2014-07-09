@@ -1,0 +1,174 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LISTEN</TITLE>
+</HEAD><BODY>
+<H1>LISTEN</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+listen - Attendre des connexions sur une socket.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+
+<P>
+<B>int listen(int </B><I>s</I><B>, int </B><I>backlog</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Pour accepter des connexions, une socket est d'abord créée avec
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2),
+
+puis le désir d'accepter des connexions entrantes, et la limite
+de la file d'entrée sont indiqués avec
+<B>listen</B>,
+
+ensuite les connexions seront acceptées avec
+<B><A HREF="/cgi-bin/man/man2html?2+accept">accept</A></B>(2).
+
+L'appel système
+<B>listen</B>
+
+s'applique seulement aux sockets de type
+<B>SOCK_STREAM</B>
+
+ou
+<B>SOCK_SEQPACKET.</B>
+
+<P>
+
+Le paramètre
+<I>backlog</I>
+
+définit une longueur maximale pour la file des connexions en attente.
+Si une nouvelle connexion arrive alors que la file est pleine, le
+client reçoit une erreur indiquant
+<B>ECONNREFUSED</B>,
+
+ou, si le protocole sous-jacent supporte les retransmissions, la requête
+peut être ignorée afin qu'un nouvel essai réussisse.
+
+Le comportement de
+<I>backlog</I>
+
+a été modifié sur les sockets TCP dans Linux 2.2.
+Il s'agit à présent de la longueur de la file d'attente pour les socket
+<I>totalement</I>
+
+établies en attente d'acceptation, plutôt que les requêtes de connexion
+incomplètes. La longueur maximale de la file d'attente des connexions
+incomplètes peut être configurée avec l'appel sysctl
+<B>tcp_max_syn_backlog</B>.
+
+Lorsque les syncookies sont activés, il n'y a pas de longueur maximale
+et la configuration sysctl est ignorée.
+Voir
+<B><A HREF="/cgi-bin/man/man2html?7+tcp">tcp</A></B>(7)
+
+pour plus de détail.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>listen</B>
+
+renvoie 0 si il réussit, ou -1 en cas d'échec, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EADDRINUSE</B>
+
+<DD>
+Une autre socket est déjà à l'écoute sur le même port.
+<DT><B>EBADF</B>
+
+<DD>
+<I>s</I>
+
+n'est pas un descripteur valide
+<DT><B>ENOTSOCK</B>
+
+<DD>
+L'argument
+<I>s</I>
+
+n'est pas une socket.
+<DT><B>EOPNOTSUPP</B>
+
+<DD>
+Le type de socket ne supporte pas l'appel système
+<B>listen.</B>
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, BSD (l'appel système
+<B>listen</B>
+
+est apparu dans BSD 4.2).
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Si la socket est de type
+<B>AF_INET</B>
+
+(internet), et si l'argument
+<I>backlog</I>
+
+est supérieur à la constante
+<B>SOMAXCONN </B>
+
+(128 dans Linux 2.0 et 2.2), il est silencieusement ramené à
+<B>SO_MAXCONN</B>.
+
+Pour la portabilité des applications, ne vous fiez pas à
+cette valeur puisque BSD (et d'autres dérivés) limitent
+l'argument
+<I>backlog </I>
+
+à 5.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+accept">accept</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:55 GMT, February 11, 2014
+</BODY>
+</HTML>

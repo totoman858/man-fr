@@ -1,0 +1,191 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MPROTECT</TITLE>
+</HEAD><BODY>
+<H1>MPROTECT</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mprotect - Contrôler les autorisations d'accès à une partie de la mémoire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/mman.h">sys/mman.h</A>&gt;</B>
+
+<B>int mprotect(const void *</B><I>addr</I><B>, size_t *</B><I>len</I><B>, int </B><I>prot</I><B>);
+</B></PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>mprotect</B>
+
+contrôle la manière d'accéder à une portion de la mémoire. Si un
+accès interdit se produit, le programme reçoit un signal
+<B>SIGSEGV.</B>
+
+<P>
+
+<I>prot</I>
+
+est un OU binaire ( | ) entre les valeurs suivantes&nbsp;:
+<DL COMPACT>
+<DT><B>PROT_NONE</B>
+
+<DD>
+On ne peut pas accéder du tout à la zone de mémoire.
+<DT><B>PROT_READ</B>
+
+<DD>
+On peut lire la zone de mémoire.
+<DT><B>PROT_WRITE</B>
+
+<DD>
+On peut écrire dans la zone de mémoire.
+<DT><B>PROT_EXEC</B>
+
+<DD>
+La zone de mémoire peut contenir du code exécutable.
+</DL>
+<P>
+
+La nouvelle protection remplace toute autre protection précédente.
+Par exemple, si la mémoire a été marquée précédemment <B>PROT_READ</B>, 
+et si l'on appelle <B>mprotect</B> avec <B>PROT_WRITE</B>, la zone
+concernée ne sera plus lisible.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>mprotect</B>
+
+renvoie 0 si il réussit, ou -1 s'il échoue, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+<I>addr</I> n'est pas un pointeur valide, ou ce n'est pas un multiple de
+PAGESIZE.
+<DT><B>EFAULT</B>
+
+<DD>
+La mémoire n'est pas accessible.
+<DT><B>EACCES</B>
+
+<DD>
+L'accès spécifié n'est pas possible sur ce type de mémoire. Ceci
+se produit par exemple si vous utilisez
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2)
+
+pour représenter un fichier en lecture-seule en mémoire, et
+si vous demandez de marquer cette zone avec
+<B>PROT_WRITE.</B>
+
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour le noyau
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>EXEMPLE D'UTILISATION</H2>
+
+<PRE>
+#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/errno.h">errno.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/sys/mman.h">sys/mman.h</A>&gt;
+
+#include &lt;<A HREF="file:///usr/include/limits.h">limits.h</A>&gt; /* pour avoir PAGESIZE */
+#ifndef PAGESIZE
+  #define PAGESIZE 4096
+#endif
+
+int
+main(void)
+{
+    char *p;
+    char c;
+
+    /* Allocation d'un buffer, protection 
+       par défaut PROT_READ|PROT_WRITE. */
+    p = malloc(1024 + PAGESIZE - 1);
+    if (!p) {
+        perror(&quot;Impossible d'allouer suffisamment de mémoire&quot;);
+        exit(errno);
+    }
+
+    /* 
+     * Aligner p sur un multiple de PAGESIZE (que l'on suppose être
+     * une puissance de 2)
+     */
+    p = (char *) (((int) p + PAGESIZE-1) &amp; ~(PAGESIZE-1));
+
+    c = p[666];         /* lecture ok */
+    p[666] = 42;        /* ecriture ok */
+
+    /* Buffer marqué en lecture-seule */
+    if (mprotect(p, 1024, PROT_READ)) {
+        perror(&quot;Impossible d'utiliser mprotect&quot;);
+        exit(errno);
+    }
+
+    c = p[666];         /* lecture ok */
+    p[666] = 42;        /* écriture, fin du programme avec SIGSEGV */
+
+    exit(0);
+}
+</PRE>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, POSIX.1b (anciennement POSIX.4).  SVr4 définit un code d'erreur
+EAGAIN supplémentaire. Les conditions d'erreur SVr4 ne correspondent pas
+tout à fait à celles de Linux.
+POSIX.1B précise que
+<B>mprotect</B>
+
+ne peut être utilisé que sur des zones de mémoire obtenues avec
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2).
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">EXEMPLE D'UTILISATION</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:02 GMT, February 11, 2014
+</BODY>
+</HTML>

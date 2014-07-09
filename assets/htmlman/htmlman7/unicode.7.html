@@ -1,0 +1,354 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of UNICODE</TITLE>
+</HEAD><BODY>
+<H1>UNICODE</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+Unicode - Le jeu de caractères universel.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le standard international
+<B>ISO 10646</B>
+
+définit le 
+<B>Universal Character Set (UCS)</B>.
+
+<B>UCS</B>
+
+contient tous les caractères de tous les autres jeux de caractères standards.
+Il garantit également une compatibilité circulaire, ce qui signifie que les
+tables de conversions permettent de ne perdre aucune information quand une
+chaîne de caractères est convertie dans un autre codage, puis reconvertie
+en sens inverse.
+<P>
+<B>UCS</B>
+
+contient les caractères nécessaires pour représenter presque tous les
+langages connus. Il inclut non seulement les alphabets Latin, Grec,
+Cyrillique, Hébreu, Arabe, Arménien, et Géorgien, mais également Chinois
+Japonais, Hiragana, Katakana, Coréen, Hangul, Devanagari,
+Bengali, Gurmukhi, Gujarati, Oriya, Tamil, Telugu, Kannada, Malayam,
+Thai, Lao, Khmer, Bopomofo, Tibétain, Runique, Ethiopien, Canadien
+Syllabique, Cherokee, Mongol, Ogham, Myanmar, Sinhala, Thaana, Yi, et
+d'autres. Pour les écritures pas encore intégrées, des recherches sont en
+cours pour optimiser l'encodage et elles seront ajoutées. Ceci peut inclure
+non seulement des hiéroglyphes et des langues indo-européennes, mais aussi
+des écritures artistiques comme Tengwar, Cirth, ou Klingon. UCS contient
+un grand nombre de symboles graphiques, typographiques, mathématiques, ou
+scientifiques comme ceux fournis par TeX, Postscript, MS-DOS, MacIntosh,
+Videotext, OCR, et de nombreux traitements de texte et système d'édition.
+<P>
+Le standard UCS (ISO 10646) décrit un jeu de caractères sur 31 bits,
+constitué de 128
+<I>groupes</I>
+
+sur 24 bits, chacun d'eux divisés en 256
+<I>plans</I>
+
+sur 16 bits, composés de 256
+<I>rangées</I>
+
+de 8 bits, avec 256 positions en
+<I>colonne</I>
+
+contenant chacune un caractère. La première partie du standard
+(<B>ISO 10646-1</B>)
+
+définit les 65534 premiers codes (0x0000 à 0xFFFD) qui forme le
+<I>Basic Multilingual Plane (BMP)</I>,
+
+c'est à dire le plan 0 du groupe 0. La partie 2 du standard
+(<B>ISO 10646-2</B>)
+
+ajoute des caractères au groupe 0, dans plusieurs
+<I>plans supplémentaires</I>
+
+dans l'espace 0x10000 à 0x10ffff. On ne prévoit pas d'ajouter de caractères
+au-delà de 0x10ffff, ainsi sur l'ensemble de l'espace disponible, une faible
+fraction du groupe 0 est effectivement utilisable dans un futur à court
+terme. Le BMP contient tous les caractères des jeux habituels. Les plans
+supplémentaires ajoutés par ISO 10646-2 ne contiennent que des caractères
+exotiques pour des notations scientifiques spéciales, l'industrie de
+l'impression, des protocoles de haut-niveau, et les besoins de quelques
+enthousiastes.
+<P>
+
+La représentation des caractères UCS sur des mots de 2 octets est
+appelée
+<B>UCS-2</B>
+
+(ne contient que les caractères du BMP), alors que
+<B>UCS-4</B>
+
+est la représentation sur un mot de 4 octets. De plus, il existe deux formes
+<B>UTF-8</B>
+
+pour les compatibilités avec les logiciels traitant l'ASCII et
+<B>UTF-16  </B>
+
+pour les traitement des caractères au-delà de
+0x10ffff par des logiciels UCS-2.
+<P>
+
+Les caractères UCS 0x0000 à 0x007F sont identiques à ceux du classique jeu
+<B>US-ASCII</B>,
+
+et ceux de l'intervalle 0x0000 à 0x00FF sont identiques à ceux du
+jeu de caractères
+<B>ISO 8859-1 Latin-1</B>.
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>CARACTÈRES COMPOSÉS</H2>
+
+Quelques codes du
+<B>UCS</B>
+
+ont été assignés à des
+<B>caractères composés</B>.
+
+Ils sont semblables aux touches accentuées sans avance sur les machines à
+écrire. Un caractère composé ajoute simplement un accent sur le caractère
+précédent (contrairement aux machines à écrire qui agissent sur le caractère
+suivant).
+Les caractères accentués les plus importants ont leurs propres codes dans
+l'UCS
+néanmoins le mécanisme des caractères composés permet d'ajouter des accents
+ou des signes diacritiques sur n'importe quel caractère de base.
+Les caractères composés suivent toujours le caractère qu'ils modifient.
+Par exemple, le caractère allemand A-Umlaut (A majuscule avec un tréma)
+peut être représenté soit par le code UCS précomposé 0x00C4, ou par la
+combinaison d'un A majuscule normal, suivi d'un
+&quot;tréma composé&quot; (combining diaeresis), 0x0041 0x0308.
+<P>
+
+Les caractères composés sont essentiels par exemple pour l'encodage de
+l'écriture Thai ou pour les notations mathématiques et l'alphabet phonétique
+international.
+<A NAME="lbAE">&nbsp;</A>
+<H2>NIVEAUX D'IMPLÉMENTATION</H2>
+
+Comme tous les systèmes ne sont pas censés supporter les mécanismes comme les
+caractères composés, ISO 10646-1 spécifie les trois niveaux d'implémentation
+suivants pour l'UCS :
+<DL COMPACT>
+<DT>Niveau 1<DD>
+Les caractères composés et les caractères Hangul Jamo (un encodage spécial et
+compliqué de l'écriture Coréenne, où les syllabes Hangul sont codées sur 2 ou
+3 sous-caractères) ne sont pas supportés.
+<DT>Niveau 2<DD>
+Comme le niveau 1, mais ce n'est qu'avec certaines écritures
+(par exemple Hébreu, Arabe, Devangari, Bengali, Gurmukhi,
+Gujarati, Oriya, Tamil, Telugo, Kannada, Malayalam, Thai et Lao) qu'il
+y a des caractères composés non supportés.
+<DT>Niveau 3<DD>
+Tous les caractères
+<B>UCS</B>
+
+sont supportés.
+</DL>
+<P>
+
+Le standard
+<B>Unicode 3.0</B>
+
+publié par le
+<B>Unicode Consortium</B>
+
+contient exactement le
+<B>Basic Multilingual Plane UCS</B>
+
+au niveau d'implémentation 3, comme décrit dans le ISO 10646-1:2000.
+<B>Unicode 3.1</B>
+
+ajoute les plans supplémentaires de l'ISO 10646-2. Le standard Unicode et
+les rapports techniques publiés par le Consortium fournissent beaucoup
+d'informations supplémentaires sur la sémantique et les recommandations
+d'usage. Ils fournissent des guides et des algorithmes pour éditer, trier
+comparer, normaliser, convertir et afficher des chaînes Unicode.
+<A NAME="lbAF">&nbsp;</A>
+<H2>UNICODE SOUS LINUX</H2>
+
+Sous Gnu/Linux le type C
+<B>wchar_t</B>
+
+est un entier 32 bits signé sous Linux, et sa valeur est
+interprétée comme un code
+<B>UCS</B>
+
+(dans toutes les localisations), une convention signalée par la bibliothèque
+C Gnu en définissant la constante
+<B>__STDC_ISO_10646__</B>
+
+comme indiquée dans le standard ISO C 99.
+<P>
+L'UCS/Unicode peut être employé comme l'ASCII dans les flux d'entrée/sortie,
+les communications avec les terminaux, les fichiers de texte, les noms de
+fichiers et les variables d'environnement dans un encodage multi-octets
+compatible
+<B>UTF-8</B>.
+
+Pour signaler l'utilisation de l'UTF-8 comme encodage pour toutes les
+applications, une
+<B>locale</B>
+
+correcte doit être configurée dans les variables d'environnement (ex.
+&quot;LANG=en_GB.UTF-8&quot;).
+<P>
+
+La fonction
+<B>nl_langinfo(CODESET)</B>
+
+renvoie le nom de l'encodage sélectionné.
+Les fonctions de bibliothèques comme
+<B><A HREF="/cgi-bin/man/man2html?3+wctomb">wctomb</A></B>(3)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?3+mbsrtowcs">mbsrtowcs</A></B>(3)
+
+peuvent être utilisées pour transformer les caractères
+<B>wchar_t</B>
+
+et les chaînes dans le jeu de caractères du système et inversement.
+La fonction
+<B><A HREF="/cgi-bin/man/man2html?3+wcwidth">wcwidth</A></B>(3)
+
+indique combien de positions (0-2) le curseur est avancé en sortant
+un caractère.
+<P>
+
+Sous Linux, en général, seule une implémentation BMP de niveau 1 devrait
+être utilisée pour le moment. Pour certaines écritures (en particulier Thai)
+certains émulateurs de terminaux UTF-8 gèrent jusqu'à deux caractères
+combinés avec une fonte ISO 10646 (niveau 2), mais il vaut mieux
+préférer les caractères précomposés s'ils sont disponibles.
+<A NAME="lbAG">&nbsp;</A>
+<H2>ZONE PRIVÉE</H2>
+
+L'intervalle entre 0xE000 et 0xF8FF du
+<B>BMP</B>,
+
+ne sera jamais assigné a aucun caractère par le standard, et est
+réservé pour un usage privé.
+Pour la communauté Linux, cette zone privée a été subdivisée en deux.
+L'intervalle entre 0xe000 et 0xefff peut être utilisé individuellement
+par n'importe quelle application.
+L'intervalle s'étendant de 0xF000 à 0xF8FF est réservé à Linux, et
+les extensions y sont coordonnées entre les divers utilisateurs de Linux.
+L'enregistrement des caractères assignés à la zone Linux est actuellement
+maintenu par H. Peter Anvin &lt;<A HREF="mailto:Peter.Anvin@linux.org">Peter.Anvin@linux.org</A>&gt;.
+<A NAME="lbAH">&nbsp;</A>
+<H2>LITTÉRATURE</H2>
+
+<DL COMPACT>
+<DT>*<DD>
+Information technology - Universal Multiple-Octet Coded Character
+Set (UCS) - Part 1: Architecture and Basic Multilingual Plane.
+International Standard ISO 10646-1, International Organization
+for Standardization, Geneva, 2000.
+<P>
+Ce sont les spécifications officielles de l'<B>UCS</B>.
+Disponible en fichier PDF sur CD-ROM sur <A HREF="http://www.iso.ch/.">http://www.iso.ch/.</A>
+<DT>*<DD>
+The Unicode Standard, Version 3.0.
+The Unicode Consortium, Addison-Wesley,
+Reading, MA, 2000, ISBN 0-201-61633-5.
+<DT>*<DD>
+S. Harbison, G. Steele. C - A Reference Manual. Fourth edition,
+Prentice Hall, Englewood Cliffs, 1995, ISBN 0-13-326224-3.
+<P>
+Un bon livre de référence à propos du langage C. La 4eme édition
+couvre maintenant l'amendement 1 (1994) au standard ISO C
+(ISO/IEC 9899:1990) qui ajoute un grand nombre de fonctions de
+bibliothèque C pour manipuler les jeux de caractères, mais ne couvre
+pas encore C99.
+<DT>*<DD>
+Unicode Technical Reports.
+<DL COMPACT><DT><DD>
+<A HREF="http://www.unicode.org/unicode/reports/">http://www.unicode.org/unicode/reports/</A>
+</DL>
+
+<DT>*<DD>
+Markus Kuhn: UTF-8 and Unicode FAQ for Unix/Linux.
+<DL COMPACT><DT><DD>
+<A HREF="http://www.cl.cam.ac.uk/~mgk25/unicode.html">http://www.cl.cam.ac.uk/~mgk25/unicode.html</A>
+Fournit les informations sur la liste de diffusion
+<B>linux-utf8</B>,
+
+le meilleur endroit pour trouver des conseils sur l'utilisation de l'Unicode
+sous Linux
+</DL>
+
+<DT>*<DD>
+Bruno Haible: Unicode HOWTO.
+<DL COMPACT><DT><DD>
+<A HREF="ftp://ftp.ilog.fr/pub/Users/haible/utf8/Unicode-HOWTO.html">ftp://ftp.ilog.fr/pub/Users/haible/utf8/Unicode-HOWTO.html</A>
+</DL>
+
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Au moment de la rédaction de cette page, le support libc de Linux
+pour les locales
+<B>UTF-8</B>
+
+était mûr, et le support XFree86 était avancé, mais le travail nécessaire
+pour rendre les applications (principalement les éditeurs) compatibles avec
+l'UTF-8 était en cours. Le support général actuel de
+<B>UCS</B>
+
+sous Linux fournit les caractères double-largeur CJK, et parfois les
+surcharges des caractères combinés, mais ne permet pas l'écriture de droite
+à gauche ou les ligatures nécessaires en Hébreu, Arabe, ou Indien. Ces
+écritures ne sont pour le moment supportées que par certaines applications
+graphiques (visualisateurs HTML, traitements de texte) avec des moteurs
+d'affichage perfectionnés.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Markus Kuhn &lt;&lt;<A HREF="mailto:mgk25@cl.cam.ac.uk">mgk25@cl.cam.ac.uk</A>&gt;
+<A NAME="lbAK">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?7+utf-8">utf-8</A></B>(7)
+
+<B><A HREF="/cgi-bin/man/man2html?7+charsets">charsets</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setlocale">setlocale</A></B>(3)
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">CARACTÈRES COMPOSÉS</A><DD>
+<DT><A HREF="#lbAE">NIVEAUX D'IMPLÉMENTATION</A><DD>
+<DT><A HREF="#lbAF">UNICODE SOUS LINUX</A><DD>
+<DT><A HREF="#lbAG">ZONE PRIVÉE</A><DD>
+<DT><A HREF="#lbAH">LITTÉRATURE</A><DD>
+<DT><A HREF="#lbAI">BOGUES</A><DD>
+<DT><A HREF="#lbAJ">AUTEUR</A><DD>
+<DT><A HREF="#lbAK">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:59 GMT, February 11, 2014
+</BODY>
+</HTML>

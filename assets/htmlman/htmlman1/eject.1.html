@@ -1,0 +1,417 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of EJECT</TITLE>
+</HEAD><BODY>
+<H1>EJECT</H1>
+Section: User Commands (1)<BR>Updated: 18 Mai 2001<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+eject - éjecte les médias amovibles
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+eject -h
+<BR>
+
+eject [-vnrsfqpx] [&lt;nom&gt;]
+<BR>
+
+eject [-vn] -d
+<BR>
+
+eject [-vn] -a on|off|1|0 [&lt;nom&gt;]
+<BR>
+
+eject [-vn] -c slot [&lt;nom&gt;]
+<BR>
+
+eject [-vn] -t [&lt;nom&gt;]
+<BR>
+
+eject [-vn] -x &lt;vitesse&gt; [&lt;nom&gt;]
+<BR>
+
+eject -V
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+<B>Eject</B>
+
+permet aux médias amovibles (tels que les cdroms, les disquettes, les bandes, les disques JAZ
+ou ZIP) d'être éjectés sous contrôle logiciel. La commande peut
+également contrôler quelques changeurs de cdrom multi-disques, le dispositif d'auto-éjection
+supporté par certains périphériques, et fermer le tiroir de quelques lecteurs de cdrom.
+<P>
+Le périphérique correspondant à &lt;nom&gt; est éjecté. Le nom peut être soit un
+fichier de périphérique ou un point de montage, soit un chemin d'accès complet ou la même chose mais
+sans &quot;/dev&quot; ou &quot;/mnt&quot;. Si aucun nom n'est indiqué, le nom par défaut
+&quot;cdrom&quot; est utilisé.
+<P>
+Il y a quatre méthodes différentes d'éjection, selon que le
+périphérique est un cdrom, un périphérique SCSI, une disquette, ou une bande. Par défaut
+eject essaye les quatre méthodes dans l'ordre jusqu'à la réussite.
+<P>
+Si le périphérique est actuellement monté, il est demonté avant l'éjection.
+<P>
+<P>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS DE LIGNE DE COMMANDE</H2>
+
+<DL COMPACT>
+<DT><B>-h</B>
+
+<DD>
+Cette option fait
+qu'<B>eject</B>
+
+affiche une courte description des options de commande.
+<P>
+<DT><B>-v</B>
+
+<DD>
+Ceci fait fonctionner
+<B>eject</B>
+
+en mode verbeux&nbsp;; plus d'informations sont affichées au sujet de ce que la 
+commande fait.
+<P>
+<DT><B>-d</B>
+
+<DD>
+Si invoqué avec cette option, 
+<B>eject</B>
+
+liste le nom du périphérique par défaut.
+<P>
+<DT><B>-a on|1|off|0</B>
+
+<DD>
+Cette option contrôle le mode d'auto-éjection, supporté par quelques périphériques.
+Après validation, le lecteur éjecte automatiquement lorsque le périphérique est
+fermé.
+<P>
+<DT><B>-c &lt;slot&gt;</B>
+
+<DD>
+Avec cette option un emplacement CD d'un changeur de CD-ROM ATAPI/IDE peut être sélectionné.
+Linux 2.0 au moins est requis pour utiliser cette fonction. Le 
+lecteur de CD-ROM ne peut pas être en service (CD de données monté ou CD de musique en train de jouer)
+pour qu'une demande de changement fonctionne. Veuillez noter également que le premier emplacement du
+changeur est désigné par 0, et non 1.
+<P>
+<DT><B>-t</B>
+
+<DD>
+Avec cette option le lecteur de CD-ROM reçoit une commande de fermeture du tiroir. Tous
+les périphériques ne supportent pas cette commande.
+<P>
+<DT><B>-x &lt;vitesse&gt;</B>
+
+<DD>
+Avec cette option le lecteur de CD-ROM reçoit une commande de selection 
+de vitesse. 
+L'argument de vitesse est un nombre spécifiant la vitesse désirée 
+(par exemple 8 pour une vitesse de 8X), ou 0 pour obtenir la vitesse 
+maximale. Tous les périphériques ne supportent pas cette commande et 
+vous ne pouvez indiquer que les vitesses que le lecteur est réellement 
+capable de réaliser. À chaque fois que le medium est changé, l'option est 
+remise à zéro. Cette option peut être utilisée seule ou conjointement aux 
+options -t et -c.
+<P>
+<DT><B>-n</B>
+
+<DD>
+Avec cette option, le périphérique sélectionné est affiché, mais aucune action n'est
+exécutée.
+<P>
+<DT><B>-r</B>
+
+<DD>
+Cette option indique que le lecteur doit être éjecté en utilisant 
+une commande d'éjection de CD-ROM.
+<DT><DD>
+<B>-s</B>
+
+Cette option indique que le lecteur doit être éjecté en utilisant 
+des commandes SCSI.
+<P>
+<DT><B>-f</B>
+
+<DD>
+Cette option indique que le lecteur doit être éjecté en utilisant une
+commande d'éjection de disquette amovible.
+<P>
+<DT><B>-q</B>
+
+<DD>
+Cette option indique que le lecteur doit être éjecté en utilisant une
+commande de lecteur de bande hors-ligne.
+<P>
+<DT><B>-p</B>
+
+<DD>
+Cette option vous permet d'utiliser /proc/mounts au lieu de /etc/mtab. 
+Dans ce cas, l'option -n est utilisée avec <A HREF="/cgi-bin/man/man2html?8+umount">umount</A>(8).
+<P>
+<DT><B>-V</B>
+
+<DD>
+Cette option affiche le numéro de version
+d'<B>eject</B>
+
+et sort du programme.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS LONGUES</H2>
+
+Toutes les options ont des noms longs correspondants, comme listés ci-dessous. Les noms
+longs peuvent être abrégés tant qu'ils restent uniques.
+<P>
+<BR>
+
+-h --help (aide)
+<BR>
+
+-v --verbose (verbeux)
+<BR>
+
+-d --default (défaut)
+<BR>
+
+-a --auto (automatique)
+<BR>
+
+-c --changerslot (changement de slot)
+<BR>
+
+-t --trayclose (fermeture tiroir)
+<BR>
+
+-x --cdspeed (vitesse cd)
+<BR>
+
+-n --noop (aucune opération effectuée)
+<BR>
+
+-r --cdrom (cdrom)
+<BR>
+
+-s --scsi (scsi)
+<BR>
+
+-f --floppy (disquette)
+<BR>
+
+-q --tape (bande)
+<BR>
+
+-V --version (version)
+<BR>
+
+-p --proc (proc)
+<BR>
+
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+<P>
+
+Éjecter le périphérique par défaut&nbsp;:
+<DL COMPACT>
+<DT><DD>
+eject
+</DL>
+<P>
+
+Éjecter un périphérique ou un point de montage appelé cdrom&nbsp;:
+<DL COMPACT>
+<DT><DD>
+eject cdrom
+</DL>
+<P>
+
+Éjecter en utilisant le nom du périphérique&nbsp;:
+<DL COMPACT>
+<DT><DD>
+eject /dev/cdrom
+</DL>
+<P>
+
+Éjecter en utilisant le point de montage&nbsp;:
+<DL COMPACT>
+<DT><DD>
+eject /mnt/cdrom/
+</DL>
+<P>
+
+Éjecter le 4ème périphérique IDE&nbsp;:
+<DL COMPACT>
+<DT><DD>
+eject hdd
+</DL>
+<P>
+
+Éjecter le premier périphérique SCSI&nbsp;:
+<DL COMPACT>
+<DT><DD>
+eject sda
+</DL>
+<P>
+
+Éjecter en utilisant le nom de partition SCSI (e.g. un lecteur ZIP)&nbsp;:
+<DL COMPACT>
+<DT><DD>
+eject sda4
+</DL>
+<P>
+
+Sélectionner le 5ème disque d'un changeur multi-disque&nbsp;:
+<DL COMPACT>
+<DT><DD>
+eject -v -c5 /dev/cdrom
+</DL>
+<P>
+
+Active l'auto-éjection sur un lecteur de CD-ROM SoundBlaster&nbsp;:
+<DL COMPACT>
+<DT><DD>
+eject -a on /dev/sbpcd
+<P>
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<P>
+
+<P>
+Renvoie 0 si l'exécution s'est bien passée, 1 si l'exécution a échoué ou si 
+la syntaxe de la commande était incorrecte.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>NOTES</H2>
+
+<P>
+
+<P>
+<B>Eject</B>
+
+fonctionne uniquement avec les périphériques qui supportent au moins une des quatre méthodes
+d'éjection. Ceci inclut la plupart des lecteurs de CD-ROM (IDE, SCSI, et
+propriétaire), certains lecteurs de bandes magnétiques SCSI, les lecteurs JAZ, les lecteurs ZIP (parallèles, 
+SCSI, et IDE), et les disquettes amovibles LS120. Des utilisateurs 
+ont également rapporté des réussites avec des lecteurs de disquettes sur des systèmes Sun SPARC et Apple
+Macintosh. Si
+<B>eject</B>
+
+ne fonctionne pas, c'est plus probablement une limitation du pilote noyau 
+du périphérique et pas du programme 
+<B>eject</B>
+
+lui-même.
+<P>
+Les options -r, -s, -f, et -q permettent de contrôler quelles méthodes sont
+utilisées pour l'éjection. Plus d'une méthode peut être indiquée. Si aucune de ces 
+options n'est indiquée, les quatre sont essayées (ceci fonctionne
+très bien dans la plupart des cas).
+<P>
+<B>Eject</B>
+
+ne peut pas toujours être capable de déterminer si le périphérique est monté (e.g. s'il
+a plusieurs noms). Si le nom du périphérique est un lien symbolique,
+<B>eject</B>
+
+suivra le lien et utilisera le périphérique vers lequel il pointe.
+<P>
+Si
+<B>eject</B>
+
+détermine que le périphérique peut avoir des partitions multiples, il essayera
+de démonter toutes les partitions montées du périphérique avant 
+l'éjection. Si un démontage échoue, le programme n'essayera pas d'éjecter 
+le média.
+<P>
+Vous pouvez éjecter un CD audio. Quelques lecteurs de CD-ROM refuseront d'ouvrir le
+tiroir si le lecteur est vide. Quelques périphériques ne gèrent pas la commande de fermeture
+du tiroir.
+<P>
+Si le dispositif d'auto-éjection est activé, le lecteur sera toujours 
+éjecté après l'exécution de cette commande. Les pilotes CD-ROM du noyau Linux 
+ne supportent pas tous le mode d'auto-éjection. Il n'y a aucun moyen de connaître 
+l'état du mode d'auto-éjection.
+<P>
+Vous avez besoin des privilèges appropriés pour accéder aux fichiers du périphérique. L'exécution en tant que
+root ou setuid root est nécessaire pour éjecter certains périphériques (e.g. périphériques 
+SCSI).
+<P>
+La méthode heuristique utilisée afin de trouver un périphérique, pour un nom donné, est la suivante. Si
+le nom se termine par un slash, il est retiré (ceci afin de supporter 
+les noms de fichiers produits en utilisant la complétion de noms du shell). Si le nom
+commence par '.' ou '/', il essaye de l'ouvrir comme un fichier de périphérique ou un point
+de montage. Si cela échoue, il essaye d'ajouter au début '/dev/', '/mnt/',
+
+qu'un fichier de périphérique ou un point de montage soit trouvé qui puisse être ouvert. Le programme
+vérifie /etc/mtab pour les périphériques montés. Si cela échoue, il vérifie également 
+/etc/fstab pour les points de montage des périphériques actuellement non montés.
+<P>
+Créer des liens symboliques tels que /dev/cdrom ou /dev/zip est recommandé
+de sorte que
+<B>eject</B>
+
+puisse déterminer les périphériques appropriés en utilisant des noms facilement mémorisables.
+<P>
+Pour vous éviter de tout retaper à chaque fois, vous pouvez créer un alias shell pour les options de eject qui 
+fonctionnent pour votre installation personnelle.
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<B>Eject</B>
+
+a été écrit par Jeff Tranter (<A HREF="mailto:tranter@pobox.com">tranter@pobox.com</A>) et est émis
+sous les conditions de la GNU General Public License. Voir le fichier
+COPYING et les notes dans le code source pour les détails.
+<P>
+L'option -x a été ajoutée par Nobuyuki Tsuchimura (<A HREF="mailto:tutimura@nn.iij4u.or.jp">tutimura@nn.iij4u.or.jp</A>), 
+avec l'aide de Roland Krivanek (<A HREF="mailto:krivanek@fmph.uniba.sk">krivanek@fmph.uniba.sk</A>) et de sa 
+commande cdrom_speed.
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<P>
+<A HREF="/cgi-bin/man/man2html?2+mount">mount</A>(2), <A HREF="/cgi-bin/man/man2html?2+umount">umount</A>(2), <A HREF="/cgi-bin/man/man2html?8+mount">mount</A>(8), <A HREF="/cgi-bin/man/man2html?8+umount">umount</A>(8)
+<BR>
+
+/usr/src/linux/Documentation/cdrom/
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS DE LIGNE DE COMMANDE</A><DD>
+<DT><A HREF="#lbAF">OPTIONS LONGUES</A><DD>
+<DT><A HREF="#lbAG">EXEMPLES</A><DD>
+<DT><A HREF="#lbAH">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAI">NOTES</A><DD>
+<DT><A HREF="#lbAJ">AUTEUR</A><DD>
+<DT><A HREF="#lbAK">VOIR AUSSI</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:44 GMT, February 11, 2014
+</BODY>
+</HTML>

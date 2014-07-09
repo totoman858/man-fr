@@ -1,0 +1,435 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of INSMOD</TITLE>
+</HEAD><BODY>
+<H1>INSMOD</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+insmod - Charge des modules dans le noyau.
+
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>insmod</B>
+
+[-fhkLmnpqrsSvVxXyYN] [-e&nbsp;<I>persist_name</I>] [-o&nbsp;<I>module_name</I>]
+[-O&nbsp;<I>blob_name</I>] [-P&nbsp;<I>prefix</I>] <I>module</I>
+[&nbsp;<B>symbol</B>=<I>value</I>&nbsp;...&nbsp;]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>insmod</B>
+
+charge un module dans le noyau en cours d'utilisation.
+<P>
+
+<B>insmod</B>
+
+essaie de lier un module dans le noyau en cours d'exécution en résolvant les noms
+de symboles à partir de la table des symboles exportés par le noyau.
+<P>
+
+Si le nom du fichier objet est donné sans répertoire et sans extension,
+<B>insmod</B>
+
+cherchera le module dans quelques répertoires par défaut.
+La variable d'environnement MODPATH peut surcharger ces répertoires par défaut.
+Si un fichier de configuration comme /etc/modules.conf existe, il surchargera
+les chemins indiqués dans <B>MODPATH</B>.
+<P>
+
+La variable d'environnement MODULECONF peut sélectionner un fichier de
+configuration différent de <I>/etc/modules.conf</I> (ou
+<I>/etc/conf.modules</I> (à éviter)).
+Cette variable d'environnement prévaudra sur toutes les définitions précédentes.
+<P>
+
+Quand la variable d'environnement
+<B>UNAME_MACHINE</B>
+
+est remplie, modutils l'utilisera à la place du champ &quot;machine&quot; de
+l'appel-système uname(). Ceci est surtout utile si vous compilez des modules
+64 bits dans un espace utilisateur 32 bits ou
+inversement&nbsp;; remplissez
+<B>UNAME_MACHINE</B>
+
+avec le type de modules construits.
+La version actuelle de modutils ne supporte pas la construction croisée complète
+de modules, elle est limitée au choix entre 32 et 64 bits de l'architecture
+hôte.
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><B>-e</B> <I>persist_name</I>, <B>--persist</B>=<I>persist_name</I> <DD>
+Indique où les données persistantes du modules doivent être lues au chargement
+et écrite lorsque cette instance du module est déchargée. Cette option est
+ignorée silencieusement si le module n'a pas de données persistantes. Les
+données persistantes ne sont lues par <B>insmod</B> que si cette option est
+présente. Par défaut <B>insmod</B> ne traite pas les données persistantes.
+<DT><B></B>
+
+<DD>
+Sous forme raccourcie, <B>-e&nbsp;&quot;&quot;</B>&nbsp;(une chaîne vide) est interprété par
+<B>insmod</B> comme la valeur de <B>persistdir</B> définie dans
+<I>modules.conf</I>, suivie du nom du fichier du module par rapport au chemin
+de recherche où il a été trouvé, en éliminant toute extension
+&quot;.gz&quot;, &quot;.o&quot; ou &quot;.mod&quot;.  Si <B>modules.conf</B> spécifie
+&quot;<B>persistdir&nbsp;=</B>&quot; (<B>persistdir</B> est un champ vide) alors ce raccourci
+est ignoré silencieusement.  (Voir <B>modules.conf</B> (5).)
+<DT><B>-f</B>, <B>--force</B>
+
+<DD>
+Tentera de charger un module même si la version du noyau en cours et celle pour
+laquelle le module a été compilé le module ne correspondent pas. Ceci ne
+surcharge que la vérification du numéro de noyau, et n'a aucun effet sur la
+vérification des noms de symbole. Si le nom d'un symbole du module ne correspond
+pas au noyau, il n'y a aucun moyen de forcer <B>insmod</B> à le charger.
+<DT><B>-h</B>, <B>--help</B>
+
+<DD>
+Affiche une page d'aide et se termine.
+<DT><B>-k</B>, <B>--autoclean</B>
+
+<DD>
+Marque le module pour auto-nettoyage. Ceci permettra à
+<B><A HREF="/cgi-bin/man/man2html?8+kerneld">kerneld</A></B>(8) d'enlever les modules qui ne sont pas utilisés
+durant une certaine période - habituellement une minute.
+<DT><B>-L</B>, <B>--lock</B>
+
+<DD>
+Utiliser <B><A HREF="/cgi-bin/man/man2html?2+flock">flock</A></B>(2) pour empêcher deux chargements simultanés du même module.
+<DT><B>-m</B>, <B>--map</B>
+
+<DD>
+Affiche la carte de chargement, rendant plus facile le débogage en cas de
+panique du noyau.
+<DT><B>-n</B>, <B>--noload</B>
+
+<DD>
+Fausse exécution. Tout faire, mais ne rien charger dans le noyau. Avec option
+<B>-m</B> ou <B>-O</B>, l'exécution produira les fichiers carte ou blob.
+Comme le module n'est pas chargé, l'adresse réelle du noyau est inconuue,
+ainsi les fichiers utilisent une adresse de chargement arbitraire
+0x12340000.
+<DT><B>-o</B> <I>module_name</I>, <B>--name</B>=<I>module_name</I><DD>
+Indique explicitement le nom du module, plutôt que d'utiliser le celui déduit
+du fichier objet.
+<DT><B>-O</B> <I>blob_name</I>, <B>--blob</B>=<I>blob_name</I><DD>
+Sauver le fichier objet dans <I>blob_name</I>. Le résultat est un blob binaire
+(pas d'en-tête ELF) montrant exactement ce qui est chargé dans noyau
+après manipulation et déplacemen des sections.
+L' option <B>-m</B> est recommandée pour obtenir une carte de cet objet.
+<DT><B>-p</B>, <B>--probe</B>
+
+<DD>
+Vérifie si le module peut être chargé avec succès. Cela inclut la position du
+fichier objet dans le chemin des modules, la vérification
+des numéros de versions, et la résolution des commandes. Elle ne vérifie pas
+les déplacements et ne produit pas de fichier blob.
+<DT><B>-P</B> <I>prefix</I>, <B>--prefix</B>=<I>prefix</I><DD>
+Cette option sert pour les modules avec numéros de version, et les noyaux smp
+ou bigmem, car ces modules ont un préfixe supplémentaire ajouté aux noms des
+symboles. Si le noyau a été construit avec les numéros de versions pour les
+symboles, alors <B>insmodfP extraiera automatiquement le préfixé de la définition
+de &quot;get_module_symbol&quot; ou &quot;inter_module_get&quot;, l'un des deux doit exister dans
+tous les noyaux qui supportent les modules. Si le noyau n'a pas de version
+pour les symboles, mais que le module en a, alors
+l'utilisateur doit fournir l'option
+-P</B>.
+
+<DT><B>-q</B>, <B>--quiet</B>
+
+<DD>
+Ne pas afficher la listes des commandes non résolues.
+Ne pas signaler les problèmes de numéros de versions.
+Les problèmes ne seront visibles que dans le statut de sortie de <B>insmod</B>.
+<DT><B>-r</B>, <B>--root</B>
+
+<DD>
+<DT><B></B>
+
+<DD>
+Certains utilisateurs compilent les modules sans droits root et les installent
+en étant root. Ceci risque de créer des modules n'appartenant pas à root, même
+si le répertoire des modules est propriété du root.
+Si un tel compte utilisateur est piraté, un intrus peut modifier ces modules
+et les utiliser pour obtenir un accès root.
+<DT><B></B>
+
+<DD>
+Par défaut, modutils rejettera les demandes d'utilisation d'un module qui
+n'appartient à root. L'option <B>-r</B> supprimera l'erreur et autorisera le
+chargement de module n'appartenant pas à root. <B>Note&nbsp;:</B> la valeur par
+défaut pour la vérification d'appartenance à root peut être modifiée dans
+la configuration de modutils.
+<DT><I></I>
+
+<DD>
+<B>L'utilisation de -r ou la configuration &quot;pas de vérification root&quot; 
+est un danger pour la sécurité et est
+déconseillée.</B>
+<DT><B>-s</B>, <B>--syslog</B>
+
+<DD>
+Envoie les messages à <B><A HREF="/cgi-bin/man/man2html?3+syslog">syslog</A></B>(3) plutôt que sur le terminal.
+<DT><B>-S</B>, <B>--kallsyms</B>
+
+<DD>
+Force le module chargé à avoir des données <B>kallsyms</B>, même si le noyau ne
+le supporte pas. Cette option sert sur les petits systèmes où le noyau est 
+chargé sans données <B>kallsyms</B>, mais que les modules ont besoin de
+<B>kallsyms</B> pour le débogage. Configuration par défaut sur Red Hat Linux.
+<DT><B>-v</B>, <B>--verbose</B>
+
+<DD>
+Rends insmod plus volubile.
+<DT><B>-V</B>, <B>--version</B>
+
+<DD>
+Affiche le numéro de version de <B>insmod</B>.
+<DT><B>-X</B>, <B>--export</B>; <B>-x</B>, <B>--noexport</B>
+
+<DD>
+Respectivement, exporter ou non tous les symboles externes du module. La valeur
+par défaut est l'exportation des symboles. Cette noption n'est effective que
+si le module n'exporte pas explicitement sa propre table de symbole,
+ce qui est déconseillé.
+<DT><B>-Y</B>, <B>--ksymoops</B>; <B>-y</B>, <B>--noksymoops</B>
+
+<DD>
+Respectivement ajoute ou non les symboles ksymoops à ksyms. Ces symboles servent
+à ksymoops pour aider au débogage si il y a un problème (Oops) dans le module.
+La valeur par défaut est de définir les symboles <B>ksymoops</B>. Cette option
+est indépendante de  <B>-X</B>/<B>-x</B>.
+<DT><B></B>
+
+<DD>
+Les symboles <B>ksymoops</B> ajoutent environ 260 octets par module chargé. À
+moins d'être vraiment à court de mémoire pour le noyau et de tenter de réduire
+ksyms au minimum, utilisez la configuration par défaut pour être plus à l'aise
+au débogage. Les symboles <B>ksymoops</B> sont nécessaires pour la sauvegarde
+de données persistantes de modules.
+<DT><B>-N</B>, <B>--numeric-only</B>
+
+<DD>
+Ne vérifie que la partie numérique de la version du module par rapport à celle
+du noyau, c'est-à-dire ignore le suffixe EXTRAVERSION pour savoir si le module
+appartient au noyau.
+Cette option est automatiquement active pour les noyaux à partir du 2.5, et
+optionnel pour les précédents.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H3>PARAMÈTRES DES MODULES</H3>
+
+Des modules acceptent des paramètres au chargement pour adapter leur action.
+Ces paramètres sont souvent des ports E/S et des numéros d'IRQ variant d'une
+machine à l'autre et ne peuvent être déterminés à partir du matériel.
+<P>
+
+Dans les modules pour les noyau 2.0, tout symbole d'entier ou de pointeur
+caractère peut être manipulé comme un paramètre et être modifié. Depuis les
+noyaux 2.1, les symboles sont explicitement marqués comme des paramètres, afin
+que seules des données spécifiques soient modifiables. De plus le type est
+indiqué pour vérifier la valeur fournie au chargement.
+<P>
+
+Pour les entiers, les valeurs peuvent être en base 10, 8 ou 16, comme en C&nbsp;:
+17, O21 ou Ox11. Les éléments de tableau sont fournis en séquence, séparés par
+des virgules. Des éléments peuvent être `sautés'
+en omettant leur valeur.
+<P>
+
+Dans les modules 2.0, les valeurs ne débutant pas par un nombre sont considérées
+comme des chaînes. Depuis les 2.1, l'information sur le type de paramètre indique
+si la valeur doit être considérée comme une chaîne. Si la valeur commence par
+un guillemet
+<BR>&nbsp;(<B>&quot;</B>),
+
+<BR>&nbsp;la&nbsp;chaîne&nbsp;est&nbsp;interprétée&nbsp;comme&nbsp;en&nbsp;C,&nbsp;avec&nbsp;séquence&nbsp;d'échappement
+et le reste. Notez que depuis la ligne de commande du shell, les guillemets
+doivent être protégés pour éviter leur interprétation par ce dernier.
+<A NAME="lbAG">&nbsp;</A>
+<H3>SYMBOLES ET MODULES SOUS LICENCE GPL</H3>
+
+Depuis le noyau 2.4.10, les modules doivent avoir une chaîne indiquant leur
+licence, définie par <B>MODULE_LICENSE()</B>. Plusieurs chaînes sont reconnues
+comme étant compatibles GPL, tout autre chaîne de licence ou l'absence de
+licence est considérée comme propriétaire. Voir
+<I>include/linux/module.h</I> pour une liste des chaînes compatibles GPL.
+<P>
+
+Si le noyau supporte l'attribut <I>/proc/sys/kernel/tainted</I>, alors
+<B>insmod</B> fera un OU entre l'attribut et '1' au chargement d'un module sans
+licence GPL. Un avertissement sera affiché si le noyau supporte le mode taché
+(tainted) et qu'on charge un module sans licence. Un avertissement est fourni
+pour tout module ayant <B>MODULE_LICENSE()</B> non compatible GPL, même sur les
+noyaux anciens ne supportant pas l'entachement. Ceci limite les avertissements
+quand les modutils récents sont utilisés sur des noyaux anciens.
+<P>
+
+Le mode <B>insmod&nbsp;-f</B> (force) fera un OU entre l'attribut tainted et '2'
+sur les noyaux supportant l'entachment. Ceci déclenche toujours un avertissement.
+<P>
+
+Certains développeurs du noyau réclament que les symboles exportés par leur code
+ne soit utilisés que dans des modules avec une licence compatible GPL. Ces
+symboles sont exportés avec <B>EXPORT_SYMBOL_GPL</B> plutôt qu'avec le normal
+<B>EXPORT_SYMBOL</B>. Les symboles GPL-seulement exportés par le noyau et d'autres
+modules ne sont visibles que des modules ayant une licence compatible GPL. Ils
+apparaissent dans <I>/proc/ksyms</I> avec le préfixe '<B>GPLONLY_</B>'.
+<B>insmod</B> ignore le préfixe <B>GPLONLY_</B> des symboles en chargeant un module
+avec une licence compatible GPL, afin que le module fasse référence au nom du
+symbole sans le préfixe. Les symboles GPL-seulement ne sont pas rendus
+disponibles aux modules sans licence compatible GPL, ou sans licence
+indiquée.
+<A NAME="lbAH">&nbsp;</A>
+<H3>AIDE KSYMOOPS</H3>
+
+Pour aider au débogage des problèmes du noyau avec des modules, <B>insmod</B>
+ajoute par défaut des symboles dans ksyms, voir l'option <B>-Y</B>.
+Ces symboles débutent avec <B>__insmod_modulename_</B>. Le <I>modulename</I> est
+nécessaire pour rendre les symboles uniques, il est possible de charger le même
+objet plusieurs fois sous différents noms de modules.
+Actuellement les commandes définies sont&nbsp;:
+<DL COMPACT>
+<DT><B>__insmod_modulename_Oobjectfile_Mmtime_Vversion</B>
+
+<DD>
+<I>objectfile</I> est le nom du fichier depuis lequel l'objet a été chargé.
+Ceci garanti que ksymoops peut accéder correctement au code de l'objet.
+<I>mtime</I> est l'horodatage en hexadécimal de la dernière modification du
+fichier en hexadécimal, zéro si <B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2) a échoué. <I>version</I> est la
+version du noyau pour lequel le module a été compilé, -1 si la version n'est
+pas disponible. Le symbole _0 est l'adresse de début de l'en-tête du module.
+<DT><B>__insmod_modulename_Ssectionname_Llength</B>
+
+<DD>
+Ce symbole apparaît au début des sections ELF sélectionnées,
+actuellement .text, .rodata, .data .bss, et .sbss. Elle apparaît seulement si la
+section a une taille non-nulle. <I>sectionname</I> est le nom de la section ELF,
+<I>length</I>  est la longueur en décimal de la section. Ces symboles aident
+ksymoops à déterminer les adresses des sections dans lesquelles aucun symbole
+n'est disponible.
+<DT><B>__insmod_modulename_Ppersistent_filename</B>
+
+<DD>
+Créé par <B>insmod</B> seulement si le module a un ou plusieurs paramètres qui
+sont marqués comme données persistantes, et si un fichier de sauvegarde
+(voir<B>-e</B>, plus haut) est disponible.
+</DL>
+<P>
+
+L'autre problème avec le débogage des problèmes du noyau dans les modules est
+que le contenu de <I>/proc/ksyms</I> et <I>/proc/modules</I> peut changer entre
+l'instant du Oops et le moment où vous analysez le fichier journal. Pour pallier
+ce problème, si le répertoire <I>/var/log/ksymoops</I> existe alors <B>insmod</B>
+et <B>rmmod</B> copieront automatiquement <I>/proc/ksyms</I> et <I>/proc/modules</I>
+dans <I>/var/log/ksymoops</I> avec le préfixe `date&nbsp;+%Y%m%d%H%M%S`.
+L'administrateur système peut indiquer à ksymoops quel fichier employer pour
+déboguer un Oops. Il n'y a pas d'option pour désactiver cette copie automatique,
+si vous ne voulez pas qu'elle se produise, il ne faut pas créer de répertoire
+<I>/var/log/ksymoops</I>. Si le répertoire existe, il doit appartenir à root,
+avoir le mode 644 ou 600 et vous devriez lancer chaque jour le script suivant,
+installé comme <B>insmod_clean_ksymoops</B>.
+<P>
+
+
+<PRE>
+  #!/bin/sh
+  # Supprime la sauvegarde de ksyms et des modules sans accès depuis 2 jours
+  if [ -d /var/log/ksymoops ]
+  then
+          set -e
+          # S'assurer qu'il y en a toujours au moins une version
+          d=`date +%Y%m%d%H%M%S`
+          cp -a /proc/ksyms /var/log/ksymoops/${d}.ksyms
+          cp -a /proc/modules /var/log/ksymoops/${d}.modules
+          find /var/log/ksymoops -type f -atime +2 -exec rm {} \;
+  fi
+</PRE><A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+rmmod">rmmod</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+modprobe">modprobe</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+depmod">depmod</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+lsmod">lsmod</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ksyms">ksyms</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?2+modules">modules</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?8+genksyms">genksyms</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+kerneld">kerneld</A></B>(8),
+
+<B>ksymoops</B>(noyau).
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Le support des modules a été conçu par Illustre Anonyme
+<BR>
+
+La version initiale pour Linux a été faite par Bas Laarhoven &lt;<A HREF="mailto:bas@vimec.nl">bas@vimec.nl</A>&gt;
+<BR>
+
+La version 0.99.14 a été faite par Jon Tombs &lt;<A HREF="mailto:jon@gtex02.us.es">jon@gtex02.us.es</A>&gt;
+<BR>
+
+Complétée par Bjorn Ekwall &lt;<A HREF="mailto:bj0rn@blox.se">bj0rn@blox.se</A>&gt;
+<BR>
+
+Aide ELF originelle de Eric Youngdale &lt;<A HREF="mailto:eric@aib.com">eric@aib.com</A>&gt;
+<BR>
+
+Réécrite pour 2.1.17 par Richard Henderson &lt;<A HREF="mailto:rth@tamu.edu">rth@tamu.edu</A>&gt;
+<BR>
+
+Complétée par Bjorn Ekwall &lt;<A HREF="mailto:bj0rn@blox.se">bj0rn@blox.se</A>&gt; pour modutils-2.2.*, Mars 1999
+<BR>
+
+Support pour ksymoops par Keith Owens &lt;<A HREF="mailto:kaos@ocs.com.au">kaos@ocs.com.au</A>&gt;, Mai 1999
+<BR>
+
+Mainteneur actuel&nbsp;:  Keith Owens &lt;<A HREF="mailto:kaos@ocs.com.au">kaos@ocs.com.au</A>&gt;.
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Jérome Signouret, 2000.
+<BR>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">PARAMÈTRES DES MODULES</A><DD>
+<DT><A HREF="#lbAG">SYMBOLES ET MODULES SOUS LICENCE GPL</A><DD>
+<DT><A HREF="#lbAH">AIDE KSYMOOPS</A><DD>
+</DL>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,201 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TTYSLOT</TITLE>
+</HEAD><BODY>
+<H1>TTYSLOT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ttyslot - Trouver l'emplacement du terminal en cours dans un fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>    /* sur les systèmes BSD */
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>    /* sur les systèmes V   */
+
+<P>
+<B>int ttyslot(void);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>ttyslot</B>()
+
+renvoie la position de l'entrée du terminal en cours dans un fichier.
+<P>
+
+&quot;Dans quel fichier&nbsp;?&quot; demandez-vouz... Bonne question&nbsp;; voyons un peu d'histoire.
+<A NAME="lbAE">&nbsp;</A>
+<H3>HISTOIRE ANCIENNE</H3>
+
+Il existaut un fichier
+<I>/etc/ttys</I>
+
+dans Unix V6, qui était consulté par
+<B><A HREF="/cgi-bin/man/man2html?8+init">init</A></B>(8)
+
+afin de savoir que faire sur chaque terminal.
+Chaque ligne était composée de trois caractères.
+Le premier était '0' ou '1', le '0' signifiant &quot;ignoré&quot;.
+Le second caractère indiquait le terminal&nbsp;: '8' signifiant &quot;/dev/tty8&quot;.
+Le troisième caractère était un argument pour
+<B><A HREF="/cgi-bin/man/man2html?8+getty">getty</A></B>(8)
+
+indiquant la séquence de vitesses à essayer ('-' signifiait &quot;essayer à partir
+de 110 bauds&quot;). Ainsi une ligne typique était &quot;18-&quot;.
+Une déconnexion sur une ligne se faisait en changeant le '1' en '0', en 
+envoyant un signal à init, en rechangeant à l'inverse et en renvoyant un signal.
+<P>
+
+Sous Unix V7  le format a changé&nbsp;:  le second caractère devenait
+l'argument pour
+<B><A HREF="/cgi-bin/man/man2html?8+getty">getty</A></B>(8)
+
+indiquant la séquence de vitesses à essayer ('0' signifiait &quot;essayer en boucle
+300-1200-150-110 baud&quot; et '4' signifiait &quot;console DECwriter&quot;) tandis que
+le reste de la ligne contenait le nom du terminal. Une ligne typique était
+&quot;14console&quot;.
+<P>
+
+Les système ultérieurs utilisèrent une syntaxe plus élaborée.
+Les systèmes type Sys-V employaient
+<I>/etc/inittab</I>
+
+à la place.
+<A NAME="lbAF">&nbsp;</A>
+<H3>HISTOIRE ANCIENNE (BIS)</H3>
+
+D'autre part, il existe un fichier
+<I>/etc/utmp</I>
+
+listant les gens actuellement connectés. Il est géré par
+<B><A HREF="/cgi-bin/man/man2html?8+login">login</A></B>(8).
+
+Il a une taille fixe, et la position appropriée dans le fichier est
+déterminée par
+<B><A HREF="/cgi-bin/man/man2html?8+login">login</A></B>(8)
+
+en utilisant l'appel
+<B>ttyslot</B>()
+
+pour trouver le numéro de la ligne dans
+<I>/etc/ttys</I>
+
+(à partir de 1).
+<A NAME="lbAG">&nbsp;</A>
+<H3>SÉMANTIQUE DE TTYSLOT</H3>
+
+Ainsi, la fonction
+<B>ttyslot</B>()
+
+renvoie l'index du terminal de contrôle du processus appelant dans le
+fichier
+<I>/etc/ttys</I>,
+
+qui est aussi (en principe) l'index de l'entrée pour l'utilisateur en cours
+dans le fichier
+<I>/etc/utmp</I>.
+
+BSD utilise encore le fichier
+<I>/etc/ttys</I>,
+
+mais pas les système SyS-V, qui ne peuvent donc pas si référer.
+Sur ces systèmes, la documentation dit que
+<B>ttyslot</B>()
+
+renvoie l'index de l'utilisateur appelant dans la base de donnée
+de comptabilité des utilisateurs.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Si elle réussit, cette fonction renvoie le numéro d'entrée.
+Si elle échoue (par exemple si aucun des descripteurs 0, 1 ou 2 n'est
+associé avec un terminal trouvé dans la base de données), elle renvoie
+0 sur Unix V6 et V7 les systèmes BSD, mais -1 sur les autres systèmes V.
+<A NAME="lbAI">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le fichier utmp se rencontre à divers endroits sur les différents systèmes,
+comme
+<I>/etc/utmp</I>,
+
+<I>/var/adm/utmp</I>,
+
+<I>/var/run/utmp</I>.
+
+<P>
+
+L'implémentation de cette fonction dans la GlibC 2 lit le fichier
+<B>_PATH_TTYS</B>,
+
+défini dans
+<I>&lt;<A HREF="file:///usr/include/ttyent.h">ttyent.h</A>&gt;</I>
+
+comme &quot;/etc/ttys&quot;. Elle renvoie 0 en cas d'erreur.
+Comme les systèmes Linux n'ont habituellement pas de &quot;/etc/ttys&quot;, elle
+renverra toujours 0.
+<P>
+
+Minix avait aussi
+<I>fttyslot</I>(<I>fd</I>).
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+<B>ttyslot</B>()
+
+est apparu dans Unix V7.
+<A NAME="lbAK">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+XPG2. Legacy dans SUSv2. Supprimé dans SUSv3.
+SUSv2 demande un -1 en cas d'erreur.
+<A NAME="lbAL">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+getttyent">getttyent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+ttyname">ttyname</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+utmp">utmp</A></B>(5)
+
+<A NAME="lbAM">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">HISTOIRE ANCIENNE</A><DD>
+<DT><A HREF="#lbAF">HISTOIRE ANCIENNE (BIS)</A><DD>
+<DT><A HREF="#lbAG">SÉMANTIQUE DE TTYSLOT</A><DD>
+</DL>
+<DT><A HREF="#lbAH">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAI">NOTES</A><DD>
+<DT><A HREF="#lbAJ">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAK">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAL">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAM">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:06 GMT, February 11, 2014
+</BODY>
+</HTML>

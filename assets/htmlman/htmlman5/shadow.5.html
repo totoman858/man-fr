@@ -1,0 +1,125 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SHADOW</TITLE>
+</HEAD><BODY>
+<H1>SHADOW</H1>
+Section: File Formats (5)<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+shadow - fichiers de mots de passe cryptés
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>/etc/shadow</I>
+
+contient les mots de passe cryptés des utilisateurs [&nbsp;Ndt&nbsp;: plus exactement, le résultat du cryptage d'une chaîne de longueur nulle
+avec le mot de passe comme clé de cryptage&nbsp;] ainsi qu'éventuellement des informations sur l'âge des mots de passe&nbsp;:
+<DL COMPACT>
+<DT><DD>
+Nom de connexion
+<DT><DD>
+Mot de passe crypté
+<DT><DD>
+Nombre de jours écoulés depuis le 1er janvier 1970 jusqu'au dernier changement de mot de passe
+<DT><DD>
+Nombre de jours durant lesquels le mot de passe est encore valide
+<DT><DD>
+Nombre de jours après lesquels le mot de passe doit être changé
+<DT><DD>
+Nombre de jours avant l'expiration du mot de passe impliquant l'avertissement de l'utilisateur
+<DT><DD>
+Nombre de jours après l'expiration provoquant la désactivation du compte
+<DT><DD>
+Numéro du jour depuis le 1er janvier 1970 à partir duquel le compte a été désactivé
+<DT><DD>
+Champ réservé
+</DL>
+<P>
+
+Le champ 
+<I>mot de passe</I>
+
+doit être rempli.
+Le mot de passe crypté comprend 13 à 24 caractères pris dans 
+l'alphabet réduit a-z, A-Z, 0-9, . et /.
+Consultez <B><A HREF="/cgi-bin/man/man2html?3+crypt">crypt</A></B>(3) pour plus d'informations sur le traitement de cette chaîne.
+<P>
+
+La date de dernière modification du mot de passe est donné par le nombre de jours écoulés depuis le 1er janvier 1970 jusqu'au dernier changement de mot de passe.
+Le mot de passe ne peut être changé jusqu'à ce que le nombre de jours indiqués soit écoulé, et doit être changé après que le nombre maximum de jours indiqué.
+Si le nombre minimum de jours requis est plus grand que le nombre maximum de jours de validé, ce mot de passe
+<B>ne peut pas</B>
+
+être changé par l'utilisateur.
+<P>
+
+Un compte est considéré comme inactif et est désactivé si le mot de passe n'est pas changé dans l'intervalle spécifié après l'expiration du mot de passe.
+Un compte est également désactivé le jour indiqué quelles que soient les autres informations d'expiration.
+<P>
+
+Cette information est prioritaire sur tous les autres champs présents dans <I>/etc/passwd</I>.
+<P>
+
+Ce fichier <B>ne doit pas être</B> accessible en lecture par les utilisateurs normaux afin de maintenir la sécurité des mots de passe, en particulier contre les attaques aux dictionnaires.
+<A NAME="lbAD">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/etc/passwd - informations sur les comptes des utilisateurs
+<BR>
+
+/etc/shadow - mots de passe cryptés des utilisateurs
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+chage">chage</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+login">login</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+passwd">passwd</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+su">su</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+sulogin">sulogin</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?3+shadow">shadow</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+passwd">passwd</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pwconv">pwconv</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+pwunconv">pwunconv</A></B>(8)
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Julianne Frances Haugh (<A HREF="mailto:jfh@tab.com">jfh@tab.com</A>)
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Ce document est une traduction, réalisée par Thierry Vignaud et actualisée par Gérard Delafond et Alan Portal en Novembre 2004.
+L'équipe de traduction a fait le maximum pour réaliser une adaptation française de qualité.
+La version anglaise la plus à jour de ce document est toujours consultable via la commande&nbsp;: LANGUAGE=en man xxxx
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute erreur dans de cette page de manuel. 
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">FICHIERS</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">AUTEUR</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:55 GMT, February 11, 2014
+</BODY>
+</HTML>

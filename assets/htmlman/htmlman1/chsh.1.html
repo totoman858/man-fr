@@ -1,0 +1,103 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CHSH</TITLE>
+</HEAD><BODY>
+<H1>CHSH</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+chsh - Changer le shell appelé à la connexion.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>chsh</B>
+
+[&nbsp;-s&nbsp;shell&nbsp;] [&nbsp;-l&nbsp;] [&nbsp;-u&nbsp;] [&nbsp;-v&nbsp;] [&nbsp;utilisateur&nbsp;]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>chsh</B>
+
+est invoqué pour changer le shell qui est appelé lors de la connexion de
+l'utilisateur.
+Si aucun shell n'est mentionné sur la ligne de commande,
+<B>chsh</B>
+
+va en réclamer un.
+<A NAME="lbAE">&nbsp;</A>
+<H2>SHELLS VALIDES</H2>
+
+<B>chsh</B>
+
+acceptera le nom complet (avec chemin d'accès) de tout fichier exécutable
+sur le système. Néanmoins, il affichera un message d'avertissement si le
+shell n'est pas mentionné dans le fichier
+<I>/etc/shells</I>.
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><I>-s, --shell</I>
+
+<DD>
+Indiquer le shell de connexion désiré.
+<DT><I>-l, --list-shells</I>
+
+<DD>
+Afficher la liste des shells mentionnés dans
+<I>/etc/shells</I>
+
+puis quitter.
+<DT><I>-u, --help</I>
+
+<DD>
+Afficher un message d'aide puis quitter.
+<DT><I>-v, --version</I>
+
+<DD>
+Afficher un numéro de version puis quitter.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+login">login</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?5+passwd">passwd</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?5+shells">shells</A></B>(5)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Salvatore Valente &lt;<A HREF="mailto:svalente@mit.edu">svalente@mit.edu</A>&gt;
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">SHELLS VALIDES</A><DD>
+<DT><A HREF="#lbAF">OPTIONS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">AUTEURS</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:41 GMT, February 11, 2014
+</BODY>
+</HTML>

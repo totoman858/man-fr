@@ -1,0 +1,572 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DBOPEN</TITLE>
+</HEAD><BODY>
+<H1>DBOPEN</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+dbopen - Méthodes d'accès aux bases de données.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/limits.h">limits.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/db.h">db.h</A>&gt;
+
+DB *
+dbopen(const char *fichier, int attributs, int mode, DBTYPE type_base,
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const void *openinfo);
+</B></PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>Dbopen</I>
+
+est l'interface de bibliothèque pour les fichiers de bases de données.
+Les formats de fichiers supportés sont les arbres binaires, les fichiers
+hachés et les fichiers UNIX.
+L'arbre binaire est une représentation d'une structure équilibrée et triée.
+Les fichiers hachés représentent des tables de hachage extensibles et dynamiques.
+Le format de fichier Unix est un flux d'octets avec des enregistrements
+de longueur fixe ou variable.
+Les formats et les informations spécifiques aux fichiers sont fournis en
+détail dans les pages de manuel respectives
+<I><A HREF="/cgi-bin/man/man2html?3+btree">btree</A></I>(3),
+
+<I><A HREF="/cgi-bin/man/man2html?3+hash">hash</A></I>(3)
+
+et
+<I><A HREF="/cgi-bin/man/man2html?3+recno">recno</A></I>(3).
+
+<P>
+
+Dbopen ouvre le
+<I>fichier</I>
+
+en lecture et/ou écriture.
+Les fichiers qui n'ont en aucun cas besoin d'être sauvegardés sur disque
+peuvent être créés avec le paramètre de fichier à NULL.
+<P>
+
+Les arguments
+<I>attribut</I>
+
+et 
+<I>mode</I>
+
+doivent être spécifiés pour la routine
+<I><A HREF="/cgi-bin/man/man2html?2+open">open</A></I>(2),
+
+toutefois seuls les attributs O_CREAT, O_EXCL, O_EXLOCK, O_NONBLOCK,
+O_RDONLY, O_RDWR, O_SHLOCK et O_TRUNC ont un sens.
+(Notez que l'ouverture d'un fichier de base de données en mode O_WRONLY n'est pas possible.)
+<P>
+
+Le
+<I>type_base</I>
+
+est un argument ayant le type DBTYPE (défini dans le fichier d'en-tête &lt;<A HREF="file:///usr/include/db.h">db.h</A>&gt;)
+et peut prendre les valeurs DB_BTREE, DB_HASH ou DB_RECNO.
+<P>
+
+L'argument
+<I>openinfo</I>
+
+est un pointeur vers une structure spécifique à la méthode d'accés décrite dans
+la page de manuel de cette méthode d'accès. Si
+<I>openinfo</I>
+
+est NULL, chaque méthode d'accès utilisera un comportement par défaut approprié
+pour le système et le type de base de données.
+<P>
+
+<I>Dbopen</I>
+
+renvoie un pointeur sur une structure DB s'il réussit, ou NULL en cas d'erreur.
+La structure DB est définie dans le fichier d'en-tête &lt;<A HREF="file:///usr/include/db.h">db.h</A>&gt; et contient, au moins,
+les champs suivants :
+<P>
+<PRE>
+typedef struct {
+<DL COMPACT><DT><DD>DBTYPE type;
+int (*close)(const DB *db);
+int (*del)(const DB *db, const DBT *clé, u_int flags);
+int (*fd)(const DB *db);
+int (*get)(const DB *db, DBT *clé, DBT *data, u_int flags);
+int (*put)(const DB *db, DBT *clé, const DBT *data,
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;u_int flags);
+int (*sync)(const DB *db, u_int flags);
+int (*seq)(const DB *db, DBT *clé, DBT *data, u_int flags);
+</DL>
+} DB;
+</PRE>
+
+<P>
+
+Ces éléments décrivent un type de base de données et un jeu de fonctions effectuant
+diverses actions.
+Ces fonctions reçoivent un pointeur sur une structure semblable à celle renvoyée par
+<I>dbopen</I>,
+
+et parfois un ou plusieurs pointeurs sur des structures clés/données et une valeur
+d'attribut.
+<DL COMPACT>
+<DT>type<DD>
+Le type de méthode d'accès sous-jacente (et le type de fichier).
+<DT>close<DD>
+Un pointeur sur une routine qui vide vers le disque toutes les informations en cache,
+libère les ressources allouées, et ferme le(s) fichier(s) de support.
+Comme les paires clés/données peuvent être cachées en mémoire, l'oubli de synchronisation
+du fichier avec les fonctions 
+<I>close</I>
+
+ou
+<I>sync</I>
+
+peut résulter dans des données incohérentes ou perdues.
+La routine
+<I>close</I>
+
+renvoie -1 en cas d'erreur (et remplit
+<I>errno</I>)
+
+et 0 si elle réussit.
+<DT>del<DD>
+Un pointeur vers une routine permettant de supprimer des paires clés/données
+de la base de données.
+<DT><DD>
+Le paramètre
+<I>flag</I>
+
+peut prendre l'une des valeurs suivantes:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>R_CURSOR<DD>
+Supprimer l'enregistrement référencé par le curseur. Ce curseur
+doit bien entendu avoir été précédemment positionné.
+</DL>
+</DL>
+
+<DT><DD>
+La routine
+<I>delete</I>
+
+renvoie 0 si elle réussit, -1 en cas d'erreur (et remplit
+<I>errno</I>),
+
+ou 1 si la
+<I>clé</I>
+
+indiquée n'a pas été trouvée dans le fichier.
+<DT>fd<DD>
+Un pointeur vers une routine qui renvoie le descripteur du fichier
+représentant la base de données. Le même descripteur de fichier doit
+être fourni à tous les processus qui invoquent
+<I>dbopen</I>
+
+avec le même nom de
+<I>fichier</I>.
+
+Ce descripteur de fichier doit pouvoir servir d'argument aux
+fonctions de verrouillage
+<I><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></I>(2)
+
+et
+<I><A HREF="/cgi-bin/man/man2html?2+flock">flock</A></I>(2).
+
+Le descripteur de fichier n'est pas nécessairement associé avec
+l'un des fichiers sous-jacents utilisés par les méthodes d'accès.
+Aucun descripteur n'est disponible pour les base de données en mémoire.
+La routine
+<I>fd</I>
+
+renvoie -1 en cas d'erreur (et remplit
+<I>errno</I>),
+
+ou le descripteur de fichiers en cas de succès.
+<DT>get<DD>
+Un pointeur vers la routine d'interface de recherche assistée d'une clé dans
+la base de données. L'adresse et la longueur des données associées avec la
+<I>clé</I>
+
+indiquée sont fournies dans une structure référencée par l'argument
+<I>data</I>.
+
+La routine
+<I>get</I>
+
+renvoie -1 en cas d'erreur (et remplit
+<I>errno</I>),
+
+0 en cas de réussite, ou 1 si la
+<I>clé</I>
+
+n'a pas été trouvée dans le fichier.
+<DT>put<DD>
+Un pointeur vers une routine permettant de stocker les paires clés/données dans
+la base de données.
+<DT><DD>
+Le paramètre
+<I>flag</I>
+
+peut prendre l'une des valeurs suivantes :
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>R_CURSOR<DD>
+Remplacer la paire clé/donnée référencée par le curseur. Ce curseur
+doit avoir été positionné précédemment.
+<DT>R_IAFTER<DD>
+Ajouter les données immédiatement après les données référencées par la
+<I>clé</I>,
+
+créant ainsi une nouvelle paire clé/donnée.
+Le numéro d'enregistrement de la paire ajoutée est renvoyé dans la structure
+<I>clé.</I>
+
+(Utilisable uniquement avec la méthode d'accès DB_RECNO)
+<DT>R_IBEFORE<DD>
+Ajouter les données immédiatement avant les données référencées par la
+<I>clé</I>,
+
+créant ainsi une nouvelle paire clé/donnée.
+Le numéro d'enregistrement de la paire insérée est renvoyé dans la structure
+<I>clé.</I>
+
+(Utilisable uniquement avec la méthode d'accès DB_RECNO)
+<DT>R_NOOVERWRITE<DD>
+N'ajouter la paire clé/donnée que si la clé n'existe pas précédement.
+<DT>R_SETCURSOR<DD>
+Enregistrer la paire clé/donnée, en positionnant ou initialisant la
+position du curseur pour la référencer.
+(Utilisable uniquement avec les méthodes d'accès DB_RECNO et DB_TREE)
+</DL>
+</DL>
+
+<DT><DD>
+R_SETCURSOR n'est disponible que pour les méthodes DB_BTREE et DB_RECNO
+car cela implique que les clés ont un ordre inhérent immuable.
+<DT><DD>
+R_IAFTER et R_IBEFORE ne sont disponibles qu'avec la méthode DB_RECNO
+car ils impliquent que la méthode d'accès soit capable de créer de
+nouvelles clés. Ceci n'est vrai que si les clés sont ordonnées et
+indépendantes, comme des numéros d'enregistrement.
+<DT><DD>
+Le comportement par défaut de la routine
+<I>put</I>
+
+est de stocker une nouvelle paire clé/donnée, en remplaçant toute
+clé existant précédemment.
+<DT><DD>
+Les routines
+<I>put</I>
+
+renvoient -1 en cas d'erreur (et remplissent
+<I>errno</I>),
+
+0 en cas de succès, ou 1 si l'attribut R_NOOVERWRITE
+a été indiqué dans
+<I>flag</I>,
+
+et si la clé existait déjà dans le fichier.
+<DT>seq<DD>
+Un pointeur vers la routine d'interface pour la recherche séquentielle
+dans la base de données. L'adresse et la longueur de la clé sont
+renvoyées dans une structure référencée par
+<I>clé</I>,
+
+et l'adresse et la longueur des données dans une structure référencée par
+<I>data</I>.
+
+<DT><DD>
+La rechercher séquentielle de paire clé/donnée peut avoir lieu à tout
+moment, et la position du ``curseur'' n'est pas affectée par les routine
+<I>del</I>,
+
+<I>get</I>,
+
+<I>put</I>,
+
+ou
+<I>sync</I>.
+
+Les modifications de la base de données durant un balayage séquentiel seront
+visibles par le balayage, c'est à dire que les enregistrements insérés avant
+le curseur ne seront pas vus, mais les enregistrements insérés après le
+curseur seront renvoyés.
+<DT><DD>
+La valeur de
+<I>flag</I>
+
+<B>doit</B>
+
+être l'une des valeurs suivantes :
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>R_CURSOR<DD>
+La routine renvoie les données associées avec la clé indiquée. Ceci
+est différent du comportement de la routine 
+<I>get</I>
+
+car le curseur est également positionné ou initialisé.
+(Notez que pour la méthode d'accès DB_BTRE, la clé renvoyée ne correspond
+pas nécessairement à la clé indiquée. On retourne la plus petite clé
+supérieure ou égale à celle indiquée, ce qui permet des correspondances
+partielles ou des recherches d'intervalles).
+<DT>R_FIRST<DD>
+On renvoie la première paire clé/donnée de la base, et le curseur
+est initialisé ou positionné pour la référencer.
+<DT>R_LAST<DD>
+On renvoie la dernière paire clé/donnée de la base, et le curseur
+est initialisé ou positionné pour la référencer.
+(Disponible uniquement pour les méthodes DB_TREE et DB_RECNO).
+<DT>R_NEXT<DD>
+Renvoyer la paire clé/donnée immédiatement après le curseur. Si le
+curseur n'est pas positionné, le comportement est le même que R_FIRST.
+<DT>R_PREV<DD>
+Renvoyer la paire clé/donnée immédiatement avant le curseur. Si le
+curseur n'est pas positionné, le comportement est le même que R_LAST.
+(Disponible uniquement pour les méthodes DB_TREE et DB_RECNO).
+</DL>
+</DL>
+
+<DT><DD>
+R_LAST et R_PREV ne sont disponibles que pour les méthodes DB_BTREE et DB_RECNO
+car ils impliquent que les clés aient un ordre inhérent immuable.
+<DT><DD>
+La routine
+<I>seq</I>
+
+renvoie -1 en cas d'erreur (et remplit
+<I>errno</I>),
+
+0 en cas de succès, et 1 s'il n'y a pas de paire clé/donnée supérieure ou
+égale à la clé indiquée ou courante. Si on tuilise la méthode DB_RECNO,
+si le fichier de base de données est un fichier spécial en mode caractères,
+et si aucune paire clé/donnée complète n'est actuellement disponible, la
+routine
+<I>seq</I>
+
+renvoie 2.
+<DT>sync<DD>
+Un pointeur vers une routine permettant de vider sur disque toutes les
+informations en cache. Si la base de données est uniquement en mémoire,
+la routine
+<I>sync</I>
+
+n'a pas d'effet, et réussira toujours.
+<DT><DD>
+La valeur de
+<I>flag</I>
+
+peut être la suivante :
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>R_RECNOSYNC<DD>
+Si on utilise la méthode DB_RECNO, cet attribut oblige la
+synchronisation à s'appliquer au fichier B-Tree sous-jacent au
+fichier RecNo, et non pas à ce dernier.
+(voir le champs
+<I>bfname</I>
+
+de la page de manuel
+<I><A HREF="/cgi-bin/man/man2html?3+recno">recno</A></I>(3)
+
+pour plus d'informations.)
+</DL>
+</DL>
+
+<DT><DD>
+La routine
+<I>sync</I>
+
+renvoie -1 en cas d'erreur (et remplit
+<I>errno</I>)
+
+ou 0 en cas de réussite.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>PAIRES CLÉS/DONNÉES</H2>
+
+L'accès à tous les types de fichiers est basé sur les paires clés/données.
+La structure de donnée suivante représente à la fois les clés et les données.
+<P>
+
+typedef struct {
+<DL COMPACT><DT><DD>
+void *data;
+<BR>
+
+size_t size;
+</DL>
+
+} DBT;
+<P>
+
+Les éléments de la structure DBT sont définis ainsi :
+<DL COMPACT>
+<DT>data<DD>
+Un pointeur vers une chaîne d'octets.
+<DT>size<DD>
+La longueur de la chaîne d'octets
+</DL>
+<P>
+
+Les chaînes d'octets des clés et des données peuvent avoir n'importe quelle
+longueur, avec la limitation que deux quelconques d'entre-elles doivent 
+pouvoir tenir simultanément en mémoire.
+Remarquez que les méthodes d'accès ne fournissent aucune garantie en ce
+qui concerne les alignements des chaînes d'octets.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+La routine
+<I>dbopen</I>
+
+peut échouer et placer dans
+<I>errno</I>
+
+n'importe laquelle des erreurs renvoyées par les routines
+<I><A HREF="/cgi-bin/man/man2html?2+open">open</A></I>(2)
+
+et
+<I><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></I>(3)
+
+ou l'une des erreurs suivantes :
+<DL COMPACT>
+<DT>[EFTYPE]<DD>
+Un fichier est mal formatté.
+<DT>[EINVAL]<DD>
+Un paramètre indiqué (par exemple fonction de hachage) est incompatible avec
+les spécifications du fichier actuel, ou n'a pas de sens pour la fonction
+(par exemple utiliser le curseur sans initialisation préalable). Ou encore,
+il y a une incompatibilité dans les numéros de version du fichier et du
+logiciel.
+</DL>
+<P>
+
+Les routines
+<I>close</I>
+
+peuvent échouer et fournir dans
+<I>errno</I>
+
+l'une quelconque des erreurs indiquées par les routines de bibliothèque
+<I><A HREF="/cgi-bin/man/man2html?2+close">close</A></I>(2),
+
+<I><A HREF="/cgi-bin/man/man2html?2+read">read</A></I>(2),
+
+<I><A HREF="/cgi-bin/man/man2html?2+write">write</A></I>(2),
+
+<I><A HREF="/cgi-bin/man/man2html?3+free">free</A></I>(3),
+
+ou
+<I><A HREF="/cgi-bin/man/man2html?2+fsync">fsync</A></I>(2).
+
+<P>
+
+Les routines
+<I>del</I>,
+
+<I>get</I>,
+
+<I>put</I>
+
+et
+<I>seq</I>
+
+peuvent échouer et fournir dans
+<I>errno</I>
+
+l'une quelconque des erreurs indiquées par les routines de bibliothèque
+<I><A HREF="/cgi-bin/man/man2html?2+read">read</A></I>(2),
+
+<I><A HREF="/cgi-bin/man/man2html?2+write">write</A></I>(2),
+
+<I><A HREF="/cgi-bin/man/man2html?3+free">free</A></I>(3)
+
+ou
+<I><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></I>(3).
+
+<P>
+
+Les routine
+<I>fd</I>
+
+peuvent échouer et remplir
+<I>errno</I>
+
+avec l'erreur ENOENT pour les bases de données en mémoire.
+<P>
+
+Les routines
+<I>sync</I>
+
+peuvent échouer et fournir dans
+<I>errno</I>
+
+l'une quelconque des erreurs indiquées par la routine de bibliothèque
+<I><A HREF="/cgi-bin/man/man2html?2+fsync">fsync</A></I>(2).
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<I><A HREF="/cgi-bin/man/man2html?3+btree">btree</A></I>(3),
+
+<I><A HREF="/cgi-bin/man/man2html?3+hash">hash</A></I>(3),
+
+<I><A HREF="/cgi-bin/man/man2html?3+mpool">mpool</A></I>(3),
+
+<I><A HREF="/cgi-bin/man/man2html?3+recno">recno</A></I>(3)
+
+<P>
+<I>LIBTP: Portable, Modular Transactions for UNIX</I>,
+
+Margo Seltzer, Michael Olson, USENIX proceedings, Winter 1992.
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Le typedef DBT est un mnémonique pour ``data base thang'', qui a été
+choisi car personne n'arrivait à trouver un nom raisonnable et pas encore
+utilisé.
+<P>
+
+L'interface avec les descripteurs de fichiers est une bidouille et sera supprimée
+dans les versions futures de l'interface.
+<P>
+
+Aucune méthode d'accès ne fournit de transactions, de verrouillages ou d'accès concurrents.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1999-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">PAIRES CLÉS/DONNÉES</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:30 GMT, February 11, 2014
+</BODY>
+</HTML>

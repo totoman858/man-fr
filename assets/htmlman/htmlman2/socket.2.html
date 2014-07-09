@@ -1,0 +1,480 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SOCKET</TITLE>
+</HEAD><BODY>
+<H1>SOCKET</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+socket - Créer un point de communication.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+
+<P>
+<B>int socket(int </B><I>domain</I><B>, int </B><I>type</I><B>, int </B><I>protocol</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>socket</B>
+
+crée un point de communication, et renvoie un descripteur.
+<P>
+
+Le paramètre 
+<I>domain</I>
+
+indique le domaine de communication pour le dialogue&nbsp;; ceci sélectionne 
+la famille de protocole à employer. Elles sont définies dans le fichier
+<B>&lt;<A HREF="file:///usr/include/linux/socket.h">linux/socket.h</A>&gt;</B>.
+
+Les formats actuellement proposés sont&nbsp;:
+<P>
+
+<TABLE>
+<TR VALIGN=top><TD>Nom</TD><TD>Utilisation</TD><TD>Page<BR></TD></TR>
+<TR VALIGN=top><TD>
+<B>PF_UNIX,PF_LOCAL</B>
+
+</TD><TD>
+Communication locale
+</TD><TD>
+<B><A HREF="/cgi-bin/man/man2html?7+unix">unix</A></B>(7)
+
+<BR></TD></TR>
+<TR VALIGN=top><TD>
+<B>PF_INET</B>
+
+</TD><TD>IPv4 Protocoles Internet</TD><TD>
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7)
+
+<BR></TD></TR>
+<TR VALIGN=top><TD>
+<B>PF_INET6</B>
+
+</TD><TD>IPv6 Protocoles Internet</TD><TD><BR></TD></TR>
+<TR VALIGN=top><TD>
+<B>PF_IPX</B>
+
+</TD><TD>IPX - Protocoles Novell</TD><TD>                                                     <BR></TD></TR>
+<TR VALIGN=top><TD>
+<B>PF_NETLINK</B>
+
+</TD><TD>
+Interface utilisateur noyau
+</TD><TD>
+<B><A HREF="/cgi-bin/man/man2html?7+netlink">netlink</A></B>(7)
+
+<BR></TD></TR>
+<TR VALIGN=top><TD>
+<B>PF_X25</B>
+
+</TD><TD>Protocole ITU-T X.25 / ISO-8208</TD><TD>
+<B><A HREF="/cgi-bin/man/man2html?7+x25">x25</A></B>(7)
+
+<BR></TD></TR>
+<TR VALIGN=top><TD>
+<B>PF_AX25</B>
+
+</TD><TD>
+Protocole AX.25 radio amateur
+</TD><TD><BR></TD></TR>
+<TR VALIGN=top><TD>
+<B>PF_ATMPVC</B>
+
+</TD><TD>Accès direct ATM PVCs</TD><TD><BR></TD></TR>
+<TR VALIGN=top><TD>
+<B>PF_APPLETALK</B>
+
+</TD><TD>Appletalk</TD><TD>
+<B><A HREF="/cgi-bin/man/man2html?7+ddp">ddp</A></B>(7)
+
+<BR></TD></TR>
+<TR VALIGN=top><TD>
+<B>PF_PACKET</B>
+
+</TD><TD>
+Interface paquet bas-niveau
+</TD><TD>
+<B><A HREF="/cgi-bin/man/man2html?7+packet">packet</A></B>(7)
+
+<BR></TD></TR>
+</TABLE>
+
+<P>
+
+Les sockets ont le
+<I>type</I>,
+
+indiqué, ce qui fixe la sémantique des communications. Les types
+définis actuellement sont&nbsp;:
+<DL COMPACT>
+<DT><B>SOCK_STREAM</B>
+
+<DD>
+Support de dialogue garantissant l'intégrite, fournissant un flux de données
+binaires, et intégrant un mécanisme pour les transmissions de données hors-bande.
+<DT><B>SOCK_DGRAM</B>
+
+<DD>
+Transmissions sans connexion, non garantie, de datagrammes de
+longueur fixe, généralement courte.
+<DT><B>SOCK_SEQPACKET</B>
+
+<DD>
+Dialogue garantissant l'intégrite, pour le transport de datagrammes
+de longueur fixe. Le lecteur peut avoir à lire le paquet de
+données complet à chaque appel-système read.
+<DT><B>SOCK_RAW</B>
+
+<DD>
+Accès direct aux données réseau.
+<DT><B>SOCK_RDM</B>
+
+<DD>
+Transmission fiable de datagrammes, sans garantie de l'ordre de délivrance.
+<DT><B>SOCK_PACKET</B>
+
+<DD>
+Obsolète, à ne pas utiliser dans les programmes actuels.
+Voir
+<B><A HREF="/cgi-bin/man/man2html?7+packet">packet</A></B>(7).
+
+</DL>
+<P>
+
+Certains types de sockets peuvent ne pas être implémentés par toutes les familles de
+protocoles. Par exemple,
+<B>SOCK_SEQPACKET</B>
+
+n'est pas implémenté pour
+<B>AF_INET</B>.
+
+<P>
+
+Le protocole à utiliser sur la socket est indiqué par l'argument
+<I>protocol</I>.
+
+Normalement il n'y a qu'un seul protocole par type de socket pour
+une famille donnée, auquel
+cas l'argument
+<I>protocol</I>
+
+peut être nul.
+Néanmoins rien ne s'oppose à ce que plusieurs protocoles existent, auquel
+cas il est nécessaire de le spécifier.
+Le numéro de protocole dépend du domaine de communication de la
+socket. Voir
+<B><A HREF="/cgi-bin/man/man2html?5+protocols">protocols</A></B>(5).
+
+Voir
+<B><A HREF="/cgi-bin/man/man2html?3+getprotoent">getprotoent</A></B>(3)
+
+pour savoir comment associer un nom de protocole à un numéro.
+<P>
+
+Une socket de type 
+<B>SOCK_STREAM</B>
+
+est un flux d'octets full-duplex, similaire aux tubes (pipes). Elle ne
+préserve pas les limites d'enregistrements. Une socket SOCK_STREAM
+doit être dans un état
+<I>connecté</I>
+
+avant que des données puisse y être lues ou écrites. Une connexion
+sur une autre socket est établie par l'appel système
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2).
+
+Une fois connectée les données y sont transmises par
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2)
+
+ou par des variantes de
+<B><A HREF="/cgi-bin/man/man2html?2+send">send</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+recv">recv</A></B>(2).
+
+Quand une session se termine, on referme la socket avec
+<B><A HREF="/cgi-bin/man/man2html?2+close">close</A></B>(2).
+
+Les données hors-bande sont envoyées ou reçues en utilisant
+<B><A HREF="/cgi-bin/man/man2html?2+send">send</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+recv">recv</A></B>(2).
+
+<P>
+
+Les protocoles de communication qui implémentent les sockets
+<B>SOCK_STREAM</B>
+
+garantissent qu'aucune donnée n'est perdue ou dupliquée.
+Si un bloc de données, pour lequel le correspondant a suffisament de
+place dans son buffer, n'est pas transmis correctement dans un délai
+raisonnable, la connexion est considérée comme inutilisable.
+Si l'option
+<B>SO_KEEPALIVE</B>
+
+est activée sur la socket, le protocole vérifie, d'une manière qui lui est
+spécifique, si le correspondant est toujours actif.
+Un signal 
+<B>SIGPIPE</B>
+
+est envoyé au processus tentant d'écrire sur une socket inutilisable,
+forçant les programmes ne gérant pas ce signal à se terminer.
+Les sockets de type
+<B>SOCK_SEQPACKET</B>
+
+emploient les mêmes appels systèmes que celles de types
+<B>SOCK_STREAM,</B>
+
+à la différence que la fonction
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2)
+
+ne renverra que le nombre d'octets requis, et toute autre donnée
+restante sera éliminée. De plus les frontières des messages seront
+préservées.
+<P>
+
+Les sockets de type
+<B>SOCK_DGRAM</B>
+
+ou
+<B>SOCK_RAW</B>
+
+permettent l'envoi de datagrammes aux correspondants indiqués dans l'appel système
+<B><A HREF="/cgi-bin/man/man2html?2+send">send</A></B>(2).
+
+Les datagrammes sont généralement lus par la fonction
+<B><A HREF="/cgi-bin/man/man2html?2+recvfrom">recvfrom</A></B>(2),
+
+qui fournit également l'adresse du correspondant.
+<P>
+
+Les sockets
+<B>SOCK_PACKET</B>
+
+sont obsolètes. Elles servent à recevoir les paquets bruts directement
+depuis le gestionnaire de périphérique. Utilisez plutôt
+<B><A HREF="/cgi-bin/man/man2html?7+packet">packet</A></B>(7).
+
+<P>
+
+Un appel à 
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2)
+
+avec l'argument
+<B>F_SETOWN</B>
+
+permet de préciser un groupe de processus qui recevront un
+signal
+<B>SIGURG</B>
+
+lors de l'arrivée de données hors-bande, ou le signal
+<B>SIGPIPE</B>
+
+lorsqu'une connexion sur une socket
+<B>SOCK_STREAM</B>
+
+se termine inopinément.
+Cette fonction permet également de valider des entrées/sorties
+non bloquantes, et une notification asynchrone des évènements par le signal
+<B>SIGIO</B>.
+
+L'utilisation de
+<B>F_SETOWN</B>
+
+est équivalent à un appel
+<B><A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A></B>(2)
+
+avec l'argument
+<B>FSIOSETOWN</B>
+
+ou
+<B>SIOCSPRGR</B>.
+
+<P>
+
+Lorsque le réseau indique une condition d'erreur au module du protocole
+(par exemple l'utilisation d'un message ICMP au lieu d'IP), un drapeau
+signale une erreur en attente sur la socket. L'opération suivante sur cette
+socket renverra ce code d'erreur. Pour certains protocoles, il est possible
+d'activer une file d'attente d'erreurs par socket. Pour plus de détails, voir
+<B>IP_RECVERR</B>
+
+dans
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7).
+
+<P>
+
+Les opérations sur les sockets sont représentées par des
+<I>options</I>
+
+du niveau socket.
+Ces options sont définies dans
+<I>sys/socket.h</I>.
+
+Les fonctions
+<B><A HREF="/cgi-bin/man/man2html?2+setsockopt">setsockopt</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+getsockopt">getsockopt</A></B>(2)
+
+sont utilisées respectivement pour fixer ou lire les options.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>socket</B>
+
+retourne un descripteur référençant la socket créée en cas de réussite.
+En cas d'échec -1 est renvoyé, et
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EPROTONOSUPPORT</B>
+
+<DD>
+Le type de protocole, ou le protocole lui-même n'est pas disponible
+dans ce domaine de communication.
+<DT><B>EAFNOSUPPORT</B>
+
+<DD>
+L'implémentation ne supporte pas le famille d'adresses indiquée.
+<DT><B>ENFILE</B>
+
+<DD>
+La table des descripteurs par processus est pleine.
+<DT><B>EMFILE</B>
+
+<DD>
+La table des fichiers est pleine.
+<DT><B>EACCES</B>
+
+<DD>
+La création d'une telle socket n'est pas autorisée.
+<DT><B>ENOBUFS</B> ou <B>ENOMEM</B>
+
+<DD>
+Pas suffisament d'espace pour allouer les buffers nécessaires.
+<DT><B>EINVAL</B>
+
+<DD>
+Protocole inconnu, ou famille de protocole inexistante.
+</DL>
+<P>
+
+D'autres erreurs peuvent être dues aux modules de protocoles sous-jacents.
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.4 (la fonction
+<B>socket</B>
+
+est apparue dans BSD 4.2). Relativement portable vers les systèmes
+non-BSD supportant des clones des sockets BSD (y compris les variantes
+de System V).
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTE</H2>
+
+Les constantes explicites utilisées sous BSD 4.* pour les familles de
+de protocoles sont  PF_UNIX, PF_INET... et AF_UNIX... sont utilisées
+pour les familles d'adresses. Toutefois même la page de manuel de BSD
+indiquait &quot;La famille de protocoles est généralement la même que la
+famille d'adresse&quot;, et les standards ultérieurs utilisent AF_* partout.
+<A NAME="lbAI">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<B>SOCK_UUCP</B>
+
+n'est pas encore implémentée.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+accept">accept</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+bind">bind</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getpeername">getpeername</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getsockname">getsockname</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getsockopt">getsockopt</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+listen">listen</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+recv">recv</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+select">select</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+send">send</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+shutdown">shutdown</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+socketpair">socketpair</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getprotoent">getprotoent</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+tcp">tcp</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+udp">udp</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+unix">unix</A></B>(7)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTE</A><DD>
+<DT><A HREF="#lbAI">BOGUES</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:59 GMT, February 11, 2014
+</BODY>
+</HTML>

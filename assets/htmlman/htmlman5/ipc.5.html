@@ -1,0 +1,431 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of IPC</TITLE>
+</HEAD><BODY>
+<H1>IPC</H1>
+Section: Manuel de l administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ipc - Mécanisme Système V de communication entre processus.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B># include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<B># include &lt;<A HREF="file:///usr/include/sys/ipc.h">sys/ipc.h</A>&gt;</B>
+<B># include &lt;<A HREF="file:///usr/include/sys/msg.h">sys/msg.h</A>&gt;</B>
+<B># include &lt;<A HREF="file:///usr/include/sys/sem.h">sys/sem.h</A>&gt;</B>
+<B># include &lt;<A HREF="file:///usr/include/sys/shm.h">sys/shm.h</A>&gt;</B>
+</PRE><A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente l'implémentation sous Linux des
+mécanismes Système V de communication entre processus&nbsp;:
+les files de messages, les ensembles de sémaphores, et les
+segments de mémoire partagée.
+Par la suite, le mot
+<B>ressource</B>
+
+se rapportera à l'un de ces mécanismes.
+<A NAME="lbAE">&nbsp;</A>
+<H3>Autorisations d'accès aux ressources.</H3>
+
+Pour chaque ressource, le système utilise une structure commune, de type
+<B>struct ipc_perm</B>,
+
+pour enregistrer les informations permettant de déterminer les autorisations
+concernant les opérations ipc.
+la structure
+<B>ipc_perm</B>
+
+définie dans le fichier
+<I>&lt;<A HREF="file:///usr/include/sys/ipc.h">sys/ipc.h</A>&gt;</I>
+
+inclut les membres suivants :
+<P>
+<PRE>
+
+    ushort cuid;   /* UID du créateur     */
+    ushort cgid;   /* GID du créateur     */
+    ushort uid;    /* UID du propriétaire */
+    ushort gid;    /* GID du propriétaire */
+    ushort mode;   /* Autorisations r/w   */
+</PRE>
+
+<P>
+
+Le membre
+<B>mode</B>
+
+de la structure
+<B>ipc_perm</B>
+
+définit, sur ses 9 bits de poids faibles, les permissions d'accès à la ressource,
+pour un processus effectuant un appel système ipc.
+Les permissions sont interprétées ainsi (nombres en octal) :
+<P>
+<PRE>
+        0400    Lecture par le propriétaire.
+        0200    Écriture par le propriétaire.
+
+        0040    Lecture par le groupe.
+        0020    Écriture par le groupe.
+
+        0004    Lecture par les autres.
+        0002    Écriture par les autres.
+</PRE>
+
+<P>
+
+Les bits 0100, 0010 et 0001 (bits exécution) ne sont pas utilisés par ces appels 
+systèmes.
+De plus,
+&quot;écriture&quot;
+a la signification
+&quot;modification&quot;
+pour un ensemble de sémaphores.
+<P>
+
+Le même fichier d'en-tête définit également les constantes symboliques suivantes :
+<DL COMPACT>
+<DT><B>IPC_CREAT</B>
+
+<DD>
+Créer une entrée si la clé n'existe pas.
+<DT><B>IPC_EXCL</B>
+
+<DD>
+Échouer si la clé existe.
+<DT><B>IPC_NOWAIT</B>
+
+<DD>
+Retourner une erreur éventuellement, mais ne pas attendre.
+<DT><B>IPC_PRIVATE</B>
+
+<DD>
+Clé privée.
+<DT><B>IPC_RMID</B>
+
+<DD>
+Supprimer la ressource.
+<DT><B>IPC_SET</B>
+
+<DD>
+Positionner une option concernant la ressource.
+<DT><B>IPC_STAT</B>
+
+<DD>
+Obtenir les options concernant la ressource.
+</DL>
+<P>
+
+Notez que
+<B>IPC_PRIVATE</B>
+
+est du type
+<B>key_t</B>
+
+alors que les autres constantes symboliques sont des options que l'on regroupe
+avec un OU binaire (|) dans une variable de type
+<B>int</B>.
+
+<A NAME="lbAF">&nbsp;</A>
+<H3>Files de messages.</H3>
+
+Une file de message est définie par un entier positif unique
+(son <I>msqid</I>)
+
+et dispose d'une structure associée de type
+<B>struct msquid_ds</B>,
+
+définie dans
+<I>&lt;<A HREF="file:///usr/include/sys/msg.h">sys/msg.h</A>&gt;</I>,
+
+qui contient les membres suivants :
+<P>
+<PRE>
+  struct ipc_perm msg_perm;
+  ushort msg_qnum;   /* nb messages dans la file    */
+  ushort msg_qbytes; /* octets maxi dans la file    */
+  ushort msg_lspid;  /* PID dernier appel msgsnd    */
+  ushort msg_lrpid;  /* PID dernier appel msgrcv    */
+  time_t msg_stime;  /* heure dernier appel msgsnd  */
+  time_t msg_rtime;  /* heure dernier appel msgrcv  */
+  time_t msg_ctime;  /* heure dernière modification */
+</PRE>
+
+<DL COMPACT>
+<DT><B>msg_perm</B>
+
+<DD>
+est la structure
+<B>ipc_perm</B>
+
+qui indique les permissions d'accès sur la file de messages.
+<DT><B>msg_qnum</B>
+
+<DD>
+est le nombre de messages actuellement dans la file.
+<DT><B>msg_qbytes</B>
+
+<DD>
+Nombre maximal d'octets pour le contenu d'un message de la file.
+<DT><B>msg_lspid</B>
+
+<DD>
+PID du processus qui a effectué le dernier appel système
+<B>msgsnd</B>.
+
+<DT><B>msg_lrpid</B>
+
+<DD>
+PID du processus qui a effectué le dernier appel système
+<B>msgrcv</B>.
+
+<DT><B>msg_stime</B>
+
+<DD>
+heure du dernier appel système
+<B>msgsnd</B>.
+
+<DT><B>msg_rtime</B>
+
+<DD>
+heure du dernier appel système
+<B>msgcv</B>.
+
+<DT><B>msg_ctime</B>
+
+<DD>
+heure du dernier appel système qui a modifié un membre de la structure
+<B>msqid_ds</B>.
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H3>Jeux de sémaphores.</H3>
+
+Un ensemble de sémaphores est défini par un entier positif unique
+(son <I>semid</I>)
+
+et dispose d'une structure associée de type
+<B>struct semid_ds</B>,
+
+définie dans
+<I>&lt;<A HREF="file:///usr/include/sys/sem.h">sys/sem.h</A>&gt;</I>,
+
+qui contient les membres suivants :
+<P>
+<PRE>
+  struct ipc_perm sem_perm;
+  time_t sem_otime;  /* heure dernière opération    */
+  time_t sem_ctime;  /* heure dernière modification */
+  ushort sem_nsems;  /* nb sémaphores dans le jeu   */
+</PRE>
+
+<DL COMPACT>
+<DT><B>sem_perm</B>
+
+<DD>
+est la structure
+<B>ipc_perm</B>
+
+qui indique les permissions d'accès sur l'ensemble de sémaphores.
+<DT><B>sem_otime</B>
+
+<DD>
+Heure du dernier appel système
+<B>semop</B>.
+
+<DT><B>sem_ctime</B>
+
+<DD>
+Heure du dernier appel système
+<B>semctl</B>,
+
+qui a modifié un membre de la structure ci-dessus ou l'état d'un
+sémaphore de l'ensemble.
+<DT><B>sem_nsems</B>
+
+<DD>
+Nombre de sémaphores dans l'ensemble.
+Chaque sémaphore est référencé par un nombre positif ou nul dans l'intervalle
+<B>0</B>
+
+a
+<B>sem_nsems-1</B>.
+
+</DL>
+<P>
+
+Un sémaphore est une structure
+<B>struct sem</B>
+
+contenant les membres suivants :
+<P>
+<PRE>
+ushort semval;  /* Valeur du sémaphore                  */
+ushort sempid;  /* PID dernière opération               */
+ushort semncnt; /* Nb proc. en attente incrément semval */
+ushort semzcnt; /* Nb proc. en attente de semval = 0    */
+</PRE>
+
+<DL COMPACT>
+<DT><B>semval</B>
+
+<DD>
+Valeur du sémaphore : entier positif ou nul.
+<DT><B>sempid</B>
+
+<DD>
+PID du dernier processus ayant effectué une opération sur
+le sémaphore.
+<DT><B>semncnt</B>
+
+<DD>
+Nombre de processus bloqués en attente de l'incrémentation de
+<B>semval</B>.
+
+<DT><B>semznt</B>
+
+<DD>
+Nombre de processus bloqués en attente de la nullité de
+<B>semval</B>.
+
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H3>Segments de mémoire partagée.</H3>
+
+Un segment de mémoire partagée est défini par un entier positif unique
+(son <I>shmid</I>)
+
+et dispose d'une structure associée de type
+<B>struct shmid_ds</B>,
+
+définie dans
+<I>&lt;<A HREF="file:///usr/include/sys/shm.h">sys/shm.h</A>&gt;</I>,
+
+qui contient les membres suivants :
+<P>
+<PRE>
+    struct ipc_perm shm_perm;
+    int    shm_segsz;  /* taille segment              */
+    ushort shm_cpid;   /* PID créateur segment        */
+    ushort shm_lpid;   /* PID dernière opération      */
+    short  shm_nattch; /* Nombre d'attachements       */
+    time_t shm_atime;  /* Heure dernier attachement   */
+    time_t shm_dtime;  /* Heure dernier détachement   */
+    time_t shm_ctime;  /* Heure dernière modification */
+</PRE>
+
+<DL COMPACT>
+<DT><B>shm_perm</B>
+
+<DD>
+est la structure
+<B>ipc_perm</B>
+
+qui indique les permissions d'accès sur le segment de mémoire partagée.
+<DT><B>shm_segsz</B>
+
+<DD>
+Taille en octets du segment.
+<DT><B>shm_cpid</B>
+
+<DD>
+PID du processus ayant créé le segment.
+<DT><B>shm_lpid</B>
+
+<DD>
+PID du processus ayant effectué le dernier appel système
+<B>shmat</B>
+
+ou
+<B>shmdt</B>.
+
+<DT><B>shm_nattch</B>
+
+<DD>
+Nombre d'attachements en cours pour ce segment.
+<DT><B>shm_atime</B>
+
+<DD>
+Heure du dernier appel système
+<B>shmat</B>.
+
+<DT><B>shm_dtime</B>
+
+<DD>
+Heure du dernier appel système
+<B>shmdt</B>.
+
+<DT><B>shm_ctime</B>
+
+<DD>
+Heure du dernier appel système
+<B>shmctl</B>
+
+qui a modifié la structure
+<B>shmid_ds</B>.
+
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+ftok">ftok</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgctl">msgctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgget">msgget</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgrcv">msgrcv</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgsnd">msgsnd</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+semctl">semctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+semget">semget</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+semop">semop</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+shmat">shmat</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+shmctl">shmctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+shmget">shmget</A></B>(2),
+
+<B>shmdt (2).</B>
+
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">Autorisations d'accès aux ressources.</A><DD>
+<DT><A HREF="#lbAF">Files de messages.</A><DD>
+<DT><A HREF="#lbAG">Jeux de sémaphores.</A><DD>
+<DT><A HREF="#lbAH">Segments de mémoire partagée.</A><DD>
+</DL>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:55 GMT, February 11, 2014
+</BODY>
+</HTML>

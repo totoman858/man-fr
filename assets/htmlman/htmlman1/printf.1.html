@@ -1,0 +1,104 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PRINTF</TITLE>
+</HEAD><BODY>
+<H1>PRINTF</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+printf - Mettre en forme et afficher des données.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>printf</B>
+
+format [argument...]
+<BR>
+
+<B>printf</B>
+
+{--help,--version}
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>printf</B>.
+
+<P>
+<B>printf</B>
+
+affiche la chaîne de caractères
+<I>format</I>,
+
+en interprétant les directives `%' et les séquences d'échappement `\'
+de la même manière que la fonction C <B><A HREF="/cgi-bin/man/man2html?3+printf">printf</A></B>(3).
+<P>
+L'argument
+<I>format</I>
+
+est ré-utilisé autant de fois qu'il le faut pour interpréter tous les
+arguments fournis.
+<P>
+
+<B>printf</B>
+
+interprète `\0ooo' comme un nombre octal (`ooo' s'étendant sur 0 à 3 chiffres)
+indiquant le caractère à imprimer, et `\xhhh' comme un nombre hexadécimal 
+(`hhh' s'étendant sur 1 à 3 chiffres) indiquant également le caractère à
+afficher.
+<P>
+Il existe une séquence d'échappement supplémentaire `\c', qui
+permet d'arrêter la sortie de
+<B>printf</B>,
+
+et une directive supplémentaire `%b', qui affiche la chaîne de caractères
+en argument en interprétant les séquences d'échappement `\' qu'elle
+contient de la même manière que pour la chaîne
+<I>format</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+Quand la version GNU de
+<B>printf</B>
+
+est invoquée avec un seul argument, les options suivantes sont reconnues :
+<DL COMPACT>
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et se terminer normalement.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et se terminer normalement.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:49 GMT, February 11, 2014
+</BODY>
+</HTML>

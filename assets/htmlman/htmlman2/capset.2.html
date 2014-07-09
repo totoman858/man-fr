@@ -1,0 +1,129 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CAPGET</TITLE>
+</HEAD><BODY>
+<H1>CAPGET</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM </H2>
+
+capget, capset - Configurer les capacités d'un processus.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#undef _POSIX_SOURCE</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/capability.h">sys/capability.h</A>&gt;</B>
+
+<P>
+<B>int capget(cap_user_header_t </B><I>entête</I><B>, cap_user_data_t </B><I>données</I><B>);</B>
+
+<P>
+<B>int capset(cap_user_header_t </B><I>entête</I><B>, const cap_user_data_t </B><I>données</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Depuis Linux 2.2, la toute puissance du Super-Utilisateur (root) a été scindée en
+plusieurs ensembles distincts.
+Chaque processus dispose d'un ensemble de capacités effectives permettant
+d'identifier ses droits de réaliser certaines actions.
+Chaque processus a aussi un ensemble de capacités héritables, qu'il peut transmettre
+au travers d'un <A HREF="/cgi-bin/man/man2html?2+execve">execve</A>(2) et un ensemble de capacités éventuelles qu'il peut rendre
+effectives ou héritables.
+<P>
+
+Ces deux fonctions constituent l'interface brute du noyau pour configurer ou lire
+les capacités d'un processus. Non seulement ces appels-système sont spécifiques
+Linux, mais l'API du noyau est susceptible de changer. L'utilisation de
+ces fonctions (en particulier le format du type
+<B>cap_user_*_t</B>)
+
+risque de varier lors de nouvelles mises à jour du noyau.
+<P>
+L'interface portable est constituée des fonctions
+<I><A HREF="/cgi-bin/man/man2html?3+cap_set_proc">cap_set_proc</A></I>(3)
+
+et
+<I><A HREF="/cgi-bin/man/man2html?3+cap_get_proc">cap_get_proc</A></I>(3);
+
+si possible utilisez plutôt ces routines dans vos applications.
+Si vous désirez vraiment utiliser les extension Linux, essayez d'employer 
+plutôt les interfaces plus simples
+<I><A HREF="/cgi-bin/man/man2html?3+capsetp">capsetp</A></I>(3)
+
+et 
+<I><A HREF="/cgi-bin/man/man2html?3+capgetp">capgetp</A></I>(3).
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Si elles réussissent, ces routines renvoient 0. Sinon elles renvoient
+-1 et configurent
+<I>errno</I>
+
+avec le code d'erreur approprié
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+Un argument est invalide
+<DT><B>EPERM</B>
+
+<DD>
+On a essayé d'ajouter une capacité dans l'ensemble éventuel, ou de placer
+une capacité dans l'ensemble effectif ou héritable qui ne se trouvait pas
+dans l'ensemble éventuel.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+L'interface portable pour les fonctions de configuration et de lecture des 
+permissions est fournie par la bibliothèque
+<B>libcap</B>
+
+disponible à :
+<BR>
+
+<B><A HREF="ftp://linux.kernel.org/pub/linux/libs/security/linux-privs">ftp://linux.kernel.org/pub/linux/libs/security/linux-privs</A></B>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?7+capabilities">capabilities</A></B>(7)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM </A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:01 GMT, February 11, 2014
+</BODY>
+</HTML>

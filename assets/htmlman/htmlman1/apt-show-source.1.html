@@ -1,0 +1,169 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of APT-SHOW-SOURCE.FR.1</TITLE>
+</HEAD><BODY>
+<H1>APT-SHOW-SOURCE.FR.1</H1>
+Section: User Contributed Perl Documentation (1)<BR>Updated: 2003-02-14<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+<A NAME="ixAAC"></A>
+apt-show-source - Énumère les paquets-sources.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<A NAME="ixAAD"></A>
+Ce programme réalise une analyse syntaxique des listes de <FONT SIZE="-1">APT</FONT> des paquets de
+source et du fichier d'état de <FONT SIZE="-1">DPKG</FONT> et liste tous les paquets avec un numéro
+de version supérieur à celui installé.
+<P>
+
+Il peut se montrer très utile si les entrées «&nbsp;deb&nbsp;» dans votre
+fichier sources.list de <FONT SIZE="-1">APT</FONT> pointent vers la version stable et les entrées
+«&nbsp;deb-src&nbsp;» pointent vers l'instable. Avec ce programme, vous
+pouvez aisément savoir s'il y a une nouvelle version de par ex. programme
+<FONT SIZE="-1">XXXX</FONT> dans l'instable.
+<A NAME="lbAD">&nbsp;</A>
+<H2>PARAMÈTRES EN LIGNE DE COMMANDE</H2>
+
+<A NAME="ixAAE"></A>
+Les paramètres en ligne de commandes optionnels sont le fichier d'état de <FONT SIZE="-1">DPKG</FONT>
+à utiliser, le chemin d'accès des fichiers listes de <FONT SIZE="-1">APT</FONT> et le nom d'un paquet.
+Il y a aussi des options à montrer&nbsp;: tous les paquets de sources,
+messages longs, version seule et l'aide de la ligne de commande.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<A NAME="ixAAF"></A>
+
+<BR>
+
+
+
+<P>
+
+<B><B>-stf</B> <I></I><FONT SIZE="-1"><I>FICHIER</I></FONT><I></I>, <B>--status-file</B>=<I></I><FONT SIZE="-1"><I>FICHIER</I></FONT><I></I></B>
+<P>
+
+
+<A NAME="ixAAG"></A>
+Lit les paquets installés à partir de <I></I><FONT SIZE="-1"><I>FICHIER</I></FONT><I></I> à la place de
+/var/lib/dpkg/status.
+
+<BR>
+
+
+
+<P>
+
+<B><B>-ld</B> <I></I><FONT SIZE="-1"><I>DOSSIER</I></FONT><I></I>, <B>--list-dir</B>=<I></I><FONT SIZE="-1"><I>DOSSIER</I></FONT><I></I></B>
+<P>
+
+
+<A NAME="ixAAH"></A>
+<I></I><FONT SIZE="-1"><I>DOSSIER</I></FONT><I></I> spécifie le chemin d'accès aux fichiers listes de <FONT SIZE="-1">APT</FONT>,
+/var/state/apt/lists/ par défaut.
+
+<BR>
+
+
+
+<P>
+
+<B><B>-p</B> <I></I><FONT SIZE="-1"><I>PAQUET</I></FONT><I></I>, <B>--package</B>=<I></I><FONT SIZE="-1"><I>PAQUET</I></FONT><I></I></B>
+<P>
+
+
+<A NAME="ixAAI"></A>
+Affiche les données de version du paquet installé/paquet de source
+pour <I></I><FONT SIZE="-1"><I>PAQUET</I></FONT><I></I>.
+
+<BR>
+
+
+
+<P>
+
+<B><B>--version-only</B></B>
+<P>
+
+
+<A NAME="ixAAJ"></A>
+Affiche seulement la version si utilisée avec <B>--package</B>.
+
+<BR>
+
+
+
+<P>
+
+<B><B>-a</B>, <B>--all</B></B>
+<P>
+
+
+<A NAME="ixAAK"></A>
+Affiche tous les paquets sources disponibles avec la version.
+
+<BR>
+
+
+
+<P>
+
+<B><B>-v</B>, <B>--verbose</B></B>
+<P>
+
+
+<A NAME="ixAAL"></A>
+Affiche de longs messages.
+
+<BR>
+
+
+
+<P>
+
+<B><B>-h</B>, <B>--help</B></B>
+<P>
+
+
+<A NAME="ixAAM"></A>
+Affiche l'aide en ligne de commande.
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<A NAME="ixAAN"></A>
+Dennis Schoen, <A HREF="mailto:dennis@debian.org">dennis@debian.org</A>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A NAME="ixAAO"></A>
+<I><A HREF="/cgi-bin/man/man2html?1+apt">apt</A></I>(1), <I><A HREF="/cgi-bin/man/man2html?1+dpkg">dpkg</A></I>(1)
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<A NAME="ixAAP"></A>
+Younes Zouhair &lt;<A HREF="mailto:zouhairy@softhome.net">zouhairy@softhome.net</A>&gt;
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">PARAMÈTRES EN LIGNE DE COMMANDE</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">AUTEUR</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:42 GMT, February 11, 2014
+</BODY>
+</HTML>

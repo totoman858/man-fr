@@ -1,0 +1,92 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ZDUMP</TITLE>
+</HEAD><BODY>
+<H1>ZDUMP</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+zdump - Affichage du fuseau horaire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>zdump</B>
+
+[
+<B>-v</B>
+
+] [
+<B>-c</B>
+
+année_finale ] [ fuseau ... ]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>Zdump</I>
+
+affiche la date et l'heure actuelle dans chaque
+<I>fuseau</I>
+
+horaire cité sur la ligne de commande.
+<P>
+
+Les options disponibles sont :
+<DL COMPACT>
+<DT><B>-v</B>
+
+<DD>
+Pour chaque
+<I>fuseau</I>
+
+de la ligne de commande, afficher la date et l'heure à la valeur
+la plus petite possible. Affiche la date et l'heure un jour plus tard puis
+une seconde avant et à l'heure juste de chaque discontinuité temporelle.
+Afficher la date et l'heure un jour avant la plus grande valeur possible
+et à cette valeur.
+Chaque ligne se termine avec
+<B>isdst=1</B>
+
+si l'heure indiquée prend en compte le décalage d'été ou
+<B>isdst=0</B>
+
+sinon.
+<DT><B>-c </B><I>année_finale</I>
+
+<DD>
+Arrêter la sortie volubile au début de l'année finale indiquée.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+newctime">newctime</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+tzfile">tzfile</A>(5),</B>
+
+<B><A HREF="/cgi-bin/man/man2html?8+zic">zic</A>(8)</B>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1999-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:04 GMT, February 11, 2014
+</BODY>
+</HTML>

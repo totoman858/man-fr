@@ -1,0 +1,128 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PUTENV</TITLE>
+</HEAD><BODY>
+<H1>PUTENV</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+putenv - Ajouter ou modifier une variable d'environnement.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<B>int putenv (char *</B><I>string</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>putenv()</B> ajoute ou modifie la valeur d'une variable
+d'environnement. L'argument <I>string</I> est une chaîne de caractères
+de la forme <I>nom</I>=<I>valeur</I>.
+Si <I>nom</I> n'existe pas dans l'environnement, la variable est ajoutée.
+Si <I>nom</I> existe, alors la valeur de la variable d'environnement
+<I>nom</I> est remplacée par <I>valeur</I>.
+La chaîne pointée par <I>string</I> devient partie intégrante de
+l'environnement, ainsi une modification de cette chaîne change
+l'environnement.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>putenv()</B> renvoie 0 si elle réussit, ou -1 si elle échoue,
+auquel cas <I>errno</I> contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+La fonction <B>putenv</B>() n'a pas besoin d'être réentrante, celles des
+bibliothèques libc4, libc5, et GlibC 2.0 ne le sont pas, contrairement
+à celle de la GlibC 2.1.
+<P>
+
+Description pour libc4, libc5 et GlibC&nbsp;:
+Si la chaîne <I>string</I> est de la forme <I>nom</I>, sans contenir
+de signe `=', la variable du <I>nom</I> indiqué est supprimée de 
+l'environnement.
+Si <B>putenv</B>() doit allouer un nouveau tableau <I>environ</I>,
+et si le tableau précédent avait déjà été alloué par <B>putenv</B>(),
+alors il sera libéré. En aucun cas, l'espace correspondant aux chaînes
+d'environnement proprement dites ne sera libéré.
+<P>
+
+Les versions des bibliothèques libc4, lib5 et GlibC 2.1.2 se conforment
+aux spécifications SUSv2&nbsp;:
+le pointeur <I>string</I> transmis à <B>putenv</B>() est utilisé. En
+particulier la chaîne devient partie intégrante de l'environnement, si
+on la modifie par la suite, l'environnement est modifié.
+(C'est donc une erreur d'appeler <B>putenv</B>() avec une
+variable automatique en argument puis de revenir de la fonction alors
+que la chaîne est toujours dans l'environnement).
+Toutefois, les GlibC 2.0 - 2.1.1 diffèrent : une copie de la chaîne
+est effectuée. D'une part cela crée une fuite mémoire, d'autre
+part on viole les spécifications SUSv2. Ceci a donc été corrigé dans la
+Glib 2.1.2.
+<P>
+
+La version BSD 4.4 effectue aussi une copie.
+<P>
+
+Dans les specifications SUSv2, le `const' a été supprimé du prototype. C'est
+aussi le cas dans GlibC 2.1.3.
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3, POSIX, BSD 4.3
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+clearenv">clearenv</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getenv">getenv</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setenv">setenv</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+unsetenv">unsetenv</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+environ">environ</A></B>(5)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:24 GMT, February 11, 2014
+</BODY>
+</HTML>

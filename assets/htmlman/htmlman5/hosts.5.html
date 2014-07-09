@@ -1,0 +1,156 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of HOSTS</TITLE>
+</HEAD><BODY>
+<H1>HOSTS</H1>
+Section: Manuel de l administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+hosts - Correspondances statiques de noms d'hôtes.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>/etc/hosts</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel décrit le format du fichier
+<I>/etc/hosts</I>.
+
+Il s'agit d'un fichier de texte simple qui associe les adresses IP
+avec les noms d'hôtes, une ligne par adresse IP. Pour chaque hôte, une 
+unique ligne doit être présente, avec les informations suivantes :
+<DL COMPACT><DT><DD>
+<P>
+
+Adresse_IP Nom_officiel [Alias...]
+</DL>
+
+<P>
+
+Les divers champs de la ligne sont séparés par un nombre quelconque d'espaces
+ou de tabulations. Le texte commençant avec un caractère &quot;#&quot; et s'étendant 
+jusqu'à la fin de la ligne est considéré comme un commentaire, et est donc ignoré.
+Les noms d'hôtes peuvent contenir n'importe quel caractère alphanumérique,
+le signe moins (&quot;-&quot;) et les points (&quot;.&quot;). Ils doivent commencer par un
+caractère alphabétique et se terminer par un caractère alphanumérique.
+Les alias permettent de disposer de noms différents, d'orthographes simplifiées, de surnoms
+plus courts, ou de noms d'hôte générique (comme
+<I>localhost</I>).
+
+Le format de la table des noms d'hôtes est décrit dans la RFC 952. 
+<P>
+
+Le système Berkeley Internet Name Domain (BIND) implémente un
+serveur de noms Internet pour les systèmes Unix. Il remplace ou complète le fichier
+<I>/etc/hosts</I>
+
+ou la recherche des noms d'hôtes, et libère un hôte de la nécessité de disposer d'un fichier
+<I>/etc/hosts</I>
+
+complet et à jour.
+<P>
+
+Dans les systèmes modernes, même si la table des hôtes a été remplacée par
+DNS, ce mécanisme est encore largement employé pour&nbsp;:
+<DL COMPACT>
+<DT><B>initialiser une machine</B>
+
+<DD>
+Beaucoup de systèmes ont un petit fichier contenant le nom et l'adresse
+des hôtes important sur le réseau local. Ceci est utile lorsque le DNS
+n'est pas en marche, notamment lors de la mise en route des systèmes.
+<DT><B>NIS</B>
+
+<DD>
+Les sites employant NIS utilisent la table d'hôtes comme entrée pour la base de données des hôtes NIS.
+Même si NIS peut être employé avec un DNS, la plupart des sites NIS conservent encore la table
+des noms d'hôtes avec une entrée pour toutes les machines locales, à des fins de secours.
+<DT><B>noeud isolés</B>
+
+<DD>
+Les petits sites, isolés des réseaux importants emploient la table d'hôtes à
+la place du DNS. Si les informations locales changent rarement, et si le réseau
+n'est pas connecté à Internet, le DNS n'offre pas beaucoup
+d'intérêt.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+<PRE>
+ 127.0.0.1       localhost
+ 192.168.1.10    foo.nomomaine.org      foo
+ 192.168.1.13    bar.nomdomain.org      bar
+ 216.234.231.5   master.debian.org      master
+ 205.230.163.103 <A HREF="http://www.opensource.org">www.opensource.org</A>
+</PRE>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTE HISTORIQUE</H2>
+
+Avant l'arrivée du DNS, la table d'hôtes était la seule manière de résoudre les
+noms d'hôtes sur un Internet balbutiant.
+Le fichier pouvait être créé à partir de la base de données
+officielle maintenue au Network Information Control Center (NIC), 
+Information Control Center (NIC), bien que des changements locaux étaient souvent
+nécessaires pour gérer les adresses et les alias non-officiels.
+Le NIC ne maintient plus le fichier hosts.txt, quoiqu'on puisse encore
+en trouver des versions historiques sur le web.
+Je n'en ai trouvé que trois, de 92, 94 et 95.
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/etc/hosts</I>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+hostname">hostname</A></B>(1)
+
+<B><A HREF="/cgi-bin/man/man2html?3+resolver">resolver</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+resolver">resolver</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?5+hosts">hosts</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?7+hostname">hostname</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?8+named">named</A></B>(8),
+
+Internet RFC 952
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Cette page de manuel a été écrite par Manoj Srivastava &lt;<A HREF="mailto:srivasta@debian.org">srivasta@debian.org</A>&gt;,
+pour le système Debian GNU/Linux.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">EXEMPLE</A><DD>
+<DT><A HREF="#lbAF">NOTE HISTORIQUE</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">AUTEUR</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:56 GMT, February 11, 2014
+</BODY>
+</HTML>

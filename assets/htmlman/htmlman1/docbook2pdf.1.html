@@ -1,0 +1,418 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of JW</TITLE>
+</HEAD><BODY>
+<H1>JW</H1>
+Section:  (1)<BR>Updated: 11 February 2004<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<P>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+jw, docbook2dvi, docbook2html, docbook2man, docbook2pdf, docbook2ps, docbook2rtf,
+docbook2tex, docbook2texi, docbook2txt - (Jade Wrapper) assurent la conversion
+de documents SGML vers d'autres formats (masquant l'action de Jade).
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<B>jw</B> [ <B>-f
+</B><I>frontend</I><B></B> | <B>--frontend
+</B><I>frontend</I><B></B> ]
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<B>-b
+</B><I>backend</I><B></B> | <B>--backend </B><I>backend</I><B></B> ]
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<B>-c&nbsp;</B><I>fichier</I><B></B>&nbsp;|&nbsp;<B>--cat&nbsp;</B><I>fichier</I><B></B>&nbsp;]
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<B>-n</B>&nbsp;|&nbsp;<B>--nostd</B>&nbsp;]
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<B>-d
+</B><I>fichier</I><B>|default|none</B> | <B>--dsl
+</B><I>fichier</I><B>|default|none</B> ]
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<B>-l&nbsp;</B><I>fichier</I><B></B>&nbsp;|&nbsp;<B>--dcl&nbsp;</B><I>fichier</I><B></B>&nbsp;]
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<B>-s&nbsp;</B><I>chemin</I><B></B>&nbsp;|&nbsp;<B>--sgmlbase&nbsp;</B><I>chemin</I><B></B>&nbsp;]
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<B>-p&nbsp;</B><I>programme</I><B></B>&nbsp;|&nbsp;<B>--parser&nbsp;</B><I>programme</I><B></B>&nbsp;]
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<B>-o&nbsp;</B><I>répertoire</I><B></B>&nbsp;|&nbsp;<B>--output&nbsp;</B><I>répertoire</I><B></B>&nbsp;]
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<B>-V
+</B><I>variable</I><B>[=</B><I>valeur</I><B>]</B> ]
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<B>-u</B>&nbsp;|&nbsp;<B>--nochunks</B>&nbsp;]&nbsp;[&nbsp;<B>-i&nbsp;</B><I>section</I><B></B>&nbsp;|&nbsp;<B>--include&nbsp;</B><I>section</I><B></B>&nbsp;]
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<B>-w&nbsp;</B><I>type</I><B>|list</B>&nbsp;|&nbsp;<B>--warning&nbsp;</B><I>type</I><B>|list</B>&nbsp;]
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<B>-e&nbsp;</B><I>type</I><B>|list</B>&nbsp;|&nbsp;<B>--error&nbsp;</B><I>type</I><B>|list</B>&nbsp;]
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<B>-h</B>&nbsp;|&nbsp;<B>--help</B>&nbsp;]&nbsp;[&nbsp;<B>-v</B>&nbsp;|&nbsp;<B>--version</B>&nbsp;]
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;<B></B><I>fichier-SGML</I><B></B>
+<P>
+<P>
+<B>docbook2dvi</B> <B></B><I>fichier-SGML</I><B></B>
+<P>
+<P>
+<B>docbook2html</B> <B></B><I>fichier-SGML</I><B></B>
+<P>
+<P>
+<B>docbook2man</B> <B></B><I>fichier-SGML</I><B></B>
+<P>
+<P>
+<B>docbook2pdf</B> <B></B><I>fichier-SGML</I><B></B>
+<P>
+<P>
+<B>docbook2ps</B> <B></B><I>fichier-SGML</I><B></B>
+<P>
+<P>
+<B>docbook2rtf</B> <B></B><I>fichier-SGML</I><B></B>
+<P>
+<P>
+<B>docbook2tex</B> <B></B><I>fichier-SGML</I><B></B>
+<P>
+<P>
+<B>docbook2texi</B> <B></B><I>fichier-SGML</I><B></B>
+<P>
+<P>
+<B>docbook2txt</B> <B></B><I>fichier-SGML</I><B></B>
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+Le script shell <B>jw</B> permet de convertir un fichier
+DocBook (ou tout autre format basé sur le SGML) vers
+d'autres formats (incluant HTML, RTF, PS et PDF) avec
+une syntaxe facile à comprendre. Il masque la part complexe
+de Jade ou d'OpenJade et apporte de confortables fonctionnalités.
+<P>
+
+D'autres scripts comme <B>docbook2html</B>,
+<B>docbook2rtf</B> ou
+<B>docbook2ps</B> fournissent des manières différentes
+d'appeler <B>jw</B> qui peuvent être plus aisées à retenir.
+<P>
+
+Pour le moment, jw ne traite pas le XML, seulement le SGML.
+<P>
+
+Cet utilitaire présume que plusieurs autres composants soient
+installés. La liste inclut&nbsp;:
+<DL COMPACT>
+<DT>&bull;<DD>
+l'entité caractère ISO pour SGML
+<DT>&bull;<DD>
+le moteur DSSSL de James Clark, jade, ou un analyseur syntaxique
+comme OpenJade
+<DT>&bull;<DD>
+la DTD DocBook du consortium OASIS
+<DT>&bull;<DD>
+les feuilles de style modulaires DocBook de Norman Walsh (ou
+d'autres jeux de feuilles de style DSSSL)
+<DT>&bull;<DD>
+l'ensemble jadetex, de Sebastian Rahtz, de macros TeX pour jade
+(pour les backends prévus pour des formats d'«&nbsp;impression&nbsp;»
+comme PDF, RTF ou PostScript)
+<DT>&bull;<DD>
+un interpréteur perl (pour les backends qui utilisent perl)
+<DT>&bull;<DD>
+le module perl SGMLSpm du CPAN (pour les backends qui utilisent sgmls)
+<DT>&bull;<DD>
+le navigateur HTML Lynx (pour le backend <I>txt</I>)
+</DL>
+<P>
+
+le script jw se lance essentiellement comme ceci&nbsp;:
+<P>
+<PRE>
+jw mon_doc.sgml
+</PRE>
+
+<P>
+
+où <I>mon_doc.sgml</I> est un fichier SGML.
+<P>
+
+La ligne de commande ci-dessus utilise les options par défaut&nbsp;:
+elle convertit à partir de DocBook (le frontend par défaut) vers
+HTML (le backend par défaut), ne met pas le résultat dans un
+sous-répertoire (à moins que cela ne soit spécifié autrement dans
+les feuilles de style), etc.
+<P>
+
+Dans cet exemple, le nom de fichier «&nbsp;mon_doc&nbsp;» aussi bien que
+l'extension «&nbsp;.sgml&nbsp;» peuvent être remplacés par n'importe quoi
+d'autre. Les extensions actuelles pour les fichiers DocBook
+SGML incluent «&nbsp;.sgml&nbsp;», «&nbsp;.sgm&nbsp;», «&nbsp;.docbook&nbsp;», et «&nbsp;.db&nbsp;».
+Le fichier traité <I>mon_doc.sgml</I> peut se trouver dans
+tout autre répertoire que le répertoire courant.
+<P>
+
+Ici, nous avons choisi de générer une sortie HTML. En fait, nous
+pouvons utiliser n'importe lequel des backends stockés dans le
+sous-répertoire du répertoire de la distribution DocBook-utils
+(habituellement <I>/usr/share/sgml/docbook/utils-0.6.14</I>).
+De la même manière, vous pouvez utiliser chacun des frontends
+définis dans le sous-répertoire <I>frontends/</I> pour convertir
+à partir d'un autre format d'entrée.
+<P>
+
+Cette commande échantillon crée un ou plusieurs fichiers HTML avec
+des noms de fichier arbitraires dans le répertoire courant.
+Ce fonctionnement par défaut peut être modifié à travers des options
+de la ligne de commande et/ou une personnalisation des feuilles de style.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<P>
+
+Les options suivantes sont applicables au script de conversion&nbsp;:
+<DL COMPACT>
+<DT><B>   -f </B><I>frontend</I><B> | --frontend </B><I>frontend</I><B>  </B><DD>
+Permet de spécifier un autre frontend que celui par défaut <I>docbook</I>.
+La liste des frontends actuellement disponible est&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B></B><I>docbook</I><B></B><DD>
+Convertit docbook avec les feuilles de style de Norman Walsh.
+Ce frontend cherche, dans les sous-répertoires du répertoire
+SGML de base, un fichier nommé <I>html/docbook.dsl</I> ou
+<I>print/docbook.dsl</I> (suivant le type de backend&nbsp;: html ou print).
+</DL>
+</DL>
+
+<DT><B>   -b </B><I>backend</I><B> | --backend </B><I>backend</I><B>  </B><DD>
+Permet de spécifier un autre backend que celui par défaut
+<I>HTML</I>. La liste des backends actuellement disponible est&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B></B><I>dvi</I><B></B><DD>
+Convertit vers DVI (fichier DeVice Independant) en appelant
+<B>Jade</B> ou <B>OpenJade</B>.
+<DT><B></B><I>html</I><B></B><DD>
+Convertit vers HTML (HyperText Markup
+Language) en appelant <B>Jade</B> ou <B>OpenJade</B>.
+<DT><B></B><I>man</I><B></B><DD>
+Convertit une «&nbsp;refentry&nbsp;» vers une page de manuel Unix
+en appelant docbook2man. Ne fonctionne pas avec des
+types de documents SGML autres que DocBook.
+<DT><B></B><I>pdf</I><B></B><DD>
+Convertit vers PDF (Portable Document
+Format) en appelant <B>Jade</B> ou
+<B>OpenJade</B>.
+<DT><B></B><I>ps</I><B></B><DD>
+Convertit vers PostScript en appelant <B>Jade</B> ou
+<B>OpenJade</B>.
+<DT><B></B><I>rtf</I><B></B><DD>
+Convertit vers RTF (Rich Text Format) en appelant <B>Jade</B> ou
+<B>OpenJade</B>. Le fichier résultant peut être ensuite importé
+dans <B>MS Word</B> ou un de ses programmes de remplacement sous Linux.
+<DT><B></B><I>tex</I><B></B><DD>
+Convertit vers TeX en appelant <B>Jade</B> ou
+<B>OpenJade</B>.
+<DT><B></B><I>texi</I><B></B><DD>
+Convertit vers des pages GNU TeXinfo en appelant
+docbook2texi. Ne fonctionne pas avec des
+types de documents SGML autres que DocBook.
+<DT><B></B><I>txt</I><B></B><DD>
+Convertit vers un fichier texte nu en appelant
+<B>Jade</B> ou <B>OpenJade</B>, puis <B>Lynx</B>.
+</DL>
+</DL>
+
+<DT><B>   -c </B><I>fichier</I><B> | --cat </B><I>fichier</I><B>  </B><DD>
+Permet d'utiliser un Catalogue Ouvert SGML supplémentaire qui listera
+d'autres fichiers comme des feuilles de styles personnalisées, des
+adaptations de la Définition de Type de Document DocBook (NdT&nbsp;:
+DocBook Document Type Definition ou DocBook DTD), des entités de
+caractères spéciaux, etc. Ce catalogue est ajouté à la liste des
+catalogues déterminée par le script (voir l'option <B>--nostd</B>
+ci-dessous)
+<DT><B>   -n | --nostd  </B><DD>
+Ne pas utiliser les Catalogues Ouverts SGML standards. Normalement,
+la liste des catalogues standards est déterminée comme suit&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>&bull;<DD>
+si le catalogue centralisé existe, alors l'utiliser. Le catalogue
+centralisé est une liste de tous les catalogues qui peuvent être
+nécessaires et qui se situent habituellement dans <I>/etc/sgml</I>.
+Son nom est fourni par le frontend, par exemple le frontend
+<I>docbook</I> renvoie <I>/etc/sgml/sgml-docbook.cat</I>.
+<DT>&bull;<DD>
+Autrement, prend tous les fichiers nommés <I>catalog</I> dans les
+sous-répertoires du répertoire de base SGML (habituellement
+<I>/usr/share/sgml</I>).
+</DL>
+</DL>
+
+Cette option est utile conjointement avec l'option
+<B>--cat</B> pour utiliser seulement les catalogues spécifiés
+sur la ligne de commande
+<DT><B>   -d </B><I>fichier</I><B>|default|none | --dsl </B><I>fichier</I><B>|default|none  </B><DD>
+Permet d'utiliser une feuille de style personnalisée à la place
+de celle par défaut.
+<P>
+Une «&nbsp;cible&nbsp;», débutant par un signe dièse «&nbsp;#&nbsp;», peut être ajoutée
+au nom du fichier. Le résultat sera que seule la partie correspondante
+de la feuille de style sera exécutée (la «&nbsp;spécification de style&nbsp;»
+dont l'«&nbsp;identificateur&nbsp;» est égal au nom de la cible). Une utilisation
+ordinaire de ce mécanisme est de définir les cibles «&nbsp;#html&nbsp;» et
+«&nbsp;#print&nbsp;» pour déclencher la partie correspondante d'une feuille de
+style de remplacement qui est commune aux conversions HTML et sortie
+d'impression.
+<P>
+En remplaçant le nom du fichier par «&nbsp;default&nbsp;», la feuille de style
+fournie avec le frontend est utilisée. Par exemple, le frontend
+<I>docbook</I> renvoie <I>./docbook.dsl#html</I> (ou
+<I>./docbook.dsl#print</I>) dans le répertoire de base SGML.
+<P>
+En remplaçant le nom du fichier par «&nbsp;none&nbsp;», aucune feuille
+de style de remplacement n'est utilisée, pas même la feuille
+de style par défaut. La feuille de style qui sera utilisée est
+alors déterminée par le frontend. Par exemple, le frontend
+<I>docbook</I> renvoie le <I>html/docbook.dsl</I> (ou
+<I>print/docbook.dsl</I>) de Norman Walsh trouvé quelque part
+dans le répertoire de base SGML.
+<P>
+Si aucune option --dsl n'est spécifiée, alors «&nbsp;--dsl default&nbsp;»
+est utilisée.
+<DT><B>   -l </B><I>fichier</I><B> | --dcl </B><I>fichier</I><B>  </B><DD>
+Permet d'utiliser une déclaration SGML personnalisée plutôt que
+celle par défaut. Le nom du fichier de la déclaration SGML
+par défaut n'est pas fixé pour les fichiers SGML, mais est fixé à
+<I>xml.dcl</I> dans le répertoire de base SGML pour les fichiers XML.
+<DT><B>   -s </B><I>chemin</I><B> | --sgmlbase </B><I>chemin</I><B>  </B><DD>
+Permet d'utiliser une autre localisation pour le répertoire de base SGML.
+C'est dans ce répertoire que sont installées toutes les DTDs SGML,
+feuilles de style, entités, etc. La valeur par défaut est
+<I>/usr/share/sgml</I>.
+<DT><B>   -p </B><I>programme</I><B> | --parser </B><I>programme</I><B>  </B><DD>
+Spécifie l'analyseur syntaxique à utiliser (<B>Jade</B>
+ou <B>OpenJade</B>) si plusieurs sont installés. Si cette option
+n'est pas spécifiée, le script essaie d'abord d'utiliser Jade,
+ensuite il essaie <B>OpenJade</B>.
+<DT><B>   -o </B><I>répertoire</I><B> | --output </B><I>répertoire</I><B>  </B><DD>
+Fixe le répertoire de sortie où tous les fichiers résultants
+seront enregistrés. Si les feuilles de style définissent également
+un sous-répertoire où les fichiers résultants doivent être
+enregistrés, alors le sous-répertoire défini par les feuilles de style
+sera placé dans le sous-répertoire défini par cette option.
+<DT><B>   -V </B><I>variable</I><B>=[</B><I>valeur</I><B>]  </B><DD>
+Fixe une variable (à une valeur, si celle-ci est spécifiée).
+<DT><B>   -u | --nochunks  </B><DD>
+Produit un gros fichier unique. Cette option est utile seulement
+pour générer du HTML, car la sortie peut être partagée dans
+plusieurs fichiers. Cette option annule la configuration qui a
+pu être réalisée dans les feuilles de style.
+<DT><B>   -i </B><I>section</I><B> | --include </B><I>section</I><B>  </B><DD>
+Déclare une section marquée SGML comme «&nbsp;include&nbsp;». Une
+section marquée SGML est une sorte de partie conditionnelle d'un
+document. Si elle est déclarée «&nbsp;ignore&nbsp;», elle sera ignorée,
+autrement, elle sera traitée. Un exemple de telle section marquée
+peut être&nbsp;:
+</DL>
+<P>
+
+<P>
+
+<P>
+<PRE>
+            &lt;DOCTYPE mon_doc [
+              &lt;!ENTITY % confidentiel &quot;ignore&quot;&gt;
+            ]&gt;
+            &lt;mon_doc&gt;
+              ...
+              &lt;![ %confidentiel [ Du texte confidentiel... ]]&gt;
+              ...
+            &lt;/mon_doc&gt;
+            
+</PRE>
+
+<DL COMPACT>
+<DT><B>   -w </B><I>type</I><B>|list | --warning </B><I>type</I><B>|list  </B><DD>
+Active ou désactive l'affichage de types donnés d'avertissements.
+Plusieurs options -w peuvent être entrées sur la ligne de commande.
+Les types d'avertissements qui commencent par «&nbsp;no-&nbsp;» désactivent
+les avertissements correspondants, les autres types les activent.
+<P>
+Si le type d'avertissement est remplacé par «&nbsp;list&nbsp;», alors une
+liste des types d'avertissements autorisés est affichée.
+<DT><B>   -e </B><I>type</I><B>|list | --error </B><I>type</I><B>|list  </B><DD>
+Désactive les types donnés d'erreurs.
+Plusieurs options -e peuvent être entrées sur la ligne de commande.
+Tous les types d'erreurs commencent par «&nbsp;no-&nbsp;».
+<P>
+Si le type d'erreur est remplacé par «&nbsp;list&nbsp;», alors une
+liste des types d'erreurs autorisées est affichée.
+<DT><B>   -h | --help  </B><DD>
+Affiche un court message d'aide et quitte.
+<DT><B>   -v | --version  </B><DD>
+Affiche l'identificateur de version et quitte.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><B></B><I>/etc/sgml/sgml-docbook.cat</I><B></B><DD>
+Le catalogue ouvert SGML centralisé. Ce nom de fichier peut
+varier si un autre frontend que <I>docbook</I> est utilisé.
+<DT><B></B><I>/usr/share/sgml/docbook/utils-0.6.14/backends</I><B></B><DD>
+Les différents backends.
+<DT><B></B><I>/usr/share/sgml/docbook/utils-0.6.14/frontends</I><B></B><DD>
+Les différents frontends.
+<DT><B></B><I>/usr/share/sgml/docbook/utils-0.6.14/helpers</I><B></B><DD>
+Les différents scripts assistants comme docbook2man ou docbook2texi.
+<P>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+<P>
+
+Éric Bischoff (le script shell jw et quelques backends),
+Jochem Huhmann (les backends <I>man</I> et <I>texi</I>)
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal AT univ-montp2 DOT fr&gt; 12 février 2003 et révisée le
+19 novembre 2004.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=en&nbsp;man&nbsp;1&nbsp;jw</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?1+docbook2man-spec.pl">docbook2man-spec.pl</A></B>(1),
+<B><A HREF="/cgi-bin/man/man2html?1+docbook2texi-spec.pl">docbook2texi-spec.pl</A></B>(1),
+<B><A HREF="/cgi-bin/man/man2html?8+install-catalog">install-catalog</A></B>(8),
+<B><A HREF="/cgi-bin/man/man2html?1+nsgmls">nsgmls</A></B>(1), page d'accueil docbook-utils
+&lt;URL:<A HREF="http://sources.redhat.com/docbook-tools/">http://sources.redhat.com/docbook-tools/</A>&gt;.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">AUTEURS</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:46 GMT, February 11, 2014
+</BODY>
+</HTML>

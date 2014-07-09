@@ -1,0 +1,196 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MKDIR</TITLE>
+</HEAD><BODY>
+<H1>MKDIR</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mkdir - Créer un répertoire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/stat.h">sys/stat.h</A>&gt;</B>
+
+<B>int mkdir(const char *</B><I>pathname</I><B>, mode_t </B><I>mode</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>mkdir</B>
+
+crée un nouveau répertoire nommé
+<I>pathname</I>.
+
+<P>
+<I>mode</I>
+
+spécifie les permissions à appliquer au répertoire. 
+Cette valeur peut être modifiée par le
+<B>umask</B>
+
+du processus : les permissions du répertoire effectivement créé 
+vaudront
+<B>(mode &amp; ~umask)</B>.
+
+<P>
+Le répertoire nouvellement créé aura pour propriétaire l'UID effectif
+du processus. Si le répertoire au-dessus du nouveau répertoire a son
+bit Set-GID à 1, ou si le système de fichier est monté avec une
+sémantique de groupe BSD, le nouveau répertoire héritera de
+l'appartenance au groupe de son parent. Sinon il appartiendra au
+groupe correspondant au GID effectif du processus.
+<P>
+Si le répertoire parent a son bit Set-GID à 1, le nouveau
+répertoire aura aussi son bit Set-GID à 1.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>mkdir</B>
+
+renvoie 0 s'il réussit, ou -1 s'il échoue, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+Le système de fichiers contenant 
+<I>pathname</I>
+
+ne permet pas la création de répertoires.
+<DT><B>EEXIST</B>
+
+<DD>
+<I>pathname</I>
+
+existe déjà (pas nécessairement un répertoire).
+Ceci inclut le cas où
+<I>pathname</I>
+
+est un lien symbolique, pointant quelque part ou pas.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>pathname</I> pointe en-dehors de l'espace d'adressage accessible.
+
+<DT><B>EACCES</B>
+
+<DD>
+Le répertoire parent n'autorise pas l'écriture au processus, ou l'un
+des répertoires de
+<I>pathname</I>
+
+n'autorise pas la consultation de son contenu.
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+<I>pathname</I> trop long.
+
+<DT><B>ENOENT</B>
+
+<DD>
+Un répertoire du chemin d'accès
+<I>pathname</I>
+
+n'existe pas ou est un lien symbolique pointant nulle part.
+<DT><B>ENOTDIR</B>
+
+<DD>
+Un élément utilisé dans le chemin
+<I>pathname</I>
+
+n'est pas un répertoire.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour le noyau.
+<DT><B>EROFS</B>
+
+<DD>
+<I>pathname</I>
+
+serait sur un système de fichier en lecture seule.
+<DT><B>ELOOP</B>
+
+<DD>
+<I>pathname</I>
+
+contient une référence circulaire (à travers un lien symbolique).
+<DT><B>ENOSPC</B>
+
+<DD>
+Le périphérique contenant
+<I>pathname</I>
+
+n'a pas assez de place pour le nouveau répertoire. Cette erreur se
+produit également si
+le quota de disque de l'utilisateur est dépassé.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, POSIX, BSD, SYSV, X/OPEN, SVr4 indique des conditions d'erreur
+supplémentaires EIO, EMULTIHOP, et ENOLINK. POSIX.1 omet ELOOP.
+<P>
+
+Il y a de nombreux problèmes avec le protocole sous-jacent à NFS, certains
+d'entre-eux peuvent affecter
+<B>mkdir</B>.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+mkdir">mkdir</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+chmod">chmod</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mknod">mknod</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mount">mount</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+rmdir">rmdir</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+umask">umask</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+unlink">unlink</A></B>(2)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:59 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,337 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CMSG</TITLE>
+</HEAD><BODY>
+<H1>CMSG</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+CMSG_ALIGN, CMSG_SPACE, CMSG_NXTHDR, CMSG_FIRSTHDR - Accès aux informations de service.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+
+<BR>
+
+<P>
+<B>struct cmsghdr *CMSG_FIRSTHDR(struct msghdr *</B><I>msgh</I><B>);</B>
+
+<BR>
+
+<B>struct cmsghdr *CMSG_NXTHDR(struct msghdr *</B><I>msgh</I><B>, struct cmsghdr *</B><I>cmsg</I><B>);</B>
+
+<BR>
+
+<B>size_t CMSG_ALIGN(size_t </B><I>length</I><B>);</B>
+
+<BR>
+
+<B>size_t CMSG_SPACE(size_t </B><I>length</I><B>);</B>
+
+<BR>
+
+<B>size_t CMSG_LEN(size_t </B><I>length</I><B>);</B>
+
+<BR>
+
+<B>unsigned char *CMSG_DATA(struct cmsghdr *</B><I>cmsg</I><B>);</B>
+
+<P>
+<PRE>
+
+struct cmsghdr {
+  socklen_t     cmsg_len;   /* Nombre d'octets, y compris l'entête */
+  int           cmsg_level; /* Protocole d'origine                 */
+  int           cmsg_type;  /* Type spécifique au protocole        */
+  /* suivi de :
+  unsigned char cmsg_data[]; */
+};
+
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION </H2>
+
+Ces macros servent à créer et à accéder aux messages de contrôle (informations
+de service -
+<I>ancillary data</I>)
+
+qui ne font pas partie du trafic normal des sockets.
+Ces informations de contrôle peuvent inclure l'interface sur laquelle le paquet
+a été reçu, des champs d'entête rarement employés, des descriptions d'erreur
+approfondies, un ensemble de descripteurs de fichiers ou des identificateurs Unix.
+Par exemple, les messages de services peuvent servir à envoyer des champs d'entête
+supplémentaires tels que les options IP. Les données de services sont émises avec
+<B><A HREF="/cgi-bin/man/man2html?2+sendmsg">sendmsg</A></B>(2)
+
+et reçues avec
+<B><A HREF="/cgi-bin/man/man2html?2+recvmsg">recvmsg</A></B>(2).
+
+Se reporter à leurs pages de manuel respectives pour avoir plus d'informations.
+<P>
+
+Une information de service est une séquence de structures
+<B>struct cmsghdr </B>
+
+avec des données ajoutées. Cette séquence ne doit être manipulée qu'au moyen des
+macros décrites dans cette page de manuel, et jamais directement. Voir les pages
+spécifiques des protocoles pour les types de messages de commande disponibles.
+La taille maximale de buffer de service par socket est paramétré avec l'option
+<B>net.core.optmem_max</B>
+
+de sysctl(). Voir
+<B><A HREF="/cgi-bin/man/man2html?7+socket">socket</A></B>(7).
+
+<P>
+
+<B>CMSG_FIRSTHDR </B>
+
+renvoie un pointeur sur la première
+<B>cmsghdr </B>
+
+du buffer de données de service associé avec
+<B>msghdr</B>.
+
+<P>
+
+<B>CMSG_NXTHDR </B>
+
+renvoie la
+<B>cmsghdr </B>
+
+suivante après la
+<B>cmsghdr</B>
+
+transmise. Elle renvoie
+<B>NULL </B>
+
+s'il n'y a plus assez de place dans le buffer.
+<P>
+
+<B>CMSG_ALIGN</B>,
+
+renvoie la longueur transmise en argument additionnée de la taille nécessaire
+pour les alignements. Il s'agit d'une expression constante.
+<P>
+
+<B>CMSG_SPACE</B>
+
+renvoie le nombre d'octets occupés par un élément de service contenant la taille
+indiquée de données transmises. Il s'agit d'une expression constante.
+<P>
+
+<B>CMSG_DATA</B>
+
+renvoie un pointeur sur les données d'une
+<B>cmsghdr</B>.
+
+<P>
+
+<B>CMSG_LEN</B>
+
+renvoie la valeur à stocker dans le membre
+<I>cmsg_len</I>
+
+d'une structure
+<B>cmsghdr </B>
+
+en tenant compte des alignements. Elle prend en argument la longueur des données.
+Il s'agit d'une expression constante.
+<P>
+
+Pour créer des données de service, il faut tout d'abord initialiser le membre
+<I>msg_controllen</I>
+
+de la structure 
+<B>msghdr </B>
+
+avec la longueur du buffer de message de contrôle. Utilisez
+<B>CMSG_FIRSTHDR </B>
+
+sur la 
+<B>msghdr </B>
+
+pour obtenir le premier message de contrôle, puis
+<B>CMSG_NEXTHDR</B>
+
+pour accéder aux suivants.
+Dans chaque meesage de contrôle, initialisez
+<I>cmsg_len</I>
+
+(avec 
+<B>CMSG_LEN</B>),
+
+les champs d'entête de l'autre
+<B>cmsghdr</B>,
+
+et la partie données avec
+<B>CMSG_DATA</B>.
+
+Finallement, il faut remplir le membre
+<I>msg_controllen </I>
+
+de la structure
+<B>msghdr </B>
+
+avec la somme de
+<B>CMSG_SPACE </B>
+
+appliqué à tous les messages de contrôle
+dans le buffer.
+Pour plus d'informations sur
+<B>msghdr</B>,
+
+voir
+<B><A HREF="/cgi-bin/man/man2html?2+recvmsg">recvmsg</A></B>(2).
+
+<P>
+
+Lorsque le buffer de message de contrôle est trop court pour stocker tous les messages, l'attribut
+<B>MSG_CTRUNC </B>
+
+est activé dans le membre
+<I>msg_flags </I>
+
+de 
+<B>msghdr</B>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+Ce code recherche l'option
+<B>IP_TTL </B>
+
+dans un buffer de messages de service reçus :
+<P>
+
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct msghdr msgh; 
+struct cmsghdr *cmsg;
+int *ttlptr;
+int received_ttl;
+
+/* Receive auxiliary data in msgh */ 
+for (cmsg = CMSG_FIRSTHDR(&amp;msgh); 
+     cmsg != NULL; 
+     cmsg = CMSG_NXTHDR(&amp;msgh,cmsg) {
+        if (cmsg-&gt;cmsg_level == SOL_IP 
+          &amp;&amp; cmsg-&gt;cmsg_type == IP_TTL) { 
+                ttlptr = (int *) CMSG_DATA(cmsg);
+                received_ttl = *ttlptr; 
+                break;
+        }
+}
+if (cmsg == NULL) {
+        /* Error: IP_TTL not enabled or small buffer
+         * or I/O error.
+         */ 
+} 
+
+</PRE>
+
+</DL>
+
+<P>
+
+Ce code passe une table de descripteurs de fichiers au travers d'une socket Unix en utilisant
+<B>SCM_RIGHTS</B>:
+
+<P>
+
+<DL COMPACT><DT><DD>
+<PRE>
+
+struct msghdr msg = {0};
+struct cmsghdr *cmsg;
+int myfds[NUM_FD]; /* Contains the file descriptors to pass. */ 
+char buf[CMSG_SPACE(sizeof myfds)];  /* ancillary data buffer */
+int *fdptr;
+
+msg.msg_control = buf; 
+msg.msg_controllen = sizeof buf;
+cmsg = CMSG_FIRSTHDR(&amp;msg); 
+cmsg-&gt;cmsg_level = SOL_SOCKET;
+cmsg-&gt;cmsg_type = SCM_RIGHTS;
+cmsg-&gt;cmsg_len = CMSG_LEN(sizeof(int) * NUM_FD); 
+/* Initialize the payload: */ 
+fdptr = (int *)CMSG_DATA(cmsg); 
+memcpy(fdptr, myfds, NUM_FD * sizeof(int)); 
+/* Sum of the length of all control messages in the buffer: */ 
+msg.msg_controllen = cmsg-&gt;cmsg_len;
+
+</PRE>
+
+</DL>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Pour des questions de portabilité, les données de services ne doivent être
+manipulées qu'avec les macros décrites ici.
+<B>CMSG_ALIGN</B>
+
+est une extension Linux et ne doit pas être utilisé dans un programme portable.
+<P>
+
+Sous Linux,
+<B>CMSG_LEN</B>,
+
+<B>CMSG_DATA</B>,
+
+et
+<B>CMSG_ALIGN</B>
+
+sont des expressions constantes (si leur argument est une constante) - on peut
+donc les utiliser pour déclarer la taille de variables
+globales. Cela peut néanmoins ne pas être portable.
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Le modèle des données de service est conforme à POSIX.1003.1g draft, 4.4BSD-Lite,
+l'API IPv6 avancée décrite dans la RFC2292 et les spécifications Single Unix v2.
+<B>CMSG_ALIGN </B>
+
+est une extension Linux.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+sendmsg">sendmsg</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+recvmsg">recvmsg</A></B>(2).
+
+<P>
+
+RFC 2292
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION </A><DD>
+<DT><A HREF="#lbAE">EXEMPLE</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:38 GMT, February 11, 2014
+</BODY>
+</HTML>

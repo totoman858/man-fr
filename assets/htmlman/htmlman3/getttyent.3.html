@@ -1,0 +1,128 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETTTYENT</TITLE>
+</HEAD><BODY>
+<H1>GETTTYENT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getttyent, getttynam, setttyent, endttyent - lire le fichier des terminaux.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/ttyent.h">ttyent.h</A>&gt;</B>
+
+<P>
+<B>struct ttyent *getttyent(void);</B>
+
+<P>
+<B>struct ttyent *getttynam(const char *</B><I>nom</I><B>);</B>
+
+<P>
+<B>int setttyent(void);</B>
+
+<P>
+<B>int endttyent(void);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ces fonctions fournissent une interface pour le fichier
+<B>_PATH_TTYS</B>
+
+(par exemple
+<I>/etc/ttys</I>).
+
+<P>
+La fonction 
+<B>setttyent</B>()
+
+ouvre le fichier, ou reprend la lecture au début s'il était déjà ouvert.
+<P>
+La fonction
+<B>endttyent</B>()
+
+ferme le fichier.
+<P>
+La fonction 
+<B>getttynam</B>()
+
+recherche un nom de terminal dans le fichier. Elle renvoie un pointeur sur une
+structure ttyent (voir ci-dessous).
+<P>
+La fonction
+<B>getttyent</B>()
+
+ouvre le fichier _PATH_TTYS (si besoin) et renvoie la première entrée.
+Si le fichier est déjà ouvert, elle renvoie l'entrée suivante.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H3>La structure ttyent</H3>
+
+<PRE>
+struct ttyent {
+        char    *ty_name;       /* nom du terminal */
+        char    *ty_getty;      /* commande à exécuter (ex : getty) */
+        char    *ty_type;       /* type termcap de terminal */
+        int     ty_status;      /* attributs d'état */
+        char    *ty_window;     /* commande gestionnaire de fenêtres */
+        char    *ty_comment;    /* commentaires */
+};
+</PRE>
+
+Le champ
+<I>ty_status</I>
+
+peut valoir
+<BR>
+
+<PRE>
+#define TTY_ON       0x01   /* autoriser les logins (avec ty_getty) */
+#define TTY_SECURE   0x02   /* autoriser login de l'UID zéro */
+</PRE>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Sous Linux, le fichier
+<I>/etc/ttys</I>,
+
+et les fonctions décrites ci-dessus ne sont pas utilisées.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+ttyname">ttyname</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+ttyslot">ttyslot</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">La structure ttyent</A><DD>
+</DL>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:44 GMT, February 11, 2014
+</BODY>
+</HTML>

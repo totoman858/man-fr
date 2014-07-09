@@ -1,0 +1,297 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MPOOL</TITLE>
+</HEAD><BODY>
+<H1>MPOOL</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mpool, mpool_open, mpool_filter, mpool_new, mpool_get, mpool_put, mpool_sync, mpool_close - Partage d'ensembles de buffers mémoires.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/db.h">db.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/mpool.h">mpool.h</A>&gt;
+
+MPOOL *
+mpool_open (DBT *clé, int fd, pgno_t pagesize, pgno_t maxcache);
+
+void
+mpool_filter (MPOOL *mp, void (*pgin)(void *, pgno_t, void *),
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void (*pgout)(void *, pgno_t, void *), void *pgcookie);
+
+void *
+mpool_new (MPOOL *mp, pgno_t *pgnoaddr);
+
+void *
+mpool_get (MPOOL *mp, pgno_t pgno, u_int flags);
+
+int
+mpool_put (MPOOL *mp, void *pgaddr, u_int flags);
+
+int
+mpool_sync (MPOOL *mp);
+
+int
+mpool_close (MPOOL *mp);
+</B></PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>Mpool</I>
+
+est l'interface de la bibliothèque fournissant une gestion de fichiers
+par des buffers mémoires découpés en pages.
+Les buffers peuvent être partagés entre les processus.
+<P>
+
+La fonction
+<I>mpool_open</I>
+
+initialise un ensemble de buffers mémoire.
+L'argument
+<I>clé</I>
+
+est la chaîne d'octets utilisée pour négocier entre plusieurs processus
+désireux de partager des buffers.
+Si les buffers de fichiers sont projetés en mémoire partagée, tous les
+processus utilisant la même clé partageront les buffers.
+Si la
+<I>clé</I>
+
+est NULL, les buffers sont projetés en mémoire privée.
+L'argument
+<I>fd</I>
+
+est un descripteur du fichier sous-jacent qui doit être accessible directement
+en n'importe quel point.
+Si la
+<I>clé</I>
+
+n'est pas NULL et correspond à un fichier déjà projeté, l'argument
+<I>fd</I>
+
+est ignoré.
+<P>
+
+Le fichier est découpé en pages de la taille
+<I>pagesize</I>
+
+(en octets).
+L'argument
+<I>maxcache</I>
+
+est le nombre maximal de pages du fichier sous-jacent, résidant dans le
+cache à un instant donné.
+Cette valeur ne dépend pas du nombre de processus qui partageront les
+buffers d'un fichier, mais la plus grande valeur de tous les processus
+partageant le fichier sera prise en compte.
+<P>
+
+La fonction
+<I>mpool_filter</I>
+
+sert à rendre transparent le traitement des pages en entrée et sortie.
+Si la fonction
+<I>pgin</I>
+
+est spéficiée, elle sera appelée à chaque fois qu'un buffer est lu depuis
+le fichier vers la mémoire.
+Si la fonction
+<I>pgout</I>
+
+est spéficiée, elle sera appelée à chaque fois qu'un buffer est écrit
+dans le fichier.
+Ces deux fonctions sont appelées avec le pointeur
+<I>pgcookie</I>,
+
+le numéro de page, et un pointeur sur la page lue ou écrite.
+<P>
+
+La fonction
+<I>mpool_new</I>
+
+prend en argument un pointeur MPOOL et une adresse.
+Si une nouvelle page peut être allouée, elle renvoie un
+pointeur sur cette page, et son numéro est stocké à l'adresse
+<I>pgnoaddr</I>.
+
+Sinon elle renvoie NULL et remplit
+<I>errno</I>.
+
+<P>
+
+La fonction
+<I>mpool_get</I>
+
+prend en argument un pointeur MPOOL et un numéro de page.
+Si la page existe, elle renvoie un pointeur dessus. Sinon elle
+renvoie NULL et remplit
+<I>errno</I>.
+
+Le paramètre flags n'est pas utilisé actuellement.
+<P>
+
+La fonction
+<I>mpool_put</I>
+
+débloque la page référencée par
+<I>pgaddr</I>.
+
+<I>Pgaddr</I>
+
+doit être une adresse que l'on a obtenue précédement avec
+<I>mpool_get</I>
+
+ou
+<I>mpool_new</I>.
+
+La valeur d'attribut 
+<I>flags</I>
+
+est indiquée avec un
+<I>OU</I>
+
+binaire entre les valeurs suivantes :
+<DL COMPACT>
+<DT>MPOOL_DIRTY<DD>
+La page a été modifiée est doit être ré-écrite dans le fichier.
+</DL>
+<P>
+
+<I>Mpool_put</I>
+
+renvoie 0 en cas de succès et -1 si une erreur se produit.
+<P>
+
+La fonction
+<I>mpool_sync</I>
+
+écrit toutes les pages modifiées associée au pointeur MPOOL dans le
+fichier.
+<I>Mpool_sync</I>
+
+renvoie 0 en cas de succès et -1 si une erreur se produit.
+<P>
+
+La fonction
+<I>mpool_close</I>
+
+libère toute mémoire allouée pour l'ensemble de buffers mémoire correspondant
+au cookie.
+Les pages modifiées ne sont
+<B>pas</B>
+
+écrites dans le fichier.
+<I>Mpool_close</I>
+
+renvoie 0 en cas de succès et -1 si une erreur se produit.
+<A NAME="lbAE">&nbsp;</A>
+<H2>ERREURS</H2>
+
+La fonction
+<I>mpool_open</I>
+
+peut échouer et remplir
+<I>errno</I>
+
+avec n'importe quel code d'erreur renvoyé par la routine
+<I><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></I>(3).
+
+<P>
+
+La fonction
+<I>mpool_get</I>
+
+peut échouer et renvoyer dans
+<I>errno</I>
+
+le code suivant :
+<DL COMPACT>
+<DT>[EINVAL]<DD>
+L'enregistrement demandé n'existe pas.
+</DL>
+<P>
+
+Les fonctions
+<I>mpool_new</I>
+
+et
+<I>mpool_get</I>
+
+peuvent échouer et remplir 
+<I>errno</I>
+
+avec n'importe quel code d'erreur renvoyé par les routines
+<I><A HREF="/cgi-bin/man/man2html?2+read">read</A></I>(2)<I>,</I>
+
+<I><A HREF="/cgi-bin/man/man2html?2+write">write</A></I>(2)<I>,</I>
+
+et
+<I><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></I>(3).
+
+<P>
+
+La fonction
+<I>mpool_sync</I>
+
+peut échouer et renvoyer dans
+<I>errno</I>
+
+n'importe quel code d'erreur renvoyé par la routine
+<I><A HREF="/cgi-bin/man/man2html?2+write">write</A></I>(2).
+
+<P>
+
+La fonction
+<I>mpool_close</I>
+
+peut échouer et renvoyer dans
+<I>errno</I>
+
+n'importe quel code d'erreur renvoyé par la routine
+<I><A HREF="/cgi-bin/man/man2html?3+free">free</A></I>(3).
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<I><A HREF="/cgi-bin/man/man2html?3+dbopen">dbopen</A></I>(3),
+
+<I><A HREF="/cgi-bin/man/man2html?3+btree">btree</A></I>(3),
+
+<I><A HREF="/cgi-bin/man/man2html?3+hash">hash</A></I>(3),
+
+<I><A HREF="/cgi-bin/man/man2html?3+recno">recno</A></I>(3)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1999-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">ERREURS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:05 GMT, February 11, 2014
+</BODY>
+</HTML>

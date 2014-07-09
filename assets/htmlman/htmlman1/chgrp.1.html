@@ -1,0 +1,202 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CHGRP</TITLE>
+</HEAD><BODY>
+<H1>CHGRP</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+chgrp - Changer le groupe propriétaire d'un fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>chgrp [</B><I>options</I><B>] </B><I>groupe fichier...</I>
+
+<P>
+Options POSIX :
+<B>[-R] [--]</B>
+
+<P>
+Options POSIX 1003.1-2001 :
+<B>[-hHLPR]</B>
+
+<P>
+Description GNU de groupe :
+<B>[--reference=</B><I>rfile</I><B>]</B>
+
+<P>
+Options GNU (forme courte) :
+<B>[-cfvR]</B>
+
+<B>[--help] [--version] [--]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>chgrp</B>
+
+change l'appartenance de chacun des fichiers indiqués pour qu'ils deviennent
+propriétés du groupe indiqué.
+<P>
+
+Le groupe peut être mentionné par son nom ou par un GID numérique.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS POSIX</H2>
+
+<DL COMPACT>
+<DT><B>-R</B>
+
+<DD>
+Modifier récursivement l'appartenance des répertoires et de leurs contenus. 
+Continuer la descente même si des erreurs surviennent.
+<DT><B>--</B>
+
+<DD>
+Terminer la liste des options.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS DU DRAFT D'AUSTIN</H2>
+
+<DL COMPACT>
+<DT><B>-h</B>
+
+<DD>
+Si un fichier est un lien symbolique, changer le groupe du lien lui-même et pas celui
+de l'objet vers lequel il pointe. Si le système ne supporte pas les groupes pour les
+liens symboliques, ne rien faire.
+<DT><B>-H</B> (half-logical)
+
+<DD>
+(Quand elle est fournie conjointement avec
+<B>-R</B>.)
+
+Si un fichier est un lien symbolique vers un répertoire, changer le groupe du répertoire et
+des fichiers de la hiérarchie en dessous.
+<DT><B>-L</B> (logique)
+
+<DD>
+(Quand elle est fournie conjointement avec
+<B>-R</B>.)
+
+Si un fichier rencontré sur la ligne de commande ou durant la traversée de l'arborescence est un
+lien symbolique vers un répertoire, changer le groupe du répertoire et
+des fichiers de la hiérarchie en dessous.
+<DT><B>-P</B> (physique)
+
+<DD>
+(Quand elle est fournie conjointement avec
+<B>-R</B>.)
+
+Si un fichier rencontré sur la ligne de commande ou durant la traversée de l'arborescence 
+est un lien symbolique, changer le groupe du lien lui-même et pas celui
+de l'objet vers lequel il pointe. Si le système ne supporte pas les groupes pour les
+liens symboliques, ne rien faire. C'est le comportement par défaut.
+<DT><B>-R</B>
+
+<DD>
+Changer récursivement le groupe des répertoires et de leurs contenus.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>DESCRIPTION GNU DE GROUPE</H2>
+
+Une extension GNU (nouvelle dans les fileutils 4.0) permet d'utiliser
+<B>--reference=</B><I>rfile</I>
+
+comme une description de groupe : on considérera le groupe auquel appartient le fichier
+<I>rfile</I>.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>OPTIONS GNU</H2>
+
+<DL COMPACT>
+<DT><B>-c, --changes</B>
+
+<DD>
+Décrire seulement les fichiers dont l'appartenance change effectivement.
+<DT><B>-f, --silent, --quiet</B>
+
+<DD>
+Ne pas afficher de message d'erreur concernant les fichiers dont
+le groupe ne peut pas être modifié.
+<DT><B>-h, --no-dereference</B>
+
+<DD>
+Agir sur un lien symbolique lui-même plutôt que sur l'objet vers lequel
+il pointe. Disponible uniquement si l'appel-système
+<B>lchown</B>
+
+est fourni.
+<DT><B>-v, --verbose</B>
+
+<DD>
+Décrire les modifications d'appartenance.
+<DT><B>-R, --recursive</B>
+
+<DD>
+Modifier récursivement l'appartenance des répertoires et de leurs contenus.
+Continuer la descente même si des erreurs surviennent.
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>OPTIONS STANDARDS GNU</H2>
+
+<DL COMPACT>
+<DT><B>--help</B>
+
+<DD>
+Afficher un message d'aide sur la sortie standard, puis terminer correctement.
+<DT><B>--version</B>
+
+<DD>
+Afficher le numéro de version sur la sortie standard, puis terminer correctement.
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+LANG, LC_ALL, LC_CTYPE et LC_MESSAGES ont leurs significations habituelles.
+Sur un système conforme XSI, NLSPATH a la signification normale.
+<A NAME="lbAK">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX 1003.2 ne documente que l'option -R. Toutes les autres options peuvent
+ne pas être portables.
+<A NAME="lbAL">&nbsp;</A>
+<H2>NOTES</H2>
+
+Cette page décrit la version de
+<B>chgrp</B>
+
+trouvée dans le paquetage fileutils-4.0, d'autres versions
+peuvent différer légèrement.
+<A NAME="lbAM">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS POSIX</A><DD>
+<DT><A HREF="#lbAF">OPTIONS DU DRAFT D'AUSTIN</A><DD>
+<DT><A HREF="#lbAG">DESCRIPTION GNU DE GROUPE</A><DD>
+<DT><A HREF="#lbAH">OPTIONS GNU</A><DD>
+<DT><A HREF="#lbAI">OPTIONS STANDARDS GNU</A><DD>
+<DT><A HREF="#lbAJ">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAK">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAL">NOTES</A><DD>
+<DT><A HREF="#lbAM">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:47 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,345 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of NSSWITCH.CONF</TITLE>
+</HEAD><BODY>
+<H1>NSSWITCH.CONF</H1>
+Section: Manuel de l administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+nsswitch.conf - Configuration des bases de données systèmes et des services de noms.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Plusieurs fonctions de la bibliothèque C doivent être configurées pour
+fonctionner correctement dans l'environnement local. Traditionnellement,
+cette configuration était établie par l'intermédiaire de fichiers
+(comme `/etc/passwd'), mais de nouveaux services de résolution de noms
+(comme le Network Information Service, NIS, ou le Domain Name Service DNS)
+sont apparus, et ont été implémentés dans la bibliothèque C avec un ordre
+de recherche fixé.
+<P>
+
+La bibliothèque libc5 de Linux implémentant NYS et la bibliothèque C GNU (libc.so.6)
+fournissent une solution plus propre à ce problème. Elle a été construite à partir
+d'une idée de Sun Microsystems, utilisée dans la bibliothèque C de Solaris 2. On a
+conservé leur dénomination, et ce schéma est appelé &quot;Name Service Switch&quot; (NSS).
+Les sources des bases de données, et leur ordre de recherche sont spécifiés dans
+le fichier
+<B>/etc/nsswitch.conf</B>.
+
+<P>
+
+Les bases de données suivantes sont disponibles dans le NSS&nbsp;:
+<DL COMPACT>
+<DT><B>aliases</B>
+
+<DD>
+Les alias pour le courrier, utilisés par
+<B><A HREF="/cgi-bin/man/man2html?8+sendmail">sendmail</A></B>(8).
+
+Ignorés de nos jours.
+<DT><B>ethers</B>
+
+<DD>
+Les numéros Ethernet.
+<DT><B>group</B>
+
+<DD>
+Les groupes d'utilisateur, servant aux fonctions
+comme
+<B><A HREF="/cgi-bin/man/man2html?3+getgrent">getgrent</A></B>(3).
+
+<DT><B>hosts</B>
+
+<DD>
+Les noms d'hôtes et leurs adresses, utilisés par les fonctions
+du type
+<B><A HREF="/cgi-bin/man/man2html?3+gethostbyname">gethostbyname</A></B>(3).
+
+<DT><B>netgroup</B>
+
+<DD>
+Une liste d'hôte et d'utilisateur servant aux règles d'accès.
+Les bibliothèques C avant la GlibC 2.1 ne supportait ces groupes qu'avec NIS.
+<DT><B>network</B>
+
+<DD>
+Les noms et les masques des réseaux, utilisés par les fonctions
+comme
+<B><A HREF="/cgi-bin/man/man2html?3+getnetent">getnetent</A></B>(3).
+
+<DT><B>passwd</B>
+
+<DD>
+Les mots de passe des utilisateurs, utilisés par les
+fonctions
+<B><A HREF="/cgi-bin/man/man2html?3+getpwent">getpwent</A></B>(3).
+
+<DT><B>protocols</B>
+
+<DD>
+Les protocoles réseau, utilisés
+par
+<B><A HREF="/cgi-bin/man/man2html?3+getprotoent">getprotoent</A></B>(3).
+
+<DT><B>publickey</B>
+
+<DD>
+Les clés publiques et privées des secure_rpc, utilisées par NIS+ et NFS.
+<DT><B>rpc</B>
+
+<DD>
+Les noms des procédures appelées à distance (RPC), utilisés par les fonctions
+comme
+<B><A HREF="/cgi-bin/man/man2html?3+getrpcbyname">getrpcbyname</A></B>(3).
+
+<DT><B>services</B>
+
+<DD>
+Les services réseau, utilisés par les
+fonctions
+<B><A HREF="/cgi-bin/man/man2html?3+getservent">getservent</A></B>(3).
+
+<DT><B>shadow</B>
+
+<DD>
+Le fichier de dissimulation des mots de passe des utilisateurs, utilisé par
+<B><A HREF="/cgi-bin/man/man2html?3+getspnam">getspnam</A></B>(3).
+
+</DL>
+<P>
+
+Un exemple de fichier
+<B>/etc/nsswitch.conf</B>
+
+pourrait être le suivant (ce sont les valeurs par défaut si
+<B>/etc/nsswitch.conf</B>
+
+manque)&nbsp;:
+<P>
+
+<DL COMPACT>
+<DT>passwd:<DD>
+compat
+<DT>group:<DD>
+compat
+<DT>shadow:<DD>
+compat
+<P>
+<DT>hosts:<DD>
+dns [!UNAVAIL=return] files
+<DT>networks:<DD>
+nis [NOTFOUND=return] files
+<DT>ethers:<DD>
+nis [NOTFOUND=return] files
+<DT>protocols:<DD>
+nis [NOTFOUND=return] files
+<DT>rpc:<DD>
+nis [NOTFOUND=return] files
+<DT>services:<DD>
+nis [NOTFOUND=return] files
+
+</DL>
+<P>
+
+La première colonne, comme vous vous en doutez, correspond à la base de données
+concernée, issue de la table indiquée plus haut.
+Le reste de la ligne indique la méthode de recherche de cette base.
+On peut indiquer une méthode différente pour chaque base de données.
+<P>
+
+La configuration de chaque base contient deux éléments différents:
+
+<DL COMPACT>
+<DT>* L'indication du service, comme `files', `db' ou `nis'.<DD>
+<DT>* Le comportement à adopter pour la recherche, comme `[NOTFOUND=return]'.<DD>
+
+</DL>
+<P>
+
+Pour la bibliothèque libc5 avec NYS, les spécifications possibles pour le
+service sont `files', `nis' et `nisplus'.
+Pour les noms d'hôtes, vous pouvez ajouter un service supplémentaire `dns', et
+pour les mots de passe et les groupes (mais pas pour la base de données shadow) vous
+pouvez employer le service `compat'.
+<P>
+
+La bibliothèque C GNU nécessite un fichier appelé
+<B>/lib/libnss_SERVICE.so.</B><I>X</I>
+
+pour chaque SERVICE utilisé.
+Avec une installation standard, vous pouvez utiliser `files', `db', `nis' et `nisplus'.
+Pour les noms d'hôtes, vous pouvez indiquer `dns' comme service supplémentaire. Les mots
+de passe, les groupes et la base de données shadow acceptent le service `compat'.
+Ces services ne sont pas utilisés par la libC5 avec NYS. Le numéro de version
+<I>X</I>
+
+est 1 pour la GlibC 2.0 et 2 pour la GlibC 2.1.
+<P>
+
+Le second élément de la configuration fournit un contrôle plus fin sur la méthode de recherche.
+Des actions sont indiquées, entre crochets, entre deux noms de services. La forme générale est la
+suivante :
+<P>
+
+`[' ( `!'? STATUS `=' ACTION )+ `]'
+<P>
+
+avec
+<P>
+
+<DL COMPACT>
+<DT>STATUS =&gt; success | notfound | unavail | tryagain<DD>
+<DT>ACTION =&gt; return | continue<DD>
+
+</DL>
+<P>
+
+Il n'y a pas de distinction majuscule/minuscule dans les mots-clés. Les valeurs
+de STATUS correspondent au résultat d'une fonction de recherche pour un service particulier.
+Ces mots-clés signifient :
+<DL COMPACT>
+<DT><B>success</B>
+
+<DD>
+Aucune erreur ne s'est produite, et la donnée recherchée a été trouvée. L'action par
+défaut est `return'.
+<DT><B>notfound</B>
+
+<DD>
+La méthode de recherche a bien fonctionné, mais la valeurs désirée n'a pas été trouvée.
+L'action par défaut est `continue'.
+<DT><B>unavail</B>
+
+<DD>
+Le service est indisponible, et ce de manière permanente. Ceci peut indiquer que le fichier
+nécessaire n'existe pas, ou, pour les DNS, que le serveur n'accepte pas les requêtes.
+L'action par défaut est `continue'.
+<DT><B>tryagain</B>
+
+<DD>
+Le service considéré est temporairement indisponible. Ceci signifie qu'un fichier est 
+verrouillé, et qu'un serveur ne peut pas accepter de connexion supplémentaire. L'action
+par défaut est `continue'.
+</DL>
+<P>
+
+<A NAME="lbAD">&nbsp;</A>
+<H3>Interactions avec la syntaxe +/- (mode compat)</H3>
+
+La bibliothèque libc5 Linux sans NYS n'accepte pas le service de résolution de noms, mais
+permet un contrôle d'accès.
+Dans le fichier
+<B>/etc/passwd</B>,
+
+vous pouvez trouver des entrées de la forme +utilisateur ou +@groupe_reseau
+(inclure l'utilisateur indiqué depuis le fichier NIS passwd), -utilisateur
+ou -@groupe_réseau (exclure ces utilisateurs) et + (inclure tous les
+utilisateurs depuis le fichier NIS passwd sauf les éventuels exclus explicites).
+Comme la plupart des gens placent un + à la fin de
+<B>/etc/passwd</B>
+
+pour tout inclure depuis NIS, il est possible d'utiliser une méthode plus rapide
+(`passwd: files nis') ne nécessitant pas d'entrée + dans
+<B>/etc/passwd</B>,
+
+<B>/etc/group</B>
+
+et
+<B>/etc/shadow</B>.
+
+Si ceci ne suffit pas, le service NSS `compat' autorise la sémantique +/- complète.
+Par défaut, la source est `nis', mais on peut la surcharger en indiquant
+`nisplus' comme source des pseudo-bases de données
+<B>passwd_compat,</B>
+
+<B>group_compat</B>
+
+et
+<B>shadow_compat.</B>
+
+Ces pseudo-bases de données ne sont disponibles que dans la bibliothèque C GNU.
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+Un service appelé SERVICE est implémenté par une bibliothèque objet partagée nommée
+<B>libnss_SERVICE.so.</B><I>X</I>
+
+se trouvant dans
+<I>/lib</I>.
+
+<DL COMPACT>
+<DT>
+<DD>
+<B>/etc/nsswitch.conf</B>
+
+fichier de configuration
+<DT><B>/lib/libnss_compat.so.</B><I>X</I>
+
+<DD>
+la source `compat' pour la bibliothèque GlibC 2&nbsp;;
+<DT><B>/lib/libnss_db.so.</B><I>X</I>
+
+<DD>
+la source `db' pour la bibliothèque GlibC 2&nbsp;;
+<DT><B>/lib/libnss_dns.so.</B><I>X</I>
+
+<DD>
+la source `dns' pour la bibliothèque GlibC 2&nbsp;;
+<DT><B>/lib/libnss_files.so.</B><I>X</I>
+
+<DD>
+la source `files' pour la bibliothèque GlibC 2&nbsp;;
+<DT><B>/lib/libnss_hesoid.so.</B><I>X</I>
+
+<DD>
+la source `hesoid' pour la bibliothèque GlibC 2&nbsp;;
+<DT><B>/lib/libnss_nis.so.</B><I>X</I>
+
+<DD>
+la source `nis' pour la bibliothèque GlibC 2&nbsp;;
+<DT><B>/lib/libnss_nisplus.so.</B><I>X</I>
+
+<DD>
+la source `nisplus' pour la bibliothèque GlibC 2.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Au sein de chaque processus qui utilise nsswitch.conf, la lecture
+du fichier entier n'a lieu qu'une seule fois. Si le fichier est
+modifié par la suite, le processus continuera à utiliser l'ancienne
+configuration.
+<P>
+
+Avec Solaris il n'est pas possible de lier statiquement des programmes
+utilisant les services NSS. Avec Linux cela ne pose aucun problème.
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1998-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAD">Interactions avec la syntaxe +/- (mode compat)</A><DD>
+</DL>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:56 GMT, February 11, 2014
+</BODY>
+</HTML>

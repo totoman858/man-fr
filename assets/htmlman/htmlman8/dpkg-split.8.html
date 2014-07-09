@@ -1,0 +1,398 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of dpkg-split</TITLE>
+</HEAD><BODY>
+<H1>dpkg-split</H1>
+Section: User Commands  (1)<BR>Updated: 23 juin 1996<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+dpkg-split - outil de décomposition/recomposition pour les paquets Debian 
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>dpkg-split</B>
+
+<B>-s</B>|<B>--split</B>
+
+<I>archive-complète</I> [<I>préfixe</I>]
+
+<BR>
+
+<B>dpkg-split</B>
+
+<B>-j</B>|<B>--join</B>
+
+<I>partie partie </I>...
+
+<BR>
+
+<B>dpkg-split</B>
+
+<B>-I</B>|<B>--info</B>
+
+<I>partie partie </I>...
+
+<BR>
+
+<B>dpkg-split</B>
+
+<B>-a</B>|<B>--auto</B>
+
+<B>-o</B><I> fichier-complet partie</I>
+
+<BR>
+
+<B>dpkg-split</B>
+
+<B>-l</B>|<B>--listq</B>
+
+<BR>
+
+<B>dpkg-split</B>
+
+<B>-d</B>|<B>--discard</B>
+
+[<I>paquet paquet </I>...]
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>dpkg-split</B>
+
+décompose les fichiers d'un paquet binaire Debian en parties plus petites (et 
+les recompose), pour permettre le stockage des fichiers d'un paquet volumineux
+sur des média de faible capacité tels que les disquettes.
+<P>
+On peut s'en servir «&nbsp;à la main&nbsp;» avec les options
+<B>--split</B>, <B>--join</B> et <B>--info</B>.
+
+<P>
+Il possède aussi un mode automatique, appelé avec l'option
+<B>--auto ,</B>
+
+dans lequel il conserve séparément dans une file les parties connues ou 
+recompose le fichier d'un paquet quand il connaît toutes ses parties.
+Les options
+<B>--listq</B> et <B>--discard</B>
+
+permettent la gestion de cette file.
+<P>
+Toutes les opérations de décomposition, recomposition ou de mise en file
+produisent des messages sur la sortie standard&nbsp;; On peut tranquillement les
+ignorer.
+<A NAME="lbAE">&nbsp;</A>
+<H2>ACTION OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>--split</B>, <B>-s</B>
+
+<DD>
+Décompose en plusieurs parties un paquet binaire Debian.
+<P>
+Le nom d'une partie est&nbsp;:
+<I>préfixe</I><B>.</B><I>N</I><B>de</B><I>M</I><B>.deb</B>
+
+où
+<I>N</I>
+
+le numéro de partie, commençant à 1, et
+<I>M</I>
+
+est le nombre total de parties (les deux sont des décimaux).
+<P>
+Quand on ne donne pas de
+<I>préfixe,</I>
+
+le nom du fichier
+<I>archive-complète</I>
+
+est utilisé, en incluant le répertoire et en supprimant tout
+<B>.deb</B>
+
+restant.
+<DT><B>--join</B>, <B>-j</B>
+
+<DD>
+Rassemble les parties d'un fichier, recomposant ainsi le fichier original tel
+qu'il était avant la décomposition.
+<P>
+Ces parties, données comme arguments, doivent appartenir toutes au même 
+fichier binaire original. Chaque partie ne doit apparaître qu'une seule
+fois dans la liste des arguments&nbsp;; mais il est inutile de les ordonner.
+<P>
+Les parties doivent bien sûr avoir été créées selon le même modèle (taille
+maximum des parties), qui est déclaré au moment de la décomposition&nbsp;; ce qui 
+signifie en fait qu'elles doivent avoir été créées par le même appel à
+<B>dpkg-split --split</B>.
+
+<P>
+Le nom des parties n'est pas significatif pour le processus de recomposition.
+<P>
+Par défaut, le fichier produit s'appelle&nbsp;:
+<I>paquet</I><B>-</B><I>version</I><B>.deb</B>.
+
+<P>
+<DT><B>--info</B>, <B>-I</B>
+
+<DD>
+Affiche les renseignements concernant telle partie dans un format lisible par
+tous. Les arguments ne représentant pas la partie d'un fichier binaire
+le disent aussi sur la sortie standard.
+<P>
+<DT><B>--auto</B>, <B>-a</B>
+
+<DD>
+Met en file automatiquement les parties en vue de la recomposition d'un
+paquet.
+<P>
+La
+<I>partie</I>
+
+déclarée est examinée et comparée avec les autres parties du même paquet qui 
+se trouvent (si elles existent) dans la file.
+<P>
+Quand toutes les parties d'un fichier (auquel appartient la partie
+<I>part)</I>
+
+sont présentes, le fichier est recomposé et créé en tant que&nbsp;:
+<I>fichier-complet</I>
+
+(ce fichier ne devrait pas déjà exister, mais ce n'est pas une erreur).
+<P>
+Quand ce n'est pas le cas, la partie
+<I>part</I>
+
+est mise dans la file et le fichier
+<I>fichier-complet</I>
+
+n'est pas créé.
+<P>
+Quand la partie
+<I>part</I>
+
+n'appartient pas à un paquet binaire décomposé,
+<B>dpkg-split</B>
+
+se termine avec un code de sortie égal à 1&nbsp;; s'il y a une autre erreur,
+c'est un code de sortie égal à 2.
+<P>
+L'option
+<B>--output</B> ou <B>-o</B>
+
+doit être fournie avec l'action
+<B>--auto</B>.
+
+(Si cela n'était pas obligatoire, le programme appelant ne saurait pas
+quel fichier attendre.)
+<DT><B>--listq</B>, <B>-l</B>
+
+<DD>
+Liste le contenu d'une file de paquets à recomposer.
+<P>
+Pour chaque fichier possédant des parties dans la file, cette action donne
+le nom du fichier, les parties présentes dans la file et le nombre total
+d'octets conservés.
+<DT><B>--discard</B>, <B>-d</B>
+
+<DD>
+Cette action laisse de côté les parties dans la file qui attendent le reste
+des parties du paquet.
+<P>
+Quand aucun 
+<I>paquet</I>
+
+n'est donné, la file est vidée&nbsp;; si un paquet est donné, seules les parties
+de ce paquet sont détruites.
+<DT><B>--help</B>, <B>-h</B>
+
+<DD>
+Affiche un message de
+<B>dpkg-split</B>
+
+donnant un résumé de ses options et de leur utilisation.
+<DT><B>--version</B>
+
+<DD>
+Affiche le numéro de version de
+<B>dpkg-split</B>.
+
+<DT><B>--licence</B>
+
+<DD>
+Affiche les renseignements sur le copyright et l'absence de garantie.
+(L'orthographe américaine&nbsp;:
+<B>--license</B>
+
+est acceptée.)
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTRES OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>--depotdir</B><I> répertoire</I>
+
+<DD>
+Indique un répertoire différent pour la file comprenant les parties en attente
+d'une recomposition automatique. Par défaut, c'est le répertoire
+<B>/var/lib/dpkg</B>.
+
+<DT><B>--partsize</B>|<B>-S</B><I> kbytes</I>
+
+<DD>
+Indique (en kilooctets (1024 octets)) la taille maximum d'une partie lors 
+d'une décomposition. Par défaut, la taille maximum est&nbsp;: 450&nbsp;ko.
+<DT><B>--output</B>|<B>-O</B><I> fichier-complet</I>
+
+<DD>
+Indique le nom du fichier à produire pour une recomposition.
+<P>
+Cela annule le fichier par défaut lors d'une recomposition «&nbsp;à la main&nbsp;» 
+(<B>--join</B>)
+
+et c'est obligatoire pour une recomposition ou une mise en file automatiques
+(<B>--auto</B>).
+
+<DT><B>--npquiet</B>, <B>-Q</B>
+
+<DD>
+Pour une recomposition ou une mise en file automatiques,
+<B>dpkg-split</B>
+
+affiche habituellement un message si on lui donne une
+<I>partie</I>
+
+qui n'est pas une partie d'un paquet binaire. Cette option supprime ce
+message&nbsp;; cela permet à des programmes comme
+<B>dpkg</B>
+
+de ne pas afficher de faux messages quand il est confronté à des paquets
+décomposés et des paquets non décomposés.
+<DT><B>--msdos</B>
+
+<DD>
+Oblige le nom des fichiers produits par
+<B>--split</B>
+
+à se conformer à msdos.
+<P>
+Cela supprime le préfixe -- soit celui par défaut dérivé du fichier d'entrée,
+soit celui donné comme argument&nbsp;: les caractères alphanumériques sont en
+minuscules, les signes plus sont remplacés par des
+<B>x</B>
+
+et tous les autres caractères sont abandonnés.
+<P>
+le résultat est alors tronqué autant que nécessaire et des fichiers de la
+forme :
+<I>prefixN</I><B>of</B><I>M</I><B>.deb</B>
+
+sont créés.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CODE DE SORTIE</H2>
+
+Un code de sortie égal à 0 signifie que la décomposition demandée, la 
+recomposition ou bien toute autre commande a réussie. Les commandes
+<B>--info</B>
+
+réussissent toujours même si les fichiers ne sont pas des parties d'un paquet
+binaire.
+<P>
+Un code de sortie égal à 1 ne peut apparaître qu'avec l'action
+<B>--auto</B>
+
+et signale que le fichier
+<I>partie</I>
+
+n'est pas une partie d'un paquet binaire.
+<P>
+Un code de sortie égal à 2 signale des problèmes, comme l'échec d'un appel
+système, ou un fichier qui, bien que ressemblant à une partie de fichier,
+est défectueux, ou bien une erreur d'utilisation, etc.
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<B>dpkg-split</B>
+
+utilise des conventions plutôt périmées pour les noms des paquets Debian.
+<P>
+On ne peut pas obtenir tous les détails voulus sur les paquets présents dans
+la file à moins d'aller voir soi-même dans le répertoire de la file.
+<P>
+On ne peut pas facilement savoir si un fichier est vraiment la partie d'un
+paquet binaire ou non.
+<P>
+L'architecture n'est pas indiquée dans l'en-tête des fichiers&nbsp;; elle l'est
+seulement dans les informations de contrôle du paquet binaire&nbsp;; et elle n'est
+pas présente dans les fichiers produits.
+<A NAME="lbAI">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><B>/var/lib/dpkg/parts</B>
+
+<DD>
+Le répertoire par défaut de la file contenant les fichiers qui attendent une
+recomposition automatique.
+<P>
+Les noms de fichiers utilisés dans ce répertoire sont dans un format
+particulier à
+<B>dpkg-split</B>
+
+et ne sont sans doute pas utiles pour d'autres programmes ; en tous cas
+on ne peut pas compter sur ce format de nom de fichier.
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+deb">deb</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?5+deb-control">deb-control</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?1+dpkg-deb">dpkg-deb</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+dpkg">dpkg</A></B>(8)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<B>dpkg-split</B>
+
+et cette page de manuel ont été écrits par Ian Jackson.
+Copyright (C) 1995-1996
+Ils ont été édités sous la «&nbsp;GNU General Public License&nbsp;» ; il n'y a
+PAS de GARANTIE.
+Voyez
+<B>/usr/share/dpkg/copyright</B>
+
+et
+<B>/usr/share/common-licenses/GPL</B>
+
+pour des précisions.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">ACTION OPTIONS</A><DD>
+<DT><A HREF="#lbAF">AUTRES OPTIONS</A><DD>
+<DT><A HREF="#lbAG">CODE DE SORTIE</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">FICHIERS</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">AUTEUR</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

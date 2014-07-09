@@ -1,0 +1,425 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ONSGMLS</TITLE>
+</HEAD><BODY>
+<H1>ONSGMLS</H1>
+Section: onsgmls (1)<BR>Updated: Novembre 2002<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+onsgmls - Un système SGML conforme à la norme internationale ISO 8879 -- Standard
+Generalized Markup Language (Langage normalisé de balisage généralisé). 
+Un système SGML étendu (Extended Facilities) conforme à l'annexe A de la norme
+internationale ISO/IEC 10744 -- Hypermedia/Time-based Structuring Language
+(Langage de structuration hypermédia/événementiel)
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<PRE>
+<B>onsgmls</B> [<B>-BCdeghlnpRrsuvx</B>] [<B>-a</B><I>type_lien</I>] [<B>-A</B><I>architecture</I>]
+        [<B>-b</B><I>bctf</I>] [<B>-c</B><I>sysid</I>...] [<B>-D</B><I>répertoire</I>]
+        [<B>-E</B><I>erreurs_max</I>] [<B>-f</B><I>fichier</I>] [<B>-i</B><I>nom</I>]
+        [<B>-o</B><I>option_sortie</I>...] [<B>-t</B><I>fichier</I>] [<B>-w</B><I>type_avertissement</I>...]
+        [<B></B><I>sysid</I>...]
+</PRE>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+<P>
+
+<B>onsgmls</B> analyse et valide le document SGML dont l'entité document est
+spécifiée par les identificateurs système [<I>sysid</I>...] et affiche sur la
+sortie standard une représentation texte simple de son jeu d'informations de
+structure des éléments (NdT&nbsp;: Element Structure Information Set). (Il s'agit
+de l'ensemble d'informations sur lequel une application structurée conforme à SGML
+devrait agir.) Lorsque plusieurs identificateurs système sont spécifiés,
+les entités correspondantes sont concaténées pour former l'entité document. 
+Ainsi, l'entité document peut être répartie sur plusieurs fichiers&nbsp;;
+par exemple, la déclaration SGML, le prologue et les instances du document
+peuvent chacun se trouver dans des fichiers séparés. Si aucun identificateur système
+n'est spécifié, alors onsgmls lira l'entité document depuis l'entrée standard.
+Un identificateur système, sur la ligne de commande, de valeur «&nbsp;-&nbsp;» peut être
+utilisé pour faire référence à l'entrée standard. (Normalement, dans un
+identificateur système, &lt;OSFD&gt;0 est utilisé pour se référer à l'entrée standard.)
+<P>
+<P>
+
+Les options suivantes sont disponibles&nbsp;:
+<P>
+<DL COMPACT>
+<DT><B>-a</B><I>type_lien</I>, <B>--activate=</B><I>type_lien</I><DD>
+Rend le type de lien <I>type_lien</I> actif. Dans ce cas, toutes les informations
+ESIS (NdT&nbsp;: <B>E</B>lement <B>S</B>tructure <B>I</B>nformation <B>S</B>et) ne sont
+pas produites en sortie&nbsp;: les LPDs (NdT&nbsp;: <B>L</B>ink <B>P</B>rocess
+<B>D</B>efinition) actives ne sont pas explicitement rapportées, bien que chaque
+attribut de lien soit qualifié avec son nom de type de lien&nbsp;; il n'y a aucune
+information sur les élements résultants&nbsp;; quand plusieurs règles de lien sont
+applicables à l'élément courant, onsgmls choisit toujours la première.
+<P>
+<DT><B>-A</B><I>architecture</I>, <B>--architecture=</B><I>architecture</I><DD>
+Analyse par rapport à l'architecture <I>architecture</I>.
+<P>
+<DT><B>-b</B><I>bctf</I>, <B>--bctf=</B><I>bctf</I>, <B>-b</B><I>encodage</I>, <B>--encoding=</B><I>encodage</I><DD>
+Cette option détermine l'encodage utilisé pour la sortie. Si c'est en mode de jeu de
+caractères fixé, elle spécifie le nom d'un encodage&nbsp;; sinon, elle spécifie
+le nom d'une BCTF.
+<P>
+<DT><B>-B</B>, <B>--batch_mode</B><DD>
+Mode par lots. Analyse séparément chaque [<B></B><I>sysid</I>...] spécifié sur la
+ligne de commande, plutôt que de les concaténer. C'est pratique surtout avec
+<B>-s</B>.
+<P>
+Si l'option <B>-t</B><I>nom_de_fichier</I> est également spécifiée, alors le nom
+de fichier indiqué servira de préfixe aux <I>sysid</I> pour composer les noms de
+fichiers du résultat RAST (NdT&nbsp;: <B>R</B>eference
+<B>A</B>pplication for <B>S</B>GML <B>T</B>esting) pour chaque <I>sysid</I>.
+<P>
+<DT><B>-c</B><I>sysid</I>, <B>--catalog=</B><I>sysid</I><DD>
+Met en correspondance les identificateurs publics et les noms d'entités avec les
+identificateurs système en utilisant le fichier d'entrées de catalogue dont
+l'identificateur système est <I>sysid</I>. Plusieurs options <B>-c</B> sont permises.
+S'il y a un fichier d'entrées de catalogue nommé «&nbsp;catalog&nbsp;» au même endroit que
+l'entité document, il sera scruté immédiatement après ceux spécifiés par <B>-c</B>.
+<P>
+<DT><B>-C</B>, <B>--catalogs</B><DD>
+Les arguments [<B></B><I>nom_de_fichier</I>...] spécifient les fichiers catalogues
+plutôt que l'entité document. L'entité document est spécifiée par la première
+entrée DOCUMENT dans les fichiers catalogues.
+<P>
+<DT><B>-D</B><I>répertoire</I>, <B>--directory=</B><I>répertoire</I><DD>
+Recherche dans <I>répertoire</I> les fichiers spécifiés dans les identificateurs
+système. Plusieurs options <B>-D</B> sont permises. Voir la description du
+gestionnaire de stockage «&nbsp;osfile&nbsp;» pour plus d'informations à propos de la
+recherche de fichier.
+<P>
+<DT><B>-e</B>, <B>--open-entities</B><DD>
+Décrit les entités ouvertes dans les messages d'erreur. Les messages d'erreur
+comportent toujours la position de l'entité externe la plus récemment ouverte.
+<P>
+<DT><B>-E</B><I>max_erreurs</I>, <B>--max-errors=</B><I>max_erreurs</I><DD>
+onsgmls s'arrêtera après <I>max_erreurs</I> erreurs. Si <I>max_erreurs</I> vaut 0,
+il n'y a pas de limite au nombre d'erreurs. La valeur par défaut est 200.
+<P>
+<DT><B>-f</B><I>fichier</I>, <B>--error-file=</B><I>fichier</I><DD>
+Redirige les erreurs vers <I>fichier</I>. C'est pratique surtout avec les 
+shells qui ne gèrent pas la redirection de la sortie d'erreur standard «&nbsp;stderr&nbsp;».
+<P>
+<DT><B>-g</B>, <B>--open-elements</B><DD>
+Montre les identificateurs génériques des éléments ouverts dans les messages
+d'erreur.
+<P>
+<DT><B>-h</B>, <B>--help</B><DD>
+Affiche un texte d'aide et quitte.
+<P>
+<DT><B>-i</B><I>nom</I>, <B>--include=</B><I>nom</I><DD>
+Simule la présence de
+<P>
+&lt;!ENTITY % <I>nom</I> &quot;INCLUDE&quot;&gt;
+<P>
+au début du sous-ensemble de déclaration de type de document dans l'entité
+document SGML. Puisque que des définitions répétées d'une entité sont ignorées,
+cette définition aura la préséance sur toutes autres définitions de cette entité
+dans la déclaration de type de document. Plusieurs options <B>-i</B> sont permises.
+Si la déclaration SGML remplace le nom réservé INCLUDE, alors le nouveau nom
+réservé sera le texte de remplacement de l'entité. Typiquement, la déclaration
+de type de document contiendra
+<P>
+&lt;!ENTITY % <I>nom</I> &quot;IGNORE&quot;&gt;
+<P>
+et utilisera %<I>nom</I>; dans la spécification du mot clé de statut d'une
+déclaration de section marquée. Dans ce cas, l'effet de l'option sera que la
+section marquée ne sera pas ignorée.
+<P>
+<DT><B>-n</B>, <B>--error-numbers</B><DD>
+Affiche les numéros d'erreur dans les messages d'erreur.
+<P>
+<DT><B>-o</B><I>option_sortie</I>, <B>--option=</B><I>option_sortie</I><DD>
+Produit en sortie des informations supplémentaires selon
+<I>option_sortie</I>&nbsp;:
+<P>
+<B>entity</B> Produit les définitions de toutes les entités générales, pas
+seulement pour les entités de données ou «&nbsp;subdoc&nbsp;» qui sont référencées ou
+nommées dans un attribut ENTITY ou ENTITIES.
+<P>
+<B>id</B> Distingue les attributs dont la valeur déclarée est ID.
+<P>
+<B>line</B> Produit des commandes «&nbsp;L&nbsp;» donnant le numéro de ligne et le nom
+de fichier courants.
+<P>
+<B>included</B> Produit une commande «&nbsp;i&nbsp;» pour les sous-éléments inclus.
+<P>
+<B>empty</B> Produit une commande «&nbsp;e&nbsp;» pour des éléments qui ne sont pas
+autorisés à avoir une balise fermante, c'est ainsi avec un contenu déclaré
+«&nbsp;empty&nbsp;» ou avec un attribut de référence de contenu.
+<P>
+<B>notation-sysid</B> Produit une commande «&nbsp;f&nbsp;» avant une commande «&nbsp;N&nbsp;»,
+si un identificateur système peut être généré pour cette notation.
+<P>
+<B>nonsgml</B> Dans le mode de jeu de caractères fixé, produit des séquences
+d'échappement  pour les caractères de données non SGML. Les caractères de
+données non SGML peuvent être le résultat d'appels de caractères numériques.
+<P>
+<B>data-attribute</B> Produit en sortie le nom et les attributs de notation pour
+les attributs DATA. Autrement, les attributs DATA sont traités comme des
+attributs CDATA. Pour plus de détails, voir la clause 4.4.3 de l'annexe K de la
+norme ISO 8879.
+<P>
+<B>comment</B> Produit en sortie une commande «&nbsp;_&nbsp;» avec les contenus d'un
+commentaire. Plusieurs commentaires dans une seule déclaration de commentaire
+produiront plusieurs commandes «&nbsp;_&nbsp;» distinctes, comme si les commentaires
+étaient chacun dans une déclaration de commentaire séparée.
+<P>
+<B>omitted</B> Produit en sortie une commande «&nbsp;o&nbsp;» avant une commande qui
+était impliquée par le document d'entrée mais omise du balisage réel. Cela
+affecte actuellement les commandes «&nbsp;(&nbsp;», «&nbsp;)&nbsp;» et «&nbsp;A&nbsp;».
+<P>
+<B>tagomit</B> Comme <B>omitted</B>, mais seulement pour les commandes «&nbsp;(&nbsp;»
+et «&nbsp;)&nbsp;»
+<P>
+<B>attromit</B> Comme <B>omitted</B>, mais seulement pour les commandes «&nbsp;A&nbsp;»
+<P>
+Plusieurs options <B>-o</B> sont permises.
+<P>
+<DT><B>-p</B>, <B>--only-prolog</B><DD>
+Analyse seulement le prologue. <B>onsgmls</B> quittera après avoir analysé la
+déclaration de type de document. Implique <B>-s</B>.
+<P>
+<DT><B>-R</B>, <B>--restricted</B><DD>
+Restreint la lecture de fichiers. Cette option s'adresse à l'utilisation
+d'outils Web basés sur onsgmls (par exemple les scripts CGI) pour prévenir la
+lecture de fichiers arbitraires sur un serveur Web. Lorsque cette option est
+activée, onsgmls ne lira aucun fichier local à part ceux situés dans le
+répertoire (ou sous-répertoire) spécifié par l'option <B>-D</B> ou inclus dans
+la variable d'environnement SGML_SEARCH_PATH. Pour plus de sécurité, cette option limite les noms de fichiers aux caractères
+A-Z, a-z, 0-9, « ? », « . », « _ », « - » et ne permet pas les noms de
+fichiers contenant « .. ».
+<P>
+<P>
+<DT><B>-s</B>, <B>--no-output</B><DD>
+Supprime la sortie. Les messages d'erreur seront tout de même affichés.
+<P>
+<DT><B>-t</B><I>nom_de_fichier</I>, <B>--rast-file=</B><I>nom_de_fichier</I><DD>
+Produit dans <I>nom_de_fichier</I> le résultat RAST ainsi qu'il est défini dans
+l'«&nbsp;ISO/IEC 13673:1995&nbsp;» (en fait, ce n'est pas encore complètement une norme
+internationale&nbsp;; cela implémente l'«&nbsp;Intermediate Editor's Draft&nbsp;» du 29 août
+1994, avec des modifications pour implémenter «&nbsp;ISO/IEC JTC1/SC18/WG8 N1777&nbsp;»).
+La sortie normale n'est pas produite.
+<P>
+<DT><B>-v</B>, <B>--version</B><DD>
+Affiche le numéro de version.
+<P>
+<DT><B>-w</B><I>type</I>, <B>--warning=</B><I>type</I><DD>
+Contrôle les avertissements et les erreurs. Plusieurs options <B>-w</B> sont
+permises. Les valeurs suivantes de «&nbsp;type&nbsp;» activent les avertissements&nbsp;:
+<P>
+<B>xml</B> Avertit sur les constructions non permises par XML.
+<P>
+<B>mixed</B> Avertit sur les modèles de contenu mixte qui ne permettent
+nulle part «&nbsp;#PCDATA&nbsp;».
+<P>
+<B>sgmldecl</B> Avertit sur différentes constructions douteuses dans la
+déclaration SGML.
+<P>
+<B>should</B> Avertit sur différentes recommandations faites dans l'ISO
+8879 avec lesquelles le document n'est pas conforme. (Les recommandations sont
+exprimées avec «&nbsp;should&nbsp;», ce qui est distinct des exigences qui sont
+généralement exprimées avec «&nbsp;shall&nbsp;»).
+<P>
+<B>default</B> Avertit sur les références utilisant l'entité par défaut.
+<P>
+<B>duplicate</B> Avertit sur les déclarations d'entité dupliquées.
+<P>
+<B>undefined</B> Avertit sur les éléments non définis&nbsp;: éléments utilisés
+dans la DTD mais non définis.
+<P>
+<B>unclosed</B> Avertit sur les balises ouvrantes et fermantes non terminées.
+<P>
+<B>empty</B> Avertit sur les balises ouvrantes et fermantes vides.
+<P>
+<B>net</B> Avertit sur les balises ouvrantes autorisant les balises
+fermantes nulles, et sur les balises fermantes nulles (NdT&nbsp;: net=<B>n</B>ull
+<B>e</B>nd <B>t</B>ag).
+<P>
+<B>min-tag</B> Avertit sur les balises ouvrantes et fermantes minimisées.
+Équivaut à une combinaison des avertissements «&nbsp;unclosed&nbsp;», «&nbsp;empty&nbsp;» et
+«&nbsp;net&nbsp;».
+<P>
+<B>unused-map</B> Avertit sur les tables d'appels abrégés (NdT&nbsp;:
+short reference maps) inutilisées&nbsp;: tables déclarées dans une
+déclaration de table d'appels abrégés, mais jamais utilisées dans une
+déclaration d'utilisation d'appels abrégés dans la DTD. (NdT&nbsp;: pour plus
+d'informations sur les appels abrégés, vous pouvez consulter la page, en
+anglais, <A HREF="http://www.sgml.u-net.com/book/sgml-7.htm#SHORTREF)">http://www.sgml.u-net.com/book/sgml-7.htm#SHORTREF)</A>
+<P>
+<B>unused-param</B> Avertit sur les entités paramètres définies mais non
+utilisées dans une DTD. Les entités paramètres internes inutilisées dont le
+texte est INCLUDE ou IGNORE ne produisent pas d'avertissement.
+<P>
+<B>notation-sysid</B> Avertit sur les notations pour lesquelles aucun
+identificateur système n'a pu être généré.
+<P>
+<B>all</B> Avertit sur les conditions qui pourraient être évitées
+(de l'avis de l'auteur). Équivalent à&nbsp;: «&nbsp;mixed&nbsp;», «&nbsp;should&nbsp;»,
+«&nbsp;default&nbsp;», «&nbsp;undefined&nbsp;», «&nbsp;sgmldecl&nbsp;», «&nbsp;unused-map&nbsp;»,
+«&nbsp;unused-param&nbsp;», «&nbsp;empty&nbsp;» et «&nbsp;unclosed&nbsp;».
+<P>
+<B>immediate-recursion</B> Avertit sur les éléments immédiatement récursifs.
+Pour plus de détails, voir la clause 2.2.5 de l'annexe K de la norme ISO 8879.
+<P>
+<B>fully-declared</B> Avertit si l'instance de document n'est pas pleinement 
+déclarée. Cela a pour effet de modifier la déclaration SGML afin qu'elle 
+spécifie IMPLYDEF ATTLIST NO ELEMENT NO ENTITY NO NOTATION NO. Pour plus de 
+détails, voir la clause 2.2.1 de l'annexe K de la norme ISO 8879.
+<P>
+<B>fully-tagged</B> Avertit si l'instance de document n'est pas pleinement balisée. 
+Cela a pour effet de modifier la déclaration SGML afin qu'elle spécifie DATATAG NO,
+RANK NO, OMITTAG NO, SHORTTAG STARTTAG EMPTY NO et SHORTTAG ATTRIB OMITNAME NO. 
+Pour plus de détails, voir la clause 2.2.2 de l'annexe K de la norme ISO 8879.
+<P>
+<B>amply-tagged, amply-tagged-recursive</B> Avertit si l'instance de document
+n'est pas amplement balisée. Les éléments définis implicitement peuvent être
+immédiatement récursifs si <B>amply-tagged-recursive</B> est spécifié. Cela a
+pour effet de modifier la déclaration SGML afin qu'elle spécifie DATATAG NO,
+RANK NO, OMITTAG NO, SHORTTAG ATTRIB OMITNAME NO et soit IMPLYDEF ELEMENT
+ANYOTHER ou IMPLYDEF ELEMENT YES. Pour plus de détails, voir la clause 2.2.4 de
+l'annexe K de la norme ISO 8879.
+<P>
+<B>type-valid</B> Avertit si l'instance de document n'est pas valide par le
+type. Cela a pour effet de modifier la déclaration SGML afin qu'elle spécifie
+VALIDITY YES. Pour plus de détails, voir la clause 2.2.3 de l'annexe K de la
+norme ISO 8879.
+<P>
+<B>entity-ref</B> Avertit sur les appels d'entités non prédéfinies. Cela a pour 
+effet de modifier la déclaration SGML afin qu'elle spécifie ENTITIES REF NONE. 
+Pour plus de détails, voir la clause 2.3.2 de l'annexe K de la norme ISO 8879.
+<P>
+<B>external-entity-ref</B> Avertit sur les appels d'entités externes. Cela 
+inclut les références à un sous-ensemble de DTD externe. Cela a pour effet 
+de modifier la déclaration SGML afin qu'elle spécifie ENTITIES REF INTERNAL.
+Pour plus de détails, voir la clause 2.3.3 de l'annexe K de la norme ISO 8879.
+<P>
+<B>integral</B> Avertit si l'instance de document n'est pas intégralement
+stockée. Cela a pour effet de modifier la déclaration SGML afin qu'elle spécifie
+ENTITIES INTEGRAL YES.Pour plus de détails, voir la clause 2.3.1 de l'annexe K
+de la norme ISO 8879.
+<P>
+Un avertissement peut être désactivé en utilisant son nom préfixé par «&nbsp;no-&nbsp;».
+Ainsi <B>-wall</B> <B>-wno-duplicate</B> active tous les avertissements
+sauf ceux concernant les déclarations d'entités dupliquées.
+<P>
+Les valeurs suivantes de <I>type_avertissement</I> désactivent les erreurs&nbsp;:
+<P>
+<B>no-idref</B> Ne signale pas d'erreur pour une valeur de référence à un
+ID qui n'est présent dans aucun élément. Chaque attribut déclaré en tant que
+«&nbsp;idref&nbsp;» se comportera comme s'il avait été déclaré en tant que «&nbsp;name&nbsp;».
+<P>
+<B>no-significant</B> Ne produit pas d'erreur lorsqu'un caractère qui n'est
+pas un caractère significatif dans la syntaxe concrète de référence apparaît
+dans une chaîne littérale de la déclaration SGML. Cela peut être utile 
+avec certaines batteries de test boguées.
+<P>
+<B>no-valid</B> N'exige pas que le document soit valide par le type. Cela a pour
+effet de modifier la déclaration SGML pour qu'elle spécifie VALIDITY NOASSERT et
+IMPLYDEF ATTLIST YES ELEMENT YES. Une option <B>-wvalid</B> a pour effet de
+modifier la déclaration SGML pour qu'elle spécifie VALIDITY TYPE et 
+IMPLYDEF ATTLIST NO ELEMENT NO. Si ni <B>-wvalid</B> ni <B>-wno-valid</B> ne sont
+spécifiées, alors les VALIDITY et IMPLYDEF spécifiées dans la déclaration SGML 
+seront utilisées.
+<P>
+<B>no-afdr</B> Ne produit pas d'erreur lorsque les fonctionnalités de notation 
+AFDR des méta-DTDs sont utilisées. Les erreurs sont normalement produites lors
+de l'analyse des DTDs, mais supprimées lors de l'analyse des méta-DTDs.
+<P>
+<DT><B>-x</B>, <B>--references</B><DD>
+Affiche l'information sur les clauses pertinentes (de la norme ISO 8879:1986)
+dans les messages d'erreur.
+<P>
+</DL>
+<P>
+
+Les options suivantes sont également acceptées afin d'assurer une compatibilité
+descendante avec sgmls&nbsp;:
+<P>
+<DL COMPACT>
+<DT><B>-d</B><DD>
+Identique à <B>-wduplicate</B>.
+<P>
+<DT><B>-l</B><DD>
+Identique à <B>-oline</B>.
+<P>
+<DT><B>-m</B><I>sysid</I><DD>
+Identique à <B>-c</B>.
+<P>
+<DT><B>-r</B><DD>
+Identique à <B>-wdefault</B>.
+<P>
+<DT><B>-u</B><DD>
+Identique à <B>-wundef</B>.
+<P>
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<P>
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?1+ospent">ospent</A>(1)</B>, <B><A HREF="/cgi-bin/man/man2html?1+ospam">ospam</A>(1)</B>, <B><A HREF="/cgi-bin/man/man2html?1+onsgmlnorm">onsgmlnorm</A>(1)</B>, <B><A HREF="/cgi-bin/man/man2html?1+osx">osx</A>(1)</B>
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+James Clark, Ian Castle &lt;<A HREF="mailto:ian.castle@openjade.org">ian.castle@openjade.org</A>&gt;.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Alain Portal &lt;aportal AT univ-montp2 DOT fr&gt;, 16 juin 2004
+<P>
+
+Je remercie infiniment Éric Bischoff sans lequel cette traduction aurait eu du
+mal à voir le jour.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>RELECTURE</H2>
+
+<P>
+
+Jean-Marc Destabeaux &lt;jmdestabeaux AT free DOT fr&gt;
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>AVERTISSEMENT SUR LA TRADUCTION</H2>
+
+<P>
+Il est possible que cette traduction soit imparfaite ou périmée.
+En cas de doute, veuillez vous reporter au document original en langue anglaise
+fourni avec le programme.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">AUTEURS</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+<DT><A HREF="#lbAH">RELECTURE</A><DD>
+<DT><A HREF="#lbAI">AVERTISSEMENT SUR LA TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:42 GMT, February 11, 2014
+</BODY>
+</HTML>

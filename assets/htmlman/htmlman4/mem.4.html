@@ -1,0 +1,117 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MEM</TITLE>
+</HEAD><BODY>
+<H1>MEM</H1>
+Section: Manuel du programmeur Linux (4)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mem, kmem, port - Mémoire système, mémoire du noyau, ports d'entrées/sorties.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>Mem</B> 
+est un périphérique caractères représentant une image de la mémoire
+principale de l'ordinateur.
+Il peut être utilisé pour examiner (et même éditer) la mémoire système.
+<P>
+
+Les adresses dans <B>mem</B> sont interprétées comme des adresses physiques.
+Les références à des adresses inexistantes retournent des erreurs.
+<P>
+
+Examiner et éditer la mémoire est susceptible de conduire à des
+résultats indésirables quand les bits lecture-seule ou écriture-seule
+sont concernés.
+<P>
+
+Ce fichier est habituellement créé ainsi :
+<DL COMPACT><DT><DD>
+<P>
+mknod -m 660 /dev/mem c 1 1
+<BR>
+
+chown root:mem /dev/mem
+<P>
+</DL>
+
+<P>
+
+Le fichier <B>kmem</B> est identique à <B>mem</B> sauf qu'il s'agit de
+la mémoire virtuelle du noyau plutôt que de la mémoire physique.
+<P>
+
+Ce fichier est habituellement créé ainsi&nbsp;:
+<DL COMPACT><DT><DD>
+<P>
+mknod -m 640 /dev/kmem c 1 2
+<BR>
+
+chown root:mem /dev/kmem
+<P>
+</DL>
+
+<P>
+
+<B>Port</B> est identique à <B>mem</B>, mais ici ce sont les ports 
+d'Entrée/Sortie qui sont représentés.
+<P>
+
+Ce fichier est habituellement créé ainsi&nbsp;:
+<DL COMPACT><DT><DD>
+<P>
+mknod -m 660 /dev/port c 1 4
+<BR>
+
+chown root:mem /dev/port
+<P>
+</DL>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/dev/mem</I>
+
+<BR>
+
+<I>/dev/kmem</I>
+
+<BR>
+
+<I>/dev/port</I>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+chown">chown</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+mknod">mknod</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+ioperm">ioperm</A></B>(2)
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">FICHIERS</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:53 GMT, February 11, 2014
+</BODY>
+</HTML>

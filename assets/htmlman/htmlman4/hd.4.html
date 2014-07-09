@@ -1,0 +1,132 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of HD</TITLE>
+</HEAD><BODY>
+<H1>HD</H1>
+Section: Manuel du programmeur Linux (4)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+hd - Disques durs MFM/IDE.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les <B>hd*</B> sont des périphériques blocs permettant l'accès aux
+contrôleurs de disques durs  MFM/IDE. Le disque maître sur le premier
+contrôleur IDE (numéro majeur 3) est <B>hda</B>, le disque esclave est
+<B>hdb</B>. Le disque maître du second contrôleur (numéro majeur 22) est
+<B>hdc</B>, et le disque esclave <B>hdd</B>.
+<P>
+
+La notation générale des périphériques blocs IDE à la forme
+<B>hd</B><I>X</I>ou
+<B>hd</B><I>XP</I>, dans laquelle
+<I>X</I>
+
+est une lettre indiquant le disque physique, et
+<I>P</I>
+
+un nombre représentant la partition sur ce disque physique.
+La première forme
+<B>hd</B><I>X,</I>
+
+est utilisée pour accéder au disque dans son ensemble.
+Les numéros de partitions sont assignés dans l'ordre de
+détection, et seules les partitions non-vides et non-étendues
+reçoivent un numéro.
+Toutefois, les numéros de partition 1 a 4 sont donnés
+aux quatre partitions indiquées dans le MBR (les partitions primaires),
+qu'elles soient vides ou non, et étendues ou non.
+Ainsi la première partition logique sera
+<B>hd</B><I>X</I><B>5</B>.
+Les partitions de type DOS et de type BSD sont supportées.
+Il peut y avoir au plus 63 partitions sur un disque IDE.
+<P>
+
+Par exemple,
+<B>/dev/hda</B>
+
+correspond au premier disque IDE du système dans son ensemble, et
+<B>/dev/hdb3</B>
+
+correspond à la troisième partition primaire DOS sur le second
+disque.
+<P>
+
+Les périphériques IDE sont typiquement créés par&nbsp;:
+<DL COMPACT><DT><DD>
+<P>
+mknod -m 660 /dev/hda b 3 0
+<BR>
+
+mknod -m 660 /dev/hda1 b 3 1
+<BR>
+
+mknod -m 660 /dev/hda2 b 3 2
+<BR>
+
+...
+<BR>
+
+mknod -m 660 /dev/hda8 b 3 8
+<BR>
+
+mknod -m 660 /dev/hdb b 3 64
+<BR>
+
+mknod -m 660 /dev/hdb1 b 3 65
+<BR>
+
+mknod -m 660 /dev/hdb2 b 3 66
+<BR>
+
+...
+<BR>
+
+mknod -m 660 /dev/hdb8 b 3 72
+<BR>
+
+chown root:disk /dev/hd*
+<P>
+</DL>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/dev/hd*
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+mknod">mknod</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+chown">chown</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+mount">mount</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?4+sd">sd</A></B>(4)
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">FICHIERS</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:53 GMT, February 11, 2014
+</BODY>
+</HTML>

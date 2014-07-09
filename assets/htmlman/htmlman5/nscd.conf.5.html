@@ -1,0 +1,190 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of nscd.conf</TITLE>
+</HEAD><BODY>
+<H1>nscd.conf</H1>
+Section: Manuel de l'administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+/etc/nscd.conf - Fichier de configuration du démon NSCD.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le fichier
+<B>/etc/nscd.conf</B>
+
+est lu au démarrage de
+<B><A HREF="/cgi-bin/man/man2html?8+nscd">nscd</A></B>(8).
+
+Chaque ligne indique soit un attribut et une valeur, soit un attribut,
+un service et une valeur. Les champs sont séparés par des espaces ou
+des tabulations. Un dièse (#) indique un début de commentaire, les
+caractères ultérieurs seront ignorés jusqu'à la fin de
+la ligne.
+<P>
+<P>
+Les services valides sont passwd, group, et hosts.
+<P>
+<B>logfile</B>
+
+<I>nom-fchier</I>
+
+<DL COMPACT><DT><DD>
+Indique le nom du fchier où les données de débogage seront écrites.
+</DL>
+
+<P>
+<B>debug-level</B>
+
+<I>valeur</I>
+
+<DL COMPACT><DT><DD>
+Indique le niveau désiré de débogage.
+</DL>
+
+<P>
+<B>threads</B>
+
+<I>nombre</I>
+
+<DL COMPACT><DT><DD>
+Il s'agit du nombre de threads en attente de requêtes. 
+Au moins cinq threads seront toujours créés.
+</DL>
+
+<P>
+<B>server-user</B>
+
+<I>utilisateur</I>
+
+<DL COMPACT><DT><DD>
+Si cette option est active, nscd prendra l'idendité de l'utilisateur et
+non celle de root. Si un cache distinct est utilisé pour chaque utilisateur
+(paramètre -S), cette option est ignorée.
+</DL>
+
+<P>
+<B>enable-cache</B>
+
+<I>service</I>
+
+<I>&lt;yes|no&gt;</I>
+
+<DL COMPACT><DT><DD>
+Active ou inhibe le cache du
+<I>service</I>
+
+indiqué.
+</DL>
+
+<P>
+<B>positive-time-to-live</B>
+
+<I>service</I>
+
+<I>valeur</I>
+
+<DL COMPACT><DT><DD>
+Indique la durée TTL (time-to-live) pour les entrées positive (requêtes
+réussies) dans le cache spécifié pour le
+<I>service</I>.
+
+<I>valeur</I>
+
+est indiquée en secondes. Les valeurs importantes améliorent les temps
+de réponse mais augmentent les problèmes dus à la cohérence du cache.
+</DL>
+
+<P>
+<B>negative-time-to-live</B>
+
+<I>service</I>
+
+<I>valeur</I>
+
+<DL COMPACT><DT><DD>
+Fice la durée TTL (time-to-live) des entrées négatives (requêtes échouées)
+dans le cache spécifiée pour le
+<I>service</I>.
+
+<I>valeur</I>
+
+est en secondes. Peut améliorer les performances, si il y a plusieurs
+fichiers appartenant à des UIDs hors des bases de données système (par
+exemple les sources du noyau Linux dé-tar-rées par root), doit rester
+faible pour réduire les problème de cohérence du cache.
+</DL>
+
+<P>
+<B>suggested-size</B>
+
+<I>service</I>
+
+<I>valeur</I>
+
+<DL COMPACT><DT><DD>
+C'est la taille de la table de hachage interne,
+<I>value</I>
+
+doit être un nombre premier pour une efficacité optimale.
+</DL>
+
+<P>
+<B>check-files</B>
+
+<I>service</I>
+
+<I>&lt;yes|no&gt;</I>
+
+<DL COMPACT><DT><DD>
+Active ou inhibe la vérification des changements dans les fichiers du
+<I>service</I>
+
+indiqué. Les fichiers sont
+<I>/etc/passwd</I>,
+
+<I>/etc/group</I>,
+
+et
+<I>/etc/hosts</I>.
+
+</DL>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+nscd">nscd</A></B>(8)
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<B>nscd</B>
+
+a été écrit par Thorsten Kukuk et Ulrich Drepper.
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAE">AUTEUR</A><DD>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:55 GMT, February 11, 2014
+</BODY>
+</HTML>

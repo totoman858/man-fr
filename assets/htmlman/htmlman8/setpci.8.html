@@ -1,0 +1,343 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SETPCI</TITLE>
+</HEAD><BODY>
+<H1>SETPCI</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 10 avril 2008<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="ixAAB"></A>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+setpci - Configurer les périphériques PCI
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>setpci</B>
+
+[<B>options</B>]
+
+<B>périphériques</B>
+
+<B>opérations</B>...
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+<B>setpci</B>
+
+est un utilitaire pour interroger et configurer les périphériques PCI.
+<P>
+Tous les nombres sont saisis en notation hexadécimale.
+<P>
+Les privilèges du superutilisateur sont nécessaires pour presque toutes
+les opérations, à l'exception des lectures de l'entête standard de l'espace
+de configuration sur certains systèmes.
+Veuillez consulter
+<B><A HREF="/cgi-bin/man/man2html?8+lspci">lspci</A></B>(8)
+
+pour les détails sur les autorisations d'accès.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<A NAME="lbAF">&nbsp;</A>
+<H3>Options générales</H3>
+
+<DL COMPACT>
+<DT><B>-v</B>
+
+<DD>
+Mode volubile. Afficher des informations détaillées concernant les accès
+à l'espace de configuration.
+<DT><B>-f</B>
+
+<DD>
+Demander à
+<B>setpci</B>
+
+de ne pas se plaindre lorsqu'il n'y a rien à faire
+(lorsqu'aucun périphérique n'est sélectionné).
+Cette option est conçue pour être utilisée dans des scripts de configuration
+largement distribués lorsqu'il n'est pas certain que le périphérique
+en question soit installé sur la machine.
+<DT><B>-D</B>
+
+<DD>
+«&nbsp;Mode démo&nbsp;» -- ne rien écrire dans les registres de configuration.
+Il est utile d'essayer
+<B>setpci -vD</B>
+
+pour voir la séquence complexe des opérations que
+<B>setpci</B>
+
+effectuera avant de le faire vraiment.
+<DT><B>--version</B>
+
+<DD>
+Afficher la version de
+<B>setpci</B>.
+
+Cette option doit être utilisée toute seule.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H3>Options d'accès PCI</H3>
+
+<P>
+
+Les utilitaires PCI utilisent la bibliothèque PCI pour dialoguer avec
+les périphériques PCI (voir
+<B><A HREF="/cgi-bin/man/man2html?7+pcilib">pcilib</A></B>(7)
+
+pour plus de détails).
+Vous pouvez utiliser les options suivantes pour influer sur
+son comportement&nbsp;:
+<DL COMPACT>
+<DT><B>-A &lt;method&gt;</B>
+
+<DD>
+La bibliothèque prend en charge plusieurs méthodes d'accès
+au matériel PCI.
+Par défaut, elle utilise la première méthode d'accès disponible,
+mais vous pouvez utilisez cette option pour outrepasser cette décision.
+Voir
+<B>-A help</B>
+
+pour une liste des méthodes disponibles et leurs descriptions.
+<DT><B>-O &lt;param&gt;=&lt;value&gt;</B>
+
+<DD>
+Le comportement de la bibliothèque est contrôlé par plusieurs
+paramètres nommés.
+Cette option permet de définir la valeur de n'importe lequel des paramètres.
+Utilisez
+<B>-O help</B>
+
+pour une liste des paramètres connus et leurs valeurs par défaut.
+<DT><B>-H1</B>
+
+<DD>
+Utiliser l'accès matériel direct via le mécanisme&nbsp;1 de configuration
+Intel (c'est un raccourci pour
+<B>-A intel-conf1</B>).
+
+<DT><B>-H2</B>
+
+<DD>
+Utiliser l'accès matériel direct via le mécanisme&nbsp;2 de configuration
+Intel (c'est un raccourci pour
+<B>-A intel-conf2</B>).
+
+<DT><B>-G</B>
+
+<DD>
+Accroître le niveau de débogage de la bibliothèque
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>SÉLECTION DES PÉRIPHÉRIQUES</H2>
+
+<P>
+
+Avant chaque séquence d'opérations, vous devez sélectionner
+les périphériques sur lesquels vous souhaitez opérer.
+<DL COMPACT>
+<DT><B>-s [[[[&lt;domain&gt;]:]&lt;bus&gt;]:][&lt;slot&gt;][.[&lt;func&gt;]]</B>
+
+<DD>
+Montrer seulement les périphériques du domaine indiqué (si votre
+machine possède plusieurs ponts d'hôtes, soit ils peuvent partager le
+même numéro de bus, soit chacun d'eux peut s'adresser un domaine PCI&nbsp;;
+les domaines sont numérotés de 0 à ffff), du bus indiqué (0 à ff),
+de l'emplacement indiqué (0 à 1f) et de la fonction indiquée (0 à 7).
+Chaque élément de l'adresse du périphérique peut être omis ou défini
+à «&nbsp;*&nbsp;», les deux signifiant «&nbsp;toute valeur&nbsp;».
+Par exemple, «&nbsp;0:&nbsp;» signifie tous les périphériques du bus 0,
+«&nbsp;0&nbsp;» signifie toutes les fonctions du périphérique 0 de tous les bus,
+«&nbsp;0.3&nbsp;» sélectionne la troisième fonction du périphérique 0 sur tous
+les bus et «&nbsp;.4&nbsp;» montre seulement la quatrième fonction de chaque
+périphérique.
+<DT><B>-d [&lt;vendor&gt;]:[&lt;device&gt;]</B>
+
+<DD>
+Sélectionner les périphériques dont les identifiants de vendeur et de
+périphérique sont fournis.
+Les deux identifiants doivent être indiqués sous forme hexadécimale et
+peuvent être omis ou définis à «&nbsp;*&nbsp;», les deux signifiant «&nbsp;toute valeur&nbsp;».
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>OPÉRATIONS</H2>
+
+<P>
+
+Pour obtenir la valeur d'un registre de configuration, nommez-le
+(en tapant soit son nom, soit son adresse avec un suffixe
+<B>.B</B>,
+
+<B>.W</B>
+
+ou
+<B>.L</B>
+
+optionnel indiquant la taille du registre comme étant un octet (byte),
+un mot (word) ou un mot long (longword).
+<P>
+
+Pour définir un registre, écrivez
+<B>reg</B>=<B>values</B>
+
+où
+<B>reg</B>
+
+est identique à ce que vous auriez utilisé pour interroger le registre et
+<B>values</B>
+
+est une liste de valeurs séparées par des virgules que vous voulez écrire
+en commençant à l'adresse donnée.
+Chaque valeur à écrire peut être indiquée sous la forme d'un nombre
+hexadécimal ou bien sous la forme d'une paire
+<B>bits</B>:<B>masque</B>
+
+qui fera que les bits à 1 de
+<B>mask</B>
+
+modifieront les valeurs des bits correspondants dans
+<B>bits</B>.
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>NOMS DES REGISTRES</H2>
+
+<P>
+
+<B>setpci</B>
+
+connaît les noms de registres de configuration suivants.
+Voir les spécifications du bus PCI pour leur signification précise
+ou consultez
+<I>header.h</I>
+
+ou
+<I>/usr/include/linux/pci.h</I>
+
+pour quelques commentaires.
+<P>
+
+<PRE>
+VENDOR_ID
+DEVICE_ID
+COMMAND
+STATUS
+REVISION
+CLASS_PROG
+CLASS_DEVICE
+CACHE_LINE_SIZE
+LATENCY_TIMER
+HEADER_TYPE
+BIST
+BASE_ADDRESS_0
+BASE_ADDRESS_1
+BASE_ADDRESS_2
+BASE_ADDRESS_3
+BASE_ADDRESS_4
+BASE_ADDRESS_5
+CARDBUS_CIS
+SUBSYSTEM_VENDOR_ID
+SUBSYSTEM_ID
+ROM_ADDRESS
+INTERRUPT_LINE
+INTERRUPT_PIN
+MIN_GNT
+MAX_LAT
+PRIMARY_BUS
+SECONDARY_BUS
+SUBORDINATE_BUS
+SEC_LATENCY_TIMER
+IO_BASE
+IO_LIMIT
+SEC_STATUS
+MEMORY_BASE
+MEMORY_LIMIT
+PREF_MEMORY_BASE
+PREF_MEMORY_LIMIT
+PREF_BASE_UPPER32
+PREF_LIMIT_UPPER32
+IO_BASE_UPPER16
+IO_LIMIT_UPPER16
+BRIDGE_ROM_ADDRESS
+BRIDGE_CONTROL
+CB_CARDBUS_BASE
+CB_CAPABILITIES
+CB_SEC_STATUS
+CB_BUS_NUMBER
+CB_CARDBUS_NUMBER
+CB_SUBORDINATE_BUS
+CB_CARDBUS_LATENCY
+CB_MEMORY_BASE_0
+CB_MEMORY_LIMIT_0
+CB_MEMORY_BASE_1
+CB_MEMORY_LIMIT_1
+CB_IO_BASE_0
+CB_IO_BASE_0_HI
+CB_IO_LIMIT_0
+CB_IO_LIMIT_0_HI
+CB_IO_BASE_1
+CB_IO_BASE_1_HI
+CB_IO_LIMIT_1
+CB_IO_LIMIT_1_HI
+CB_SUBSYSTEM_VENDOR_ID
+CB_SUBSYSTEM_ID
+CB_LEGACY_MODE_BASE
+</PRE><A NAME="lbAK">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+lspci">lspci</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?7+pcilib">pcilib</A></B>(7)
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Les utilitaires PCI sont maintenus par Martin Mares &lt;<A HREF="mailto:mj@ucw.cz">mj@ucw.cz</A>&gt;.
+<A NAME="lbAM">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal&nbsp;AT&nbsp;univ-montp2&nbsp;DOT&nbsp;fr&gt; le 6&nbsp;juin&nbsp;2008.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;8&nbsp;setpci</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DL>
+<DT><A HREF="#lbAF">Options générales</A><DD>
+<DT><A HREF="#lbAG">Options d'accès PCI</A><DD>
+</DL>
+<DT><A HREF="#lbAH">SÉLECTION DES PÉRIPHÉRIQUES</A><DD>
+<DT><A HREF="#lbAI">OPÉRATIONS</A><DD>
+<DT><A HREF="#lbAJ">NOMS DES REGISTRES</A><DD>
+<DT><A HREF="#lbAK">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAL">AUTEUR</A><DD>
+<DT><A HREF="#lbAM">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:04 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,196 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FMT</TITLE>
+</HEAD><BODY>
+<H1>FMT</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fmt - Mettre en forme des textes.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>fmt</B>
+
+[-cstu] 
+[-width] 
+[-w width] 
+[-p prefix]
+[--crown-margin]
+[--split-only]
+[--tagged-paragraph]
+[--uniform-spacing]
+[--width=largeur]
+[--prefix=prefixe]
+[--help]
+[--version]
+[fichier ...]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>fmt</B>.
+
+<P>
+<B>fmt</B>
+
+est un formateur simple de texte qui regroupe les lignes pour
+obtenir des lignes de sortie ayant (jusqu'à) la
+<I>largeur</I>
+
+indiquée (par défaut 75 caractères).
+<P>
+Néanmoins
+<B>fmt</B>
+
+utilise un algorithme de césure optimale
+<B>best-fit</B>,
+
+version simple adaptée de
+``Breaking Paragraphs into Lines'',
+Donald E. Knuth and Michael F. Plass,
+<I>Software---Practice and Experience</I>
+
+<B>11</B>
+
+(1981) 1119-1184.
+<P>
+
+<B>fmt</B>
+
+met bout à bout les
+<I>fichiers</I>
+
+indiqués en arguments. Si aucun n'est mentionné,
+<B>fmt</B>
+
+met en forme l'entrée standard.
+<P>
+
+Les lignes blanches sont conservées en sortie, tout comme les espacements
+entre les mots
+(a moins que l'option
+<I>-u</I>
+
+soit utilisée).
+Contrairement à la version BSD de
+<B>fmt</B>,
+
+celle-ci développe les tabulations en entrée, et les réintroduit en sortie.
+<P>
+
+L'indentation est conservée en sortie, et les lignes ayant des niveaux
+d'indentation différents ne sont pas regroupées (sauf si les options
+<I>-c</I>
+
+ou
+<I>-t</I>
+
+sont utilisées).
+Bien que la page de manuel BSD de
+<B>fmt</B>
+
+prétende la même chose, en réalité leur version regroupe une ligne et
+sa suivante si cette dernière a une indentation plus courte.
+<P>
+
+<B>fmt </B>
+
+préfère couper les lignes en fin de phrase, et essaye d'éviter de retourner
+à la ligne après le premier mot, ou avant le dernier mot d'une phrase.
+La fin d'une phrase est définie soit par la fin d'un paragraphe, soit
+par un mot terminé par les caractères `.', `?' ou `!', suivi de deux
+espaces ou d'une fin de ligne, en ignorant les parenthèses ou les
+guillemets intermédiaires. 
+<P>
+[NDT] : il s'agit là de la mise en forme de
+textes anglo-saxons. En français nous préférons insérer une espace entre le dernier mot et
+`!' ou `?'. De même nous ne plaçons qu'une
+seule espace après un point. Ne soyez pas étonnés si certaines possibilités
+de <B>fmt</B> ne fonctionnent pas sur un texte français.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><I>-c, --crown-margin</I>
+
+<DD>
+Conserver l'indentation des deux premières lignes de chaque paragraphe,
+et aligner la marge gauche des lignes suivantes avec la seconde ligne.
+<DT><I>-t, --tagged-paragraph</I>
+
+<DD>
+Comme `-c' sauf que les deux premières lignes d'un paragraphe doivent
+avoir des indentations différentes, sinon la première ligne est considérée
+comme un paragraphe à elle toute seule.
+<DT><I>-s, --split-only</I>
+
+<DD>
+Seulement couper les lignes. Ne pas joindre les lignes successives
+pour en former une plus longue. Ceci évite de combiner indûment
+des lignes de code, ou des paragraphes déjà ``mis en forme''.
+<DT><I>-u, --uniform-spacing</I>
+
+<DD>
+Espacement uniforme.
+Réduire les espacements entre les mots à une espace, sauf à la fin d'une
+phrase. 
+<DT><I>-width, -w largeur, --width=largeur</I>
+
+<DD>
+Remplir les lignes jusqu'à la
+<I>largeur</I>
+
+mentionnée (par défaut 75 caractères).
+<B>fmt </B>
+
+préfère rendre les lignes plus courtes de 7%, afin d'avoir la place
+d'équilibrer les longueurs de ligne.
+<DT><I>-p, --prefix=préfixe</I>
+
+<DD>
+N'arranger que les lignes commençant par le <I>préfixe</I> indiqué
+(éventuellement précédé d'espaces). Ce préfixe (et ses espaces précédents
+éventuels) est supprimé pour la mise en forme, puis réinséré ensuite.
+Ceci permet de mettre en forme les commentaires de certains types de
+programmes, sans toucher au code.
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et se terminer normalement.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et se terminer
+normalement.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:44 GMT, February 11, 2014
+</BODY>
+</HTML>

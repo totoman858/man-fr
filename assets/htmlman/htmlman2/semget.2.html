@@ -1,0 +1,369 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SEMGET</TITLE>
+</HEAD><BODY>
+<H1>SEMGET</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+semget - Obtenir l'identificateur d'un ensemble de sémaphores.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/ipc.h">sys/ipc.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/sem.h">sys/sem.h</A>&gt;</B>
+</PRE>
+
+<P>
+<B>int semget (key_t </B><I>key</I><B>,</B>
+
+<B>int </B><I>nsems</I><B>,</B>
+
+<B>int </B><I>semflg</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette fonction retourne l'identificateur de l'ensemble de 
+sémaphores associé à la valeur de clé
+<I>key</I>.
+
+Un nouvel ensemble contenant
+<I>nsems</I>
+
+sémaphores est créé si 
+<I>key</I>
+
+a la valeur
+<B>IPC_PRIVATE</B>
+
+ou si aucun ensemble n'est associé à
+<I>key</I>,
+
+et si l'option
+<B>IPC_CREAT</B>
+
+est présente dans
+<I>semflg.</I>
+
+(i.e.
+<I>semflg</I> &amp;
+
+<B>IPC_CREAT</B>
+
+différent de zéro).
+<P>
+
+La présence de
+<B>IPC_CREAT</B>
+
+et
+<B>IPC_EXCL</B>
+
+dans le champ
+<I>semflg</I>
+
+joue le même rôle, par rapport à l'existence du
+jeu de sémaphores, que la présence de
+<B>O_CREAT</B>
+
+et
+<B>O_EXCL</B>
+
+dans l'argument de mode de l'appel système
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2)
+
+i.e. la fonction
+<B>semget</B>
+
+échouera si
+<I>semflg</I>
+
+demande à la fois
+<B>IPC_CREAT</B>
+
+et
+<B>IPC_EXCL</B>
+
+et si un sémaphore associé a
+<I>key </I>
+
+existe déjà.
+<P>
+
+Pendant la création, les 9 bits de poids faibles de
+l'argument
+<I>semflg</I>
+
+définissent les permissions d'accès (pour le propriétaire,
+le groupe et les autres) au jeu de sémaphores, en utilisant
+le même format et la même signification  que les droits
+d'accès dans
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+creat">creat</A></B>(2).
+
+Les permissions d'exécutions ne sont pas utilisées par le système, et
+pour un jeu de sémaphores, l'autorisation d'écriture signifie
+autorisation de modification.
+<P>
+
+Durant la création, la structure de données
+<B>semid_ds</B>
+
+contrôlant le jeu de sémaphores est initialisée ainsi :
+<DL COMPACT>
+<DT><DD>
+<B>sem_perm.cuid</B>
+
+et
+<B>sem_perm.uid</B>
+
+contiennent l'UID effectif du processus appelant.
+<DT><DD>
+<B>sem_perm.cgid</B>
+
+et
+<B>sem_perm.gid</B>
+
+contiennent le GID effectif du processus appelant.
+<DT><DD>
+le 9 bits de poids faibles de
+<B>sem_perm.mode</B>
+
+sont remplis avec les 9 bits de poids faibles de
+<I>semflg</I>.
+
+<DT><DD>
+<B>sem_nsems</B>
+
+reçoit la valeur
+<I>nsems</I>.
+
+<DT><DD>
+<B>sem_otime</B>
+
+est mis a 0.
+<DT><DD>
+<B>sem_ctime</B>
+
+est rempli avec l'heure actuelle.
+</DL>
+<P>
+
+l'argument
+<I>nsems</I>
+
+peut valoir
+<B>0</B>
+
+(ignore)
+si l'appel système n'est pas une création d'ensemble de sémaphores.
+Autrement
+<I>nsems</I>
+
+doit être supérieur à
+<B>0</B>
+
+et inférieur ou égal au nombre maximal de sémaphores par ensemble,
+(<B>SEMMSL</B>).
+
+<P>
+
+Si le jeu de sémaphores existe déjà, les permissions d'accès sont
+contrôlées, et l'on vérifie si l'ensemble est sur le point
+d'être détruit.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Si l'appel réussit, il renvoie l'identificateur de l'ensemble (un
+entier positif), sinon il renvoie
+<B>-1</B>
+
+et
+<B>errno</B>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>Eaccès</B>
+
+<DD>
+Le jeu de sémaphore associé à
+<I>key</I>
+
+existe, mais le processus n'a aucun droit d'accès sur lui
+<DT><B>EEXIST</B>
+
+<DD>
+Le jeu de sémaphore associé a
+<B>key</B>
+
+existe mais l'argument
+<I>semflg</I>
+
+précise à la fois
+<B>IPC_CREAT</B>
+
+et
+<B>IPC_EXCL</B>.
+
+
+
+
+<DT><B>ENOENT</B>
+
+<DD>
+Aucun jeu de sémaphore associé a
+<I>key</I>
+
+n'existe
+et l'argument
+<I>semflg</I>
+
+ne précise pas
+<B>IPC_CREAT</B>.
+
+<DT><B>EINVAL</B>
+
+<DD>
+<I>nsems</I>
+
+est inférieur à zéro ou supérieur à la limite sur le nombre de sémaphores
+par ensemble,
+(<B>SEMMSL</B>),
+
+ou l'ensemble de sémaphores identifié par
+<I>key</I>
+
+existe déjà, et
+<I>nsems</I>
+
+est plus grand que le nombre de sémaphores par ensemble..
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour créer les structures nécessaires.
+<DT><B>ENOSPC</B>
+
+<DD>
+Le nombre maximal de jeux de sémaphores sur le système
+(<B>SEMMNI</B>)
+
+est atteint,
+ou le nombre maximal de sémaphores sur le système est atteint
+(<B>SEMMNS</B>).
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+<B>IPC_PRIVATE</B>
+
+n'est pas une option, mais un objet de type
+<B>key_t</B>.
+
+Si l'on utilise cette valeur spéciale dans l'argument
+<I>key</I>,
+
+l'appel système ne se préoccupera que des 9 bits de poids
+faibles de
+<I>semflg</I>
+
+et tentera de créer un nouveau jeu de sémaphores.
+<P>
+
+Les limites suivantes concernent l'appel système
+<B>semget :</B>
+
+<DL COMPACT>
+<DT><B>SEMMNI</B>
+
+<DD>
+Nombre maximal d'ensembles de sémaphores sur le système.
+<DT><B>SEMMSL</B>
+
+<DD>
+Nombre maximal de sémaphores par ensemble.
+<DT><B>SEMMNS</B>
+
+<DD>
+Nombre maximal de sémaphores sur le système&nbsp;: dépend de l'implémentation.
+Les valeurs supérieures à
+<B>SEMMSL * SEMMNI</B>
+
+sont incorrectes.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+L'utilisation de 
+<B>IPC_PRIVATE</B>
+
+n'empêche pas les autres processus d'accéder au jeu de sémaphores alloué.
+Le choix de ce mot est malheureux, il aurait mieux valu utiliser IPC_NEW.
+<P>
+
+Les structures de données associées a chaque sémaphore dans l'ensemble
+ne sont pas initialisées lors de l'appel système.
+Pour effectuer cette initialisation, il faut exécuter un appel à
+<B><A HREF="/cgi-bin/man/man2html?2+semctl">semctl</A></B>(2)
+
+avec les commandes
+<B>SETVAL</B>
+
+ou
+<B>SETALL.</B>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID.  SVr4 documente des conditions d'erreur supplémentaires
+EFBIG, E2BIG, EAGAIN, ERANGE, et EFAULT.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+ftok">ftok</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+ipc">ipc</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?2+semctl">semctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+semop">semop</A></B>(2).
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:59 GMT, February 11, 2014
+</BODY>
+</HTML>

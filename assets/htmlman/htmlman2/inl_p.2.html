@@ -1,0 +1,85 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of OUTB</TITLE>
+</HEAD><BODY>
+<H1>OUTB</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+outb, outw, outl, outsb, outsw, outsl - Écrire sur un port.
+<BR>
+
+inb, inw, inl, insb, insw, insl - Lecture depuis un port.
+<BR>
+
+outb_p, outw_p, outl_p, inb_p, inw_p, inl_p - Lire/Écrire avec un délai
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette famille de fonctions est utilisée pour des entrées/sorties de
+bas niveau. Elles ont principalement été conçues pour un usage interne au noyau,
+mais sont quand même utilisables avec des processus utilisateurs.
+<P>
+Compiler le programme avec les options <B>-O</B> or <B>-O2</B> ou
+équivalent. Ces fonctions sont en réalité des macros développées
+en ligne, et ne seront pas substituées sans valider l'optimisation.
+Ceci causerait des erreurs de références non résolues au moment de
+l'édition des liens.
+<P>
+Utiliser
+<B><A HREF="/cgi-bin/man/man2html?2+ioperm">ioperm</A></B>(2)
+
+ou éventuellement
+<B><A HREF="/cgi-bin/man/man2html?2+iopl">iopl</A></B>(2)
+
+pour demander au noyau d'autoriser l'application à accéder aux
+ports d'entrées/sorties en question. Une omission de cette étape
+déclencherait une faute de segmentation.
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<B>outb</B> et les autres fonctions dépendent du matériel. Les
+arguments
+<I>port</I>
+
+et
+<I>value</I>
+
+sont dans l'ordre inverse de la plupart des implémentations 
+équivalentes sous DOS.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+ioperm">ioperm</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+iopl">iopl</A></B>(2)
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:59 GMT, February 11, 2014
+</BODY>
+</HTML>

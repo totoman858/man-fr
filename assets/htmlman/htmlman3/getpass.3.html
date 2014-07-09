@@ -1,0 +1,165 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETPASS</TITLE>
+</HEAD><BODY>
+<H1>GETPASS</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getpass - Saisie d'un mot de passe (password).
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>char *getpass (const char * prompt );</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette fonction est obsolète, ne l'utilisez pas !
+<P>
+
+La fonction
+<B>getpass</B>
+
+ouvre
+<I>/dev/tty</I>
+
+(le terminal de contrôle du processus)
+affiche le message d'accueil 
+<I>prompt</I>,
+
+éteint l'écho local, lit une ligne (le mot de passe), puis restore l'état de
+<I>/dev/tty </I>
+
+et le referme.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction
+<B>getpass</B>
+
+renvoie un pointeur sur une chaîne de caractères allouée statiquement
+contenant (les PASS_MAX premiers caractère du) mot de passe sans le retour
+chariot final, terminé par un caractère nul.
+Ce buffer peut être écrasé par un autre appel.
+En cas d'erreur, l'état du terminal est restauré,
+<I>errno</I>
+
+est rempli, et la fonction renvoie NULL.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+La fonction peut échouer dans les cas suivants :
+<DL COMPACT>
+<DT><B>ENXIO</B>
+
+<DD>
+Le processus n'a pas de terminal de contrôle.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Dans les versions LibC4 et LibC5, le message n'est pas affiché sur
+<I>/dev/tty</I>
+
+mais sur
+<I>stderr</I>.
+
+De plus, si
+<I>/dev/tty</I>
+
+ne peut être ouvert, le mot de passe est lu depuis
+<I>stdin</I>.
+
+Le buffer statique a une longueur de 128 octets, aussi seulement 127
+carctères du mot de passe sont renvoyés. Durant la lecture, les signaux
+(SIGINT, SIGQUIT, SIGSTOP) sont désactivés et les caractères de contrôle
+correspondant (en général Ctrl-C, Ctrl-\, Ctrl-Z et Ctrl-Y) sont transmis
+comme part intégrante du mot de passe.
+Depuis la LibC5.4.19, l'édition de ligne est également désactivée, ainsi
+les retours en arrières etc. seront présents dans le mot de passe.
+<P>
+
+Pour la GlibC 2, si
+<I>/dev/tty</I>
+
+ne peut pas être ouvert, le message est envoyé sur
+<I>stderr</I>
+
+et le mot de passe lu sur
+<I>stdin</I>.
+
+Il n'y a pas de limite à la longueur du mot de passe. L'édition de ligne
+n'est pas désactivée.
+<P>
+
+D'après SUSv2, la valeur de PASS_MAX doit être définie dans
+<I>&lt;<A HREF="file:///usr/include/limits.h">limits.h</A>&gt;</I>
+
+au cas où elle est inférieure à 8, et doit être toujours accessible avec
+<I>sysconf(_SC_PASS_MAX)</I>.
+
+Quoiqu'il en soit, POSIX.2 retire les constantes PASS_MAX et _SC_PASS_MAX,
+ainsi que la fonction
+<B>getpass ().</B>
+
+LibC 4 et LibC5 n'ont jamais utilisé PASS_MAX ou _SC_PASS_MAX. GlibC 2
+accepte _SC_PASS_MAX et renvoie BUFSIZ (par exemple 8192).
+<A NAME="lbAH">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/dev/tty</I>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+crypt">crypt</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Une fonction
+<B>getpass</B>
+
+est apparue dans la Version 7 d'AT&amp;T UNIX.
+<A NAME="lbAK">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Le processus appelant doit effacer le mot de passe saisi aussi vite que
+possible, afin d'éviter d'en conserver une copie en texte clair dans
+son espace d'adressage.
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">FICHIERS</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAK">BOGUES</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:21 GMT, February 11, 2014
+</BODY>
+</HTML>

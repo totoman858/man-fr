@@ -1,0 +1,300 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LINKCHECKER</TITLE>
+</HEAD><BODY>
+<H1>LINKCHECKER</H1>
+Section:  (1)<BR>Updated: 10 mars 2001<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+linkchecker - outil permettant de vérifier s'il n'y a pas de liens cassés dans vos documents HTML
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>linkchecker</B>
+
+[
+<I>options</I>
+
+]
+[
+<I>fichier-ou-url</I>
+
+]
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+LinkChecker propose
+une vérification récursive,
+du multithreading,
+un affichage en couleurs ou au format texte, HTML, SQL, CSV,
+mais aussi un graphique de la carte du site en GML ou XML,
+un support de HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, 
+Gopher, Telnet et les liens sur les fichiers locaux, 
+une vérification des liens restreinte par l'utilisation de filtres à base d'expressions rationnelles,
+un support des proxys,
+des autorisations nom utilisateur/mot de passe pour HTTP et FTP,
+un support du protocole d'exclusion par le fichier robots.txt,
+un support de l'internationalisation,
+une interface ligne de commandes et
+une interface web CGI (rapide, qui nécessite un serveur HTTP).
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+L'utilisation la plus courante est de vérifier le domaine récursivement, ainsi que
+quelques URL simples pointant en dehors du domaine&nbsp;:
+<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;<A HREF="http://treasure.calvinsplayground.de/">http://treasure.calvinsplayground.de/</A></B>
+<P>
+Faites attention, car ceci vérifie le site en entier, celui-ci pouvant avoir plusieurs centaines
+de milliers d'URL. Utilisez l'option <B>-r</B> pour restreindre la profondeur de la récursion.
+<P>
+Pour ne pas se connecter aux hôtes mailto:, seulement vérifier leur syntaxe.
+Tous les autres liens sont vérifiés comme d'habitude&nbsp;:
+<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;--intern='!^mailto:'&nbsp;--extern-strict-all&nbsp;<A HREF="http://www.mysite.org">www.mysite.org</A></B>
+<P>
+Pour vérifier un fichier HTML local sur Unix&nbsp;:
+<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;../bla.html</B>
+<P>
+Pour vérifier un fichier HTML local sur Windows&nbsp;:
+<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;c:\temp\test.html</B>
+<P>
+Vous pouvez ne pas mettre la partie <B>http://</B> de l'URL si le nom de domaine commence par <B>www.</B>&nbsp;:
+<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;<A HREF="http://www.myhomepage.de">www.myhomepage.de</A></B>
+<P>
+Vous pouvez ne pas mettre la partie <B>ftp://</B> de l'URL si le nom de domaine commence par <B>ftp.</B>&nbsp;:
+<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;-r0&nbsp;<A HREF="ftp://ftp.linux.org">ftp.linux.org</A></B>
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<A NAME="lbAG">&nbsp;</A>
+<H3>Options générales</H3>
+
+<DL COMPACT>
+<DT><B>-h</B>, <B>--help</B><DD>
+Afficher des informations sur l'utilisation du programme.
+<DT><B>-f</B><I>configfile</I>, <B>--config=</B><I>configfile</I><DD>
+Utiliser <I>configfile</I> comme fichier de configuration. LinkChecker recherche d'abord
+/etc/linkchecker/linkcheckerrc puis ~/.linkcheckerrc.
+<DT><B>-I</B>, <B>--interactive</B><DD>
+Demander l'URL si aucune n'a été donnée sur la ligne de commande.
+<DT><B>-V</B>, <B>--version</B><DD>
+Afficher la version et quitter.
+<DT><B>-t</B><I>num</I>, <B>--threads=</B><I>num</I><DD>
+Permettre de ne pas avoir plus de <I>num</I> threads. Le nombre de threads est fixé par défaut à 10.
+Pour désactiver le multithreading, spécifier un nombre non positif.
+<P>
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H3>Options de sortie</H3>
+
+<DL COMPACT>
+<DT><B>-v</B>, <B>--verbose</B><DD>
+Journaliser toutes les URL vérifiées (implique <B>-w</B>). Par défaut, seules les URL invalides
+sont mises dans le journal.
+<DT><B>-w</B>, <B>--warnings</B><DD>
+Journaliser les avertissements.
+<DT><B>-W</B><I>regex</I>, <B>--warning-regex=</B><I>regex</I><DD>
+Définir une expression rationnelle. Quand cette expression rationnelle correspondra au contenu d'un lien vérifié, LinkChecker affichera un avertissement.
+Ceci ne s'applique qu'aux pages valides, car on peut ainsi récupérer leur contenu.
+Utilisez ceci afin de vérifier les pages qui peuvent contenir des messages d'erreur sous une certaine forme, comme par exemple 'Cette page a été déplacée' ou 'Erreur du serveur d'application Oracle'.
+Cette option implique <B>-w</B>.
+<DT><B>--warning-size-bytes=</B><I>octets</I><DD>
+Affiche un avertissement si la taille du contenu disponible dépasse le nombre d'<I>octets</I> donné.
+Cette option implique <B>-w</B>.
+<DT><B>-q</B>, <B>--quiet</B><DD>
+Exécution silencieuse, c'est un alias pour <B>-o none</B>.
+Cette option n'est utile qu'avec <B>-F</B>.
+<DT><B>-o</B><I>type</I>, <B>--output=</B><I>type</I>[<B>/</B><I>encodage</I>]<DD>
+Spécifier le type de sortie. Les types possibles sont <B>text</B>, <B>html</B>, <B>sql</B>, <B>csv</B>, <B>gml</B>, <B>xml</B>, <B>none</B> ou <B>blacklist</B>. Le type par défaut est <B>text</B>. Les différents types de sortie sont documentés ci-dessous.
+<I>encodage</I> permet de spécifier l'encodage de sortie, la valeur par défaut étant <B>iso-8859-15</B>.
+Les encodages valides sont disponibles sur <B><A HREF="http://docs.python.org/lib/node127.html">http://docs.python.org/lib/node127.html</A></B>.
+<DT><B>-F</B><I>type</I>[<B>/</B><I>encodage</I>][<B>/</B><I>nom_fichier</I>], <B>--file-output=</B><I>type</I>[<B>/</B><I>encodage</I>][<B>/</B><I>nom_fichier</I>]<DD>
+Enregistrer la sortie dans un fichier <B>linkchecker-out.</B><I>type</I>,
+<B>$HOME/.linkchecker_blacklist</B> pour la sortie <B>blacklist</B>, ou dans <I>nom_fichier</I> si spécifié.
+<I>encodage</I> permet de spécifier l'encodage de sortie, la valeur par défaut étant <B>iso-8859-15</B>.
+Les encodages valides sont disponibles sur <B><A HREF="http://docs.python.org/lib/node127.html">http://docs.python.org/lib/node127.html</A></B>.
+La partie <I>nom_fichier</I> du type de sortie <B>none</B> est ignorée, sinon, si le fichier existe déjà, il sera écrasé.
+Vous pouvez spécifier l'option plusieurs fois. Les types de sortie valides pour les fichiers sont <B>text</B>, <B>html</B>, <B>sql</B>,
+<B>csv</B>, <B>gml</B>, <B>xml</B>, <B>none</B> ou <B>blacklist</B>.
+Par défaut, il n'y a pas de fichier de sortie. Les différents types de sortie sont documentés ci-dessous. Il faut noter que vous pouvez supprimer toutes les sorties console avec l'option <B>-o none</B>.
+<DT><B>--no-status</B><DD>
+Ne pas afficher les messages d'état de la vérification.
+<DT><B>-D</B><I>logger</I>, <B>--debug=</B><I>logger</I><DD>
+Afficher les sorties de débogage pour l'enregistreur de journal <I>logger</I>.
+Les enregistreurs disponibles sont&nbsp;: <B>cmdline</B>, <B>checking</B>,
+<B>cache</B>, <B>gui</B> and <B>all</B>.
+<B>all</B> est un alias pour indiquer que l'on veut tous les enregistreurs disponibles.
+Cette option peut être donnée plusieurs fois pour déboguer avec plus d'un enregistreur de journal.
+
+Le multithreading est désactivé pendant une exécution en mode debug afin de garantir la précision des résultats.
+<DT><B>--profile</B><DD>
+Écrire les données de profilage dans un fichier nommé <B>linkchecker.prof</B>
+dans le répertoire de travail courant. Voir aussi <B>--viewprof</B>.
+<DT><B>--viewprof</B><DD>
+Afficher en sortie les données de profilage générées précédemment. Voir aussi <B>--profile</B>.
+<P>
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H3>Options de vérification</H3>
+
+<DL COMPACT>
+<DT><B>-r</B><I>depth</I>, <B>--recursion-level=</B><I>profondeur</I><DD>
+Vérifier récursivement tous les liens jusqu'à une <I>profondeur</I> donnée. Une profondeur négative permet d'avoir une récursion infinie. Par défaut, la récursion est infinie.
+<DT><B>-i</B><I>regex</I>, <B>--intern=</B><I>regex</I><DD>
+Supposer que les URL correspondant à l'expression rationnelle donnée sont internes. LinkChecker ne descend récursivement que sur les URL internes, et pas sur les externes.
+<DT><B>-e</B><I>regex</I>, <B>--extern=</B><I>regex</I><DD>
+Supposer que les URL correspondant à l'expression donnée sont externes. Seuls les liens HTML internes sont vérifiés récursivement.
+<DT><B>--extern-strict=</B><I>regex</I><DD>
+Supposer que les URL correspondant à l'expression donnée sont strictement externes. Seuls les liens HTML internes sont vérifiés récursivement.
+<DT><B>-s</B>, <B>--extern-strict-all</B><DD>
+Ne vérifier que la syntaxe des liens externes, sans que l'on essaie de s'y connecter. Pour les URL locales, seuls les fichiers locaux sont internes. Pour les URL HTTP et FTP, toutes les URL avec le même nom de domaine sont internes.
+<DT><B>-d</B>, <B>--denyallow</B><DD>
+Inverser l'ordre de vérification en externe/interne. L'ordre de vérification par défaut est interne/externe.
+<DT><B>-C</B>, <B>--cookies</B><DD>
+Accepter et envoyer des cookies HTTP en accord avec le RFC 2109. Seuls les cookies qui sont renvoyés au serveur d'origine sont acceptés. Les cookies acceptés et envoyés sont fournis comme une information supplémentaire dans les journaux.
+<DT><B>-a</B>, <B>--anchors</B><DD>
+Vérifier les références ancrées. Cette option s'applique aux URL internes et externes. Par défaut, il n'y a pas de vérification des ancres. Cette option implique <B>-w</B> parce que les erreurs d'ancre sont toujours des avertissements.
+<DT><B>--no-anchor-caching</B><DD>
+Traiter url#anchora et url#anchorb comme égales dans le cache. Ceci est le comportement par défaut d'un navigateur, mais n'est pas spécifié dans la spécification URI. À utiliser avec précaution.
+<DT><B>-u</B><I>nom</I>, <B>--user=</B><I>nom</I><DD>
+Essayer le nom d'utilisateur <I>nom</I> pour l'autorisation HTTP et FTP. Pour FTP, le nom d'utilisateur par défaut est <B>anonymous</B>. Voir aussi <B>-p</B>.
+<DT><B>-p</B><I>pwd</I>, <B>--password=</B><I>pwd</I><DD>
+Essayer le mot de passe <I>pwd</I> pour l'autorisation HTTP et FTP. Pour FTP, le mot de passe par défaut est <B>anonymous@</B>. Voir aussi <B>-u</B>.
+<DT><B>--timeout=</B><I>secs</I><DD>
+Préciser le délai d'expiration pour les attentes de connexion en secondes. Le délai par défaut est de 30&nbsp;secondes.
+<DT><B>-P</B><I>secs</I>, <B>--pause=</B><I>secs</I><DD>
+Mettre en pause <I>secs</I> secondes entre chaque vérification d'URL. Cette option implique <B>-t0</B>. Par défaut, il n'y a pas de pause entre les requêtes.
+<DT><B>-N</B><I>serveur</I>, <B>--nntp-server=</B><I>serveur</I><DD>
+Spécifier un serveur NNTP pour les liens « news: ». Par défaut, la variable d'environnement NNTP_SERVER est utilisée. Si aucun hôte n'est donné, LinkChecker n'effectue qu'une vérification de la syntaxe du lien.
+<P>
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H3>Options obsolètes</H3>
+
+<DL COMPACT>
+<DT><B>--status</B><DD>
+Afficher l'état des vérifications toutes les 5&nbsp;secondes sur la sortie d'erreur. C'est le comportement par défaut.
+</DL>
+<A NAME="lbAK">&nbsp;</A>
+<H2>OUTPUT TYPES</H2>
+
+Notez que seules les erreurs sont journalisées par défaut.
+<P>
+<DL COMPACT>
+<DT><B>text</B><DD>
+Sortie texte standard, journaliser les URL dans des mots clés : mode argument.
+<DT><B>html</B><DD>
+Journaliser les URL dans des mots clés : mode argument, formaté en HTML. Contient aussi des liens vers les pages référencées. Les URL invalides ont aussi en plus une vérification syntaxique des liens HTML et CSS.
+<DT><B>csv</B><DD>
+Journaliser le résultat de la vérification au format CSV avec une URL par ligne.
+<DT><B>gml</B><DD>
+Journaliser les relations fils/père entre les URL liées dans un graphe GML. Vous devez utiliser l'option <B>--verbose</B> pour avoir un graphe complet.
+<DT><B>xml</B><DD>
+Journaliser le résultat de la vérification dans un fichier au format XML.
+<DT><B>sql</B><DD>
+Journaliser le résultat dans un script SQL avec des commandes INSERT. Un script d'exemple montrant la création de la table SQL initiale est inclus : create.sql.
+<DT><B>blacklist</B><DD>
+Approprié pour les tâches cron. Journaliser le résultat de la vérification dans un fichier <B>~/.blacklist</B> qui ne contient que les entrées avec des URL invalides et le nombre de fois qu'elles ont échoué.
+<DT><B>none</B><DD>
+Ne rien journaliser du tout. Approprié pour les scripts.
+<P>
+</DL>
+<A NAME="lbAL">&nbsp;</A>
+<H2>NOTES</H2>
+
+Un <B>!</B> avant une expression rationnelle l'inverse. Ainsi <B>'!^mailto:'</B> correspond à tout sauf un lien mailto.
+<P>
+Les URL sur la ligne de commande commençant par <B>ftp.</B> sont traitées comme <B><A HREF="ftp://ftp.">ftp://ftp.</A></B>, les URL commençant par <B>www.</B> sont traitées comme <B><A HREF="http://www.">http://www.</A></B>.
+Vous pouvez aussi mettre des noms de fichiers locaux comme arguments.
+<P>
+Si votre système est configuré pour établir automatiquement une connexion à internet (par exemple, avec diald), il se connectera quand les liens de vérification ne pointent pas sur votre système local.
+Utilisez les options <B>-s</B> et <B>-i</B> pour éviter cela.
+<P>
+Les liens javascript sont ignorés actuellement.
+<P>
+Si votre plate-forme n'accepte pas le multithreading, LinkChecker utilise <B>-t0</B>.
+<P>
+Vous pouvez fournir plusieurs paires nom d'utilisateur/mot de passe dans un fichier de configuration.
+<P>
+Pour utiliser les proxys, positionnez $http_proxy, $https_proxy sur Unix ou Windows.
+Sur un Mac, utilisez la configuration Internet.
+<P>
+Pour la vérification des liens <B>news:</B>, les liens de l'hôte NNTP donné n'ont pas besoin d'être les mêmes que l'hôte de l'utilisateur naviguant.
+<P>
+<A NAME="lbAM">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+<B>NNTP_SERVER</B> - spécifie le serveur NNTP par défaut
+<P>
+<B>http_proxy</B> - spécifie le proxy HTTP par défaut
+<P>
+<B>ftp_proxy</B> - spécifie le proxy FTP par défaut
+<P>
+<B>LC_MESSAGES</B>, <B>LANG</B> - spécifie la langue en sortie
+<P>
+<A NAME="lbAN">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<B>/etc/linkchecker/linkcheckerrc</B>, <B>~/.linkcheckerrc</B> - fichiers de configuration par défaut
+<P>
+<B>~/.blacklist</B> - fichier par défaut des blacklists pour la journalisation
+<P>
+<B>linkchecker-out.</B><I>type</I> - fichier par défaut pour la journalisation
+<P>
+<B><A HREF="http://docs.python.org/lib/node127.html">http://docs.python.org/lib/node127.html</A></B> - encodages valides de sortie
+<P>
+<A NAME="lbAO">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Bastian Kleineidam &lt;<A HREF="mailto:calvin@users.sourceforge.net">calvin@users.sourceforge.net</A>&gt;
+<P>
+<A NAME="lbAP">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Ce document est une traduction, réalisée par Yann Verley &lt;<A HREF="mailto:yann.verley@free.fr">yann.verley@free.fr</A>&gt; le 29 novembre 2004.
+<P>
+L'équipe de traduction a fait le maximum pour réaliser une adaptation française de qualité.
+La version anglaise la plus à jour de ce document est toujours consultable via la commande&nbsp;:
+<P>
+LANGUAGE=en man linkchecker
+<P>
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">EXEMPLES</A><DD>
+<DT><A HREF="#lbAF">OPTIONS</A><DD>
+<DL>
+<DT><A HREF="#lbAG">Options générales</A><DD>
+<DT><A HREF="#lbAH">Options de sortie</A><DD>
+<DT><A HREF="#lbAI">Options de vérification</A><DD>
+<DT><A HREF="#lbAJ">Options obsolètes</A><DD>
+</DL>
+<DT><A HREF="#lbAK">OUTPUT TYPES</A><DD>
+<DT><A HREF="#lbAL">NOTES</A><DD>
+<DT><A HREF="#lbAM">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAN">FICHIERS</A><DD>
+<DT><A HREF="#lbAO">AUTEUR</A><DD>
+<DT><A HREF="#lbAP">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:44 GMT, February 11, 2014
+</BODY>
+</HTML>

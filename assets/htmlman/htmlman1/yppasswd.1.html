@@ -1,0 +1,237 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of yppasswd</TITLE>
+</HEAD><BODY>
+<H1>yppasswd</H1>
+Section: User Commands  (1)<BR>Updated: June 2004<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+yppasswd, ypchfn, ypchsh - changer un mot de passe dans la base NIS (Network Information Service)
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>yppasswd [-f] [-l] [-p] [utilisateur]</B>
+
+<BR>
+
+<B>ypchfn [utilisateur]</B>
+
+<BR>
+
+<B>ypchsh [utilisateur]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Par le passé, les commandes standard 
+<B><A HREF="/cgi-bin/man/man2html?1+passwd">passwd</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+chfn">chfn</A></B>(1)
+
+et 
+<B><A HREF="/cgi-bin/man/man2html?1+chsh">chsh</A></B>(1)
+
+ne permettaient pas, sous Linux, de changer les informations stockées sur un serveur NIS 
+(mot de passe utilisateur, type de shell, GECOS). 
+Pour changer les informations NIS  vous deviez utiliser à la place :
+<B>yppasswd</B>,
+
+<B>ypchfn</B>
+
+et 
+<B>ypchsh</B>.
+
+<P>
+
+Aujourd'hui ces commandes sont obsolètes et ne devraient plus être utlisées.
+<P>
+
+Vous pouvez utiliser différentes options pour mettre à jour votre mot de passe 
+<B>-p</B>,
+
+le shell exécuté lors de votre login
+<B>-l</B>,
+
+votre champs GECOS
+<B>-f</B>,
+
+ou une combinaison de celles-ci. Si aucune option n'est utilisée, 
+<B>yppasswd</B>
+
+utilise l'option 
+<B>-p</B>
+
+par défaut. Si les options
+<B>-f</B>
+
+ou
+<B>-l</B>
+
+sont mentionnées, vous devez aussi mentionner l'option
+<B>-p.</B>
+
+<B>ypchfn</B>
+
+est associé à l'option 
+<B>-f</B>
+
+et
+<B>ypchsh</B>
+
+à
+<B>-l</B>.
+
+<P>
+
+Si l'argument 
+<I>utilisateur</I>
+
+est omis, les mises à jour sont effectuées sur l'utilisateur qui a lancé la commande. Sinon, elles sont faites sur l'
+<I>utilisateur</I>
+
+spécifié. Cette dernière opération n'est accessible qu'au superutilisateur.
+Si le démon yppasswd tournant sur le serveur le permet vous pouvez entrer
+le mot de passe du superutilisateur à la place de celui de l'utilisateur [old].
+<P>
+
+Toutes ces commandes demanderont d'abord le mot de passe de l'utilisateur 
+afin de s'authentifier auprès du démon
+<B><A HREF="/cgi-bin/man/man2html?8+yppasswdd">yppasswdd</A></B>(8).
+
+Par la suite, le programme demande les informations suivantes&nbsp;:
+
+
+<DL COMPACT>
+<DT><B>yppasswd</B> ou <B>-l</B><DD>
+Change le mot de passe de l'utilisateur. Un nouveau mot de passe est demandé à l'utilisateur.
+Pendant la frappe du mot de passe, celui-ci n'apparaît pas à l'écran.
+Les mots de passe vides ou contenant moins de 6 caractères sont rejetés.
+Le programme demande une deuxième fois le mot de passe pour 
+s'assurer qu'il avait été correctement entré la première fois.
+
+
+<DT><B>ypchsh</B> ou <B>-l</B><DD>
+Change le shell qui sera exécuté lors du login de l'utilisateur.
+Un nouveau shell est demandé et l'ancien est proposé par défaut.
+<DT><DD>
+
+<B>
+</B><PRE>
+Login shell [/bin/sh]: _
+</PRE>
+
+
+
+<DT><DD>
+Il suffit de taper [return] pour accepter le choix par défaut.
+Pour effacer le champ shell vous concernant dans le fichier 
+<B><A HREF="/cgi-bin/man/man2html?5+passwd">passwd</A></B>(5)
+
+(NdT&nbsp;: du serveur NIS),
+entrez
+<I>none</I>.
+
+De cette façon, le shell par défaut sera sélectionné.
+
+
+<DT><B>ypchfn</B> ou <B>-f</B><DD>
+Change le nom complet de l'utilisateur et les informations associées.
+Traditionnellement quelques applications s'attendent à trouver le nom réel de l'utilisateur (par opposition à son nom de login), son numéro de 
+téléphone ou autre dans le quatrième champs (GECOS) du fichier 
+<B><A HREF="/cgi-bin/man/man2html?5+passwd">passwd</A></B>(5)<B>.</B>
+
+Ces information peuvent être consultées avec
+<B><A HREF="/cgi-bin/man/man2html?1+finger">finger</A></B>(1)
+
+et avec probablement d'autres outils.
+<DT><DD>
+Lors de la mise à jour,
+<B>ypchfn</B>
+
+affiche les &quot;invites&quot; suivantes en mettant les valeurs par défaut entre
+crochets :
+<DT><DD>
+
+<B>
+</B><PRE>
+Name [Joe Doe]:
+Location [2nd floor, bldg 34]:
+Office Phone [12345]:
+Home Phone []:
+</PRE>
+
+
+
+<DT><DD>
+Il suffit d'appuyer sur [return] pour accepter le choix par défaut.
+Pour effacer le champs, il faut entrer la chaîne 
+<I>none</I>.
+
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+chfn">chfn</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+chsh">chsh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+finger">finger</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?5+passwd">passwd</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?1+passwd">passwd</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+ypcat">ypcat</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+yppasswdd">yppasswdd</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ypserv">ypserv</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?1+ypwhich">ypwhich</A></B>(1)
+
+<P>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<B>yppasswd</B>
+
+fait partie du paquetage
+<B>yp-tools ,</B>
+
+qui a été écrit par Thorsten Kukuk &lt;<A HREF="mailto:kukuk@suse.de">kukuk@suse.de</A>&gt;.
+<P>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>AVERTISSEMENT SUR LA TRADUCTION</H2>
+
+Il est possible que cette traduction soit imparfaite ou périmée. En cas de doute, veuillez vous reporter au document original en langue anglaise fourni avec le programme.
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Philippe Lefebvre ENSICAEN, septembre 2004
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">AUTEUR</A><DD>
+<DT><A HREF="#lbAG">AVERTISSEMENT SUR LA TRADUCTION</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:45 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,596 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ENEMIES-OF-CARLOTTA</TITLE>
+</HEAD><BODY>
+<H1>ENEMIES-OF-CARLOTTA</H1>
+Section: User Commands  (1)<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+enemies-of-carlotta - un gestionnaire de listes de diffusion simple
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>enemies-of-carlotta </B>
+
+<I></I>[<I>options</I>] [<I>adresses</I>]
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>enemies-of-carlotta</B>
+
+est un gestionnaire de listes de diffusion simple.
+Si vous ne savez pas ce qu'est un gestionnaire de listes de diffusion, vous
+devez commencez par apprendre de quoi il s'agit avant de vouloir vous en 
+servir.
+<P>
+
+Enemies of Carlotta conserve toutes les données des listes dans le répertoire
+<I>~/.enemies-of-carlotta.</I>
+
+Il sera créé automatiquement lorsque vous créerez votre première liste.
+Vous devez vous arranger manuellement pour que les courriels soient traités
+par le gestionnaire de liste de diffusion.
+Les détails peuvent varier d'un système à l'autre.
+Pour QMail et Postfix, regardez ci-dessous.
+<P>
+
+Chaque liste possède un ou plusieurs propriétaires, qui modèrent également
+les inscriptions, ou bien certains messages, voire tous.
+Sur les listes non modérées, les propriétaires de la liste sont chargés de
+répondre aux questions au sujet de la liste.
+Sur les liste totalement modérées, ils doivent approuver chaque message
+avant qu'il ne soit envoyé sur la liste.
+Sur les liste où
+<I>posting=auto</I>,
+
+les messages des abonnés sont automatiquement envoyés à la liste, et les
+modérateurs n'ont pas besoin d'approuver que les messages qui ne 
+proviennent pas des abonnés.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+
+<DL COMPACT>
+<DT><B>--name=</B><A HREF="mailto:foo@example.com">foo@example.com</A>
+
+<DD>
+Précise la liste sur laquelle la commande doit être effectuée.
+La plupart des options restantes nécessitent que vous précisiez
+le nom de la liste avec cette option.
+Avec les options --edit, --subscribe, --unsubscribe, et --list,
+le nom peut être abrégé en enlevant le signe @ et le domaine.
+
+<DT><B>--create</B>
+
+<DD>
+Créer une nouvelle liste de diffusion
+Vous devez précisez au moins un propriétaire à l'aide de 
+<B>--owner</B>.
+
+
+<DT><B>--owner=</B><I>adresse</I>
+
+<DD>
+Indique la liste des propriétaires lorsque la liste est créée.
+
+<DT><B>--cleaning-woman</B>
+
+<DD>
+Règle les problèmes des messages qui n'ont pas pu être délivrés et
+nettoie également quelques autres éléments.
+Vous devez lancer
+<B>enemies-of-carlotta --cleaning-woman</B>
+
+périodiquement.
+Cela nettoiera l'ensemble de vos listes de diffusion.
+
+<DT><B>--destroy</B>
+
+<DD>
+Détruit la liste.
+
+<DT><B>--edit</B>
+
+<DD>
+Modifie la configuration de la liste.
+
+<DT><B>--subscription=</B><I>type</I>
+
+<DD>
+Lors de la création d'une liste, définit le mode d'abonnement à 
+<I>free</I>
+
+(libre) ou 
+<I>moderated</I>
+
+(modéré).
+Utilisez-le avec
+<B>--edit</B>,
+
+ou
+<B>--create</B>.
+
+
+<DT><B>--posting=</B><I>type</I>
+
+<DD>
+Lors de la création d'une liste, définit le mode d'envoi à 
+<I>free</I>,
+
+(libre)
+<I>auto</I>,
+
+(automatique)
+ou
+<I>moderated</I>
+
+(modéré).
+Utilisez-le avec
+<B>--edit</B>,
+
+ou
+<B>--create</B>.
+
+
+<DT><B>--archived=</B><I>yes-ou-no</I>
+
+<DD>
+Les messages à destination de la liste doivent-ils être archivés sous
+la forme d'une
+<B>archive-box</B>
+
+ou d'un répertoire dans le répertoire dans liste 
+<B>~/.enemies-of-carlotta</B>
+
+Utilisez 
+<I>yes</I>
+
+(oui) ou 
+<I>no</I>
+
+(non).
+
+<DT><B>--list</B>
+
+<DD>
+Liste l'ensemble des abonnés à une liste de diffusion.
+
+<DT><B>--subscribe</B>
+
+<DD>
+Ajoute des abonnés à la liste.
+Les arguments qui ne sont pas des options sont les adresses qui doivent
+être abonnées. Notez que les adresses ajoutées de cette manière ne 
+recevront pas de demande de confirmation d'abonnement.
+
+<DT><B>--unsubscribe</B>
+
+<DD>
+Enlève un abonné de la liste.
+Les arguments qui ne sont pas des options sont les adresses qui doivent
+être désabonnées. Notez que les adresses enlevées de cette manière ne
+recevront pas de demande de confirmation de désabonnement.
+
+<DT><B>--incoming</B>
+
+<DD>
+Traite un message entrant sur l'entrée standard.
+L'enveloppe SMTP qui précise l'adresse de l'expéditeur doit être
+précisée par la variable d'environnement
+<I>SENDER</I>
+
+et l'enveloppe SMTP qui précise l'adresse du destinataire doit être
+précisée par la variable d'environnement
+<I>RECIPIENT</I>
+
+(QMail et Postfix traitent cela automatiquement.)
+
+<DT><B>--skip-prefix=</B><I>chaîne</I>
+
+<DD>
+Avant d'analyser l'adresse de destination pour regarder à quelle liste
+le message est destiné, ce paramètre permet d'enlever
+<I>chaîne</I>
+
+depuis son début.
+C'est utilisé pour traiter les domaines virtuels dans QMail et Postfix,
+voyez ci-dessous.
+
+<DT><B>--domain=</B><I>nom.domaine</I>
+
+<DD>
+Avant d'analyser l'adresse de destination pour voir à quelle liste le message
+est destiné, remplace le nom de domaine par
+<I>nom.domaine</I>.
+
+C'est utilisé pour traiter les domaines virtuels dans QMail et Postfix.
+
+<DT><B>--is-list</B>
+
+<DD>
+L'adresse précisée par
+<B>--name</B>
+
+fait-elle référence à un nom de liste valide&nbsp;?
+Cela retourne le code d'erreur zéro (succès) si c'est le cas, ou un (échec)
+dans le cas contraire.
+
+<DT><B>--sendmail=</B><I>chemin</I>
+
+<DD>
+Utilise
+<I>chemin</I>
+
+au lieu de 
+<B>/usr/sbin/sendmail</B>
+
+Pour envoyer des courriels via une interface en ligne de commande.
+Notez que la commande doit respecter l'interface de la ligne de commande
+sendmail.
+
+<DT><B>--smtp-server=</B><I>hôte</I>
+
+<DD>
+Envoi les courriels en utilisant le serveur 
+<I>hôte</I>
+
+(port 25).
+Le serveur doit être configuré pour permettre à la machine sur laquelle
+fonctionne la liste de l'utiliser pour relais.
+Notez que par défaut, c'est l'interface en ligne de commande qui est utilisée.
+L'envoi au moyen de SMTP n'est utilisé que si vous utilisez cette option.
+
+<DT><B>--moderate</B>
+
+<DD>
+Force un message entrant à être modéré, même s'il est envoyé à une liste
+où l'envoi est libre.
+Cela peut être utilisé pour filtrer le spam&nbsp;:
+Vos messages entrants peuvent être filtrés par n'importe quel système de 
+filtrage des courriels, dès lors qu'un message semble être du spam,
+vous pouvez demander qu'il soit modéré par une personne humaine.
+
+<DT><B>--quiet</B>
+
+<DD>
+Par défaut, les messages de débogage des journaux sont envoyés sur 
+l'erreur standard.
+Avec cette option, il ne le sont plus.
+
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFIGURATION</H2>
+
+Chaque liste est représentée par un répertoire, nommé d'après le nom de
+la liste, sous le répertoire 
+<I>~/.enemies-of-carlotta</I>.
+
+Ce répertoire contient plusieurs fichiers et répertoires, qui sont décrits
+ci-dessous.
+En général, il n'est pas nécessaire de toucher à ces répertoires.
+Cependant, certaines configurations ésotériques peuvent uniquement être
+faites en éditant le fichier de configuration de la liste.
+<DL COMPACT>
+<DT><B>config</B>
+
+<DD>
+Le fichier de configuration de la liste.
+Le contenu est décrit ci-dessous.
+<DT><B>subscribers</B>
+
+<DD>
+La base de données des abonnés.
+Chaque ligne contient un groupe d'abonné, dont les cinq premiers
+espaces délimitent les champs qui sont les identifiants des groupes,
+le statut, le timestamp de la date de création du groupe, le timestamp
+pour les retours de courriel en cas d'échec, il peut varier de «&nbsp;ok&nbsp;»
+à «&nbsp;bonced&nbsp;», et l'identifiant du message de retour en cas d'échec.
+<DT><B>archive-box</B>
+
+<DD>
+Les messages archivés.
+<DT><B>bounce-box</B>
+
+<DD>
+Groupes de messages qui n'ont pu être délivrés et qui sont dans le
+statut «&nbsp;ok&nbsp;».
+<DT><B>moderation-box</B>
+
+<DD>
+Messages en attente d'approbation du modérateur.
+<DT><B>subscription-box</B>
+
+<DD>
+Requêtes d'abonnement de désabonnement en attente de confirmation de la
+part de l'utilisateur.
+</DL>
+<P>
+
+le fichier 
+<B>config</B>
+
+possède des
+<I>mot-clé</I>=<I>value</I>
+
+format&nbsp;:
+<P>
+
+<DL COMPACT><DT><DD>
+<PRE>
+[list]
+owners = <A HREF="mailto:liw@liw.iki.fi">liw@liw.iki.fi</A>
+archived = no
+posting = free
+subscription = free
+mail-on-subscription-changes = yes
+mail-on-forced-unsubscribe = yes
+language = fi
+</PRE>
+
+</DL>
+
+<P>
+
+Les mots clés
+<B>archived</B>,
+
+<B>posting</B>,
+
+et
+<B>subscription </B>
+
+correspondent aux options qui portent les mêmes noms.
+Les autres mots-clés sont&nbsp;:
+<DL COMPACT>
+<DT><B>owners</B>
+
+<DD>
+Liste les adresses des propriétaires. Définissez-la à l'aide de
+l'option
+<I>--owner.</I>
+
+<DT><B>mail-on-subscription-changes</B>
+
+<DD>
+Les propriétaires doivent-ils recevoir un avertissement lorsqu'un utilisateur
+s'abonne ou se désabonne&nbsp;?
+<DT><B>mail-on-forced-unsubscribe</B>
+
+<DD>
+Les propriétaires doivent-ils recevoir un avertissement lorsqu'une personne
+est enlevée de la liste car trop de courriels ne lui sont pas parvenus&nbsp;?
+<DT><B>language</B>
+
+<DD>
+Suffixe pour les templates, pour permettre le support de plusieurs
+langues
+(Si 
+<I>language</I>
+
+est défini à «&nbsp;fr&nbsp;», alors la template nommée «&nbsp;foo&nbsp;» est d'abord
+recherchée comme «&nbsp;foo.fr&nbsp;».)
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+Pour créer une liste nommée
+<I><A HREF="mailto:moviefans@example.com">moviefans@example.com</A></I>,
+
+dont le propriétaire est
+<I><A HREF="mailto:ding@example.com">ding@example.com</A></I>,
+
+utilisez la commande suivante (tout sur la même ligne)&nbsp;:
+<P>
+<DL COMPACT><DT><DD>
+enemies-of-carlotta --name=<A HREF="mailto:ding@example.com">ding@example.com</A> --create
+</DL>
+
+<P>
+
+Pour voir la liste de tous les abonnés à cette liste&nbsp;:
+<P>
+<DL COMPACT><DT><DD>
+enemies-of-carlotta --name=<A HREF="mailto:moviefans@example.com">moviefans@example.com</A> --list
+</DL>
+
+<P>
+
+Les personnes qui souhaitent être abonnées à la liste doivent
+envoyer un courriel à
+<P>
+<DL COMPACT><DT><DD>
+<A HREF="mailto:moviefans-subscribe@example.com">moviefans-subscribe@example.com</A>
+</DL>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>QMAIL</H2>
+
+Dans Qmail, pour faire en sorte que le courrier entrant soit traité
+par Enemies of Carlotta, vous avez besoin de créer quelques fichiers
+<I>.qmail-extension</I>
+
+par liste.
+Par exemple, si votre nom d'utilisateur est joe et que vous souhaitez
+utiliser la liste de diffusion joe-fans, vous devrez créer les
+fichiers
+<I>.qmail-fans</I>
+
+et
+<I>.qmail-fans-default</I>,
+
+qui contiennent
+<P>
+<DL COMPACT><DT><DD>
+|&quot;enemies-of-carlotta --incoming&quot;
+</DL>
+
+<P>
+
+Si vous utilisez un domaine virtuel, example.com, et que les 
+courriels sont délivrés via
+<I>/var/qmail/control/virtualdomains à joe-exampledotcom, </I>
+
+les fichiers seront nommés
+<I>.qmail-exampledotcom-fans</I>
+
+et
+<I>.qmail-exampledotcom-fans-default</I>
+
+et ils contiendront
+<P>
+<DL COMPACT><DT><DD>
+|&quot;enemies-of-carlotta --incoming 
+<BR>
+
+--skip-prefix=joe-exampledotcom-&quot;
+</DL>
+
+<P>
+(l'ensemble sur la même ligne, il va de soi).
+<A NAME="lbAI">&nbsp;</A>
+<H2>POSTFIX</H2>
+
+Avec Postfix, vous devrez configurer un fichier
+<I>.forward</I>
+
+contenant
+<P>
+<DL COMPACT><DT><DD>
+&quot;|procmail -p&quot;
+</DL>
+
+<P>
+et un fichier
+<I>.procmailrc</I>
+
+contenant
+<P>
+<DL COMPACT><DT><DD>
+:0
+<BR>
+
+* ? enemies-of-carlotta --name=$RECIPIENT --is-list
+<BR>
+
+| enemies-of-carlotta --incoming
+</DL>
+
+<P>
+
+Pour utiliser Enemies of Carlotta avec un domaine virtuel Postfix,
+vous devrez mettre en place une
+<I>«&nbsp;carte virtuelle d'expressions rationnelles&nbsp;»,</I>
+
+généralement 
+<I>/etc/postfix/virtual_regexp</I>
+
+(ajoutez
+<I>virtual_maps = regexp:/etc/postfix/virtual_regexp</I>
+
+dans votre fichier
+<I>/etc/postfix/main.cf</I>
+
+pour l'activer).
+Le fichier d'expressions rationnelles a besoin de faire des choses
+horribles pour conserver l'adresse de destination.
+Ajoutez ce qui suit dans le fichier d'expressions rationnelles&nbsp;:
+<P>
+<DL COMPACT><DT><DD>
+/^your.virtual.domain$/ dummy
+<BR>
+
+/^(yourlist|yourlist-.*)@(your.virtual.domain)$/ joe-virtual-$1
+</DL>
+
+<P>
+(Ça fait deux lignes.)
+Ensuite dans votre fichier,
+<I>.procmailrc, </I>
+
+ajoutez les options
+<I>--skip-prefix=joe-virtual-</I>
+
+et
+<I>--domain=your.virtual.domain</I>
+
+pour les deux appels à 
+<B>enemies-of-carlotta</B>.
+
+<P>
+
+(Oui, je aussi trouve que ces choses là sont trop compliquées)
+<A NAME="lbAJ">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>~/.enemies-of-carlotta</I>
+
+<DD>
+L'ensemble des fichiers en rapports avec vos listes de diffusion.
+<DT><I>~/.enemies-of-carlotta/secret</I>
+
+<DD>
+Les mots de passe secrets utilisés pour générer des adresses signées pour
+le contrôle des couriels d'échec et la validation de l'abonnement.
+<DT><I>~/.enemies-of-carlotta/<A HREF="mailto:foo@example.com">foo@example.com</A></I>
+
+<DD>
+Le répertoire contient les données appartenant à la liste de diffusion
+<A HREF="mailto:foo@example.com">foo@example.com</A>.
+À l'exception du fichier de 
+<I>config</I>
+
+qui se trouve dans ce répertoire, vous ne devriez pas éditer autre chose 
+à la main
+<DT><I>~/.enemies-of-carlotta/<A HREF="mailto:foo@example.com">foo@example.com</A>/config</I>
+
+<DD>
+Fichier de configuration pour la liste de diffusion.
+Vous aurez peut-être besoin de l'éditer à la main si vous souhaitez 
+apporter des changement en ce qui concerne la modération ou bien les 
+propriétaires de la liste.
+</DL>
+<A NAME="lbAK">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+Vous serez peut-être intéressé de visiter 
+la page d'accueil d'
+<I>«&nbsp;Enemies of Carlotta&nbsp;»</I>
+
+à l'adresse
+<I><A HREF="http://www.iki.fi/liw/eoc/">http://www.iki.fi/liw/eoc/</A></I>.
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Pierre Machard &lt;<A HREF="mailto:pmachard@tuxfamily.org">pmachard@tuxfamily.org</A>&gt;, 2003
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">CONFIGURATION</A><DD>
+<DT><A HREF="#lbAG">EXEMPLES</A><DD>
+<DT><A HREF="#lbAH">QMAIL</A><DD>
+<DT><A HREF="#lbAI">POSTFIX</A><DD>
+<DT><A HREF="#lbAJ">FICHIERS</A><DD>
+<DT><A HREF="#lbAK">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:48 GMT, February 11, 2014
+</BODY>
+</HTML>

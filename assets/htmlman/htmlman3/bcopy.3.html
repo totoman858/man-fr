@@ -1,0 +1,89 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of BCOPY</TITLE>
+</HEAD><BODY>
+<H1>BCOPY</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+bcopy - Copier un bloc d'octets.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/string.h">string.h</A>&gt;</B>
+
+<B>void bcopy (const void *</B><I>src</I><B>, void *</B><I>dest</I><B>, size_t </B><I>n</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>bcopy()</B>
+
+copie
+<I>n</I>
+
+octets depuis
+<I>src</I>
+
+vers
+<I>dest</I>.
+
+Le résultat est correct même si les deux zones se chevauches.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Aucune.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.3. Cette fonction est déconseillée, utilisez plutôt
+<B>memcpy</B>
+
+dans les nouveaux programmes. Notez que les deux premiers paramètes
+sont inversés par rapport à
+<B>memcpy</B>.
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+memccpy">memccpy</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+memcpy">memcpy</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+memmove">memmove</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strcpy">strcpy</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strncpy">strncpy</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:09 GMT, February 11, 2014
+</BODY>
+</HTML>

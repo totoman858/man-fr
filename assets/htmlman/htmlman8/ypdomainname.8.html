@@ -1,0 +1,141 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of domainname</TITLE>
+</HEAD><BODY>
+<H1>domainname</H1>
+Section: Maintenance Commands (8)<BR>Updated: mai 1999<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+domainname - affiche ou définit le nom de domaine du système
+<BR>
+
+nisdomainname - affiche ou définit le nom de domaine NIS(YP) du système
+<BR>
+
+ypdomainname - affiche ou définit le nom de domaine NIS(YP) du système
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSYS</H2>
+
+<B>domainname</B>
+
+[
+<B>domaine</B>
+
+]
+<BR>
+
+<B>nisdomainname</B>
+
+[
+<B>domaine</B>
+
+]
+<BR>
+
+<B>ypdomainname</B>
+
+[
+<B>domaine</B>
+
+]
+<P>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Appelé sans argument,
+<B>domainname</B>
+
+fournit le nom de domaine NIS du système.
+<B>domainname</B>
+
+utilise la fonction
+<B><A HREF="/cgi-bin/man/man2html?2+getdomainname">getdomainname</A></B>(2)
+
+pour obtenir le nom de domaine,
+<B>nisdomainname</B>
+
+et
+<B>ypdomainname</B>
+
+utilisent
+<B><A HREF="/cgi-bin/man/man2html?3+yp_get_default_domain">yp_get_default_domain</A></B>(3).
+
+<P>
+
+Seul le superutilisateur peut définir le nom du domaine en spécifiant
+le nouveau 
+<B>domaine</B>
+
+comme argument. Les trois programmes utilisent
+<B><A HREF="/cgi-bin/man/man2html?2+setdomainname">setdomainname</A></B>(2)
+
+pour cela. Notons que les programmes tournant déjà risquent de continuer
+à utiliser l'ancien nom de domaine.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+getdomainname">getdomainname</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setdomainname">setdomainname</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+yp_get_default_domain">yp_get_default_domain</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ypbind">ypbind</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?1+ypcat">ypcat</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+ypmatch">ypmatch</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+ypwhich">ypwhich</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+yppoll">yppoll</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ypserv">ypserv</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+yset">yset</A></B>(8)
+
+<P>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+<B>domainname</B>
+
+fait partie du paquet
+<B>yp-tools</B>
+
+, qui a été écrit par Thorsten Kukuk &lt;<A HREF="mailto:kukuk@suse.de">kukuk@suse.de</A>&gt;.
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Jean Michel Vansteene, Guillaume Audirac, Samuel Thibault (septembre 2004)
+<A NAME="lbAH">&nbsp;</A>
+<H2>AVERTISSEMENT SUR LA TRADUCTION</H2>
+
+Il est possible que cette traduction soit imparfaite ou périmée. En cas de doute, veuillez vous reporter au document original en langue anglaise fourni avec le programme.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSYS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">AUTEURS</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+<DT><A HREF="#lbAH">AVERTISSEMENT SUR LA TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:02 GMT, February 11, 2014
+</BODY>
+</HTML>

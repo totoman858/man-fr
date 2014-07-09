@@ -1,0 +1,245 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of POPEN</TITLE>
+</HEAD><BODY>
+<H1>POPEN</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+popen, pclose - Entrées/Sorties pour un processus.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<P>
+<B>FILE *popen (const char *</B><I>commande</I><B>, const char *</B><I>type</I><B>);</B>
+
+<P>
+<B>int pclose (FILE *</B><I>stream</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>popen()</B>
+
+engendre un processus en créant un tube (pipe), exécutant un <B>fork()</B>,
+et en invoquant le shell. Comme un tube est unidirectionnel par définition,
+l'argument
+<I>type</I>
+
+doit indiquer seulement une lecture ou une écriture, et non pas les deux.
+Le flux correspondant sera ouvert en lecture seule ou écriture seule.
+<P>
+
+L'argument
+<I>commande</I>
+
+est un pointeur sur une chaîne de caractères, terminée par un caractère nul,
+et contenant une ligne de commande shell.
+Cette commande est transmise à
+<I>/bin/sh</I>
+
+en utilisant l'option
+<B>-c</B>.
+
+L'interprétation en est laissée au shell.
+<P>
+
+L'argument
+<I>type</I>
+
+est un pointeur sur une chaîne de caractères, terminée par un caractère nul,
+qui doit contenir à 'r' pour la lecture ou 'w' pour l'écriture.
+<P>
+
+La valeur renvoyée par
+<B>popen()</B>
+
+est un flux d'entrée/sortie normal, à la seule différence qu'il doit être
+fermé en appelant
+<B>pclose()</B>
+
+à la place de
+<B>fclose()</B>.
+
+L'écriture dans le flux correspond à écrire sur l'entrée standard de
+la commande. Le flux de sortie standard de la commande est le même que
+celui du processus appelant
+<B>popen()</B>,
+
+à moins que la commande le modifie.
+Symétriquement, la lecture depuis un flux ouvert par <B>popen()</B> correspond
+à lire la sortie standard de la commande, et dans ce cas l'entrée standard
+de la commande est la même que celle du processus appelant
+<B>popen</B>.
+
+<P>
+
+Notez que, par défaut, les flux de sortie fournis par
+<B>popen</B>
+
+disposent d'un buffer.
+<P>
+
+La fonction
+<B>pclose</B>
+
+attend que le processus correspondant se termine, et renvoie
+alors le statut de sortie de la commande, comme en utilisant
+<B>wait4</B>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction
+<B>popen</B>
+
+renvoie
+<B>NULL</B>
+
+si l'appel système
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+pipe">pipe</A></B>(2)
+
+échoue, ou s'il n'a pas assez de mémoire.
+<P>
+
+La fonction
+<B>pclose</B>
+
+renvoie -1 si
+
+
+
+
+
+<B>wait4</B>
+
+échoue, ou si une autre erreur est détectée.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+La fonction
+<B>popen</B>
+
+ne remplit pas
+<I>errno</I>
+
+si une allocation mémoire échoue. Si les appels
+<B>fork()</B> ou <B>pipe()</B>
+
+sous-jacents échouent,
+<I>errno</I>
+
+est correctement rempli. Si l'argument
+<I>type</I>
+
+est invalide, et si cette condition est détectée,
+<I>errno</I>
+
+contient
+<B>EINVAL</B>.
+
+<P>
+
+Si
+<B>pclose()</B>
+
+n'arrive pas à obtenir le status du fils,
+<I>errno</I>
+
+contient
+<B>ECHILD</B>.
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX.2
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Comme l'entrée standard d'une commande ouverte en lecture partage son pointeur
+de position dans le flux avec le processus appelant
+<B>popen()</B>,
+
+si le processus original a effectué des lectures en buffer, la position
+du flux d'entrée de la commande peut être différente de celle attendue.
+Symétriquement, la sortie d'une commande ouverte en écriture peut s'emmêler
+avec celle du processus original. Le second problème peut être évité en
+appelant
+<B><A HREF="/cgi-bin/man/man2html?3+fflush">fflush</A></B>(3)
+
+avant
+<B>popen</B>.
+
+<P>
+
+Il n'est pas possible de distinguer un échec d'exécution du shell lui-même,
+d'un échec d'exécution d'une commande par le shell, ni même d'une sortie
+immédiate de la commande. Le seul indice est un code de retour de 127.
+<A NAME="lbAI">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Des fonctions
+<B>popen()</B>
+
+et
+<B>pclose()</B>
+
+sont apparues dans la Version 7 d'AT&amp;T UNIX.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?1+sh">sh</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+pipe">pipe</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+wait4">wait4</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fflush">fflush</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fclose">fclose</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fopen">fopen</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+stdio">stdio</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+system">system</A></B>(3)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:28 GMT, February 11, 2014
+</BODY>
+</HTML>

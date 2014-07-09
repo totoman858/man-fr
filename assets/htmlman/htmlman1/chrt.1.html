@@ -1,0 +1,191 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CHRT</TITLE>
+</HEAD><BODY>
+<H1>CHRT</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 1er avril 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+chrt - Manipuler les attributs temps réel d'un processus
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>chrt</B>
+
+[<I>options</I>]&nbsp;<I>prio</I>
+
+<I>commande&nbsp;</I>[<I>arg</I>]...
+
+<BR>
+
+<B>chrt</B>
+
+[<I>options</I>]
+
+<B>-p</B>
+
+[<I>prio</I>]&nbsp;<I>pid</I>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>chrt</B>
+
+définit ou récupère les attributs d'ordonnancement temps réel d'un processus
+existant ou exécute la
+<I>commande</I>
+
+avec les attributs fournis.
+La politique d'ordonnancement
+(<B>SCHED_OTHER</B>,
+
+<B>SCHED_FIFO</B>,
+
+<B>SCHED_RR</B>,
+
+ou
+<B>SCHED_BATCH</B>)
+
+et la priorité peuvent être définis et récupérées.
+<P>
+
+La politique
+<B>SCHED_BATCH</B>
+
+est prise en charge depuis Linux&nbsp;2.6.16.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-p ,  --pid</B>
+
+<DD>
+Opérer sur un processus existant et ne pas lancer une nouvelle tâche.
+<DT><B>-b</B>, <B>--batch</B>
+
+<DD>
+Définir la politique d'ordonnancement à
+<B>SCHED_BATCH</B>.
+
+<DT><B>-f ,  --fifo</B>
+
+<DD>
+Définir la politique d'ordonnancement à
+<B>SCHED_FIFO</B>.
+
+<DT><B>-m ,  --max</B>
+
+<DD>
+Afficher les priorités minimum et maximum valides et quitter.
+<DT><B>-o ,  --other</B>
+
+<DD>
+Définir la politique d'ordonnancement à
+<B>SCHED_OTHER</B>.
+
+<DT><B>-r ,  --rr</B>
+
+<DD>
+Définir la politique d'ordonnancement à
+<B>SCHED_RR</B>
+
+(c'est la valeur par défaut) .
+<DT><B>-h ,  --help</B>
+
+<DD>
+Afficher un message d'aide et quitter.
+<DT><B>-v ,  --version</B>
+
+<DD>
+Afficher les informations de versions et quitter.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>USAGE</H2>
+
+<DL COMPACT>
+<DT>Le comportement par défaut est de lancer une nouvelle tâche.&nbsp;:<DD>
+chrt prio commande [arguments]
+<DT>Vous pouvez également récupérer les attributs temps réel d'une tâche existante&nbsp;:<DD>
+chrt -p pid
+<DT>Ou bien les définir&nbsp;:<DD>
+chrt -p prio pid
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>PERMISSIONS</H2>
+
+Un utilisateur doit posséder la capacité
+<B>CAP_SYS_NICE</B>
+
+pour pouvoir modifier les attributs d'ordonnancement d'un processus.
+N'importe quel utilisateur peut récupérer les informations d'ordonnancement.
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Écrit par Robert M. Love.
+<A NAME="lbAI">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright &#169; 2004 Robert M. Love
+<BR>
+
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+taskset">taskset</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+nice">nice</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+renice">renice</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_setscheduler">sched_setscheduler</A></B>(2)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>DISPONIBILITÉ</H2>
+
+La commande
+<B>chrt</B>
+
+fait partie du paquetage util-linux-ng et est disponible à l'adresse
+<A HREF="ftp://ftp.kernel.org/pub/linux/utils/util-linux-ng/.">ftp://ftp.kernel.org/pub/linux/utils/util-linux-ng/.</A>
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Ce document est une traduction réalisée par Alain Portal
+&lt;aportal&nbsp;AT&nbsp;univ-montp2&nbsp;DOT&nbsp;fr&gt; le 26&nbsp;mai&nbsp;2008.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;1&nbsp;chrt</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">USAGE</A><DD>
+<DT><A HREF="#lbAG">PERMISSIONS</A><DD>
+<DT><A HREF="#lbAH">AUTEUR</A><DD>
+<DT><A HREF="#lbAI">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">DISPONIBILITÉ</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:41 GMT, February 11, 2014
+</BODY>
+</HTML>

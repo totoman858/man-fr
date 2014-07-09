@@ -1,0 +1,118 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MKFIFO</TITLE>
+</HEAD><BODY>
+<H1>MKFIFO</H1>
+Section: Manuel de l'utilisateur Linux (1L)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mkfifo - Créer des FIFOs (tubes nommés).
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>mkfifo [</B><I>options</I><B>] </B><I>fichier...</I>
+
+<P>
+Options POSIX :
+<B>[-m </B><I>mode</I><B>] [--]</B>
+
+<P>
+Options GNU (versions courtes) :
+<B>[-m </B><I>mode</I><B>] [--help] [--version] [--]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>mkfifo</B>
+
+crée une file FIFO (un tube nommé) pour chacun des noms indiqués.
+<P>
+
+Une &quot;FIFO&quot; est un type de fichier spécial permettant la communication entre
+des processus indépendants. Un processus ouvre la FIFO en écriture, et un
+autre l'ouvre en lecture. Ensuite les données peuvent transiter entre les
+processus comme avec les tubes anonymes proposés par les shells.
+<P>
+
+Par défaut, les permissions
+d'accès aux FIFOs créées sont 0666 moins les bits à 1 du umask.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-m </B><I>mode</I><B>, --mode=</B><I>mode</I>
+
+<DD>
+Indique les permissions d'accès pour les FIFOs créées. Le
+<I>mode</I>
+
+est fourni de manière symbolique, comme pour 
+<B><A HREF="/cgi-bin/man/man2html?1+chmod">chmod</A></B>(1),
+
+en utilisant
+l'autorisation par défaut comme valeur de départ.
+<DT><B>--</B>
+
+<DD>
+Fin explicite de la liste des options.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS STANDARDS GNU</H2>
+
+<DL COMPACT>
+<DT><B>--help</B>
+
+<DD>
+Afficher un message d'aide sur la sortie standard, et se terminer normalement.
+<DT><B>--version</B>
+
+<DD>
+Afficher un numéro de version sur la sortie standard, et se terminer normalement.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+Les variables d'environnement LANG, LC_ALL, LC_TYPE et LC_MESSAGES ont leur
+significations habituelles.
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX 1003.2
+<A NAME="lbAI">&nbsp;</A>
+<H2>NOTES</H2>
+
+Cette page décrit la version de
+<B>mkfifo</B>
+
+rencontrée dans le paquetage fileutils-4.0. D'autres
+versions peuvent varier légèrement.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">OPTIONS STANDARDS GNU</A><DD>
+<DT><A HREF="#lbAG">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">NOTES</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:49 GMT, February 11, 2014
+</BODY>
+</HTML>

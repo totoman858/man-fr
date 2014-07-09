@@ -1,0 +1,134 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SCHED_RR_GET_INTERVAL</TITLE>
+</HEAD><BODY>
+<H1>SCHED_RR_GET_INTERVAL</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+sched_rr_get_interval  - Obtenir l'intervalle SCHED_RR pour le processus indiqué.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sched.h">sched.h</A>&gt;</B>
+
+<P>
+<B>int sched_rr_get_interval(pid_t </B><I>pid</I><B>, struct timespec *</B><I>tp</I><B>);
+<P>
+</B><PRE>
+
+<B>struct timespec {
+    time_t  tv_sec;     /* seconds */
+    long    tv_nsec;    /* nanoseconds */
+};
+
+</B></PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>sched_rr_get_interval </B>
+
+remplit la structure <I>timespec</I> pointée par <I>tp</I> 
+avec le &quot;round robin time quantum&quot; du processus identifié par <I>pid</I>.
+Si <I>pid</I> vaut zéro, le time quantum du processus en cours est
+écrit dans *<I>tp</I>. 
+Le processus identifié doit être ordonnancé avec la politique
+<I>SCHED_RR.</I>
+
+<P>
+La valeur &quot;round robin time quantum&quot; n'est pas modifiable sous 
+Linux 1.3.81.
+<P>
+Les systèmes POSIX sur lesquels
+<B>sched_rr_get_interval</B>
+
+est disponible, définissent
+<I>_POSIX_PRIORITY_SCHEDULING</I>
+
+dans &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>sched_rr_get_interval</B>
+
+renvoie 0 s'il réussit.
+en cas d'échec, -1 est renvoyé, et
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ESRCH</B>
+
+<DD>
+Le processus numéro <I>pid</I> n'existe pas.
+<DT><B>ENOSYS</B>
+
+<DD>
+L'appel système n'a pas encore été implémenté.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX.1b (POSIX.4)
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Avec Linux 1.3.81, <B>sched_rr_get_interval</B> renvoie une erreur 
+ENOSYS, car SCHED_RR n'a pas été totalement implémenté et testé.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+sched_setscheduler">sched_setscheduler</A></B>(2)
+
+décrit les politiques d'ordonnancement de Linux.
+<P>
+
+<I>Programming for the real world - POSIX.4</I>
+
+by Bill O. Gallmeister, O'Reilly &amp; Associates, Inc., ISBN 1-56592-074-0
+<BR>
+
+<I>IEEE Std 1003.1b-1993</I>
+
+(standard POSIX.1b, anciennement POSIX.4)
+<BR>
+
+<I>ISO/IEC 9945-1:1996</I>
+
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:53 GMT, February 11, 2014
+</BODY>
+</HTML>

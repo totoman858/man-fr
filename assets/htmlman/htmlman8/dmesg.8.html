@@ -1,0 +1,117 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DMESG</TITLE>
+</HEAD><BODY>
+<H1>DMESG</H1>
+Section: Manuel de l utilisateur Linux (8)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+dmesg - Afficher et contrôler le tampon des messages du noyau.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>dmesg [ -c ] [ -n </B><I>niveau</I><B> ] [ -s </B><I>taille</I><B> ]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>dmesg</B>
+
+est utilisé pour examiner ou contrôler le tampon des messages du noyau.
+<P>
+Le programme aide les utilisateurs à afficher les messages du démarrage
+de la machine. Au lieu de copier ces messages à la main, il suffit de faire
+<DL COMPACT><DT><DD>
+dmesg &gt; boot.messages
+</DL>
+
+et envoyer par courrier électronique le fichier
+<I>boot.messages</I>
+
+à quelqu'un capable d'identifier un éventuel problème.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-c</B>
+
+<DD>
+Efface le tampon des messages du noyau après les avoir affichés.
+<DT><B>-s</B><I> taille</I>
+
+<DD>
+utilise un tampon de la <I>taille</I> indiquée au lieu d'utiliser
+la taille courante.
+Par défaut, 8196 octets sont utilisés par le démon syslog du noyau dans
+les versions 2.0.33 et 2.1.103. Si vous utiliser un tampon plus large
+que celui par défaut, cette option vous permet de voir le tampon tout entier.
+<DT><B>-n</B><I> niveau</I>
+
+<DD>
+règle le
+<I>niveau</I>
+
+des messages à afficher sur la console. Par exemple,
+<B>-n  1</B>
+
+supprime l'affichage de tous les messages, exceptés les messages graves.
+Tous les niveaux d'affichage des messages sont enregistrés dans
+<I>/proc/kmsg</I>,
+
+ainsi
+<B><A HREF="/cgi-bin/man/man2html?8+syslogd">syslogd</A></B>(8)
+
+peut être toujours utilisé pour contrôler exactement où les messages du noyau apparaissent.
+Quand l'option
+<B>-n</B>
+
+est utilisée,
+<B>dmesg</B>
+
+n'affichera ou n'effacera
+<I>pas</I>
+
+le tampon des messages du noyau.
+<P>
+Quand les deux options sont utilisées, seule la dernière option sur la ligne de commande est prise
+en compte.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI.</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+syslogd">syslogd</A></B>(8)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Theodore Ts'o (<A HREF="mailto:tytso@athena.mit.edu">tytso@athena.mit.edu</A>)
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 1999.
+
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI.</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:03 GMT, February 11, 2014
+</BODY>
+</HTML>

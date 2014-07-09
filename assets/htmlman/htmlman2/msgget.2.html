@@ -1,0 +1,314 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MSGGET</TITLE>
+</HEAD><BODY>
+<H1>MSGGET</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+msgget - Obtenir un identificateur de file de messages.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/ipc.h">sys/ipc.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/msg.h">sys/msg.h</A>&gt;</B>
+</PRE>
+
+<P>
+<B>int msgget ( key_t </B><I>key</I><B>,</B>
+
+<B>int msgflg</B><I> );</I>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette fonction renvoie l'identificateur de la file de
+messages associée à la clé
+<I>key.</I>
+
+Une nouvelle file de messages est créée si
+<I>key</I>
+
+a la valeur
+<B>IPC_PRIVATE</B>
+
+ou si
+aucune file de message n'est associée à
+<I>key</I>,
+
+et si la valeur
+<B>IPC_CREAT</B>
+
+a été introduite dans
+<I>msgflg</I>
+
+(c'est à dire
+<I>msgflg</I><B>&amp;</B><I>IPC_CREAT</I>
+
+non nul).
+La présence des champs
+<B>IPC_CREAT</B>
+
+et
+<B>IPC_EXCL</B>
+
+dans
+<I>msgflg</I>
+
+joue le même rôle, par rapport à l'existence de
+la file de messages, que la présence des champs
+<B>O_CREAT</B>
+
+et
+<B>O_EXCL</B>
+
+dans l'argument
+<I>mode</I>
+
+de l'appel système
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2) :
+
+La fonction
+<B>msgget</B>
+
+échouera si
+<I>msgflg</I>
+
+indique à la fois
+<B>IPC_CREAT</B>
+
+et
+<B>IPC_EXCL</B>
+
+et si une file de messages existe déjà associée à
+<I>key.</I>
+
+<P>
+
+Lors de la création, les 9 bits de poids faibles de l'argument
+<I>msgflg</I>
+
+définissent les permissions d'accès à la file de message
+(pour le propriétaire, le groupe, et les autres) avec le
+même format et la même signification que les permissions
+d'accès dans les appels
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+creat">creat</A></B>(2)
+
+(bien que la permission d'exécution ne soit pas utilisée).
+<P>
+
+Pendant la création, l'appel système initialise la structure
+système 
+<B>msqid_ds</B>
+
+de la file de messages comme suit :
+<DL COMPACT>
+<DT><DD>
+<B>msg_perm.cuid</B>
+
+et
+<B>msg_perm.uid</B>
+
+sont remplis avec l'UID effectif du processus appelant.
+<DT><DD>
+<B>msg_perm.cgid</B>
+
+et
+<B>msg_perm.gid</B>
+
+sont remplis avec le GID effectif du processus appelant.
+<DT><DD>
+Les 9 bits de poids faibles de
+<I>msgflg</I>
+
+sont copiés dans les 9 bits de poids faibles de
+<B>msg_perm.mode</B>.
+
+<DT><DD>
+<B>msg_qnum</B>,
+
+<B>msg_lspid</B>,
+
+<B>msg_lrpid</B>,
+
+<B>msg_stime</B>
+
+et
+<B>msg_rtime</B>
+
+sont fixés à 0.
+<DT><DD>
+<B>msg_ctime</B>
+
+est rempli avec l'heure actuelle.
+<DT><DD>
+<B>msg_qbytes</B>
+
+est rempli avec la limite système
+<B>MSGMNB</B>.
+
+</DL>
+<P>
+
+Si la file de message existe déjà, les permissions d'accès sont
+contrôlées, et une vérification est faite pour voir si la file
+est prête à être détruite.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>msgget</B>
+
+renvoie l'identificateur de la file de messages (un entier positif), 
+s'il réussit.
+En cas d'échec -1 est renvoyé et
+<B>errno</B>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EACCES</B>
+
+<DD>
+Une file de messages existe associée à la clé
+<I>key</I>,
+
+mais le processus appelant n'a pas de permissions sur cette
+file.
+<DT><B>EEXIST</B>
+
+<DD>
+Une file de messages existe associée à la clé
+<B>key</B>
+
+et
+<I>msgflg</I>
+
+réclame à la fois
+<B>IPC_CREAT</B>
+
+et
+<B>IPC_EXCL</B>.
+
+<DT><B>ENOENT</B>
+
+<DD>
+Aucune file de messages n'existe associée à la clé
+<I>key</I>
+
+et
+<I>msgflg</I>
+
+ne contient pas
+<B>IPC_CREAT</B>.
+
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour les nouvelles structures de données.
+<DT><B>ENOSPC</B>
+
+<DD>
+Le nombre maximum de files de messages sur le système
+(<B>MSGMNI</B>)
+
+est atteint.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+<B>IPC_PRIVATE</B>
+
+n'est pas destiné au champ
+<I>msgflg</I>
+
+mais est du type
+<B>key_t.</B>
+
+Si cette valeur spéciale est fournie à la place de
+<I>key</I>,
+
+l'appel système ignorera tout sauf les 9 bits de poids faibles de
+<I>msgflg</I>
+
+et créera une nouvelle file de messages.
+<P>
+
+La limite système concernant les files de messages et affectant
+<B>msgget</B>
+
+est
+<DL COMPACT>
+<DT><B>MSGMNI</B>
+
+<DD>
+Nombre maximum de files de messages sur le système.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+L'utilisation de
+<B>IPC_PRIVATE</B>
+
+n'empêche pas les autres processus d'avoir accès à la file
+de messages allouée. Le nom IPC_PRIVATE a été mal choisi, ICP_NEW aurait été mieux.
+<P>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID.  SVr4 ne documente pas le code d'erreur EIDRM.
+Jusqu'à la version 2.3.20, Linux renvoyait EIDRM pour un
+<B>msgget</B>
+
+sur une file de messages prête à être supprimée.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+ftok">ftok</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+ipc">ipc</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgctl">msgctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgsnd">msgsnd</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+msgrcv">msgrcv</A></B>(2)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:53 GMT, February 11, 2014
+</BODY>
+</HTML>

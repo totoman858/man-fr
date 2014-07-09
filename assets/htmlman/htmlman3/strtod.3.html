@@ -1,0 +1,195 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STRTOD</TITLE>
+</HEAD><BODY>
+<H1>STRTOD</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+strtod, strtof, strtold - Conversion d'une chaîne ASCII en nombre réel.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<P>
+<B>double strtod (const char *</B><I>nptr</I><B>, char **</B><I>endptr</I><B>);</B>
+
+<BR>
+
+<B>float strtof(const char *</B><I>nptr</I><B>, char **</B><I>endptr</I><B>);</B>
+
+<BR>
+
+<B>long double strtold(const char *</B><I>nptr</I><B>, char **</B><I>endptr</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les fonctions
+<B>strtod</B>,
+
+<B>strtof</B>,
+
+et
+<B>strtold</B>
+
+convertissent la portion initiale de la chaîne pointée par
+<I>nptr</I>
+
+en un réel de type
+<B>double</B>,
+
+<B>float</B>,
+
+et
+<B>long double</B>
+
+respectivement.
+<P>
+La (portion initiale de la) chaîne attendue est de la forme suivante :
+<DL COMPACT>
+<DT><DD>
+Des espaces éventuels en tête, ou des caractères interprétes comme
+tels par <I><A HREF="/cgi-bin/man/man2html?3+isspace">isspace</A></I>(3)
+<DT><DD>
+Un éventuel signe plus (``+'') ou moins (``-'')
+<DT><DD>
+Un nombre décimal ou hexadécimal, ou un infini, ou encore un
+non-nombre NAN (not-a-number).
+</DL>
+<P>
+
+Un
+<I>nombre décimal</I>
+
+consiste en une séquence non-vide de chiffres décimaux, pouvant contenir
+un point décimal (dépendant de la localisation, mais habituellement ``.''),
+suivi éventuellement d'un exposant décimal.
+Ce dernier est constitué d'un ``E'' ou ``e'' suivi éventuellement du signe
+plus ou du signe moins, puis une séquence non-vide de de chiffres décimaux,
+indiquant la multiplication par une puissance de 10.
+<P>
+
+Un
+<I>nombre hexadécimal</I>
+
+commence ``0x'' ou ``0X'', suivi d'une séquence non-vide de chiffres hexadécimaux,
+pouvant contenir un point décimal suivi éventuellement d'un exposant binaire.
+Ce dernier est constitué d'un ``P'' ou ``p'' suivi éventuellement du signe
+plus ou du signe moins, puis une séquence non-vide de de chiffres décimaux,
+indiquant la multiplication par une puissance de 2. Il ne peut y avoir plus
+d'un point ou d'un exposant binaire.
+<P>
+
+Un
+<I>infini</I>
+
+est soit ``INF'', soit ``INFINITY'', sans tenir compte des différences entre
+majuscules et minuscules.
+<P>
+
+Un
+<I>non-nombre</I>
+
+est ``NAN'' (sans différences majuscules/minuscules) suivi éventuellement par `(',
+une séquence de caractères, et `)'.
+La chaîne de caractères indique le type de non-nombre de manière dépendant
+de l'implémentation.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Ces fonctions renvoient la valeur convertie si c'est possible
+<P>
+Si
+<I>endptr</I>
+
+n'est pas
+<B>NULL</B>,
+
+un pointeur sur le caractère suivant le dernier caractère converti y
+est stocké.
+<P>
+Si aucune conversion n'est possible, la fonction renvoie zéro, et
+la valeur de 
+<I>nptr</I>
+
+est stockée dans
+<I>endptr</I>.
+
+<P>
+Si la valeur convertie déclenche un débordement (overflow), la fonction renvoie
+plus ou moins
+<B>HUGE_VAL</B>
+
+(<B>HUGE_VALF</B>,
+
+<B>HUGE_VALL</B>)
+
+et <I>errno</I> contient le code d'erreur
+<B>ERANGE</B>.
+
+Si la valeur convertie déclenche un debordement inférieur (underflow), la
+fonction renvoie 0, et <I>errno</I> contient le code d'erreur
+<B>ERANGE</B>.
+
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ERANGE</B>
+
+<DD>
+Débordement.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ANSI C décrit
+<B>strtod</B>.
+
+C99 décrit les deux autres fonctions.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+atof">atof</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+atoi">atoi</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+atol">atol</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strtol">strtol</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strtoul">strtoul</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:22 GMT, February 11, 2014
+</BODY>
+</HTML>

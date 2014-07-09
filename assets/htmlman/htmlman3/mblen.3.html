@@ -1,0 +1,153 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MBLEN</TITLE>
+</HEAD><BODY>
+<H1>MBLEN</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mblen - Déterminer la taille du prochain caractère multi-octets.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<B>int mblen (const char *</B><I>s</I><B>, size_t </B><I>n</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Si
+<I>s</I>
+
+n'est pas un pointeur
+<B>NULL</B>,
+
+la fonction
+<B>mblen</B>
+
+inspecte au plus
+<I>n</I>
+
+octets de la chaine commençant à l'adresse
+<I>s</I>
+
+et extrait le caractère multi-octets suivant. Elle utilise un état de décalage
+statique et anonyme, uniquement connu de la routine
+<B>mblen</B>().
+
+Si le caractère multi-octets n'est pas le caractère large nul, elle renvoie
+le nombre d'octes consommés dans
+<I>s</I>.
+
+Si c'est le caractère large nul, elle renvoie 0.
+<P>
+
+Si les
+<I>n</I>
+
+octets commençant à l'adresse
+<I>s</I>
+
+ne contiennent pas un caractère multi-octets complet,
+<B>mblen</B>()
+
+renvoie -1. Ceci peut arriver même si
+<I>n</I>
+
+est supérieur à
+<B>MB_CUR_MAX</B>,
+
+si la chaîne multi-octets contient des séquences de décalages redondantes.
+<P>
+
+Si la chaîne multi-octets commençant en
+<I>s</I>
+
+contient une séquence invalide avant le prochaine caractère complet,
+<B>mblen</B>()
+
+renvoie aussi -1.
+<P>
+
+Si
+<I>s</I>
+
+est un pointeur
+<B>NULL</B>,
+
+la fonction
+<B>mblen</B>()
+
+reinitialise l'état de décalage (connue d'elle seule), et renvoie une valeur
+non-nulle si le codage a un état de décalage non-trivial, ou zéro si
+le codage est sans état.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction
+<B>mblen</B>()
+
+renvoie le nombre d'octets analysés dans la séquence multi-octets commençant en
+<I>s</I>,
+
+si un caractère large non-nul a été reconnu.
+Elle renvoie zéro, si un caractère large nul a été trouvé.
+Elle renvoie -1 si une séquence multi-octets invalide ou un caractère
+multi-octets incomplet ont été rencontrés.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ISO/ANSI C, UNIX98
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+mbrlen">mbrlen</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le comportement de
+<B>mblen</B>()
+
+dépdent de la catégorie
+<B>LC_CTYPE</B>
+
+de la localisation en cours.
+<P>
+
+La fonction
+<B>mbrlen</B>()
+
+fournit une meilleure interface pour la même fonctionnalité.
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:38 GMT, February 11, 2014
+</BODY>
+</HTML>

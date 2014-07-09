@@ -1,0 +1,141 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FCLOSE</TITLE>
+</HEAD><BODY>
+<H1>FCLOSE</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fclose - Fermer un flux.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<P>
+<B>int fclose (FILE *</B><I>stream</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>fclose</B>
+
+dissocie le flux nommé
+<I>stream</I>
+
+du fichier sous-jacent. Si le flux était utilisé en sortie, toutes les
+données contenues dans le buffer sont d'abord écrites, en utilisant
+<B><A HREF="/cgi-bin/man/man2html?3+fflush">fflush</A></B>(3).
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Si la fonction réussit intégralement, elle renvoie 0,
+sinon elle renvoie
+<B>EOF</B>
+
+et
+<I>errno</I>
+
+contient le code d'erreur. Dans tous les cas, tout autre
+accès ultérieur au flux (y compris un autre appel de
+<B>fclose</B>())
+
+conduit à un comportement indéfini.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+Le descripteur de fichier sous-jacent au
+<I>stream</I>
+
+n'est pas valide.
+
+
+
+
+</DL>
+<P>
+
+La fonction
+<B>fclose</B>
+
+peut également échouer et positionner
+<I>errno</I>
+
+avec l'une quelconque des erreurs décrites par
+<B><A HREF="/cgi-bin/man/man2html?2+close">close</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?3+fflush">fflush</A></B>(3).
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Remarquez que
+<B>fclose</B>
+
+ne vide que les buffers fournis par la bibliothèque C dans l'espace utilisateur.
+Pour s'assurer que les données sont écrites physiquement sur le disque, il faut
+vider les buffers du noyau à l'aide par exemple de
+<B><A HREF="/cgi-bin/man/man2html?2+sync">sync</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+fsync">fsync</A></B>(2).
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+La fonction
+<B>fclose</B>
+
+est conforme à ANSI X3.159-1989 (``ANSI C'').
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+close">close</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fcloseall">fcloseall</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fflush">fflush</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fopen">fopen</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setbuf">setbuf</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:49 GMT, February 11, 2014
+</BODY>
+</HTML>

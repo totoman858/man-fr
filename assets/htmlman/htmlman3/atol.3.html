@@ -1,0 +1,103 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ATOI</TITLE>
+</HEAD><BODY>
+<H1>ATOI</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+atoi,atol, atoll, atoq - Conversion d'une chaîne en entier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<B>int atoi (const char *</B><I>nptr</I><B>);</B>
+<BR>
+<B>long atol(const char *</B><I>nptr</I><B>);</B>
+<BR>
+<B>long long atoll(const char *</B><I>nptr</I><B>);</B>
+<BR>
+<B>long long atoq(const char *</B><I>nptr</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>atoi()</B> convertit le début de la chaîne pointée 
+par <I>nptr</I> en entier de type <I>int</I>.  Le résultat est identique
+à un appel
+<P>
+<DL COMPACT><DT><DD>
+<B>strtol(nptr, (char **)NULL, 10);</B>
+
+</DL>
+
+<P>
+à la différence que <B>atoi()</B> ne détecte pas d'erreur.
+<P>
+
+Les fonctions <B>atol()</B> et <B>atoll()</B> se comportent comme <B>atoi()</B>,
+sauf qu'elles convertissent la portion initiale de la chaîne dans leur
+type de retour <I>long</I> ou <I>long long</I>.
+<B>atoq()</B> est un nom obsolète pour <B>atoll()</B>.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Le résultat de la conversion.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3, POSIX, BSD 4.3, ISO/IEC 9899. ISO/IEC 9899:1990 (C89) et POSIX.1
+(édition 1996) incluent les fonctions <B>atoi()</B> et <B>atol()</B>.
+C99 ajoute la fonction <B>atoll()</B>.
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+La fonction non-standard <B>atoq()</B> n'est pas présente dans la LibC 4.6.27
+ni dans la GlibC 2, mais est présente dans LibC 5 et LibC 4.7 (bien que ce
+ne soit qu'une fonction inline dans <B>&lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B> jusqu'a LibC 5.4.44).
+La fonction <B>atoll()</B> est présente dans la GlibC 2 depuis 2.0.2, mais
+pas dans LibC 4 ou Libc4.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+atof">atof</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strtod">strtod</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strtol">strtol</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strtoul">strtoul</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:34 GMT, February 11, 2014
+</BODY>
+</HTML>

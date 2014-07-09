@@ -1,0 +1,427 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETADDRINFO</TITLE>
+</HEAD><BODY>
+<H1>GETADDRINFO</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getaddrinfo, freeaddrinfo, gai_strerror - Traduction d'adresses et de services réseau.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/netdb.h">netdb.h</A>&gt;</B>
+
+<B>int getaddrinfo(const char * </B><I>node</I><B>, const char * </B><I>service</I><B>,</B>
+<B>                   const struct addrinfo *</B><I>hints</I><B>,</B>
+<B>                   struct addrinfo ** </B><I>res</I><B>);</B>
+
+<B>void freeaddrinfo(struct addrinfo * </B><I>res</I><B>);</B>
+
+<B>char * gai_strerror(int </B><I>errcode</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B><A HREF="/cgi-bin/man/man2html?3+getaddrinfo">getaddrinfo</A></B>(3)
+
+combine les possibilités offertes par les fonctions
+<B><A HREF="/cgi-bin/man/man2html?3+getipnodebyname">getipnodebyname</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getipnodebyaddr">getipnodebyaddr</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getservbyname">getservbyname</A></B>(3),
+
+et 
+<B><A HREF="/cgi-bin/man/man2html?3+getservbyport">getservbyport</A></B>(3)
+
+en une unique interface.
+La fonction
+<B><A HREF="/cgi-bin/man/man2html?3+getaddrinfo">getaddrinfo</A></B>(3)
+
+adaptée aux contextes multithreads crée une ou plusieurs structures d'adresses de socket, utilisables par
+<B><A HREF="/cgi-bin/man/man2html?2+bind">bind</A></B>(2)
+
+et 
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2)
+
+pour créer une socket de client ou de serveur.
+<P>
+
+La fonction
+<B><A HREF="/cgi-bin/man/man2html?3+getaddrinfo">getaddrinfo</A></B>(3)
+
+n'est pas limitée aux structures d'adresses IPv4, 
+elle permet également la création de structures IPv6 si le support en est disponible.
+Ces structures peuvent être utilisées directement par
+<B><A HREF="/cgi-bin/man/man2html?2+bind">bind</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2),
+
+pour préparer une socket de client ou de serveur.
+<P>
+
+La structure
+<B>addrinfo</B>
+
+utilisée par cette fonction contient les membres suivants :
+<P>
+<PRE>
+<B>struct addrinfo {</B>
+<B>    int     </B><I>ai_flags</I><B>;</B>
+<B>    int     </B><I>ai_family</I><B>;</B>
+<B>    int     </B><I>ai_socktype</I><B>;</B>
+<B>    int     </B><I>ai_protocol</I><B>;</B>
+<B>    size_t  </B><I>ai_addrlen</I><B>;</B>
+<B>    struct sockaddr *</B><I>ai_addr</I><B>;</B>
+<B>    char   *</B><I>ai_canonname</I><B>;</B>
+<B>    struct addrinfo *</B><I>ai_next</I><B>;</B>
+<B>};</B>
+</PRE>
+
+<P>
+
+La fonction
+<B><A HREF="/cgi-bin/man/man2html?3+getaddrinfo">getaddrinfo</A></B>(3)
+
+fait pointer
+<I>res</I>
+
+vers une liste de structures
+<B>addrinfo</B>
+
+nouvellement allouées, chaînées par leurs membres
+<I>ai_next</I>.
+
+La liste peut contenir plusieurs structures
+<B>addrinfo</B>
+
+pour plusieurs raisons, par exemple&nbsp;:
+l'hôte fonctionne en multi-home,
+ou le même service est disponible sur 
+plusieurs types de sockets (une socket
+<B>SOCK_STREAM</B>
+
+et une socket
+<B>SOCK_DGRAM</B>
+
+par exemple).
+<P>
+
+Les membres
+<I>ai_family</I>,
+
+<I>ai_socktype</I>,
+
+et 
+<I>ai_protocol</I>
+
+ont la même signification que leurs homologues de l'appel-système
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2).
+
+La fonction
+<B><A HREF="/cgi-bin/man/man2html?3+getaddrinfo">getaddrinfo</A></B>(3)
+
+renvoie les adresses de sockets autant en IPv4
+qu'en IPv6
+(<I>ai_family</I>
+
+contiendra
+<B>PF_INET</B>
+
+ou
+<B>PF_INET6</B>).
+
+<P>
+
+L'argument
+<I>hints</I>
+
+permer de préciser 
+le type préféré de socket ou de protocole.
+Un argument
+<I>hints</I>
+
+NULL indique que tout type d'adresse ou de protocole est acceptable.
+Si ce paramètre n'est pas
+<B>NULL</B>
+
+il doit pointeur sur une structure
+<B>addrinfo</B>
+
+dont les
+membres
+<I>ai_family</I>,
+
+<I>ai_socktype</I>,
+
+et 
+<I>ai_protocol</I>
+
+indique les types de socket préférés.
+<B>PF_UNSPEC</B>
+
+dans le membre
+<I>ai_family</I>
+
+indique que toute famille de d'adresse (autant IPv4 que IPv6, par exemple) est acceptable.
+De même un 0 dans les membres
+<I>ai_socktype</I>
+
+ou
+<I>ai_protocol</I>
+
+indique que tout type de socket ou de protocole est admis.
+Le membre
+<I>ai_flags</I>
+
+indique des options supplémentaires
+décrites plus bas.
+Divers attributs sont regroupés par un OU binaire.
+Tous les autres membres de l'argument
+<I>hints</I>
+
+doivent contenir 0 ou être des pointeurs NULL.
+<P>
+
+L'argument
+<I>node</I>
+
+ou l'argument
+<I>service </I>
+
+peuvent être NULL, mais pas les deux en même temps.
+<I>node</I>
+
+indique soit une adresse réseau en format numérique
+(décimal pointé pour l'IPv4, hexadécimal pour l'IPv6),
+soit un nom d'hôte, dont l'adresse réseau est alors résolue.
+Si le membre
+<I>ai_flags</I>
+
+de l'argument
+<I>hints</I>
+
+contient l'attribut
+<B>AI_NUMERICHOST</B>
+
+alors le paramètre
+<I>node</I>
+
+devra être une adresse réseau numérique.
+L'attribut
+<B>AI_NUMERICHOST</B>
+
+empêche toute tentative - éventuellement longue - de résolution de nom d'hôte.
+<P>
+
+La fonction
+<B><A HREF="/cgi-bin/man/man2html?3+getaddrinfo">getaddrinfo</A></B>(3)
+
+crée une liste chaînée de structures
+<B>addrinfo</B>,
+
+une pour chaque adresse réseau soumise aux restrictions imposées
+par l'argument
+<I>hints</I>.
+
+Le membre
+<I>ai_canonname</I>
+
+pointera vers le nom officiel de l'hôte si le membre
+<I>ai_flags</I>
+
+de l'argument
+<I>hints</I>
+
+contient l'attribut
+<B>AI_CANONNAME</B>.
+
+Les membres
+<I>ai_family</I>,
+
+<I>ai_socktype</I>,
+
+et
+<I>ai_protocol</I>
+
+indiquent les paramètres de création de socket.
+Un pointeur vers l'adresse de la socket est placé dans le membre
+<I>ai_addr</I>,
+
+et la longueur de l'adresse de la socket, en octets,
+est inscrite dans le membre
+<I>ai_addrlen</I>
+
+de la structure.
+<P>
+
+Si l'argument
+<I>node</I>
+
+est NULL,
+l'adresse réseau
+dans chaque structure d'adresse est initialisée en fonction de l'attribut
+<B>AI_PASSIVE</B>
+
+que l'on inscrit dans le membre
+<I>ai_flags</I>
+
+de l'argument
+<I>hints</I>.
+
+L'adresse réseau de chaque structure sera
+laissée vide
+si l'attribut
+<B>AI_PASSIVE</B>
+
+est présent.
+Ceci est utilisé par les serveurs qui désirent accepter les
+connexions des clients sur n'importe quelle interface réseau.
+L'adresse réseau sera remplie avec l'adresse de boucle loopback
+si l'attribut
+<B>AI_PASSIVE</B>
+
+n'est pas utilisé.
+Ceci est utilisé par les clients qui désirent se connecter sur
+un serveur fonctionnant sur le même hôte.
+<P>
+
+L'argument
+<I>service</I>
+
+indique le numéro de port au sein de l'adresse réseau de la socket. Si
+<I>service</I>
+
+est NULL le numéro de port restera non initialisé.
+<P>
+
+La fonction
+<B><A HREF="/cgi-bin/man/man2html?3+freeaddrinfo">freeaddrinfo</A></B>(3)
+
+libère la mémoire qui a été allouée
+dynamiquement pour la liste chaînée
+<I>res</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+getaddrinfo">getaddrinfo</A></B>(3)
+
+renvoie 0 si elle réussit, ou l'un des codes d'erreur non-nuls suivants :
+<DL COMPACT>
+<DT><B>EAI_FAMILY</B>
+
+<DD>
+La famille d'adresse réclamée n'est pas supportée du tout.
+<DT><B>EAI_SOCKTYPE</B>
+
+<DD>
+Le type de socket demandé n'est pas supporté.
+<DT><B>EAI_BADFLAGS</B>
+
+<DD>
+<I>ai_flags</I>
+
+contient des attributs invalides.
+<DT><B>EAI_NONAME</B>
+
+<DD>
+Le contenu du champ
+<I>node</I>
+
+ou de 
+<I>service</I>
+
+est inconnu.
+Cette erreur est aussi renvoyée si 
+<I>node</I>
+
+et 
+<I>service</I>
+
+sont simultanément NULL.
+<DT><B>EAI_SERVICE</B>
+
+<DD>
+Le service demandé n'est pas disponible pour le type de socket réclamé.
+Il peut être disponible pour un autre type de socket.
+<DT><B>EAI_ADDRFAMILY</B>
+
+<DD>
+L'hôte indiqué n'a pas d'adresse dans la 
+famille réseau demandée.
+<DT><B>EAI_NODATA</B>
+
+<DD>
+L'hôte existe mais n'a pas
+d'adresse réseau définie.
+<DT><B>EAI_MEMORY</B>
+
+<DD>
+Pas assez de mémoire.
+<DT><B>EAI_FAIL</B>
+
+<DD>
+Le serveur de noms a renvoyé une erreur définitive.
+<DT><B>EAI_AGAIN</B>
+
+<DD>
+Le serveur de noms a renvoyé une erreur temporaire.
+Réessayez plus tard.
+<DT><B>EAI_SYSTEM</B>
+
+<DD>
+Autre erreur système, voir
+<I>errno</I>
+
+pour plus de détail.
+</DL>
+<P>
+
+La fonction
+<B><A HREF="/cgi-bin/man/man2html?3+gai_strerror">gai_strerror</A></B>(3)
+
+traduit ces codes d'erreur en une chaîne de caractères compréhensible,
+utilisable pour rendre compte du problème.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+getipnodebyname">getipnodebyname</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getipnodebyaddr">getipnodebyaddr</A></B>(3)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:16 GMT, February 11, 2014
+</BODY>
+</HTML>

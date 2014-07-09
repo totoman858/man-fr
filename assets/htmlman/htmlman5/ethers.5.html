@@ -1,0 +1,98 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ETHERS</TITLE>
+</HEAD><BODY>
+<H1>ETHERS</H1>
+Section: Manuel de l'administrateur Linux (5)<BR>Updated: 15 mai 2005<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM ethers - Base de données adresses Ethernet vers adresses IP.</H2>
+
+
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION <I>/etc/ethers</I>
+
+</H2>
+
+contient des adresses Ethernet sur 48&nbsp;bits et leur
+adresse IP correspondante, une ligne par adresse IP&nbsp;:
+<P>
+<DL COMPACT><DT><DD>
+<I>adresse-Ethernet  adresse-IP</I>
+
+</DL>
+
+<P>
+Les deux éléments sont séparés par une ou plusieurs espaces et/ou tabulations.
+Un «&nbsp;#&nbsp;» en début de ligne est un commentaire pour tout le reste de la ligne.
+L'<I>adresse-Ethernet</I>
+
+est écrite sous la forme
+<I>x</I>:<I>x</I>:<I>x</I>:<I>x</I>:<I>x</I>:<I>x</I>,
+
+où <I>x</I> est une valeur hexadécimale comprise entre 0 et ff
+représentant un octet de l'adresse, dans l'ordre du réseau (gros-boutiste).
+L'<I>adresse-IP</I>
+
+peut être soit un nom d'hôte résolu par DNS, soit une adresse
+en notation décimale pointée.
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>EXEMPLES 08:00:20:00:61:CA  pal</H2>
+
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS <I>/etc/ethers</I>
+
+</H2>
+
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI <B><A HREF="/cgi-bin/man/man2html?8+rarp">rarp</A></B>(8)
+
+</H2>
+
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Jean Michel Vansteene
+&lt;vanstee&nbsp;AT&nbsp;worldnet&nbsp;DOT&nbsp;fr&gt; le 15&nbsp;mars&nbsp;1999,
+mise à jour par Guillaume Audirac en août 2004
+et révisée le 17&nbsp;août&nbsp;2006.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;5&nbsp;ethers</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM ethers - Base de données adresses Ethernet vers adresses IP.</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION <I>/etc/ethers</I>
+
+</A><DD>
+<DT><A HREF="#lbAD">EXEMPLES 08:00:20:00:61:CA  pal</A><DD>
+<DT><A HREF="#lbAE">FICHIERS <I>/etc/ethers</I>
+
+</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI <B>rarp</B>(8)
+
+</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:56 GMT, February 11, 2014
+</BODY>
+</HTML>

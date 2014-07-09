@@ -1,0 +1,274 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of RECNO</TITLE>
+</HEAD><BODY>
+<H1>RECNO</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+recno - Méthodes d'accès aux bases de données avec enregistrements numérotés.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/db.h">db.h</A>&gt;
+</B></PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La routine
+<I>dbopen</I>
+
+est l'interface de bibliothèque pour les fichiers de base de données.
+L'un des formats de fichier supportés est celui avec enregistrements
+numérotés.
+La description générale des méthodes d'accès à une base de données
+est fournie dans la page de manuel
+<I><A HREF="/cgi-bin/man/man2html?3+dbopen">dbopen</A></I>(3).
+
+La page présente ne décrit que les informations spécifiques aux enregistrements
+numérotés.
+<P>
+
+La structure de cette base ds données est une série d'enregistrements
+de longueurs variables ou fixes, stockés dans un fichier linéaire, et
+auxquels on accède par les numéros logiques d'enregistrement.
+L'existence de l'enregistrement numéro 5 implique l'existence des
+enregistrements 1 à 4, et l'effacement du numéro entraîne la renumérotation
+de l'enregistrement 5 en 4, ainsi que le déplacement d'un cran du curseur
+s'il était positionné après l'enregistrement 1.
+<P>
+
+La structure de données spécifique pour l'accès aux enregistrements numérotés,
+et que l'on transmet à
+<I>dbopen</I>
+
+est définie dans &lt;<A HREF="file:///usr/include/db.h">db.h</A>&gt; ainsi :
+<P>
+
+typedef struct {
+<DL COMPACT><DT><DD>
+u_long flags;
+<BR>
+
+u_int cachesize;
+<BR>
+
+u_int psize;
+<BR>
+
+int lorder;
+<BR>
+
+size_t reclen;
+<BR>
+
+u_char bval;
+<BR>
+
+char *bfname;
+</DL>
+
+} RECNOINFO;
+<P>
+
+Les éléments de cette structure sont les suivants :
+<DL COMPACT>
+<DT>flags<DD>
+La valeur de ce champ est calculé avec un
+<I>OU</I>
+
+binaire sur certaines des constantes suivantes :
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>R_FIXEDLEN<DD>
+Les enregistrements ont une taille fixe, et non pas délimités.
+Le champ
+<I>reclen</I>
+
+de la structure indique la longueur de l'enregistrement, et
+le champ
+<I>bval</I>
+
+contient le caractère à utiliser pour les remplissages éventuels.
+Tout enregistrement, inséré dans la base de données, ayant moins de
+<I>reclen</I>
+
+octets de long sera automatiquement alongé.
+<DT>R_NOKEY<DD>
+Avec l'interface spécifiée par
+<I>dbopen</I>,
+
+le parcours séquentiel renseigne à la fois la structure
+<I>clé</I>
+
+de l'appelant, et la structure des
+<I>données</I>.
+
+Si l'argument R_NOKEY est utilisé les routines de gestion du
+<I>curseur</I>
+
+ne sont pas obligées de remplir la structure clé.
+Ceci permet aux applications d'accéder à des enregistrements en fin
+de fichier sans avoir à relire tous les enregistrements précédents.
+<DT>R_SNAPSHOT<DD>
+Ce drapeau demande qu'une image du fichier soit saisie lorsque
+<I>dbopen</I>
+
+est ouvert, plutôt que de lire tout enregistrement non modifié
+dans le fichier original.
+</DL>
+</DL>
+
+<DT>cachesize<DD>
+Une taille maximale suggérée de mémoire cache, en octets. Ceci n'a
+qu'une valeur
+<B>indicative</B>,
+
+et les méthodes d'accès alloueront plus de mémoire plutôt que d'échouer.
+Si
+<I>cachesize</I>
+
+vaut  0 (pas de taille indiquée) on utilise une valeur par défaut.
+<DT>psize<DD>
+La méthode d'accès recno stocke les copies en mémoire de ses enregistrements
+dans un arbre B-tree.
+Cette valeur est la taille (en octets) des pages à utiliser pour les
+noeuds de cet arbre.
+Si
+<I>psize</I>
+
+vaut  0 (pas de taille indiquée) une taille de page est choisie en fonction
+des tailles de blocs d'entrée-sortie du système de fichiers sous-jacent.
+Voir
+<I><A HREF="/cgi-bin/man/man2html?3+btree">btree</A></I>(3)
+
+pour plus d'information.
+<DT>lorder<DD>
+L'ordre des octets pour les entiers stockés dans la base de données.
+Ce nombre doit représenter l'ordre sous forme d'entier. Par exemple l'ordre
+poids faible-poids fort (big endian) est représenté par le nombre 4321.
+Si
+<I>lorder</I>
+
+vaut 0 (pas d'ordre indiqué), on utilise l'ordre des octets du système hôte.
+<DT>reclen<DD>
+La longueur des enregistrements de taille fixe.
+<DT>bval<DD>
+L'octet de marquage servant à délimiter les enregistrements de longueurs
+variables, et l'octet de remplissage pour les enregistrements de taille fixe.
+Si aucune valeur n'est indiquée, le caractère fin-de-lignes (``\n'')
+est utilisé comma délimiteur et les enregistrements de tailles fixes sont
+complétés avec des espaces.
+<DT>bfname<DD>
+La méthode d'accès recno stocke les copies en mémoire de ses enregistrements
+dans un arbre B-tree.
+Si bfname n'est pas NULL, il indique le nom du fichier B-tree.
+</DL>
+<P>
+
+La partie ``donnée'' des paires clés/donnéees utilisées par les méthodes
+d'accès recno est la même que pour les autres méthodes d'accès.
+La clé est différente.
+Le champ
+<I>data</I>
+
+de la clé doit être un pointeur sur un emplacement mémoire du type
+<I>recno_t</I>,
+
+ainsi qu'il est défini dans le fichier d'en-tête &lt;<A HREF="file:///usr/include/db.h">db.h</A>&gt;.
+Ce type est normalement le plus grand des types d'entiers non signés
+disponibles pour l'implémentation.
+Le champ
+<I>size</I>
+
+doit contenir la longueur de ce type de donnée.
+<P>
+
+Comme il ne peut pas y avoir de méta-données associées aux fichiers
+sous-jacent aux méthodes recno, tout changement par rapport aux valeurs
+par défaut (par exemple longueur des enregistrements fixes, ou caractère
+séparateur) doit être indiqué explicitement à chaque fois que le fichier est
+ouvert.
+<P>
+
+Avec l'interface indiquée par
+<I>dbopen</I>,
+
+l'utilisation de la routine
+<I>put</I>
+
+pour créer un nouvel enregistrement causera la création de plusieurs
+enregistrements vides si le numéro d'enregistrement est supérieur de
+plus d'une unité au plus grand numéro déjà présent dans la base de données.
+<A NAME="lbAE">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Les routines des méthodes d'accès au
+<I>enregistrements numérotés</I>
+
+peuvent échouer et remplir
+<I>errno</I>
+
+avec n'importe quelle erreur indiquée par la routine
+<I><A HREF="/cgi-bin/man/man2html?3+dbopen">dbopen</A></I>(3)
+
+ou la suivante :
+<DL COMPACT>
+<DT>[EINVAL]<DD>
+On a essayé d'ajouter un enregistrement trop grand dans une base de
+données avec longueurs fixes.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<I><A HREF="/cgi-bin/man/man2html?3+btree">btree</A></I>(3)
+
+<I><A HREF="/cgi-bin/man/man2html?3+dbopen">dbopen</A></I>(3),
+
+<I><A HREF="/cgi-bin/man/man2html?3+hash">hash</A></I>(3),
+
+<I><A HREF="/cgi-bin/man/man2html?3+mpool">mpool</A></I>(3),
+
+<P>
+<I>Document Processing in a Relational Database System</I>,
+
+Michael Stonebraker, Heidi Stettner, Joseph Kalash, Antonin Guttman,
+Nadene Lynn, Memorandum No. UCB/ERL M82/32, May 1982.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Seuls les ordres d'octets big-endian et little-endian fonctionnent.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1999-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">ERREURS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:14 GMT, February 11, 2014
+</BODY>
+</HTML>

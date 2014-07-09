@@ -1,0 +1,127 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LOCKFILE</TITLE>
+</HEAD><BODY>
+<H1>LOCKFILE</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+flockfile, ftrylockfile, funlockfile - Verrouillage d'un flux pour stdio.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<B>void flockfile(FILE *</B><I>filehandle</I><B>);</B>
+<BR>
+<B>int ftrylockfile(FILE *</B><I>filehandle</I><B>);</B>
+<BR>
+<B>void funlockfile(FILE *</B><I>filehandle</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les fonctions stdio peuvent être utilisées dans un contexte multithread.
+Ceci est réalisé en affectant à chaque objet de type FILE 
+un compteur et (si le compteur est non nul) un thread propriétaire.
+Lors de chaque appel à la librairie stdio, ces fonctions attendent jusqu'à ce que
+l'objet FILE ne soit plus verrouillé par un thread différent, puis elles le verrouillent,
+réalisent l'entrée sortie demandée, et libèrent l'objet.
+<P>
+
+(Remarque : ce verrouillage n'a rien à voir avec le verrouillage de fichier réalisé
+par des fonctions comme 
+<B><A HREF="/cgi-bin/man/man2html?2+flock">flock</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?3+lockf">lockf</A></B>(3).)
+
+<P>
+
+Tout ceci est invisible au programmeur en C, mais il existe deux raisons 
+de souhaiter un contrôle plus fin. D'une part, un thread peut réaliser
+une  série d'entrées/sorties interdépendantes, ces opérations
+ne devant pas être interrompues par les entrées sorties d'autres threads.
+D'autre part, on peut désirer supprimer l'overhead induit par ce verrouillage 
+afin d'obtenir de meilleures performances.
+<P>
+
+A cette fin, un thread peut verrouiller explicitement un objet de type FILE,
+puis réaliser sa série d'entrées sorties, et enfin, relâcher le verrou.
+Cela empêche les autres threads d'intervenir (sur le flux)
+entre-temps. Si la motivation du verrouillage est la recherche de 
+meilleures  performances, on peut réaliser l'entrée sortie à l'aide des 
+versions non bloquantes des fonctions stdio : avec
+<I>getc_unlocked</I>() et <I>putc_unlocked</I>() au lieu de 
+<I>getc</I>() et <I>putc</I>().
+<P>
+
+La fonction <B>flockfile()</B> attend jusqu'à ce que *<I>filehandle</I> ne
+soit plus verrouillé par un autre thread, puis affecte  *<I>filehandle</I> 
+au thread actuel, et incrémente le compteur.
+<P>
+
+La fonction <B>funlockfile()</B> décrémente le compteur de verrou.
+<P>
+
+La fonction <B>ftrylockfile()</B> est une version non bloquante de 
+<B>flockfile()</B>. Elle ne fait rien lorsqu'un autre thread
+détient *<I>filehandle</I>, sinon, elle se l'approprie  et incrémente 
+le compteur.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>ftrylockfile()</B> renvoie zéro en cas de succès 
+(le verrou a été obtenu), et une valeur différente de zéro en cas d'échec.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+Aucune.
+<A NAME="lbAG">&nbsp;</A>
+<H2>DISPONIBILITÉ</H2>
+
+Ces fonctions sont disponibles lorsque _POSIX_THREAD_SAFE_FUNCTIONS
+est défini. Elles sont présentes dans la libc depuis la version 5.1.1 
+et dans la glibc depuis la glic 2.0.
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX.1
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+unlocked_stdio">unlocked_stdio</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Stéphan Rafin, 2002.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">DISPONIBILITÉ</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:32 GMT, February 11, 2014
+</BODY>
+</HTML>

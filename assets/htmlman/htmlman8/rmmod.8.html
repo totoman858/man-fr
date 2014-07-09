@@ -1,0 +1,193 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of RMMOD</TITLE>
+</HEAD><BODY>
+<H1>RMMOD</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+rmmod - Décharger un module.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>rmmod</B>
+
+[ -aehrsvV] module ...
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>rmmod</B>
+
+décharge de la mémoire les modules chargés dans le noyau en cours d'exécution.
+<P>
+
+<B>rmmod</B>
+
+essaye d'enlever un ensemble de modules du noyau, à condition qu'ils ne
+soient ni en cours d'utilisation, ni nécessaires à d'autres modules.
+<P>
+
+S'il y a plus d'un module sur la ligne de commande, ils sont
+retirés dans l'ordre indiqué. Ceci permet le déchargement de modules
+empilés.
+<P>
+
+Avec l'option '<B>-r</B>', une suppression récursive est tentée.
+Ceci signifie que si un module au sommet de la pile est indiqué sur la
+ligne de commande, tous les modules qu'il utilise seront supprimés si
+possible, et ainsi de suite.
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><B>-a</B>, <B>--all</B>
+
+<DD>
+Réaliser l'auto-nettoyage&nbsp;: marquer les module non utilisés comme &quot;à
+nettoyer&quot; et supprimer ceux déjà marqués. Ces derniers n'ont pas été utilisés
+depuis le dernier auto-nettoyage.
+La suppression en deux passes éviter de décharger des modules temporairement
+inutilisés.
+<DT><B>-e</B>, <B>--persist</B>
+
+<DD>
+Sauver les données persistantes pour les modules indiqués, sans en décharger
+aucun. Si aucun module n'est indiqué, alors la sauvegarde a lieu pour tous
+les modules qui ont des données persistantes. Les données sont sauvegardées
+seulement si le noyau et modutils supportent les données persistantes et
+si <I>/proc/ksyms</I> contient une entrée
+<BR>
+
+__insmod_<I>modulename</I>_P<I>persistent_filename</I>
+<DT><B>-h</B>, <B>--help</B>
+
+<DD>
+Affiche une page d'aide et se termine.
+<DT><B>-r</B>, <B>--stacks</B>
+
+<DD>
+Supprime une pile de module.
+<DT><B>-s</B>
+
+<DD>
+Affiche tout via <B><A HREF="/cgi-bin/man/man2html?3+syslog">syslog</A></B>(3) plutôt que sur le terminal.
+<DT><B>-v</B>, <B>--verbose</B>
+
+<DD>
+Mode volubile.
+<DT><B>-V</B>, <B>--version</B>
+
+<DD>
+Affiche le numéro de version de <B>modutils</B>.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>DONNÉES PERSISTANTES</H2>
+
+Si un module contient des données persistantes (voir
+<B><A HREF="/cgi-bin/man/man2html?8+insmod">insmod</A></B>(8)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?5+modules.conf">modules.conf</A></B>(5))
+
+alors la suppression de ce module écrit toujours ces données dans le fichier
+dans l'entrée __insmod _P symbol. On peut aussi sauvegarder les données
+persistantes à tout moment par <B>rmmod&nbsp;-e</B>, sans décharger aucun
+module.
+<P>
+
+Quand les données persistantes sont écrites dans le fichier, elles sont
+précédées par une ligne de commentaire
+<BR>
+
+#% <I>version_noyau horodatage</I>
+<BR>
+
+Les lignes de commentaires générées automatiquement commencent par '#%',
+elles sont toutes supprimées du fichier existant, mais les autres
+commentaires sont préservés. Les valeurs des données sont écrites, en
+conservant l'ordre des commentaires et affectations. Les nouvelles valeurs
+sont ajoutées à la fin du fichier. Si le fichier contient des valeurs
+absentes du module, elles sont préservées mais précédées d'un commentaire
+d'avertissement. Ceci permet à un utilisateur de changer de versions de
+noyau sans perdre de données persistantes et sans message d'erreur.
+<P>
+
+<B>Note&nbsp;:</B>
+
+Pour les commentaires, le premier caractère non-blanc de la ligne doit être
+
+module. Les espaces en début de ligne sont ignorés, mais tout le reste est
+transmis tel quel en option à insmod.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+insmod">insmod</A></B>(8), <B><A HREF="/cgi-bin/man/man2html?8+lsmod">lsmod</A></B>(8), <B><A HREF="/cgi-bin/man/man2html?8+ksyms">ksyms</A></B>(8), <B><A HREF="/cgi-bin/man/man2html?8+modprobe">modprobe</A></B>(8).
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<B>rmmod</B> [<B>-V</B>&nbsp;|&nbsp;<B>--version</B>] devrait afficher la version
+et se terminer immédiatement. Au lieu de cela, il affiche la version et se
+cmporte comme si aucun option n'était fournie.
+<A NAME="lbAI">&nbsp;</A>
+<H2>HISTOIRE</H2>
+
+Le support des modules a été conçu initialement par Illustre Anonyme.
+<BR>
+
+La version initiale pour Linux par Bas Laarhoven &lt;<A HREF="mailto:bas@vimec.nl">bas@vimec.nl</A>&gt;
+<BR>
+
+Version 0.99.14 par Jon Tombs &lt;<A HREF="mailto:jon@gtex02.us.es">jon@gtex02.us.es</A>&gt;
+<BR>
+
+Étendu par Bjorn Ekwall &lt;<A HREF="mailto:bj0rn@blox.se">bj0rn@blox.se</A>&gt;
+<BR>
+
+Mis à jour pour Linux 2.1.17 par Richard Henderson &lt;<A HREF="mailto:rth@tamu.edu">rth@tamu.edu</A>&gt;
+<BR>
+
+Mis à jour Linux 2.2.2 par Bjorn Ekwall &lt;<A HREF="mailto:bj0rn@blox.se">bj0rn@blox.se</A>&gt;
+<BR>
+
+Mis à jour modutils 2.3.20 par Keith Owens &lt;<A HREF="mailto:kaos@ocs.com.au">kaos@ocs.com.au</A>&gt;
+<BR>
+
+Données persistantes modutils 2.3.22 par Keith Owens &lt;<A HREF="mailto:kaos@ocs.com.au">kaos@ocs.com.au</A>&gt;
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 2000
+
+<BR>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">DONNÉES PERSISTANTES</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">HISTOIRE</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:04 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,161 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DRAND48</TITLE>
+</HEAD><BODY>
+<H1>DRAND48</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+drand48, erand48, lrand48, nrand48, mrand48, jrand48, srand48, seed48, lcong48 - Générateurs de nombres pseudo-aléatoires uniformément distribués.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<B>double drand48 (void);</B>
+
+<B>double erand48 (unsigned short </B><I>xsubi</I><B>[3]);</B>
+
+<B>long int lrand48 (void);</B>
+
+<B>long int nrand48 (unsigned short </B><I>xsubi</I><B>[3]);</B>
+
+<B>long int mrand48 (void);</B>
+
+<B>long int jrand48 (unsigned short </B><I>xsubi</I><B>[3]);</B>
+
+<B>void srand48 (long int </B><I>seedval</I><B>);</B>
+
+<B>unsigned short * seed48 (unsigned short </B><I>seed16v</I><B>[3]);</B>
+
+<B>void lcong48 (unsigned short </B><I>param</I><B>[7]);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ces fonctions engendrent des nombres pseudo-aléatoires en utilisant un
+algorithme de congruence linéaire, et une arithmétique entière sur 48 bits.
+<P>
+
+les fonctions <B>drand48()</B> et <B>erand48()</B> renvoient des valeurs réelles
+en virgule flottante uniformément distribuées dans l'intervalle
+[0.0, 1.0].
+<P>
+
+Les fonctions <B>lrand48()</B> et <B>nrand48()</B> renvoient des entiers longs
+positifs ou nuls, uniformément distribués entre 0 et 2^31.
+<P>
+
+Les fonctions <B>mrand48()</B> et <B>jrand48()</B> renvoient des entiers longs
+signés uniformément distribués entre -2^31 et 2^31.
+<P>
+
+Les fonctions <B>srand48()</B>, <B>seed48()</B> et <B>lcong48()</B> sont
+des fonctions d'initialisation. Une d'entre elles devrait être appelée
+avant d'utiliser <B>drand48()</B>, <B>lrand48()</B> ou <B>mrand48()</B>.  
+Les fonctions <B>erand48()</B>, <B>nrand48()</B> et <B>jrand48()</B>
+ne nécessitent pas de fonction d'initialisation préliminaire.
+<P>
+
+Toutes ces fonctions engendrent une séquence d'entiers
+<I>Xi</I>, sur 48 bits, en utilisant la formule de congruence lineaire :
+<P>
+<PRE>
+<DL COMPACT><DT><DD><B>Xn+1 = (aXn + c) mod m,   avec n &gt;= 0</B>
+</DL>
+</PRE>
+
+<P>
+Le paramètre <I>m</I> vaut 2^48, ainsi l'arithmétique entière 48 bits est
+respectée.
+Tant que <B>lcong48()</B> n'est pas appelé, <I>a</I> et <I>c</I> valent :
+<P>
+<PRE>
+<DL COMPACT><DT><DD><B>a = 0x5DEECE66D</B>
+<B>c = 0xB</B>
+</DL>
+</PRE>
+
+<P>
+Les fonctions <B>drand48()</B>, <B>erand48()</B>, <B>lrand48()</B>,
+<B>nrand48()</B>, <B>mrand48()</B> et <B>jrand48()</B> commencent par
+calculer le <I>Xi</I> suivant dans la séquence, puis le nombre de
+bits approprié à la valeur de retour est copié en partant des bits
+de poids forts, enfin cette dernière valeur est renvoyée.
+<P>
+
+Les fonctions <B>drand48()</B>, <B>lrand48()</B> et <B>mrand48()</B> mémorisent
+le dernier <I>Xi</I> créé dans un buffer interne.  Les fonctions
+<B>erand48()</B>, <B>nrand48()</B> et <B>jrand48()</B> nécessitent que le
+programme appelant fournisse un emplacement de stockage pour les
+valeurs successives de <I>Xi</I>, Cet emplacement est le tableau
+correspondant à l'argument <I>xsubi</I>.
+Ces fonctions sont initialisées en plaçant une valeur pour <I>Xi</I>
+dans le tableau avant le premier appel.
+<P>
+
+La fonction d'initialisation <B>srand48()</B> place l'argument
+<I>seedval</I> dans les 32 bits de poids fort de <I>Xi</I>.
+Les 16 bits de poids faibles sont initialisés avec la valeur arbitraire 0x330E.
+<P>
+
+La fonction d'initialisation <B>seed48()</B> place les éléments du tableau
+<I>seed16v</I> dans les 48 bits de <I>Xi</I>.
+La valeur précédente de <I>Xi</I> est copiée dans un buffer interne sur lequel
+un pointeur est renvoyé par <B>seed48()</B>.
+<P>
+
+La fonction d'initialisation <B>lcong48()</B> permet à l'utilisateur
+de fournir les valeurs initiales de <I>Xi</I>, <I>a</I> et <I>c</I>.
+Les éléments <I>param[0-2]</I> du tableau fourni en argument représentent
+les 48 bits de <I>Xi</I>, <I>param[3-5]</I> correspondent à <I>a</I>, et
+<I>param[6]</I> correspond à <I>c</I>.
+Après un appel à <B>lcong48()</B>, un appel ultérieur à <B>srand48()</B> ou à
+<B>seed48()</B> rétablira les valeurs normales de <I>a</I> et <I>c</I>.
+<A NAME="lbAE">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Ces fonctions sont déclarées obsolètes par SVID 3, qui indique que
+<B><A HREF="/cgi-bin/man/man2html?3+rand">rand</A></B>(3) devrait être utilisé à la place.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+rand">rand</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+random">random</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:14 GMT, February 11, 2014
+</BODY>
+</HTML>

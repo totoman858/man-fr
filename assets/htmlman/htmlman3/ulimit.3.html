@@ -1,0 +1,122 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ULIMIT</TITLE>
+</HEAD><BODY>
+<H1>ULIMIT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ulimit - Lire ou écrire les limites d'utilisation.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/ulimit.h">ulimit.h</A>&gt;</B>
+
+<P>
+<B>long ulimit(int </B><I>cmd</I><B>, long </B><I>newlimit</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Attention : Cette routine est obsolète. Les fichiers d'en-tête ne sont
+plus inclus dans la glibc. Utilisez <A HREF="/cgi-bin/man/man2html?2+getrlimit">getrlimit</A>(2), <A HREF="/cgi-bin/man/man2html?2+setrlimit">setrlimit</A>(2) et <A HREF="/cgi-bin/man/man2html?3+sysconf">sysconf</A>(3)
+à la place.
+<P>
+Pour avoir des informations sur la commande shell
+<B>ulimit</B>,
+
+reportez-vous à
+<B><A HREF="/cgi-bin/man/man2html?1+bash">bash</A></B>(1).
+
+<P>
+L'appel
+<B>ulimit</B>
+
+permet de lire ou d'écrire certaines limitation pour le processus en cours.
+L'argument
+<I>cmd</I>
+
+peut prendre l'une des valeurs suivantes&nbsp;:
+<DL COMPACT>
+<DT><B>UL_GETFSIZE </B>
+
+<DD>
+Lire la limitation de taille d'un fichier en unités de 512 octets.
+<DT><B>UL_SETFSIZE</B>
+
+<DD>
+Ecrire la limitation de taille d'un fichier.TP
+<B>3</B>
+
+(Non implémenté sous Linux.)
+Renvoyer l'adresse maximale du segment de données.
+<DT><B>4</B>
+
+<DD>
+(Implémenté, mais pas de nom symbolique)
+Lire le nombre maximal de fichiers que l'appelant peut ouvrir.
+<P>
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+S'il réussit
+<B>ulimit</B>
+
+renvoie une valeur positive ou nulle.
+En cas d'erreur, il renvoie -1 et
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+Un processus non-root essaye d'augmenter une de ses limitations.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+getrlimit">getrlimit</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setrlimit">setrlimit</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+sysconf">sysconf</A></B>(3).
+
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1998-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:21 GMT, February 11, 2014
+</BODY>
+</HTML>

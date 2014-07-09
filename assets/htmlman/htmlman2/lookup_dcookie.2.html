@@ -1,0 +1,132 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LOOKUP_DCOOKIE</TITLE>
+</HEAD><BODY>
+<H1>LOOKUP_DCOOKIE</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+lookup_dcookie - Renvoie le chemin d'accès d'un élément de répertoire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<B>int lookup_dcookie(u64 </B><I>cookie</I><B>, char * </B><I>buffer</I><B>, size_t </B><I>len</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette fonction renvoie le chemin complet de l'élément de répertoire indiqué par
+<I>cookie</I>.
+
+Le
+<I>cookie</I>
+
+est un identificateur opaque référençant de manière unique un élément de
+répertoire donné. Le buffer fourni est rempli avec le chemin d'accès
+complet de cet élément.
+<P>
+Pour que
+<B>lookup_dcookie</B>
+
+fonctionne, le noyau doit déjà connaître le
+<I>cookie</I>
+
+référençant l'élément de répertoire.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+<B>lookup_dcookie</B>
+
+est un appel-système spécial, utilisé actuellement uniquement par le
+profiler oprofile. Il s'appuie sur un pilote du noyau pour enregistrer
+les cookies des éléments de répertoire.
+<P>
+Le chemin renvoyé peut avoir un suffixe &quot; (deleted)&quot; si l'élément de 
+répertoire a été supprimé.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Si elle réussit, la fonction
+<B>lookup_dcookie</B>
+
+renvoie la longueur de la chaîne copiée dans le buffer.
+En cas d'erreur, elle renvoie -1 et remplit
+<I>errno</I>
+
+avec le code d'erreur.
+<A NAME="lbAG">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<B>EPERM</B>
+
+Le processus n'a pas la capacité d'enregistrer des valeurs de cookie.
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+Le noyau n'a pas d'association cookie/élément de répertoire correspondant
+au cookie, ou le cookie ne fait pas référence à un élément valide.
+<DT><B>ENOMEM</B>
+
+<DD>
+Le noyau ne peut pas allouer assez de mémoire pour les buffers
+temporaires.
+<DT><B>ERANGE</B>
+
+<DD>
+Le buffer fourni n'est pas assez grand pour contenir le chemin d'accès.
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+Le nom ne tient pas dans le buffer.
+<DT><B>EFAULT</B>
+
+<DD>
+Le buffer est invalide.
+<P>
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<B>lookup_dcookie</B>
+
+est spécifique Linux.
+<A NAME="lbAI">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Cet appel-système est disponible depuis Linux 2.5.43.
+L'erreur ENAMETOOLONG a été ajoutée dans Linux 2.5.70.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAG">ERREURS</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:56 GMT, February 11, 2014
+</BODY>
+</HTML>

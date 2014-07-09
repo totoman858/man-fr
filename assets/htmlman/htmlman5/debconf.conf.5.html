@@ -1,0 +1,776 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DEBCONF.CONF</TITLE>
+</HEAD><BODY>
+<H1>DEBCONF.CONF</H1>
+Section: File Formats (5)<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+debconf.conf - fichier de configuration de debconf
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Debconf est un système de configuration pour les paquets Debian.
+/etc/debconf.conf et ~/.debconfrc sont les fichiers de configuration utilisés
+pour déterminer quelle base de données doit être utilisée. Ces bases de données
+sont utilisées pour garder deux types d'informations&nbsp;; la configuration
+dynamique des données que l'utilisateur a entrées et les données statiques des
+questions. Debconf offre une interface souple et extensible pour la gestion
+des bases de données. De nouveaux pilotes peuvent être créés sans efforts et les
+pilotes peuvent être combinés de différentes façons.
+<A NAME="lbAD">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<BR>&nbsp;&nbsp;#&nbsp;This&nbsp;is&nbsp;a&nbsp;sample&nbsp;config&nbsp;file&nbsp;that&nbsp;is
+<BR>&nbsp;&nbsp;#&nbsp;sufficient&nbsp;to&nbsp;use&nbsp;debconf.
+<BR>&nbsp;&nbsp;Config:&nbsp;configdb
+<BR>&nbsp;&nbsp;Templates:&nbsp;templatedb
+<P>
+<BR>&nbsp;&nbsp;Name:&nbsp;configdb
+<BR>&nbsp;&nbsp;Driver:&nbsp;File
+<BR>&nbsp;&nbsp;Filename:&nbsp;/var/cache/debconf/config.dat
+<P>
+<BR>&nbsp;&nbsp;Name:&nbsp;templatedb
+<BR>&nbsp;&nbsp;Driver:&nbsp;File
+<BR>&nbsp;&nbsp;Mode:&nbsp;644
+<BR>&nbsp;&nbsp;Filename:&nbsp;/var/cache/debconf/templates.dat
+<A NAME="lbAE">&nbsp;</A>
+<H2>FORMAT DE FICHIER</H2>
+
+Le format de ce fichier est une suite de paragraphes, chacun d'eux séparé par
+au moins une ligne blanche. Les lignes de commentaires commençant par un
+caractère dièse («&nbsp;#&nbsp;») sont ignorées.
+<P>
+
+Le premier paragraphe du fichier est spécial et est utilisé pour configurer
+l'ensemble de debconf. Ce premier paragraphe requiert deux champs&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>Config</B>
+
+<DD>
+Spécifie le nom de la base de données où prendre les données de configuration.
+<DT><B>Templates</B>
+
+<DD>
+Spécifie le nom de la base de données à utiliser pour le cache des
+questions.
+</DL>
+</DL>
+
+<P>
+
+Champs additionnels qui peuvent être ajoutés&nbsp;:
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>Frontend</B>
+
+<DD>
+L'interface utilisée par debconf, remplace toute interface indiquée dans
+la base de données de debconf.
+<DT><B>Priority</B>
+
+<DD>
+La priorité utilisée par debconf, remplace toute priorité indiquée dans
+la base de données de debconf.
+<DT><B>Showold</B>
+
+<DD>
+Fixé à «&nbsp;true&nbsp;» pour que debconf réaffiche les questions déjà posées. Ce
+n'est probablement pas ce que vous voulez. Cela peut être annulé à la volée
+par la variable d'environnement DEBCONF_SHOWOLD.
+<DT><B>Admin-Email</B>
+
+<DD>
+L'adresse électronique à laquelle Debconf envoie un courriel pour s'assurer que
+l'administrateur a bien vu une remarque importante. Par défaut «&nbsp;root&nbsp;»,
+mais ce peut être une adresse électronique valide où envoyer le
+courriel. Si vous préférez que debconf ne vous envoie pas de courriel, spécifiez
+une adresse vide. Cela peut être annulé à la volée par la variable
+d'environnement DEBCONF_ADMIN_EMAIL.
+<DT><B>Debug</B>
+
+<DD>
+Si ce champ existe, debconf affichera alors les informations de débogage sur la
+sortie d'erreur standard. La valeur fixée peut être quelque chose comme
+«&nbsp;user&nbsp;», «&nbsp;developper&nbsp;», «&nbsp;db&nbsp;» ou encore une expression rationnelle.
+Généralement, plutôt que de le configurer en permanence dans un fichier de
+configuration, vous voudrez activer le débogage temporairement, la variable
+d'environnement DEBCONF_DEBUG peut alors être utilisée à la place pour accomplir
+ce débogage.
+<DT><B>NoWarnings</B>
+
+<DD>
+S'il existe, debconf n'affichera aucun avertissement. Il peut être
+annulé à la volée par la variable d'environnement DEBCONF_NOWARNINGS.
+<DT><B>Log</B>
+
+<DD>
+Debconf enregistre des informations de débogage dans le fichier syslog 
+lorsqu'il fonctionne. La valeur donnée sert à contrôler ce qui est enregistré
+dans le journal. Voir plus haut Debug pour une explication des valeurs qui
+peuvent être choisies pour contrôler ce qui est enregistré dans le journal.
+<DT><B>Sigils</B>
+
+<DD>
+Certaines interfaces de debconf afficheront des «&nbsp;sceaux&nbsp;» --&nbsp;petits trucs
+qui indiquent l'importance de la question. Ils sont affichés par défaut, pour
+les désactiver, utilisez Sigils: false.
+<DT><B>Smileys</B>
+
+<DD>
+Quelques interfaces utilisent de gentilles petites binettes comme sceaux. Si
+c'est trop gentil et que vous voulez les désactiver, utilisez Smilies: false.
+Pour les interfaces ne les montrant pas par défaut, Smileys: true essaiera de
+les activer.
+<DT><B>Terse</B>
+
+<DD>
+S'il est fixé à «&nbsp;true&nbsp;», certaines interfaces debconf utiliseront un
+mode d'affichage concis et spécial qui affiche le moins possible. Par défaut à
+false. Le mode concis peut être choisi temporairement par la variable
+d'environnement DEBCONF_TERSE.
+</DL>
+</DL>
+
+<P>
+
+Par exemple, le premier paragraphe d'un fichier devrait ressembler à ça&nbsp;:
+<BR>&nbsp;&nbsp;Config:&nbsp;configdb
+<BR>&nbsp;&nbsp;Templates:&nbsp;templatedb
+<P>
+
+Chaque paragraphe restant dans le fichier configure une base de données. Un
+paragraphe de base de données commence par nommer la base de données&nbsp;:
+<BR>&nbsp;&nbsp;Name:&nbsp;configdb
+<P>
+
+Ensuite, cela indique le pilote à utiliser pour
+cette base de données. Pour avoir des informations sur les pilotes disponibles,
+voir la section DRIVER plus bas.
+<BR>&nbsp;&nbsp;Driver:&nbsp;File
+<P>
+
+Vous pouvez indiquer que la base de données n'est pas essentielle au
+fonctionnement correct de debconf en disant qu'elle n'est pas requise. Cela
+mettra le désordre dans debconf si la base de données échoue pour une raison
+ou une autre.
+<BR>&nbsp;&nbsp;Required:&nbsp;false
+<P>
+
+Vous pouvez marquer une base de données comme en lecture seule et debconf
+n'écrira rien dedans.
+<BR>&nbsp;&nbsp;Readonly:&nbsp;true
+<P>
+
+Vous pouvez aussi limiter le type de données pouvant aller dans la base de
+données avec les lignes Accept- et Reject-&nbsp;; voir la section ACCESS CONTROLS
+plus bas.
+<P>
+
+Le reste de chaque paragraphe d'une base de données est utilisé pour fournir
+une configuration spécifique à ce pilote. Par exemple, le pilote Text a besoin
+de connaître un répertoire pour y mettre la base de données, vous devriez donc
+dire&nbsp;:
+<BR>&nbsp;&nbsp;Filename:&nbsp;/var/cache/debconf/config.dat
+<A NAME="lbAF">&nbsp;</A>
+<H2>PILOTES</H2>
+
+Il y a de nombreux pilotes disponibles et on peut en écrire d'autres sans
+grande difficulté. Les pilotes sont répartis en deux types. Il y a d'abord les
+pilotes réels --&nbsp;pilotes qui lisent et stockent réellement les données dans
+quelque base de données, qui peut être sur le système de fichiers local
+ou sur un système distant. Il y a ensuite les méta-pilotes qui associent 
+différents pilotes pour former des systèmes plus intéressants.
+Commençons par les premiers.
+<DL COMPACT>
+<DT><DT><B>File</B>
+
+<DD>
+<DD>
+<DL COMPACT><DT><DD>
+Ce pilote permet à debconf de stocker une base de données complète dans un
+simple fichier texte. Cela facilite l'archivage, le transfert entre les machines
+et l'édition. C'est l'un des formats de base de données les plus compacts en
+terme d'espace disque utilisé. C'est aussi l'un des formats les plus lents.
+<P>
+
+Parmi les inconvénients, le fichier doit être lu en entier à chaque fois que
+debconf démarre&nbsp;; le sauvegarder est aussi lent.
+<P>
+
+Pour ce pilote, les points suivants sont configurables.
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>Filename</B>
+
+<DD>
+Le fichier à utiliser comme base de données. Ce champ est obligatoire.
+<DT><B>Mode</B>
+
+<DD>
+Les permissions du fichier à créer s'il n'existe pas. Elles sont par défaut 
+mises à 600 parce que le fichier peut contenir dans certaines circonstances 
+des mots de passe.
+<DT><B>Format</B>
+
+<DD>
+Le format du fichier. Voir plus bas la section FORMATS. Le format par défaut
+est du type défini par la rfc-822.
+<DT><B>Backup</B>
+
+<DD>
+Si une sauvegarde de l'ancien fichier doit être faite avant de le changer.
+Par défaut à «&nbsp;true&nbsp;».
+</DL>
+</DL>
+
+<P>
+
+Voici un exemple de paragraphe configurant une base de données qui utilise ce
+pilote&nbsp;:
+<P>
+
+<BR>&nbsp;&nbsp;Name:&nbsp;mydb
+<BR>&nbsp;&nbsp;Driver:&nbsp;File
+<BR>&nbsp;&nbsp;Filename:&nbsp;/var/cache/debconf/mydb.dat
+</DL>
+
+<DT><B>DirTree</B>
+
+<DD>
+<DL COMPACT><DT><DD>
+Ce pilote permet à debconf de stocker les données dans une
+structure hiérarchisée de type répertoire. Les noms des différents questionnaires et
+questions debconf sont utilisés pour former des répertoires contenant les fichiers.
+Ce format de base de données est le plus facile à consulter et à modifier à la
+main. Il a une très bonne vitesse de chargement et de sauvegarde. C'est lui qui
+utilise le plus d'espace, car tous les petits fichiers et sous-répertoires
+occupent beaucoup de place.
+<P>
+
+Pour ce pilote, les points suivants sont configurables.
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>Directory</B>
+
+<DD>
+Le répertoire où sont déposés les fichiers. Obligatoire.
+<DT><B>Extension</B>
+
+<DD>
+Une extension pour préfixer les fichiers. Elle ne doit pas être une chaîne
+vide&nbsp;;
+Par défaut à «&nbsp;.dat&nbsp;»
+<DT><B>Format</B>
+
+<DD>
+Le format du fichier. Voir la section FORMATS plus bas. Par défaut, il utilise
+un format semblable au type défini par la rfc-822.
+<DT><B>Backup</B>
+
+<DD>
+Si une sauvegarde de l'ancien fichier doit être faite avant de le changer.
+Par défaut à «&nbsp;true&nbsp;».
+</DL>
+</DL>
+
+<P>
+
+Voici un exemple de paragraphe configurant une base de données qui utilise ce
+pilote&nbsp;:
+<P>
+
+<BR>&nbsp;&nbsp;Name:&nbsp;mydb
+<BR>&nbsp;&nbsp;Driver:&nbsp;DirTree
+<BR>&nbsp;&nbsp;Directory:&nbsp;/var/cache/debconf/mydb
+<BR>&nbsp;&nbsp;Extension:&nbsp;.txt
+</DL>
+
+<DT><B>PackageDir</B>
+
+<DD>
+<DL COMPACT><DT><DD>
+Ce pilote est un compromis entre les bases de données File et
+DirTree. Il utilise un répertoire dans lequel il y a (approximativement) un
+fichier par paquet qui utilise debconf. C'est assez rapide, bien qu'utilisant
+un peu plus d'espace que le pilote de base de données File. 
+<P>
+
+Ce pilote est configurable de la même manière que le pilote DirTree, plus&nbsp;:
+<DL COMPACT>
+<DT><B>Mode</B>
+
+<DD>
+Les permissions des fichiers créés. Par défaut à 600 parce que les fichiers
+peuvent contenir dans certaines circonstances des mots de passe.
+</DL>
+<P>
+
+Voici un exemple de paragraphe configurant une base de données qui utilise ce
+pilote&nbsp;:
+<P>
+
+<BR>&nbsp;&nbsp;Name:&nbsp;mydb
+<BR>&nbsp;&nbsp;Driver:&nbsp;PackageDir
+<BR>&nbsp;&nbsp;Directory:&nbsp;/var/cache/debconf/mydb
+</DL>
+
+<DT><B>LDAP</B>
+
+<DD>
+<DL COMPACT><DT><DD>
+ATTENTION&nbsp;: Ce pilote est actuellement expérimental. Utilisez-le avec
+précaution.
+<P>
+
+Ce pilote accède à un répertoire LDAP pour les données de configuration de
+debconf. Les répertoires LDAP doivent être en lecture seule, à cause de la
+nature de la bête. C'est parce que plusieurs accès peuvent avoir lieu et il
+vaut mieux, pour la cohérence des données, que personne n'essaie de les
+modifier lorsque cela arrive. Bien sûr, on peut donner la possibilité de
+modifier ces répertoires lorsque vous voulez mettre à jour les données de
+configuration.
+<P>
+
+Pour plus d'informations à propos de la configuration d'un serveur LDAP pour
+debconf, lisez /usr/share/doc/debconf-doc/README.LDAP (du paquet debconf-doc).
+<P>
+
+Pour utiliser ce pilote, vous devez avoir installé le paquet
+libnet-ldap-perl. Debconf suggère ce paquet mais ne dépend pas de lui.
+<P>
+
+Veuillez être attentif à ce qu'implique une base de données debconf distante 
+en ce qui concerne la sécurité. Ce n'est pas une chose très sûre à faire à moins
+que vous fassiez confiance à la source et au réseau intervenant.
+<P>
+
+Pour ce pilote, les points suivants sont configurables.
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>server</B>
+
+<DD>
+Le nom d'hôte ou l'adresse IP d'un serveur LDAP auquel se connecter.
+<DT><B>port</B>
+
+<DD>
+Le port de connexion au serveur LDAP. Si aucun n'est donné, le port par défaut
+est utilisé, 389 (ou 686 si vous utilisez SSL).
+<DT><B>basedn</B>
+
+<DD>
+Le DN sous lequel tous les points de la configuration seront stockés. Chaque
+point de configuration est supposé exister dans un DN de cn=&lt;item name&gt;,&lt;Base
+DN&gt;. Si cette structure n'est pas suivie, rien ne marche. 
+<DT><B>binddn</B>
+
+<DD>
+Le DN à attacher au répertoire. Un lien anonyme sera utilisé s'il n'y en a aucun
+de spécifié.
+<DT><B>bindpasswd</B>
+
+<DD>
+Le mot de passe à utiliser dans un attachement authentifié (utilisé avec
+binddn, ci-dessus). Si ce n'est pas spécifié, un lien anonyme sera utilisé.
+</DL>
+<P>
+
+<DL COMPACT><DT><DD>
+Cette option ne doit pas être utilisée dans le cas général. La liaison anonyme
+devrait être suffisante dans la plupart des cas pour un accès en lecture seule.
+Spécifier un DN lié à un mot de passe devrait être réservé pour les cas où vous
+souhaitez mettre à jour vos données de configuration de debconf.
+</DL>
+
+</DL>
+
+<P>
+
+Voici un exemple de paragraphe configurant une base de données qui utilise ce
+pilote, en supposant que la base de données distante est sur example.com et
+qu'on peut y accéder anonymement&nbsp;:
+<P>
+
+<BR>&nbsp;&nbsp;Name:&nbsp;ldapdb
+<BR>&nbsp;&nbsp;Driver:&nbsp;LDAP
+<BR>&nbsp;&nbsp;Readonly:&nbsp;true
+<BR>&nbsp;&nbsp;Server:&nbsp;example.com
+<BR>&nbsp;&nbsp;BaseDN:&nbsp;cn=debconf,dc=example,dc=com
+<P>
+
+Autre exemple, cette fois la base de données LDAP est sur l'hôte local et peut
+être modifiée&nbsp;:
+<P>
+
+<BR>&nbsp;&nbsp;Name:&nbsp;ldapdb
+<BR>&nbsp;&nbsp;Driver:&nbsp;LDAP
+<BR>&nbsp;&nbsp;Server:&nbsp;localhost
+<BR>&nbsp;&nbsp;BaseDN:&nbsp;cn=debconf,dc=domain,dc=com
+<BR>&nbsp;&nbsp;BaseDN:&nbsp;cn=debconf,dc=domain,dc=com
+<BR>&nbsp;&nbsp;BindPasswd:&nbsp;secret
+</DL>
+
+<DT><B>Pipe</B>
+
+<DD>
+<DL COMPACT><DT><DD>
+Ce pilote spécial lit et écrit la base de données depuis
+l'entrée/sortie standard. Ça peut être utile pour les personnes qui ont des
+besoins spécifiques.
+<P>
+
+Pour ce pilote, les points suivants sont configurables.
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>Format</B>
+
+<DD>
+Le format à lire et écrire. Voir la section FORMAT plus bas. Par défaut, il
+utilise un format du type défini par la rfc-822.
+<DT><B>Infd</B>
+
+<DD>
+Numéro du descripteur de fichier à lire. La lecture se fait par défaut depuis
+l'entrée standard. Si elle est fixée à «&nbsp;none&nbsp;», la base de données ne lira
+aucune donnée au démarrage
+<DT><B>Outfd</B>
+
+<DD>
+Numéro du descripteur de fichier à écrire. L'écriture se fait par défaut sur la
+sortie standard.
+</DL>
+</DL>
+
+</DL>
+
+</DL>
+<P>
+
+C'est tout pour les pilotes réels, nous allons à présent voir les 
+méta-pilotes.
+<DL COMPACT>
+<DT><B>Stack</B>
+
+<DD>
+<DL COMPACT><DT><DD>
+Ce pilote superpose plusieurs autres bases de données (de tous types) et permet
+l'accès à celles-ci comme si elles n'en formaient qu'une seule. Lorsque debconf
+demande une valeur, la première base dans la pile qui contient cette valeur la
+retourne. Si debconf écrit quelque chose dans la base de données, l'écriture se
+fait normalement dans le premier pilote de la pile qui contient l'élément
+modifié par debconf&nbsp;; s'il n'y en a pas, le nouvel élément est ajouté à la
+première base de données de la pile sur laquelle on peut écrire.
+<P>
+
+Les choses deviennent plus intéressantes si l'une des bases de données de la
+pile est en lecture seule. Considérez une pile des bases de données foo, bar et
+baz, où foo et baz sont toutes les deux en lecture seule. Debconf veut changer
+un élément et cet élément est présent seulement dans baz, qui est en lecture
+seule. Le pilote de pile est assez malin pour réaliser que ça ne fonctionne pas,
+il copiera l'élément de baz vers bar et l'écriture aura lieu dans bar.
+Maintenant l'élément de baz est caché par celui de bar et il ne sera plus
+visible par debconf.
+<P>
+
+Ce genre de cas est particulièrement utile si vous voulez pointer beaucoup de
+systèmes vers une base de données centrale en lecture seule, tout en permettant
+la réécriture des éléments sur chaque système. Si l'on ajoute des contrôles 
+d'accès, les piles permettent de faire beaucoup d'autres choses
+intéressantes, comme rediriger tous les mots de passe vers une base de données
+pendant qu'une autre base de données en-dessous s'occupe de tout le reste.
+<P>
+
+Pour configurer une pile, il n'y a besoin que d'un petit bout de configuration&nbsp;:
+<P>
+
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>Stack</B>
+
+<DD>
+C'est là où vous spécifiez une liste d'autres bases de données, par nom, pour
+dire de quoi est composée la pile.
+</DL>
+</DL>
+
+<P>
+
+Par exemple&nbsp;:
+<P>
+
+<BR>&nbsp;&nbsp;Name:&nbsp;megadb
+<BR>&nbsp;&nbsp;Driver:&nbsp;stack
+<BR>&nbsp;&nbsp;Stack:&nbsp;passworddb,&nbsp;configdb,&nbsp;companydb
+<P>
+
+ATTENTION&nbsp;: Le pilote de piles n'a pas encore été vraiment testé. Utilisez-le
+à vos propres risques.
+</DL>
+
+</DL>
+<P>
+
+<B>Backup</B>
+
+<DL COMPACT><DT><DD>
+Ce pilote transmet toutes les requêtes vers un autre pilote. Mais il copie
+aussi toutes les requêtes d'écriture vers un pilote de sauvegarde.
+<P>
+
+Pour configurer ce pilote, vous devez spécifier les champs suivants&nbsp;:
+<P>
+
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>Db</B>
+
+<DD>
+La base de données à lire et sur laquelle écrire.
+<DT><B>Backupdb</B>
+
+<DD>
+Le nom de la base de données où envoyer les copies à écrire.
+</DL>
+</DL>
+
+<P>
+
+Par exemple&nbsp;:
+<P>
+
+<BR>&nbsp;&nbsp;Name:&nbsp;backup
+<BR>&nbsp;&nbsp;Driver:&nbsp;Backup
+<BR>&nbsp;&nbsp;Backupdb:&nbsp;mydb
+<BR>&nbsp;&nbsp;Backup:&nbsp;mybackupdb
+</DL>
+
+<P>
+
+<B>Debug</B>
+
+<DL COMPACT><DT><DD>
+Ce pilote transmet toutes les requêtes vers un autre pilote, affichant toutes
+les informations de débogage à propos des requêtes et de leurs résultats.
+<P>
+
+Pour configurer ce pilote, vous devez spécifiez les champs suivants&nbsp;:
+<P>
+
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT><B>Db</B>
+
+<DD>
+La base de données à lire et sur laquelle écrire.
+</DL>
+</DL>
+
+<P>
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONTRÔLE D'ACCÈS</H2>
+
+Quand vous configurez une base de données, vous pouvez aussi utiliser quelques
+champs pour indiquer les contrôles d'accès. Vous pouvez spécifier, par exemple,
+qu'une base de données n'accepte que les mots de passe ou faire une base de
+données qui n'accepte que les choses ayant dans leur nom «&nbsp;foo&nbsp;».
+<DL COMPACT>
+<DT><B>Readonly</B>
+
+<DD>
+Comme on l'a mentionné, ce contrôle d'accès, s'il est fixé à
+«&nbsp;true&nbsp;», rend une base de données accessible qu'en lecture seule.
+Debconf en lira les valeurs mais n'écrira jamais rien dessus.
+<DT><B>Accept-Name</B>
+
+<DD>
+Le texte de ce champ est une expression rationnelle compatible avec perl qui
+s'accorde avec les noms des éléments requis de la base de données. La base de
+données permettra à debconf d'y accéder ou de la modifier seulement si le nom
+d'un élément concorde avec l'expression rationnelle.
+<DT><B>Reject-Name</B>
+
+<DD>
+Comme Accept-Name, excepté que tout élément correspondant à cette
+expression rationnelle sera rejeté.
+<DT><B>Accept-Type</B>
+
+<DD>
+Une autre expression rationnelle, qui correspond avec le type de l'élément
+auquel on accédera. L'accès sera accordé seulement si le type correspond à
+l'expression rationnelle.
+<DT><B>Reject-Type</B>
+
+<DD>
+Comme Accept-Type, excepté que tout type correspondant à cette
+expression rationnelle sera rejeté.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>FORMATS</H2>
+
+Quelques pilotes utilisent des modules de format pour
+contrôler le format réel de stockage des bases de données sur le disque. Ces
+formats sont actuellement supportés&nbsp;:
+<DL COMPACT>
+<DT><B>822</B>
+
+<DD>
+C'est un format de fichier vaguement basé sur le format de la rfc-822 pour les
+entêtes des courriels. Des formats similaires sont utilisés partout dans 
+Debian&nbsp;; dans le fichier de statut de dpkg, et d'autres.
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+Voici un exemple de fichier debconf.conf parmi les plus compliqués.
+<P>
+
+<BR>&nbsp;&nbsp;#&nbsp;Ce&nbsp;paragraphe&nbsp;est&nbsp;utilisé&nbsp;pour&nbsp;la
+<BR>&nbsp;&nbsp;#&nbsp;configuration&nbsp;générale&nbsp;de&nbsp;debconf.
+<BR>&nbsp;&nbsp;Config:&nbsp;stack
+<BR>&nbsp;&nbsp;Templates:&nbsp;templates
+<BR>&nbsp;&nbsp;Log-To:&nbsp;syslog
+<BR>&nbsp;&nbsp;Debug:&nbsp;developer
+<P>
+<BR>&nbsp;&nbsp;#&nbsp;Ma&nbsp;base&nbsp;de&nbsp;données&nbsp;locale.
+<BR>&nbsp;&nbsp;Name:&nbsp;mydb
+<BR>&nbsp;&nbsp;Driver:&nbsp;DirTree
+<BR>&nbsp;&nbsp;Directory:&nbsp;/var/cache/debconf/config
+<P>
+<BR>&nbsp;&nbsp;#&nbsp;C'est&nbsp;une&nbsp;autre&nbsp;base&nbsp;de&nbsp;données&nbsp;que
+<BR>&nbsp;&nbsp;#&nbsp;j'utilise&nbsp;pour&nbsp;garder&nbsp;seulement&nbsp;la
+<BR>&nbsp;&nbsp;#&nbsp;configuration&nbsp;de&nbsp;mon&nbsp;serveur&nbsp;X.
+<BR>&nbsp;&nbsp;Name:&nbsp;X
+<BR>&nbsp;&nbsp;Driver:&nbsp;File
+<BR>&nbsp;&nbsp;Filename:&nbsp;/etc/X11/debconf.dat
+<BR>&nbsp;&nbsp;Mode:&nbsp;644
+<BR>&nbsp;&nbsp;#&nbsp;Il&nbsp;est&nbsp;difficile&nbsp;de&nbsp;savoir&nbsp;quelles
+<BR>&nbsp;&nbsp;#&nbsp;questions&nbsp;concernent&nbsp;X&nbsp;;&nbsp;il&nbsp;faudrait
+<BR>&nbsp;&nbsp;#&nbsp;utiliser&nbsp;une&nbsp;arborescence&nbsp;plus&nbsp;profonde
+<BR>&nbsp;&nbsp;#&nbsp;pour&nbsp;que&nbsp;je&nbsp;puisse&nbsp;n'accepter&nbsp;que&nbsp;les
+<BR>&nbsp;&nbsp;#&nbsp;correspondances&nbsp;avec&nbsp;^X/
+<BR>&nbsp;&nbsp;#&nbsp;Passons.
+<BR>&nbsp;&nbsp;Accept-Name:&nbsp;xserver|xfree86|xbase
+<P>
+<BR>&nbsp;&nbsp;#&nbsp;C'est&nbsp;la&nbsp;base&nbsp;de&nbsp;données&nbsp;générale&nbsp;de&nbsp;notre
+<BR>&nbsp;&nbsp;#&nbsp;société,&nbsp;en&nbsp;lecture&nbsp;seule&nbsp;(pour&nbsp;moi&nbsp;!).
+<BR>&nbsp;&nbsp;Name:&nbsp;company
+<BR>&nbsp;&nbsp;Driver:&nbsp;LDAP
+<BR>&nbsp;&nbsp;Server:&nbsp;debconf.foo.com
+<BR>&nbsp;&nbsp;BaseDN:&nbsp;cn=debconf,dc=foo,dc=com
+<BR>&nbsp;&nbsp;BindDN:&nbsp;uid=admin,dc=foo,dc=com
+<BR>&nbsp;&nbsp;BindPasswd:&nbsp;secret
+<BR>&nbsp;&nbsp;Readonly:&nbsp;true
+<BR>&nbsp;&nbsp;#&nbsp;Je&nbsp;ne&nbsp;veux&nbsp;pas&nbsp;que&nbsp;les&nbsp;mots&nbsp;de&nbsp;passe&nbsp;traînent&nbsp;par&nbsp;là.
+<BR>&nbsp;&nbsp;Reject-Type:&nbsp;password
+<BR>&nbsp;&nbsp;#&nbsp;Si&nbsp;cette&nbsp;base&nbsp;de&nbsp;données&nbsp;n'est&nbsp;pas&nbsp;disponible
+<BR>&nbsp;&nbsp;#&nbsp;pour&nbsp;quelque&nbsp;raison&nbsp;que&nbsp;ce&nbsp;soit,&nbsp;on&nbsp;continue.
+<BR>&nbsp;&nbsp;Required:&nbsp;false
+<P>
+<BR>&nbsp;&nbsp;#&nbsp;J'utilise&nbsp;cette&nbsp;base&nbsp;de&nbsp;données&nbsp;pour
+<BR>&nbsp;&nbsp;#&nbsp;conserver&nbsp;les&nbsp;mots&nbsp;de&nbsp;passe&nbsp;en&nbsp;sûreté.
+<BR>&nbsp;&nbsp;Name:&nbsp;passwords
+<BR>&nbsp;&nbsp;Driver:&nbsp;File
+<BR>&nbsp;&nbsp;Filename:&nbsp;/etc/debconf/passwords
+<BR>&nbsp;&nbsp;Mode:&nbsp;600
+<BR>&nbsp;&nbsp;Accept-Type:&nbsp;password
+<P>
+<BR>&nbsp;&nbsp;#&nbsp;Rassemblons&nbsp;toutes&nbsp;ses&nbsp;bases
+<BR>&nbsp;&nbsp;#&nbsp;de&nbsp;données&nbsp;dans&nbsp;une&nbsp;pile.
+<BR>&nbsp;&nbsp;Name:&nbsp;stack
+<BR>&nbsp;&nbsp;Driver:&nbsp;Stack
+<BR>&nbsp;&nbsp;Stack:&nbsp;passwords,&nbsp;X,&nbsp;mydb,&nbsp;company
+<BR>&nbsp;&nbsp;#&nbsp;Donc,&nbsp;tous&nbsp;les&nbsp;mots&nbsp;de&nbsp;passe&nbsp;vont&nbsp;dans&nbsp;la
+<BR>&nbsp;&nbsp;#&nbsp;base&nbsp;de&nbsp;données&nbsp;passwords.&nbsp;La&nbsp;plupart&nbsp;des&nbsp;objets
+<BR>&nbsp;&nbsp;#&nbsp;concernant&nbsp;la&nbsp;configuration&nbsp;de&nbsp;X&nbsp;vont&nbsp;dans&nbsp;la
+<BR>&nbsp;&nbsp;#&nbsp;base&nbsp;de&nbsp;données&nbsp;X,&nbsp;et&nbsp;tout&nbsp;le&nbsp;reste&nbsp;va&nbsp;dans&nbsp;ma
+<BR>&nbsp;&nbsp;#&nbsp;base&nbsp;de&nbsp;données&nbsp;principale.&nbsp;Les&nbsp;valeurs&nbsp;sont
+<BR>&nbsp;&nbsp;#&nbsp;recherchées&nbsp;tour&nbsp;à&nbsp;tour&nbsp;dans&nbsp;chacune&nbsp;de&nbsp;ces&nbsp;bases
+<BR>&nbsp;&nbsp;#&nbsp;de&nbsp;données&nbsp;et&nbsp;si&nbsp;une&nbsp;valeur&nbsp;particulière&nbsp;n'est&nbsp;trouvée
+<BR>&nbsp;&nbsp;#&nbsp;nulle&nbsp;part,&nbsp;elle&nbsp;est&nbsp;recherchée&nbsp;dans&nbsp;la&nbsp;base&nbsp;de
+<BR>&nbsp;&nbsp;#&nbsp;données&nbsp;LDAP&nbsp;de&nbsp;la&nbsp;compagnie&nbsp;(à&nbsp;moins&nbsp;que&nbsp;ce&nbsp;ne
+<BR>&nbsp;&nbsp;#&nbsp;soit&nbsp;un&nbsp;mot&nbsp;de&nbsp;passe).
+<P>
+<BR>&nbsp;&nbsp;#&nbsp;Une&nbsp;base&nbsp;de&nbsp;données&nbsp;est&nbsp;aussi&nbsp;utilisée
+<BR>&nbsp;&nbsp;#&nbsp;pour&nbsp;conserver&nbsp;les&nbsp;questionnaires.&nbsp;Nous
+<BR>&nbsp;&nbsp;#&nbsp;n'avons&nbsp;pas&nbsp;besoin&nbsp;de&nbsp;le&nbsp;faire&nbsp;à&nbsp;notre&nbsp;goût.
+<BR>&nbsp;&nbsp;Name:&nbsp;templates
+<BR>&nbsp;&nbsp;Driver:&nbsp;File
+<BR>&nbsp;&nbsp;Mode:&nbsp;644
+<BR>&nbsp;&nbsp;Format:&nbsp;822
+<BR>&nbsp;&nbsp;Filename:&nbsp;/var/cache/debconf/templates
+<A NAME="lbAJ">&nbsp;</A>
+<H2>NOTES</H2>
+
+Si vous utilisez dans ce fichier quelque chose comme ${HOME}, cette variable 
+sera remplacée par la valeur de la variable d'environnement nommée ainsi.
+<P>
+
+La casse des noms des champs (la partie de la ligne avant le deux-points) 
+n'est pas importante. Cependant, pour les valeurs, la casse importe.
+<A NAME="lbAK">&nbsp;</A>
+<H2>AMÉLIORATIONS PRÉVUES</H2>
+
+Plus de pilotes et de formats. Voici quelques idées&nbsp;:
+Un pilote SQL, avec la possibilité d'accéder à une base de données distante.
+Un pilote DHCP, qui rend disponible certaines choses spécifiques comme le nom
+d'hôte, l'adresse IP et les serveurs DNS.
+Un pilote qui prend ses valeurs dans les champs TXT des enregistrements DNS 
+publics.
+Un format qui est compatible avec la sortie de debconf.
+Un pilote d'annulation, qui peut annuler la valeur d'un champ ou les drapeaux
+de toutes les requêtes qui lui sont adressées.
+<A NAME="lbAL">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/etc/debconf.conf
+<P>
+
+~/.debconfrc
+<A NAME="lbAM">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?7+debconf">debconf</A></B>(7)
+
+<A NAME="lbAN">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Joey Hess &lt;<A HREF="mailto:joeyh@debian.org">joeyh@debian.org</A>&gt;
+<A NAME="lbAO">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Julien Louis &lt;<A HREF="mailto:leonptitlouis@ifrance.com">leonptitlouis@ifrance.com</A>&gt;
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAE">FORMAT DE FICHIER</A><DD>
+<DT><A HREF="#lbAF">PILOTES</A><DD>
+<DT><A HREF="#lbAG">CONTRÔLE D'ACCÈS</A><DD>
+<DT><A HREF="#lbAH">FORMATS</A><DD>
+<DT><A HREF="#lbAI">EXEMPLE</A><DD>
+<DT><A HREF="#lbAJ">NOTES</A><DD>
+<DT><A HREF="#lbAK">AMÉLIORATIONS PRÉVUES</A><DD>
+<DT><A HREF="#lbAL">FICHIERS</A><DD>
+<DT><A HREF="#lbAM">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAN">AUTEUR</A><DD>
+<DT><A HREF="#lbAO">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:54 GMT, February 11, 2014
+</BODY>
+</HTML>

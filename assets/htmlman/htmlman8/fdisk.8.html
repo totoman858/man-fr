@@ -1,0 +1,359 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FDISK</TITLE>
+</HEAD><BODY>
+<H1>FDISK</H1>
+Section: Manuel de l utilisateur Linux (8)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fdisk - manipulateur de tables de partitions pour Linux
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>fdisk [-u] [-b taille-secteur] </B><I>périphérique</I>
+
+<P>
+<B>fdisk -l [-u] [-b taille-secteur] [ </B><I>périphérique ...</I><B>]</B>
+
+<P>
+<B>fdisk -s </B><I>partition ...</I>
+
+<P>
+<B>fdisk -v</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les disques durs peuvent être divisés en un ou plusieurs disques
+logiques appelés
+<I>partitions</I>.
+
+Cette division est décrite dans la
+<I>table des partitions</I>
+
+trouvée sur le secteur 0 du disque.
+<P>
+Dans le monde BSD, on parle de «&nbsp;tranches de disque&nbsp;» (disk slices) et
+d'«&nbsp;étiquette de disque&nbsp;» (disklabels).
+<P>
+Linux a besoin d'au moins une partition, à savoir pour son système de
+fichiers racine.
+Il peut utiliser des fichiers et/ou des partitions d'échange (swap)
+d'échange, mais ces dernières sont plus efficaces. C'est pourquoi on
+dédie en général une seconde partition Linux comme partition d'échange.
+Sur le matériel compatible Intel, le BIOS qui démarre le système ne
+peut souvent accéder qu'aux 1024 premiers cylindres du disque. Pour
+cette raison, les personnes possédant des disques volumineux créent
+souvent une troisième partition, d'à peine quelques Mo de large, montée
+typiquement en
+<I>/boot</I>,
+
+pour y conserver l'image du noyau et quelques fichiers auxiliaires
+nécessaires au démarrage, afin de s'assurer que ce matériel soit
+accessible depuis le BIOS. Il peut y avoir des raisons de sécurité, de
+facilité d'administration et de sauvegarde, ou de tests qui nécessitent
+d'utiliser plus que le nombre minimal de partitions.
+<P>
+<B>fdisk</B>
+
+(dans la première forme d'invocation) est un programme piloté par menu
+utilisé pour la création et la manipulation de tables de
+partitions. Il comprend les tables de partitions de type DOS, et les
+étiquettes de disque BSD ou SUN.
+<P>
+Le
+<I>périphérique</I>
+
+est en général l'un des suivants&nbsp;:
+<P>
+<BR>
+
+<PRE>
+<DL COMPACT><DT><DD>/dev/hda
+/dev/hdb
+/dev/sda
+/dev/sdb
+</DL>
+</PRE>
+
+<P>
+(/dev/hd[a-h] pour les disques IDE, /dev/sd[a-p] pour les disques
+SCSI, /dev/ed[a-d] pour les disques ESDI, /dev/xd[ab] pour les disques
+XT). Un nom de périphérique référence le disque entier.
+<P>
+La
+<I>partition</I>
+
+est un nom de
+<I>périphérique</I>
+
+suivi d'un numéro de partition. Par exemple,
+<B>/dev/hda1</B>
+
+est la première partition du premier disque dur IDE du système. Les
+disques peuvent contenir jusqu'à 15 partitions. Voyez également
+<I>/usr/src/linux/Documentation/devices.txt</I>.
+
+<P>
+Une étiquette de disque de type BSD/SUN peut décrire 8 partitions, dont la
+troisième devrait être une partition de «&nbsp;disque entier&nbsp;». Ne faites pas
+démarrer de partition utilisant réellement son premier secteur sur le
+cylindre 0 (comme une partition d'échange), car cela détruirait l'étiquette
+du disque.
+<P>
+Une étiquette de disque de type IRIX/SGI peut décrire 16 partitions, dont
+la onzième devrait être une partition entière de «&nbsp;volume&nbsp;», alors que la
+neuvième devrait être un «&nbsp;en-tête de volume&nbsp;». L'en-tête de volume
+couvre également la table des partitions, c.-à-d. qu'il débute au bloc zéro
+et s'étend par défaut sur 5 cylindres. L'espace restant dans l'en-tête de
+volume peut être utilisé par des entrées de répertoires d'en-tête. Aucune
+partition ne peut empiéter sur l'en-tête de volume. Ne modifiez pas son
+type ni ne créez de système de fichiers dessus, car vous perdriez alors la
+table des partitions. N'utilisez ce type d'étiquette que lorsque vous
+travaillez sur des machines IRIX/SGI ou avec des disques IRIX/SGI sous
+Linux.
+<P>
+Une table de partitions de type DOS peut décrire un nombre illimité de
+partitions. Dans le secteur 0, il y a de la place pour décrire 4
+partitions (appelées «&nbsp;primaires&nbsp;»). L'une d'entre elles peut être
+une partition étendue&nbsp;; c'est une sorte de boîte contenant des
+partitions logiques, dont les descripteurs sont trouvés dans une liste
+chaînée de secteurs, chacun précédant les partitions logiques
+correspondantes. Les quatre partitions primaires, présentes ou pas,
+portent les numéros 1-4. Les partitions logiques sont numérotées à
+partir de 5.
+<P>
+Dans une table de partitions de type DOS, le décalage de départ et la
+taille de chaque partition sont conservés de deux façons&nbsp;: comme un
+nombre absolu de secteurs (sur 32 bits), ou comme un triplet
+Cylindres/Têtes/Secteurs (sur 10+8+6 bits). La première manière
+fonctionne bien - avec des secteurs de 512 octets, cela marchera
+jusqu'à 2 To. La seconde possibilité souffre de deux problèmes
+différents. Primo, ces champs C/T/S ne peuvent être remplis que
+lorsque le nombre de têtes et le nombre de secteurs par piste sont
+connus. Secundo, même si l'on connaissait ces nombres, les 24 bits qui
+sont disponibles ne suffiraient pas. DOS utilise uniquement C/T/S,
+Windows utilise les deux, Linux n'utilise jamais C/T/S.
+<P>
+Si c'est possible,
+<B>fdisk</B>
+
+déterminera automatiquement la géométrie du disque. Ce n'est pas
+nécessairement la géométrie physique du disque (en effet, les disques
+modernes ne possèdent pas à proprement parler quoi que ce soit pouvant
+être assimilé à une géométrie physique, et encore moins quelque chose
+pouvant être décrit par la forme simpliste Cylindres/Têtes/Secteurs),
+mais c'est la géométrie de disque qu'utilise MS-DOS pour la table des
+partitions.
+<P>
+D'habitude, tout se passe bien par défaut, et il n'y a aucun problème
+si Linux est le seul système sur le disque. Néanmoins, si le disque
+doit être partagé avec d'autres systèmes d'exploitation, c'est en
+général une bonne idée de laisser créer au moins une partition par un
+fdisk d'un autre système d'exploitation. Quand Linux démarre, il
+examine la table des partitions, et essaie de déduire quelle (fausse)
+géométrie est requise pour une bonne coopération avec les autres systèmes.
+<P>
+Chaque fois qu'une table des partitions est écrite, un test de
+cohérence est effectué sur les entrées de la table des partitions. Ce
+test vérifie que les débuts et fins physiques et logiques sont
+identiques, et que la partition commence et se termine sur une limite
+de cylindre (sauf pour la première partition).
+<P>
+Certaines versions de MS-DOS créent une première partition qui ne
+commence pas sur une limite de cylindre, mais sur le secteur 2 du
+premier cylindre. Les partitions commençant au cylindre 1 ne peuvent
+débuter sur une limite de cylindre, mais il est peu probable que cela
+pose problème à moins que vous n'ayez également OS/2 sur votre
+machine.
+<P>
+Un sync() et un ioctl() BLKRRPART (relire la table des partitions à
+partir du disque) sont exécutés avant la sortie quand la table des
+partitions a été mise à jour. Il y a longtemps, il était nécessaire de
+redémarrer après l'utilisation de fdisk. Je ne crois pas que cela soit
+encore le cas - en effet, redémarrer trop rapidement pourrait causer la
+perte de données non encore écrites sur disque. Notez que le noyau et le
+matériel disque peuvent tous deux placer des données en mémoire tampon.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>AVERTISSEMENT DOS 6.x</H2>
+
+<P>
+La commande DOS 6.x FORMAT recherche certaines informations sur le
+premier secteur de la zone de données de la partition, et suppose
+qu'elles sont plus fiables que celles contenues dans la table des
+partitions. Le FORMAT DOS suppose que FDISK DOS efface les 512 premiers
+octets de la zone de données de la partition à chaque fois qu'un
+changement de taille se produit. FORMAT DOS regardera cette information
+additionnelle même si le drapeau /U est fourni -- nous considérons que
+c'est un bogue dans les FORMAT et FDISK DOS.
+<P>
+Si vous utilisez cfdisk ou fdisk pour modifier la taille d'une entrée
+DOS de la table des partitions, alors vous devrez également utiliser
+<B>dd</B>
+
+pour mettre à zéro les 512 premiers octets de cette partition avant
+d'utiliser FORMAT DOS pour formater cette partition. Par exemple, si
+vous avez utilisé cfdisk pour créer une entrée DOS dans la table des
+partitions pour /dev/hda1, alors (après la sortie de fdisk ou de
+cfdisk et après avoir redémarré Linux afin que les informations sur la
+table des partitions soient valides) vous devriez utiliser la commande
+«&nbsp;dd if=/dev/zero of=/dev/hda1 bs=512 count=1&nbsp;» pour mettre à zéro
+les 512 premiers octets de la partition.
+<P>
+<B>SOYEZ EXTRÊMEMENT PRUDENT </B>
+
+si vous utilisez la commande
+<B>dd, </B>
+
+car une petite faute de frappe peut rendre toutes les données de votre
+disque inutilisables.
+<P>
+Pour obtenir les meilleurs résultats, vous devriez toujours utiliser
+un programme de partitionnement spécifique au système
+d'exploitation. Par exemple, vous devriez créer des partitions DOS
+avec le programme FDISK DOS, et des partitions Linux avec l'un des
+programmes Linux fdisk ou cfdisk.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-b </B><I>taille-secteur</I>
+
+<DD>
+Spécifier la taille des secteurs du disque. Les valeurs valides sont
+512, 1024 et 2048. (Les noyaux récents connaissent la taille de
+secteur. N'utilisez cette option que sur des noyaux anciens ou pour
+passer outre l'avis du noyau.)
+<DT><B>-C </B><I>cylindres</I>
+
+<DD>
+Indique le nombre de cylindres du disque.
+Je ne vois pas à quoi ça peut servir.
+<DT><B>-H </B><I>têtes</I>
+
+<DD>
+Indique le nombre de tête du disque. (Pas le nombre physique, bien sûr,
+mais celui utilisé pour la table de partitions.)
+Valeurs raisonables&nbsp;: 255 et 16.
+<DT><B>-S </B><I>secteurs</I>
+
+<DD>
+Indique le nombre de secteurs par piste du disque.
+(Pas le nombre physique, bien sûr,
+mais celui utilisé pour la table de partitions.)
+Une valeur raisonnable est 63.
+<DT><B>-l</B>
+
+<DD>
+Lister les tables de partitions des périphériques spécifiés et
+ensuite se terminer. Si aucun périphérique n'est fourni, ceux
+mentionnés dans
+<I>/proc/partitions</I>
+
+(si ce fichier existe) sont utilisés.
+<DT><B>-u</B>
+
+<DD>
+Lors du listage des tables de partitions, donner les tailles en
+secteurs plutôt qu'en cylindres.
+<DT><B>-s </B><I>partition</I>
+
+<DD>
+La
+<I>taille</I>
+
+de la partition (en blocs) est affichée sur la sortie standard.
+<DT><B>-v</B>
+
+<DD>
+Afficher le numéro de version de
+<B>fdisk</B>
+
+et se terminer normalement.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Il existe plusieurs programmes *fdisk. Chacun a ses points forts et
+ses points faibles. Essayez-les dans l'ordre
+<B>cfdisk</B>,
+
+<B>fdisk</B> et
+
+<B>sfdisk</B>.
+
+(En effet,
+<B>cfdisk</B>
+
+est un beau programme qui a des exigences strictes sur les tables de
+partitions qu'il accepte, et qui produit des tables de partitions de
+haute qualité. Utilisez-le si vous le pouvez. 
+<B>fdisk</B>
+
+est un programme bogué qui fait des choses assez floues - d'habitude,
+il arrive à produire des résultats raisonnables. Son seul avantage est
+qu'il supporte les étiquettes de disque BSD, et d'autres tables de
+partitions non DOS. Évitez-le si vous le pouvez.
+<B>sfdisk</B>
+
+est destiné uniquement aux hackers - l'interface utilisateur est
+quelque peu rebutante, mais il travaille mieux que fdisk et est plus
+puissant que fdisk et cfdisk. De plus, il peut être utilisé de façon
+non interactive.)
+<P>
+
+L'étiquette de disque de type IRIX/SGI n'est pas supportée actuellement
+par le noyau. De plus, les répertoires d'en-tête IRIX/SGI ne sont pas
+encore entièrement supportés.
+<P>
+
+Il manque l'option «&nbsp;écrire la table des partitions dans un fichier&nbsp;».
+
+
+
+
+
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+cfdisk">cfdisk</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+parted">parted</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+sfdisk">sfdisk</A></B>(8)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Frédéric Delanoy &lt;<I>delanoy_f at yahoo.com</I>&gt;, 2002.
+<BR>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">AVERTISSEMENT DOS 6.x</A><DD>
+<DT><A HREF="#lbAF">OPTIONS</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

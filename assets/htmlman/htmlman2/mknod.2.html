@@ -1,0 +1,278 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MKNOD</TITLE>
+</HEAD><BODY>
+<H1>MKNOD</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mknod - Créer un noeud du système de fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/sys/stat.h">sys/stat.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/fcntl.h">fcntl.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<B>int mknod(const char *</B><I>pathname</I><B>, mode_t </B><I>mode</I><B>, dev_t </B><I>dev</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>mknod</B>
+
+crée un noeud du système de fichiers (fichier, fichier spécial de périphérique ou
+tube) appelé
+<I>pathname</I>,
+
+avec les attributs
+<I>mode</I>
+
+et
+<I>dev</I>.
+
+<P>
+L'argument
+<I>mode</I>
+
+définit à la fois les permissions d'utilisation, et le type de noeud
+à créer. C'est une combinaison par 
+<I>OU binaire</I>
+
+( | ) 
+entre l'un des types de noeuds ci-dessous et les permissions d'accès
+pour le nouveau noeud.
+<P>
+Les permissions sont modifiées par le
+<B>umask</B>
+
+du processus : les permissions effectivement écrites sont
+<B>(mode &amp; ~umask)</B>.
+
+<P>
+Le type de noeud doit être l'un des suivants
+<B>S_IFREG</B>,
+
+<B>S_IFCHR</B>,
+
+<B>S_IFBLK</B>
+
+<B>S_IFIFO</B>
+
+ou
+<B>S_IFSOCK</B>
+
+
+pour indiquer respectivement un fichier normal (vide à la création),
+un fichier spécial mode caractère, un fichier spécial mode bloc,
+un tube nommé (FIFO) ou une socket du domaine Unix.
+On peut également utiliser 0 pour créer un fichier normal.
+<P>
+Si le noeud est de type
+<B>S_IFCHR</B> or <B>S_IFBLK</B>
+
+alors
+<I>dev</I>
+
+doit spécifier les numéros majeurs et mineurs du périphérique
+associé, pour les autres types de noeuds,
+<I>dev</I>
+
+est ignoré.
+<P>
+Si
+<I>pathname</I>
+
+existe déjà, ou est un lien symbolique, l'appel échoue avec l'erreur EEXIST.
+<P>
+Le noeud nouvellement créé aura pour propriétaire l'UID effectif
+du processus. Si le répertoire contenant ce noeud a son bit
+Set-GID à 1, ou si le système de fichier est monté avec une
+sémantique BSD, le nouveau noeud héritera de l'appartenance au
+groupe de son parent. Sinon il appartiendra au groupe effectif
+du processus.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>mknod</B>
+
+renvoie 0 s'il réussit, ou -1 s'il échoue, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+<I>mode</I>
+
+demande la création d'un noeud autre qu'un fichier régulier
+une FIFO (tube nommé) ou une socket du domaine Unix, alors que
+le processus appelant n'est pas le Super-User. Cette erreur se
+produit également si le système de fichier contenant
+<I>pathname</I>
+
+ne supporte pas les noeuds du type demandé.
+<DT><B>EINVAL</B>
+
+<DD>
+<I>mode</I>
+
+demande la création d'autre chose qu'un fichier normal, fichier
+spécial de périphérique, DIFO ou socket.
+<DT><B>EEXIST</B>
+
+<DD>
+<I>pathname</I>
+
+existe déjà
+<DT><B>EFAULT</B>
+
+<DD>
+<I>pathname</I> pointe en-dehors de l'espace d'adressage accessible.
+
+<DT><B>EACCES</B>
+
+<DD>
+Le répertoire parent n'autorise pas l'écriture au processus, ou l'un
+des répertoires de
+<I>pathname</I>
+
+n'autorise pas la consultation de son contenu.
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+<I>pathname</I> trop long.
+
+<DT><B>ENOENT</B>
+
+<DD>
+Un répertoire du chemin d'accès
+<I>pathname</I>
+
+n'existe pas ou est un lien symbolique pointant nulle part.
+<DT><B>ENOTDIR</B>
+
+<DD>
+Un élément utilise dans le chemin
+<I>pathname</I>
+
+n'est pas un répertoire.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire pour le noyau.
+<DT><B>EROFS</B>
+
+<DD>
+<I>pathname</I>
+
+serait placé sur un système de fichier en lecture seule.
+<DT><B>ELOOP</B>
+
+<DD>
+<I>pathname</I>
+
+contient une référence circulaire (à travers un lien symbolique).
+<DT><B>ENOSPC</B>
+
+<DD>
+Le périphérique contenant
+<I>pathname</I>
+
+n'a pas assez de place pour le nouveau noeud.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4 (mais l'appel y nécessite des privilèges, alors qu'il n'y en a
+pas besoin dans POSIX), BSD 4.4. La version Linux diffère de celle de
+SVr4 en ceci qu'elle n'a pas besoin de privilèges root pour créer des
+tubes, et qu'elle ne décrit pas les erreurs EMULTIHOP, ENOLINK, et EINTR.
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Posix 1003.1-2001 dit : &quot;Le seul usage portable de
+<B>mknod</B>()
+
+est réservé à la création de fichiers spéciaux FIFO. Si le 
+<I>mode</I>
+
+n'est pas S_IFIFO ou si 
+<I>dev</I>
+
+n'est pas 0, alors le comportement de
+<B>mknod</B>()
+
+est indéterminé.
+<P>
+Sous Linux
+<B>mknod</B>
+
+ne peut pas être utilisé pour créer des répertoires.
+Il faut créer les répertoires avec
+<B>mkdir</B>,
+
+et les FIFO avec
+<B>mkfifo</B>.
+
+<P>
+Il y a de nombreux problèmes avec le protocole sous-jacent à NFS, certains
+d'entre-eux pouvant affecter
+<B>mknod</B>.
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mkdir">mkdir</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mount">mount</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+socket">socket</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+umask">umask</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+unlink">unlink</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+mkfifo">mkfifo</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:51 GMT, February 11, 2014
+</BODY>
+</HTML>

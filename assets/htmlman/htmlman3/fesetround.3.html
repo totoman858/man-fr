@@ -1,0 +1,355 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FENV</TITLE>
+</HEAD><BODY>
+<H1>FENV</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+feclearexcept, fegetexceptflag, feraiseexcept, fesetexceptflag, fetestexcept, fegetenv, fegetround, feholdexcept, fesetround, fesetenv, feupdateenv, fedisableexcept, feenableexcept, fegetexcept - Gestion des exceptions C99 pour les arrondis et les erreurs en virgule flottante.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/fenv.h">fenv.h</A>&gt;</B>
+
+<B>void feclearexcept(int </B><I>excepts</I><B>);</B>
+<BR>
+<B>void fegetexceptflag(fexcept_t *</B><I>flagp</I><B>, int </B><I>excepts</I><B>);</B>
+<BR>
+<B>void feraiseexcept(int </B><I>excepts</I><B>);</B>
+<BR>
+<B>void fesetexceptflag(const fexcept_t *</B><I>flagp</I><B>, int </B><I>excepts</I><B>);</B>
+<BR>
+<B>int fetestexcept(int </B><I>excepts</I><B>);</B>
+
+<B>int fegetround(void);</B>
+<BR>
+<B>int fesetround(int </B><I>rounding_mode</I><B>);</B>
+
+<B>void fegetenv(fenv_t *</B><I>envp</I><B>);</B>
+<BR>
+<B>int feholdexcept(fenv_t *</B><I>envp</I><B>);</B>
+<BR>
+<B>void fesetenv(const fenv_t *</B><I>envp</I><B>);</B>
+<BR>
+<B>void feupdateenv(const fenv_t *</B><I>envp</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Ces onze fonctions ont été définies dans le C99, et permettent de paramétrer
+les arrondis et les gestions d'erreurs (débordement, division par zéro, etc.) en virgule flottante.
+<A NAME="lbAE">&nbsp;</A>
+<H3>Exceptions</H3>
+
+L'exception DivideByZero se produit quand une opération sur des nombres finis
+donne un infini comme réponse exacte.
+<P>
+
+L'exception Overflow se produit quand un résultat doit être représenté par un
+nombre en virgule flottante, mais que sa valeur absolue est trop grande
+pour être représentée par un nombre fini.
+<P>
+
+L'exception Underflow se produit quand un résultat doit être représenté par un
+nombre en virgule flottante, mais que sa valeur absolue est trop petite pour
+être représentée.
+<P>
+
+L'exception Inexact se produit quand le résultat arrondi d'une opération
+n'est pas égal au résultat en précision infinie. Elle peut se déclencher
+quand les exceptions Overflown ou Underflow se produisent.
+<P>
+
+L'exception Invalid se produit quand il n'y a pas de résultat bien défini
+pour une opération, comme 0/0 ou infini-infi ou sqrt(-1).
+<A NAME="lbAF">&nbsp;</A>
+<H3>Gestion des exceptions</H3>
+
+Les exceptions sont représentées de deux manières : en tant qu'un unique bit
+(exception présente ou absente) correspondant de manière dépendant de
+l'implémentation avec une position au sein d'un entier, et aussi en tant que
+structure opaque pouvant véhiculer plus d'information
+concernant l'exception (éventuellement l'adresse du code déclenchant l'erreur).
+<P>
+
+Chacune des macros
+<B>FE_DIVBYZERO</B>,
+
+<B>FE_INEXACT</B>,
+
+<B>FE_INVALID</B>,
+
+<B>FE_OVERFLOW</B>,
+
+<B>FE_UNDERFLOW</B>
+
+est définie lorsque l'implémentation supporte la gestion
+de l'exception correspondante. Les bits sont alors définis,
+ainsi on peut appeler par exemple les fonctions de gestion
+des exceptions avec un argument entier
+<B>FE_OVERFLOW</B>|<B>FE_UNDERFLOW</B>.
+
+D'autres exceptions peuvent être supportées. La macro
+<B>FE_ALL_EXCEPT</B>
+
+est un masque regroupant par OU binaire tous les bits des exceptions supportées.
+<P>
+
+La fonction
+<B>feclearexcept</B>
+
+efface les exceptions supportées représentées par les bits présents
+dans son argument.
+<P>
+
+La fonction
+<B>fegetexceptflag</B>
+
+stocke une représentation de l'état des exceptions contenues dans 
+son argument
+<I>excepts</I>
+
+dans l'objet opaque
+*<I>flagp</I>.
+
+<P>
+
+La fonction
+<B>feraiseexcept</B>
+
+déclenche les exceptions supportées représentées par les bits de l'argument
+<I>excepts</I>.
+
+<P>
+
+La fonction
+<B>fesetexceptflag</B>
+
+fixe l'état des exceptions représentées par l'argument
+<I>excepts</I>
+
+en employant la valeur
+*<I>flagp</I>.
+
+Cette dernière doit être le résultat d'un appel préalable à
+<B>fegetexceptflag</B>
+
+avec un dernier argument contenant au moins tous les bits présents dans
+<I>excepts</I>.
+
+<P>
+
+La fonction
+<B>fetestexcept</B>
+
+renvoie un mot dont les bits également présents dans
+l'argument
+<I>excepts</I>
+
+seront positionnés si l'exception correspondante est présente.
+<A NAME="lbAG">&nbsp;</A>
+<H3>Arrondis</H3>
+
+Chacune des macros
+<B>FE_DOWNWARD</B>,
+
+<B>FE_TONEAREST</B>,
+
+<B>FE_TOWARDZERO</B>,
+
+<B>FE_UPWARD</B>
+
+est définie lorsque l'implémentation supporte l'usage 
+de la direction d'arrondi correspondante.
+<P>
+
+La fonction
+<B>fegetround</B>
+
+renvoie la macro correspondant au mode d'arrondi
+en cours.
+<P>
+
+La fonction
+<B>fesetround</B>
+
+fixe le mode d'arrondi tel qu'il est spécifié par son argument
+et renvoie zéro lorsqu'elle réussit.
+<A NAME="lbAH">&nbsp;</A>
+<H3>Environnement en virgule flottante.</H3>
+
+L'environnement de travail en virgule flottante, y compris
+les modes de contrôle et les états peuvent être manipulés
+sous forme d'un objet opaque de type
+<I>fenv_t</I>.
+
+L'environnement par défaut, est représenté par
+<B>FE_DFL_ENV</B>
+
+(de type
+<I>const fenv_t *</I>).
+
+Il s'agit de la configuration de l'environnement au démarrage du programme
+et elle est définie par ISO C comme ayant un arrondi au plus proche, toutes
+les exceptions effacées et un mode non-stop (continuer sur exception).
+<P>
+
+La fonction
+<B>fegetenv</B>
+
+sauve l'environnement de travail en virgule flottante en cours dans
+l'objet 
+*<I>envp</I>.
+
+<P>
+
+La fonction
+<B>feholdexcept</B>
+
+effectue la même chose, puis efface tous les drapeaux d'exceptions,
+et bascule si possible sur un mode non-stop (continuer en présence d'exceptions).
+Elle renvoie zéro si elle réussit.
+<P>
+
+La fonction
+<B>fesetenv</B>
+
+recharge l'environnement de travail en virgule flottante à
+partir de l'objet 
+*<I>envp</I>.
+
+Cette objet doit être valide, c'est à dire être le résultat de
+<B>fegetenv</B>,
+
+de
+<B>feholdexcept</B>
+
+ou égal à
+<B>FE_DFL_ENV</B>.
+
+Cet appel ne déclenche pas les exceptions.
+<P>
+
+La fonction
+<B>feupdateenv</B>
+
+installe l'environnement en virgule flottante représenté par l'objet
+*<I>envp</I>,
+
+sauf que les exceptions déjà déclenchées ne sont pas effacées.
+Après l'appel de cette fonction, les exception déclenchées seront un OU
+binaire entre l'ensemble précédent, et celui contenu dans
+*<I>envp</I>.
+
+Comme précédemment, l'objet pointé par
+<I>envp</I>
+
+doit être valide.
+<BR>&nbsp;
+<A NAME="lbAI">&nbsp;</A>
+<H2>DÉTAILS GNU</H2>
+
+Si possible, la bibliothèque Gnu LibC définit une macro
+<B>FE_NOMASK_ENV</B>
+
+qui représente l'environnement quand toutes les exceptions déclenchent un
+appel. On peut tester la présence de cette macro en utilisant
+<B>#ifdef</B>.
+
+Elle n'est définie que si la constante symbolique
+<B>_GNU_SOURCE</B>
+
+est définie.
+Le standard C99 ne définit pas de manière de fixer des bits individuels dans
+le masque, par exemple pour intercepter des exceptions particulières.
+La GLibC 2.2 supporte
+<I>feenableexcept</I>
+
+et
+<I>fedisableexcept</I>
+
+pour fixer individuellement des interceptions, et
+<I>fegetexcept</I>
+
+pour demander l'état.
+<P>
+<PRE>
+<B>#define _GNU_SOURCE</B>
+<BR>
+<B>#include &lt;<A HREF="file:///usr/include/fenv.h">fenv.h</A>&gt;</B>
+
+<B>int feenableexcept (int </B><I>excepts</I><B>);</B>
+<BR>
+<B>int fedisableexcept (int </B><I>excepts</I><B>);</B>
+<BR>
+<B>int fegetexcept (void);</B>
+<BR>
+</PRE>
+
+<P>
+
+Les fonctions
+<B>feenableexcept</B>
+
+et
+<B>fedisableexcept</B>
+
+activent (désactivent) l'interception pour chaque exception représentée par
+<I>excepts</I>
+
+et renvoient l'ensemble précédent des exceptions activées lorsqu'elle
+réussissent, et -1 sinon.
+La fonction
+<B>fegetexcept</B>
+
+renvoie l'ensemble des exceptions actuellement activées.
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>Effectuez l'édition des liens avec l'option</H2>
+
+<B>-lm</B>.
+
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+IEC 60559 (IEC 559:1989), ANSI/IEEE 854, ISO C99 (ISO/IEC 9899:1999).
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+<P>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">Exceptions</A><DD>
+<DT><A HREF="#lbAF">Gestion des exceptions</A><DD>
+<DT><A HREF="#lbAG">Arrondis</A><DD>
+<DT><A HREF="#lbAH">Environnement en virgule flottante.</A><DD>
+</DL>
+<DT><A HREF="#lbAI">DÉTAILS GNU</A><DD>
+<DT><A HREF="#lbAJ">Effectuez l'édition des liens avec l'option</A><DD>
+<DT><A HREF="#lbAK">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:35 GMT, February 11, 2014
+</BODY>
+</HTML>

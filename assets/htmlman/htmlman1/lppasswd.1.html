@@ -1,0 +1,86 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of lppasswd</TITLE>
+</HEAD><BODY>
+<H1>lppasswd</H1>
+Section: Easy Software Products (1)<BR>Updated: Common UNIX Printing System<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+lppasswd - Ajoute, modifie ou supprime des mots de passe
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>lppasswd</B>
+
+[ -a ] [ -g
+<I>groupe</I>
+
+] [ -x ] [
+<I>utilisateur</I>
+
+]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>lppasswd</I> ajoute, modifie ou supprime des mots de passe du fichier 
+<I>passwd.md5</I>. Lorsque ce programme est lancé par un utlisateur non privilégié,
+il demande l'ancien et le nouveau mot de passe. Lorsque ce programme est lancé par
+un super-utilisateur, il peut créer de nouveaux comptes utilisateurs (<I>-a utilisateur</I>),
+modifier des comptes existants (<I>utilisateur</I>), ou supprimer des comptes
+(<I>-x utilisateur</I>). Les noms d'utilisateurs ne doivent pas forcément correspondre
+à des noms d'utilisateurs UNIX. Cependant, seuls les utilisateurs UNIX sont gérés
+par les programmes clients CUPS (<I><A HREF="/cgi-bin/man/man2html?1+lp">lp</A>(1)</I>, <I><A HREF="/cgi-bin/man/man2html?1+lpr">lpr</A>(1)</I>, etc.)
+<P>
+
+L'option <I>-g</I> définit un groupe autre que le groupe système -&nbsp;«&nbsp;sys&nbsp;»,
+«&nbsp;system&nbsp;», «&nbsp;root&nbsp;», suivant le système d'exploitation.
+<A NAME="lbAE">&nbsp;</A>
+<H2>PROBLÈMES DE SÉCURITÉ</H2>
+
+La commande <I>lppasswd</I> est installée avec le bit setuid activé. Toutes les précautions
+ont été prises pour empêcher les exploits permettant l'accès aux privilèges du
+super-utilisateur par un utilisateur non privilégié. Cependant, certains administrateurs
+systèmes (paranoïaques) peuvent vouloir désactiver ce programme ou en modifier le
+propriétaire par un utilisateur non privilégié.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+lp">lp</A>(1), <A HREF="/cgi-bin/man/man2html?1+lpr">lpr</A>(1),
+CUPS Software Administrators Manual,
+CUPS Software Users Manual,
+<A HREF="http://localhost:631/documentation.html">http://localhost:631/documentation.html</A>
+<A NAME="lbAG">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright 1993-2003 Easy Software Products, Tous droits réservés.
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Gilles QUERRET &lt;<A HREF="mailto:gilles.querret@nerim.net">gilles.querret@nerim.net</A>&gt;
+
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">PROBLÈMES DE SÉCURITÉ</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:49 GMT, February 11, 2014
+</BODY>
+</HTML>

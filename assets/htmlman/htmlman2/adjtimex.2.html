@@ -1,0 +1,198 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ADJTIMEX</TITLE>
+</HEAD><BODY>
+<H1>ADJTIMEX</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+adjtimex - Régler l'horloge du noyau (kernel clock).
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/timex.h">sys/timex.h</A>&gt;</B>
+
+<P>
+<B>int adjtimex(struct timex *</B><I>buf</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Linux utilise l'algorithme d'ajustement d'horloge de David L. Mills (RFC 1305).
+L'appel-système
+<B>adjtimex</B>
+
+lit, et écrit éventuellement les paramètres d'ajustement pour cet algorithme.
+Il utilise un pointeur sur une structure
+<I>timex </I>
+
+pour mettre à jour les paramètres du noyau avec les valeurs de ses champs,
+et renvoyer la même structure avec les valeurs actuelles du noyau.
+La structure est déclarée comme suit
+<P>
+
+<DL COMPACT><DT><DD>
+<PRE>
+struct timex {
+    int modes;           /* mode selector */
+    long offset;         /* time offset (usec) */
+    long freq;           /* frequency offset (scaled ppm) */
+    long maxerror;       /* maximum error (usec) */
+    long esterror;       /* estimated error (usec) */
+    int status;          /* clock command/status */
+    long constant;       /* pll time constant */
+    long precision;      /* clock precision (usec) (read only) */
+    long tolerance;      /* clock frequency tolerance (ppm)
+                            (read only) */
+    struct timeval time; /* current time (read only) */
+    long tick;           /* usecs between clock ticks */
+};
+</PRE>
+
+</DL>
+
+<P>
+
+Le champ
+<I>modes</I>
+
+détermine les paramètres éventuels à écrire.
+Il contient un
+OU
+
+binaire ( | ) entre les valeurs suivantes:
+<P>
+
+<DL COMPACT><DT><DD>
+<PRE>
+#define ADJ_OFFSET            0x0001 /* time offset */
+#define ADJ_FREQUENCY         0x0002 /* frequency offset */
+#define ADJ_MAXERROR          0x0004 /* maximum time error */
+#define ADJ_ESTERROR          0x0008 /* estimated time error */
+#define ADJ_STATUS            0x0010 /* clock status */
+#define ADJ_TIMECONST         0x0020 /* pll time constant */
+#define ADJ_TICK              0x4000 /* tick value */
+#define ADJ_OFFSET_SINGLESHOT 0x8001 /* old-fashioned adjtime */
+</PRE>
+
+</DL>
+
+<P>
+
+Les utilisateurs normaux sont limités à une valeur de
+<I>mode</I>
+
+nulle, seul le Super-User peut écrire les paramètres.
+<BR>
+
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+S'il réussit,
+<B>adjtimex</B>
+
+renvoie l'état de l'horloge&nbsp;:
+<P>
+
+<DL COMPACT><DT><DD>
+<PRE>
+#define TIME_OK   0 /* clock synchronized */
+#define TIME_INS  1 /* insert leap second */
+#define TIME_DEL  2 /* delete leap second */
+#define TIME_OOP  3 /* leap second in progress */
+#define TIME_WAIT 4 /* leap second has occurred */
+#define TIME_BAD  5 /* clock not synchronized */
+</PRE>
+
+</DL>
+
+<P>
+
+En cas d'échec
+<B>adjtimex</B>
+
+renvoie -1 et remplit
+<I>errno</I>.
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EFAULT</B>
+
+<DD>
+<I>buf</I>
+
+pointe en dehors de l'espace d'adressage accessible.
+<DT><B>EPERM</B>
+
+<DD>
+<I>buf.mode</I>
+
+est non nul, et l'utilisateur n'est pas Super-User.
+<DT><B>EINVAL</B>
+
+<DD>
+Une tentative est faite de remplir
+<I>buf.offset</I>
+
+en dehors de l'intervalle -131071 à +131071,
+ou de mettre
+<I>buf.status</I>
+
+a une valeur autre que celle listée ci-dessus,
+ou
+<I>buf.tick</I>
+
+en dehors de l'intervalle
+900000/<B>HZ</B>
+
+à
+1100000/<B>HZ</B>,
+
+où
+<B>HZ</B>
+
+est la fréquence d'interruption de l'horloge système.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<B>adjtimex</B> est spécifique à Linux, et ne doit pas être employé dans des
+programmes destinés à être portés sur d'autres systèmes. Un appel
+<B>adjtime</B> moins général existe sous SVr4.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+settimeofday">settimeofday</A></B>(2).
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:53 GMT, February 11, 2014
+</BODY>
+</HTML>

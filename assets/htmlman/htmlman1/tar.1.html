@@ -1,0 +1,503 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TAR</TITLE>
+</HEAD><BODY>
+<H1>TAR</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+tar - la version GNU de l'utilitaire tar de gestion d'archives.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>tar</B>
+
+[
+<B>-</B>
+
+]
+<B>A --catenate --concatenate | c --create | d --diff --compare | r --append | t --list | u --update | x -extract --get</B>
+
+[
+<B>--atime-preserve</B>
+
+]
+[
+<B>-b, --block-size N</B>
+
+]
+[
+<B>-B, --read-full-blocks</B>
+
+]
+[
+<B>-C, --directory RÉP</B>
+
+]
+[
+<B>--checkpoint<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+]<BR>
+[
+<B>-f, --file [NOM_HÔTE:]F</B>
+
+]
+[
+<B>--force-local<TT>&nbsp;&nbsp;&nbsp;</TT></B>
+
+]<BR>
+[
+<B>-F, --info-script F --new-volume-script F</B>
+
+]
+[
+<B>-G, --incremental</B>
+
+]
+[
+<B>-g, --listed-incremental F</B>
+
+]
+[
+<B>-h, --dereference</B>
+
+]
+[
+<B>-i, --ignore-zeros</B>
+
+]
+[
+<B>-j, -I, --bzip</B>
+
+]
+[
+<B>--ignore-failed-read</B>
+
+]
+[
+<B>-k, --keep-old-files</B>
+
+]
+[
+<B>-K, --starting-file F</B>
+
+]
+[
+<B>-l, --one-file-system</B>
+
+]
+[
+<B>-L, --tape-length N</B>
+
+]
+[
+<B>-m, --modification-time</B>
+
+]
+[
+<B>-M, --multi-volume</B>
+
+]
+[
+<B>-N, --after-date DATE, --newer DATE</B>
+
+]
+[
+<B>-o, --old-archive, --portability</B>
+
+]
+[
+<B>-O, --to-stdout</B>
+
+]
+[
+<B>-p, --same-permissions, --preserve-permissions</B>
+
+]
+[
+<B>-P, --absolute-paths</B>
+
+]
+[
+<B>--preserve<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+]<BR>
+[
+<B>-R, --record-number</B>
+
+]
+[
+<B>--remove-files</B>
+
+]
+[
+<B>-s, --same-order, --preserve-order</B>
+
+]
+[
+<B>--same-owner</B>
+
+]
+[
+<B>-S, --sparse</B>
+
+]
+[
+<B>-T, --files-from F</B>
+
+]
+[
+<B>--null<TT>&nbsp;&nbsp;</TT></B>
+
+]<BR>
+[
+<B>--totals<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+]<BR>
+[
+<B>-v, --verbose</B>
+
+]
+[
+<B>-V, --label NOM</B>
+
+]
+[
+<B>--version<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+]<BR>
+[
+<B>-w, --interactive, --confirmation</B>
+
+]
+[
+<B>-W, --verify<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+]<BR>
+[
+<B>--exclude FICHIER</B>
+
+]
+[
+<B>-X, --exclude-from FICHIER</B>
+
+]
+[
+<B>-Z, --compress, --uncompress</B>
+
+]
+[
+<B>-z, --gzip, --ungzip<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+]<BR>
+[
+<B>--use-compress-program PROG</B>
+
+]
+[
+<B>--block-compress</B>
+
+]
+[
+<B>-[0-7][lmh]<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+]<BR>
+<DL COMPACT>
+<DT><I>nomfichier1 [ nomfichier2, ... nomfichierN ] </I>
+
+<DD>
+<DT><I>répertoire1 [ répertoire2, ... répertoireN ]</I>
+
+<DD>
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+Voici la page de manuel de la version GNU de
+<B>tar</B>,
+
+un programme de gestion d'archive utilisé pour créer et restaurer des
+fichiers à partir d'une archive connue sous le nom 
+<I>tarfile.</I>
+
+Un fichier 
+<I>tarfile</I>
+
+peut être sur un lecteur de bande, cependant il est possible de produire
+un fichier
+<I>tarfile</I>
+
+comme un fichier normal.
+Le première argument de  
+<B>tar</B>
+
+doit être obligatoirement une de ces lettres&nbsp;:
+<B>Acdrtux</B>,
+
+suivie par n'importe quelles fonctions optionnelles.
+Les arguments finaux de
+<B>tar</B>
+
+sont les noms des fichiers ou des répertoires qui doivent être archivés.
+L'utilisation d'un nom de répertoire implique toujours que les
+sous-répertoires seront inclus dans l'archive.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS PRINCIPALES</H2>
+
+<DL COMPACT>
+<DT>Il faut obligatoirement utiliser l'une des options suivantes&nbsp;:<DD>
+<DT><B>-A, --catenate, --concatenate</B>
+
+<DD>
+ajouter des fichiers à une archive.
+<DT><B>-c, --create<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+créer une nouvelle archive.<BR>
+<DT><B>-d, --diff, --compare</B>
+
+<DD>
+trouver les différence entre une archive et les fichiers indiqués.
+<DT><B>--delete<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+supprimer des fichiers d'une archive (à ne pas utiliser avec les lecteurs de<BR>
+bandes&nbsp;!).
+<DT><B>-r, --append<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+ajouter des fichiers à la fin d'une archive.<BR>
+<DT><B>-t, --list<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+liste le contenu d'une archive.<BR>
+<DT><B>-u, --update<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+ajoute seulement les fichiers qui sont plus récents que ceux de l'archive.<BR>
+<DT><B>-x, --extract, --get<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+restaure les fichiers contenus dans une archive.<BR>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTRES OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>--atime-preserve<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+ne modifie pas les dates d'accès des fichiers de l'archive.<BR>
+<DT><B>-b, --block-size N</B>
+
+<DD>
+impose des blocs de N*512 octets (par défaut N=20).
+<DT><B>-B, --read-full-blocks<TT>&nbsp;&nbsp;</TT></B>
+
+<DD>
+reforme des blocs valides (pour lire les tubes 4.2BSD).<BR>
+<DT><B>-C, --directory RÉP</B>
+
+<DD>
+va dans le répertoire RÉP.
+<DT><B>--checkpoint<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+affiche les noms des répertoires durant la lecture de l'archive.<BR>
+<DT><B>-f, --file [NOM_HÔTE:]F<TT>&nbsp;</TT></B>
+
+<DD>
+utilise le fichier archive F ou le périphérique F (par défaut /dev/rmt0).<BR>
+<DT><B>--force-local<TT>&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+le fichier archive est local même si son nom contient un deux-points.<BR>
+<DT><B>-F, --info-script F --new-volume-script F </B>
+
+<DD>
+lance un script à la fin de chaque bande (implique -M).
+<DT><B>-G, --incremental<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+crée/liste/restaure les anciens formats GNU de sauvegarde incrémentale.<BR>
+<DT><B>-g, --listed-incremental F </B>
+
+<DD>
+crée/liste/restaure les nouveaux formats GNU de sauvegarde incrémentale.
+<DT><B>-h, --dereference<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+n'archive pas les liens symboliques, archive les fichiers vers lesquels ils pointent.<BR>
+<DT><B>-i, --ignore-zeros<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+ignore, dans l'archive, les blocs de zéros, qui correspondent normalement à EOF.<BR>
+<DT><DT><B>-j, -I, --bzip</B>
+
+<DD>
+<DD>
+filtrer l'archive via bzip2. Note&nbsp;: l'option -I est très déconseillée et pourra
+avoir une autre signification plus tard.
+<B>--ignore-failed-read<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+n'abandonne pas l'opération si un fichier est illisible.<BR>
+<DT><B>-k, --keep-old-files<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+conserve les fichiers existants&nbsp;; ne les remplace pas par les fichiers<BR>
+présents dans l'archive.
+<DT><B>-K, --starting-file F<TT>&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+commence par le fichier F dans l'archive.<BR>
+<DT><B>-l, --one-file-system<TT>&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+reste dans le système de fichiers local quand l'archive est créée.<BR>
+<DT><B>-L, --tape-length N<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+change la cassette (ou disquette, le support) après avoir écrit N*1024<BR>
+octets.
+<DT><B>-m, --modification-time<TT>&nbsp;</TT></B>
+
+<DD>
+ne restaure pas la date de modification du fichier. <BR>
+<DT><B>-M, --multi-volume</B>
+
+<DD>
+crée/liste/restaure les archives multivolumes.
+<DT><B>-N, --after-date DATE, --newer DATE<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+enregistre seulement les fichiers plus récents que DATE.<BR>
+<DT><B>-o, --old-archive, --portability<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+écrit une archive au format V7, plutôt qu'au format ANSI.<BR>
+<DT><B>-O, --to-stdout<TT>&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+restaure les fichiers vers la sortie standard.<BR>
+<DT><B>-p, --same-permissions, --preserve-permissions </B>
+
+<DD>
+restaure toutes les informations de protection.
+<DT><B>-P, --absolute-paths<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+n'enlève pas les '/' au début des noms des fichiers.<BR>
+<DT><B>--preserve<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+comme -p -s<BR>
+<DT><B>-R, --record-number<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+accompagne chaque message du numéro d'enregistrement au sein de l'archive.<BR>
+<DT><B>--remove-files<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+efface les fichiers après les avoir ajoutés à l'archive.<BR>
+<DT><B>-s, --same-order, --preserve-order<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+la liste des fichiers à restaurer est triée dans l'ordre d'archivage.<BR>
+<DT><B>--same-owner<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+conserve les appartenances des fichiers restaurés.<BR>
+<DT><B>-S, --sparse<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+traite efficacement les fichiers à trous.<BR>
+<DT><B>-T, --files-from F</B>
+
+<DD>
+obtient la liste des fichiers à extraire ou à archiver depuis le fichier F.
+<DT><B>--null<TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+lit les noms se terminant par des caractères nuls. Désactive l'option -C.<BR>
+<DT><B>--totals<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+affiche la taille totale de l'archive créée avec --create<BR>
+<DT><B>-v, --verbose<TT>&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+affiche la liste des fichiers traités.<BR>
+<DT><B>-V, --label NOM<TT>&nbsp;</TT></B>
+
+<DD>
+crée une archive avec le nom de volume NOM.<BR>
+<DT><B>--version<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+affiche la version de tar.<BR>
+<DT><B>-w, --interactive, --confirmation<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+demande une confirmation pour chaque action.<BR>
+<DT><B>-W, --verify<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+tente de vérifier l'archive après l'avoir produite.<BR>
+<DT><B>--exclude FICHIER</B>
+
+<DD>
+exclut le fichier FICHIER du traitement.
+<DT><B>-X, --exclude-from FICHIER</B>
+
+<DD>
+exclut du traitement les fichiers dont les noms sont contenus dans FICHIER.
+<DT><B>-Z, --compress, --uncompress      <TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+compacte l'archive avec <B>compressFP.<BR>
+<DT>-z, --gzip, --ungzip<TT>&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT></B>
+
+<DD>
+compacte l'archive avec <B>gzip</B>.<BR>
+<DT><B>--use-compress-program PROG</B>
+
+<DD>
+compacte l'archive en utilisant le programme PROG (qui doit accepter la option -d pour le décompactage).
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Jérome Signouret, 2000.
+<BR>
+
+Christophe Blaess 2003.
+<A NAME="lbAH">&nbsp;</A>
+<H2>RELECTURE</H2>
+
+Gérard Delafond
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS PRINCIPALES</A><DD>
+<DT><A HREF="#lbAF">AUTRES OPTIONS</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+<DT><A HREF="#lbAH">RELECTURE</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:48 GMT, February 11, 2014
+</BODY>
+</HTML>

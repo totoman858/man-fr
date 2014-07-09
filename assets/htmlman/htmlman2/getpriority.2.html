@@ -1,0 +1,234 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETPRIORITY</TITLE>
+</HEAD><BODY>
+<H1>GETPRIORITY</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getpriority, setpriority - Lire / écrire la priorité d'ordonnancement du processus.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/time.h">sys/time.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/resource.h">sys/resource.h</A>&gt;</B>
+
+<P>
+<B>int getpriority(int </B><I>which</I><B>, int </B><I>who</I><B>);</B>
+
+<BR>
+
+<B>int setpriority(int </B><I>which</I><B>, int </B><I>who</I><B>, int </B><I>prio</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La priorité d'ordonnancement du processus, du groupe de processus ou
+de l'utilisateur, comme précisé dans
+<I>which</I>
+
+et
+<I>who</I>
+
+est lue avec
+<B>getpriority</B>
+
+et fixée avec
+<B>setpriority.</B>
+
+<P>
+<I>Which</I>
+
+doit être l'un des éléments
+<B>PRIO_PROCESS,</B>
+
+<B>PRIO_PGRP,</B>
+
+ou
+<B>PRIO_USER,</B>
+
+et
+<I>who</I>
+
+est interprété en fonction de
+<I>which</I>
+
+(un ID de processus pour
+<B>PRIO_PROCESS,</B>
+
+un ID de groupe de processus 
+pour
+<B>PRIO_PGRP,</B>
+
+et un ID d'utilisateur pour
+<B>PRIO_USER).</B>
+
+Une valeur nulle pour
+<I>who</I>
+
+indique (respectivement) le processus appelant, le groupe de processus de
+l'appelant ou l'UID réel du processus appelant.
+<I>Prio</I>
+
+est une valeur dans l'intervalle -20 à 20 (voir les Notes plus bas).
+La priorité par défaut est 0, les priorités les plus faibles indiquant
+un ordonnancement le plus favorable.
+<P>
+La fonction
+<B>getpriority</B>
+
+renvoie la plus haute priorité (la plus basse valeur numérique)
+dont a bénéficié l'un des processus indiqué. La fonction
+<B>setpriority</B>
+
+fixe la priorité des processus indiqués à la valeur fournie.
+Seul le Super-User peut diminuer la valeur numérique de la priorité.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Comme
+<B>getpriority</B>
+
+peut tout à fait renvoyer la valeur -1, il faut
+effacer la variable externe
+<I>errno</I>
+
+avant l'appel afin de vérifier
+si une valeur -1 indique une
+erreur ou une priorité légitime.
+L'appel
+<B>setpriority</B>
+
+renvoie 0 s'il réussit, ou -1 s'il échoue et remplit
+<I>errno</I>.
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ESRCH</B>
+
+<DD>
+Aucun processus ne correspond aux valeurs de
+<I>which</I>
+
+et
+<I>who</I>
+
+indiquées.
+<DT><B>EINVAL</B>
+
+<DD>
+<I>Which</I>
+
+n'était ni
+<B>PRIO_PROCESS,</B>
+
+ni
+<B>PRIO_PGRP,</B>
+
+ni
+<B>PRIO_USER.</B>
+
+</DL>
+<P>
+
+De plus
+<B>setpriority</B>
+
+peut échouer pour les erreurs suivantes :
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+Un processus correspond bien aux valeurs indiquées, mais ni l'UID réel,
+ni l'UID effectif de l'appelant ne lui correspondent.
+<DT><B>EACCES</B>
+
+<DD>
+Tentative de favoriser un processus sans être Super-User.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les détails concernant la condition d'erreur EPERM dépendent du système.
+La description ci-dessus concerne ce que dit SUSv3, et qui semble être suivi
+par tous les systèmes de type SysV.
+Linux demande que l'UID réel ou effectif de l'appelant correspondent à
+l'UID réel du processus <I>who</I> (et non pas à son UID effectif).
+Tous les systèmes de type BSD (SunOS 4.1.3, Ultrix 4.2
+BSD 4.3, FreeBSD 4.3, OpenBSD-2.5...) demandent que l'UID
+effectif de l'appelant corresponde à l'UID réel 
+ou effectif du processus <I>who</I>.
+<P>
+
+Le véritable intervalle des priorités varie suivant les versions du noyau.
+Sur les systèmes Linux antérieure au 1.3.36 l'intervalle s'étendait de
+-infini à 15. Depuis le 1.3.43 il correspond à -20..19, et l'appel-système
+getpriority renvoie 40..1 pour ces valeurs (puisque les nombres négatifs
+sont des codes d'erreur).
+La routine de bibliothèque convertit N en 20-N.
+<P>
+
+L'inclusion
+<I>&lt;<A HREF="file:///usr/include/sys/time.h">sys/time.h</A>&gt;</I>
+
+n'est plus obligatoire, mais améliore la portabilité.
+(En fait,
+<I>&lt;<A HREF="file:///usr/include/sys/resource.h">sys/resource.h</A>&gt;</I>
+
+définit la structure
+<I>rusage</I>
+
+qui contient des champs de type
+<I>struct timeval</I>
+
+défini
+<I>&lt;<A HREF="file:///usr/include/sys/time.h">sys/time.h</A>&gt;</I>).
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, BSD 4.4 (Cette fonction est apparue dans BSD 4.2).
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+nice">nice</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?8+renice">renice</A></B>(8).
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:56 GMT, February 11, 2014
+</BODY>
+</HTML>

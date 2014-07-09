@@ -1,0 +1,255 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FLOCK</TITLE>
+</HEAD><BODY>
+<H1>FLOCK</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+flock - Placer ou enlever un verrou coopératif sur un fichier ouvert.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/file.h">sys/file.h</A>&gt;</B>
+
+<P>
+<B>int flock(int </B>fd<B>, int </B>operation<B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Place ou enlève un verrou consultatif sur un fichier ouvert dont le descripteur est
+<I>fd</I>.
+
+Le paramètre
+<I>operation</I>
+
+est l'un des suivants&nbsp;:
+<DL COMPACT><DT><DD>
+<P>
+<DL COMPACT>
+<DT>LOCK_SH<DD>
+Verrouillage partagé.
+Plusieurs processus peuvent disposer d'un verrouillage
+partagé simultanément sur un même fichier.
+<DT>LOCK_EX<DD>
+Verrouillage exclusif.
+Un seul processus dispose d'un verrouillage exclusif
+sur un fichier, à un moment donné.
+<DT>LOCK_UN<DD>
+Déverrouillage d'un verrou tenu par le processus.
+<P>
+</DL>
+</DL>
+
+<P>
+Un appel
+<B>flock()</B>
+
+peut bloquer si un verrou incompatible est tenu par un autre processus.
+Pour que la requête soit non-bloquante, il faut inclure
+<B>LOCK_NB</B>
+
+(par un
+<I>OU</I>
+
+binaire | ) avec la constante précisant l'opération.
+<P>
+Un même fichier ne peut pas avoir simultanément des verrous partagés et exclusifs.
+<P>
+Les verrous créés avec
+<B>flock</B>()
+
+sont associés à un fichier, ou plus précisément une entrée de la table des fichiers
+ouverts. Ainsi les descripteurs de fichiers dupliqués (par exemple avec
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2) ou <B><A HREF="/cgi-bin/man/man2html?2+dup">dup</A></B>(2))
+
+se réfèrent au même verrou, et celui-ci peut être relâché ou modifié à
+travers n'importe lequel des descripteurs.
+De plus, un verrou est relâche par une opération explicite
+<B>LOCK_UN</B>
+
+sur l'un quelconque des descripteurs, ou lorsqu'ils ont tous été
+fermés.
+<P>
+Un processus ne peut avoir qu'une seul type de verrou (partagé ou exclusif)
+sur un fichier.
+En conséquence un appel
+<B>flock</B>()
+
+sur un fichier déjà verrouillé modifiera le type de
+verrouillage.
+<P>
+Les verrous créés par
+<B>flock</B>()
+
+sont conservé lors d'un appel
+<B>execve</B>().
+
+<P>
+Un verrou partagé ou exclusif peut être placé sur un fichier quelque soit le
+mode d'ouverture du fichier.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>flock</B>
+
+renvoie 0 s'il réussit, ou -1 en cas d'échec, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EWOULDBLOCK</B>
+
+<DD>
+Le fichier est verrouillé et l'attribut
+<B>LOCK_NB</B>
+
+a été précisé.
+<DT><B>EBADF</B>
+
+<DD>
+<I>fd</I>
+
+n'est pas un descripteur de fichier ouvert.
+<DT><B>EINTR</B>
+
+<DD>
+Durant l'attente pour acquérir le verrou,
+l'appel a été interrompu par un signal capturé par un gestionnaire.
+<DT><B>EINVAL</B>
+
+<DD>
+<I>operation</I>
+
+est invalide.
+<DT><B>ENOLCK</B>
+
+<DD>
+Le noyau n'a pas assez de mémoire pour les allocations de verrou.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+4.4BSD (l'appel système
+<B><A HREF="/cgi-bin/man/man2html?2+flock">flock</A></B>(2)
+
+est apparu pour la première fois dans 4.2BSD).
+Une version de
+<B><A HREF="/cgi-bin/man/man2html?2+flock">flock</A></B>(2)
+
+parfois implémenté à partir de
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2),
+
+est apparue sur la plupart des Unix.
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+flock">flock</A></B>(2)
+
+ne verrouille par les fichiers à travers NFS. Utilisez
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2)
+
+à la place : il fonctionne avec NFS si la version de Linux est suffisamment
+récente et si le serveur accepte les verrouillages.
+<P>
+
+Depuis le noyau 2.0,
+<B><A HREF="/cgi-bin/man/man2html?2+flock">flock</A></B>(2)
+
+est implémenté par un appel-système plutôt que d'être
+émulé par une routine de la bibliothèque C invoquant
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2).
+
+Ceci correspond à la véritable sémantique BSD&nbsp;:
+il n'y a pas d'interaction entre les verrous
+placés 
+<B><A HREF="/cgi-bin/man/man2html?2+flock">flock</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2),
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+flock">flock</A></B>(2)
+
+ne détecte pas les cas de blocage (deadlock).
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?2+flock">flock</A></B>(2)
+
+place uniquement des verrous coopératifs&nbsp;: suivant les permissions du fichier
+un processus peut ignorer l'utilisation de
+<B><A HREF="/cgi-bin/man/man2html?2+flock">flock</A></B>(2)
+
+et faire des entrées/sorties sur le fichier.
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?2+flock">flock</A></B>(2)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2)
+
+ont des sémantiques différents par rapport aux processus &quot;forkés&quot; et
+<B><A HREF="/cgi-bin/man/man2html?2+dup">dup</A></B>(2).
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+close">close</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+dup">dup</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+execve">execve</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+lockf">lockf</A></B>(3)
+
+<P>
+On peut également se reporter aux fichiers
+<I>locks.txt</I>
+
+et
+<I>mandatory.txt</I>
+
+dans le répertoire
+<I>/usr/src/linux/Documentation</I>.
+
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:53 GMT, February 11, 2014
+</BODY>
+</HTML>

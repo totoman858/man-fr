@@ -1,0 +1,198 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of BASENAME</TITLE>
+</HEAD><BODY>
+<H1>BASENAME</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NON</H2>
+
+basename, dirname - Analyse des composants d'un chemin d'accès.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/libgen.h">libgen.h</A>&gt;</B>
+
+<B>char *basename(char </B><I>*chemin</I><B>);</B>
+<B>char *dirname(char </B><I>*chemin</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les fonctions
+<B>basename</B>
+
+et
+<B>dirname</B>
+
+décomposent une chaîne terminée par un caractère nul, représentant un chemin
+d'accès en ses composants répertoire et nom de fichier.
+En général,
+<B>dirname</B>
+
+renvoie la chaîne s'étendant jusqu'au dernier '/', non compris, et
+<B>basename</B>
+
+renvoie la partie se trouvant après le dernier '/'.
+Les caractères '/' en fin de chaîne ne font pas partie du chemin.
+<P>
+
+Si le
+<I>chemin</I>
+
+ne contient pas de slash,
+<B>dirname</B>
+
+renvoie la chaîne &quot;.&quot; et
+<B>basename</B>
+
+renvoie une copie de la chaîne
+<I>chemin</I>.
+
+Si le
+<I>chemin</I>
+
+est représenté par la chaîne &quot;/&quot;, alors
+<B>dirname</B>
+
+et
+<B>basename</B>
+
+renvoient tout deux la chaîne &quot;/&quot;.
+Si le
+<I>chemin</I>
+
+est un pointeur NULL, ou pointe vers une chaîne vide, alors
+<B>dirname</B>
+
+et
+<B>basename</B>
+
+renvoient tout deux la chaîne &quot;.&quot;
+<P>
+
+En mettant bout à bout la chaîne renvoyée par
+<B>dirname</B>,
+
+un &quot;/&quot;, et la chaîne renvoyée par
+<B>basename</B>,
+
+on obtient un chemin d'accès complet.
+<P>
+
+Autant
+<B>dirname</B>
+
+que
+<B>basename</B>
+
+peuvent modifier le contenu de la chaîne
+<I>chemin</I>,
+
+aussi si vous devez conserver la chaîne originale, il
+faut leur transmettre des copies de la chaîne. De plus,
+<B>dirname</B>
+
+et
+<B>basename</B>
+
+peuvent renvoyer des pointeurs sur des zones mémoires allouées
+statiquement, qui peuvent être écrasées par des appels consécutifs.
+<P>
+
+La liste suivante d'exemple (prise dans SUSv2) 
+montre les chaînes renvoyées par
+<B>dirname</B>
+
+et
+<B>basename</B>
+
+pour différents chemin d'accès :
+<P>
+<PRE>
+<B>chemin      dirname  basename</B>
+&quot;/usr/lib&quot;  &quot;/usr&quot;   &quot;lib&quot;
+&quot;/usr/&quot;     &quot;/&quot;      &quot;usr&quot;
+&quot;usr&quot;       &quot;.&quot;      &quot;usr&quot;
+&quot;/&quot;         &quot;/&quot;      &quot;/&quot;
+&quot;.&quot;         &quot;.&quot;      &quot;.&quot;
+&quot;..&quot;        &quot;.&quot;      &quot;..&quot;
+</PRE>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+<PRE>
+char *dirc, *basec, *bname, *dname;
+char *chemin = &quot;/etc/passwd&quot;;
+
+dirc = strdup(chemin);
+basec = strdup(chemin);
+dname = dirname(dirc);
+bname = basename(basec);
+printf(&quot;dirname=%s, basename=%s\n&quot;, dname, bname);
+free(dirc);
+free(basec);
+</PRE>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Les fonctions
+<B>dirname</B>
+
+et
+<B>basename</B>
+
+renvoient des pointeurs sur des chaînes terminées par un caractère nul.
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Dans les versions de la GlibC jusqu'à 2.2.1 comprise,
+<B>dirname</B>
+
+ne gérait pas correctement les chemins se terminant par un caractère '/'
+et déclenchait une erreur de segmentation en recevant un pointeur NULL.
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SUSv2
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+dirname">dirname</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+basename">basename</A></B>(1),
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2001-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NON</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">EXEMPLE</A><DD>
+<DT><A HREF="#lbAF">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:06 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,104 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of HOSTS.EQUIV</TITLE>
+</HEAD><BODY>
+<H1>HOSTS.EQUIV</H1>
+Section: Manuel de l administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+/etc/hosts.equiv - Liste d'ordinateurs et d'utilisateurs de confiance.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le fichier <B>hosts.equiv</B> autorise ou interdit à des ordinateurs et à des
+utilisateurs l'utilisation des commandes <B>r</B> (telles que <B>rlogin</B>,
+<B>rsh</B> ou <B>rcp</B>) sans donner de mot de passe.
+<P>
+
+Le fichier utilise le format suivant&nbsp;:
+<DL COMPACT>
+<DT><I>[ + | - ]</I> <I>[ordinateur]</I> <I>[utilisateur]</I><DD>
+</DL>
+<P>
+
+Le champ <I>ordinateur</I> est le nom d'un ordinateur équivalent à l'ordinateur
+local en terme d'autorisations. Les utilisateurs connectés sur cet ordinateur
+sont autorisés à accéder aux comptes du même nom sans fournir de mot de passe.
+<I>ordinateur</I> peut être optionnellement précédé d'un signe plus (+). Un signe
+plus seul signifie que toutes les machines sont autorisées à se connecter au
+système. Il est possible d'interdire l'accès à un ordinateur particulier en
+précédant <I>ordinateur</I> d'un signe moins (-). Les utilisateurs de ces
+ordinateurs devront toujours fournir un mot de passe. Pour des raisons de
+sécurité, vous devriez toujours utiliser le nom complet de l'ordinateur et non
+son diminutif.
+<P>
+
+Le champ <I>utilisateur</I> permet de donner accès à tous les comptes (excepté
+root) sans mot de passe à un utilisateur particulier. Cela signifie que cet
+utilisateur n'est
+<B>pas</B>
+
+limité au compte du même nom&nbsp;! Le champ <I>utilisateur</I> peut être
+optionnellement précédé par un signe plus (+). Vous pouvez aussi explicitement
+interdire l'accès à un utilisateur particulier en précédant <I>utilisateur</I>
+par un signe moins (-). Cela signifie que cet utilisateur n'est pas déclaré sûr
+quel que soit les entrées relatives aux machines.
+<P>
+
+Les netgroupes peuvent être utilisés en plaçant un signe @ devant.
+<P>
+
+Soyez très attentifs quand vous employez le signe plus (+). Une simple erreur
+typographique et vous placerez un signe plus sur une ligne vide; ce qui
+signifiera que touts les ordinateurs seront autorisés à employer les
+<I>r</I>-commandes sans mot de passe&nbsp;!
+<P>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/etc/hosts.equiv
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTE</H2>
+
+Certains systèmes ne tiennent compte du contenu de ce fichier que lorsque
+que le propriétaire est root et que personne d'autre ne peut le modifier.
+Certains systèmes particulièrement paranoïaques nécessitent même qu'il n'y ait
+qu'un seul lien physique sur le fichier.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+rhosts">rhosts</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+rshd">rshd</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+rlogind">rlogind</A></B>(8)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 1999
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">FICHIERS</A><DD>
+<DT><A HREF="#lbAE">NOTE</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:55 GMT, February 11, 2014
+</BODY>
+</HTML>

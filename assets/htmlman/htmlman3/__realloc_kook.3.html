@@ -1,0 +1,203 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MALLOC_HOOK</TITLE>
+</HEAD><BODY>
+<H1>MALLOC_HOOK</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+__malloc_hook, __malloc_initialize_hook, __memalign_hook, __free_hook, __realloc_hook, __after_morecore_hook - Variables de débogage de malloc.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/malloc.h">malloc.h</A>&gt;</B>
+
+<P>
+<B>void *(*__malloc_hook)(size_t </B><I>size</I><B>,</B>
+
+<B>const void *</B><I>caller</I><B>);</B>
+
+<P>
+<B>void *(*__realloc_hook)(void *</B><I>ptr</I><B>,</B>
+
+<B>size_t </B><I>size</I><B>,</B>
+
+<B>const void *</B><I>caller</I><B>);</B>
+
+<P>
+<B>void *(*__memalign_hook)(size_t </B><I>alignment</I><B>,</B>
+
+<B>size_t </B><I>size</I><B>,</B>
+
+<B>const void *</B><I>caller</I><B>);</B>
+
+<P>
+<B>void (*__free_hook)(void *</B><I>ptr</I><B>,</B>
+
+<B>const void *</B><I>caller</I><B>);</B>
+
+<P>
+<B>void (*__malloc_initialize_hook)(void);</B>
+
+<P>
+<B>void (*__after_morecore_hook)(void);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La bibliothèque C GNU vous permet de modifier le comportement de
+<I>malloc</I>(),
+
+<I>realloc</I>(),
+
+et
+<I>free</I>()
+
+en fixant les points d'entrée des routines. Vous pouvez utiliser ces points
+pour faciliter le débogage des programmes utilisant des allocations de mémoire
+dynamique par exemple.
+<P>
+
+La variable
+<B>__malloc_initialize_hook</B>
+
+pointe vers une fonction qui est appelée une seule fois à l'initialisation de
+malloc. C'est une variable libre qui peut être modifiée par l'application avec
+une déclaration comme celle-ci&nbsp;:
+<BR>
+
+<PRE>
+    void (*__malloc_initialize_hook)(void) = my_init_hook;
+</PRE>
+
+<BR>
+
+A présent la fonction
+<I>my_init_hook</I>()
+
+pourra faire toute l'initialisation des routines.
+<P>
+
+Les quatre fonctions pointes par
+<B>__malloc_hook</B>,
+
+<B>__realloc_hook</B>,
+
+<B>__memalign_hook</B>,
+
+<B>__free_hook</B>
+
+ont des prototypes semblables à ceux des fonctions
+<I>malloc</I>(),
+
+<I>realloc</I>(),
+
+<I>memalign</I>(),
+
+<I>free</I>(),
+
+respectivement, avec un argument final supplémentaire
+<I>caller</I>
+
+qui fournit l'adresse du code appelant
+<I>malloc</I>(),
+
+etc.
+<P>
+
+La variable
+<B>__after_morecore_hook</B>
+
+pointe sur une fonction qui est invoquée à chaque fois que
+<I>sbrk</I>()
+
+a été appelé pour augmenter le segment de données.
+<A NAME="lbAE">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+Voici un court exemple d'utilisation de ces variables.
+<P>
+<PRE>
+#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/malloc.h">malloc.h</A>&gt;
+     
+/* Prototypes de nos routines */
+static void my_init_hook(void);
+static void *my_malloc_hook(size_t, const void *);
+
+/* Variables pour sauver la routine originale */
+static void *(*old_malloc_hook)(size_t, const void *);
+     
+/* Ecrasement de la routine d'initialisaiton GlibC */
+void (*__malloc_initialize_hook) (void) = my_init_hook;
+
+static void
+my_init_hook(void) {
+    old_malloc_hook = __malloc_hook;
+    __malloc_hook = my_malloc_hook;
+}
+
+static void *
+my_malloc_hook (size_t size, const void *caller) {
+    void *result;
+
+    /* Replacer la routine originale */
+    __malloc_hook = old_malloc_hook;
+
+    /* Appel de la routine originale) */
+    result = malloc (size);
+
+    /* Sauver la routine originale */
+    old_malloc_hook = __malloc_hook;
+
+    /* `printf' peut appeler `malloc'... à protéger. */
+    printf (&quot;malloc(%u) called from %p returns %p,
+        (unsigned int) size, caller, result);
+
+    /* Replacer notre routine */
+    __malloc_hook = my_malloc_hook;
+
+    return result;
+}
+</PRE>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+mallinfo">mallinfo</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+mtrace">mtrace</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+mcheck">mcheck</A></B>(3)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">EXEMPLE</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:22 GMT, February 11, 2014
+</BODY>
+</HTML>

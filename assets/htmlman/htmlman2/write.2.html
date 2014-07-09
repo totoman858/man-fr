@@ -1,0 +1,194 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of WRITE</TITLE>
+</HEAD><BODY>
+<H1>WRITE</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+write - Écrire dans un descripteur de fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>ssize_t write(int </B><I>fd</I><B>, const void *</B><I>buf</I><B>, size_t </B><I>count</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>write</B>
+
+écrit jusqu'à
+<I>count</I>
+
+octets dans le fichier associé au descripteur
+<I>fd</I>
+
+depuis le buffer pointé par
+<I>buf.</I>
+
+POSIX réclame qu'une lecture avec <B>read()</B> effectuée après le
+retour d'une écriture avec <B>write()</B>, renvoie les nouvelles
+données. Notez que tous les systèmes de fichiers ne sont pas
+compatibles avec POSIX.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>write</B>
+
+renvoie le nombre d'octets écrits (0 signifiant aucune écriture), 
+ou -1 s'il échoue,
+auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+Si <I>count</I> vaut zéro, et si le descripteur est associé à un
+fichier normal, 0 sera renvoyé sans effets de bord. Pour un
+fichier spécial, les résultats ne sont pas portables.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+<I>fd</I>
+
+n'est pas un descripteur de fichier valide, ou n'est pas ouvert
+en écriture.
+<DT><B>EINVAL</B>
+
+<DD>
+<I>fd</I>
+
+correspond à un objet ne permettant pas l'écriture.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>buf</I>
+
+pointe en dehors de l'espace d'adressage accessible.
+<DT><B>EFBIG</B>
+
+<DD>
+Tentative d'écrire un fichier dont la taille dépasse un maximum dépendant
+de l'implémentation ou du processus, ou d'écrire à une position qui dépasse
+le déplacement maximal autorisé.
+<DT><B>EPIPE</B>
+
+<DD>
+<I>fd</I>
+
+est connecté à un tube (pipe) ou une socket dont l'autre extrémité est
+fermée. Quand ceci se produit, le processus écrivain reçoit un signal
+<B>SIGPIPE .</B>
+
+S'il intercepte, bloque ou ignore ce signal, 
+<B>EPIPE</B>
+
+est renvoyé.
+<DT><B>EAGAIN</B>
+
+<DD>
+L'écriture est non-bloquante (attribut
+<B>O_NONBLOCK</B>
+
+du descripteur), et l'opération devrait bloquer.
+<DT><B>EINTR</B>
+
+<DD>
+L'appel système a été interrompu par un signal avant d'avoir pu écrire
+quoique ce soit.
+<DT><B>ENOSPC</B>
+
+<DD>
+Le périphérique correspondant à 
+<I>fd</I>
+
+n'a plus de place disponible.
+<DT><B>EIO</B>
+
+<DD>
+Une erreur d'entrée/sortie bas niveau s'est produite durant la modification
+de l'i-noeud.
+</DL>
+<P>
+
+D'autres erreurs peuvent se produire suivant le type d'objet associé à
+<I>fd</I>.
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID, POSIX, X/OPEN, BSD 4.3.  SVr4 mentionne des conditions d'erreur
+supplémentaires EDEADLK, ENOLCK, ENOLNK, ENOSR, ENXIO, EPIPE, et ERANGE.
+Sous SVr4, un appel <B>write</B>() peut être interrompu, et renvoyer EINTR à
+n'importe quel moment, pas seulement avant l'écriture des données.
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Une réussite de
+<B>write</B>
+
+n'offre aucune garantie que les données se trouvent sur le disque.
+En fait, sur certaines implémentations erronées, elle ne garantie même pas
+que l'espace suffisant a été réservé pour les données.
+La seule manière d'être sûr de la réussite est d'invoquer
+<B><A HREF="/cgi-bin/man/man2html?2+fsync">fsync</A></B>(2)
+
+après avoir écrit les données.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+close">close</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fsync">fsync</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+lseek">lseek</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+select">select</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fwrite">fwrite</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?2+writev">writev</A></B>(2)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:01 GMT, February 11, 2014
+</BODY>
+</HTML>

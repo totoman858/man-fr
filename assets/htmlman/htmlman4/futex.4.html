@@ -1,0 +1,144 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FUTEX</TITLE>
+</HEAD><BODY>
+<H1>FUTEX</H1>
+Section: Manuel du programmeur Linux (4)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+futex - Verrous rapide dans l'espace utilisateur.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<P>
+<PRE>
+#include &lt;<A HREF="file:///usr/include/linux/futex.h">linux/futex.h</A>&gt;
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+Le noyau Linux propose des Futex (Fast Userpace muTex) en guise de blocs
+de base pour des verrous et sémaphores dans l'espace utilisateur. Ils sont très
+simples et servent à implémenter des abstration de plus haut niveau comme les mutex Posix.
+<P>
+
+Cette page ne documente pas toutes les décisions de conception mais se contente des informations
+nécessaires pour le développeur d'application ou de bibliothèque. La plupart des programmeurs n'utiliseront jamais
+les futex directement mais s'appuieront sur des bibliothèques les utilisant, comme l'implémentation NPTL des threads.
+<P>
+
+Un futex est identifié par une portion de mémoire qui peut être partagée entre processus. Dans chacun d'eux,
+il peut avoir une adresse différente. Dans sa forme brute, un futex se comporte comme un sémaphore&nbsp;;
+il a un compteur que l'on incrémente et décrémente atomiquement, et les
+processus peuvent attendre que sa valeur soit positive.
+<P>
+
+Les opérations sur les Futex se font entièrement dans l'espace utilisateur lorsqu'il n'y a pas de conflits.
+Le noyau n'est impliqué que pour arbitrer les conflits. Comme toute conception sensée essayera d'éviter les conflits,
+les futex sont optimisés pour cette situation.
+<P>
+
+Dans sa forme la plus simple, un futex est un entier aligné, manipulé uniquement par des
+opérations assembleur atomiques. Les processus peuvent les partager par des projection mmap ou des segments de mémoire
+partagée, ce qui correspond au cas des applications multi-threads.
+<A NAME="lbAE">&nbsp;</A>
+<H2>SÉMANTIQUE</H2>
+
+<P>
+
+Toute opération sur les futex débute dans l'espace utilisateur, mais il peut
+être nécessaire d'invoquer
+le noyau avec l'appel-système <B><A HREF="/cgi-bin/man/man2html?2+futex">futex</A></B>(2).
+<P>
+
+Pour augmenter un futex, exécutez l'opération assembleur qui permet au CPU
+hôte d'incrémenter atomiquement
+un entier. Après, vérifiez s'il est passé de zéro à un, auquel cas il n'y
+avait pas d'attente et l'opération est terminée. C'est le cas sans conflit,
+rapide et courant.
+<P>
+
+S'il y avait un blocage, l'incrémentation atomique part d'un compteur à -1
+(ou une autre valeur négative). Si c'est le cas, il y a des processus en attente.
+Il faut à présent mettre le compteur à 1 et demander au noyau de réveiller
+tous les processus en attente, à l'aide de l'opération FUTEX_WAKE.
+<P>
+
+Attendre sur un futex pour le décrémenter est l'opération inverse. Décrémentez le compteur et
+vérifiez s'il est descendu à zéro, auquel cas l'opération est terminée car le
+futex était libre.
+Dans tous les autres cas, le processus doit mettre le compteur à -1 et demander au noyau d'attendre
+qu'un autre processus libère le futex. Ceci est réalisé avec l'opération FUTEX_WAIT.
+<P>
+
+L'appel-système futex peut aussi recevoir un délai maximal d'attente pour que le futex
+soit incrémenté. Dans ce cas la sémantique est plus complexe et le programmeur doit se reporter à
+<B><A HREF="/cgi-bin/man/man2html?2+futex">futex</A></B>(2) pour plus de détail. Idem pour les attentes asynchrones.
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+<P>
+
+Répetons-le, les futex bruts ne sont pas conçus pour être utilisés facilement. Les implémenteurs
+sont supposés connaître l'assembleur et avoir lu les sources de la bibliothèque
+futex en espace utilisateur décrite plus bas.
+<P>
+
+Cette page illustre l'utilisation la plus courante des primitives <B><A HREF="/cgi-bin/man/man2html?2+futex">futex</A></B>(2)&nbsp;: ce n'est pas la seule.
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+<P>
+
+Les futex ont été conçus et écrits par Hubertus Franke (IBM Thomas J. Watson Research Center), 
+Matthew Kirkwood, Ingo Molnar (Red Hat) et Rusty Russell (IBM Linux Technology Center). Cette page a été écrite 
+par bert hubert.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VERSIONS</H2>
+
+<P>
+
+Le support initial des futex a été introduit dans Linux 2.5.7 avec une sémantique différente de celle décrite ci-dessus.
+La sémantique actuelle est disponible depuis Linux 2.5.40.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<P>
+
+<B><A HREF="/cgi-bin/man/man2html?2+futex">futex</A></B>(2),
+`Fuss, Futexes and Furwocks: Fast Userlevel Locking in Linux' (proceedings of the Ottawa Linux 
+Symposium 2002), 
+futex example library, futex-*.tar.bz2 &lt;URL:<A HREF="ftp://ftp.kernel.org:/pub/linux/kernel/people/rusty/">ftp://ftp.kernel.org:/pub/linux/kernel/people/rusty/</A>&gt;.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">SÉMANTIQUE</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">AUTEURS</A><DD>
+<DT><A HREF="#lbAH">VERSIONS</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:53 GMT, February 11, 2014
+</BODY>
+</HTML>

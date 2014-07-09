@@ -1,0 +1,242 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of OPENPTY</TITLE>
+</HEAD><BODY>
+<H1>OPENPTY</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+openpty, login_tty, forkpty - Fonctions utilitaires pour terminaux tty.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/pty.h">pty.h</A>&gt;</B>
+
+&nbsp;/* for openpty and forkpty */
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/utmp.h">utmp.h</A>&gt;</B>
+
+/* for login_tty */
+<P>
+<B>int openpty(int *</B><I>amaster</I><B>, int *</B><I>aslave</I><B>, char *</B><I>name</I><B>, struct termios *</B><I>termp</I><B>, struct winsize * </B><I>winp</I><B>);</B>
+
+<P>
+<B>int login_tty(int </B><I>fd</I><B>);</B>
+
+<P>
+<B>pid_t forkpty(int *</B><I>amaster</I><B>, char *</B><I>name</I><B>, struct termios *</B><I>termp</I><B>, struct winsize *</B><I>winp</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction 
+<B>openpty()</B>
+
+localise un pseudo terminal disponible et renvoie des descripteurs de fichiers
+pour le maître et l'esclave dans 
+<I>amaster</I>
+
+et
+<I>aslave</I>.
+
+Si la chaîne
+<I>name</I>
+
+ne vaut pas NULL, le nom de fichier de l'esclave est renvoyé dans
+<I>name</I>.
+
+Si
+<I>termp</I>
+
+ne vaut pas NULL, les paramètres du terminal esclave seront affectés conformément
+aux valeurs spécifiées dans
+<I>termp</I>.
+
+Si
+<I>winp</I>
+
+ne vaut pas NULL, la taille de la fenêtre de l'esclave sera conditionnée par 
+les valeurs contenues dans 
+<I>winp</I>.
+
+<P>
+La fonction 
+<B>login_tty()</B>
+
+prépare une connexion sur le terminal 
+<I>fd</I>
+
+(qui peut être un véritable périphérique tty, ou bien l'esclave d'un pseudo 
+terminal tel que celui renvoyé par
+<B>openpty()</B>)
+
+en créant une nouvelle session, en faisant de 
+<I>fd</I>
+
+le terminal de contrôle pour le processus courant, en affectant 
+<I>fd</I>
+
+à l'entrée standard, à la sortie standard et aux flux d'erreur du processus
+courant, et enfin, en fermant 
+<I>fd</I>.
+
+<P>
+La fonction
+<B>forkpty()</B>
+
+combine
+<B>openpty()</B>,
+
+<B>fork()</B>,
+
+et
+<B>login_tty()</B>
+
+afin de créer un nouveau processus opérant dans un pseudo terminal. Le descripteur 
+de fichier de la partie maître du pseudo terminal est renvoyé dans
+<I>amaster</I>,
+
+et le nom de fichier de l'esclave dans
+<I>name</I>
+
+s'il n'est pas NULL. Les paramètres
+<I>termp</I>
+
+et
+<I>winp</I>
+
+, s'ils ne valent pas NULL, 
+déterminent les attributs du terminal et la taille de la fenêtre de
+la partie esclave du pseudo terminal.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Lorsqu'un appel à
+<B>openpty()</B>,
+
+<B>login_tty()</B>,
+
+ou
+<B>forkpty()</B>
+
+échoue, alors, on renvoie -1 et 
+<I>errno</I>
+
+est positionnée afin de préciser l'erreur. Sinon
+<B>openpty()</B>,
+
+<B>login_tty()</B>,
+
+ainsi que le processus fils de
+<B>forkpty()</B>
+
+renvoient 0 tandis que le processus père de
+<B>forkpty()</B>
+
+renvoie le PID du processus fils.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<B>openpty()</B>
+
+échoue lorsque&nbsp;:
+<DL COMPACT>
+<DT><B>ENOENT</B>
+
+<DD>
+Il n'y a plus de terminaux disponibles.
+</DL>
+<P>
+
+<B>login_pty()</B>
+
+échoue lorsque 
+<B>ioctl()</B>
+
+ne parvient pas à affecter 
+<I>fd</I>
+
+au terminal de contrôle du processus courant.
+<P>
+
+<B>forkpty()</B>
+
+échoue en cas d'échec de
+<B>openpty()</B>
+
+ou de
+<B>fork().</B>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTE</H2>
+
+Ces fonctions sont dans la bibliothèque libutil, il faut donc ajouter
+<B>-lutil</B>
+
+sur la ligne de commande du compilateur.
+<A NAME="lbAH">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/dev/[pt]ty[pqrstuwxyzabcdePQRST][0123456789abcdef]</I>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Il s'agit de fonctions BSD présentes dans la libc5 et la glibc2.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Personne ne sait combien d'espace il faut réserver pour
+<I>name</I>,
+
+ainsi les appels
+<B>openpty()</B>
+
+et
+<B>forkpty()</B>
+
+avec un argument
+<I>name</I>
+
+non-nul peut poser un problème de sécurité.
+<A NAME="lbAK">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2)
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Stéphan Rafin, 2002.
+<BR>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTE</A><DD>
+<DT><A HREF="#lbAH">FICHIERS</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">BOGUES</A><DD>
+<DT><A HREF="#lbAK">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:11 GMT, February 11, 2014
+</BODY>
+</HTML>

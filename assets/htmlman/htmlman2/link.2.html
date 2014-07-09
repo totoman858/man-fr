@@ -1,0 +1,212 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LINK</TITLE>
+</HEAD><BODY>
+<H1>LINK</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+link - Crée un nouveau nom pour un fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int link (const char *</B><I>oldpath</I><B>, const char *</B><I>newpath</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>link</B>
+
+crée un nouveau lien (aussi appelé lien matériel ou hard link) sur
+un fichier existant.
+<P>
+Si
+<I>newpath</I>
+
+existe il ne sera
+<I>pas</I>
+
+ecrasé.
+<P>
+Ce nouveau nom pourra être utilisé exactement comme l'ancien quelque
+soit l'opération. Les deux noms se réfèrent au même fichier (et ont
+donc les mêmes permissions et propriétaire) et il est impossible de
+déterminer quel nom était l'original.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+En cas de réussite 0 est renvoyé, en cas d'échec -1 est renvoyé,
+et
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EXDEV</B>
+
+<DD>
+<I>oldpath</I> et <I>newpath</I>
+
+ne résident pas sur le même système de fichiers.
+<DT><B>EPERM</B>
+
+<DD>
+Le système de fichier contenant
+<I>oldpath</I> et <I>newpath</I>
+
+ne permet pas la création de liens matériels.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>oldpath</I> ou <I>newpath</I> pointent en dehors de l'espace d'adressage accessible.
+
+<DT><B>EACCES</B>
+
+<DD>
+L'écriture dans le répertoire contenant
+<I>newpath</I>
+
+n'est pas autorisé pour l'UID effectif du processus, ou l'un des
+répertoires de
+<I>oldpath</I> ou <I>newpath</I>
+
+ne permet pas le parcours (exécution).
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+<I>oldpath</I> ou <I>newpath</I> sont trop longs.
+
+<DT><B>ENOENT</B>
+
+<DD>
+Un répertoire contenu dans
+<I>oldpath</I> ou <I>newpath</I>
+
+n'existe pas, ou est un lien symbolique pointant nulle part.
+<DT><B>ENOTDIR</B>
+
+<DD>
+Un élément du chemin d'accès
+<I>oldpath</I> ou <I>newpath</I>
+
+n'est pas réellement un répertoire.
+<DT><B>ENOMEM</B>
+
+<DD>
+pas assez de mémoire pour le noyau
+<DT><B>EROFS</B>
+
+<DD>
+Le fichier se trouve sur un système de fichier en lecture seule
+<DT><B>EEXIST</B>
+
+<DD>
+<I>newpath</I>
+
+existe déjà.
+<DT><B>EMLINK</B>
+
+<DD>
+Le fichier référencé par
+<I>oldpath</I>
+
+possède déjà le nombre maximal de liens.
+<DT><B>ELOOP</B>
+
+<DD>
+<I>oldpath</I> ou <I>newpath</I>
+
+contiennent une référence circulaire (à travers un lien symbolique).
+<DT><B>ENOSPC</B>
+
+<DD>
+Le support du système de fichier ne dispose pas d'assez de place
+pour un nouveau point d'entrée dans le répertoire.
+<DT><B>EPERM</B>
+
+<DD>
+<I>oldpath</I>
+
+est un répertoire.
+<DT><B>EIO</B>
+
+<DD>
+Une erreur d'entrée/sortie bas-niveau s'est produite.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les liens matériels créés par
+<B>link</B>,
+
+ne peuvent pas s'étendre sur plusieurs systèmes de fichiers.
+On peut utiliser plutôt
+<B>symlink</B>
+
+si ceci est nécessaire.
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID, POSIX, BSD 4.3, X/OPEN. SVr4 documente des conditions d'erreurs
+supplémentaires ENOLINK et EMULTIHOP. POSIX.1 ne décrit pas ELOOP.
+X/OPEN ne décrit pas les erreurs EFAULT, ENOMEM, ni EIO.
+<A NAME="lbAI">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Sur les systèmes de fichiers NFS, le code de retour peut être faux,
+si le serveur NFS a créé correctement le lien mais s'est arrêté
+avant de donner le code de retour.  Utiliser dans ce cas
+<I><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></I>(2)
+
+pour vérifier si le lien a été effectivement créé
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+symlink">symlink</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+unlink">unlink</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+rename">rename</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?1+ln">ln</A></B>(1)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">BOGUES</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:52 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,139 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SLABINFO</TITLE>
+</HEAD><BODY>
+<H1>SLABINFO</H1>
+Section: Manuel de l'administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+/proc/slabinfo - Statistiques sur les données noyaux allouées.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>cat /proc/slabinfo</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les objets fréquemment utilisés dans le noyaux Linux (têtes de buffer,
+i-noeuds, entrées de répertoire...) ont leur propres caches.
+Le fichier
+<I>/proc/slabinfo</I>
+
+fourni des statistiques. Par exemple&nbsp;:
+<P>
+
+<DL COMPACT><DT><DD>
+<PRE>
+$ cat /proc/slabinfo
+slabinfo - version: 1.1
+kmem_cache            60     78    100    2    2    1
+blkdev_requests     5120   5120     96  128  128    1
+mnt_cache             20     40     96    1    1    1
+inode_cache         7005  14792    480 1598 1849    1
+dentry_cache        5469   5880    128  183  196    1
+filp                 726    760     96   19   19    1
+buffer_head        67131  71240     96 1776 1781    1
+vm_area_struct      1204   1652     64   23   28    1
+...
+size-8192              1     17   8192    1   17    2
+size-4096             41     73   4096   41   73    1
+...
+</PRE>
+
+</DL>
+
+<P>
+
+Il fournit pour chaque élément, le nom du cache, le nombre d'objet
+actuellement actifs, le nombre total d'objets disponibles, la taille
+de l'objet en octets, le nombre de pages avec au moins un objet
+actif, le nombre total de pages allouées, et le nombre
+de page par élément.
+<P>
+Notez qu'à cause de l'alignement des objets et du surcoût dû au cache,
+les objets ne sont pas accolés dans les pages. Les pages avec
+un seul objet en utilisation sont considérées comme utilisées et ne
+peuvent pas être libérées.
+<P>
+Les noyaux compilés avec les statistiques d'utilisation du cache affichent
+&quot;(statistics&quot;) dans la première ligne, et proposent cinq colonnes
+supplémentaires&nbsp;: la limite supérieure d'objets actifs, le nombre
+de fois que les objets ont été alloués, le nombre de fois où le
+cache a grandit (nouvelles pages ajoutées au cache), le nombre de fois
+où le cache a été réduit (pages inutilisées retirées), 
+et le nombre d'erreur d'allocation de nouvelles pages dans le
+cache. Si les statistiques ne sont pas validée dans le
+noyau, ces colonnes ne sont pas affichées.
+<P>
+Les systèmes SMP ont également &quot;(SMP)&quot; dans la première ligne de sortie,
+et deux colonnes supplémentaires, indiquant la politique d'allication
+pour le cache local ay CPU (pour réduire le besoin de synchronisation
+entre CPU lors d'allocation d'objet depuis le cache). La première colonne
+est la limite par CPU&nbsp;: le nombre maximal
+d'objets mis dans le cache pour chaque CPU.
+La seconde colonne est un compte global&nbsp;:
+le nombre maximum d'objets libres dans le cache global qui seront
+transférés au cache par CPU s'il est vide, ou le nombre d'objets qui
+set renvoyé dans le cache global si le cache par CPU est
+plein.
+<P>
+Si les statistiques et le SMP sont définis simultanément, il y aura
+quatre colonnes suppplémentaires, indiquant les statistiques du 
+cache par CPU. Les deux premières comptent les réussites et échecs des
+allocations dans le cache par CPU&nbsp;: le nombre de fois où un objet était
+ou n'était pas disponible pour allocation depuis le cache par CPU.
+Les deux suivantes sont les réussites et échecs des libérations vers
+le cache par CPU&nbsp;: le nomnbre de fois où un objet libéré a pu ou non
+tenir dans les limites du cache par CPU, avant
+de renvoyer les objets vers le cache global.
+<P>
+Il est possible d'ajuster les limites du cache par CPU et du transfert
+vers le cache global avec&nbsp;:
+<P>
+<PRE>
+echo &quot;<I>nom_cache limite batchcount</I>&quot; &gt; /proc/slabinfo
+</PRE>
+
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>DISPONIBILITÉ</H2>
+
+<I>/proc/slabinfo</I>
+
+existe depuis Linux 2.1.23.
+Les caches SMP par CPU existent depuis Linux 2.4.0-test3.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>&lt;<A HREF="file:///usr/include/linux/slab.h">linux/slab.h</A>&gt;</I>
+
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">DISPONIBILITÉ</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:54 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,298 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PASSWD</TITLE>
+</HEAD><BODY>
+<H1>PASSWD</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+<P>
+passwd - mettre à jour les marques d'authentification d'un utilisateur.
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>passwd [-k] [-l] [-u [-f]] [-d] [-S] [nom_utilisateur]</B>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Passwd est utilisé pour mettre à jour la ou les marques
+d'authentification d'un utilisateur. Passwd est configuré pour
+travailler grâce à
+l'<B>API Linux-PAM</B>. 
+
+Il s'initialise en tant que service «&nbsp;passwd&nbsp;» avec
+<I>Linux-PAM</I>
+
+et utilise les modules
+<I>password</I>
+
+(mot de passe) configurés pour authentifier et ensuite mettre à jour
+le mot de passe d'un utilisateur.
+<P>
+<P>
+Une entrée du fichier de configuration de
+<I>Linux-PAM</I>
+
+pour ce service pourrait être&nbsp;:
+<BR>
+
+<BR>&nbsp;&nbsp;
+<BR>
+
+<BR>&nbsp;#
+<BR>
+
+<BR>&nbsp;#&nbsp;entrée&nbsp;de&nbsp;service&nbsp;passwd&nbsp;effectuant&nbsp;une&nbsp;
+<BR>
+
+<BR>&nbsp;#&nbsp;vérification&nbsp;de&nbsp;force&nbsp;d'un&nbsp;mot&nbsp;de&nbsp;passe
+<BR>
+
+<BR>&nbsp;#&nbsp;proposé&nbsp;avant&nbsp;de&nbsp;le&nbsp;mettre&nbsp;à&nbsp;jour.
+<BR>
+
+<BR>&nbsp;#
+<BR>
+
+<BR>&nbsp;passwd&nbsp;password&nbsp;requisite&nbsp;\
+<BR>
+
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/usr/lib/security/pam_cracklib.so&nbsp;retry=3
+<BR>
+
+<BR>&nbsp;passwd&nbsp;password&nbsp;required&nbsp;\
+<BR>
+
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/usr/lib/security/pam_pwdb.so&nbsp;use_authtok
+<BR>
+
+<BR>&nbsp;#
+<P>
+<P>
+Notez qu'aucun autre type de module n'est requis pour le
+fonctionnement correct de cette application.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<P>
+<DL COMPACT>
+<DT><B>-k</B><DD>
+L'option,
+<B>-k</B>, 
+
+est utilisée pour indiquer que la mise à jour ne devrait être
+effectuée que pour les marques d'authentification (mots de passe)&nbsp;;
+l'utilisateur conserve ses marques non expirés.
+<P>
+<DT><B>-l</B><DD>
+Cette option est utilisé pour verrouiller le compte spécifié, et n'est
+disponible que pour root. Le verrouillage est effectué en rendant le
+mot de passe crypté invalide (en le préfixant par un !).
+<P>
+<DT><B>--stdin</B><DD>
+Cette option est utilisée pour indiquer que <B>passwd</B> doit lire le
+nouveau mot de passe depuis l'entrée standard, qui peut être un
+tube.
+<P>
+<DT><B>-u</B><DD>
+L'inverse de l'option -l - déverrouille le mot de passe du compte en
+supprimant le préfixe «&nbsp;!&nbsp;». Cette option n'est disponible que pour
+root. Par défaut, <B>passwd</B> refusera de créer un compte sans mot de
+passe associé (il ne déverrouillera pas un compte contenant uniquement
+! pour mot de passe). L'option <B>-f</B> contourne cette protection.
+<P>
+<DT><B>-d</B><DD>
+C'est un moyen rapide de désactivation du mot de passe d'un compte. Il
+rendra inutile la saisie d'un mot de passe pour un compte
+donné. Disponible uniquement pour root.
+<P>
+<DT><B>-n</B><DD>
+Ceci fixera la durée de vie minimale du mot de passe, en jours, si le
+compte de l'utilisateur supporte les durées de vie pour les mots de
+passe. Disponible uniquement pour root.
+<P>
+<DT><B>-x</B><DD>
+Ceci fixe la durée de vie maximale du mot de passe, en jours, si le
+compte de l'utilisateur supporte les durées de vie pour les mots de
+passe. Disponible uniquement pour root.
+<P>
+<DT><B>-w</B><DD>
+Ceci fixe le nombre de jours à l'avance pendant lesquels
+l'utilisateur recevra des avertissements l'informant que son mot de
+passe va expirer, si le compte de l'utilisateur supporte les durées de
+vie pour les mots de passe. Disponible uniquement pour root.
+<P>
+<DT><B>-i</B><DD>
+Ceci fixe le nombre de jours qui s'écouleront avant qu'un mot de
+passe expiré pour ce compte indique qu'il est inactif et devrait être
+désactivé, si le compte de l'utilisateur supporte les durées de vie
+pour les mots de passe. Disponible uniquement pour root.
+<P>
+<DT><B>-S</B><DD>
+Cela affiche une information courte sur le statut du mot de passe pour
+un compte donné. Disponible uniquement pour root.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>Rappelez-vous les deux principes suivants&nbsp;:</H2>
+
+<P>
+<DL COMPACT>
+<DT><B>Protégez&nbsp;votre&nbsp;mot&nbsp;de&nbsp;passe.</B><DD>
+N'écrivez nulle part votre mot de passe - mémorisez-le. En
+particulier, ne le laissez pas traîner n'importe où et ne le placez
+pas non plus dans un fichier non crypté !  Utilisez des mots de passe
+non liés sur des systèmes contrôlés par différentes organisations. Ne
+divulguez ni ne partagez votre mot de passe, en particulier à
+quelqu'un prétendant faire partie du support technique, ou du
+personnel d'un vendeur. Ne laissez personne regarder votre mot de
+passe pendant que vous le tapez. N'entrez pas votre mot de passe sur
+un ordinateur auquel vous ne faites pas confiance, ou s'il se passe
+quelque chose qui «&nbsp;semble amusant&nbsp;»&nbsp;; quelqu'un pourrait être en
+train d'essayer de détourner votre mot de passe. Utilisez votre mot de
+passe pour une durée limitée et modifiez-le périodiquement.
+<P>
+<DT><B>Choisissez&nbsp;un&nbsp;mot&nbsp;de&nbsp;passe&nbsp;difficile&nbsp;à&nbsp;deviner.</B><DD>
+<I>passwd</I>
+
+essaiera de vous empêcher de choisir un mot de passe réellement
+mauvais, mais il n'est pas infaillible&nbsp;; créez votre mot de passe
+sagement. N'utilisez pas quelque chose que vous pouvez trouver dans un
+dictionnaire (dans n'importe quel langue ou jargon). N'utilisez pas de
+nom (incluant celui d'un conjoint, d'un parent, d'un enfant, d'un
+animal domestique, d'un personnage imaginaire, d'un personnage
+célèbre, ou d'un endroit connu), ou de variation sur votre nom
+personnel ou votre nom de compte. N'utilisez aucune information
+personnelle qui soit accessible (comme votre numéro de téléphone,
+plaque d'immatriculation ou numéro de sécurité sociale), ou sur les
+personnes de votre entourage. N'utilisez pas une date d'anniversaire
+ou un motif simple comme «&nbsp;azerty&nbsp;», «&nbsp;qwerty&nbsp;», «&nbsp;abc&nbsp;» ou
+«&nbsp;aaa&nbsp;»). N'utilisez aucun élément parmi ceux cités ci-dessus suivi
+ou précédé par un chiffre. Au lieu de cela, utilisez une combinaison
+de lettres minuscules et majuscules, de chiffres et de signes de
+ponctuation. Quand vous choisissez un nouveau mot de passe,
+assurez-vous qu'il n'ait rien en commun avec l'ancien. Utilisez des
+mots de passe longs (disons d'au moins 8 caractères). Vous pourriez
+utiliser une paire de mots avec un signe de ponctuation inséré, une
+phrase de passe (une séquence de mots compréhensible), ou la première
+lettre de chaque mot dans une phrase de passe.
+<P>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2></H2>
+
+Ces principes sont partiellement imposés par le système, mais
+uniquement partiellement. Une certaine vigilance de votre côté rendra
+le système beaucoup plus sûr.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<P>
+En cas de succès,
+<B>passwd</B>
+
+se terminera avec une valeur de retour de 0. Une valeur de retour de 1
+indique qu'une erreur s'est produite. Les erreurs textuelles sont
+écrites dans le flux d'erreur standard.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<BR>
+
+<B>Linux-PAM</B>
+
+(Pluggable Authentication Modules pour Linux).
+<BR>
+
+Notez que si votre distribution de Linux-PAM se conforme au Linux
+Filesystem Standard (standard de système de fichiers sous Linux), vous
+pouvez trouver les modules dans
+<I>/lib/security/</I>
+
+au lieu de /usr/lib/security/, comme indiqué dans l'exemple.
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<BR>
+
+<B>/etc/pam.d/passwd</B>
+
+- le fichier de configuration de
+<B>Linux-PAM</B>
+
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<P>
+Inconnus au bataillon.
+<P>
+<A NAME="lbAL">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<P>
+<B><A HREF="/cgi-bin/man/man2html?8+pam">pam</A></B>(8), 
+
+et
+<B><A HREF="/cgi-bin/man/man2html?2+pam_chauthok">pam_chauthok</A></B>(2). 
+
+<P>
+<P>
+Pour des informations plus complètes sur la façon de configurer cette
+application avec
+<B>Linux-PAM</B>, 
+
+voyez le
+<B>Linux-PAM System Administrators' Guide</B> sur 
+
+<BR>
+
+<I>&lt;<A HREF="http://parc.power.net/morgan/Linux-PAM/index.html">http://parc.power.net/morgan/Linux-PAM/index.html</A>&gt;</I>
+
+<P>
+<A NAME="lbAM">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Cristian Gafton &lt;<A HREF="mailto:gafton@redhat.com">gafton@redhat.com</A>&gt;
+<P>
+<A NAME="lbAN">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Frédéric Delanoy &lt;<I>delanoy_f at yahoo.com</I>&gt;, 2002.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">Rappelez-vous les deux principes suivants&nbsp;:</A><DD>
+<DT><A HREF="#lbAG"></A><DD>
+<DT><A HREF="#lbAH">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">FICHIERS</A><DD>
+<DT><A HREF="#lbAK">BOGUES</A><DD>
+<DT><A HREF="#lbAL">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAM">AUTEUR</A><DD>
+<DT><A HREF="#lbAN">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:47 GMT, February 11, 2014
+</BODY>
+</HTML>

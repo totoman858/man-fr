@@ -1,0 +1,102 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DEBCONF-COMMUNICATE.FR.1</TITLE>
+</HEAD><BODY>
+<H1>DEBCONF-COMMUNICATE.FR.1</H1>
+Section: User Contributed Perl Documentation (1)<BR>Updated: 2003-02-14<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+<A NAME="ixAAC"></A>
+debconf-communicate - communiquer avec debconf
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<A NAME="ixAAD"></A>
+
+
+<PRE>
+ echo commandes | debconf-communicate [options] [paquet]
+
+</PRE>
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<A NAME="ixAAE"></A>
+<B>debconf-communicate</B> permet de communiquer à la volée avec debconf depuis la
+ligne de commande. Le paquet en argument est le nom du paquet que vous voulez
+faire communiquer avec debconf, il peut être omis si vous êtes paresseux. Ce
+programme lit depuis l'entrée standard des commandes utilisées par le protocole
+de debconf. Pour la documentation sur les commandes disponibles ainsi que leur
+usage, voyez la spécification debconf.
+<P>
+
+Les commandes sont exécutées dans l'ordre. Le code de retour de chaque commande
+est affiché sur la sortie standard.
+<P>
+
+La valeur de retour de ce programme est le chiffre de retour de la dernière
+commande exécutée.
+<A NAME="lbAE">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+<A NAME="ixAAF"></A>
+
+
+<PRE>
+ echo get debconf/frontend | debconf-communicate
+
+</PRE>
+
+
+<P>
+
+Imprime l'importance de la question de l'interface/debconf.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ATTENTION</H2>
+
+<A NAME="ixAAG"></A>
+Ce programme ne devrait pas être utilisé par les scripts de maintenance d'un
+paquet qui utilise debconf&nbsp;! Il peut, cependant, être utile pour le
+débogage.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A NAME="ixAAH"></A>
+<I><A HREF="/cgi-bin/man/man2html?1+debconf-loadtemplate">debconf-loadtemplate</A></I>(1)
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<A NAME="ixAAI"></A>
+Joey Hess &lt;<A HREF="mailto:joeyh@debian.org">joeyh@debian.org</A>&gt;
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<A NAME="ixAAJ"></A>
+Julien Louis &lt;<A HREF="mailto:leonptitlouis@ifrance.com">leonptitlouis@ifrance.com</A>&gt;
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">EXEMPLE</A><DD>
+<DT><A HREF="#lbAF">ATTENTION</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">AUTEUR</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:47 GMT, February 11, 2014
+</BODY>
+</HTML>

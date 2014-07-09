@@ -1,0 +1,88 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ATAN2</TITLE>
+</HEAD><BODY>
+<H1>ATAN2</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+atan2, atan2f, atan2l - Arc Tangente du rapport de deux variables.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/math.h">math.h</A>&gt;</B>
+
+<B>double atan2 (double </B><I>y</I><B>, double </B><I>x</I><B>);</B>
+<B>float atan2f (float </B><I>y</I><B>, float </B><I>x</I><B>);</B>
+<B>long double atan2l (long double </B><I>y</I><B>, long double </B><I>x</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>atan2()</B> calcule l'Arc Tangente du rapport des deux
+variables <I>x</I> et <I>y</I>.  Cela revient à calculer l'Arc Tangente
+de <I>y</I> / <I>x</I>, mais les signes des deux variables sont utilisés
+pour déterminer le quadrant du résultat.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>atan2()</B> renvoie le résultat en radians, dans l'intervalle
+[-PI, PI] (bornes comprises).
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Pour utiliser les fonctions de la bibliothèque mathématique, il ne faut
+pas oublier d'ajouter l'argument <I>-lm</I> sur la ligne de commande de
+<B><A HREF="/cgi-bin/man/man2html?1+cc">cc</A></B>(1) ou <B><A HREF="/cgi-bin/man/man2html?1+ld">ld</A></B>(1), lors de l'édition des liens.
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID 3, POSIX, BSD 4.3, ISO 9899.
+Les variantes float et long double sont des demandes C99.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+acos">acos</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+asin">asin</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+atan">atan</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+cos">cos</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+sin">sin</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+tan">tan</A>(3)</B>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:32 GMT, February 11, 2014
+</BODY>
+</HTML>

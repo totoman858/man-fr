@@ -1,0 +1,370 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of HOSTNAME</TITLE>
+</HEAD><BODY>
+<H1>HOSTNAME</H1>
+Section: Manuel de l'administrateur Linux (1)<BR>Updated: 28 janvier 1996<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+hostname, domainname, dnsdomainname, nisdomainname, ypdomainname, nodename - Afficher ou définir les noms d'hôte, de domaine DNS ou NIS/YP, de noeud DECnet du système.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>hostname</B>
+
+[<B>-v</B>]
+
+[<B>-a</B>]
+
+[<B>--alias</B>]
+
+[<B>-d</B>]
+
+[<B>--domain</B>]
+
+[<B>-f</B>]
+
+[<B>--fqdn</B>]
+
+[<B>-i</B>]
+
+[<B>--ip-address</B>]
+
+[<B>--long</B>]
+
+[<B>-s</B>]
+
+[<B>--short</B>]
+
+[<B>-y</B>]
+
+[<B>--yp</B>]
+
+[<B>--nis</B>]
+
+
+<P>
+
+<B>hostname</B>
+
+[<B>-v</B>]
+
+[<B>-F&nbsp;nom_fichier</B>]
+
+[<B>--file&nbsp;nom_fichier</B>]
+
+[<B>hostname</B>]
+
+
+<P>
+
+<B>domainname</B>
+
+[<B>-v</B>]
+
+[<B>-F&nbsp;nom_fichier</B>]
+
+[<B>--file&nbsp;nom_fichier</B>]
+
+[<B>name</B>]
+
+
+<P>
+
+<B>nodename</B>
+
+[<B>-v</B>]
+
+[<B>-F&nbsp;nom_fichier</B>]
+
+[<B>--file&nbsp;nom_fichier</B>]
+
+[<B>name</B>]
+
+
+<P>
+
+<B>hostname</B>
+
+[<B>-v</B>]
+
+[<B>-h</B>]
+
+[<B>--help</B>]
+
+[<B>-V</B>]
+
+[<B>--version</B>]
+
+
+<P>
+
+<B>dnsdomainname</B>
+
+[<B>-v</B>]
+
+<BR>
+
+<B>nisdomainname</B>
+
+[<B>-v</B>]
+
+<BR>
+
+<B>ypdomainname</B>
+
+[<B>-v</B>]
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>hostname</B>
+
+est le programme utilisé soit pour définir le nom d'hôte, soit
+pour visualiser le nom actuel d'hôte, de domaine ou de noeud du
+système. Ce nom est utilisé par de nombreux programmes de réseaux
+pour identifier la machine. Le nom de domaine est également utilisé
+par NIS/YP.
+
+<A NAME="lbAE">&nbsp;</A>
+<H3>OBTENTION DU NOM</H3>
+
+Appelé sans argument, le programme affiche les noms actuels&nbsp;:
+
+<P>
+
+<B>hostname</B>
+
+fournit le nom du système tel qu'il est renvoyé par la fonction
+<B><A HREF="/cgi-bin/man/man2html?2+gethostname">gethostname</A></B>(2).
+
+
+<P>
+
+<B>domainname</B>, <B>nisdomainname</B> et <B>ypdomainname</B>
+
+fournissent le nom du système tel qu'il est renvoyé par la fonction
+<B><A HREF="/cgi-bin/man/man2html?2+getdomainname">getdomainname</A></B>(2).
+
+Ceci est connu comme nom de domaine YP/NIS du système.
+
+<P>
+
+<B>nodename</B>
+
+fournit le nom de noeud DECnet du système tel qu'il est renvoyé par la
+fonction
+<B><A HREF="/cgi-bin/man/man2html?2+getnodename">getnodename</A></B>(2).
+
+
+<P>
+
+<B>dnsdomainname</B>
+
+fournit la partie domaine du FQDN («&nbsp;Fully Qualified Domain Name&nbsp;» ou
+nom de domaine complètement défini). Le nom FQDN du système est retourné
+par la commande
+<B>hostname --fqdn</B>.
+
+
+<A NAME="lbAF">&nbsp;</A>
+<H3>DÉFINIR LE NOM</H3>
+
+Appelé avec un argument ou avec l'option
+<B>--file</B>,
+
+la commande définit le nom d'hôte ou le nom de domaine NIS/YP.
+
+<P>
+
+Notez que seul le superutilisateur peut modifier les noms.
+
+<P>
+
+Il n'est pas possible de définir le nom FQDN ou le nom de domaine DNS
+avec la commande
+<B>dnsdomainname</B>
+
+(voir
+<B>LE FQDN</B>
+
+ci-dessous).
+
+<P>
+
+Le nom d'hôte est généralement défini une seule fois, au
+démarrage du système, par le script de configuration
+<I>/etc/rc.d/rc.inet1</I>
+
+ou
+<I>/etc/init.d/boot</I>
+
+(normalement en lisant un fichier contenant ce nom, par exemple
+<I>/etc/hostname</I>).
+
+
+<A NAME="lbAG">&nbsp;</A>
+<H3>LE FQDN</H3>
+
+Vous ne pouvez pas modifier le FQDN (donné par la commande
+<B>hostname --fqdn</B>)
+
+ou le nom de domaine DNS (donné par la commande
+<B>dnsdomainname</B>)
+
+avec cette commande. Le FQDN du système est le nom que le résolveur
+(<B><A HREF="/cgi-bin/man/man2html?3+resolver">resolver</A></B>(3))
+
+renvoie comme nom d'hôte.
+
+<P>
+
+Techniquement&nbsp;: le FQDN est le nom fourni par
+<B><A HREF="/cgi-bin/man/man2html?2+gethostbyname">gethostbyname</A></B>(2)
+
+à partir du nom d'hôte renvoyé par
+<B><A HREF="/cgi-bin/man/man2html?2+gethostname">gethostname</A></B>(2).
+
+Le nom de domaine DNS est la partie suivant le premier point.
+<P>
+
+La façon dont vous pouvez le modifier dépend de la configuration
+(habituellement dans
+<I>/etc/host.conf</I>).
+
+Si le fichier «&nbsp;hosts&nbsp;» est analysé avant d'interroger le DNS ou
+NIS, vous pouvez le modifier dans le fichier
+<I>/etc/hosts</I>.
+
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-a, --alias</B>
+
+<DD>
+Afficher l'alias de l'hôte (s'il est utilisé).
+<DT><B>-d, --domain</B>
+
+<DD>
+Afficher le nom du domaine DNS. N'utilisez pas la commande
+<B>domainname</B>
+
+pour obtenir le nom de domaine DNS car vous obtiendrez en réalité le
+nom de domaine NIS. Utilisez plutôt la commande
+<B>dnsdomainname</B>.
+
+<DT><B>-F, --file nom_fichier</B>
+
+<DD>
+Lire le nom d'hôte à partir du fichier spécifié. Les commentaires
+(les lignes commençant par un «&nbsp;#&nbsp;») sont ignorés.
+<DT><B>-f, --fqdn, --long</B>
+
+<DD>
+Affiche le FQDN. Un FQDN consiste en un nom d'hôte court et un nom
+de domaine DNS. À moins que vous n'utilisiez «&nbsp;bind&nbsp;» ou NIS pour la
+résolution d'hôtes, vous pouvez modifier le nom FQDN et le nom de
+domaine DNS (qui fait partie du FQDN) dans le fichier
+<I>/etc/hosts</I>.
+
+<DT><B>-h, --help</B>
+
+<DD>
+Afficher un message d'aide et quitter.
+<DT><B>-i, --ip-address</B>
+
+<DD>
+Afficher la (les) adresse(s) IP de l'hôte.
+<DT><B>-n, --node</B>
+
+<DD>
+Afficher le nom du noeud DECnet. Si un paramètre est fourni (ou l'option
+<B>--file nom_fichier</B>),
+
+le superutilisateur peut également définir un nouveau nom de noeud.
+<DT><B>-s, --short</B>
+
+<DD>
+Afficher le nom d'hôte en format court. Il s'agit du nom d'hôte coupé au
+premier point.
+<DT><B>-V, --version</B>
+
+<DD>
+Afficher les informations sur la version sur la sortie standard et
+quitter correctement.
+<DT><B>-v, --verbose</B>
+
+<DD>
+Mode volubile.
+<DT><B>-y, --yp, --nis</B>
+
+<DD>
+Afficher le nom de domaine NIS. Si un paramètre est fourni (ou
+<B>--file nom_fichier</B>),
+
+le superutilisateur peut également définir un nouveau nom de domaine NIS.
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/etc/hosts</I>
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Peter Tobias, &lt;<A HREF="mailto:tobias@et-inf.fho-emden.de">tobias@et-inf.fho-emden.de</A>&gt;
+<BR>
+
+Bernd Eckenfels, &lt;<A HREF="mailto:net-tools@lina.inka.de">net-tools@lina.inka.de</A>&gt; (NIS et page de manuel).
+<BR>
+
+Steve Whitehouse, &lt;<A HREF="mailto:SteveW@ACM.org">SteveW@ACM.org</A>&gt; (support DECnet et page de manuel).
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Jean Michel Vansteene
+&lt;vanstee&nbsp;AT&nbsp;worldnet&nbsp;DOT&nbsp;fr&gt; le 15&nbsp;mars&nbsp;1999,
+mise à jour par Guillaume Audirac en août 2004
+et révisée le 17&nbsp;août&nbsp;2006.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;1&nbsp;hostname</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OBTENTION DU NOM</A><DD>
+<DT><A HREF="#lbAF">DÉFINIR LE NOM</A><DD>
+<DT><A HREF="#lbAG">LE FQDN</A><DD>
+</DL>
+<DT><A HREF="#lbAH">OPTIONS</A><DD>
+<DT><A HREF="#lbAI">FICHIERS</A><DD>
+<DT><A HREF="#lbAJ">AUTEURS</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:44 GMT, February 11, 2014
+</BODY>
+</HTML>

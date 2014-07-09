@@ -1,0 +1,427 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SYSLOG</TITLE>
+</HEAD><BODY>
+<H1>SYSLOG</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+syslog, vsyslog, openlog, closelog - Envoyer un message de journalisation.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/syslog.h">syslog.h</A>&gt;</B>
+
+<P>
+<B>void openlog (const char * </B><I>ident</I><B>, int </B><I>option</I><B>, int  </B><I>facility</I><B>);</B>
+
+<P>
+<B>void syslog (int </B><I>priority</I><B>, char * </B><I>format</I><B>, ...);</B>
+
+<P>
+<B>void closelog (void );</B>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/stdarg.h">stdarg.h</A>&gt;</B>
+
+<P>
+<B>void vsyslog (int </B><I>priority</I><B>, char  * </B><I>format</I><B>, va_list </B><I>ap</I><B>);</B>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>closelog()</B>
+
+ferme le descripteur utilisé pour la journalisation. L'utilisation de
+<B>closelog()</B>
+
+est facultative.
+<P>
+<B>openlog()</B>
+
+ouvre une connection de journalisation. La chaîne pointée par
+<I>ident </I>
+
+sera ajouteé à chaque message
+(c'est généralement le nom du programme).
+L'argument
+<I>option</I>
+
+précise les attributs contrôlant le fonctionnement de
+<B>openlog()</B>
+
+et des appels ultérieurs à
+<B>syslog()</B>.
+
+L'argument
+<I>facility</I>
+
+est une valeur par défaut employée lorsque ce paramètre n'est
+pas fourni lors des appels ultérieurs à
+<B>syslog()</B>.
+
+Les valeurs pour
+<I>option</I>
+
+et
+<I>facility</I>
+
+sont décrites plus bas. L'utilisation de
+<B>openlog()</B>
+
+est optionnelle. Cette fonction sera automatiquement invoquée par
+<B>syslog()</B>
+
+si besoin. Dans ce cas
+<I>ident</I>
+
+aura la valeur par défaut NULL.
+<P>
+<B>syslog()</B>
+
+crée un message journalisé, qui sera distribué par
+<B><A HREF="/cgi-bin/man/man2html?8+syslogd">syslogd</A></B>(8).
+
+L'argument
+<I>priority</I>
+
+est une combinaison par OU binaire des valeurs de
+<I>facility</I>
+
+et de
+<I>level</I>,
+
+indiquées plus bas. Les arguments restants
+sont un
+<I>format</I>,
+
+comme celui de
+<B><A HREF="/cgi-bin/man/man2html?3+printf">printf</A></B>(3)
+
+et tous les arguments nécessaires pour ce
+<I>format</I>,
+
+sauf que les deux caractères %m seront automatiquement 
+remplacés par le libelle d'erreur
+<I>strerror</I>(<I>errno</I>).
+
+Un saut de ligne final est ajouté si besoin est.
+<P>
+La fonction
+<B>vsyslog()</B>
+
+réalise la même tâche que
+<B>syslog()</B>
+
+à la différence qu'elle prend un ensemble d'arguments obtenus
+à l'aide de la macro
+<B><A HREF="/cgi-bin/man/man2html?3+stdarg">stdarg</A></B>(3)
+
+pour les listes variables d'arguments.
+<A NAME="lbAE">&nbsp;</A>
+<H2>PARAMÈTRES</H2>
+
+Cette section détaille les paramètres utilisés pour les valeurs de
+<I>option</I>,<I> facility</I>, et <I>priority</I>.
+
+<A NAME="lbAF">&nbsp;</A>
+<H3>option</H3>
+
+L'argument
+<I>option</I>
+
+de
+<B>openlog()</B>
+
+est un OU binaire entre les constantes suivantes :
+<DL COMPACT>
+<DT><B>LOG_CONS</B>
+
+<DD>
+écrire directement sur la console système s'il y a une erreur durant
+la transmission.
+<DT><B>LOG_NDELAY</B>
+
+<DD>
+ouvrir la connexion immédiatement (normalement, la connexion est ouverte
+quand le premier message est transmis).
+<DT><B>LOG_NOWAIT</B>
+
+<DD>
+Ne pas attendre la fin des processus fils qui peuvent être créés lors d
+l'enregistrement du message. La bibliothèque GlibC ne crée pas de processus
+fils, ainsi cette option est sans effet sous Linux.
+<DT><B>LOG_ODELAY</B>
+
+<DD>
+L'inverse de
+<B>LOG_NDELAY</B>;
+
+l'ouverture de la connexion est repoussée jusqu'à l'invocation de
+<B>syslog()</B>.
+
+C'est le comportement par défaut, et l'option n'a pas besoin d'être indiquée.
+<DT><B>LOG_PERROR</B>
+
+<DD>
+(pas dans SUSv3) écrire sur stderr également.
+<DT><B>LOG_PID</B>
+
+<DD>
+inclure le PID dans chaque message.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H3>facility </H3>
+
+L'argument
+<I>facility</I>
+
+permet d'indiquer le type du programme qui demande la journalisation
+du message. Ceci permet un traitement différent des messages, en
+fonction de fichiers de configuration.
+<DL COMPACT>
+<DT><B>LOG_AUTH</B>
+
+<DD>
+message de sécurité/autorisation (DÉCONSEILLÉ ! Utilisez
+<B>LOG_AUTHPRIV </B>
+
+a la place)
+<DT><B>LOG_AUTHPRIV</B>
+
+<DD>
+message de sécurité/autorisation (privé).
+<DT><B>LOG_CRON</B>
+
+<DD>
+message d'un démon horaire
+(<B>cron</B> et <B>at</B>)
+
+<DT><B>LOG_DAEMON</B>
+
+<DD>
+démon du système sans classification particulière.
+<DT><B>LOG_FTP</B>
+
+<DD>
+démon ftp.
+<DT><B>LOG_KERN</B>
+
+<DD>
+message du noyau.
+<DT><B>LOG_LOCAL0</B> through <B>LOG_LOCAL7</B>
+
+<DD>
+réservé pour des utilisations locales.
+<DT><B>LOG_LPR</B>
+
+<DD>
+message du sous-système d'impression.
+<DT><B>LOG_MAIL</B>
+
+<DD>
+message du sous-système de courier.
+<DT><B>LOG_NEWS</B>
+
+<DD>
+message du sous-système des news USENET.
+<DT><B>LOG_SYSLOG</B>
+
+<DD>
+message interne de
+<B>syslogd </B>
+
+<DT><B>LOG_USER</B> (défaut)
+
+<DD>
+message utilisateur générique.
+<DT><B>LOG_UUCP</B>
+
+<DD>
+message du sous-système UUCP.
+<P>
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H3>level</H3>
+
+Ceci détermine l'importance du message. Les niveaux, dans l'ordre
+d'importance décroissante, sont :
+<DL COMPACT>
+<DT><B>LOG_EMERG</B>
+
+<DD>
+Le système est inutilisable.
+<DT><B>LOG_ALERT</B>
+
+<DD>
+Des actions doivent être entreprises immédiatement.
+<DT><B>LOG_CRIT</B>
+
+<DD>
+Les conditions sont critiques.
+<DT><B>LOG_ERR</B>
+
+<DD>
+Des erreurs se produisent.
+<DT><B>LOG_WARNING</B>
+
+<DD>
+Des avertissement se présentent.
+<DT><B>LOG_NOTICE</B>
+
+<DD>
+Condition normale, mais message significatif.
+<DT><B>LOG_INFO</B>
+
+<DD>
+Message d'information simple.
+<DT><B>LOG_DEBUG</B>
+
+<DD>
+Message de debugging.
+</DL>
+<P>
+
+La fonction
+<B><A HREF="/cgi-bin/man/man2html?3+setlogmask">setlogmask</A></B>(3)
+
+permet de restreindre l'enregistrement à certains niveaux uniquement.
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Les fonctions
+<B>openlog()</B>,
+
+<B>closelog()</B>,
+
+et
+<B>syslog()</B>
+
+(mais pas
+<B>vsyslog()</B>)
+
+sont mentionnées dans SUSv2 et POSIX 1003.1-2001.
+POSIX 1003.1-2001 indique uniquement les valeurs
+<B>LOG_USER</B>
+
+et
+<B>LOG_LOCAL*</B>
+
+pour l'argument
+<I>facility</I>.
+
+Néanmoins, à l'exception de
+<B>LOG_AUTHPRIV</B>
+
+et
+<B>LOG_FTP</B>,
+
+les autres valeurs pour
+<I>facility</I>
+
+existent sur la plupart des systèmes Unix.
+La valeur
+<B>LOG_PERROR</B>
+
+de l'argument
+<I>option</I>
+
+n'est pas mentionnée par POSIX 1003.1-2001, mais est disponible
+dans la plupart des versions d'Unix.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Une fonction
+<B>syslog</B>
+
+est appparue dans BSD 4.2.
+BSD 4.3 documente
+<I>openlog</I>(),
+
+<I>syslog</I>(),
+
+<I>closelog</I>(),
+
+et
+<I>setlogmask</I>().
+
+4.3BSD-Reno documente aussi
+<I>vsyslog</I>().
+
+Bien sûr les premières fonctions v* utilisaient le mécanisme
+<I>&lt;<A HREF="file:///usr/include/varargs.h">varargs.h</A>&gt;</I>,
+
+qui n'est pas compatible avec
+<I>&lt;<A HREF="file:///usr/include/stdarg.h">stdarg.h</A>&gt;</I>.
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>NOTES</H2>
+
+Le paramètre
+<I>ident</I>
+
+durant l'appel
+<B>openlog()</B>
+
+est généralement stocké tel quel. Ainsi si la chaîne vers laquelle il pointe
+est modifiée, 
+<B>syslog()</B>
+
+peut afficher la chaîne modifiée, et si la chaîne cesse d'exister,
+le résultat est indéfini.
+Le comportement le plus portable est l'utilisation d'une chaîne constante.
+<P>
+
+Ne jamais passer directement une chaîne fournie par l'utilisateur, utilisez
+<DL COMPACT><DT><DD>
+syslog (&quot;%s&quot;, chaine);
+</DL>
+
+à la place.
+<A NAME="lbAL">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+logger">logger</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setlogmask">setlogmask</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+syslog.conf">syslog.conf</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+syslogd">syslogd</A></B>(8)
+
+<A NAME="lbAM">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">PARAMÈTRES</A><DD>
+<DL>
+<DT><A HREF="#lbAF">option</A><DD>
+<DT><A HREF="#lbAG">facility </A><DD>
+<DT><A HREF="#lbAH">level</A><DD>
+</DL>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAK">NOTES</A><DD>
+<DT><A HREF="#lbAL">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAM">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:28 GMT, February 11, 2014
+</BODY>
+</HTML>

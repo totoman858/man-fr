@@ -1,0 +1,157 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SYSCTL</TITLE>
+</HEAD><BODY>
+<H1>SYSCTL</H1>
+Section:  (8)<BR>Updated: 21 Septembre 1999<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+sysctl - configure les paramètres du noyau à chaud
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNTHÈSE</H2>
+
+<B>sysctl [-n] [-e] variable ...</B>
+
+<BR>
+
+<B>sysctl [-n] [-e] -w variable=valeur ...</B>
+
+<BR>
+
+<B>sysctl [-n] [-e] -p &lt;nom_de_fichier&gt;    (par défaut /etc/sysctl.conf)</B>
+
+<BR>
+
+<B>sysctl [-n] [-e] -a</B>
+
+<BR>
+
+<B>sysctl [-n] [-e] -A</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>sysctl</B>
+
+est utilisé pour modifier les paramètres du noyau en cours d'exécution.
+Les paramètres utilisables sont ceux listés dans le répertoire /proc/sys.
+Procfs est nécessaire pour utiliser
+<B><A HREF="/cgi-bin/man/man2html?8+sysctl">sysctl</A>(8)</B>
+
+sous Linux. Vous pouvez utiliser
+<B><A HREF="/cgi-bin/man/man2html?8+sysctl">sysctl</A>(8)</B>
+
+aussi bien pour lire que pour écrire des paramètres.
+<A NAME="lbAE">&nbsp;</A>
+<H2>PARAMÈTRES</H2>
+
+<DL COMPACT>
+<DT><B>variable</B>
+
+<DD>
+Le nom d'une clé à lire. Par exemple «&nbsp;kernel.ostype&nbsp;».
+Le séparateur «&nbsp;/ » est aussi accepté en lieu et place de «&nbsp;.&nbsp;».
+<DT><B>variable=valeur</B>
+
+<DD>
+Pour écrire une valeur, utilisez la forme
+<B>variable=valeur</B>,
+
+où
+<B>variable</B>
+
+est la clé et
+<B>valeur</B>
+
+la valeur à y placer. Si valeur contient des guillemets ou des
+caractères interprétés par le shell, il faut placer la valeur entre guillemets doubles.
+Cette forme ne peut être utilisée qu'avec l'option -w.
+<DT><B>-n</B>
+
+<DD>
+Empêche l'affichage des clés lors de l'affichage des valeurs.
+<DT><B>-e</B>
+
+<DD>
+Ignore les erreurs concernant les clés inconnues.
+<DT><B>-w</B>
+
+<DD>
+Permet de changer un paramètre.
+<DT><B>-p</B>
+
+<DD>
+Met en place les paramètres indiqués dans le fichier donné en argument ou dans
+<I>/etc/sysctl.conf</I>
+
+si aucun fichier n'est donné.
+<DT><B>-a</B>
+
+<DD>
+Affiche toutes les valeurs disponibles.
+<DT><B>-A</B>
+
+<DD>
+Affiche toutes les valeurs disponibles sous forme d'un tableau.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+<DL COMPACT>
+<DT>/sbin/sysctl -a<DD>
+<DT>/sbin/sysctl -n kernel.hostname<DD>
+<DT>/sbin/sysctl -w kernel.domainname=&quot;exemple.com&quot;<DD>
+<DT>/sbin/sysctl -p /etc/sysctl.conf<DD>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/proc/sys</I>
+
+<I>/etc/sysctl.conf</I>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+sysctl.conf">sysctl.conf</A></B>(5)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>BUGS</H2>
+
+Le paramètre -A se comporte comme le paramètre -a.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+George Staikos, &lt;<A HREF="mailto:staikos@0wned.org">staikos@0wned.org</A>&gt;
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Loïc Le Loarer, 2001.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNTHÈSE</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">PARAMÈTRES</A><DD>
+<DT><A HREF="#lbAF">EXEMPLES</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">BUGS</A><DD>
+<DT><A HREF="#lbAJ">AUTEUR</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:04 GMT, February 11, 2014
+</BODY>
+</HTML>

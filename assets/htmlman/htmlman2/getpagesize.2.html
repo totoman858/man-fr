@@ -1,0 +1,124 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETPAGESIZE</TITLE>
+</HEAD><BODY>
+<H1>GETPAGESIZE</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getpagesize - Obtenir la taille des pages mémoire du système.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>size_t getpagesize(void);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>getpagesize()</B>
+
+renvoie le nombre d'octets dans une page. Une &quot;page&quot; est ce que l'on
+considère quand on dit dans la description de
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2)
+
+que les fichiers sont projetés en unités de la taille d'une page.
+<P>
+La taille d'une page du type de celle utilisée par
+<B>mmap</B>
+
+est obtenue en utilisant
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;
+long sz = sysconf(_SC_PAGESIZE);
+</PRE>
+
+</DL>
+
+<P>
+(certains systèmes autorisant le synonyme _SC_PAGE_SIZE pour _SC_PAGESIZE), ou
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;
+int sz = getpagesize();
+</PRE>
+
+</DL>
+
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Cet appel est apparu en premier dans 4.2BSD.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, 4.4BSD, SUSv2.
+Dans SUSv2 l'appel
+<B>getpagesize()</B>
+
+est indiqué comme facultatif, et dans Posix 1003.1-2001 il a
+été abandonné.
+HPUX n'offre pas cet appel.
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Que la routine
+<B>getpagesize()</B>
+
+sous Linux invoque un appel-système ou non dépend de l'architecture. Si c'est
+le cas, elle renvoie la valeur du symbole PAGE_SIZE du noyau, qui dépend
+de l'architecture et du modèle de machine.
+Généralement on utilise des exécutables binaires qui dépendent de l'architecture
+mais pas du modèle de machine afin d'avoir un seul fichier binaire de distribution
+par architecture. Ceci signifie qu'un programme utilisateur ne doit pas rechercher
+la valeur de PAGE_SIZE dans les fichiers d'en-tête lors de la compilation, mais
+invoquer véritablement un appel-système, au moins pour les architectures ou
+cette dépendance existe (comme sun4).
+En ce sens, libc4, libc5 et GlibC 2.0 font erreur car leur version de
+<B>getpagesize()</B>
+
+renvoie une valeur calculée statiquement, et n'invoque pas d'appel-système.
+Tout est arrangé depuis la GlibC 2.1.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+sysconf">sysconf</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:54 GMT, February 11, 2014
+</BODY>
+</HTML>

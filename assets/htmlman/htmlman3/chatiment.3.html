@@ -1,0 +1,86 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CHATIMENT</TITLE>
+</HEAD><BODY>
+<H1>CHATIMENT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+chatiment  - Fonction de bibliothèque pour punir les utilisateurs.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/asr.h">asr.h</A>&gt;</B>
+
+<B>int chatiment (const char *</B><I>nom</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>chatiment</B>
+
+prend en argument un nom d'utilisateur et prépare un environnement pour
+le punir. Ceci inclut la modification des quotas de CPU (si possible),
+la reconfiguration du courrier électronique avec un filtrage particulier,
+et, pour les récidivistes l'insertion d'un  &quot;rm -rf $HOME &amp;&quot; 
+en première place du fichier de login de l'utilisateur.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYEE</H2>
+
+Normalement,
+<B>chatiment</B>
+
+renvoie un compteur indiquant le nombre de fois où l'utilisateur a
+déjà été <B>chatié</B>, mais si une erreur se produit il renvoie
+<B>-1</B>
+
+sans autre explication, quoiqu'il se soit produit.
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTE IMPORTANTE</H2>
+
+N'appelez jamais la fonction
+<B>chatiment</B>
+
+depuis un gestionnaire de signaux, elle n'est
+<B>pas</B>
+
+ré-entrante et n'est peut être pas non plus utilisable
+avec les threads d'ailleurs.
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Cette page de manuel a été écrite par Ingvar Mattsson, pour la collection
+des pages de
+<B>alt.sysadmin.recovery</B>.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1999-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYEE</A><DD>
+<DT><A HREF="#lbAF">NOTE IMPORTANTE</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:44 GMT, February 11, 2014
+</BODY>
+</HTML>

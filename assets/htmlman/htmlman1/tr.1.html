@@ -1,0 +1,449 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TR</TITLE>
+</HEAD><BODY>
+<H1>TR</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+tr - Transposer ou éliminer des caractères.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>tr</B>
+
+[-cst] [--complement] [--squeeze-repeats]
+[--truncate-set1] chaîne_1 chaîne_2
+<BR>
+
+<B>tr</B>
+
+{-s,--squeeze-repeats} [-c] [--complement] chaîne_1
+<BR>
+
+<B>tr</B>
+
+{-d,--delete} [-c] chaîne_1
+<BR>
+
+<B>tr</B>
+
+{-d,--delete} {-s,--squeeze-repeats} [-c] [--complement]
+chaîne_1 chaîne_2
+<P>
+
+La version GNU de
+<B>tr</B>
+
+accepte également les options --help et --version.
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+Cette page de manuel documente la version GNU de
+<B>tr.</B>
+
+<P>
+<B>tr</B>
+
+copie son entrée standard sur sa sortie standard en effectuant l'une des
+manipulations suivantes :
+<DL COMPACT>
+<DT><DD>
+&bull; transposer, et éventuellement réunir les caractères dupliqués de la chaîne résultante
+<BR>
+
+&bull; réunir les caractères dupliqués
+<BR>
+
+&bull; supprimer des caractères
+<BR>
+
+&bull; supprimer des caractères, et éventuellement réunir les caractères dupliqués de la chaîne résultante
+</DL>
+<P>
+
+Les arguments <I>chaîne1</I> et (éventuellement) <I>chaîne2</I> décrivent des
+ensembles ordonnés de caractères, que l'on mentionnera plus bas sous les noms de
+jeu1 et jeu2.
+Ces ensembles représentent les caractères de l'entrée standard sur lesquels
+<B>tr</B>
+
+travaillera.
+L'option
+<I>--complement</I>
+
+(<I>-c</I>) remplace jeu1 par son complément (tous les caractères n'appartenant
+pas à jeu1).
+<A NAME="lbAE">&nbsp;</A>
+<H3>DÉFINIR LES ENSEMBLES DE CARACTÈRES</H3>
+
+<P>
+
+Le format des arguments <I>chaîne1</I> et <I>chaîne2</I> ressemble à celui
+des expressions rationnelles. Il ne s'agit toutefois pas d'expressions
+rationnelles, mais simplement de listes de caractères.
+La plupart des caractères sont représentes par eux-mêmes, néanmoins
+les chaînes peuvent également contenir des raccourcis plus simples
+décrits ci-dessous. Certains de ces raccourcis ne peuvent être
+utilisés que dans <I>chaîne1</I> ou que dans <I>chaîne2</I>, comme c'est
+mentionné ci-dessous.
+<P>
+
+Séquences avec BackSlash. Un backslash suivi d'un caractère non défini
+ci-dessous déclenche un message d'erreur.
+<DL COMPACT>
+<DT>\a<DD>
+Contrôle-G.
+<DT>\b<DD>
+Contrôle-H.
+<DT>\f<DD>
+Contrôle-L.
+<DT>\n<DD>
+Contrôle-J.
+<DT>\r<DD>
+Contrôle-M.
+<DT>\t<DD>
+Contrôle-I.
+<DT>\v<DD>
+Contrôle-K.
+<DT>\ooo<DD>
+Le caractère de valeur octale <I>ooo</I>, s'étendant sur 1 à 3 chiffres.
+<DT>\\<DD>
+BackSlash.
+</DL>
+<P>
+
+Intervalles.  La notation `<I>m</I>-<I>n</I>' représente tous les caractères
+compris entre <I>m</I> et <I>n</I>, en ordre croissant.  <I>m</I>
+doit être inférieur à <I>n</I>, sinon une erreur se produit. 
+Par exemple, `0-9' est équivalent à `0123456789'.
+Bien que la version GNU de
+<B>tr</B>
+
+ne supporte pas la syntaxe System V qui utilise des crochets pour indiquer
+les intervalles, les transpositions spécifiées avec ce format fonctionneront
+quand même si les crochets de chaîne1 correspondent à des crochets identiques
+de chaîne2.
+<P>
+
+Répétition de caractères. La notation `[<I>c</I>*<I>n</I>]' dans
+<I>chaîne2</I> se développe en <I>n</I> copies du caractère <I>c</I>. Ainsi,
+`[y*6]' est équivalent à `yyyyyy'.  La notation `[<I>c</I>*]' dans
+<I>chaîne2</I> se développe en autant de copie de <I>c</I> qu'il le faut
+pour rendre le jeu2 aussi long que jeu1. Si <I>n</I> commence par 0, il est
+interprété en octal, sinon en décimal.
+<P>
+
+Classes de caractères. La notation `[:<I>nom-classe</I>:]' correspond à
+l'ensemble de tous les caractères appartenant à la classe (prédéfinie)
+<I>nom-classe</I>.
+Les caractères ne se présentent pas dans un ordre particulier, sauf pour
+les classes `upper' `lower' dont les membres sont en ordre croissant.
+Quand les options
+<I>--delete</I>
+
+(<I>-d</I>) et
+<I>--squeeze-repeats</I>
+
+(<I>-s</I>) sont utilisées simultanément, n'importe quelle classe de
+caractères peut être mentionnée dans <I>chaîne2</I>.
+Autrement, seules les classes `lower' et `upper' sont acceptées dans
+<I>string2</I>, et ceci seulement si la classe correspondante
+(`upper' et `lower', respectivement) est mentionnée à la même position
+relative dans <I>chaîne1</I>. Ceci permet de convertir le type
+majuscule/minuscule des caractères. Les noms de classes sont indiqués
+ci-dessous. Une erreur se produit si l'on tente d'utiliser un nom de
+classe invalide.
+<DL COMPACT>
+<DT>alnum<DD>
+Lettres et chiffres.
+<DT>alpha<DD>
+Lettres.
+<DT>blank<DD>
+Caractères d'espacement horizontaux.
+<DT>cntrl<DD>
+caractères de contrôle.
+<DT>digit<DD>
+Chiffres.
+<DT>graph<DD>
+caractères imprimables, sauf l'espace.
+<DT>lower<DD>
+Lettres minuscules.
+<DT>print<DD>
+caractères imprimables, y compris l'espace.
+<DT>punct<DD>
+caractères de ponctuation.
+<DT>space<DD>
+Caractères d'espacement horizontaux ou verticaux.
+<DT>upper<DD>
+Lettres majuscules.
+<DT>xdigit<DD>
+Chiffres hexadécimaux.
+</DL>
+<P>
+
+Classes d'équivalence. La syntaxe `[=<I>c</I>=]' se développe en l'ensemble
+des caractères équivalents à <I>c</I>, sans ordre particulier.
+Les classes d'équivalence sont une invention récente destinée à
+supporter les alphabets autres que l'anglais. Mais il n'y a pas
+de manière standard de les définir ou de connaître leur contenu.
+Ainsi elles ne sont pas totalement implémentées dans la version
+GNU de
+<B>tr</B>.
+
+La classe d'équivalence d'un caractère est composée uniquement de ce
+caractère, ce qui rend ces classes inutiles actuellement.
+<P>
+[NDT] Il serait pourtant bien pratique que la classe d'équivalence
+d'un caractère contienne également ses versions accentuées...
+<A NAME="lbAF">&nbsp;</A>
+<H3>TRADUCTION</H3>
+
+<P>
+
+<B>tr</B>
+
+effectue les traductions de caractères lorsqu'on lui fournit à
+la fois <I>chaîne1</I> et <I>chaîne2</I>, et si l'on n'utilise pas
+l'option --delete (<I>-d</I>).
+<B>tr</B>
+
+transpose chaque caractère d'entrée appartenant au jeu1 en un caractère
+correspondant du jeu2. Les caractères non trouvés dans jeu1 sont
+copies sans modification. Quand un caractère apparaît plusieurs fois
+dans jeu1, et si les caractères correspondants de jeu2 ne sont pas
+toujours les mêmes, seule la version finale est utilisée.
+Par exemple ces deux commandes sont équivalentes :
+<DL COMPACT><DT><DD>
+<PRE>
+tr aaa xyz
+tr a z
+</PRE>
+
+</DL>
+
+<P>
+
+Un usage classique de
+<B>tr</B>
+
+est la conversions de minuscules en majuscules. Ceci peut être réalisé
+de nombreuses manières différentes. En voici trois :
+<DL COMPACT><DT><DD>
+<PRE>
+tr abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ
+tr a-z A-Z
+tr '[:lower:]' '[:upper:]'
+</PRE>
+
+</DL>
+
+<P>
+
+[NDT] Une utilisation pratique pour nous est la suppression des accents
+d'un texte. En voici un exemple supprimant les accents utilisés en français.
+<DL COMPACT><DT><DD>
+<PRE>
+tr &quot;àçéèêëîïôöùüÂÇÉÈÊËÎÏÔÖÙÜ&quot; &quot;aceeeeiioouuACEEEEIIOOUU&quot;
+</PRE>
+
+</DL>
+
+<P>
+
+Quand
+<B>tr</B>
+
+effectue une traduction, jeu1 et jeu2 doivent normalement avoir la même
+longueur. Si jeu1 est plus court que jeu2, les caractères supplémentaires
+en fin de jeu2 sont ignorés.
+<P>
+
+D'autre part, si jeu1 est plus long que jeu2, la portabilité n'est
+pas assurée. POSIX.2 précise que dans ce cas le comportement est
+indéfini. La version BSD de
+<B>tr</B>
+
+complète jeu2 jusqu'à la même longueur que jeu1 en répétant son dernier
+caractère de fois autant que nécessaire. La version System V de
+<B>tr</B>
+
+tronque jeu1 à la même longueur que jeu2.
+<P>
+
+Par défaut, la version GNU de
+<B>tr</B>
+
+se comporte comme la version BSD.
+Quand l'option --truncate-set1 (<I>-t</I>) est mentionnée, elle
+se comporte comme la version System V.
+Cette option n'a pas d'effet pour les autres manipulations que les
+traductions.
+<P>
+
+Le comportement System V de
+<B>tr</B>
+
+rend impossible la commande BSD classique
+<DL COMPACT><DT><DD>
+<PRE>
+tr -cs A-Za-z0-9 '\012'
+</PRE>
+
+</DL>
+
+car elle ne convertit que les octets nuls
+(le premier élément du complément de jeu1) en Saut de Ligne,
+au lieu de convertir tous les caractères non-alphanumériques.
+<A NAME="lbAG">&nbsp;</A>
+<H3>ÉLIMINER LES RÉPÉTITIONS ET EFFACER DES CARACTÈRES</H3>
+
+<P>
+
+Quand seule l'option --delete (<I>-d</I>) est fournie,
+<B>tr</B>
+
+supprime tous les caractères d'entrée présents dans jeu1.
+<P>
+
+Quand seule l'option --squeeze-repeats (<I>-s</I>) est fournie,
+<B>tr</B>
+
+remplace chaque répétitions de caractères appartenant au jeu1 par une
+seule occurrence de ce caractère.
+<P>
+
+Quand les deux options --delete et --squeeze-repeats sont réclamées
+en même temps,
+<B>tr</B>
+
+effectue d'abord toutes les suppressions des caractères de jeu1, puis
+élimine les répétitions des caractères appartenant au jeu2.
+<P>
+
+L'option --squeeze-repeats peut également être utilisée pendant les
+traductions, auquel cas
+<B>tr</B>
+
+effectue d'abord la transposition, puis élimine les répétitions de
+caractères appartenant au jeu2.
+<P>
+
+Voici quelques exemples destinés à illustrer diverses combinaisons
+des options :
+<P>
+
+Supprimer les octets nuls :
+<DL COMPACT><DT><DD>
+tr -d '\000'
+</DL>
+
+<P>
+
+Afficher chaque mot sur une ligne indépendante. Ceci convertit tous les
+caractères non alphanumériques en sauts de lignes, puis regroupe
+les lignes blanches successives en un seul saut de ligne :
+<DL COMPACT><DT><DD>
+tr -cs '[a-zA-Z0-9]' '[\n*]'
+</DL>
+
+<P>
+
+Convertir les séquences de sauts de lignes en un seul saut de
+ligne (ceci supprime les lignes blanches) :
+<DL COMPACT><DT><DD>
+tr -s '\n'
+</DL>
+
+<P>
+
+La version GNU de
+<B>tr</B>
+
+accepte également les options supplémentaire suivantes :
+<DL COMPACT>
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et se terminer normalement.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et se terminer normalement.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H3>MESSAGE D'AVERTISSEMENT</H3>
+
+<P>
+
+Lorsque la variable d'environnement POSIXLY_CORRECT est validée, plusieurs
+messages d'erreurs et d'avertissements sont inhibés, afin d'assurer une
+compatibilité stricte avec POSIX.2.
+Les messages en question se produisent dans les circonstances suivantes :
+<P>
+
+1. Quand l'option
+<I>--delete</I>
+
+est utilisée sans l'option
+<I>--squeeze-repeats,</I>
+
+et si <I>chaîne2</I> est fournie, la version GNU de
+<B>tr</B>
+
+affiche par défaut un message d'erreur et se termine, car <I>chaîne2</I> ne
+serait pas utilisée. Les spécifications POSIX indiquent que dans ce
+cas <I>chaîne2</I> doit simplement être ignorée. Ignorer un argument sans
+prévenir l'utilisateur n'est pas une bonne idée.
+<P>
+
+2. Quand un nombre octal ambigu est fourni par une séquence d'échappement.
+Par exemple \400 correspond en réalité au caractère \40 suivi du
+chiffre 0, car la valeur octale 400 ne tient pas dans un octet.
+<P>
+
+Remarquez que la version GNU de
+<B>tr</B>
+
+ne fournit pas de compatibilité totale BSD ou System V. Par exemple,
+il n'y a pas d'option pour inhiber l'interprétation des séquences
+POSIX  [:alpha:], [=c=], et [c*10]. Remarquez également que la version GNU de
+<B>tr</B>
+
+ne supprime pas les octets nuls automatiquement contrairement aux
+versions UNIX traditionnelles, avec lesquelles il n'y a pas de
+moyen de conserver les octets nuls.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">DÉFINIR LES ENSEMBLES DE CARACTÈRES</A><DD>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+<DT><A HREF="#lbAG">ÉLIMINER LES RÉPÉTITIONS ET EFFACER DES CARACTÈRES</A><DD>
+<DT><A HREF="#lbAH">MESSAGE D'AVERTISSEMENT</A><DD>
+</DL>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:41 GMT, February 11, 2014
+</BODY>
+</HTML>

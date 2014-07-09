@@ -1,0 +1,101 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CONFMODULE</TITLE>
+</HEAD><BODY>
+<H1>CONFMODULE</H1>
+Section: C Library Functions (3)<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+confmodule - Communiquer avec l'interface de configuration système Debian
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<BR>&nbsp;&nbsp;#!/bin/sh&nbsp;-e
+<BR>&nbsp;&nbsp;.&nbsp;/usr/share/debconf/confmodule
+<BR>&nbsp;&nbsp;db_version&nbsp;2.0
+<BR>&nbsp;&nbsp;db_capb&nbsp;'backup'
+<BR>&nbsp;&nbsp;CAPB=$RET
+<BR>&nbsp;&nbsp;db_input&nbsp;'foo/bar'&nbsp;||&nbsp;true
+<BR>&nbsp;&nbsp;db_go&nbsp;||&nbsp;true
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+C'est une bibliothèque de fonctions shell qui allège la communication avec le
+gestionnaire de configuration système Debian. Elle peut communiquer avec une
+interface via le protocole debconf. Chaque commande du protocole est représentée
+par une fonction de cette bibliothèque. Le nom de la fonction est le même que
+celui de la commande, excepté qu'il est préfixé avec «&nbsp;db_&nbsp;» et est en minuscule.
+Appelez la fonction et transmettez-lui les paramètres que vous voulez pour la
+commande. Un code de retour textuel de l'interface vous sera renvoyé dans la
+variable $RET, et le code de retour numérique de l'interface sera renvoyé comme
+code de retour (ces codes de retour doivent être pris ou ignorés).
+<P>
+gestionnaire de configuration système Debian. Il peut communiquer avec une
+interface via le protocole debconf Le plan de ce module est que chaque commande
+du protocole est représentée par une fonction. Le nom de la fonction est le même
+que celui de la commande, excepté qu'il est préfixé avec «&nbsp;db_&nbsp;» et est en
+minuscules. Appelez la fonction et transmettez-lui les paramètres que vous voulez
+suivre à la commande. N'importe quel code de retour textuel de l'interface vous
+sera renvoyé dans la variable $RET, pendant que le code de retour numérique de
+l'interface sera renvoyé comme code de retour (donc ces codes de retour seront
+pris ou ignorés).
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+Une fois que cette bibliothèque est chargée, le texte que vous sortirez ira sur
+l'erreur standard, plutôt que sur la sortie standard. C'est une bonne chose en
+général, car le texte envoyé à la sortie standard est interprété par l'interface
+comme une commande. Si vous voulez envoyer une commande directement à
+l'interface, vous devez la faire sortir sur le descripteur de fichier 3, comme
+ceci&nbsp;:
+<BR>&nbsp;&nbsp;echo&nbsp;GET&nbsp;foo/bar&nbsp;&gt;&amp;3
+<P>
+
+La bibliothèque s'assure qu'elle communique réellement avec une interface en
+examinant la variable DEBIAN_HAS_FRONTEND. Si elle est fixée, une interface est
+supposée être lancée. Si non, la bibliothèque en devient une et lance une copie
+du script qui chargea la bibliothèque et se connecta à elle. Cela signifie que
+si vous chargez cette bibliothèque, vous devez le faire presque au début de
+votre script, parce que tout ce qui a été fait  avant le chargement de la
+bibliothèque sera peut-être exécuté une fois de plus.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+dpkg-preconfigure">dpkg-preconfigure</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+dpkg-reconfigure">dpkg-reconfigure</A></B>(8),
+
+Les spécifications debconf dans le paquet debian-policy
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Joey Hess &lt;<A HREF="mailto:joeyh@debian.org">joeyh@debian.org</A>&gt;
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Julien Louis &lt;<A HREF="mailto:leonptitlouis@ifrance.com">leonptitlouis@ifrance.com</A>&gt;
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:25 GMT, February 11, 2014
+</BODY>
+</HTML>

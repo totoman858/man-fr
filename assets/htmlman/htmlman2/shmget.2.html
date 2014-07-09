@@ -1,0 +1,367 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SHMGET</TITLE>
+</HEAD><BODY>
+<H1>SHMGET</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+shmget - Allouer un segment de mémoire partagée.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/ipc.h">sys/ipc.h</A>&gt;</B>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/sys/shm.h">sys/shm.h</A>&gt;</B>
+
+<P>
+<B>int shmget(key_t </B><I>clé</I><B>, int </B><I>size</I><B>, int </B><I>shmflg</I><B>);</B>
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>shmget()</B>
+
+renvoie l'identificateur du segment de mémoire partagée
+associé à la valeur de l'argument
+<I>clé</I>.
+
+Un nouveau segment mémoire, de taille 
+<I>size</I>
+
+arrondie au multiple supérieur de
+<B>PAGE_SIZE</B>,
+
+est créé si
+<I>clé</I>
+
+a la valeur
+<B>IPC_PRIVATE</B>
+
+ou si aucun segment de mémoire partagée n'est associé à
+<I>clé</I>,
+
+et
+<B>IPC_CREAT</B>
+
+est présent dans
+<I>shmflg.</I>
+
+<P>
+
+<I>shmflg</I>
+
+est composé de&nbsp;:
+<DL COMPACT>
+<DT><B>IPC_CREAT</B>
+
+<DD>
+pour créer un nouveau segment. Sinon
+<B>shmget()</B>
+
+recherchera le segment associé à <I>clé</I>, vérifiera que
+l'appelant a la permission de recevoir l'identifiant <I>shmid</I> 
+associé au segment, et contrôlera que le segment n'est pas
+détruit.
+<DT><B>IPC_EXCL</B>
+
+<DD>
+est utilisé avec <B>IPC_CREAT</B> pour garantir l'échec si
+le segment existe déjà.
+<DT><B>mode d'accès (les 9 bits de poids faibles)</B>
+
+<DD>
+indiquant les permissions pour le propriétaire, le groupe et
+les autres.
+Actuellement la permission d'exécution n'est pas utilisée 
+par le système.
+</DL>
+<P>
+
+Si un nouveau segment est créé, les permissions d'accès de
+<I>shmflg</I>
+
+sont copiées dans le membre
+<I>shm_perm</I>
+
+de la structure
+<I>shmid_ds</I>
+
+décrivant le segment. Cette structure est définie ainsi :
+<P>
+
+
+<PRE>
+struct shmid_ds {
+  struct          ipc_perm shm_perm; /* Permissions d'accès       */
+  int             shm_segsz;         /* Taille segment en octets  */
+  time_t          shm_atime;         /* Heure dernier attachement */
+  time_t          shm_dtime;         /* Heure dernier détachement */
+  time_t          shm_ctime;         /* Heure dernier changement  */
+  unsigned short  shm_cpid;          /* PID du créateur           */
+  unsigned short  shm_lpid;          /* PID du dernier opérateur  */
+  short           shm_nattch;        /* Nombre d'attachements     */
+};
+</PRE>
+
+
+<P>
+
+
+<PRE>
+struct ipc_perm {
+  key_t  key;
+  ushort uid;   /* UID et GID effectifs du propriétaire    */
+  ushort gid;
+  ushort cuid;  /* UID et GID effectif du créateur         */
+  ushort cgid;
+  ushort mode;  /* Mode d'accès sur 9 bits de poids faible */
+  ushort seq;   /* Numéro de séquence                      */
+};
+</PRE>
+
+<P>
+
+De plus, durant la création, le système initialise la structure
+<B>shmid_ds</B>
+
+associée au segment comme suit&nbsp;:
+<DL COMPACT>
+<DT><DD>
+<B>shm_perm.cuid</B>
+
+et
+<B>shm_perm.uid</B>
+
+contiennent l'UID effectif de l'appelant.
+<DT><DD>
+<B>shm_perm.cgid</B>
+
+et 
+<B>shm_perm.gid</B>
+
+contiennent le GID effectif de l'appelant.
+<DT><DD>
+Les 9 bits de poids faibles de
+<B>shm_perm.mode</B>
+
+contiennent les 9 bits de poids faibles de
+<I>shmflg</I>.
+
+<DT><DD>
+<B>shm_segsz</B>
+
+prend la valeur
+<I>size.</I>
+
+<DT><DD>
+<B>shm_lpid</B>,
+
+<B>shm_nattch</B>,
+
+<B>shm_atime</B>
+
+et
+<B>shm_dtime</B>
+
+sont mis à 
+<B>0.</B>
+
+<DT><DD>
+<B>shm_ctime</B>
+
+contient l'heure actuelle
+</DL>
+<P>
+
+Si le segment de mémoire existe déjà, les permissions d'accès sont
+vérifiées, et un contrôle à lieu pour voir s'il est marqué pour destruction.
+<P>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>AUTRES APPELS SYSTÈMES</H2>
+
+<DL COMPACT>
+<DT><B>fork()</B>
+
+<DD>
+Après un
+<B>fork()</B>
+
+le fils hérite des segments de mémoire partagée.
+<DT><B>exec()</B>
+
+<DD>
+Après un
+<B>exec()</B>
+
+tous les segments de mémoire partagée sont détachés (pas détruits).
+<DT><B>exit()</B>
+
+<DD>
+Lors d'un
+<B>exit()</B>
+
+tous les segments de mémoire partagée sont détachés (pas détruits).
+</DL>
+<P>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Un identificateur de segment 
+<I>shmid</I>
+
+valide est renvoyé en cas de réussite, sinon -1 est renvoyé et
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAG">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+<B>SHMMIN</B> &gt; <I>size</I> ou
+<I>size</I> &gt; <B>SHMMAX</B>, ou <I>size</I> plus grand que la taille du segment.
+<DT><B>EEXIST</B>
+
+<DD>
+On a indiqué
+<B>IPC_CREAT | IPC_EXCL</B>
+
+et le segment existe déjà.
+<DT><B>ENOSPC</B>
+
+<DD>
+Tous les ID de mémoire partagée sont utilisés, ou l'allocation
+d'un segment partagé de taille
+<I>size</I>
+
+dépasserait les limites de mémoire partagée du système.
+<DT><B>ENOENT</B>
+
+<DD>
+Aucun segment n'est associé à <I>clé</I>, et 
+<B>IPC_CREAT</B>
+
+n'etait pas indiqué.
+<DT><B>EACCES</B>
+
+<DD>
+L'appelant n'a pas les autorisations d'accès au segment.
+<DT><B>ENOMEM</B>
+
+<DD>
+Pas assez de mémoire.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+<B>IPC_PRIVATE</B>
+
+n'est pas une option mais une valeur de type
+<B>key_t</B>.
+
+Si cette valeur spéciale est utilisée comme
+<I>clé</I>,
+
+l'appel système ignore tout sauf les 9 bits de poids faibles
+de
+<I>shmflg</I>
+
+et tente de créer un nouveau segment.
+<P>
+
+Les limites suivantes influent sur l'appel système
+<B>shmget</B> :
+
+<DL COMPACT>
+<DT><B>SHMALL</B>
+
+<DD>
+Nombre maximal de pages de mémoire partagée sur le système.
+<DT><B>SHMMAX</B>
+
+<DD>
+Taille maximale d'un segment partagé (actuellement 4 Mo).
+<DT><B>SHMMIN</B>
+
+<DD>
+Taille minimale d'un segment partagé.
+(actuellement 1 octet, bien que
+<B>PAGE_SIZE</B>
+
+soit la valeur effectivement utilisée).
+<DT><B>SHMMNI</B>
+
+<DD>
+Nombre maximal de segments de mémoire partagée sur le système 
+(actuellement 4096, mais 128 avant Linux 2.3.99).
+</DL>
+<P>
+
+Il n'y a pas de limite pour le nombre de segments partagés par
+processus (sauf SHMMNI).
+<A NAME="lbAI">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Le choix du nom IPC_PRIVATE est plutôt malheureux, il aurait mieux
+valu utiliser IPC_NEW.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, SVID. SVr4 mentionne une condition d'erreur supplémentaire EEXIST. 
+Jusqu'au noyau 2.3.30, Linux renvoyait l'erreur EIDRM pour un
+<B>shmget</B>
+
+sur un segment de mémoire marqué pour destruction.
+<A NAME="lbAK">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+ftok">ftok</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+ipc">ipc</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?2+shmctl">shmctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+shmat">shmat</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+shmdt">shmdt</A></B>(2).
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">AUTRES APPELS SYSTÈMES</A><DD>
+<DT><A HREF="#lbAF">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAG">ERREURS</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">BOGUES</A><DD>
+<DT><A HREF="#lbAJ">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAK">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:01 GMT, February 11, 2014
+</BODY>
+</HTML>

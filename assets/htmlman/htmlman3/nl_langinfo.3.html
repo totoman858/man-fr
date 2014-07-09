@@ -1,0 +1,192 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of NL_LANGINFO</TITLE>
+</HEAD><BODY>
+<H1>NL_LANGINFO</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+nl_langinfo - Demande d'informations sur la langue et la localisation.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/langinfo.h">langinfo.h</A>&gt;</B>
+
+<B>char *nl_langinfo(nl_item *</B><I>item</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>nl_langinfo</B> fournit un accès aux informations de localisation
+de façon plus flexible que ne le fait 
+<B><A HREF="/cgi-bin/man/man2html?3+localeconv">localeconv</A></B>(3).
+
+Des éléments individuels et supplémentaires des catégories de localisation
+peuvent être interrogés.
+<P>
+
+Voici des exemples d'éléments de localisation qui peuvent être spécifiés via
+<I>item</I> en utilisant les constantes définies dans &lt;<A HREF="file:///usr/include/langinfo.h">langinfo.h</A>&gt; :
+<P>
+<DL COMPACT>
+<DT><B>CODESET</B>&nbsp;(LC_CTYPE)
+
+<DD>
+renvoie une chaîne contenant le nom de l'encodage de caractères utilisé 
+dans la localisation sélectionnée, par exemple &quot;UTF-8&quot;, &quot;ISO-8859-1&quot;, ou 
+&quot;ANSI_X3.4-1968&quot; ( mieux connu sous US-ASCII). Il s'agit de la même chaîne 
+que celle obtenue avec &quot;locale charmap&quot;. Pour une liste des noms d'encodage
+de caractères, essayez &quot;locale
+-m&quot;, cf.
+<B><A HREF="/cgi-bin/man/man2html?1+locale">locale</A></B>(1).
+
+<P>
+<DT><B>D_T_FMT</B>&nbsp;(LC_TIME)
+
+<DD>
+renvoie une chaîne qui peut être utilisée en tant que chaîne de format pour
+<B><A HREF="/cgi-bin/man/man2html?3+strftime">strftime</A></B>(3)
+
+afin de représenter l'heure et la date de façon spécifique à la localisation.
+<P>
+<DT><B>D_FMT</B>&nbsp;(LC_TIME)
+
+<DD>
+renvoie une chaîne qui peut être utilisée en tant que chaîne de format pour
+<B><A HREF="/cgi-bin/man/man2html?3+strftime">strftime</A></B>(3)
+
+afin de représenter la date de façon spécifique à la localisation.
+<P>
+<DT><B>T_FMT</B>&nbsp;(LC_TIME)
+
+<DD>
+renvoie une chaîne qui peut être utilisée en tant que chaîne de format pour
+<B><A HREF="/cgi-bin/man/man2html?3+strftime">strftime</A></B>(3)
+
+afin de représenter l'heure de façon spécifique à la localisation.
+<P>
+<DT><B>DAY_</B>{1-7} (LC_TIME)
+
+<DD>
+renvoie le nom du <I>n</I>-ième jour de la semaine. [Attention : cela suit 
+la convention américaine stipulant que  DAY_1 = Dimanche, et pas la convention
+internationale (ISO 8601) spécifiant que Lundi est le premier jour de la semaine.]
+<P>
+<DT><B>ABDAY_</B>{1-7} (LC_TIME)
+
+<DD>
+renvoie le nom abrégé du <I>n</I>-ième jour de la semaine.
+<P>
+<DT><B>MON_</B>{1-12} (LC_TIME)
+
+<DD>
+renvoie le nom du <I>n</I>-ième mois.
+<P>
+<DT><B>ABMON_</B>{1-12} (LC_TIME)
+
+<DD>
+renvoie le nom abrégé du <I>n</I>-ième mois.
+<P>
+<DT><B>RADIXCHAR</B>&nbsp;(LC_NUMERIC)
+
+<DD>
+renvoie le caractère indiquant la base (point, virgule, etc.).
+<P>
+<DT><B>THOUSEP</B>&nbsp;(LC_NUMERIC)
+
+<DD>
+renvoie le caractère séparateur pour les milliers (groupe de trois chiffres);
+<P>
+<DT><B>YESEXPR</B>&nbsp;(LC_MESSAGES)
+
+<DD>
+renvoie une expression rationelle qui peut être utilisée avec
+la fonction 
+<B><A HREF="/cgi-bin/man/man2html?3+regex">regex</A></B>(3)
+
+afin de reconnaître une réponse affirmative à une question de type oui/non.
+<P>
+<DT><B>NOEXPR</B>&nbsp;(LC_MESSAGES)
+
+<DD>
+renvoie une expression rationelle qui peut être utilisée avec
+la fonction
+<B><A HREF="/cgi-bin/man/man2html?3+regex">regex</A></B>(3)
+
+afin de reconnaître une réponse négative à une question de type oui/non.
+<P>
+<DT><B>CRNCYSTR</B>&nbsp;(LC_MONETARY)
+
+<DD>
+renvoie le symbole monétaire précédé par &quot;-&quot; si le symbole doit 
+apparaître avant la valeur, &quot;+&quot; si le symbole doit apparaître après
+la valeur, ou bien &quot;.&quot; si le symbole doit remplacer la virgule.
+</DL>
+<P>
+
+La liste ci dessus ne couvre que quelques exemples des éléments qui
+peuvent être obtenus. Pour une liste plus détaillée, veuillez consulter
+<I>The GNU C Library Reference Manual</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Si aucune localisation n'a été sélectionnée pour la catégorie appropriée,
+<B>nl_langinfo</B> renvoie un pointeur vers la chaîne correspondante dans 
+la localisation &quot;C&quot;.
+<P>
+
+Si <I>item</I> n'est pas un pointeur valide, alors un pointeur vers une
+chaîne vide est renvoyée.
+<P>
+
+Ce pointeur peut faire référence à une donnée statique susceptible d'être écrasée
+lors du prochain appel à  <B>nl_langinfo</B> ou à <B>setlocale</B>.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+The Single UNIX&#174; Specification, Version 2
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+localeconv">localeconv</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setlocale">setlocale</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?1+locale">locale</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?7+locale">locale</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+charsets">charsets</A></B>(7),
+
+The GNU C Library Reference Manual
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Stéphan Rafin, 2002.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:41 GMT, February 11, 2014
+</BODY>
+</HTML>

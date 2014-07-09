@@ -1,0 +1,365 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of NETDEVICE</TITLE>
+</HEAD><BODY>
+<H1>NETDEVICE</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+netdevice - Accès bas-niveau aux périphériques réseau sous Linux.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/ioctl.h">sys/ioctl.h</A>&gt;</B>
+
+<B>#include &lt;<A HREF="file:///usr/include/net/if.h">net/if.h</A>&gt;</B>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel décrit l'interface des socket permettant de configurer
+les périphériques réseau.
+<P>
+Linux support des ioctls standard pour configurer les périphériques réseau. Il servent
+sur n'importe quel descripteur de socket, quelqu'en soit la famille ou le type.
+Ils utilisent une
+structure
+<B>ifreq</B> :
+
+<P>
+<PRE>
+
+struct ifreq {
+    char    ifr_name[IFNAMSIZ];/* nom interface */
+    union {
+            struct sockaddrifr_addr;
+            struct sockaddrifr_dstaddr;
+            struct sockaddrifr_broadaddr;
+            struct sockaddrifr_netmask;
+            struct sockaddrifr_hwaddr;
+            short   ifr_flags;
+            int     ifr_ifindex;
+            int     ifr_metric;
+            int     ifr_mtu;
+            struct ifmapifr_map;
+            char    ifr_slave[IFNAMSIZ];
+            char    ifr_newname[IFNAMSIZ];
+            char *  ifr_data;
+    };
+};
+
+struct ifconf { 
+    int ifc_len;    /* taille buffer */
+    union {            
+            char *  ifc_buf; /* adresse buffer */ 
+            struct ifreq *ifc_req; /* table de structures */
+    };  
+};     
+
+</PRE>
+
+<P>
+Normalement, l'utilisateur indique le périphérique concerné en remplissant
+<B>ifr_name</B>
+
+avec le nom de l'interface. Tous les autres membres de la structure peuvent
+partager la mémoire.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>IOCTLS</H2>
+
+Si un ioctl est indiqué comme privilégié, alors il nécessite un UID effectif
+nul ou la capacité.
+<B>CAP_NET_ADMIN</B>
+
+Sinon, il renverra
+l'erreur
+<B>EPERM</B>.
+
+<P>
+<DL COMPACT>
+<DT><B>SIOCGIFNAME</B>
+
+<DD>
+En utilisant
+<B>ifr_ifindex</B>,
+
+renvoie le nom de l'interface dans
+<B>ifr_name</B>.
+
+C'est le seul ioctl qui renvoie un résultant dans
+<B>ifr_name</B>.
+
+<P>
+<DT><B>SIOCGIFINDEX</B>
+
+<DD>
+Retrouve le numéro d'interface et le place dans
+<B>ifr_ifindex</B>.
+
+<P>
+<DT><B>SIOCGIFFLAGS</B>, <B>SIOCSIFFLAGS</B>
+
+<DD>
+Lire ou écrire les attributs actifs du périphérique.
+<B>ifr_flags</B>
+
+est un mot contenant un masque de bits combinant les valeurs suivantes&nbsp;:
+<P>
+<TABLE>
+<TR VALIGN=top><TD ALIGN=center COLSPAN=2>Device flags<BR></TD></TR>
+<TR VALIGN=top><TD>IFF_UP</TD><TD>Interface fonctionne.<BR></TD></TR>
+<TR VALIGN=top><TD>IFF_BROADCAST</TD><TD>Adresse de broadcast valide.<BR></TD></TR>
+<TR VALIGN=top><TD>IFF_DEBUG</TD><TD>Attribut interne de débogage.<BR></TD></TR>
+<TR VALIGN=top><TD>IFF_LOOPBACK</TD><TD>Interface de type loopback.<BR></TD></TR>
+<TR VALIGN=top><TD>IFF_POINTOPOINT</TD><TD>Interface de type point-à-point.<BR></TD></TR>
+<TR VALIGN=top><TD>IFF_RUNNING</TD><TD>Resources allouées.<BR></TD></TR>
+<TR VALIGN=top><TD>IFF_NOARP</TD><TD>Pas de protocole Arp, adresse de destination L2 absente.<BR></TD></TR>
+<TR VALIGN=top><TD>IFF_PROMISC</TD><TD>Interface en mode promiscuous.<BR></TD></TR>
+<TR VALIGN=top><TD>IFF_NOTRAILERS</TD><TD>N'utilise pas les postambules.<BR></TD></TR>
+<TR VALIGN=top><TD>IFF_ALLMULTI</TD><TD>Accepte tous les paquets multicast.<BR></TD></TR>
+<TR VALIGN=top><TD>IFF_MASTER</TD><TD>Maître d'un système de répartition de charge.<BR></TD></TR>
+<TR VALIGN=top><TD>IFF_SLAVE</TD><TD>Esclave d'un système de répartition de charge.<BR></TD></TR>
+<TR VALIGN=top><TD>IFF_MULTICAST</TD><TD>Support multicast.<BR></TD></TR>
+<TR VALIGN=top><TD>IFF_PORTSEL</TD><TD>Capable de sélectionner le média via ifmap.<BR></TD></TR>
+<TR VALIGN=top><TD>IFF_AUTOMEDIA</TD><TD>Sélection automatique du média.<BR></TD></TR>
+<TR VALIGN=top><TD>IFF_DYNAMIC</TD><TD>
+Adresse perdue quand l'interfac est arrêtée.
+<BR></TD></TR>
+</TABLE>
+
+<P>
+Écrire les attributs est une opération privilégiée, mais tout
+processus peut les lire.
+<DT><B>SIOCGIFMETRIC</B>, <B>SIOCSIFMETRIC</B>
+
+<DD>
+Lire ou écrire la métrique du périphérique en utilisant
+<B>ifr_metric</B>.
+
+Ceci n'est pas encore implémenté, il renvoie dans
+<B>ifr_metric</B>
+
+la valeur 0 si on essaye de lire, et renvoie l'erreur
+<B>EOPNOTSUPP</B>
+
+si on essaye d'écrire.
+<DT><B>SIOCGIFMTU</B>, <B>SIOCSIFMTU</B>
+
+<DD>
+Lire ou écrire le MTU (Maximum Transfer Unit) du périphérique avec
+<B>ifr_mtu</B>.
+
+Fixer le MTU est une opération privilégiée. Fixer un MTU trop petit
+peut faire planter le noyau.
+<DT><B>SIOCGIFHWADDR</B>, <B>SIOCSIFHWADDR</B>
+
+<DD>
+Lire ou écrire l'adresse matérielle du périphérique en utilisant
+<B>ifr_hwaddr</B>.
+
+Cette adresse matérielle est indiquée dans une structure
+<I>sockaddr</I>.
+
+<I>sa_family </I>
+
+contien le type de périphérique ARPHRD_*,
+<I>sa_data</I>
+
+est l'adresse matérielle L2 commençant par l'octet 0.
+Écrire l'adresse matérielle est une opération privilégiée.
+<DT><B>SIOCSIFHWBROADCAST</B>
+
+<DD>
+Fixer l'adresse de broadcast du périphérique à partir de
+<B>ifr_hwaddr</B>.
+
+C'est une opération privilégiée.
+<DT><B>SIOCGIFMAP</B>, <B>SIOCSIFMAP</B>
+
+<DD>
+Lire ou écrire les paramètres matériels de l'interface en utilisant
+<B>ifr_map</B>.
+
+L'écriture des paramètres est une opération privilégiée.
+<P>
+<PRE>
+
+struct ifmap 
+{
+    unsigned long   mem_start;
+    unsigned long   mem_end;
+    unsigned short  base_addr; 
+    unsigned char   irq;                  
+    unsigned char   dma; 
+    unsigned char   port; 
+};
+
+</PRE>
+
+<P>
+L'interprétation de la structure ifmap dépend du pilote de périphérique
+et de l'architecture.
+<DT><B>SIOCADDMULTI</B>, <B>SIOCDELMULTI</B>
+
+<DD>
+Ajouter ou supprimer une adresse des filtres multicast du niveau liaison
+du périphérique en utilisant
+<B>ifr_hwaddr</B>.
+
+Ce sont des opérations privilégiées.
+Voir aussi
+<B><A HREF="/cgi-bin/man/man2html?7+packet">packet</A></B>(7)
+
+pour une autre possibilité.
+<DT><B>SIOCGIFTXQLEN</B>, <B>SIOCSIFTXQLEN</B>
+
+<DD>
+Lire ou écrire la taille de la file d'émission du périphérique avec
+<B>ifr_qlen</B>.
+
+L'Écriture de la taille de la file est une opértation privilégiée.
+<DT><B>SIOCSIFNAME</B>
+
+<DD>
+Changer le nom de l'interface indiquée dans 
+<B>ifr_name</B>
+
+pour
+<B>ifr_newname</B>.
+
+C'est une opération privilégiée. Elle n'est possible que si l'interface
+n'est pas en fonctionnement.
+<DT><B>SIOCGIFCONF</B>
+
+<DD>
+Renvoie une liste des adresses (couche de transport) des interfaces. Ceci
+ne marche actuellement qu'avec les adresses AF_INET (IPv4) pour des raisons
+de compatibilité. L'utilisateur passe une structure
+<B>ifconf</B>
+
+en argument à l'ioctl. Elle contient un pointeur sur une table de structures
+<I>ifreq</I>
+
+dans son membre
+<B>ifc_req</B>
+
+et la longueur en octets dans
+<B>ifc_len.</B>
+
+Le noyau remplit les ifreqs avec toutes les adresses L3 des interfaces
+en fonctionnement&nbsp;:
+<I>ifr_name </I>
+
+contient le nom de l'interfacez (eth0:1 etc.), et
+<I>ifr_addr</I>
+
+l'adresse.
+Le noyau renvoie la longueur réelle dans 
+<I>ifc_len</I>.
+
+Si 
+<I>ifc_len</I>
+
+est égal à la longueur originale du buffer, on a probablement atteint la
+limite, et il est conseillé de recommencer avec un buffer plus grand.
+S'il réussit, l'ioctl renvoie 0, sinon il renvoie -1.
+Atteindre la limite du buffer n'est pas considéré comme une erreur.
+
+
+
+
+
+
+
+</DL>
+<P>
+
+La plupart des protocoles supportent leurs propres ioctls pour configurer
+les options d'interface spécifiques aux protocoles. Voir les pages de manuel
+correspondante. Pour configurer les adresses IP, voir
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7).
+
+<P>
+
+De plus, certains périphériques supportent des ioctls privés, non décrits ici.
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+Strictement parlant,
+<B>SIOCGIFCONF </B>
+
+est spécifique à IP et devrait se trouver dans
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7).
+
+<P>
+
+Les noms des interfaces sans adresses, ou celles qui n'ont pas l'attribut
+<B>IFF_RUNNING </B>
+
+peuvent être trouvés dans
+<I>/proc/net/dev</I>.
+
+<P>
+
+Les adresses IPv6 locales se trouvent dans /proc/net ou grâce à
+<B><A HREF="/cgi-bin/man/man2html?7+rtnetlink">rtnetlink</A></B>(7).
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Dans la GlibC 2.1 il manque la maco
+<I>ifr_newname </I>
+
+dans net/if.h. Ajoutez les lignes suivantes dans votre programme&nbsp;:
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+
+#ifndef ifr_newname
+#define ifr_newname     ifr_ifru.ifru_slave
+#endif
+
+</PRE>
+
+</DL>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?7+ip">ip</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+proc">proc</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?7+rtnetlink">rtnetlink</A></B>(7)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">IOCTLS</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:56 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,122 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ID</TITLE>
+</HEAD><BODY>
+<H1>ID</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+id - Afficher les UIDs et GIDs effectifs et réels.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>id</B>
+
+[-agnruG] [--group] [--name] [--real] [--user] [--groups]
+[--help] [--version] [utilisateur]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>id</B>.
+
+<P>
+<B>id</B>
+
+affiche des informations concernant l'utilisateur indiqué, ou le processus
+appelant si aucun utilisateur n'est mentionné.
+<P>
+Par défaut, il affiche l'U-ID réel, le G-ID réel, l'U-ID effectif s'il
+diffère de l'U-ID réel, le G-ID effectif s'il diffère du G-ID réel,
+et les G-IDs des groupes supplémentaires. Chaque valeur est affichée précédée
+d'un libellé l'identifiant, et suivie entre parenthèses des noms de groupe ou
+d'utilisateur.
+<P>
+
+Les options permettent à
+<B>id</B>
+
+de n'afficher qu'une partie de ces informations.
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><I>-a</I>
+
+<DD>
+Ignoré, pour compatibilité.
+<DT><I>-g, --group</I>
+
+<DD>
+Afficher uniquement le Group-ID.
+<DT><I>-G, --groups</I>
+
+<DD>
+Afficher uniquement les groupes supplémentaires.
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et se terminer normalement.
+<DT><I>-n, --name</I>
+
+<DD>
+Afficher les noms de groupe ou d'utilisateur à la place du numéro d'ID.
+Nécessite
+<I>-u</I>,
+
+<I>-g</I>,
+
+ou
+<I>-G</I>.
+
+<DT><I>-r, --real</I>
+
+<DD>
+Afficher les U-ID et G-ID réels plutot que ceux effectifs.
+Nécessite
+<I>-u</I>,
+
+<I>-g</I>,
+
+ou
+<I>-G</I>.
+
+<DT><I>-u, --user</I>
+
+<DD>
+N'afficher que l'User-ID.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et se terminer
+normalement.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:44 GMT, February 11, 2014
+</BODY>
+</HTML>

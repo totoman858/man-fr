@@ -1,0 +1,124 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ECVT_R</TITLE>
+</HEAD><BODY>
+<H1>ECVT_R</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ecvt_r, fcvt_r, qecvt_r, qfcvt_r - Convertir un réel en chaîne.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<P>
+<B>char *ecvt_r(double </B><I>nombre</I><B>, int </B><I>nb_chiffres</I><B>, int *</B><I>decpt</I><B>,</B>
+
+<B>int *</B><I>sign</I><B>, char *</B><I>tampon</I><B>, size_t </B><I>longueur</I><B>);</B>
+
+<P>
+<B>char *fcvt_r(double </B><I>nombre</I><B>, int </B><I>nb_chiffres</I><B>, int *</B><I>decpt</I><B>,</B>
+
+<B>int *</B><I>sign</I><B>, char *</B><I>tampon</I><B>, size_t </B><I>longueur</I><B>);</B>
+
+<P>
+<B>char *qecvt_r(long double </B><I>nombre</I><B>, int </B><I>nb_chiffres</I><B>, int *</B><I>decpt</I><B>,</B>
+
+<B>int *</B><I>sign</I><B>, char *</B><I>tampon</I><B>, size_t </B><I>longueur</I><B>);</B>
+
+<P>
+<B>char *qfcvt_r(long double </B><I>nombre:</I><B>, int </B><I>nb_chiffres</I><B>, int *</B><I>decpt</I><B>,</B>
+
+<B>int *</B><I>sign</I><B>, char *</B><I>tampon</I><B>, size_t </B><I>longueur</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Les fonctions
+<B>ecvt_r</B>,
+
+<B>fcvt_r</B>,
+
+<B>qecvt_r</B>
+
+et
+<B>qfcvt_r</B>
+
+sont identiques à
+<B>ecvt</B>,
+
+<B>fcvt</B>,
+
+<B>qecvt</B>
+
+et
+<B>qfcvt</B>,
+
+respectivement, sauf qu'elles ne renvoient pas leurs résultats dans
+un tampon statique, mais utilisent à la place le
+<I>tampon</I>
+
+inidiqué dont la
+<I>longueur</I>
+
+est précisée.
+Voir
+<B><A HREF="/cgi-bin/man/man2html?3+ecvt">ecvt</A></B>(3)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?3+qecvt">qecvt</A></B>(3).
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+Ces fonctions sont obsolètes. L'utilisation de
+<I>sprintf</I>()
+
+est recommandée à leur place.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Ce sont des extensions GNU.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+ecvt">ecvt</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+qecvt">qecvt</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+sprintf">sprintf</A></B>(3)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Thierry Vignaud &lt;<I><A HREF="mailto:tvignaud@mandrakesoft.com">tvignaud@mandrakesoft.com</A></I>&gt;, 2002
+
+<BR>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:24 GMT, February 11, 2014
+</BODY>
+</HTML>

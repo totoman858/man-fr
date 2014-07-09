@@ -1,0 +1,88 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of accept</TITLE>
+</HEAD><BODY>
+<H1>accept</H1>
+Section: Easy Software Products (8)<BR>Updated: Common UNIX Printing System<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+accept/reject - Accepte/refuse les travaux d'impression envoyés à une destination
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>accept</B>
+
+destination(s)
+<BR>
+
+<B>reject</B>
+
+[ -E ] [ -h
+<I>serveur</I>
+
+] [ -r
+<I>raison</I>
+
+]
+destination(s)
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>accept</I> envoie l'ordre au système d'impression d'accepter les
+travaux d'impression vers les destinations spécifiées.
+<P>
+
+<I>reject</I> envoie l'ordre au système d'impression de refuser les
+travaux d'impression vers les destinations spécifiées. L'option <I>-r</I>
+permet de spécifier la raison du rejet des travaux d'impression. Si cette
+raison n'est pas fournie, la raison par défaut est «&nbsp;Raison inconnue&nbsp;».
+<P>
+
+L'option <I>-E</I> force le cryptage lors de la connexion au serveur.
+<A NAME="lbAE">&nbsp;</A>
+<H2>COMPATIBILITÉ</H2>
+
+Les versions CUPS d'<I>accept</I> et <I>reject</I> peuvent demander à
+l'utilisateur de s'identifier suivant la configuration du système d'impression,
+à la différence des versions System V, qui demandent le mot de passe root.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+cancel">cancel</A>(1), <A HREF="/cgi-bin/man/man2html?8+disable">disable</A>(8), <A HREF="/cgi-bin/man/man2html?8+enable">enable</A>(8), <A HREF="/cgi-bin/man/man2html?1+lp">lp</A>(1), <A HREF="/cgi-bin/man/man2html?8+lpadmin">lpadmin</A>(8), <A HREF="/cgi-bin/man/man2html?1+lpstat">lpstat</A>(1),
+CUPS Software Administrators Manual,
+<A HREF="http://localhost:631/documentation.html">http://localhost:631/documentation.html</A>
+<A NAME="lbAG">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright 1993-2003 Easy Software Products, Tous droits réservés.
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Gilles QUERRET &lt;<A HREF="mailto:gilles.querret@nerim.net">gilles.querret@nerim.net</A>&gt;
+
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">COMPATIBILITÉ</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:05 GMT, February 11, 2014
+</BODY>
+</HTML>

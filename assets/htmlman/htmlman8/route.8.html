@@ -1,0 +1,538 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ROUTE</TITLE>
+</HEAD><BODY>
+<H1>ROUTE</H1>
+Section: Manuel du programmeur de Linux (8)<BR>Updated: 2 octobre 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+route - Afficher/manipuler la table de routage IP.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>route</B>
+
+[<B>-CFvnee</B>]
+
+<DL COMPACT>
+<DT><B>route</B>
+
+<DD>
+[<B>-v</B>]
+
+[<B>-A</B>
+
+famille]
+<B>add</B>
+
+[<B>-net</B>|<B>-host</B>]
+
+cible
+[<B>netmask</B>
+
+Nm]
+[<B>gw</B>
+
+Gw]
+[<B>metric</B>
+
+N]
+[<B>mss</B>
+
+M]
+[<B>window</B>
+
+W]
+[<B>irtt</B>
+
+I]
+[<B>reject</B>]
+
+[<B>mod</B>]
+
+[<B>dyn</B>]
+
+[<B>reinstate</B>]
+
+[[<B>dev</B>]
+
+If]
+<DT><B>route</B>
+
+<DD>
+[<B>-v</B>]
+
+[<B>-A</B>
+
+famille]
+<B>del</B>
+
+[<B>-net</B>|<B>-host</B>]
+
+cible
+[<B>gw</B>
+
+Gw]
+[<B>netmask</B>
+
+Nm]
+[<B>metric</B>
+
+N]
+[[<B>dev</B>]
+
+If]
+<DT><B>route</B>
+
+<DD>
+[<B>-V</B>]
+
+[<B>--version</B>]
+
+[<B>-h</B>]
+
+[<B>--help</B>]
+
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>route</B>
+
+manipule les tables de routage IP du noyau. Son utilisation première
+consiste à configurer des routes statiques vers des hôtes ou des réseaux
+via une interface, après sa configuration par le programme
+<B><A HREF="/cgi-bin/man/man2html?8+ifconfig">ifconfig</A></B>(8).
+
+<P>
+Avec les options
+<B>add</B>
+
+ou
+<B>del</B>,
+
+<B>route</B>
+
+modifie les tables de routage. Sans ces options,
+il affiche simplement le contenu actuel des tables.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-A famille</B>
+
+<DD>
+Utiliser la famille d'adresses spécifiée (par exemple «&nbsp;inet&nbsp;»&nbsp;;
+exécutez
+<B>route --help</B>
+
+pour obtenir la liste complète).
+<DT><B>-F</B>
+
+<DD>
+Travailler sur la table de routage FIB («&nbsp;Forwarding Information Base&nbsp;»)
+du noyau. C'est le comportement par défaut.
+<DT><B>-C</B>
+
+<DD>
+Travailler sur le cache de routage du noyau.
+<DT><B>-v</B>
+
+<DD>
+Activer le mode volubile.
+<DT><B>-n</B>
+
+<DD>
+Afficher les adresses sous forme numérique, au lieu d'essayer de
+déterminer les noms d'hôtes symboliques. C'est utile si vous désirez
+comprendre pourquoi la route vers votre serveur de noms a disparu.
+<DT><B>-e</B>
+
+<DD>
+Utiliser le format de
+<B><A HREF="/cgi-bin/man/man2html?8+netstat">netstat</A></B>(8)
+
+pour l'affichage de la table de routage.
+<DT><B>-ee</B>
+
+<DD>
+Générer une très longue ligne avec tous les paramètres de la table
+de routage.
+<DT><B>del</B>
+
+<DD>
+Supprimer une route.
+<DT><B>add</B>
+
+<DD>
+Ajouter une route.
+<DT><B>cible</B>
+
+<DD>
+Le réseau ou l'hôte de destination, sous forme d'adresse IP en
+notation décimale pointée, ou sous forme de noms d'hôte ou de réseau.
+<DT><B>-net</B>
+
+<DD>
+La
+<B>cible</B>
+
+est un réseau.
+<DT><B>-host</B>
+
+<DD>
+La
+<B>cible</B>
+
+est un hôte.
+<DT><B>netmask Nm</B>
+
+<DD>
+Spécifier le masque de réseau de la route à ajouter.
+<DT><B>gw Gw</B>
+
+<DD>
+Router les paquets via une passerelle.
+<B>NOTE</B>&nbsp;:
+
+La passerelle concernée doit pouvoir être atteinte. Ceci signifie
+qu'une route statique vers cette passerelle doit préalablement exister.
+Si vous spécifiez l'adresse d'une de vos interfaces locales, elle sera
+utilisée pour décider de l'interface vers laquelle les paquets seront
+envoyés. Ceci est une bidouille permettant d'être compatible avec BSD.
+<DT><B>metric M</B>
+
+<DD>
+Affecter la valeur M au champ métrique de la table de routage
+(utilisé par les démons de routage).
+<DT><B>mss M</B>
+
+<DD>
+Fixer à M octets la taille maximum de segment (MSS ou «&nbsp;Maximum Segment Size&nbsp;»)
+de TCP, pour les connexions empruntant cette route.
+La valeur par défaut est donnée par le MTU du périphérique moins
+les en-têtes, ou un MTU inférieur quand se déclenche l'interrogation
+du MTU de la liaison.
+Ce réglage est utilisé pour forcer sur l'autre extrémité l'envoi
+de paquets TCP plus petits lorsque l'interrogation du MTU de la
+liaison ne fonctionne pas (habituellement à cause de pare-feux
+mal configurés qui bloquent les paquets ICMP de type «&nbsp;Fragmentation
+Nécessaire&nbsp;» ou «&nbsp;ICMP Fragmentation Needed&nbsp;»).
+<DT><B>window W</B>
+
+<DD>
+Fixer à W octets la taille de la fenêtre de TCP pour les connexions relatives
+à cette route. C'est, en général, uniquement utilisé sur les réseaux AX.25 et
+avec les pilotes incapables de manipuler les trames dos-à-dos.
+<DT><B>irtt I</B>
+
+<DD>
+Fixer le temps initial de trajet aller-retour (iRTT ou «&nbsp;round trip time&nbsp;»)
+pour les connexions TCP sur cette route à I millisecondes (1-12000).
+Typiquement, ceci ne concerne que les réseaux AX.25. Si la valeur
+est omise, on prend par défaut 300&nbsp;ms (selon la RFC&nbsp;1122).
+<DT><B>reject</B>
+
+<DD>
+Installer une route bloquante, qui force l'échec d'une recherche de route.
+On l'utilise par exemple pour dissimuler des réseaux avant d'utiliser la
+route par défaut. Ce n'est pas une fonction de pare-feu.
+<DT><B>mod, dyn, reinstate</B>
+
+<DD>
+Installer une route dynamique ou modifiée. En général, ces indicateurs ne sont
+positionnés que par des démons de routage, et ne servent que pour des
+besoins de diagnostics.
+<DT><B>dev If</B>
+
+<DD>
+Forcer la route à être associée au périphérique spécifié, sinon le noyau
+tente de le déterminer par lui-même (en consultant les routes existantes
+et les spécifications de périphériques). Dans la plupart des réseaux
+normaux, vous n'en aurez pas besoin.
+<P>
+Si
+<B>dev If</B>
+
+est la dernière option en ligne de commande, le mot
+<B>dev</B>
+
+peut être omis, puisque c'est l'option par défaut. Autrement, l'ordre des
+modificateurs de route (metric - netmask - gw - dev) n'a pas d'importance.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+<DL COMPACT>
+<DT><B>route add -net 127.0.0.0</B>
+
+<DD>
+Ajoute l'entrée normale de bouclage («&nbsp;loopback&nbsp;»), en utilisant le
+masque 255.0.0.0 (réseau de classe A, d'après l'adresse de destination)
+et en l'associant avec l'interface «&nbsp;lo&nbsp;» (en supposant que ce périphérique
+a été correctement configuré avec
+<B><A HREF="/cgi-bin/man/man2html?8+ifconfig">ifconfig</A></B>(8)).
+
+<DT><B>route add -net 192.56.76.0 netmask 255.255.255.0 dev eth0</B>
+
+<DD>
+Ajoute une route vers le réseau 192.56.76.x via «&nbsp;eth0&nbsp;». Le masque
+de classe C n'est pas vraiment nécessaire ici car 192.* est une
+adresse IP de classe C. Le mot «&nbsp;dev&nbsp;» peut être omis.
+<DT><B>route add default gw mango-gw</B>
+
+<DD>
+Ajoute une route par défaut (qui sera utilisée si aucune autre route ne
+convient). Tous les paquets empruntant cette route passeront par la passerelle
+«&nbsp;mango-gw&nbsp;». Le périphérique effectivement utilisé pour cette route
+dépend de la façon dont on atteint «&nbsp;mango-gw&nbsp;» - la route statique vers
+«&nbsp;mango-gw&nbsp;» devra être préalablement configurée.
+<DT><B>route add ipx4 sl0</B>
+
+<DD>
+Ajoute une route vers l'hôte «&nbsp;ipx4&nbsp;» via l'interface SLIP (en supposant que
+«&nbsp;ipx4&nbsp;» est l'hôte SLIP).
+<DT><B>route add -net 192.57.66.0 netmask 255.255.255.0 gw ipx4</B>
+
+<DD>
+Cette commande renvoie le réseau «&nbsp;192.57.66.x&nbsp;» vers la passerelle
+définie par la commande précédente sur l'interface SLIP.
+<DT><B>route add -net 224.0.0.0 netmask 240.0.0.0 dev eth0</B>
+
+<DD>
+Cette commande est obscure mais documentée pour que chacun puisse
+l'utiliser. Elle force toutes les routes d'adresse IP en classe D
+(multidiffusion) à passer par «&nbsp;eth0&nbsp;». C'est la configuration
+appropriée pour un noyau acceptant la multidiffusion.
+<DT><B>route add -net 10.0.0.0 netmask 255.0.0.0 reject</B>
+
+<DD>
+Installe une route bloquante pour le réseau privé «&nbsp;10.x.x.x&nbsp;».
+</DL>
+<P>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>AFFICHAGE</H2>
+
+Le contenu de la table de routage du noyau est affiché en colonnes
+comme suit&nbsp;:
+<DL COMPACT>
+<DT><B>Destination</B>
+
+<DD>
+Le réseau ou l'hôte de destination.
+<DT><B>Passerelle</B>
+
+<DD>
+L'adresse de la passerelle ou «&nbsp;*&nbsp;» si aucune n'est définie.
+<DT><B>Genmask</B>
+
+<DD>
+Le masque de réseau pour le réseau destinataire&nbsp;; «&nbsp;255.255.255.255&nbsp;»
+pour un hôte et «&nbsp;0.0.0.0&nbsp;» pour la route par défaut 
+(<B>default</B>).
+
+<DT><B>Indic</B>
+
+<DD>
+Les indicateurs possibles sont
+<BR>
+
+<B>U</B>
+
+(la route est active ou
+«&nbsp;<B>up</B>&nbsp;»)
+
+<BR>
+
+<B>H</B>
+
+(la cible est un
+<B>hôte</B>)
+
+<BR>
+
+<B>G</B>
+
+(utilise une passerelle ou
+«&nbsp;<B>gateway</B>&nbsp;»)
+
+<BR>
+
+<B>R</B>
+
+(<B>rétablit</B>
+
+la route pour le routage dynamique)
+<BR>
+
+<B>D</B>
+
+(configurée
+dynamiquement
+
+par le démon ou par une redirection)
+<BR>
+
+<B>M</B>
+
+(<B>modifiée</B>
+
+par le démon de routage ou par une redirection)
+<BR>
+
+<B>A</B>
+
+(installé par
+<B>addrconf</B>)
+
+<BR>
+
+<B>C</B>
+
+(entrée du
+cache<B>)</B>
+
+<BR>
+
+<B>!</B>
+
+(<B>rejette</B>
+
+la route)
+<DT><B>Metric</B>
+
+<DD>
+La «&nbsp;distance&nbsp;» à la cible (habituellement comptée en sauts). Ce n'est pas
+utilisé par les noyaux récents, mais peut être requis par certains démons
+de routage.
+<DT><B>Ref</B>
+
+<DD>
+Nombre de références à cette route (non utilisé dans le noyau Linux).
+<DT><B>Use</B>
+
+<DD>
+Nombre de résolutions effectuées pour cette route. En fonction de
+l'option utilisée -F ou -C, on obtient les tentatives de résolution
+vers le cache manquées (-F) ou réussies (-C).
+<DT><B>Iface</B>
+
+<DD>
+Interface vers laquelle seront envoyés les paquets empruntant cette route.
+<DT><B>MSS</B>
+
+<DD>
+Taille de segment maximum par défaut pour les connexions TCP sur cette
+route.
+<DT><B>Fenêtre</B>
+
+<DD>
+Taille de fenêtre par défaut pour les connexions TCP sur cette route.
+<DT><B>irtt</B>
+
+<DD>
+Temps initial de trajet aller-retour (iRTT ou «&nbsp;initial Round Trip Time&nbsp;»).
+Le noyau utilise cette donnée pour deviner les meilleurs paramètres
+du protocole TCP sans attendre de réponse (pouvant être tardive).
+<DT><B>HH (seulement pour le cache)</B>
+
+<DD>
+Nombre d'entrées ARP et de routes cachées faisant référence au cache
+d'en-tête matériel pour la route cachée. La valeur est -1 si aucune adresse
+matérielle n'est nécessaire pour l'interface de la route cachée
+(par exemple, lo).
+<DT><B>Arp (seulement pour le cache)</B>
+
+<DD>
+Indique si oui ou non l'adresse matérielle pour la route en cache
+est encore à jour.
+</DL>
+<P>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<I>/proc/net/ipv6_route</I>
+
+<BR>
+
+<I>/proc/net/route</I>
+
+<BR>
+
+<I>/proc/net/rt_cache</I>
+
+<P>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+ifconfig">ifconfig</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+netstat">netstat</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+arp">arp</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+rarp">rarp</A></B>(8)
+
+<P>
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+<B>route</B>
+
+pour Linux a été originellement écrit par Fred N. van Kempen,
+&lt;<A HREF="mailto:waltje@uwalt.nl.mugnet.org">waltje@uwalt.nl.mugnet.org</A>&gt; puis modifié par Johannes Stille et
+Linus Torvalds pour pl15. Alan Cox a ajouté les options mss et
+window dans Linux 1.1.22. La prise en charge de irtt
+et la fusion avec netstat ont été réalisées par Bernd Eckenfels.
+<A NAME="lbAK">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Maintenu par Phil Blundell &lt;<A HREF="mailto:Philip.Blundell@pobox.com">Philip.Blundell@pobox.com</A>&gt;.
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<P>
+
+Ce document est une traduction réalisée par Jean Michel Vansteene
+&lt;vanstee&nbsp;AT&nbsp;worldnet&nbsp;DOT&nbsp;fr&gt; en 1998,
+mise à jour par Guillaume Audirac en août 2004
+et révisée le 17&nbsp;août&nbsp;2006.
+<P>
+
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande&nbsp;: «&nbsp;<B>LANG=C&nbsp;man&nbsp;8&nbsp;route</B>&nbsp;».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">EXEMPLES</A><DD>
+<DT><A HREF="#lbAG">AFFICHAGE</A><DD>
+<DT><A HREF="#lbAH">FICHIERS</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAK">AUTEUR</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:04 GMT, February 11, 2014
+</BODY>
+</HTML>

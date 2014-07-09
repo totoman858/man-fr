@@ -1,0 +1,274 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CRONTAB</TITLE>
+</HEAD><BODY>
+<H1>CRONTAB</H1>
+Section: Manuel de l'administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+crontab - Table permettant de gérer le démon Cron.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Un fichier
+<I>crontab</I>
+
+contient des instructions pour le démon
+<I><A HREF="/cgi-bin/man/man2html?8+cron">cron</A></I>(8).
+
+Ces instructions ont la forme générale suivante : ``lancer cette commande
+à telle heure, tel jour''.
+Chaque utilisateur dispose de sa propre table crontab, et les commandes
+contenues dans une table seront exécutées sous l'identifiant du propriétaire
+de la table.
+Les pseudo-utilisateurs Uucp et News disposent généralement de leurs propres
+crontabs, ce qui évite d'invoquer explicitement
+<I><A HREF="/cgi-bin/man/man2html?1+su">su</A></I>(1)
+
+dans une commande cron.
+<P>
+
+Les lignes blanches, et les espaces et tabulations en tête de lignes sont
+ignorées. Les lignes dont le premier caractère non-blanc est un dièse (#) sont
+considérées comme des commentaires, et sont également ignorées.
+Notez que les commentaires ne peuvent pas se trouver sur la même ligne
+qu'une commande cron, car ils seraient considérés comme des arguments
+en ligne pour la commande à invoquer.
+De même, un commentaire ne peut pas se trouver sur la même ligne qu'une
+affectation de variable d'environnement.
+<P>
+
+Une ligne active dans une crontab devra donc être soit une affectation
+de variable d'environnement, soit une commande cron. 
+Une ligne d'affectation d'environnement est de la forme
+<P>
+
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;nom&nbsp;=&nbsp;valeur
+<P>
+
+où les espaces autour du signe égal (=) sont facultatifs, et où tous les
+espaces ultérieurs feront partie intégrante de la valeur affectée à la
+variable ayant le
+<I>nom</I>indiqué.
+
+La chaîne de
+<I>valeur</I>
+
+peut être inscrite entre guillemets ou entre quotes afin de protéger les
+blancs initiaux et finaux.
+<P>
+
+Plusieurs variables d'environnement sont automatiquement
+configurées par le démon
+<I><A HREF="/cgi-bin/man/man2html?8+cron">cron</A></I>(8).
+
+SHELL est rempli avec /bin/sh, LOGNAME et HOME sont configurées
+à partir de la ligne de /etc/passwd correspondant au propriétaire de la crontab.
+HOME et SHELL peuvent être surchargés par des affectations explicites
+dans la crontab, LOGNAME non.
+<P>
+
+(Note : la variable LOGNAME est parfois nommée USER sur les systèmes BSD,
+elle sera alors configurée).
+<P>
+
+En plus de LOGNAME, HOME, et SHELL,
+<I><A HREF="/cgi-bin/man/man2html?8+cron">cron</A></I>(8)
+
+prendra en compte la variable MAILTO s'il doit envoyer le résultat d'une
+commande exécutée dans cette crontab. Si MAILTO est définie (et non vide),
+le résultat est envoyé à l'utilisateur indiqué. Si MAILTO est défini et vide
+(MAILTO=&quot;&quot;), aucun courrier ne sera envoyé.
+Sinon, le courrier sera émis vers le propriétaire de la crontab.
+<P>
+Cette option est utile si vous utilisez /bin/mail comme agent à la place de
+/usr/lib/sendmail lorsque vous installez cron. /bin/mail ne gère pas d'alias,
+et UUCP ne lit généralement pas son courrier.
+<P>
+
+Le format d'une commande cron est très proche du standard V7, avec quelques
+options gardant une compatibilité ascendante.
+Chaque ligne dispose de 5 champs de date et heure, suivi d'un nom d'utilisateur
+s'il s'agit du fichier crontab central du système, suivi d'une commande.
+Les commandes sont exécutées par
+<I><A HREF="/cgi-bin/man/man2html?8+cron">cron</A></I>(8)
+
+lorsque les champs minute, heure, et mois de l'année correspondent à la date
+<I>et</I>
+
+quand au moins l'un des deux autres champs (jour du mois, jour de la semaine)
+correspond aussi (voir le paragraphe ``Note'' plus bas).
+Notez que les moments non-existants, comme les heures manquantes au moment
+des changements d'heure, ne seront jamais mises en correspondante, et
+leurs jobs ne seront pas exécutés. De même les moments se reproduisant 
+deux fois (encore pendant les changements d'heure) déclencheront le
+même job deux fois.
+<P>
+
+<I><A HREF="/cgi-bin/man/man2html?8+cron">cron</A></I>(8)
+
+examine ses données une fois par minute.
+Les champs de date et heure sont&nbsp;:
+<DL COMPACT>
+<DT><DD>
+
+
+champs<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>valeurs autorisées<BR>
+<BR>
+
+-----<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>--------------<BR>
+<BR>
+
+minute<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>0-59<BR>
+<BR>
+
+heure<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>0-23<BR>
+<BR>
+
+jour du mois<TT>&nbsp;&nbsp;</TT>0-31<BR>
+<BR>
+
+mois<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>0-12 (ou noms, voir plus bas)<BR>
+<BR>
+
+jour de semaine0-7 (0 et 7 sont Dimanche, ou les noms)<BR>
+<BR>
+
+</DL>
+<P>
+
+Un champ peut contenir un astérisque (*), qui correspond à l'intervalle
+``premier-dernier''
+<P>
+
+Les intervalles de nombres sont permis. Il se présentent sous forme
+de deux nombres séparés par un tiret. Les bornes sont inclues. Par exemple,
+l'intervalle horaire 8-11 correspond à une exécution aux heures 8, 9, 10, et 11.
+<P>
+
+Les listes sont permises. Une liste est une série de nombres ou d'intervalles
+séparés par des virgules. Exemple ``1,2,5,9'', ``0-4,8-12''.
+<P>
+
+Des valeurs de &quot;pas&quot; peuvent être associées aux intervalles. A la suite 
+d'un intervalle, un ``/nombre'' précise le pas à adopter pour parcourir
+l'intervalle. Par exemple ``0-23/2'' dans le champ horaire demande
+une exécution toutes les heures paires. Une alternative avec le standard
+V7 serait ``0,2,4,6,8,10,12,14,16,18,20,22''). Les pas sont également
+autorisés à la suite d'un astérisque, ainsi, pour dire
+``toutes les deux heures'', on peut utiliser ``*/2''.
+<P>
+
+On peut employer les noms des mois ou des jours de la semaine, en
+utilisant les trois premières lettres (pas de différence majuscule/minuscule).
+Les intervalles, ou les listes de noms ne sont pas acceptés.
+<P>
+
+Le sixième champ (le reste de la ligne) indique la commande à exécuter.
+Tout le reste de la ligne, jusqu'au retour chariot ou au caractère %,
+sera exécuté par /bin/sh, ou par le shell mentionné dans la variable
+SHELL du fichier cron.
+Les signes pourcentages (%) dans les commandes seront transformés en
+retour-chariot, sauf s'ils sont précédés par un backslash (\). Toutes
+les données se trouvant à la suite du premier % seront transmises
+à la commande sur son entrée standard.
+<P>
+
+Note: Le jour d'exécution d'une commande peut être spécifié part deux
+champs (jour du mois, et jour de la semaine). Si les deux champs sont
+remplis (c.-à-d. pas *), la commande sera lancée quand 
+<I>l'un</I>
+
+des champs correspond à la date en cours. Par exemple
+<BR>
+
+``30 4 1,15 * 5''
+exécutera une commande à 4:30 du matin les 1er et 15 de chaque mois, ET
+chaque Vendredi.
+<A NAME="lbAD">&nbsp;</A>
+<H2>EXEMPLE DE FICHIER CRONTAB</H2>
+
+<PRE>
+
+# utiliser /bin/sh pour lancer les commandes, quoiqu'en dise /etc/passwd.
+SHELL=/bin/sh
+# Envoyer les résultats à Paul, sans tenir compte du propriétaire
+MAILTO=paul
+#
+# Chaque jour, 5 minutes après Minuit
+5 0 * * *       $HOME/bin/daily.job &gt;&gt; $HOME/tmp/out 2&gt;&amp;1
+# Le premier de chaque mois à 14h15 - Résultat envoyé à Paul
+15 14 1 * *     $HOME/bin/monthly
+# Les jours de la semaine à 22h, énerver Joe
+0 22 * * 1-5   mail -s &quot;Il est 22h&quot; joe%Joe,%%Où sont tes enfants ?%
+23 0-23/2 * * * echo &quot;Tous les jours, à 23mn après 0h, 2h, 4h...&quot;
+5 4 * * sun     echo &quot;Tous les dimanches à 4h 05&quot;
+</PRE>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?8+cron">cron</A>(8), <A HREF="/cgi-bin/man/man2html?1+crontab">crontab</A>(1)
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXTENSIONS</H2>
+
+Dans l'utilisation du jour de la semaine, le 0 et le 7 correspondent tous deux
+au Dimanche.
+BSD et ATT ne sont pas tout à fait d'accord là-dessus.
+<P>
+
+On autorise les intervalles et les listes dans le même champs.
+&quot;1-3,7-9&quot; sera rejeté par le cron ATT ou BSD, ils n'acceptent que &quot;1-3&quot; ou &quot;7,8,9&quot;.
+<P>
+
+Les intervalles peuvent inclure des &quot;pas&quot;, ainsi &quot;1-9/2&quot; 
+équivaut à &quot;1,3,5,7,9&quot;.
+<P>
+
+Les noms des mois ou des jours de la semaine peuvent être utilisés.
+<P>
+
+Les variables d'environnement peuvent être configurées dans la crontab.
+Avec BSD ou ATT, les environnements transmis aux processus fils
+sont globalement ceux de /etc/rc.
+<P>
+
+La sortie des commandes est normalement envoyée au propriétaire de la crontab
+(pas sous BSD), mais peut être dirigée vers une autre personne (pas sous SysV),
+ou l'on peut empêcher toute redirection du courrier (pas sous SysV non plus).
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<PRE>
+Paul Vixie &lt;<A HREF="mailto:paul@vix.com">paul@vix.com</A>&gt;
+
+
+</PRE><A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1999-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">EXEMPLE DE FICHIER CRONTAB</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">EXTENSIONS</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:56 GMT, February 11, 2014
+</BODY>
+</HTML>

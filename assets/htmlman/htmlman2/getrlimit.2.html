@@ -1,0 +1,389 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETRLIMIT</TITLE>
+</HEAD><BODY>
+<H1>GETRLIMIT</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getrlimit, getrusage, setrlimit - Lire/écrire les limites et utilisations des ressources.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/time.h">sys/time.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/resource.h">sys/resource.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int getrlimit (int </B><I>resource</I><B>, struct rlimit *</B><I>rlim</I><B>);</B>
+
+<BR>
+
+<B>int getrusage (int </B><I>who</I><B>, struct rusage *</B><I>usage</I><B>);</B>
+
+<BR>
+
+<B>int setrlimit (int </B><I>resource</I><B>, const struct rlimit *</B><I>rlim</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>getrlimit</B>
+
+et
+<B>setrlimit</B>
+
+lisent ou écrivent les limites des ressources systèmes. Chaque ressource
+a une limite souple et une limite stricte définies par la structure
+<B>rlimit</B>
+
+(l'argument
+<I>rlim</I>
+
+de
+<B>getrlimit</B>() et <B>setrlimit</B>()) :
+
+<P>
+
+
+<PRE>
+struct rlimit {
+  rlim_t rlim_cur; /* limite souple */
+  rlim_t rlim_max; /* limite stricte (plafond
+                      de rlim_cur) */
+};
+
+</PRE>
+
+
+La limite souple est la valeur que le noyau prend en compte pour la
+ressource correspondante.
+La limite stricte agit comme un plafond pour la limite souple&nbsp;: un processus
+non-privilégié peut seulement modifier sa limite souple dans l'intervalle entre
+zéro et la limite stricte, et diminuer (de manière irréversible) sa limite
+stricte. Un processus privilégié peut modifier ses deux limites à sa guise.
+<P>
+
+La valeur
+<B>RLIM_INFINITY</B>
+
+indique une limite infinie pour la ressource (aussi bien pour
+<B>getrlimit</B>()
+
+que pour
+<B>setrlimit</B>().
+
+<P>
+
+<I>resource</I>
+
+doit être l'un des éléments suivants :
+<DL COMPACT>
+<DT><B>RLIMIT_CPU</B>
+
+<DD>
+Limite de temps CPU en secondes. 
+Si un processus atteint cette limite souple, il reçoit le signal
+<B>SIGXCPU</B>.
+
+L'action par défaut en est la terminaison du processus.
+Mais le signal peut être capturé et le gestionnaire
+peut renvoyer le contrôle au programme
+principal.
+Si le processus continue à consommer du temps CPU, il recevra
+<B>SIGXCPU</B>
+
+toutes les secondes jusqu'à atteindre sa limite stricte,
+où il recevra
+<B>SIGKILL</B>.
+
+(Ceci correspond au comportement de Linux 2.2 et 2.4.
+Les implémentations varient sur le comportement vis-à-vis d'un processus
+qui continue à consommer du temps CPU après dépassement de sa limite souple.
+Les applications portables qui doivent capturer ce signal devrait
+prévoir une terminaison propre dès la première réception de
+<B>SIGXCPU</B>).
+
+<DT><B>RLIMIT_DATA</B>
+
+<DD>
+Taille maximale du segment de données d'un processus (données initialisées,
+non-initialisées, et tas).
+Cette limite affecte les appels
+<B>brk</B>() et <B>sbrk</B>(),
+
+qui échouent avec l'erreur
+<B>ENOMEM</B>
+
+si la limite souple est dépassée.
+<DT><B>RLIMIT_FSIZE</B>
+
+<DD>
+Taille maximal d'un fichier que le processus peut créer.
+Les tentatives d'extension d'un fichier au-delà de cette limite resultent en
+un signal
+<B>SIGXFSZ</B>.
+
+Par défaut ce signal termine le processus, mais il peut être
+capturé, et dans ce cas l'appel-système concerné (par exemple
+<B>write</B>(), <B>truncate</B>())
+
+échouent avec l'erreur
+<B>EFBIG</B>.
+
+<B>RLIMIT_LOCKS</B>
+
+Une limite sur le nombre combiné de verrous
+<B>flock</B>()
+
+et
+<B>fcntl()</B>
+
+que le processus peut établir
+(Linux 2.4 et suivants).
+
+<DT><B>RLIMIT_MEMLOCK</B>
+
+<DD>
+Le nombre maximal d'octets de mémoire virtuelle que le processus peut
+verrouiller en RAM à l'aide des appels
+<B>lock</B>() et <B>mlockall</B>().
+
+<DT><B>RLIMIT_NOFILE</B>
+
+<DD>
+Le nombre maximal de descripteurs de fichiers qu'un processus
+peut ouovrir simultanément.
+Les tentatives d'ouverture
+(<B>open</B>(), <B>pipe</B>(), <B>dup</B>(), etc)
+
+dépassant cette limite renverront l'erreur
+<B>EMFILE</B>.
+
+<DT><B>RLIMIT_NPROC</B>
+
+<DD>
+Le nombre maximum de processus qui peuvent être créés pour l'UID réel
+du processus appelant.
+Une fois cette limite atteinte,
+<B>fork</B>()
+
+échoue avec l'erreur
+<B>EAGAIN</B>.
+
+<DT><B>RLIMIT_RSS</B>
+
+<DD>
+Indique la limite (en pages) pour la taille de l'ensemble résident du processus
+(le nombre de page de mémoire virtuelle en RAM).
+Cette limite n'a d'effet que depuis Linux 2.4, et n'affecte
+que les appels
+<B>madvise</B>()
+
+indiquant
+<B>MADVISE_WILLNEED</B>.
+
+<DT><B>RLIMIT_STACK</B>
+
+<DD>
+La taille maximal de la pile du processus, en octets.
+Une fois cette limite atteinte, un signal
+<B>SIGSEGV</B>
+
+est déclenché.
+Pour gérer ce signal, le processus doit utiliser une pile spécifique pour signaux
+(<B><A HREF="/cgi-bin/man/man2html?2+sigaltstack">sigaltstack</A></B>(2)).
+
+</DL>
+<P>
+
+<B>RLIMIT_OFILE </B>
+
+est le nom BSD pour
+<B>RLIMIT_NOFILE</B>.
+
+<B>getrusage</B>
+
+renvoie l'utilisation courante des ressources, pour <I>who</I>
+valant à 
+<B>RUSAGE_SELF</B>
+
+ou
+<B>RUSAGE_CHILDREN</B>.
+
+Le premier correspond aux ressources consommées par le processus appelant
+et le second par l'ensemble des processus fils terminés qui ont été attendus
+par un <B>wait</B>().
+<P>
+
+
+<PRE>
+struct rusage {
+  struct timeval ru_utime; /* Temps utilisateur écoulé         */
+  struct timeval ru_stime; /* Temps système écoulé             */
+  long  ru_maxrss;         /* Taille résidente maximale        */
+  long  ru_ixrss;          /* Taille de mémoire partagée       */
+  long  ru_idrss;          /* Taille des données non partagées */
+  long  ru_isrss;          /* Taille de pile                   */
+  long  ru_minflt;         /* Demandes de pages                */
+  long  ru_majflt;         /* Nombre de fautes de pages        */
+  long  ru_nswap;          /* Nombre de swaps                  */
+  long  ru_inblock;        /* Nombre de lectures de blocs      */
+  long  ru_oublock;        /* Nombre d'écritures de blocs      */
+  long  ru_msgsnd;         /* Nombre de messages émis          */
+  long  ru_msgrcv;         /* Nombre de messages reçus         */
+  long  ru_nsignals;       /* Nombre de signaux reçus          */
+  long  ru_nvcsw;          /* Chgmnts de contexte volontaires  */
+  long  ru_nivcsw;         /* Chgmnts de contexte involontaires*/
+};
+</PRE>
+
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Ces fonctions renvoient 0 si elles réussissent, ou -1 si elles échouent, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EFAULT</B>
+
+<DD>
+<I>rlim</I>
+
+ou
+<I>usage</I>
+
+pointent en dehors de l'espace d'adressage disponible.
+<DT><B>EINVAL</B>
+
+<DD>
+<B>getrlimit</B> ou <B>setrlimit</B>
+
+est appelé avec un mauvais argument <I>resource</I>, 
+ou <B>getrusage</B> est appelé avec un mauvais argument <I>who</I>.
+<DT><B>EPERM</B>
+
+<DD>
+Tentative d'utiliser <B>setrlimit()</B> sans être Super-User pour
+augmenter ses limites, ou alors le Super-User essaye d'augmenter
+les limites au-dessus des maxima du noyau.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVr4, BSD 4.3
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTE</H2>
+
+L'inclusion de
+<I>&lt;<A HREF="file:///usr/include/sys/time.h">sys/time.h</A>&gt;</I>
+
+n'est plus obligatoire mais améliore la portabilité.
+(En fait,
+<I>struct timeval</I>
+
+est définie dans
+<I>&lt;<A HREF="file:///usr/include/sys/time.h">sys/time.h</A>&gt;</I>).
+
+<P>
+
+Sous Linux, si le traitement de
+<B>SIGCHLD </B>
+
+est configuré avec
+<B>SIG_IGN </B>
+
+alors les statistiques d'utilisation des processus enfants
+sont automatiquement incluses dans les valeurs renvoyées par
+<B>RUSAGE_CHILDREN</B>,
+
+bien que POSIX 1003.1-2001 interdise explicitement cela.
+<P>
+
+Les structures ci-dessous sont extraites de BSD 4.3 Reno.
+Tous les champs ne sont pas significatifs sous Linux. Actuellement 
+(Linux 2.4) seuls les champs
+<B>ru_utime</B>,
+
+<B>ru_stime</B>,
+
+<B>ru_minflt</B>,
+
+<B>ru_majflt</B>,
+
+et
+<B>ru_nswap</B>
+
+sont remplis.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+dup">dup</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fcntl">fcntl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fork">fork</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mlock">mlock</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mlockall">mlockall</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+quotactl">quotactl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sbrk">sbrk</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+wait3">wait3</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+wait4">wait4</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+ulimit">ulimit</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?7+signal">signal</A></B>(7)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTE</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:00 GMT, February 11, 2014
+</BODY>
+</HTML>

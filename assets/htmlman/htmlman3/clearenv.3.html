@@ -1,0 +1,124 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CLEARENV</TITLE>
+</HEAD><BODY>
+<H1>CLEARENV</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+clearenv - Vider l'environnement.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<B>int clearenv(void);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>clearenv()</B> efface de l'environnement toutes les paires
+nom-valeur et remplit la variable externe
+<I>environ</I>
+
+avec un NULL.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>clearenv()</B> renvoie zéro en cas de succès et une autre valeur en cas d'échec.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>DISPONIBILITÉ</H2>
+
+Cette fonction est absente de la libc4 et la libc5. Elle est présente dans la  glibc depuis la version 2.0.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Diverses variantes d'Unix (DGUX, HPUX, QNX, ...).
+POSIX.9 (pour FORTRAN77).
+POSIX.1-1996 ne définissait pas <B>clearenv()</B> et <I>putenv()</I>,
+mais, suite à un changement d'attitude, ces fonctions ont été programmées 
+pour les versions futures de ce standard (cf. B.4.6.1). Néanmoins, SUSv3
+ajouta seulement <I>putenv()</I>, et refusa <B>clearenv()</B>.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTES</H2>
+
+Cette fonction est utilisée dans les applications sensibilisées à la sécurité.
+Si elle n'est pas disponible, l'affectation
+<DL COMPACT><DT><DD>
+<PRE>
+        environ = NULL;
+</PRE>
+
+</DL>
+
+rendra sans doute le même service.
+<P>
+
+Les pages de manuel DGUX et Tru64 indiquent&nbsp;: Si
+<I>environ</I>
+
+a été modifiée par autre chose que les fonctions
+<B>putenv</B>(),
+
+<B>getenv</B>(),
+
+et
+<B>clearenv</B>(),
+
+alors 
+<B>clearenv</B>()
+
+renverra une erreur et l'environnement du processus sera inchangé.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+getenv">getenv</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+putenv">putenv</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setenv">setenv</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+unsetenv">unsetenv</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+environ">environ</A></B>(5)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Stéphan Rafin, 2002.
+<BR>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">DISPONIBILITÉ</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">NOTES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:43 GMT, February 11, 2014
+</BODY>
+</HTML>

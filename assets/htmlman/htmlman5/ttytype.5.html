@@ -1,0 +1,95 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TTYTYPE</TITLE>
+</HEAD><BODY>
+<H1>TTYTYPE</H1>
+Section: Manuel de l administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ttytype - Liste des noms de terminaux et de périphériques.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le fichier
+<I>/etc/ttytype</I>
+
+associe les lignes tty avec les noms de terminaux termcap/terminfo. Chaque
+ligne est constituée du type de terminal, suivi d'espace et d'un nom
+de tty (sans le préfixe
+<I>/dev</I>).
+
+<P>
+Cette association est utilisée par le programme
+<B><A HREF="/cgi-bin/man/man2html?1+tset">tset</A></B>(1)
+
+pour remplir la variable d'environnement TERM avec le nom du terminal par
+défaut pour le tty de l'utilisateur
+<P>
+Cette fonctionnalité était conçue pour un environnement temps partagé
+classique, avec des terminaux en mode caractère connectés physiquement
+à un mini-ordinateur tournant sous Unix.
+Elle est de moins en moins utilisée avec l'avènement des stations de
+travail modernes, et des Unix sur ordinateurs personnels.
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+Un fichier
+<I>/etc/ttytype</I>
+
+typique est&nbsp;:
+<DL COMPACT><DT><DD>
+<P>
+con80x25 tty1
+<BR>
+
+vt320 ttys0
+<P>
+</DL>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/etc/ttytype</I>
+
+<DD>
+le fichier de définition des ttys.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+getty">getty</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?5+terminfo">terminfo</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?5+termcap">termcap</A></B>(5)
+
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">EXEMPLE</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:54 GMT, February 11, 2014
+</BODY>
+</HTML>

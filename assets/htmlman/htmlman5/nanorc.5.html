@@ -1,0 +1,359 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of NANORC</TITLE>
+</HEAD><BODY>
+<H1>NANORC</H1>
+Section: File Formats (5)<BR>Updated: version 1.3.11<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+
+
+<P>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+nanorc - fichier de configuration de l'éditeur nano du projet GNU 
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel décrit brièvement le fichier de configuration de 
+l'éditeur <B>nano</B> GNU.
+<P>
+
+<B>nano</B> est un petit éditeur sympathique et libre, qui vise à 
+remplacer Pico, l'éditeur par défaut du logiciel non libre Pine. 
+<B>nano</B> ne se contentant pas de copier l'interface et l'ergonomie de 
+Pico, il offre également certaines fonctionnalités manquantes (ou 
+désactivées par défaut) de Pico. Ces fonctionnalités sont, par exemple, 
+les fonctions de recherche et de remplacement et la possibilité de 
+sauter directement à un numéro de ligne.
+<P>
+
+Le fichier <I>nanorc</I> contient les paramètres par défaut de 
+<B>nano</B>. Lors de son démarrage, nano commencera par lire le fichier 
+de configuration général <I>SYSCONFDIR/nanorc</I>, puis lira le fichier 
+de configuration personnel de l'utilisateur <I>~/.nanorc</I>.
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+Le fichier de configuration accepte une série de commandes <B>set</B> 
+(activer) et <B>unset</B> (désactiver), qui permettent de définir le 
+paramétrage de nano au démarrage sans avoir à utiliser d'options sur 
+la ligne de commande. De plus, les mots clefs <B>syntax</B> (syntaxe),
+<B>color</B> (couleur) et <B>icolor</B> (couleur insensible à la casse) 
+sont utilisés pour définir les règles de colorisation pour différents 
+motifs de texte. Nano lira une commande par ligne.
+<P>
+Les options du fichier de configuration ont priorité sur les valeurs par
+défaut utilisées par nano. Les options de la ligne de commande sont
+prioritaires par rapport aux options du fichier de configuration.
+<P>
+Les options sont désactivées (unset) par défaut, sauf les options 
+prenant un argument.
+<P>
+Les apostrophes («&nbsp;<I>'</I>&nbsp;») et les guillemets droits («&nbsp;<I>&quot;</I>&nbsp;»)
+présents dans des chaînes de caractères utilisées comme paramètres n'ont 
+pas besoin d'être précédées d'une barre oblique inversée
+(«&nbsp;<I>\</I>&nbsp;»). La chaîne sera terminée par le dernier guillemet 
+droit. Par exemple, pour l'option <I>brackets</I>, &quot;<I>&quot;')&gt;]}</I>&quot; 
+correspondra à <I>&quot;</I>, <I>'</I>, <I>)</I>, <I>&gt;</I>, <I>]</I> et <I>}</I>.
+<P>
+Les commandes et arguments reconnus sont&nbsp;:
+<P>
+<DL COMPACT>
+<DT><B>set/unset autoindent</B><DD>
+Active l'indentation automatique.
+<DT><B>set/unset backup</B><DD>
+Crée des copies de sécurité nommées
+<I>nom_du_fichier~</I>.
+
+<DT><B>set backupdir </B><I>répertoire</I>
+
+<DD>
+Définit le répertoire utilisé par <B>nano</B> pour enregistrer les copies 
+de sécurité uniques, si l'enregistrement de copies de sécurité est 
+activé.
+<DT><B>set/unset backwards</B>
+
+<DD>
+Par défaut, les recherches se font vers l'arrière.
+<DT><B>set brackets </B><I>chaîne</I>
+
+<DD>
+Définit les caractères considérés comme des fermetures de parenthèses. 
+Ces caractères ne doivent pas contenir d'espaces. Seules les 
+ponctuations terminales, éventuellement suivies de parenthèses 
+fermantes, peuvent terminer une phrase.
+<P>
+(N.D.T.&nbsp;: reportez-vous au paragraphe sur l'option <B>punct</B> pour 
+plus d'informations.)
+<P>
+La valeur par défaut de cette option est&nbsp;: &quot;<I>&quot;')&gt;]}</I>&quot;.
+<P>
+<DT><B>set/unset casesensitive</B>
+
+<DD>
+Par défaut, les recherches ne tiennent pas compte de la casse.
+<DT><B>set/unset const</B><DD>
+Affiche en permanence la position du curseur dans la ligne d'état.
+<DT><B>set/unset cut</B><DD>
+Par défaut, coupe le texte du curseur à la fin de la ligne, au lieu de 
+couper la ligne entière.
+<DT><B>set fill </B><I>n</I><DD>
+Passe automatiquement à la ligne une fois arrivé à la colonne <I>n</I>. 
+Si la valeur indiquée est de 0 ou moins, le point de passage à la ligne 
+aura lieu à la taille de l'écran moins <I>n</I>. Cela permet de faire 
+varier le point de passage à la ligne lorsque l'on change la taille de 
+l'écran. La valeur par défaut est de -8.
+<DT><B>set/unset historylog</B><DD>
+Active l'utilisation de
+<I>~/.nano_history</I>
+
+pour enregistrer et relire les chaînes ayant fait l'objet d'une 
+recherche ou d'un remplacement.
+<DT><B>set matchbrackets </B><I>chaîne</I>
+
+<DD>
+Définit les crochets ouvrants et fermant pour la recherche de crochets 
+correspondants. Cette liste ne doit pas contenir de blancs. L'ensemble 
+des crochets ouvrants doit être indiqué en premier, suivi de l'ensemble 
+des crochets fermant, qui doit être dans le même ordre. La valeur par 
+défaut de cette option est &quot;<I>(&lt;[{)&gt;]}</I>&quot;.
+<DT><B>set/unset morespace</B>
+
+<DD>
+Utiliser la ligne blanche située sous la ligne de titre comme espace 
+supplémentaire d'édition.
+<DT><B>set/unset mouse</B>
+
+<DD>
+Active l'utilisation de la souris, afin que des clics souris puissent 
+être utilisés pour marquer le texte ou accéder aux raccourcis.
+<DT><B>set/unset multibuffer</B><DD>
+Mode multi-espace&nbsp;: permet de charger les fichiers dans leur propre 
+espace.
+<DT><B>set/unset noconvert</B><DD>
+Pas de conversion depuis les formats DOS et Mac.
+<DT><B>set/unset nofollow</B><DD>
+Ne suit pas les liens symboliques lors de l'écriture des fichiers.
+<DT><B>set/unset nohelp</B><DD>
+Désactive les lignes d'aide affichée en bas de l'écran.
+<DT><B>set/unset nonewlines</B>
+
+<DD>
+Ne pas ajouter de passage à la ligne à la fin des fichiers.
+<DT><B>set/unset nowrap</B><DD>
+Désactive le passage automatique à la ligne.
+<DT><B>set operatingdir </B><I>répertoire</I><DD>
+<B>nano</B> ne lira et n'écrira des fichiers qu'à l'intérieur du 
+<I>répertoire</I> et de ses sous-répertoires. De plus, celui-ci devient 
+le répertoire courant, afin que les fichiers soient lus depuis ce 
+répertoire. Par défaut, cette fonction est désactivée.
+<DT><B>set/unset preserve</B><DD>
+Préserve les séquences XON et XOFF (^Q et ^S).
+<DT><B>set punct </B><I>chaîne</I><DD>
+Définit les caractères interprétés comme des ponctuations terminales. 
+Ces caractères ne peuvent inclure de blancs. Seules les ponctuations 
+terminales, éventuellement suivies de parenthèses fermantes, peuvent 
+terminer une phrase.
+<P>
+(N.D.T.&nbsp;: ce réglage permet, lors de la justification, de conserver 2&nbsp;
+espaces au lieu d'une derrière les ponctuations terminales, ce qui 
+correspond aux normes typographiques anglo-saxonnes, mais n'a pas lieu 
+d'être en français. Pour le français, le plus simple est d'indiquer, 
+dans le fichier nanorc, une chaîne vide pour ce paramètre.)
+<P>
+La valeur par défaut de cette option est &quot;<I>!.?</I>&quot;.
+<DT><B>set/unset quickblank</B>
+
+<DD>
+Effacement rapide de la ligne d'état. Les messages affichés par la ligne
+d'état disparaîtront après une frappe clavier au lieu de 25.
+<DT><B>set quotestr </B><I>chaîne</I><DD>
+Définit le préfixe par défaut utilisé pour les citations dans les 
+courriers électroniques. Ce préfixe est utilisé pour réaliser une 
+justification correcte de ces citations. Il s'agira, si votre système le 
+permet, d'une expression rationnelle étendue. Dans le cas 
+contraire, il s'agira d'une chaîne de texte brut. Si vous disposez des 
+expressions rationnelles, la valeur par défaut de cette option sera 
+&quot;<I>^([&nbsp;\t]*[#:&gt;\|}])+</I>&quot;, sinon, ce sera &quot;&gt;&nbsp;&quot;. Notez que le
+«&nbsp;\t&nbsp;» ci-dessus correspond à un caractère de tabulation.
+<DT><B>set/unset rebinddelete</B><DD>
+Interprète différemment la touche «&nbsp;Supprimer&nbsp;», afin que les touches 
+«&nbsp;Effacement arrière&nbsp;» et «&nbsp;Supprimer&nbsp;» fonctionnent correctement. 
+Vous ne devriez avoir besoin de cette option que si, sur votre système, 
+la touche «&nbsp;Effacement arrière&nbsp;» produit l'effet de la touche «&nbsp;
+Supprimer&nbsp;».
+<DT><B>set/unset rebindkeypad</B>
+
+<DD>
+Interprète les touches du pavé numérique afin qu'elles fonctionnent 
+toutes correctement. Vous ne devriez utiliser cette option que si ce 
+n'est pas le cas, car nano ne sera plus capable d'utiliser la souris 
+correctement lorsque cette option sera activée.
+<DT><B>set/unset regexp</B><DD>
+Utilise par défaut des expressions rationnelles étendues pour les 
+recherches.
+<DT><B>set/unset smarthome</B><DD>
+Rend plus malin le fonctionnement de la touche «&nbsp;Début&nbsp;». Lorsque
+cette touche est pressée à n'importe quel endroit excepté au tout début
+du texte d'une ligne (i.&nbsp;e. au premier caractère non blanc), le curseur
+se positionnera au début du texte de la ligne (qu'il soit en avant ou en 
+arrière). Si le curseur est déjà là, il se placera au vrai début de la 
+ligne.
+<DT><B>set/unset smooth</B><DD>
+Active le défilement ligne-par-ligne du texte.
+<DT><B>set speller </B><I>programme</I><DD>
+Utilise le correcteur orthographique <I>programme</I> au lieu du 
+correcteur intégré, qui s'appuie sur <I>spell</I>.
+<DT><B>set/unset suspend</B><DD>
+Autorise à suspendre nano.
+<DT><B>set tabsize </B><I>n</I><DD>
+Utilise une taille de tabulation de <I>n</I> colonnes. Cette valeur doit 
+être strictement supérieure à 0. La valeur par défaut est de&nbsp;8.
+<DT><B>set/unset tabstospaces</B>
+
+<DD>
+Convertit les tabulations clavier en espaces.
+<DT><B>set/unset tempfile</B><DD>
+S'il a été modifié, le fichier sera sauvegardé automatiquement en 
+quittant, sans demande de confirmation.
+<DT><B>set/unset view</B><DD>
+Interdit de modifier les fichiers.
+<DT><B>set whitespace </B><I>chaîne</I><DD>
+Définit les deux caractères utilisés pour afficher les premiers 
+caractères des tabulations et des espaces. Ces deux caractères doivent 
+être mono-colonne.
+<DT><B>set/unset wordbounds</B>
+
+<DD>
+Détection plus précise des limites de mots, obtenue en considérant les
+caractères de ponctuation comme faisant partie des mots.
+<DT><B>syntax </B><I>chaîne</I> [<I>motif_de_fichier</I> ... ]
+
+<DD>
+Définit une syntaxe nommée <I>chaîne</I> qui pourra être activé via 
+l'option <B>-Y</B> ou qui sera automatiquement activée si le nom du 
+fichier en cours correspond à l'expression rationnelle étendue 
+<I>motif_de_fichier</I>. Toutes les instructions suivantes de 
+colorisation <B>color</B> ou <B>icolor</B> s'appliqueront à cette 
+syntaxe, jusqu'à la définition d'une nouvelle syntaxe.
+<P>
+La syntaxe nommée <I>none</I> (aucune) est réservée&nbsp;; si elle est 
+indiquée dans la ligne de commande, cela revient à ne définir aucune 
+syntaxe. La syntaxe nommée <I>default</I> (par défaut) est spéciale, elle 
+ne nécessite aucun motif de <I>motif_de_fichier</I>, et s'applique aux 
+fichiers ne correspondant à aucun des <I>motif_de_fichier</I> des autres 
+syntaxes.
+<DT><B>color </B><I>couleur_texte</I>[,<I>couleur_fond</I>] <I>motif</I> ...
+
+<DD>
+Pour la syntaxe en cours, affiche toutes les expressions correspondant à 
+l'expression rationnelle étendue <I>motif</I> en utilisant la couleur de 
+texte <I>couleur_texte</I> et la couleur de fond <I>couleur_fond</I>, 
+l'une de ces deux couleurs au moins devant être définie. Les couleurs 
+acceptées par <B>nano</B> pour le texte et le fond sont&nbsp;: <I>white</I> 
+(blanc), <I>black</I> (noir), <I>red</I> (rouge), <I>blue</I> (bleu), 
+<I>green</I> (vert), <I>yellow</I> (jaune), <I>magenta</I>, et <I>cyan</I>. 
+Pour la couleur du texte, vous pouvez ajouter à ces couleurs le préfixe 
+<I>bright</I> (lumineux) pour obtenir une couleur plus lumineuse. Si 
+votre terminal est capable de gérer la transparence, ne pas spécifier de 
+<I>couleur_fond</I> indique à <B>nano</B> d'essayer d'utiliser un fond 
+transparent.
+<DT><B>icolor </B><I>couleur_texte</I>[,<I>couleur_fond</I>] <I>motif</I> ...
+
+<DD>
+Comme ci-dessus, mais la recherche des motifs est effectuée sans tenir 
+compte de la casse.
+<DT><B>color </B><I>couleur_texte</I>[,<I>couleur_fond</I>] start=<I>motif_début</I> end=<I>motif_fin</I>
+
+<DD>
+Affiche les expressions commençant par l'expression rationnelle étendue 
+<I>motif_début</I> et se terminant par l'expression rationnelle étendue 
+<I>motif_fin</I> en utilisant la couleur de texte <I>couleur_texte</I> 
+et la couleur de fond <I>couleur_fond</I>, l'une de ces deux couleurs au 
+moins devant être définie. Cela permet à la colorisation syntaxique de 
+s'étendre sur plusieurs lignes. Notez que toutes les occurrences 
+successives de <I>motif_début</I> après le <I>motif_début</I> initial 
+seront surlignées jusqu'à la prochaine instance de <I>motif_fin</I>.
+<DT><B>icolor </B><I>couleur_texte</I>[,<I>couleur_fond</I>] start=<I>motif_début</I> end=<I>motif_fin</I>
+
+<DD>
+Comme ci-dessus, mais la recherche des motifs est effectuée sans tenir 
+compte de la casse.
+<P>
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>$SYSCONFDIR/nanorc</I>
+
+<DD>
+Fichier de configuration général
+<DT><I>~/.nanorc</I>
+
+<DD>
+Fichier de configuration personnel
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+
+<DL COMPACT>
+<DT><B><A HREF="/cgi-bin/man/man2html?1+nano">nano</A></B>(1)<DD>
+</DL>
+<P>
+
+<I>/usr/share/doc/nano/examples/nanorc.sample</I> (ou son équivalent sur 
+votre système)
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Chris Allegretta &lt;<A HREF="mailto:chrisa@asty.org">chrisa@asty.org</A>&gt; et d'autres (voir les fichiers
+<I>AUTHORS</I> et <I>THANKS</I> pour plus d'information). Cette page de
+manuel a été rédigée par Jordi Mallach &lt;<A HREF="mailto:jordi@gnu.org">jordi@gnu.org</A>&gt;.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Cette adaptation française a été réalisé par Jean-Philippe&nbsp;Guérard
+&lt;<A HREF="mailto:jean-philippe.guerard@corbeaunoir.org">jean-philippe.guerard@corbeaunoir.org</A>&gt; le 6&nbsp;avril&nbsp;2006 à partir de
+la version du 5&nbsp;avril 2006 de la page de manuel de nanorc (pour la 
+version 1.3.11 de nano). Cette version a été relue par Gérard Delafond.
+<P>
+Un maximum de soin a été apporté lors de l'élaboration de cette
+traduction&nbsp;; néanmoins, quelques imperfections peuvent subsister. Si
+vous en rencontrez, que ce soit dans la version française ou dans la
+version originale, n'hésitez pas à les signaler à l'auteur ou au
+traducteur.
+<P>
+La version originale la plus à jour de ce document est toujours 
+consultable via la commande :
+<P>
+LANGUAGE=en man nano
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">OPTIONS</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:55 GMT, February 11, 2014
+</BODY>
+</HTML>

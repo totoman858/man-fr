@@ -1,0 +1,240 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ACCESS</TITLE>
+</HEAD><BODY>
+<H1>ACCESS</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM </H2>
+
+access - Vérifier les permissions d'accès à un fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<B>int access(const char *</B><I>pathname</I><B>, int </B><I>mode</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>access</B>
+
+vérifie si le processus serait autorisé à lire, écrire,
+exécuter, ou tester l'existence d'un fichier (ou d'un autre objet
+appartenant au système de fichiers), dont le nom est
+<I>pathname</I>.
+
+Si
+<I>pathname</I>
+
+est un lien symbolique, ce sont les permissions du fichier pointé
+par celui-ci qui sont testées.
+<P>
+<I>mode</I>
+
+est un masque constitué des arguments liés par un OU binaire ( | )
+<B>R_OK</B>, <B>W_OK</B>, <B>X_OK</B> et  <B>F_OK</B>.
+
+Les requêtes
+<B>R_OK</B>, <B>W_OK</B> et <B>X_OK</B>
+
+servent respectivement à tester la lecture, l'écriture, et
+l'exécution du fichier.  La requête
+<B>F_OK</B>
+
+teste l'existence du fichier.
+<P>
+Les tests dépendent des permissions des répertoires apparaissant
+dans le chemin
+<I>pathname</I>
+
+et éventuellement des liens symboliques
+rencontrés sur ce chemin.
+<P>
+Le test est effectué avec les User-ID et Group-ID
+<I>réels</I>
+
+du processus, plutôt qu'avec les IDs effectifs qui sont utilisés lorsque
+l'on tente l'opération. Ceci permet aux programmes Set-UID de déterminer
+les autorisations de l'utilisateur ayant invoqué le programme.
+<P>
+Seuls les bits d'accès sont vérifiés, et non pas le contenu du fichier.
+Ainsi si l'autorisation d'écriture dans un répertoire, indique la possibilité
+d'y créer des fichiers, et pas d'y écrire comme dans un fichier. De même,
+un fichier DOS peut être considéré comme exécutable, alors que l'appel
+<B><A HREF="/cgi-bin/man/man2html?2+execve">execve</A></B>(2)
+
+échouera évidemment.
+<P>
+Si le processus a les privilèges suffisants, une implémentation peut indiquer
+un succès pour
+<B>X_OK</B>
+
+même si le fichier n'a aucun bit d'exécution positionné.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+L'appel renvoie 0 s'il réussit (toutes les requêtes sont autorisées),
+ou -1 s'il échoue (au moins une requête du
+<I>mode</I>
+
+est interdite),
+auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<B>access</B>
+
+doit échouer si&nbsp;:
+<DL COMPACT>
+<DT><B>EACCES</B>
+
+<DD>
+L'accès serait refusé au fichier lui-même, ou il n'est pas permis de
+parcourir l'un des répertoires de
+<I>pathname</I>.
+
+<DT><B>ELOOP</B>
+
+<DD>
+Trop de liens symboliques ont été rencontrés en parcourant
+<I>pathname</I>.
+
+<DT><B>ENAMETOOLONG</B>
+
+<DD>
+<I>pathname</I>
+
+est trop long.
+<DT><B>ENOENT</B>
+
+<DD>
+Un répertoire contenu dans le
+<I>pathname</I>
+
+aurait été accessible mais n'existe pas, ou est un lien symbolique
+pointant dans le vide.
+<DT><B>ENOTDIR</B>
+
+<DD>
+Un élément contenu dans le chemin
+<I>pathname</I>
+
+n'est pas un répertoire.
+<DT><B>EROFS</B>
+
+<DD>
+On demande une écriture sur un système de fichiers en lecture-seule.
+</DL>
+<P>
+
+<B>access</B>
+
+peut échouer si&nbsp;:
+<DL COMPACT>
+<DT><B>EFAULT</B>
+
+<DD>
+<I>pathname</I>
+
+pointe en dehors de l'espace d'adressage accessible.
+<DT><B>EINVAL</B>
+
+<DD>
+<I>mode </I>
+
+était mal spécifié.
+<DT><B>EIO</B>
+
+<DD>
+Une erreur d'entrée/sortie s'est produite.
+<DT><B>ENOMEM</B>
+
+<DD>
+Le noyau n'a pas assez de mémoire.
+<DT><B>ETXTBSY</B>
+
+<DD>
+On a demandé l'écriture dans un fichier exécutable
+qui en cours d'utilisation.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>RESTRICTIONS</H2>
+
+<B>access</B>
+
+renvoie une erreur si l'un quelconque des types d'accès est refusé,
+même si les autres sont acceptés.
+<P>
+
+<B>access</B>
+
+peut fonctionner incorrectement sur un serveur NFS si les correspondances
+d'UID sont activées, car ces correspondances sont gérées par le serveur,
+et masquées au client qui effectue les vérifications d'autorisation.
+<P>
+
+Utiliser 
+<B>access</B>
+
+pour vérifier si un utilisateur a le droit, par exemple, d'ouvrir un fichier
+avant d'effectuer réellement l'ouverture avec
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+risque de créer un trou de sécurité. En effet, l'utilisateur peut exploiter le
+petit intervalle de temps entre la vérification et l'accès pour modifier le
+fichier (via un lien symbolique en général).
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+SVID, AT&amp;T, POSIX, X/OPEN, BSD 4.3
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+stat">stat</A></B>(2)
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2)
+
+<B><A HREF="/cgi-bin/man/man2html?2+chmod">chmod</A></B>(2)
+
+<B><A HREF="/cgi-bin/man/man2html?2+chown">chown</A></B>(2)
+
+<B><A HREF="/cgi-bin/man/man2html?2+setuid">setuid</A></B>(2)
+
+<B><A HREF="/cgi-bin/man/man2html?2+setgid">setgid</A></B>(2).
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM </A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">RESTRICTIONS</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:00 GMT, February 11, 2014
+</BODY>
+</HTML>

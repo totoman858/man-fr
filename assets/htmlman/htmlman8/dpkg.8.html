@@ -1,0 +1,802 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DPKG</TITLE>
+</HEAD><BODY>
+<H1>DPKG</H1>
+Section: dpkg suite (8)<BR>Updated: February 2000<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+dpkg - un gestionnaire de paquet de niveau intermédiaire pour Debian
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>dpkg</B>
+
+[<I>options</I>] <I>action</I>
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>AVERTISSEMENT</H2>
+
+Ce manuel est destiné aux utilisateurs qui souhaitent aller au delà de la
+commande <B>dpkg --help</B> pour la compréhension des options de la ligne
+de commande et des états des paquets.
+<P>
+
+Les responsables de paquet qui veulent comprendre comment <B>dpkg</B> 
+installe leur paquet <I>ne doivent pas</I> l'utiliser. Les descriptions
+concernant l'installation ou la désinstallation des paquets
+sont très insuffisantes. 
+<P>
+
+Vous trouverez des renseignements sur ce sujet dans la Faq Debian ou dans
+la référence Debian, aux rubriques concernant la création de paquets.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>dpkg</B> est un outil de niveau intermédiaire pour l'installation, la 
+création, la suppression et la gestion des paquets Debian. 
+<B>dpkg</B> lui-même est entièrement contrôlé par
+des paramètres sur la ligne de commande, laquelle comprend exactement une
+action et zéro ou plusieurs options. Le paramètre «&nbsp;action&nbsp;» dit ce que
+<B>dpkg</B> doit faire et les options modifient l'action d'une manière
+ou d'une autre.
+<P>
+
+On peut aussi utiliser <B>dpkg</B> comme une interface à <B>dpkg-deb</B>.
+Quand <B>dpkg</B> rencontre les actions suivantes, qui sont des actions
+de <B>dpkg-deb</B>, il lance simplement <B>dpkg-deb</B> avec les
+paramètres qui lui ont été fournis&nbsp;:
+<PRE>
+    <B>-b</B>, <B>--build</B>,
+    <B>-c</B>, <B>--contents</B>,
+    <B>-I</B>, <B>--info</B>,
+    <B>-f</B>, <B>--field</B>,
+    <B>-e</B>, <B>--control</B>,
+    <B>-x</B>, <B>--extract</B>,
+    <B>-X</B>, <B>--vextract</B>, et
+    <B>--fsys-tarfile</B>.
+</PRE>
+
+Voyez <B><A HREF="/cgi-bin/man/man2html?1+dpkg-deb">dpkg-deb</A></B>(1) pour des renseignements sur ces actions.
+<P>
+
+Note&nbsp;: <B><A HREF="/cgi-bin/man/man2html?8+dselect">dselect</A></B>(8) est la principale interface à <B>dpkg</B> et la plus
+agréable à utiliser. Il en existe d'autres, comme celles basées sur
+<B><A HREF="/cgi-bin/man/man2html?8+apt">apt</A></B>(8).
+<P>
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>RENSEIGNEMENTS SUR LES PAQUETS</H2>
+
+<B>dpkg</B> conserve des renseignements utiles sur les paquets disponibles.
+Cette information est divisée en trois classes&nbsp;: les états, les états
+de sélection et les drapeaux. La modification de ces valeurs est
+principalement dévolue à <B>dselect</B>.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H3>ÉTATS DES PAQUETS</H3>
+
+<DL COMPACT>
+<DT><B>installed</B>
+
+<DD>
+Le paquet est dépaqueté et configuré OK.
+<DT><B>half-installed</B>
+
+<DD>
+L'installation du paquet a commencé mais, pour quelque raison, ne s'est pas
+terminée.
+<DT><B>not-installed</B>
+
+<DD>
+Le paquet n'est pas installé sur le système.
+<DT><B>unpacked</B>
+
+<DD>
+Le paquet est dépaqueté mais n'est pas configuré.
+<DT><B>half-configured</B>
+
+<DD>
+Le paquet est dépaqueté et la configuration a commencé mais, pour quelque 
+raison, ne s'est pas terminée.
+<DT><B>config-files</B>
+
+<DD>
+Seuls les fichiers de configuration du paquet existent sur le système.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H3>ÉTATS DE LA SÉLECTION DES PAQUETS</H3>
+
+<DL COMPACT>
+<DT><B>install</B>
+
+<DD>
+Le paquet est sélectionné pour être installé.
+<DT><B>deinstall</B>
+
+<DD>
+Le paquet est sélectionné pour être désinstallé (c.-à-d. on veut supprimer 
+tous les fichiers à l'exception des fichiers de configuration).
+<DT><B>purge</B>
+
+<DD>
+Le paquet est sélectionné pour être purgé (c.-à-d. on veut supprimer tous
+les fichiers même les fichiers de configuration).
+<P>
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H3>DRAPEAUX DES PAQUETS</H3>
+
+<DL COMPACT>
+<DT><B>hold</B>
+
+<DD>
+<B>dpkg</B> laisse de côté un paquet marqué <B>hold</B>, à moins qu'il ne 
+soit lancé avec l'option de forçage <B>--force-hold</B>.
+<DT><B>reinst-required</B>
+
+<DD>
+Un paquet marqué <B>reinst-required</B> est défectueux et demande une
+réinstallation. <B>dpkg</B> ne peut supprimer de tels paquets, à moins qu'il
+ne soit lancé avec l'option de forçage <B>--force-reinstreq</B>.
+<P>
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>ACTIONS</H2>
+
+<DL COMPACT>
+<DT><B>dpkg -i</B> | <B>--install</B> <I>fichier-paquet</I>...<DD>
+Installe le paquet. Si l'on donne l' option <B>--recursive</B> ou 
+<B>-R</B>, <I>fichier-paquet</I> doit alors indiquer un répertoire.
+</DL>
+<P>
+
+L'installation comporte les étapes suivantes&nbsp;:
+<BR>
+
+<B>1.</B> Extraction des fichiers de contrôle du nouveau paquet.
+<BR>
+
+<B>2.</B> Quand une ancienne version du même paquet est déjà installée,
+exécution du script <I>prerm</I> de l'ancien paquet.
+<BR>
+
+<B>3.</B> lancement du script <I>preinst</I>, s'il est fourni par le paquet.
+<BR>
+
+<B>4.</B> Dépaquetage des nouveaux fichiers, et en même temps sauvegarde des 
+anciens de manière à pouvoir les restaurer si quelque chose tourne mal.
+<BR>
+
+<B>5.</B> Quand une ancienne version du même paquet est déjà installée,
+exécution du script <I>postrm</I> de l'ancien paquet.
+Il faut remarquer que ce script est exécuté après le script <I>preinst</I>
+du nouveau paquet, parce que les nouveaux fichiers sont écrits dans le même
+temps que les anciens sont supprimés.
+<BR>
+
+<B>6.</B> Configuration du paquet. Voyez l'action <B>--configure</B> pour
+savoir comment cela se passe.
+<DL COMPACT>
+<DT><B>dpkg --unpack </B><I>fichier-paquet</I> ...<DD>
+Dépaquète le paquet, mais ne configure rien. Si l'on donne l'option
+If <B>--recursive</B> ou <B>-R</B> option, <I>fichier-paquet</I> doit alors
+indiquer un répertoire.
+<DT><B>dpkg --configure </B><I>paquet</I> ... | <B>-a</B> | <B>--pending</B><DD>
+Reconfiguration d'un paquet dépaqueté.  Si l'on donne l'option 
+<B>-a</B> ou <B>--pending</B> au lieu de <I>paquet</I>, tous les paquets 
+dépaquetés mais non configurés sont configurés.
+</DL>
+<P>
+
+La configuration comporte les étapes suivantes&nbsp;: 
+<BR>
+
+<B>1.</B> Dépaquetage des fichiers de configuration, et dans le même temps
+sauvegarde des anciens fichiers de configuration, de manière à pouvoir les
+restaurer si quelque chose se passe mal.
+<BR>
+
+<B>2.</B> exécution du script <B>postinst</B>, s'il est fourni par le
+paquet.
+<BR>
+
+<DL COMPACT>
+<DT><B>dpkg -r</B> | <B>--remove</B> | <B>-P</B> | <B>--purge </B><I>paquet</I> ... | <B>-a</B> | <B>--pending</B><DD>
+Supprime un paquet installé. L'action <B>-r</B> ou <B>--remove</B> supprime 
+tout sauf
+les fichiers de configuration.  Cela peut éviter la reconfiguration du
+paquet lors d'une réinstallation. (Les fichiers de configuration sont les 
+fichiers répertoriés dans le fichier de contrôle <I>debian/conffiles</I>.) 
+L'option <B>-P</B> ou <B>--purge</B> supprime tout, y compris les fichiers de
+configuration. Si l'on donne l'option <B>-a</B> ou <B>--pending</B> à la 
+place d'un nom de paquet, tous les paquets non dépaquetés, mais qui sont
+marqués comme devant être supprimés ou purgés
+dans le fichier <I>/var/lib/dpkg/status</I>, sont respectivement
+supprimés et purgés.
+</DL>
+<P>
+
+La suppression des paquets comporte les étapes suivantes&nbsp;: 
+<BR>
+
+<B>1.</B> lancement du script <I>prerm</I> 
+<BR>
+
+<B>2.</B> suppression des fichiers installés
+<BR>
+
+<B>3.</B> lancement du script <I>postrm</I> 
+<BR>
+
+<DL COMPACT>
+<DT><B>dpkg  -p|--print-avail </B><I>paquet</I>
+
+<DD>
+Affiche des renseignements détaillés sur <I>paquet</I>, tels qu'ils sont
+trouvés dans le fichier <I>/var/lib/dpkg/available</I>.
+<DT><B>dpkg --update-avail</B> | <B>--merge-avail</B> <I>fichier-paquet</I><DD>
+Met à jour les idées de <B>dpkg</B> et de <B>dselect</B> sur les paquets 
+disponibles. L'action <B>--merge-avail</B> combine les informations
+anciennes avec celles qui proviennent de <I>fichier-paquet</I>. L'action
+<B>--update-avail</B> remplace les informations anciennes par celles qui
+proviennent de <I>fichier-paquet</I>. Le <I>fichier-paquet</I>
+distribué avec Debian est appelé simplement <I>paquet</I>.
+<B>dpkg</B> garde son propre enregistrement des paquets disponibles dans
+<I>/var/lib/dpkg/available</I>.
+<DT><B>dpkg -A</B> | <B>--record-avail</B> <I>fichier-paquet</I> ...<DD>
+Met à jour les idées de <B>dpkg</B> et de <B>dselect</B> sur les paquets
+disponibles avec les informations qui proviennent de <I>fichier-paquet</I>.
+Si l'option <B>--recursive</B> ou <B>-R</B> est donnée, <I>fichier-paquet</I>
+doit indiquer un répertoire.
+<DT><B>dpkg --forget-old-unavail</B>
+
+<DD>
+Oublie ce qui concerne les paquets non installés ou non disponibles.
+<DT><B>dpkg --clear-avail</B>
+
+<DD>
+Efface les renseignements existants concernant les paquets disponibles.
+<DT><B>dpkg -l</B> | <B>--list</B> <I>motif</I> ...<DD>
+Affiche la liste des paquets qui correspondent au motif donné. Quand on
+ne fournit pas de <I>motif</I>, la liste comporte tous les 
+paquets cités dans <I>/var/lib/dpkg/available</I>.  Les méta-caractères
+ordinaires du shell sont autorisés dans <I>motif</I>. (Il faudra
+sans doute mettre <I>motif</I> entre apostrophes pour éviter 
+l'expansion des noms de fichier par le shell. Par exemple, la commande
+<B>dpkg -l 'libc5*'</B> affiche tous les paquets dont le nom commence par
+«&nbsp;libc5&nbsp;».)
+<DT><B>dpkg -s</B> | <B>--status</B> <I>nom-de-paquet</I> ...<DD>
+Rapporte l'état du paquet indiqué. C'est simplement l'affichage de l'entrée
+de la base de données concernant les états des paquets installés.
+<DT><B>dpkg -C</B> | <B>--audit</B><DD>
+Recherche les paquets qui n'ont été que partiellement installés sur le 
+système. <B>dpkg</B> suggère une manière de les faire fonctionner.
+<DT><B>dpkg --get-selections</B> [<I>motif</I>...]<DD>
+Obtient la liste des sélections des paquets, et l'envoie sur la sortie 
+standard.
+<DT><B>dpkg --set-selections</B>
+
+<DD>
+fixe les sélections des paquets en lisant un fichier sur l'entrée standard.
+<DT><B>dpkg --yet-to-unpack</B>
+
+<DD>
+Recherche les paquets qui ont été sélectionnés pour l'installation, mais qui
+pour une raison quelconque, ne sont pas encore installés.
+<DT><B>dpkg -L</B> | <B>--listfiles</B> <I>paquet</I> ...<DD>
+Affiche la liste des fichiers de <I>paquet</I> installés sur le système.
+Il faut remarquer cependant que les fichiers créés par les scripts d'
+installation particuliers au paquet ne sont pas affichés.
+<DT><B>dpkg -S</B> | <B>--search</B> <I>motif-de-recherche</I> ...<DD>
+Recherche un nom de fichier dans les paquets installés. On peut utiliser
+dans le motif tous les méta-caractères du shell.
+<DT><B>dpkg --print-architecture</B>
+
+<DD>
+Affiche l'architecture cible (par exemple, «&nbsp;i386&nbsp;»). Cette option utilise
+<B>gcc</B>.
+<DT><B>dpkg --print-gnu-build-architecture</B>
+
+<DD>
+Affiche la version «&nbsp;GNU&nbsp;» de l'architecture cible (par exemple, «&nbsp;i486&nbsp;»).
+<DT><B>dpkg --print-installation-architecture</B>
+
+<DD>
+Affiche l'architecture de l'hôte.
+<DT><B>dpkg --compare-versions </B><I>ver1 op ver2</I>
+
+<DD>
+Compare des numéros de version, où <I>op</I> est un opérateur binaire.
+<B>dpkg</B> retourne un zéro si la condition spécifiée est vérifiée, et
+retourne un nombre différent de zéro dans le cas contraire. Il y a deux
+groupes d'opérateurs&nbsp;; ils diffèrent par leur façon de traiter l'absence
+de <I>ver1</I> ou de <I>ver2</I>. 
+Les opérateurs suivants, <B>lt le eq ne ge gt</B>, ne traitent pas les versions
+antérieures à une version donnée&nbsp;; les opérateurs <B>lt-nl le-nl ge-nl gt-nl</B>
+ne traitent pas les versions supérieures à une version donnée. Les opérateurs
+<B>&lt; &lt;&lt; &lt;= = &gt;= &gt;&gt; &gt;</B> ne sont fournis que pour la compatibilité avec la
+syntaxe du fichier de contrôle.
+<DT><B>dpkg --command-fd &lt;n&gt;</B>
+
+<DD>
+Cette action accepte une série de commandes sur le descripteur du fichier
+d'entrée <B>&lt;n&gt;</B>.  Note&nbsp;: des options supplémentaires définies sur la
+ligne de commande à travers ce descripteur de fichier ne sont pas redéfinies
+pour les commandes suivantes qui sont exécutées pendant la même séquence.
+<DT><B>dpkg --help</B>
+
+<DD>
+Affiche les commandes utilisables.
+<DT><B>dpkg --force-help</B>
+
+<DD>
+donne des renseignements sur les options <B>--force-</B><I>quelque-chose</I>.
+<DT><B>dpkg -Dh </B>|<B> --debug=help</B>
+
+<DD>
+donne des renseignements sur les options de débogage.
+<DT><B>dpkg --licence</B> | <B>dpkg --license</B><DD>
+Affiche les informations sur le copyright et la licence de <B>dpkg</B>.
+<DT><B>dpkg --version</B><DD>
+Affiche la version de <B>dpkg</B>.
+<DT><B>dpkg-deb-actions</B><DD>
+Voyez <B><A HREF="/cgi-bin/man/man2html?1+dpkg-deb">dpkg-deb</A></B>(1) pour des renseignements supplémentaires sur les
+actions suivantes.
+</DL>
+<P>
+
+<PRE>
+<B>dpkg -b</B> | <B>--build</B> <I>répertoire</I> [<I>nom-de-fichier</I>]
+    Construit un paquet deb.
+<B>dpkg -c</B> | <B>--contents</B> <I>nom-de-fichier</I>
+    liste le contenu d'un paquet deb.
+<B>dpkg -e</B> | <B>--control</B> <I>nom-de-fichier</I> [<I>répertoire</I>]
+    Extrait les informations de contrôle d'un paquet.
+<B>dpkg -x</B> | <B>--extract</B> <I>nom-de-fichier répertoire</I>
+    Extrait les fichiers d'un paquet.
+<B>dpkg -f</B> | <B>--field</B>  <I>nom-de-fichier</I> [<I>champ de contrôle</I>] ...
+    Affiche le(s) champ(s) de contrôle d'un paquet.
+<B>dpkg --fsys-tarfile</B> <I>nom-de-fichier</I>
+    Affiche le fichier «&nbsp;tar&nbsp;» du système de fichiers d'un paquet Debian.
+<B>dpkg -I</B> | <B>--info</B> <I>nom-de-fichier</I> [<I>fichier de contrôle</I>]
+    Affiche des renseignements sur un paquet.
+<B>dpkg -X</B> | <B>--vextract</B> <I>nom-de-fichier</I> <I>répertoire</I>
+    Extrait et affiche les noms des fichiers d'un paquet.
+</PRE>
+
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+On peut spécifier une option à la fois sur la ligne de commande et dans le
+fichier de configuration de dpkg, <I>/etc/dpkg/dpkg.cfg</I>. Chaque ligne de
+ce fichier est soit une option (identique à une option en ligne de commande
+mais sans tiret), soit un commentaire, commençant par <B>#</B>.
+<BR>
+
+<DL COMPACT>
+<DT><B>--abort-after=</B><I>nombre</I><DD>
+Modifie le nombre d'erreurs au delà duquel dpkg s'arrête. il est par défaut
+égal à 50.
+<DT><B>-B</B>|<B>--auto-deconfigure</B>
+
+<DD>
+Quand un paquet est supprimé, il peut arriver qu'un paquet installé
+dépendait du paquet supprimé. En spécifiant cette option, on
+obtient la dé-configuration automatique du paquet qui dépendait du paquet 
+supprimé.
+<DT><B>-D</B><I>octal</I> | <B>--debug=</B><I>octal</I><DD>
+demande de débogage. <I>octal</I> est formé en faisant un «&nbsp;ou&nbsp;» logique entre
+des valeurs souhaitées appartenant à la liste ci-dessous (notez que ces 
+valeurs peuvent changer dans de prochaines versions). <B>-Dh</B> or <B>--debug=help</B> affiche ces valeurs de débogage.
+<P>
+<BR>&nbsp;nombre&nbsp;&nbsp;description
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;Généralement,&nbsp;informations&nbsp;de&nbsp;progression&nbsp;utiles
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;Appel&nbsp;et&nbsp;état&nbsp;des&nbsp;scripts&nbsp;du&nbsp;développeur
+<BR>&nbsp;&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;Sortie&nbsp;pour&nbsp;chaque&nbsp;fichier&nbsp;traité
+<BR>&nbsp;&nbsp;100&nbsp;&nbsp;&nbsp;De&nbsp;nombreuses&nbsp;sorties&nbsp;pour&nbsp;chaque&nbsp;fichier&nbsp;traité
+<BR>&nbsp;&nbsp;&nbsp;20&nbsp;&nbsp;&nbsp;Sortie&nbsp;pour&nbsp;chaque&nbsp;fichier&nbsp;de&nbsp;configuration
+<BR>&nbsp;&nbsp;200&nbsp;&nbsp;&nbsp;De&nbsp;nombreuses&nbsp;sorties&nbsp;pour&nbsp;chaque&nbsp;fichier&nbsp;de&nbsp;configuration
+<BR>&nbsp;&nbsp;&nbsp;40&nbsp;&nbsp;&nbsp;Dépendances&nbsp;et&nbsp;conflits
+<BR>&nbsp;&nbsp;400&nbsp;&nbsp;&nbsp;De&nbsp;nombreuses&nbsp;sorties&nbsp;pour&nbsp;les&nbsp;dépendances&nbsp;et&nbsp;les&nbsp;conflits
+<BR>&nbsp;1000&nbsp;&nbsp;&nbsp;Beaucoup&nbsp;de&nbsp;radotage&nbsp;à&nbsp;propos&nbsp;du&nbsp;répertoire&nbsp;dpkg/info&nbsp;
+<BR>&nbsp;2000&nbsp;&nbsp;&nbsp;Quantité&nbsp;stupide&nbsp;de&nbsp;radotage
+<DT><B>--force-</B><I>quelque-chose</I> | <B>--no-force-</B><I>quelque-chose</I> | <B>--refuse-</B><I>quelque-chose</I><DD>
+Forcer ou refuser (<B>no-force</B> et <B>refuse</B> signifient la même chose)
+de faire quelque chose. <I>quelque-chose</I> est une liste de commandes séparées
+par des virgules&nbsp;; les commandes sont décrites ci-après. <B>--force-help</B> 
+affiche un message qui les décrit. Les commandes marquées d'un (*) sont
+forcées par défaut.
+</DL>
+<P>
+
+<I>Avertissement&nbsp;: Ces options sont principalement destinées aux experts.
+Un usage auquel manque la pleine compréhension de leurs effets
+peut casser le système entier.</I>
+<BR>
+
+<B>all</B>&nbsp;:
+Met en oeuvre (ou pas) toutes les options de forçage.
+<BR>
+
+<B>auto-select</B>(*)&nbsp;:
+Sélectionner les paquets pour l'installation, ou la désinstallation.
+<BR>
+
+<B>downgrade</B>(*)&nbsp;:
+Installer un paquet, même si une version plus récente du paquet est déjà
+installée.
+<BR>
+
+<B>configure-any</B>&nbsp;:
+Configurer aussi les paquets dépaquetés mais non configurés dont dépend le
+paquet en question.
+<BR>
+
+<B>hold</B>&nbsp;:
+Traiter même les paquets marqués «&nbsp;à garder&nbsp;» («&nbsp;hold&nbsp;»).
+<BR>
+
+<B>remove-reinstreq</B>&nbsp;:
+Supprimer un paquet, même défectueux et marqué comme demandant une
+réinstallation. Il se peut par exemple que des morceaux de paquet restent 
+sur le système et soient dès lors oubliés par <B>dpkg</B>.
+<BR>
+
+<B>remove-essential</B>&nbsp;:
+Supprimer un paquet même s'il est considéré comme indispensable.
+Les paquets «&nbsp;Essential&nbsp;» comportent les commandes Unix les plus
+fondamentales et les enlever peut casser le système entier. Il faut
+utiliser cette option avec prudence.
+<BR>
+
+<B>depends</B>&nbsp;:
+Changer tous les problèmes de dépendance en avertissements
+<BR>
+
+<B>depends-version</B>&nbsp;:
+Ignorer les versions dans les questions de dépendance
+<BR>
+
+<B>conflicts</B>&nbsp;:
+Installer un paquet, même s'il est en conflit avec un autre paquet. C'est
+dangereux car habituellement cela produit le remplacement de certains
+fichiers.
+<BR>
+
+<B>confmiss</B>&nbsp;:
+Toujours installer un fichier de configuration manquant. C'est dangereux,
+puisque cela signifie que les changements apportés au fichier ne seront pas
+préservés.
+<BR>
+
+<B>confnew</B>&nbsp;:
+Quand un «&nbsp;conffile&nbsp;» a été modifié, toujours utiliser la nouvelle version
+et ne rien demander, sauf si l'option <B>--force-confdef</B> est aussi
+présente, auquel cas l'action par défaut est choisie.
+<BR>
+
+<B>confold</B>&nbsp;:
+Quand un «&nbsp;conffile&nbsp;» a été modifié, garder l'ancienne version et ne rien 
+demander, sauf si l'option <B>--force-confdef</B> est aussi présente, auquel 
+cas l'action par défaut est choisie.
+<BR>
+
+<B>confdef</B>&nbsp;:
+Utiliser toujours l'action par défaut quand un «&nbsp;conffile&nbsp;» a été modifié.
+Quand il n'y a pas d'action par défaut, la commande s'arrête et interroge
+l'utilisateur, à moins que l'option <B>--force-confnew</B> ou l'option 
+<B>--force-confold</B> n'ait été donnée, auquel cas  elle se sert de ces 
+pour déterminer l'action finale.
+<BR>
+
+<B>overwrite</B>&nbsp;:
+Remplacer un fichier d'un paquet par celui d'un autre.
+<BR>
+
+<B>overwrite-dir</B>&nbsp;:
+Remplacer un répertoire d'un paquet par celui d'un autre.
+<BR>
+
+<B>overwrite-diverted</B>&nbsp;:
+Remplacer un fichier détourné avec une version non détournée.
+<BR>
+
+<B>architecture</B>&nbsp;:
+Traiter même les paquets d'une autre architecture
+<BR>
+
+<B>bad-path</B>&nbsp;:
+Programmes importants non visibles par la variable <B>PATH</B>, ce qui va poser
+des problèmes.
+<BR>
+
+<B>not-root</B>&nbsp;:
+Tenter de (dés)installer même sans être root
+<BR>
+
+<DL COMPACT>
+<DT><B>--ignore-depends</B>=<I>paquet</I>,...<DD>
+Ne pas tenir compte de la vérification des dépendances pour les paquets 
+spécifiés (en fait, la vérification est faite mais on ne donne rien d'autre que
+des avertissements).
+<DT><B>--new</B> | <B>--old</B><DD>
+Sélectionner soit l'ancien format des paquet binaires, soit le nouveau. C'est
+une option de <B><A HREF="/cgi-bin/man/man2html?1+dpkg-deb">dpkg-deb</A></B>(1).
+<DT><B>--nocheck</B>
+
+<DD>
+Ne pas lire ni vérifier le contenu du fichier de contrôle pendant la
+construction d'un paquet.
+C'est une option de <B><A HREF="/cgi-bin/man/man2html?1+dpkg-deb">dpkg-deb</A></B>(1).
+<DT><B>--no-act</B>
+
+<DD>
+Faire tout ce qui doit être fait, mais n'écrire aucune modification. On 
+utilise cette option pour voir ce qui se passe sans modifier quoi que ce soit.
+</DL>
+<P>
+
+Assurez vous de donner l'option <B>--no-act</B> avant le paramètre action,
+sinon des résultats fâcheux pourraient arriver. Par exemple, la commande
+<B>dpkg --purge foo --no-act</B> purge d'abord le paquet foo et essaye ensuite
+de purger le paquet --no-act, même si vous comptiez qu'elle ne ferait rien du 
+tout.
+<DL COMPACT>
+<DT><B>-R</B> | <B>--recursive</B><DD>
+Traiter récursivement tous les simples fichiers qui correspondent au motif
+<B>*.deb</B> et qui se trouvent dans les répertoires spécifiés et tous ses
+sous-répertoires. On peut utiliser cette option avec les actions
+<B>-i</B>, <B>-A</B>, <B>--install</B>, <B>--unpack</B> et <B>--avail</B>.
+<DT><B>-G</B><DD>
+Ne pas installer un paquet si une version plus récente de ce paquet est déjà
+installée. C'est un alias pour <B>--refuse-downgrade.</B>.
+<DT><B>--root=</B><I>rep</I> | <B>--admindir=</B><I>rep</I> | <B>--instdir=</B><I>rep</I><DD>
+Changer les répertoires par défaut. <B>admindir</B> est par défaut 
+<I>/var/lib/dpkg</I> et contient beaucoup de fichiers qui donnent des
+informations sur l'état des paquets installés ou non installés, etc. 
+<B>instdir</B> est par défaut <I>/</I> et se réfère au répertoire où les 
+paquets doivent être installés. <B>instdir</B> est aussi le répertoire 
+donné à <B><A HREF="/cgi-bin/man/man2html?2+chroot">chroot</A></B>(2) avant que ne soient lancées les scripts d'installation
+du <I>paquet</I>, ce qui signifie que ces scripts voient <B>instdir</B> 
+comme le répertoire de root. Changer <B>root</B> change <B>instdir</B> en
+<I>rep</I> et <B>admindir</B> en <I>rep</I><B>/var/lib/dpkg</B>.
+<DT><B>-O</B> | <B>--selected-only</B><DD>
+Traiter seulement les paquets qui sont sélectionnés pour l'installation. 
+La sélection est réellement faite par <B>dselect</B> ou par <B>dpkg</B> quand il
+manipule les paquets.  Par exemple, quand un paquet est supprimé, il est
+marqué comme ayant été sélectionné pour l'installation.
+<DT><B>-E</B> | <B>--skip-same-version</B>
+
+<DD>
+Ne pas installer le paquet si la même version du paquet est déjà
+installée.
+<DT><B>--status-fd </B><I>&lt;n&gt;</I><DD>
+Cette action envoie des informations sur l'état d'un paquet au descripteur
+de fichier <I>&lt;n&gt;</I>.  On peut répéter l'opération plusieurs fois.
+La mise à jour d'un état est de la forme&nbsp;: «&nbsp;status: &lt;pkg&gt;: &lt;pkg qstate&gt;&nbsp;».
+<P>
+</DL>
+<A NAME="lbAL">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/etc/dpkg/dpkg.cfg</I>
+
+<DD>
+Fichier de configuration contenant les options par défaut.
+</DL>
+<P>
+
+Les autres fichiers répertoriés ici sont dans leur répertoire par défaut, voyez
+l'option <B>--admindir</B> pour savoir changer l'emplacement de ces fichiers.
+<DL COMPACT>
+<DT><I>/var/lib/dpkg/available</I>
+
+<DD>
+Liste des paquets disponibles.
+<DT><I>/var/lib/dpkg/status</I>
+
+<DD>
+États des paquets disponibles. Ce fichier contient des informations qui
+permettent de savoir si un paquet est marqué comme devant être supprimé
+ou pas, devant être installé ou pas, etc. Voyez la section
+<B>RENSEIGNEMENTS SUR LES PAQUETS</B> pour des informations supplémentaires.
+</DL>
+<P>
+
+Les fichiers suivants font partie d'un paquet binaire. Voyez <B><A HREF="/cgi-bin/man/man2html?5+deb">deb</A></B>(5)
+pour des informations supplémentaires&nbsp;:
+<DL COMPACT>
+<DT><I>control</I>
+
+<DD>
+<DT><I>conffiles</I>
+
+<DD>
+<DT><I>preinst</I>
+
+<DD>
+<DT><I>postinst</I>
+
+<DD>
+<DT><I>prerm</I>
+
+<DD>
+<DT><I>postrm</I>
+
+<DD>
+<P>
+</DL>
+<A NAME="lbAM">&nbsp;</A>
+<H2>VARIABLES D'ENVIRONNEMENT</H2>
+
+<DL COMPACT>
+<DT><B>DPKG_NO_TSTP</B>
+
+<DD>
+Donnez-lui une valeur si vous préférez que <B>dpkg</B> lance un nouveau
+shell plutôt que de s'interrompre, pour faire un appel au shell.
+<DT><B>SHELL</B>
+
+<DD>
+Le programme qu'exécute <B>dpkg</B> quand il lance un nouveau shell.
+<DT><B>COLUMNS</B>
+
+<DD>
+Fixe le nombre de colonnes utilisées par <B>dpkg</B> lorsqu'il affiche un texte
+formaté. Seule l'action <B>-l</B> se sert actuellement de cette variable.
+<DT><B>DPKG_OLD_CONFFILE</B>
+
+<DD>
+C'est le nom de l'ancien fichier de configuration quand on 
+démarre un shell pour examiner un fichier de configuration modifié&nbsp;; elle est 
+fixée par <B>dpkg</B>.
+<DT><B>DPKG_NEW_CONFFILE</B>
+
+<DD>
+C'est le nom de la nouvelle version du fichier de configuration quand on
+démarre un shell pour examiner un fichier de configuration modifié&nbsp;; elle est
+fixée par <B>dpkg</B>.
+<P>
+</DL>
+<A NAME="lbAN">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+Pour afficher les paquets dont le nom contient la chaîne «&nbsp;vi&nbsp;»&nbsp;:
+<BR>
+
+<B>     dpkg -l '*vi*'</B>
+<BR>
+
+<P>
+
+Pour voir les entrées de <I>/var/lib/dpkg/available</I> concernant plusieurs
+paquets&nbsp;:
+<B>     dpkg -p base-files login xfree86-common | pager</B>
+<P>
+
+Pour supprimer le paquet installé «&nbsp;elvis&nbsp;»&nbsp;:
+<BR>
+
+<B>     dpkg -r elvis</B>
+<P>
+
+Pour installer un paquet, vous devez d'abord le trouver dans une archive
+ou sur un cédérom. Le fichier «&nbsp;available&nbsp;» montre que le paquet 
+«&nbsp;vim&nbsp;» se trouve dans la section «&nbsp;editors&nbsp;»&nbsp;:
+<BR>
+
+<B>     cd /cdrom/hamm/hamm/binary/editors</B>
+<B>     dpkg -i vim_4.5-3.deb</B>
+<BR>
+
+(Note&nbsp;: Beaucoup se servent de <B><A HREF="/cgi-bin/man/man2html?8+apt-get">apt-get</A></B>(8) pour cela.)
+<P>
+
+Pour faire une copie locale des états de sélection des paquets&nbsp;:
+<BR>
+
+<B>     dpkg --get-selections &gt;myselections</B>
+<P>
+
+On remarquera que cela n'installe ou ne supprime rien du tout&nbsp;; cela ne fait
+que déterminer l'état de sélection des paquets requis. Vous aurez besoin
+d'autres applications pour transférer et installer réellement les paquets
+requis.
+<P>
+
+Vous pourriez transférer ce fichier sur un autre ordinateur et l'installer de
+cette manière&nbsp;:
+<BR>
+
+<B>     dpkg --set-selections &lt;myselections</B>
+<P>
+
+Habituellement, vous trouverez que <B><A HREF="/cgi-bin/man/man2html?8+dselect">dselect</A></B>(8) fournit une
+façon plus aisée de modifier les états de sélection des paquets.
+<P>
+<A NAME="lbAO">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+dpkg-deb">dpkg-deb</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?5+deb">deb</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?5+deb-control">deb-control</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+dselect">dselect</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+apt">apt</A></B>(8).
+
+<P>
+<A NAME="lbAP">&nbsp;</A>
+<H2>BOGUES ET RESTRICTIONS</H2>
+
+dpkg n'ordonne pas l'installation des paquets.
+<BR>
+
+dpkg ne fournit pas une manière automatique de se loguer.
+<BR>
+
+Lors de mises à niveau, les relations de dépendance d'un paquet peuvent ne plus
+correspondre (p.ex. les dépendances exactes d'un paquet -dev de bibliothèques
+par rapport au paquet comprenant les bibliothèques).
+<P>
+
+L'option --no-act ne donne pas assez d'informations utiles.
+<BR>
+
+L'action --status ne donne pas d'information sur les paquets virtuels.
+<P>
+<A NAME="lbAQ">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+<PRE>
+<B>dpkg</B> fut d'abord écrit par Ian Jackson&nbsp;; puis mis à jour par beaucoup 
+d'autres gens. Voyez le fichier <B>/usr/share/doc/dpkg/THANKS</B> pour la 
+liste des personnes qui ont contribué à <B>dpkg</B>.
+</PRE>
+
+<A NAME="lbAR">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Philippe Batailler &lt;<A HREF="mailto:pbatailler@teaser.fr">pbatailler@teaser.fr</A>&gt; 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">AVERTISSEMENT</A><DD>
+<DT><A HREF="#lbAE">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAF">RENSEIGNEMENTS SUR LES PAQUETS</A><DD>
+<DL>
+<DT><A HREF="#lbAG">ÉTATS DES PAQUETS</A><DD>
+<DT><A HREF="#lbAH">ÉTATS DE LA SÉLECTION DES PAQUETS</A><DD>
+<DT><A HREF="#lbAI">DRAPEAUX DES PAQUETS</A><DD>
+</DL>
+<DT><A HREF="#lbAJ">ACTIONS</A><DD>
+<DT><A HREF="#lbAK">OPTIONS</A><DD>
+<DT><A HREF="#lbAL">FICHIERS</A><DD>
+<DT><A HREF="#lbAM">VARIABLES D'ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAN">EXEMPLES</A><DD>
+<DT><A HREF="#lbAO">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAP">BOGUES ET RESTRICTIONS</A><DD>
+<DT><A HREF="#lbAQ">AUTEURS</A><DD>
+<DT><A HREF="#lbAR">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:03 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,114 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GZEXE</TITLE>
+</HEAD><BODY>
+<H1>GZEXE</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: <BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+gzexe - Compacter sur place les fichiers exécutables.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>gzexe</B>
+
+[ nom ...  ]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+L'utilitaire
+<I>gzexe</I>
+
+vous permet de compacter sur place des exécutables pour qu'ils se
+décompactent automatiquement et s'exécutent là où vous les appelez (au prix
+d'une perte de performance). Par exemple, si vous exécutez
+«&nbsp;gzexe&nbsp;/bin/cat&nbsp;», il créera les deux fichiers suivants&nbsp;:
+<P>
+
+<PRE>
+<BR>
+    -r-xr-xr-x  1 root  bin   9644 Feb 11 11:16 /bin/cat
+    -r-xr-xr-x  1 bin   bin  24576 Nov 23 13:21 /bin/cat~
+</PRE>
+
+<P>
+
+/bin/cat~ est le fichier original et /bin/cat est le fichier exécutable
+auto-extractible. Vous pouvez supprimer /bin/cat~ une fois que vous êtes
+sûr(e) que /bin/cat fonctionne correctement.
+<P>
+
+Cet utilitaire est principalement utile sur les systèmes ayant de très
+petits disques.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-d</B>
+
+<DD>
+Décompacter les exécutables fournis au lieu de les compacter.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+gzip">gzip</A>(1), <A HREF="/cgi-bin/man/man2html?1+znew">znew</A>(1), <A HREF="/cgi-bin/man/man2html?1+zmore">zmore</A>(1), <A HREF="/cgi-bin/man/man2html?1+zcmp">zcmp</A>(1), <A HREF="/cgi-bin/man/man2html?1+zforce">zforce</A>(1)
+<A NAME="lbAG">&nbsp;</A>
+<H2>AVERTISSEMENTS</H2>
+
+L'exécutable compacté est un script shell. Cela peut créer quelques trous
+de sécurité. En particulier, l'exécutable compacté utilise la variable
+d'environnement PATH pour trouver
+<I>gzip</I>
+
+et d'autres utilitaires 
+(<I>tail</I>,
+
+<I>chmod</I>,
+
+<I>ln</I>,
+
+<I>sleep</I>).
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<I>gzexe </I>
+
+essaie de préserver les attributs du fichier original sur l'exécutable
+compacté, mais vous pourriez devoir les régler par vous-même dans certains
+cas, en utilisant
+<I>chmod</I>
+
+ou
+<I>chown</I>.
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Frédéric Delanoy &lt;<I>delanoy_f at yahoo.com</I>&gt;, 2001.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">AVERTISSEMENTS</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:43 GMT, February 11, 2014
+</BODY>
+</HTML>

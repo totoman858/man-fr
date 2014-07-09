@@ -1,0 +1,287 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TOUCH</TITLE>
+</HEAD><BODY>
+<H1>TOUCH</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+touch - Modifier l'horodatage d'un fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>touch </B>
+
+<B>[-acm][-r</B><I> référence |-t</I><B>date</B><I>] [--] </I><B>fichier...</B>
+
+<P>
+Version obsolète :
+<BR>
+
+<B>touch</B>
+
+<B>[-acm][</B><I>date_horrible</I><B>] </B><I>fichier...</I>
+
+<P>
+Version GNU :
+<BR>
+
+<B>touch</B>
+
+<B>[-acfm] [-r </B><I>fichier</I><B>] [-t </B><I>date_décimale</I><B>]</B>
+
+<B>[-d </B><I>date</I><B>] [--time={atime,access,use,mtime,modify}]</B>
+
+<B>[--date=</B><I>date</I><B>] [--reference=</B><I>fichier</I><B>]</B>
+
+<B>[--no-create] [--help] [--version] [--] </B><I>fichier...</I>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>touch</B>
+
+modifie la date d'accès et la date de modification de chaque
+<I>fichier</I>
+
+indiqué.
+Ces horodatages sont remplacés par la date et l'heure actuelles, sauf si
+l'option <I>-r</I> est utilisée, auquel cas ils sont remplacés par
+les horodatages correspondants du fichier 
+<I>référence</I>
+
+ou, si
+l'option <I>-t</I> est utilisée, on utilise la
+<I>date</I>
+
+mentionnée.
+Si aucune des deux options -a et -m ne sont indiquées, ou si elles
+le sont toutes deux, on modifie les deux dates (accès et changement)
+Si on utilise une seule des options -a et -m, seule la date concernée
+est modifiée.
+Les fichiers n'existant pas sont créés (sauf si l'option -c est utilisée),
+leur contenu est vide et leur
+mode est 0666 modifié par l'umask de l'utilisateur.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS POSIX</H2>
+
+<DL COMPACT>
+<DT><B>-a</B>
+
+<DD>
+Modifier l'heure du dernier accès au fichier
+<DT><B>-c</B>
+
+<DD>
+Ne pas créer les fichiers n'existant pas.
+<DT><B>-m</B>
+
+<DD>
+Changer l'heure de dernière modification du fichier
+<DT><B>-r </B><I>fichier_référence</I>
+
+<DD>
+Utiliser les horodatages du
+<I>fichier_référence</I>
+
+à la place de l'heure actuelle.
+<DT><B>-t </B><I>date</I>
+
+<DD>
+Utiliser la 
+<I>date</I>
+
+indiquée à la place de la date actuelle.
+L'argument est un nombre décimal de la forme
+<BR>
+
+<PRE>
+    [[SS]AA]MMJJhhmm[.ss]
+<BR>
+</PRE>
+
+(Mois, Jour, Heure, Minute, éventuellement Siècle et
+Année, éventuellement seconde). Si le Siècle n'est pas mentionné,
+la date est automatiquement prise dans l'intervalle 1969-2068.
+Si les secondes ne sont pas fournies, on les fixe à 0. Les secondes
+peuvent appartenir à l'intervalle 0-61 à cause des rattrapages périodiques.
+La date résultante correspond au fuseau horaire indiquée par la variable TZ.
+Une date ne peut pas être antérieure au 1er Janvier 1970.
+<DT><B>--</B>
+
+<DD>
+Fin explicite de la liste des options.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>DÉTAILS POSIX</H2>
+
+La seconde forme d'invocation présente l'inconvénient de risquer
+l'ambiguïté quant à savoir si
+<I>date_horrible</I>
+
+est une date ou un nom de fichier.
+On la considère comme une date si aucune option -r ou -t n'est utilisée,
+s'il y a au moins deux arguments, et si le premier argument est un
+entier de 8 ou 10 chiffre.
+Le format de la
+<I>date_horrible</I>
+
+est MMJJhhmm[aa], où aa (dans l'intervalle 69-99) indique une année
+dans l'intervalle 1969-1999. L'année en cours est indiquée par l'absence
+de aa.
+Cette forme est obsolète.
+<A NAME="lbAG">&nbsp;</A>
+<H2>DÉTAILS GNU</H2>
+
+Si le premier
+<I>fichier</I>
+
+serait un argument valide de l'option
+<B>-t,</B>
+
+si aucun horodatage n'est précisé par les options
+<B>-d</B>,
+
+<B>-r</B>
+
+ou
+<B>-t,</B>
+
+et si l'argument `--' n'est pas mentionné, 
+ce premier argument est interprété comme l'horodatage à utiliser
+plutôt que comme un nom de fichier.
+<P>
+
+Si l'on change à la fois les dates d'accès et de modification pour
+les amener à l'heure actuelle, alors
+<B>touch</B>
+
+peut modifier les horodatages de fichiers n'appartenant pas à
+l'utilisateur l'invoquant, à la condition toutefois que celui-ci
+ait une autorisation d'écriture dessus.
+Sinon, l'utilisateur doit posséder le fichier.
+<A NAME="lbAH">&nbsp;</A>
+<H2>OPTIONS GNU</H2>
+
+<B>-a, --time=atime, --time=access, --time=use</B>
+
+Modifier uniquement l'heure d'accès.
+<DL COMPACT>
+<DT><B>-c, --no-create</B>
+
+<DD>
+Ne pas créer les fichiers n'existant pas.
+<DT><B>-d </B><I>date</I><B>, --date=</B><I>date</I>
+
+<DD>
+Utiliser la
+<I>date</I>
+
+indiquée (qui peut se présenter sous plusieurs formes) à la place
+de la date actuelle. La
+<I>date</I>
+
+peut contenir des mois littéraux, des indications de fuseau horaire, les
+abréviations `am' et `pm', etc...
+<DT><B>-f</B>
+
+<DD>
+Sans effet - uniquement pour assurer la compatibilité
+avec la version BSD de
+<B>touch</B>.
+
+<DT><B>-m, --time=mtime, --time=modify</B>
+
+<DD>
+Changer uniquement l'heure de modification.
+<DT><B>-r </B><I>fichier-référence</I><B>, --file=</B><I>fichier-référence</I>
+
+<DD>
+Utiliser les horodatages du
+<I>fichier_référence</I>
+
+à la place de l'heure actuelle.
+<DT><B>-t </B><I>MMJJhhmm[[SS]AA][.ss]</I>
+
+<DD>
+Utiliser la date (Mois, Jour, Heure, Minute, éventuellement Siècle et
+Année, éventuellement Seconde) à la place de la date actuelle.
+Notez que cette option viole la syntaxe Posix.
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>OPTIONS STANDARDS GNU</H2>
+
+<DL COMPACT>
+<DT><B>--help</B>
+
+<DD>
+Afficher un message d'aide sur la sortie standard, et se terminer normalement.
+<DT><B>--version</B>
+
+<DD>
+Afficher un numéro de version sur la sortie standard, et se terminer normalement.
+<DT><B>--</B>
+
+<DD>
+Terminer la liste des options.
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+La variable TZ est utilisée pour interpréter les dates fournies de
+manière explicite.
+LANG, LC_ALL, LC_CTYPE et LC_MESSAGES ont leurs significations habituelles.
+<A NAME="lbAK">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX 1003.2 décrit une syntaxe pour l'option -t qui diffère de celle
+de GNU.
+<A NAME="lbAL">&nbsp;</A>
+<H2>EXEMPLE D'UTILISATION</H2>
+
+La commande `<I>touch foo</I>' créera le fichier <I>foo</I>
+s'il n'existe pas, et positionnera son horodatage de dernière
+modification à l'heure actuelle. Ceci est souvent utilisé pour
+contrôler le comportement de
+<B>make</B>.
+
+<A NAME="lbAM">&nbsp;</A>
+<H2>NOTES</H2>
+
+Cette page décrit la version de <B>touch</B> fournie dans le
+paquetage fileutils-4.0.
+<A NAME="lbAN">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS POSIX</A><DD>
+<DT><A HREF="#lbAF">DÉTAILS POSIX</A><DD>
+<DT><A HREF="#lbAG">DÉTAILS GNU</A><DD>
+<DT><A HREF="#lbAH">OPTIONS GNU</A><DD>
+<DT><A HREF="#lbAI">OPTIONS STANDARDS GNU</A><DD>
+<DT><A HREF="#lbAJ">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAK">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAL">EXEMPLE D'UTILISATION</A><DD>
+<DT><A HREF="#lbAM">NOTES</A><DD>
+<DT><A HREF="#lbAN">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:42 GMT, February 11, 2014
+</BODY>
+</HTML>

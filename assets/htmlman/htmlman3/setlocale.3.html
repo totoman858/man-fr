@@ -1,0 +1,256 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SETLOCALE</TITLE>
+</HEAD><BODY>
+<H1>SETLOCALE</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+setlocale - Fixe la localisation courante.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/locale.h">locale.h</A>&gt;</B>
+
+<B>char *setlocale (int </B><I>categorie</I><B>, const char * </B><I>locale</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>setlocale()</B>
+
+est utilisée pour indiquer ou demander la localisation courante du programme.
+Si 
+<I>locale</I>
+
+n'est pas
+<B>NULL</B>,
+
+la localisation courante du programme est modifiée en fonction des arguments.
+L'argument
+<I>categorie</I>
+
+détermine quelle partie de la localisation sera concernée par la modification :
+<DL COMPACT>
+<DT><B>LC_ALL</B>
+
+<DD>
+toute la localisation,
+<DT><B>LC_COLLATE</B>
+
+<DD>
+la mise en correspondance des expressions rationnelles (classes d'équivalence
+et intervalles), et le classement des chaînes de caractères,
+<DT><B>LC_CTYPE</B>
+
+<DD>
+la classification de caractère, et les routines de conversions.
+<DT><B>LC_MESSAGES</B>
+
+<DD>
+les messages en langue naturelle
+<DT><B>LC_MONETARY</B>
+
+<DD>
+l'affichage des valeurs monétaires.
+<DT><B>LC_NUMERIC</B>
+
+<DD>
+le symbole décimal (point, virgule, ...)
+<DT><B>LC_TIME</B>
+
+<DD>
+la forme de la date et l'heure.
+L'argument
+<I>locale</I>
+
+est un pointeur sur une chaîne de caractères contenant la configuration de la
+<I>categorie</I>.
+
+Une telle chaîne peut être une constante bien connue, comme &quot;C&quot; ou &quot;fr_FR&quot;
+(voir plus bas) ou une chaîne opaque renvoyée par un autre appel précédent
+<B>setlocale</B>.
+
+</DL>
+<P>
+
+Si
+<I>locale</I>
+
+est
+<B>&quot;&quot;</B>,
+
+chaque partie de la localisation doit être modifiée en fonction des variables
+d'environnement. Les détails d'implémentation varient.
+Pour la GlibC, d'abord
+
+
+
+
+
+(quelque soit la
+<I>catégorie</I>)
+
+la variable d'environnement LC_ALL est examinée, puis la variable 
+d'environnement avec le même nom que la catégorie (LC_COLLATE, LC_CTYPE,
+LC_MESSAGES, LC_MONETARY, LC_NUMERIC, LC_TIME) et finalement la variable
+LANG.
+La première variable d'environnement existant est utilisée. Si sa valeur
+est n'est pas une spécification de localication valide, la localisation n'est
+pas modifiée, et
+<B>setlocale</B>
+
+renvoie NULL.
+
+
+<P>
+
+Les localisations
+<B>C</B>
+
+et
+<B>POSIX</B>
+
+sont portables, leur partie LC_CTYPE correspond au jeu de caractères ASCII
+7 bits.
+<P>
+
+Un nom de localisation est typiquement de la forme
+<I>langue</I>[_<I>territoire</I>][.<I>codeset</I>][@<I>modificateur</I>],
+
+où la 
+<I>langue</I>
+
+est un code linguistique ISO 639, le
+<I>territoire</I>
+
+un code de pays ISO 3166, et
+<I>codeset</I>
+
+un jeu de caractères ou un identificateur d'encodage, comme
+<B>ISO-8859-1</B>
+
+ou
+<B>UTF-8</B>.
+
+Pour voir une liste de toutes les localisations disponibles, essayez
+&quot;locale -a&quot;, cf.
+<B><A HREF="/cgi-bin/man/man2html?1+locale">locale</A></B>(1).
+
+<P>
+
+Si 
+<I>locale</I>
+
+est 
+<B>NULL</B>,
+
+la localisation courante est consultée, mais pas modifiée.
+<P>
+
+Au démarrage, la localisation portable
+<B>C</B>
+
+est sélectionnée par défaut.
+Un programme peut être rendu portable en appelant
+<B>setlocale(LC_ALL, )</B>
+
+lors de son initialisation, en utilisant les valeurs renvoyées par
+<B>localeconv()</B>
+
+pour les valeurs dépendant de la localisation, en utilisation les fonctions
+multioctets et caractères larges pour traiter les chaines si
+<B>MB_CUR_MAX &gt; 1</B>,
+
+et en utilisant
+<B>strcoll()</B>, <B>wcscoll()</B>
+
+ou
+<B>strxfrm()</B>, <B>wcsxfrm()</B>
+
+pour comparer les chaînes de caractères.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Un appel reussi à
+<B>setlocale()</B>
+
+renvoie une chaine correspondant à la localisation.
+Cette chaîne peut être allouée dans une zone statique.
+La chaine est renvoyée de telle manière qu'un appel ultérieur avec
+cette chaîne et la catégorie associée restituera cette partie de
+la localisation du processus. La valeur renovyée est
+<B>NULL</B>
+
+si la demande ne peut pas être honorée.
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+ANSI C, POSIX.1
+<P>
+
+Linux (c'est à dire la libc) supporte les localisations portables
+<B>&quot;C&quot;</B> et <B>&quot;POSIX&quot;</B>.
+
+Il y avait auparavant un support pour le Latin-1 européen
+<B>&quot;ISO-8859-1&quot;</B>
+
+(par exemple dans la libc-4.5.21 et libc-4.6.27), ainsi que
+et le
+<B>KOI-8</B>
+
+russe (plus précisement &quot;koi-8r&quot; dans la libc-4.6.27).
+Il suffisait alors d'initialiser la variable d'environnement
+LC_TYPE=ISO-8859-1 pour que isprint() fonctionne correctement.
+Désormais les européens non-anglicistes doivent peiner un peu
+plus pour installer les véritables fichiers de localisation.
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+locale">locale</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+localedef">localedef</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strcoll">strcoll</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+isalpha">isalpha</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+localeconv">localeconv</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strftime">strftime</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?4+charsets">charsets</A></B>(4),
+
+<B><A HREF="/cgi-bin/man/man2html?7+locale">locale</A></B>(7)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:25 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,104 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SUM</TITLE>
+</HEAD><BODY>
+<H1>SUM</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+sum - Calculer une somme de contrôle, et compter le nombre de blocs d'un fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>sum</B>
+
+[-rs] [--sysv] [--help] [--version] [fichier...]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>sum</B>.
+
+<P>
+<B>sum</B>
+
+calcule une somme de contrôle sur 16 bits pour chaque fichier indiqué.
+<P>
+Si aucun fichier n'est fourni, ou si le nom `-' est mentionné, la lecture
+se fera depuis l'entrée standard.
+<P>
+La somme de contrôle est affichée pour chaque fichier ainsi que le nombre
+de blocs du fichier (arrondi par excès).
+<P>
+Par défaut, le nom du fichier est également imprimé, si celui-ci a été
+fourni sur la ligne de commande.
+Avec l'option
+<I>--sysv</I>
+
+le nom de fichier n'est imprimé que s'il y a au moins un argument.
+<P>
+Par défaut, la version GNU de
+<B>sum</B>
+
+calcule la somme de contrôle en utilisant un algorithme compatible
+avec la version BSD de
+<B>sum</B>.
+
+<P>
+Par défaut la taille des fichiers est calculée avec des blocs de 1 Ko.
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><I>-r</I>
+
+<DD>
+Utiliser l'algorithme par défaut (compatible BSD). Cette option est
+inclue pour assurer la compatibilité avec System V.
+Si l'option
+<I>-s</I>
+
+n'est pas utilisée en même temps, ceci n'a pas d'effet.
+<DT><I>-s, --sysv</I>
+
+<DD>
+Utiliser l'algorithme compatible System V, et afficher la taille des
+fichiers en blocs de 512 octets plutôt qu'1 Ko.
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et se terminer normalement.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et se terminer normalement.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:44 GMT, February 11, 2014
+</BODY>
+</HTML>

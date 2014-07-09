@@ -1,0 +1,191 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MORE</TITLE>
+</HEAD><BODY>
+<H1>MORE</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+more - Filtre lecteur de fichier.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>more</B> [<B>-dlfpcsu</B>] [<B>-</B><I>num</I>] [<B>+/</B> <I>motif</I>]
+[<B>+</B> <I>numligne</I>]
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<I>fichier&nbsp;...</I>]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>More</B>
+est un filtre permettant de se déplacer dans un texte écran par écran.
+Cette version est particulièrement primitive. Les utilisateurs doivent
+se convaincre que <A HREF="/cgi-bin/man/man2html?1+less">less</A>(1) constitue une excellente émulation avec
+de nombreuses améliorations.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+Les options sur la ligne de commande sont décrites ci-dessous.
+La variable d'environnement <I>MORE</I> peut contenir des options
+supplémentaires (précédées par un tiret (``-'')) mais les options sur la
+ligne de commande ont priorité.
+<DL COMPACT>
+<DT><B>-</B><I>num</I><DD>
+<I>num</I> est un nombre entier indiquant la taille en lignes de l'écran.
+<DT><B>-d</B><DD>
+<B>more</B>
+affiche le message &quot;[Press space to continue, 'q' to quit.]&quot; pour défiler
+et le message &quot;[Press 'h' for instructions.]&quot; au lieu d'émettre un bip quand
+on appuie sur une touche interdite.
+<DT><B>-l</B><DD>
+Normalement <B>more</B> considère que <B>^L</B> (form feed) est un caractère
+spécial et attend après chaque ligne contenant un form feed. L'option
+<B>-l</B> supprime ce comportement.
+<DT><B>-f</B><DD>
+provoque un comptage logique des lignes, c'est à dire que les lignes longues
+ne sont pas découpées.
+<DT><B>-p</B><DD>
+Ne pas dérouler&nbsp;: efface l'écran avant d'afficher le texte.
+<DT><B>-c</B><DD>
+Ne pas dérouler&nbsp;: 
+affiche les lignes en partant du haut et en effaçant les fins de ligne au
+fur et à mesure.
+<DT><B>-s</B><DD>
+Regroupe les lignes blanches consécutives en une seule.
+<DT><B>-u</B><DD>
+Supprime le soulignement.
+<DT><B>+/</B><DD>
+L'option <B>+/</B> indique un texte à rechercher dans chaque fichier avant de
+l'afficher.
+<DT><B>+</B><I>num</I><DD>
+Commence à la ligne indiquée.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>COMMANDES</H2>
+
+<B>more</B> reconnaît un jeu de commandes interactives basé sur celui de <A HREF="/cgi-bin/man/man2html?1+vi">vi</A>(1).
+Certaines commandes peuvent être précédées d'un nombre décimal noté k
+ci-dessous. ^X signifie control-X.
+<P>
+
+<DL COMPACT>
+<DT><B>h</B> ou <B>?</B><DD>
+Aide&nbsp;: affiche un résumé des commandes. Si vous les avez toutes oubliées, tâchez
+de vous souvenir de celle-la. 
+<DT><B>ESPACE</B><DD>
+Affiche les k lignes suivantes.
+Par défaut, k est la taille de l'écran.
+<DT><B>z</B><DD>
+Affiche les k lignes suivantes.
+Par défaut k est la taille de l'écran mais l'argument fourni devient la
+nouvelle valeur par défaut.
+<DT><B>RETURN</B><DD>
+Affiche les k lignes suivantes.
+Par défaut, k vaut 1 mais l'argument fourni devient la
+nouvelle valeur par défaut.
+<DT><B>d</B> ou <B>^D</B><DD>
+Déroule k lignes.
+la valeur par défaut vaut initialement 11
+mais l'argument fourni devient la nouvelle valeur par défaut.
+<DT><B>q</B> ou <B>Q</B> ou <B>INTERRUPT</B><DD>
+Arrêt.
+<DT><B>s</B><DD>
+Saute k lignes. Par défaut, saute une ligne.
+<DT><B>f</B><DD>
+Saute k écrans. Par défaut, saute un écran.
+<DT><B>b</B> ou <B>^B</B><DD>
+Recule de k écrans. Par défaut, recule d'un écran.
+<DT><B>'</B><DD>
+Retourne au point de départ de la dernière recherche.
+<DT><B>=</B><DD>
+Affiche le numéro de ligne courant.
+<DT><B>/</B><I>motif</I><DD>
+Recherche la k-ième occurrence d'une expression rationnelle. Par défaut,
+k vaut 1.
+<DT><B>n</B><DD>
+Recherche la k-ième occurrence de la dernière expression rationnelle.
+Par défaut k vaut 1.
+<DT><B>!</B><I>&lt;cmd&gt;</I> ou <B>:!</B><I>&lt;cmd&gt;</I><DD>
+Exécute <I>&lt;cmd&gt;</I> dans un sous-shell.
+<DT><B>v</B><DD>
+Lance /usr/bin/vi sur la ligne courante.
+<DT><B>^L</B><DD>
+Réaffiche l'écran
+<DT><B>:n</B><DD>
+Passe au k-ième fichier suivant. Par défaut k=1.
+<DT><B>:p</B><DD>
+Passe au k-ième fichier précédent. Par défaut k=1.
+<DT><B>:f</B><DD>
+Affiche le nom et le numéro de ligne du fichier courant.
+<DT><B>.</B><DD>
+Répète la commande précédente.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+<B>More</B>
+utilise les variables d'environnement suivantes quand elles existent&nbsp;:
+<DL COMPACT>
+<DT><I>MORE</I><DD>
+Cette variable contient les options préférées pour <B>more</B>.
+<DT><I>SHELL</I><DD>
+Shell courant (normalement positionné par le shell au login).
+<DT><I>TERM</I><DD>
+Spécifie le type de terminal&nbsp;; utilisé par <B>more</B> pour connaître
+les codes de contrôle de l'écran.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+vi">vi</A>(1) <A HREF="/cgi-bin/man/man2html?1+less">less</A>(1)
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Eric Shienbrood, UC Berkeley
+<BR>
+
+Modifié par Geoff Peck, UCB pour ajouter le soulignement et
+l'espacement simple.
+<BR>
+
+Modifié par John Foderaro, UCB pour ajouter <B>-c</B> et la gestion de la
+variable d'environnement <I>MORE</I>.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+La commande <B>more</B> est apparue dans BSD 3.0.
+Cette page documente la version 5.19 (Berkeley 6/29/88),
+qui est celle actuellement utilisée par la communauté Linux.
+Cette documentation a été constituée en utilisant les pages de manuel de
+plusieurs autres versions et après un examen exhaustif du code source.
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Michel Quercia, 1997.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">COMMANDES</A><DD>
+<DT><A HREF="#lbAG">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">AUTEURS</A><DD>
+<DT><A HREF="#lbAJ">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:49 GMT, February 11, 2014
+</BODY>
+</HTML>

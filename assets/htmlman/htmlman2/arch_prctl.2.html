@@ -1,0 +1,201 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ARCH_PRCTL</TITLE>
+</HEAD><BODY>
+<H1>ARCH_PRCTL</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+arch_prctl - Fixe l'état spécifique à l'architecture.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/asm/prctl.h">asm/prctl.h</A>&gt;</B>
+
+<P>
+<B>#include &lt;<A HREF="file:///usr/include/sys/prctl.h">sys/prctl.h</A>&gt;</B>
+
+<P>
+<B>int arch_prctl(int code, unsigned long adr)</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>arch_prctl</B>
+
+fixe l'état spécifique à l'architecture pour le thread ou le processus.
+<I>code</I>
+
+sélectionne une sous-fonction
+et lui passe
+l'argument
+<I>addr</I>.
+
+<P>
+
+Les sous-fonctions pour les architectures x86-64 sont&nbsp;:
+<DL COMPACT>
+<DT><B>ARCH_SET_FS</B>
+
+<DD>
+Remplit la base 64-bits pour le registre
+<I>FS</I>
+
+avec
+<I>adr</I>.
+
+<DT><B>ARCH_GET_FS</B>
+
+<DD>
+Renvoie la base 64-bits pour le registre
+<I>FS</I>
+
+du thread en cours dans la variable
+<I>unsigned long</I>
+
+pointée par le
+paramètre
+<I>adr</I>.
+
+<DT><B>ARCH_SET_GS</B>
+
+<DD>
+Remplit la base 64-bits pour le registre
+<I>GS</I>
+
+avec
+<I>addr</I>.
+
+<DT><B>ARCH_GET_GS</B>
+
+<DD>
+Renvoie la base 64-bits pour le registre
+<I>GS</I>
+
+du thread en cours dans la variable
+<I>unsigned long</I>
+
+pointée par le
+paramètre
+<I>adr</I>.
+
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTES</H2>
+
+<I>arch_prctl</I>
+
+n'est seulement supporté sur Linux/x86-64 pour les programmes 64-bits.
+<P>
+La base 64-bits change lorsqu'un nouveau selecteur de segment 32-bits est chargé.
+<P>
+<B>ARCH_SET_GS</B>
+
+est inactif dans certains noyaux.
+<P>
+Les changements de contextes pour les bases 64-bits sont assez coûteux. Il peut être
+plus rapide de fixer une base 32-bits avec un sélecteur de segment en fixant
+une LDT avec
+<B><A HREF="/cgi-bin/man/man2html?2+modify_ldt">modify_ldt</A></B>(2)
+
+ou en utilisant l'appel-système
+<B><A HREF="/cgi-bin/man/man2html?2+set_thread_area">set_thread_area</A></B>(2)
+
+des noyaux 2.5.
+<B>arch_prctl</B>
+
+n'est utile que si vous désirez fixer des bases plus grandes que 4Go.
+La mémoire dans les premiers 2 Go d'adressage peut être allouée en utilisant
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2)
+
+avec
+l'attribut.
+<I>MAP_32BIT</I>.
+
+<P>
+Il n'y a pas de prototype pour
+<I>arch_prctl</I>
+
+Dans la GlibC 2.2. Vous devez le déclarer vous-même.
+Ceci sera corrigé dans les futures versions de la GlibC.
+<P>
+<I>FS </I>
+
+peut être déjà utilisé par la bibliothèque de multi-threading.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+<I>code </I>
+
+n'est pas une sous-commande valide.
+<DT><B>EPERM</B>
+
+<DD>
+<I>adr</I>
+
+pointe en dehors de l'espace d'adressage du processus.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>adr </I>
+
+pointe vers une adresse non affectée ou est en dehors de l'espace d'adressage.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+Page de manuel écrite par Andi Kleen.
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<I>arch_prctl</I>
+
+est une extension Linux/x86-64 et ne doit pas être employée dans un programme portable.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+mmap">mmap</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+modify_ldt">modify_ldt</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+prctl">prctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+set_thread_area">set_thread_area</A></B>(2)
+
+<P>
+Manuel du programmeur AMD X86-64
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTES</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:54 GMT, February 11, 2014
+</BODY>
+</HTML>

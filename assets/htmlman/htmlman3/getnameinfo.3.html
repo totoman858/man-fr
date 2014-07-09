@@ -1,0 +1,320 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of getnameinfo</TITLE>
+</HEAD><BODY>
+<H1>getnameinfo</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getnameinfo - Traduction d'adresse en nom de façon indépendante du protocole
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;</B>
+<B>#include &lt;<A HREF="file:///usr/include/netdb.h">netdb.h</A>&gt;</B>
+
+<B>int getnameinfo(const struct sockaddr *</B><I>sa</I><B>, socklen_t </B><I>salen</I><B>,</B>
+<B>                char *</B><I>host</I><B>, size_t </B><I>hostlen</I><B>,</B>
+<B>                char *</B><I>serv</I><B>, size_t </B><I>servlen</I><B>, int </B><I>flags</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B><A HREF="/cgi-bin/man/man2html?3+getnameinfo">getnameinfo</A></B>(3)
+
+est définie afin de traduire des adresses en noms de noeuds de façon indépendante du protocole. Elle combine les fonctionnalités de
+<B><A HREF="/cgi-bin/man/man2html?3+gethostbyaddr">gethostbyaddr</A></B>(3)
+
+et
+<B><A HREF="/cgi-bin/man/man2html?3+getservbyport">getservbyport</A></B>(3)
+
+et constitue la réciproque de 
+<B><A HREF="/cgi-bin/man/man2html?3+getaddrinfo">getaddrinfo</A></B>(3).
+
+Le paramètre
+<I>sa</I>
+
+est un pointeur vers l'adresse d'une structure de socket générique
+(de type
+<I>sockaddr_in</I>
+
+ou
+<I>sockaddr_in6</I>)
+
+de taille
+<I>salen</I>
+
+qui contient l'adresse IP d'entrée et le numéro de port.
+Les parmètres
+<I>host</I>
+
+et
+<I>serv</I>
+
+sont des pointeurs vers des tampons (de tailles respectives
+<I>hostlen</I>
+
+et 
+<I>servlen</I>
+
+) destinés à recevoir les valeurs renvoyées.
+<P>
+L'appelant peut préciser qu'aucun nom d'hôte (ou qu'aucun nom de service)
+n'est nécessaire en fournissant NULL comme paramètre
+<I>host</I>
+
+(ou
+<I>serv</I>)
+
+ou bien en passant un argument
+<I>hostlen</I>
+
+(ou
+<I>servlen</I>)
+
+valant zéro. Quoi qu'il en soit, au moins un nom d'hôte ou un nom de service
+doit être demandé.
+<P>
+Le paramètre
+<I>flags</I>
+
+modifie le comportement de 
+<B><A HREF="/cgi-bin/man/man2html?3+getnameinfo">getnameinfo</A></B>(3)
+
+comme indiqué ci dessous :
+<DL COMPACT>
+<DT><B>NI_NOFQDN</B>
+
+<DD>
+renvoie seulement la partie nom de l'hôte du FQDN (Fully-Qualified Domain Name) pour les hôtes locaux.
+<DT><B>NI_NUMERICHOST</B>
+
+<DD>
+La forme numérique du nom de l'hôte est renvoyée.
+
+
+
+
+(Même si ce drapeau n'est pas levé, cela arrivera également lorsque le
+nom du noeud ne pourra pas être résolu.)
+<DT><B>NI_NAMEREQD</B>
+
+<DD>
+renvoie une erreur si le nom de l'hôte ne peut être résolu.
+<DT><B>NI_NUMERICSERV</B>
+
+<DD>
+L'adresse du service est renvoyée sous forme numérique, par exemple
+sous la forme de son numéro de port.
+<DT><B>NI_DGRAM</B>
+
+<DD>
+Indique que le service est plutôt basé sur des datagrammes (UDP)
+que sur un flux connecté (TCP). Ce drapeau est nécessaire pour les
+quelques ports (512-514) qui ont des services différents selon
+le protocole utilisé : UDP ou TCP.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+En cas de succès, 0 est renvoyé, et, les noms du noeud et du service, s'ils
+sont demandés, sont renseignés sous forme de chaînes à zéro terminal, éventuellement
+tronquées afin de s'adapter aux tailles des tampons spécifiés.
+En cas d'erreur, une valeur non nulle est renvoyée, et 
+<I>errno</I>
+
+est affectée de façon adéquate.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EAI_AGAIN</B>
+
+<DD>
+Le nom ne peut être résolu en ce moment. Réessayer plus tard.
+<DT><B>EAI_BADFLAGS</B>
+
+<DD>
+Le paramètre
+<I>flags</I>
+
+n'est pas valide.
+<DT><B>EAI_FAIL</B>
+
+<DD>
+Une erreur irrécupérable est survenue.
+<DT><B>EAI_FAMILY</B>
+
+<DD>
+La famille d'adresse n'a pas été reconnue,
+ou bien la taille de l'adresse était invalide pour la famille spécifiée.
+<DT><B>EAI_MEMORY</B>
+
+<DD>
+Pas assez de mémoire.
+<DT><B>EAI_NONAME</B>
+
+<DD>
+Le nom ne peut être résolu avec les paramètres fournis.
+NI_NAMEREQD est spécifié et le nom de l'hôte ne peut être localisé,
+ou bien, on n'a demandé ni un nom d'hôte ni un nom de service.
+<DT><B>EAI_SYSTEM</B>
+
+<DD>
+Une erreur système a eu lieu. Le code d'erreur peut être lu dans 
+<I>errno</I>.
+
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/etc/hosts
+<BR>
+
+/etc/nsswitch.conf
+<BR>
+
+/etc/resolv.conf
+<A NAME="lbAH">&nbsp;</A>
+<H2>NOTE</H2>
+
+Afin d'aider les programmeurs à choisir des tailles raisonnables
+pour les tampons fournis,
+<I>&lt;<A HREF="file:///usr/include/netdb.h">netdb.h</A>&gt;</I>
+
+définit les constantes
+<DL COMPACT><DT><DD>
+<PRE>
+# define NI_MAXHOST      1025
+<BR>
+# define NI_MAXSERV      32
+</PRE>
+
+</DL>
+
+La première est la constante MAXDNAME présente dans les versions récentes du 
+fichier header  
+<I>&lt;<A HREF="file:///usr/include/arpa/nameser.h">arpa/nameser.h</A>&gt;</I>
+
+de BIND. 
+La deuxième est déterminée en se basant sur les services répertoriés 
+dans la RFC &quot;Assigned numbers&quot; (Numéros affectés) actuelle.
+<A NAME="lbAI">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+Le code suivant essaie d'obtenir le nom de l'hôte ainsi que le nom du service
+sous forme numérique, et ce, pour une adresse de socket donnée. Remarquez qu'il
+<BR>&nbsp;n'y&nbsp;a&nbsp;aucune&nbsp;référence&nbsp;à&nbsp;une&nbsp;quelconque&nbsp;famille&nbsp;d'adresse&nbsp;codée&nbsp;en&nbsp;dur.
+<P>
+<DL COMPACT><DT><DD>
+<PRE>
+  struct sockaddr *sa;    /* input */
+  char hbuf[NI_MAXHOST], sbuf[NI_MAXSERV];
+
+  if (getnameinfo(sa, sa-&gt;sa_len, hbuf, sizeof(hbuf), sbuf,
+      sizeof(sbuf), NI_NUMERICHOST | NI_NUMERICSERV) == 0)
+          printf(&quot;host=%s, serv=%s\n&quot;, hbuf, sbuf);
+</PRE>
+
+</DL>
+
+<P>
+La version suivante vérifie si l'adresse de la socket peut
+se voir associer un nom. 
+<P>
+<DL COMPACT><DT><DD>
+
+<BR>&nbsp;&nbsp;struct&nbsp;sockaddr&nbsp;*sa;&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;input&nbsp;*/
+<BR>&nbsp;&nbsp;char&nbsp;hbuf[NI_MAXHOST];
+<P>
+<BR>&nbsp;&nbsp;if&nbsp;(getnameinfo(sa,&nbsp;sa-&gt;sa_len,&nbsp;hbuf,&nbsp;sizeof(hbuf),
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NULL,&nbsp;0,&nbsp;NI_NAMEREQD))
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(&quot;could&nbsp;not&nbsp;resolve&nbsp;hostname&quot;);
+<BR>&nbsp;&nbsp;else
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(&quot;host=%s\n&quot;,&nbsp;hbuf);
+
+</DL>
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+RFC 2553. (Voir aussi XNS, révision 5.2.)
+<A NAME="lbAK">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+getaddrinfo">getaddrinfo</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+gethostbyaddr">gethostbyaddr</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getservbyname">getservbyname</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+getservbyport">getservbyport</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+inet_ntop">inet_ntop</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+socket">socket</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+hosts">hosts</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?5+services">services</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?7+hostname">hostname</A></B>(7),
+
+<B><A HREF="/cgi-bin/man/man2html?8+named">named</A></B>(8)
+
+<P>
+
+R. Gilligan, S. Thomson, J. Bound et W. Stevens,
+<I>Basic Socket Interface Extensions for IPv6</I>,
+
+RFC 2553, Mars 1999.
+<P>
+
+Tatsuya Jinmei et Atsushi Onoe,
+<I>An Extension of Format for IPv6 Scoped Addresses</I>,
+
+internet draft, travail en cours.
+<A HREF="ftp://ftp.ietf.org/internet-drafts/draft-ietf-ipngwg-scopedaddr-format-02.txt">ftp://ftp.ietf.org/internet-drafts/draft-ietf-ipngwg-scopedaddr-format-02.txt</A>
+<P>
+
+Craig Metz,
+<I>Protocol Independence Using the Sockets API</I>,
+
+compte rendu du sujet freenix&nbsp;:
+conférence technique annuelle USENIX 2000, juin 2000.
+<A HREF="http://www.usenix.org/publications/library/proceedings/usenix2000/freenix/metzprotocol.html">http://www.usenix.org/publications/library/proceedings/usenix2000/freenix/metzprotocol.html</A>
+<A NAME="lbAL">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Stéphan Rafin, 2002.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">NOTE</A><DD>
+<DT><A HREF="#lbAI">EXEMPLES</A><DD>
+<DT><A HREF="#lbAJ">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAK">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAL">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:32 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,865 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SELECT_TUT</TITLE>
+</HEAD><BODY>
+<H1>SELECT_TUT</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+select, pselect, FD_CLR, FD_ISSET, FD_SET, FD_ZERO - Multiplexage d'E/S synchrones
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/time.h">sys/time.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int select(int </B><I>n</I><B>, fd_set *</B><I>readfds</I><B>,
+fd_set *</B><I>writefds</I><B>, fd_set *</B><I>exceptfds</I><B>,
+struct timeval *</B><I>utimeout</I><B>);</B>
+<P>
+<B>int pselect(int </B><I>n</I><B>, fd_set *</B><I>readfds</I><B>,
+fd_set *</B><I>writefds</I><B>, fd_set *</B><I>exceptfds</I><B>,
+const struct timespec *</B><I>ntimeout</I><B>, sigset_t *</B><I>sigmask</I><B>);</B>
+<P>
+<B>FD_CLR(int</B> <I>fd</I><B>, fd_set *</B><I>set</I><B>);</B>
+<BR>
+
+<B>FD_ISSET(int</B> <I>fd</I><B>, fd_set *</B><I>set</I><B>);</B>
+<BR>
+
+<B>FD_SET(int</B> <I>fd</I><B>, fd_set *</B><I>set</I><B>);</B>
+<BR>
+
+<B>FD_ZERO(fd_set *</B><I>set</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+<B>select</B> (ou <B>pselect</B>) est la fonction pivot de la plupart des
+programmes en C qui gèrent simultanément et de façon efficace plusieurs 
+descripteurs de fichiers (ou sockets). Ses principaux arguments sont 
+trois tableaux de descripteurs de fichiers&nbsp;:
+<I>readfds</I>, <I>writefds</I>, et  <I>exceptfds</I>. 
+<B>select</B> est généralement utilisé de façon à bloquer en attendant 
+un &quot;changement d'état&quot; d'un ou plusieurs descripteurs de fichiers. Un 
+&quot;changement d'état&quot; est signalé lorsque de nouveaux caractères sont mis
+à disposition sur le descripteur de fichier; <I>ou bien</I> lorsque de l'espace 
+devient disponible au niveau des tampons internes du noyau permettant de nouvelles
+écritures dans le descripteur de fichier, <I>ou bien</I> lorsqu'un descripteur de
+fichier rencontre une erreur (dans le cas d'une socket ou d'un tube, une telle erreur
+est levée lorsque l'autre extrémité de la connexion est fermée).
+<P>
+Pour résumer,  <B>select</B> surveille simplement de multiples  descripteurs 
+de fichiers, et constitue l'appel Unix standard pour réaliser cette tâche.
+<P>
+Les tableaux de descripteurs de fichier sont appelés 
+<I>ensembles de descripteurs de fichiers</I>.
+Chaque ensemble est de type <B>fd_set</B>, et son contenu peut être
+modifié avec les macros <B>FD_CLR</B>, <B>FD_ISSET</B>, <B>FD_SET</B>, et
+<B>FD_ZERO</B>. On commence généralement par utiliser <B>FD_ZERO</B> sur un
+ensemble venant d'être créé. Ensuite, Les descripteurs de fichiers individuels
+qui vous intéressent peuvent être ajoutés un à un à l'aide de <B>FD_SET</B>.
+<B>select</B> modifie le contenu de ces ensembles selon les règles ci-dessous;
+Après un appel à  <B>select</B>,  vous pouvez vérifier si votre descripteur
+de fichier est toujours présent dans l'ensemble à l'aide de la macro <B>FD_ISSET</B>. 
+<B>FD_ISSET</B> renvoie zéro si le descripteur de fichier est absent et 
+une valeur non nulle sinon. <B>FD_CLR</B> retire un descripteur de fichier de 
+l'ensemble bien que je n'en vois pas l'utilité dans un programme propre.
+<P>
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>ARGUMENTS</H2>
+
+<DL COMPACT>
+<DT><I>readfds</I><DD>
+Cet ensemble est examiné afin de déterminer si des données sont disponibles
+en lecture à partir d'un de ses descripteurs de fichiers. Suite à un appel à
+<B>select</B>, <I>readfds</I> ne contient plus aucun de ses descripteurs de 
+fichiers à l'exception de ceux qui sont immédiatement disponibles pour une 
+lecture via un appel <B>recv()</B> (pour les sockets) ou <B>read()</B> 
+(pour les tubes, fichiers et sockets).
+<DT><I>writefds</I><DD>
+Cet ensemble est examiné afin de déterminer s'il y a de l'espace afin d'écrire
+des données dans un de ses descripteurs de fichiers. Suite à un appel à
+<B>select</B>, <I>writefds</I> ne contient plus aucun de ses descripteurs de 
+fichiers à l'exception de ceux qui sont immédiatement disponibles pour une écriture
+via un appel à <B>send()</B> (pour les sockets) ou <B>write()</B> 
+(pour les tubes, fichiers et sockets).
+<DT><I>exceptfds</I><DD>
+Cet ensemble est examiné pour les exception ou les erreurs survenues
+sur les descripteurs de fichiers. Néanmoins, ceci n'est véritablement 
+rien d'autre qu'une rumeur. <I>exceptfds</I> est en fait utilisé afin
+de détecter l'occurence de données <I>hors-bande</I> (Out Of Band).
+Les données hors bande sont celles qui sont envoyées sur une socket en 
+utilisant le drapeau <B>MSG_OOB</B>, ainsi <I>exceptfds</I> s'applique en 
+réalité uniquement aux sockets. Voir <B><A HREF="/cgi-bin/man/man2html?2+recv">recv</A></B>(2) et <B><A HREF="/cgi-bin/man/man2html?2+send">send</A></B>(2) à ce sujet.
+Suite à un appel à <B>select</B>, <I>exceptfds</I> ne contient plus aucun de
+ses descripteurs de fichiers à l'exception de ceux qui sont disponibles pour
+une lecture de données hors-bande. Cependant, vous pouvez presque toujours
+<BR>&nbsp;lire&nbsp;uniquement&nbsp;un&nbsp;octet&nbsp;de&nbsp;données&nbsp;hors&nbsp;bande&nbsp;(à&nbsp;l'aide&nbsp;de&nbsp;<B>recv()</B>),&nbsp;
+et l'écriture de données hors bande (avec <B>send</B>) peut être effectuée 
+à n'importe quel moment et n'est pas bloquante. Il n'y a donc pas de besoin 
+d'un quatrième ensemble afin de vérifier si une socket est disponible pour
+<BR>&nbsp;une&nbsp;écriture&nbsp;de&nbsp;données&nbsp;hors&nbsp;bande.
+<DT><I>n</I><DD>
+Il s'agit d'un entier valant un de plus que n'importe lequel des descripteurs 
+de fichiers de tous les ensembles. En d'autres termes, lorsque 
+vous ajoutez des descripteurs de fichiers à vos ensembles, vous devez
+déterminer la valeur entière maximale de tous ces derniers, puis ajouter un
+à cette valeur, et la passer en argument <I>n</I> à
+<B>select</B>.
+<DT><I>utimeout</I><DD>
+<DL COMPACT><DT><DD>
+Il s'agit du temps le plus long que <B>select</B> doit attendre avant de 
+rendre la main, même si rien d'intéressant n'est arrivé. Si cette valeur
+est positionnée à <B>NULL</B>, alors, <B>select</B> bloque indéfiniment 
+dans l'attente d'un événement.
+<I>utimeout</I> peut être positionné à zéro seconde, ce qui provoque le
+retour immédiat de <B>select</B>. La structure <B>struct timeval</B> est
+définie comme
+<P>
+
+<PRE>
+struct timeval {
+    long tv_sec;    /* secondes */
+    long tv_usec;   /* microsecondes */
+};
+</PRE>
+
+</DL>
+
+<DT><I>ntimeout</I><DD>
+<DL COMPACT><DT><DD>
+Cet argument a la même signification que <I>utimeout</I> mais 
+<B>struct timespec</B> a une précision à la nanoseconde comme 
+explicité ci dessous :
+<P>
+
+<PRE>
+struct timespec {
+    long tv_sec;    /* secondes */
+    long tv_nsec;   /* nanosecondes */
+};
+</PRE>
+
+</DL>
+
+<DT><I>sigmask</I><DD>
+Cet argument renferme un ensemble de signaux non bloqués pendant un appel
+<B>pselect</B> (voir <B><A HREF="/cgi-bin/man/man2html?3+sigaddset">sigaddset</A></B>(3) et <B><A HREF="/cgi-bin/man/man2html?2+sigprocmask">sigprocmask</A></B>(2)). Il peut 
+valoir NULL, et, dans ce cas, il ne modifie pas l'ensemble des signaux
+non bloqués à l'entrée et la sortie de la fonction. Il se comporte alors 
+de façon identique à <B>select</B>.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>COMBINAISON D'ÉVÉNEMENTS DE SIGNAUX ET DE DONNÉES</H2>
+
+<B>pselect</B> doit être utilisé si vous attendez tout aussi bien un
+signal que des données d'un descripteur de fichier. Les programmes qui
+reçoivent les signaux comme des événements utilisent généralement le
+gestionnaire de signal uniquement pour lever un drapeau global. Le drapeau
+global indique que l'événement doit être traiter dans la boucle principale 
+du programme. Un signal provoque l'arrêt de l'appel <B>select</B> (ou 
+<B>pselect</B>) avec <B>errno</B> positionnée à <B>EINTR</B>. Ce comportement 
+est essentiel afin que les signaux puissent être traités dans la boucle 
+principale du programme, sinon <B>select</B> bloquerait indéfiniment.
+Ceci étant, la boucle principale implante quelque part une condition
+vérifiant le drapeau global. et l'on doit donc se demander : que se 
+passe t il si un signal est levé après la condition mais avant l'appel
+à <B>select</B> ? La réponse est que <B>select</B> bloquerait indéfiniment,
+même si un signal est en fait en attente. Cette &quot;race condition&quot; est résolue 
+par l'appel <B>pselect</B>. Cet appel peut être utilisé afin de débloquer 
+des signaux qui ne sont pas censés être reçus si ce n'est durant l'appel
+à <B>pselect</B>. Par exemple, disons que l'événement en question est la 
+fin d'un processus fils. Avant le démarrage de la boucle principale, nous
+bloquerions <B>SIGCHLD</B> en utilisant <B>sigprocmask</B>. Notre appel
+<BR>&nbsp;<B>pselect</B>&nbsp;débloquerait&nbsp;<B>SIGCHLD</B>&nbsp;en&nbsp;utilisant&nbsp;le&nbsp;masque&nbsp;de&nbsp;signal
+initial. Le programme ressemblerait à ceci:
+<P>
+<P>
+
+<PRE>
+int child_events = 0;
+
+void child_sig_handler (int x) {
+    child_events++;
+    signal (SIGCHLD, child_sig_handler);
+}
+
+int main (int argc, char **argv) {
+    sigset_t sigmask, orig_sigmask;
+
+    sigemptyset (&amp;sigmask);
+    sigaddset (&amp;sigmask, SIGCHLD);
+    sigprocmask (SIG_BLOCK, &amp;sigmask,
+                                &amp;orig_sigmask);
+
+    signal (SIGCHLD, child_sig_handler);
+
+    for (;;) { /* main loop */
+        for (; child_events &gt; 0; child_events--) {
+            /* do event work here */
+        }
+        r = pselect (n, &amp;rd, &amp;wr, &amp;er, 0, &amp;orig_sigmask);
+
+        /* corps principal du programme */
+    }
+}
+</PRE>
+
+<P>
+
+Remarquez que l'appel <B>pselect</B> ci dessus peut être remplacé 
+par :
+<P>
+
+<PRE>
+        sigprocmask (SIG_BLOCK, &amp;orig_sigmask, 0);
+        r = select (n, &amp;rd, &amp;wr, &amp;er, 0);
+        sigprocmask (SIG_BLOCK, &amp;sigmask, 0);
+</PRE>
+
+<P>
+
+mais il y a encore la possibilité qu'un signal 
+arrive après le premier <B>sigprocmask</B> et
+avant <B>select</B>. si vous faites ceci, il est prudent
+de positionner tout au moins un timeout du durée finie
+de sorte que le processus ne bloque pas. Pour l'instant,
+la glibc fonctionne sans doute de cette manière, le 
+noyau Linux n'ayant  pas d'appel système natif <B>pselect</B>.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>PRATIQUE</H2>
+
+<P>
+Quelle est donc la finalité de <B>select</B>? Ne puis-je pas simplement lire
+et écrire dans les descripteurs chaque fois que je le souhaite ? L'objet de 
+select est de surveiller de multiples descripteurs simultanément et d'endormir
+proprement le processus s'il n'y a pas d'activité. Il fait ceci tout en vous
+permettant de gérer de multiples tubes et sockets simultanément. Les 
+programmeurs UNIX se retrouvent souvent dans une situation dans laquelle
+ils doivent gérer des E/S provenant de plus d'un descripteur de fichier et 
+dans laquelle le flux de données est intermittent. Si vous deviez créer une 
+séquence d'appels <B>read</B> et <B>write</B>, vous vous retrouveriez 
+potentiellement bloqué sur un de vos appels attendant pour lire ou écrire des
+données à partir/vers un descripteur de fichier, alors qu'un autre descripteur 
+de fichier est inutilisé bien qu'il soit disponible pour lire/écrire des données.
+<B>select</B> gère efficacement cette situation.
+<P>
+Un exemple classique de <B>select</B> vient de la page de manuel
+de  <B>select</B> :
+<P>
+<PRE>
+#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/sys/time.h">sys/time.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;
+
+int
+main(void) {
+    fd_set rfds;
+    struct timeval tv;
+    int retval;
+
+    /* Surveille stdin (fd 0) pour voir s'il a des données en entrée */
+    FD_ZERO(&amp;rfds);
+    FD_SET(0, &amp;rfds);
+    /* Attends jusqu'à 5 secondes. */
+    tv.tv_sec = 5;
+    tv.tv_usec = 0;
+
+    retval = select(1, &amp;rfds, NULL, NULL, &amp;tv);
+    /* Ne pas se fier à la valeur de tv maintenant ! */
+
+    if (retval)
+        printf(&quot;Des données sont disponibles maintenant\n&quot;);
+        /* FD_ISSET(0, &amp;rfds) est alors vrai. */
+    else
+        printf(&quot;Aucune donnée durant les cinq secondes.\n&quot;);
+
+    exit(0);
+}
+</PRE>
+
+<P>
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>EXEMPLE DE REDIRECTION DE PORT</H2>
+
+<P>
+Voici un exemple qui montre mieux l'utilité réelle de <B>select</B>.
+Le code ci dessous consiste en un programme de &quot;TCP forwarding&quot; qui
+redirige un port TCP vers un autre.
+<P>
+
+<PRE>
+#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/sys/time.h">sys/time.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/sys/types.h">sys/types.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/string.h">string.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/signal.h">signal.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/sys/socket.h">sys/socket.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/netinet/in.h">netinet/in.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/arpa/inet.h">arpa/inet.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/errno.h">errno.h</A>&gt;
+
+static int forward_port;
+
+#undef max
+#define max(x,y) ((x) &gt; (y) ? (x) : (y))
+
+static int listen_socket (int listen_port) {
+    struct sockaddr_in a;
+    int s;
+    int yes;
+    if ((s = socket (AF_INET, SOCK_STREAM, 0)) &lt; 0) {
+        perror (&quot;socket&quot;);
+        return -1;
+    }
+    yes = 1;
+    if (setsockopt
+        (s, SOL_SOCKET, SO_REUSEADDR,
+         (char *) &amp;yes, sizeof (yes)) &lt; 0) {
+        perror (&quot;setsockopt&quot;);
+        close (s);
+        return -1;
+    }
+    memset (&amp;a, 0, sizeof (a));
+    a.sin_port = htons (listen_port);
+    a.sin_family = AF_INET;
+    if (bind
+        (s, (struct sockaddr *) &amp;a, sizeof (a)) &lt; 0) {
+        perror (&quot;bind&quot;);
+        close (s);
+        return -1;
+    }
+    printf (&quot;accepting connections on port %d\n&quot;,
+            (int) listen_port);
+    listen (s, 10);
+    return s;
+}
+
+static int connect_socket (int connect_port,
+                           char *address) {
+    struct sockaddr_in a;
+    int s;
+    if ((s = socket (AF_INET, SOCK_STREAM, 0)) &lt; 0) {
+        perror (&quot;socket&quot;);
+        close (s);
+        return -1;
+    }
+
+    memset (&amp;a, 0, sizeof (a));
+    a.sin_port = htons (connect_port);
+    a.sin_family = AF_INET;
+
+    if (!inet_aton
+        (address,
+         (struct in_addr *) &amp;a.sin_addr.s_addr)) {
+        perror (&quot;bad IP address format&quot;);
+        close (s);
+        return -1;
+    }
+
+    if (connect
+        (s, (struct sockaddr *) &amp;a,
+         sizeof (a)) &lt; 0) {
+        perror (&quot;connect()&quot;);
+        shutdown (s, SHUT_RDWR);
+        close (s);
+        return -1;
+    }
+    return s;
+}
+
+#define SHUT_FD1 {                      \
+        if (fd1 &gt;= 0) {                 \
+            shutdown (fd1, SHUT_RDWR);  \
+            close (fd1);                \
+            fd1 = -1;                   \
+        }                               \
+    }
+
+#define SHUT_FD2 {                      \
+        if (fd2 &gt;= 0) {                 \
+            shutdown (fd2, SHUT_RDWR);  \
+            close (fd2);                \
+            fd2 = -1;                   \
+        }                               \
+    }
+
+#define BUF_SIZE 1024
+
+int main (int argc, char **argv) {
+    int h;
+    int fd1 = -1, fd2 = -1;
+    char buf1[BUF_SIZE], buf2[BUF_SIZE];
+    int buf1_avail, buf1_written;
+    int buf2_avail, buf2_written;
+
+    if (argc != 4) {
+        fprintf (stderr,
+                 &quot;Utilisation\n\tfwd &lt;listen-port&gt; \
+&lt;forward-to-port&gt; &lt;forward-to-ip-address&gt;\n&quot;);
+        exit (1);
+    }
+
+    signal (SIGPIPE, SIG_IGN);
+
+    forward_port = atoi (argv[2]);
+
+    h = listen_socket (atoi (argv[1]));
+    if (h &lt; 0)
+        exit (1);
+
+    for (;;) {
+        int r, n = 0;
+        fd_set rd, wr, er;
+        FD_ZERO (&amp;rd);
+        FD_ZERO (&amp;wr);
+        FD_ZERO (&amp;er);
+        FD_SET (h, &amp;rd);
+        n = max (n, h);
+        if (fd1 &gt; 0 &amp;&amp; buf1_avail &lt; BUF_SIZE) {
+            FD_SET (fd1, &amp;rd);
+            n = max (n, fd1);
+        }
+        if (fd2 &gt; 0 &amp;&amp; buf2_avail &lt; BUF_SIZE) {
+            FD_SET (fd2, &amp;rd);
+            n = max (n, fd2);
+        }
+        if (fd1 &gt; 0
+            &amp;&amp; buf2_avail - buf2_written &gt; 0) {
+            FD_SET (fd1, &amp;wr);
+            n = max (n, fd1);
+        }
+        if (fd2 &gt; 0
+            &amp;&amp; buf1_avail - buf1_written &gt; 0) {
+            FD_SET (fd2, &amp;wr);
+            n = max (n, fd2);
+        }
+        if (fd1 &gt; 0) {
+            FD_SET (fd1, &amp;er);
+            n = max (n, fd1);
+        }
+        if (fd2 &gt; 0) {
+            FD_SET (fd2, &amp;er);
+            n = max (n, fd2);
+        }
+
+        r = select (n + 1, &amp;rd, &amp;wr, &amp;er, NULL);
+
+        if (r == -1 &amp;&amp; errno == EINTR)
+            continue;
+        if (r &lt; 0) {
+            perror (&quot;select()&quot;);
+            exit (1);
+        }
+        if (FD_ISSET (h, &amp;rd)) {
+            unsigned int l;
+            struct sockaddr_in client_address;
+            memset (&amp;client_address, 0, l =
+                    sizeof (client_address));
+            r = accept (h, (struct sockaddr *)
+                        &amp;client_address, &amp;l);
+            if (r &lt; 0) {
+                perror (&quot;accept()&quot;);
+            } else {
+                SHUT_FD1;
+                SHUT_FD2;
+                buf1_avail = buf1_written = 0;
+                buf2_avail = buf2_written = 0;
+                fd1 = r;
+                fd2 =
+                    connect_socket (forward_port,
+                                    argv[3]);
+                if (fd2 &lt; 0) {
+                    SHUT_FD1;
+                } else
+                    printf (&quot;connexion de %s\n&quot;,
+                            inet_ntoa
+                            (client_address.sin_addr));
+            }
+        }
+/* NB: lecture des données hors bande avant les lectures normales */
+        if (fd1 &gt; 0)
+            if (FD_ISSET (fd1, &amp;er)) {
+                char c;
+                errno = 0;
+                r = recv (fd1, &amp;c, 1, MSG_OOB);
+                if (r &lt; 1) {
+                    SHUT_FD1;
+                } else
+                    send (fd2, &amp;c, 1, MSG_OOB);
+            }
+        if (fd2 &gt; 0)
+            if (FD_ISSET (fd2, &amp;er)) {
+                char c;
+                errno = 0;
+                r = recv (fd2, &amp;c, 1, MSG_OOB);
+                if (r &lt; 1) {
+                    SHUT_FD1;
+                } else
+                    send (fd1, &amp;c, 1, MSG_OOB);
+            }
+        if (fd1 &gt; 0)
+            if (FD_ISSET (fd1, &amp;rd)) {
+                r =
+                    read (fd1, buf1 + buf1_avail,
+                          BUF_SIZE - buf1_avail);
+                if (r &lt; 1) {
+                    SHUT_FD1;
+                } else
+                    buf1_avail += r;
+            }
+        if (fd2 &gt; 0)
+            if (FD_ISSET (fd2, &amp;rd)) {
+                r =
+                    read (fd2, buf2 + buf2_avail,
+                          BUF_SIZE - buf2_avail);
+                if (r &lt; 1) {
+                    SHUT_FD2;
+                } else
+                    buf2_avail += r;
+            }
+        if (fd1 &gt; 0)
+            if (FD_ISSET (fd1, &amp;wr)) {
+                r =
+                    write (fd1,
+                           buf2 + buf2_written,
+                           buf2_avail -
+                           buf2_written);
+                if (r &lt; 1) {
+                    SHUT_FD1;
+                } else
+                    buf2_written += r;
+            }
+        if (fd2 &gt; 0)
+            if (FD_ISSET (fd2, &amp;wr)) {
+                r =
+                    write (fd2,
+                           buf1 + buf1_written,
+                           buf1_avail -
+                           buf1_written);
+                if (r &lt; 1) {
+                    SHUT_FD2;
+                } else
+                    buf1_written += r;
+            }
+/* Vérifie si l'écriture de données a provoqué la lecture  de données*/
+        if (buf1_written == buf1_avail)
+            buf1_written = buf1_avail = 0;
+        if (buf2_written == buf2_avail)
+            buf2_written = buf2_avail = 0;
+/* une extrémité a fermé la connexion, continue 
+  d'écrire vers l'autre extrémité jusqu'à ce que ce soit vide*/
+        if (fd1 &lt; 0
+            &amp;&amp; buf1_avail - buf1_written == 0) {
+            SHUT_FD2;
+        }
+        if (fd2 &lt; 0
+            &amp;&amp; buf2_avail - buf2_written == 0) {
+            SHUT_FD1;
+        }
+    }
+    return 0;
+}
+</PRE>
+
+<P>
+
+Le programme ci dessus redirige correctement la plupart des types de 
+connexions TCP y compris les signaux de données hors bande OOB transmis
+par les serveurs <B>telnet</B>. Il gère le problème épineux des flux de 
+données bidirectionnels simultanés. Vous pourriez penser qu'il est plus 
+efficace d'utiliser un appel <B>fork()</B> et de dédier une tâche à chaque 
+flux. Cela devient alors plus délicat que vous ne l'imaginez. Une autre 
+idée est de configurer les E/S comme non bloquantes en utilisant un appel 
+<B>ioctl()</B>. Cela pose également problème parce que vous 
+finissez par avoir des timeouts inefficaces.
+<P>
+Le programme ne gère pas plus d'une connexion à la fois bien qu'il soit 
+aisément extensible à une telle fonctionnalité en utilisant une liste chainée de buffers
+- un pour chaque connexion. Pour l'instant, de nouvelles connexions
+provoquent l'abandon de la connexion courante.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>RÈGLES DE SELECT </H2>
+
+<P>
+De nombreuses personnes qui essaient d'utiliser <B>select</B> obtiennent
+un comportement difficile à comprendre et produisent des résultats non
+portables ou des effets de bord. Par exemple, le programme ci dessus est
+écrit avec précaution afin de ne bloquer nulle part, même s'il ne positionne
+pas du tout ses descripteurs de fichiers en mode non bloquant (voir 
+<B><A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A></B>(2)). Il est facile d'introduire des erreurs subtiles qui 
+annuleraient l'avantage de l'utilisation de <B>select</B>, aussi, vais je 
+présenter une liste de points essentiels à contrôler lors de 
+l'utilisation de l'appel <B>select</B>.
+<P>
+<P>
+<DL COMPACT>
+<DT><B>1.</B><DD>
+Vous devriez toujours essayer d'utiliser <B>select</B> sans timeout.
+Votre programme ne devrait rien avoir à faire s'il n'y a pas de 
+données disponibles. Le code dépendant de timeouts n'est en général
+pas portable et difficile à déboguer.
+<DT><B>2.</B><DD>
+La valeur <I>n</I> doit être calculée correctement pour des raisons
+d'efficacité comme expliqué plus haut.
+<DT><B>3.</B><DD>
+Aucun descripteur de fichier ne doit être ajouté à un quelconque
+ensemble si vous ne projetez pas de vérifier son état après un
+appel à <B>select</B>, et de réagir de façon adéquate. Voir
+la règle suivante.
+<DT><B>4.</B><DD>
+Après qu'un appel <B>select</B> a rendu la main, tous les 
+descripteurs de fichiers de tous les ensembles <I>doivent</I>
+être vérifiés. Tout descripteur de fichier disponible pour 
+l'écriture <I>doit</I> être alimenté, et tout descripteur de 
+fichier disponible pour la lecture <I>doit</I> être lu, etc.
+<DT><B>5.</B><DD>
+Les fonctions <B>read()</B>, <B>recv()</B>, <B>write()</B>, et
+<BR>&nbsp;<B>send()</B>&nbsp;ne&nbsp;lisent&nbsp;ou&nbsp;n'écrivent&nbsp;&nbsp;<B>pas</B>&nbsp;forcément
+la quantité totale de données spécifiée. Si elles lisent/écrivent
+la quantité totale, c'est parce que vous avez une faible charge de
+trafic et un flux rapide. Ce n'est pas toujours le cas. Vous devriez 
+gérer la cas où vos fonctions traitent seulement l'envoi ou 
+la réception d'un unique octet.
+<DT><B>6.</B><DD>
+Ne lisez/N'écrivez jamais seulement quelques octets à la fois à moins
+que vous ne soyez absolument sûr de n'avoir qu'une faible quantité de 
+données à traiter. Il est parfaitement inefficace de ne pas lire/écrire
+autant de données que vous pouvez en stocker à chaque fois. Les tampons
+de l'exemple ci dessus font 1024 octets bien qu'ils aient facilement
+pu être rendus aussi importants que la taille de paquet maximale sur 
+votre réseau local.
+<DT><B>7.</B><DD>
+Les fonctions <B>read()</B>, <B>recv()</B>, <B>write()</B>, et
+<B>send()</B> tout comme l'appel <B>select()</B> peuvent renvoyer
+-1 avec errno positionné à <B>EINTR</B> ou <B>EAGAIN</B> (<B>EWOULDBLOCK</B>)
+ce qui ne relève pas de l'erreur. Ces résultats doivent être 
+correctement gérés (cela n'est pas fait correctement ci dessus.)
+Si votre programme n'est pas censé recevoir de signal, alors, il est 
+hautement improbable que vous obteniez <B>EINTR</B>. Si votre programme
+n'a pas configuré les E/S en mode non bloquant, vous n'obtiendrez pas
+de <B>EAGAIN</B>. Néanmoins, vous devriez tout de même gérer ces erreurs
+dans un soucis de complétude.
+<DT><B>8.</B><DD>
+N'appelez jamais <B>read()</B>, <B>recv()</B>, <B>write()</B>, ou  <B>send()</B>
+avec un buffer de taille nulle
+<DT><B>9.</B><DD>
+A l'exception des cas indiqués en <B>7.</B>, les fonctions 
+<B>read()</B>, <B>recv()</B>, <B>write()</B>, et <B>send()</B>
+n'ont jamais une valeur de retour inférieure à 1 sauf si une 
+erreur est survenue. Par exemple, un <B>read()</B> sur un 
+tube dont l'extrémité est morte renvoie zéro (de même qu'une
+erreur de fin de fichier), <I>mais</I> ne renvoie zéro qu'une
+seule fois. Dans le cas où l'une de ces fonctions renvoie 0 ou
+-1, vous ne devriez <I>pas</I> utiliser ce descripteur à nouveau.
+Dans l'exemple ci dessus, je ferme le descripteur immédiatement,
+et ensuite, je le positionne à -1 afin qu'il ne soit pas inclus
+dans un ensemble.
+<DT><B>10.</B><DD>
+La valeur de timeout doit être initialisée à chaque nouvel appel à
+<BR>&nbsp;<B>select</B>,&nbsp;puisque&nbsp;des&nbsp;systèmes&nbsp;d'exploitation&nbsp;modifient&nbsp;la
+structure. Cependant, <B>pselect</B> ne modifie pas sa structure
+de timeout.
+<DT><B>11.</B><DD>
+J'ai entendu que le niveau socket Windows ne traite pas correctement
+les données hors bande (OOB). Il ne gère pas non plus les appels <B>select</B>
+lorsqu'aucun descripteur de fichier n'est positionné. N'avoir aucun descripteur
+de fichier positionné est un moyen utile afin d'endormir le processus
+avec une précision inférieure à la seconde en utilisant le timeout.
+(Voir plus loin.)
+<P>
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>ÉMULATION DE USLEEP</H2>
+
+<P>
+Sur les systèmes qui ne possèdent pas la fonction <B>usleep</B>,
+vous pouvez appeler <B>select</B>  avec un timeout à valeur finie 
+et sans descripteur de fichier de la façon suivante :
+<P>
+
+<PRE>
+    struct timeval tv;
+    tv.tv_sec = 0;
+    tv.tv_usec = 200000;  /* 0.2 secondes */
+    select (0, NULL, NULL, NULL, &amp;tv);
+</PRE>
+
+<P>
+
+Le fonctionnement n'est cependant garanti que sur les
+systèmes Unix.
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<P>
+En cas de succès, <B>select</B> renvoie le nombre total de descripteurs 
+de fichiers encore présents dans les ensembles de descripteurs de 
+fichiers.
+<P>
+En cas de timeout échu, alors les descripteurs de fichiers devraient tous
+être vides (mais peuvent ne pas l'être sur certains systèmes). par contre, 
+la valeur renvoyée est clairement zéro.
+<P>
+Une valeur de retour égale à -1 indique une erreur,
+<B>errno</B> est alors positionné de façon adéquate. En cas d'erreur,
+les ensembles renvoyés et le contenu de la  structure de timeout sont
+indéfinis et ne devraient pas être exploités. <B>pselect</B> ne modifie
+cependant jamais <I>ntimeout</I>.
+<P>
+<A NAME="lbAL">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B><DD>
+Un ensemble contenait un descripteur de fichier invalide. Cette erreur
+se produit fréquemment lorsque l'on ajoute à un ensemble un descripteur 
+de fichier qui a déjà été fermé avec un appel <B>close</B>, ou lorsque
+ce descripteur de fichier a déjà accusé une erreur. Ainsi, devriez vous 
+cesser d'ajouter aux ensembles tout descripteur de fichier qui renvoie
+une erreur de lecture ou d'écriture.
+<DT><B>EINTR</B><DD>
+Un signal interrompant l'appel a été intercepté, par exemple un signal 
+<B>SIGINT</B> ou <B>SIGCHLD</B> etc.
+Dans un tel cas, vous devriez rétablir vos ensembles de descripteurs de
+fichiers et réessayer.
+<DT><B>EINVAL</B><DD>
+Est renvoyé si <I>n</I> a une valeur négative.
+<DT><B>ENOMEM</B><DD>
+Echec d'allocation de mémoire interne.
+<P>
+</DL>
+<A NAME="lbAM">&nbsp;</A>
+<H2>NOTES</H2>
+
+De façon générale, tous les systèmes d'exploitation qui gèrent les sockets,
+implantent également <B>select</B>. Certaines personnes considèrent <B>select</B>
+comme une fonction ésotérique et rarement utilisée. En fait, de nombreux 
+types de programmes deviennent extrêmement compliqués sans cette fonction.
+<B>select</B> peut être utilisé pour résoudre de façon portable et efficace
+de nombreux problèmes que des programmeurs naïfs essaient de résoudre 
+avec des threads, des forks, des IPCs, des signaux, des mémoires partagées
+et d'autres méthodes peu élégantes. <B>pselect</B> est une fonction plus récente
+qui est moins répandue.
+<P>
+
+L'appel-système
+<B><A HREF="/cgi-bin/man/man2html?2+poll">poll</A></B>(2)
+
+a les mêmes fonctionnalités que <B>select</B>, avec un comportement un peu moins
+subtil.Il est moins portable que <B>select</B>.
+<P>
+<A NAME="lbAN">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD4.4(la fonction <B>select</B> est tout d'abord apparue dans BSD4.2).  
+Généralement portable de/vers des systèmes non BSD possédant un équivalent
+au niveau socket BSD (y compris les variantes système V).
+Néanmoins, notez bien que la variante système V positionne typiquement
+la variable timeout avant de rendre la main alors que la variante BSD 
+ne le fait pas.
+<P>
+
+La fonction <B>pselect</B> est définie dans le standard IEEE 1003.1g-2000
+<BR>&nbsp;(POSIX.1g).
+On la trouve dans la glibc 2.1 et les versions suivantes. La Glibc 2.0
+possède une fonction portant ce nom mais qui n'a pas de pas de
+paramètre <I>sigmask</I> .
+<P>
+<A NAME="lbAO">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+accept">accept</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+connect">connect</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+ioctl">ioctl</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+poll">poll</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+read">read</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+recv">recv</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+select">select</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+send">send</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+sigaddset">sigaddset</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+sigdelset">sigdelset</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+sigemptyset">sigemptyset</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+sigfillset">sigfillset</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+sigismember">sigismember</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigprocmask">sigprocmask</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2)
+
+<P>
+<A NAME="lbAP">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+Cette page de manuel a été rédigée par Paul Sheer.
+<A NAME="lbAQ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Stéphan Rafin, 2002
+<BR>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">ARGUMENTS</A><DD>
+<DT><A HREF="#lbAF">COMBINAISON D'ÉVÉNEMENTS DE SIGNAUX ET DE DONNÉES</A><DD>
+<DT><A HREF="#lbAG">PRATIQUE</A><DD>
+<DT><A HREF="#lbAH">EXEMPLE DE REDIRECTION DE PORT</A><DD>
+<DT><A HREF="#lbAI">RÈGLES DE SELECT </A><DD>
+<DT><A HREF="#lbAJ">ÉMULATION DE USLEEP</A><DD>
+<DT><A HREF="#lbAK">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAL">ERREURS</A><DD>
+<DT><A HREF="#lbAM">NOTES</A><DD>
+<DT><A HREF="#lbAN">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAO">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAP">AUTEURS</A><DD>
+<DT><A HREF="#lbAQ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:01 GMT, February 11, 2014
+</BODY>
+</HTML>

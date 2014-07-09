@@ -1,0 +1,148 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of FFLUSH</TITLE>
+</HEAD><BODY>
+<H1>FFLUSH</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+fflush - Vider les buffers d'un flux.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<P>
+<B>int fflush (FILE *</B><I>flux</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>fflush</B>
+
+force l'écriture de toutes les données se trouvant dans les buffers de l'espace utilisateur, et met à jour le
+<I>flux</I>
+
+à travers la fonction sous-jacente d'écriture. Le statut d'ouverture du
+flux n'est pas affecté.
+<P>
+
+Si l'argument
+<I>flux</I>
+
+est
+<B>NULL</B>,
+
+<B>fflush</B>
+
+vide
+<I>tous</I>
+
+les flux en sortie.
+<P>
+
+Pour une version de cette fonction ignorant les verrouillages, voir
+<B><A HREF="/cgi-bin/man/man2html?3+unlocked_stdio">unlocked_stdio</A></B>(3).
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Si elle réussit intégralement, cette fonctions renvoie 0. Sinon,
+elle renvoie
+<B>EOF</B>,
+
+et la variable
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+<I>flux</I>
+
+n'est pas ouvert, ou du moins pas en écriture.
+</DL>
+<P>
+
+La fonction
+<B>fflush</B>
+
+peut aussi échouer, et positionner dans
+<I>errno</I>
+
+n'importe quelles erreurs spécifiées dans la routine
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2).
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Remarquez que
+<B>fflush()</B>
+
+ne vide que les buffers fournis par la bibliothèque C dans l'espace utilisateur.
+Pour s'assurer que les données sont écrites physiquement sur le disque, il faut
+vider les buffers du noyau à l'aide par exemple de
+<B><A HREF="/cgi-bin/man/man2html?2+sync">sync</A></B>(2)
+
+ou
+<B><A HREF="/cgi-bin/man/man2html?2+fsync">fsync</A></B>(2).
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+La fonction
+<B>fflush()</B>
+
+est conforme à ANSI X3.159-1989 (``ANSI C'').
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+fsync">fsync</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sync">sync</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+write">write</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fclose">fclose</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fopen">fopen</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+setbuf">setbuf</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+unlocked_stdio">unlocked_stdio</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:05 GMT, February 11, 2014
+</BODY>
+</HTML>

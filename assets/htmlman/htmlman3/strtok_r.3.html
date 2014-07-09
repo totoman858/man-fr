@@ -1,0 +1,143 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STRTOK</TITLE>
+</HEAD><BODY>
+<H1>STRTOK</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+strtok, strtok_r - Extraire des mots d'une chaîne.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/string.h">string.h</A>&gt;</B>
+
+<B>char *strtok (char *</B><I>s</I><B>, const char *</B><I>delim</I><B>);</B>
+
+<B>char *strtok_r (char *</B><I>s</I><B>, const char *</B><I>delim</I><B>, char **</B><I>ptrptr);</I>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Un élément lexical (token) est une chaîne non vide de caractères qui
+n'appartiennent
+pas à la chaîne <I>delim</I>, suivie de \0 ou d'un caractère appartenant
+à <I>delim</I>.
+<P>
+
+La fonction <B>strtok()</B> peut être utilisée pour scinder <I>s</I>
+en éléments lexicaux. Le premier appel à <B>strtok()</B> doit fournir <I>s</I>
+comme premier argument. Les appels ultérieurs doivent fournir NULL
+comme premier argument. Chaque appel renvoie un pointeur sur l'élément
+lexical suivant, ou NULL quand il n'y en a plus.
+<P>
+
+Si un token se termine par un délimiteur, le caractère de délimitation est
+surchargé par un \0 et un pointeur sur le caractère suivant est 
+mémorisé pour l'appel suivant à <B>strtok()</B>.
+La chaîne de séparateurs <I>delim</I> peut être différente à chaque appel.
+<P>
+
+La fonction
+<B>strtok_r</B>()
+
+est identique à
+<B>strtok</B>()
+
+mais au lieu d'utiliser un buffer statique, elle emploie un pointeur sur
+un buffer &quot;char *&quot; alloué par l'utilisateur. Ce pointeur transmis comme
+paramètre
+<I>ptrptr</I>
+
+doit être toujours le même durant l'analyse d'une chaîne.
+<A NAME="lbAE">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Évitez au maximum d'utiliser cette fonction. Sinon, prenez note des informations
+suivantes&nbsp;:
+<P>
+
+<DL COMPACT><DT><DD>
+Cette fonction modifie son premier argument.
+<P>
+
+Les caractères de séparation sont surchargés, leur identité est donc perdue.
+<P>
+
+Cette fonction ne doit pas être invoquée sur une chaîne constante.
+<P>
+
+La fonction
+<B>strtok</B>()
+
+utilise un buffer statique et n'est donc pas sûre dans un contexte
+multithread. Dans ce cas il vaut mieux utiliser
+<B>strtok_r</B>().
+
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>strtok()</B> renvoie un pointeur sur l'élément lexical suivant,
+ou NULL s'il n'y en a plus.
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<DL COMPACT>
+<DT>strtok ()<DD>
+SVID 3, POSIX, BSD 4.3, ISO 9899
+<DT>strtok_r ()<DD>
+POSIX.1c
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+index">index</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+memchr">memchr</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+rindex">rindex</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strchr">strchr</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strpbrk">strpbrk</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strsep">strsep</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strspn">strspn</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strstr">strstr</A></B>(3)
+
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">BOGUES</A><DD>
+<DT><A HREF="#lbAF">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:46 GMT, February 11, 2014
+</BODY>
+</HTML>

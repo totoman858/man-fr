@@ -1,0 +1,357 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SORT</TITLE>
+</HEAD><BODY>
+<H1>SORT</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+sort - Trier les lignes d'un fichier texte.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>sort</B>
+
+[-cmus] [-t séparateur] [-o fichier_de_sortie] [-T répertoire_temporaire]
+[-bdfiMnr] [+POS1 [-POS2]] [-k POS1[,POS2]] [fichier...]
+<BR>
+
+<B>sort</B>
+
+{--help,--version}
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>sort</B>.
+
+<P>
+<B>sort</B>
+
+trie, regroupe ou compare toutes les lignes des fichiers indiqués.
+Si aucun fichier n'est fourni, ou si le nom `-' est mentionné,
+la lecture se fera depuis l'entrée standard.
+<P>
+Par défaut,
+<B>sort</B>
+
+écrit ses résultats sur la sortie standard.
+<P>
+
+<B>sort</B>
+
+peut opérer suivant trois modes : tri (par défaut), regroupement, et
+vérification de l'ordre. Les options suivantes modifient le mode
+opératoire :
+<DL COMPACT>
+<DT><I>-c</I>
+
+<DD>
+([NDT] c = check - vérifier)
+Vérifie si les fichiers fournis sont déjà triés : s'ils ne le sont
+pas, afficher un message d'erreur, et terminer avec un code de
+retour valant 1.
+<DT><I>-m</I>
+
+<DD>
+([NDT] m = merge - melanger)
+Regrouper les fichiers indiqués en les triant. Chaque fichier d'entrée
+doit déjà être trié individuellement. Il est toujours possible de
+trier plutôt que de réunir, le regroupement est fourni parce qu'il est
+plus rapide dans les cas où il fonctionne.
+</DL>
+<P>
+
+La comparaison de deux lignes se fait ainsi :
+Si un champ clé a été indiqué, 
+<B>sort</B>
+
+compare chaque paire de champs, dans l'ordre précisé sur la ligne
+de commande, jusqu'à ce qu'une différence soit trouvée, ou qu'il
+ne reste plus de champs.
+<P>
+
+Si l'une des options globales
+<I>Mbdfinr</I>
+
+est utilisée, et si aucun champ clé n'est indiqué,
+<B>sort</B>
+
+compare les lignes entières en fonction des options globales.
+<P>
+
+Finalement, si toutes les clés sont égales, en dernier ressort
+<B>sort</B>
+
+compare les lignes octet par octet suivant l'ordre défini sur
+la machine. Cette dernière comparaison accepte l'option globale
+<I>-r</I>.
+
+L'option
+<I>-s</I>
+
+(stable) inhibe cette comparaison en dernier recours afin que les
+lignes considérées comme égales restent à leurs positions relatives.
+Si aucun champ clé, et aucune option ne sont fournis, 
+<I>-s</I>
+
+est sans effet.
+<P>
+
+La version GNU de
+<B>sort</B>
+
+n'a pas de limitation concernant la longueur des lignes d'entrée ou les
+caractères autorisés. De plus, si le dernier octet d'une ligne d'entrée
+n'est pas un saut de ligne (NewLine), la version GNU de
+<B>sort</B>
+
+en ajoute un automatiquement.
+<P>
+
+Si la variable d'environnement
+<B>TMPDIR</B>
+
+est configurée,
+<B>sort</B>
+
+utilise ce répertoire pour stocker les fichiers temporaires à la place
+du répertoire par défaut /tmp. L'option
+<I>-T répertoire_temporaire</I>
+
+permet également de sélectionner un répertoire pour placer les fichiers
+temporaires, elle a priorité sur la variable d'environnement.
+<P>
+
+Les options suivantes affectent l'ordre des lignes de sortie. Elles
+peuvent être mentionnées globalement, ou appliquées à un champ clé
+spécifique. Si aucun champ clé n'est indiqué, les options globales 
+s'appliquent aux comparaisons des lignes entières, sinon elles sont
+transmises aux champs clés n'ayant pas d'option spécifique.
+<DL COMPACT>
+<DT><I>-b</I>
+
+<DD>
+Ignorer les blancs en début de ligne pendant la recherche de la clé
+de tri sur chaque ligne.
+<DT><I>-d</I>
+
+<DD>
+Trier dans l'ordre des répertoires téléphoniques : ignorer pour le
+tri tous les caractères autres que les lettres, les chiffres et les blancs.
+<DT><I>-f</I>
+
+<DD>
+Considérer les minuscules comme leur équivalent en majuscule pendant
+le tri. Ainsi `b' est trié de manière équivalente a `B'. ([NDT] Bien
+entendu, cela ne fonctionne pas avec les minuscules accentuées...)
+<DT><I>-i</I>
+
+<DD>
+Ignorer pour le tri les caractères en dehors de l'intervalle ASCII
+octal 040-0176 (bornes comprises).
+<DT><I>-M</I>
+
+<DD>
+Une chaîne initiale, consistant en un nombre quelconque de blancs, suivi
+de trois lettres correspondant à une abréviation de mois est convertie
+en majuscules avant d'être comparée dans l'ordre `JAN' &lt; `FEB' &lt; ... &lt; `DEC.'
+Les noms invalides sont considérés comme inférieurs aux noms valides.
+([NDT] Qu'en-est-il vis-à-vis de la localisation ?)
+<DT><I>-n</I>
+
+<DD>
+Comparer suivant la valeur arithmétique d'une chaîne numérique initiale
+composée d'espaces éventuelles, suivies optionnellement du signe -, et
+de zéro ou plusieurs chiffres, éventuellement suivis d'un point décimal
+et de zéro ou plusieurs chiffres.
+<DT><I>-r</I>
+
+<DD>
+Inverser l'ordre de tri, afin que les lignes avec la plus grande
+valeur de clé apparaissent en premier.
+</DL>
+<P>
+
+Les autres options sont :
+<DL COMPACT>
+<DT><I>-o fichier_de_sortie</I>
+
+<DD>
+Écrire dans le
+<I>fichier_de_sortie</I>
+
+plutôt que sur la sortie standard.
+Si
+<I>fichier_de_sortie</I>
+
+est également un fichier d'entrée,
+<B>sort</B>
+
+copie les données dans un fichier temporaire avant le tri pour pouvoir
+écrire correctement ses résultats dans le
+<I>fichier_de_sortie</I>.
+
+<DT><I>-t caractère_séparateur</I>
+
+<DD>
+Utiliser le
+<I>caractère_séparateur</I>
+
+afin de distinguer les champs pour  rechercher la clé de tri sur chaque
+ligne. Par défaut le séparateur de champs est une chaîne blanche entre
+chaînes non-blanches. Ceci signifie qu'avec l'entrée ` foo bar',
+<B>sort</B>
+
+distingue deux champs ` foo' et ` bar'. Le séparateur n'appartient
+ni au champ précédent, ni au champ suivant.
+<DT><I>-u</I>
+
+<DD>
+Pour l'action par défaut, ou pour l'action
+<I>-m</I>,
+
+n'afficher que la première séquence de lignes considérées comme
+égales. Pour l'action
+<I>-c</I>,
+
+vérifier qu'aucune lignes consécutives ne soient égales.
+<DT><I>+POS1 [-POS2]</I>
+
+<DD>
+Indiquer un champ à utiliser comme clé de tri pour chaque ligne. Le
+champ consiste en une portion de de ligne débutant à la position POS1,
+et s'étendant jusqu'à POS2 non-inclue (ou jusqu'à la fin de la ligne
+si POS2 n'est pas mentionnée). Les positions des champs et des caractères
+sont numérotées à partir
+de 0.
+<DT><I>-k POS1[,POS2]</I>
+
+<DD>
+Une autre syntaxe possible pour indiquer les clés de tri.
+Les positions des champs et des caractères sont numérotées à partir de 1.
+</DL>
+<P>
+
+Une position est de la forme <I>f</I>.<I>c</I>, où <I>f</I> est le numéro
+du champ à utiliser, et <I>c</I> le numéro du premier caractère depuis le
+début du champ (avec <I>+pos</I>) ou depuis la fin du champ précédent
+(avec <I>-pos</I>).  La partie .<I>c</I> de la position peut être
+omise, auquel cas le caractère considéré est le premier du champ.
+Si l'option
+<I>-b</I>
+
+est choisie, la partie .<I>c</I> d'une spécification de champ est comptée
+à partir du premier caractère non-blanc du champ (pour <I>+pos</I>)
+ou à partir du premier caractère non-blanc suivant le champ précédent
+(pour <I>-pos</I>).
+<P>
+
+Un argument <I>+pos</I> ou <I>-pos</I> peut également avoir un préfixe
+constitué d'une des lettres d'option
+<I>Mbdfinr</I>
+
+auquel cas les options globales ne s'appliquent pas à ce champ.
+l'option
+<I>-b</I>
+
+peut être attachée indépendamment aux parties <I>+pos</I> ou <I>-pos</I>
+d'une spécification de champ. Si elle est héritée d'une option globale,
+elle s'appliquera aux deux parties.
+Si une option
+<I>-n</I>
+
+ou
+<I>-M</I>
+
+est utilisée, ceci implique que l'option
+<I>-b</I>
+
+s'applique aux deux spécifications <I>+pos</I> et <I>-pos</I>.
+Les clés peuvent s'étendre sur plusieurs champs.
+<P>
+
+De plus quand la version GNU de
+<B>sort</B>
+
+est invoquée avec un seul argument, les options suivantes sont reconnues :
+<DL COMPACT>
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et se terminer normalement.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et se terminer normalement.
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>COMPATIBILITÉ</H2>
+
+<P>
+
+Les implémentations historiques (BSD et System V) de
+<B>sort</B>
+
+diffèrent quant à leur interprétation de certaines options, notamment 
+<I>-b</I>,
+
+<I>-f</I>,
+
+et
+<I>-n</I>.
+
+La version GNU suit le comportement POSIX, qui est généralement
+(mais pas toujours) celui de la version System V.
+Suivant POSIX
+<I>-n</I>
+
+n'implique plus obligatoirement
+<I>-b</I>.
+
+Pour assurer l'homogénéité,
+<I>-M</I>
+
+a été modifiée de la même manière.
+Dans certains cas, assez obscurs, ceci peut affecter la signification
+des positions de caractères dans les spécifications de champs.
+Si ceci vous perturbe, vous pouvez ajouter explicitement un
+<I>-b</I>.
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Les différentes significations des numéros de champs en fonction de
+l'utilisation ou non de l'option
+<I>-k</I>
+
+induit une confusion certaine.
+C'est la faute à POSIX !
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">COMPATIBILITÉ</A><DD>
+<DT><A HREF="#lbAF">BOGUES</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:48 GMT, February 11, 2014
+</BODY>
+</HTML>

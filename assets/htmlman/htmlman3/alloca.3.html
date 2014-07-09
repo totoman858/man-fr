@@ -1,0 +1,145 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ALLOCA</TITLE>
+</HEAD><BODY>
+<H1>ALLOCA</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+alloca - Allocation mémoire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<P>
+<B>void *alloca (size_t </B><I>size</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>alloca</B>
+
+alloue
+<I>size</I>
+
+octets dans l'espace de pile de l'appelant. Cet espace temporaire est
+automatiquement libéré lors du retour de la fonction ayant invoqué
+<B>alloca</B>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction
+<B>alloca</B>
+
+renvoie un pointeur sur le début de la zone allouée. Si l'allocation échoue
+elle renvoie un pointeur
+<B>NULL</B>.
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Il semble que 
+<B>alloca</B>
+
+soit apparue dans 32v, pwb, pwb.2, 3BSD, et 4BSD.
+Il y a une page de manuel la décrivant dans BSD 4.3.
+Linux utilise la version GNU.
+Cette fonction n'est décrite ni par POSIX ni par SUSv3.
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES SUR LA VERSION GNU</H2>
+
+Normalement,
+<B>gcc</B>
+
+traduit l'appel de
+<B>alloca</B>
+
+par du code en-ligne. Ceci n'est pas le cas si l'option -ansi ou l'option
+-fno-builtin est fournie. Attention&nbsp;! par défaut la version
+GlibC de
+<I>&lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</I>
+
+inclue
+<I>&lt;<A HREF="file:///usr/include/alloca.h">alloca.h</A>&gt;</I>
+
+qui contient la ligne
+<DL COMPACT><DT><DD>
+# define alloca(size)   __builtin_alloca (size)
+</DL>
+
+avec toutes les conséquences fâcheuses que cela entraîne si on a une fonction
+personnelle de ce nom.
+<P>
+
+Le fait que le code soit développé en ligne signifie qu'il est impossible de
+prendre l'adresse de la fonction ou de changer son comportement en utilisant
+une bibliothèque différente.
+<P>
+
+Le code en ligne consiste souvent une une seule instruction qui ajuste le pointeur
+de pile et ne vérifie pas le débordement de pile. Il n'y a donc pas
+de retour d'erreur NULL.
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+La fonction
+<B>alloca</B>
+
+dépend de la machine et du compilateur. Son usage est déconseillé.
+<P>
+
+Sur beaucoup de systèmes
+<B>alloca</B>
+
+ne doit pas être utilisée au sein de la liste des arguments d'un appel de fonction,
+car l'espace de pile réservé par
+<B>alloca</B>
+
+se trouverait alors au milieu de l'espace utilisé par les arguments de
+la fonction.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+brk">brk</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+pagesize">pagesize</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+calloc">calloc</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+realloc">realloc</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAG">NOTES SUR LA VERSION GNU</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:10 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,97 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STRSEP</TITLE>
+</HEAD><BODY>
+<H1>STRSEP</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+strsep - Extraction de mots d'une chaîne.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/string.h">string.h</A>&gt;</B>
+
+<B>char *strsep (char **</B><I>stringp</I><B>, const char *</B><I>delim</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Si *<I>stringp</I> est NULL, la fonction <B>strsep()</B> renvoie NULL et ne
+fait rien d'autre. Sinon, cette fonction prend le premier élément lexical
+(token) dans la chaîne <I>stringp</I> où les éléments sont séparés par les
+symboles contenus dans <I>delim</I>.
+Le mot renvoyé est terminé par un caractère nul `\0' (en  écrasant le
+séparateur)
+et  *<I>stringp</I> est mis à jour pour pointer après le mot.
+Dans le cas où aucun séparateur n'est trouvé, l'élément extrait est
+constitué de toute la chaîne *<I>stringp</I>, et *<I>stringp</I> vaut NULL.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>strsep()</B> renvoie un pointeur sur l'élément lexical
+extrait, c'est-à-dire la valeur originelle de *<I>stringp</I>.
+<I>stringp</I>.
+
+La fonction <B>strsep()</B> a été introduite en remplacement de
+<B>strtok()</B>, qui ne peut pas traiter les champs vides.
+Néanmoins <B>strtok()</B> est conforme au C ANSI et est donc plus portable.
+<A NAME="lbAF">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Cette fonction souffre des mêmes problèmes que <B>strtok()</B>. En particulier
+elle modifie la chaîne initiale. Évitez-la.
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+BSD 4.4
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+index">index</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+memchr">memchr</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+rindex">rindex</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strchr">strchr</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strpbrk">strpbrk</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strspn">strspn</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strstr">strstr</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strtok">strtok</A></B>(3)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">BOGUES</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:20 GMT, February 11, 2014
+</BODY>
+</HTML>

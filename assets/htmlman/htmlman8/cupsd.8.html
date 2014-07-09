@@ -1,0 +1,71 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of cupsd</TITLE>
+</HEAD><BODY>
+<H1>cupsd</H1>
+Section: Easy Software Products (8)<BR>Updated: Common UNIX Printing System<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+cupsd - common unix printing system daemon
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>cupsd</B>
+
+[ -c
+<I>config-file</I>
+
+] [ -f ] [ -F ]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>cupsd</I> est un programmateur pour le système Common UNIX Printing System. Il fournit des outils pour un système d'impression de base sous le Internet Printing Protocol, version 1.1. Si aucune option n'est spécifiée dans la ligne de commande, alors le fichier de configuration par défaut (habituellement <I>/etc/cups/cupsd.conf</I>) sera utilisé.
+<P>
+
+L'option <I>-f</I> force <I>cupsd</I> à tourner en avant-plan&nbsp;; par défaut, cupsd tourne en arrière-plan comme «&nbsp;démon&nbsp;».
+<P>
+
+L'option <I>-F</I> force <I>cupsd</I> à tourner en avant-plan, mais détache le processus du terminal et du répertoire de travail. Cette option est utile pour lancer <I>cupsd</I> depuis <I>init</I>.
+<A NAME="lbAE">&nbsp;</A>
+<H2>COMPATIBILITÉ</H2>
+
+<I>cupsd</I> fournit tous les attributs et opération de IPP/1.1. Il implémente aussi plusieurs opérations d'administration spécifiques à CUPS
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+backend">backend</A>(1), <A HREF="/cgi-bin/man/man2html?5+classes.conf">classes.conf</A>(5), <A HREF="/cgi-bin/man/man2html?5+cupsd.conf">cupsd.conf</A>(5), <A HREF="/cgi-bin/man/man2html?1+filter">filter</A>(1), <A HREF="/cgi-bin/man/man2html?5+mime.convs">mime.convs</A>(5),
+<A HREF="/cgi-bin/man/man2html?5+mime.types">mime.types</A>(5), <A HREF="/cgi-bin/man/man2html?5+printers.conf">printers.conf</A>(5),
+CUPS Implementation of IPP,
+CUPS Interface Design Description,
+CUPS Software Administrators Manual,
+<A HREF="http://localhost:631/documentation.html">http://localhost:631/documentation.html</A>
+<A NAME="lbAG">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright 1993-2003 Easy Software Products, All Rights Reserved.
+
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">COMPATIBILITÉ</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">COPYRIGHT</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:02 GMT, February 11, 2014
+</BODY>
+</HTML>

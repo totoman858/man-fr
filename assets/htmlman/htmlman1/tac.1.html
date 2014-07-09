@@ -1,0 +1,95 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of TAC</TITLE>
+</HEAD><BODY>
+<H1>TAC</H1>
+Section: Manuel de l utilisateur Linux (1)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+tac - Concaténer et afficher des fichiers à l'envers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>tac</B>
+
+[-br] [-s chaîne] [--before] [--regex] [--separator=chaîne]
+[--help] [--version] [fichier...]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette page de manuel documente la version GNU de
+<B>tac</B>
+
+([NDT] : Comme son nom l'indique, <B>tac</B> est l'inverse de <B>cat</B>).
+<P>
+<B>tac</B>
+
+copie les fichiers indiqués sur la sortie standard en inversant l'ordre
+des enregistrements. 
+<P>
+Si aucun fichier n'est fourni, ou si le nom `-' est
+mentionné, la lecture se fera depuis l'entrée standard.
+<P>
+Les enregistrements sont séparés par une chaîne de caractères, ou par
+un saut de ligne si aucune chaîne n'est indiquée.
+<P>
+Par défaut, la chaîne séparatrice est attachée à la fin de l'enregistrement
+qui la précède.
+<A NAME="lbAE">&nbsp;</A>
+<H3>OPTIONS</H3>
+
+<DL COMPACT>
+<DT><I>-b, --before</I>
+
+<DD>
+La chaîne séparatrice est attachée au début de l'enregistrement
+qui la suit.
+<DT><I>-r, --regex</I>
+
+<DD>
+Le séparateur est une expression rationnelle.
+<DT><I>-s chaîne, --separator=chaîne</I>
+
+<DD>
+Utiliser
+<I>chaîne</I>
+
+comme séparateur d'enregistrements.
+<DT><I>--help</I>
+
+<DD>
+Afficher un message d'aide sur la sortie standard et se terminer normalement.
+<DT><I>--version</I>
+
+<DD>
+Afficher un numéro de version sur la sortie standard et se terminer normalement.
+<P>
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1997-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DL>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+</DL>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:41 GMT, February 11, 2014
+</BODY>
+</HTML>

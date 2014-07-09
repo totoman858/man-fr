@@ -1,0 +1,133 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MUNLOCK</TITLE>
+</HEAD><BODY>
+<H1>MUNLOCK</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+munlock - Réautorise la pagination d'une portion de mémoire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/sys/mman.h">sys/mman.h</A>&gt;</B>
+
+<B>int munlock(const void *</B><I>addr</I><B>, size_t </B><I>len</I><B>);
+</B></PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>munlock</B>
+
+revalide la pagination pour la zone de mémoire commençant
+à l'adresse
+<I>addr</I>
+
+et s'étendant sur
+<I>len</I>
+
+octets. Toutes les pages contenant des octets de cette zone
+peuvent être à nouveau déplacées par le noyau sur le support
+de swap après l'appel de
+<B>munlock.</B>
+
+<P>
+Il n'y a pas d'empilement des verrouillages mémoire, ce qui
+signifie qu'une page verrouillée plusieurs fois par
+<B>mlock</B>
+
+ou
+<B>mlockall</B>
+
+sera libérée en un seul appel à
+<B>munlock</B>
+
+pour la zone mémoire correspondante ou par un appel à
+<B>munlockall.</B>
+
+Les pages qui sont verrouillées par plusieurs zones, ou
+par plusieurs processus restent en mémoire vive tant qu'il
+y a au moins un processus ou une zone qui les verrouillent.
+<P>
+Sur les systèmes POSIX où
+<B>mlock</B>
+
+et
+<B>munlock</B>
+
+sont disponibles, la constante symbolique
+<B>_POSIX_MEMLOCK_RANGE</B>
+
+est définie dans &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt; et la valeur symbolique
+<B>PAGESIZE</B>
+
+de &lt;<A HREF="file:///usr/include/limits.h">limits.h</A>&gt; indique le nombre d'octets par page.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>munlock</B>
+
+renvoie 0 si il réussit, ou -1 s'il échoue, auquel cas
+<I>errno</I>
+
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ENOMEM</B>
+
+<DD>
+La zone ne correspond pas à des pages contenues dans l'espace
+d'adressage du processus.
+<DT><B>EINVAL</B>
+
+<DD>
+<I>len</I>
+
+n'est pas un nombre positif
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX.1b, SVr4
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+mlock">mlock</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+mlockall">mlockall</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+munlockall">munlockall</A></B>(2)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:00 GMT, February 11, 2014
+</BODY>
+</HTML>

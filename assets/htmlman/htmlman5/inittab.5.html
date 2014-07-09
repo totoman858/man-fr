@@ -1,0 +1,300 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of INITTAB</TITLE>
+</HEAD><BODY>
+<H1>INITTAB</H1>
+Section: Manuel de l'administrateur système Linux (5)<BR>Updated: October 19, 2001<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+inittab - format du fichier inittab utilisé dans le processus de démarrage des 
+systèmes UNIX SYSTEM V et compatibles
+
+
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION<TT>&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>  </H2>
+
+Le fichier <B>inittab</B> décrit l'ensemble des processus qui doivent être<BR>
+lancés au démarrage du système et dans d'autres circonstances (par exemple, 
+/etc/init.d/boot, /etc/init.d/rc, gettys...). Le programme 
+<B><A HREF="/cgi-bin/man/man2html?8+init">init</A>(8)</B>
+
+distingue différents <I>modes de démarrage</I> (runlevel), chacun pouvant avoir ses propres
+processus à démarrer. Les modes de démarrage valides sont 0-6, et A, B, C pour
+des modes personnalisés. Typiquement, une entrée dans le fichier inittab a la 
+forme suivante&nbsp;:
+<DL COMPACT><DT><DD>
+<P>
+<I>id</I>:<I>runlevels</I>:<I>action</I>:<I>process</I>
+<P>
+</DL>
+
+Les lignes commençant par le caractère «&nbsp;#&nbsp;» sont ignorées.
+
+<DL COMPACT>
+<DT><I>id</I><DD>
+dans 
+<B>inittab</B>
+
+(pour les versions des systèmes V compilées avec les librairies &lt; 5.2.18 
+ou les librairies a.out, la limite est de 2 caractères).
+<P>
+Note : pour  les programmes de login comme les gettys ou d'autres, le champ
+<I>id</I> doit être le numéro du tty correspondant à la console, par exemple 
+<B>1</B> pour <B>tty1</B>. Dans le cas contraire, la connexion risquerait de ne pas 
+bien fonctionner.
+
+
+<DT><I>runlevels</I><DD>
+liste des modes de démarrage pour lesquels l'action doit être faite
+
+
+<DT><I>action</I><DD>
+décrit l'action à faire
+
+
+<DT><I>process</I><DD>
+spécifie la commande à exécuter. Si ce champ commence par le caractère 
+«&nbsp;+&nbsp;», init ne lancera pas les commandes utmp et wtmp pour enregistrer les 
+connexions. Ceci est requis par getty qui utilise son propre
+gestionnaire d'enregistrement de connexion. C'est également une habitude.
+
+</DL>
+<P>
+
+le champ <I>runlevels</I> peut contenir plusieurs caractères indiquant différents 
+modes de démarrage. Par exemple, <B>123</B> signifie que le process sera exécuté 
+dans les modes de démarrage 1, 2 et 3.<TT>&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT> <BR>
+Les <I>runlevels</I> pour les entrées <B>ondemand</B> peuvent contenir un <B>A</B>,
+<B>B</B>, ou <B>C</B>. Les entrées de champs <I>runlevels</I> de <B>sysinit</B>,
+<B>boot</B>, et <B>bootwait</B> sont ignorées.
+<P>
+
+Quand le mode de démarrage est changé, tous les processus qui ont été démarrés
+dans ce mode sont tués, d'abord avec <FONT SIZE="-2">SIGTERM</FONT>, puis avec  <FONT SIZE="-2">SIGKILL</FONT>.
+<P>
+
+Les actions valides pour le champ <I>action</I> sont&nbsp;:
+
+<DL COMPACT>
+<DT><B>respawn</B><DD>
+Le processus est redémarré à chaque fois qu'il se termine (ex&nbsp;: getty)
+
+
+<DT><B>wait</B><DD>
+Le processus n'est démarré qu'une seul fois dans son mode de démarrage et 
+<B>init </B>
+
+attend qu'il se termine.
+
+
+<DT><B>once</B><DD>
+Le processus est exécuté lorsque le mode de démarrage spécifié est appelé
+
+
+<DT><B>boot</B><DD>
+Le processus est exécuté pendant le démarrage du système. Le champ
+<I>runlevels</I> est ignoré.
+
+
+<DT><B>bootwait</B><DD>
+Le processus est exécuté pendant le démarrage du système, et 
+<B>init </B>
+
+attend que le processus se termine. Le champ <I>runlevels</I> est ignoré.
+
+
+<DT><B>off</B><DD>
+Ne fait rien<TT>&nbsp;&nbsp;&nbsp;</TT><BR>
+
+
+<DT><B>ondemand</B><DD>
+Un processus marqué dans un mode de démarrage <B>ondemand</B> est exécuté à 
+chaque fois que le mode de démarrage <B>ondemand</B> est appelé. Cependant, 
+aucun changement de mode de démarrage ne survient. (les modes de démarrage pour 
+<B>ondemand</B> sont «&nbsp;a&nbsp;», «&nbsp;b&nbsp;» et «&nbsp;c&nbsp;»).
+
+
+<DT><B>initdefault</B><DD>
+Une entrée <B>initdefault</B> indique qu'on entrera dans le mode de démarrage une 
+fois le système sera effectivement opérationnel. 
+Si aucun n'existe, 
+<B>init </B>
+
+demandera un runlevel sur la console. Le champ <I>process</I> est ignoré.
+
+
+<DT><B>sysinit</B><DD>
+Le processus est exécuté pendant le démarrage du système. Il est exécuté
+avant les entrées <B>boot</B> ou <B>bootwait</B>. Le champ <I>runlevels</I> est 
+ignoré
+
+
+<DT><B>powerwait</B><DD>
+Le processus est exécuté quand la machine est sur le point de s'éteindre.
+Init est normalement informé par un programme qui discute avec un UPS connecté
+à la machine. <B>Init</B> attend jusqu'à ce que le processus soit terminé avant de 
+continuer.
+
+
+<DT><B>powerfail</B><DD>
+Idem que <B>powerwait</B>, mis à part que <B>init</B> n'attend pas la fin du processus
+avant de continuer.
+
+
+<DT><B>powerokwait</B><DD>
+Le processus est exécuté dès que <B>init</B> est informé que la machine est remise 
+en route.
+
+
+<DT><B>powerfailnow</B><DD>
+Ce processus sera exécuté quand on dit à <B>init</B> que la batterie de 
+l'onduler externe est presque vide et que la tension faiblit 
+(à condition que l'onduleur et le processus de surveillance soit capable
+de détecter cette condition).
+
+
+<DT><B>ctrlaltdel</B><DD>
+Le processus est exécuté lorsque init reçoit le signal SIGINT. Cela signifie
+que quelqu'un dans la console système a taper la combinaison de touches CTRL + ALT +
+DEL. Typiquement, on a voulu exécuter une sorte d'arrêt, soit pour démarrer
+en mode simple utilisateur, soit pour redémarrer la machine.
+
+
+<DT><B>kbrequest</B><DD>
+Le processus sera exécuté quand <B>init</B> reçoit un signal du gestionnaire
+de clavier qu'une combinaison spéciale de touches a été actionnée sur le 
+clavier de la console.
+<P>
+La documentation pour cette fonction n'est pas encore complète&nbsp;; il est possible
+de trouver de la documentation supplémentaire dans le paquetage 
+kbd-x.xx packages (le plus récent était kbd-0.94 au moment où ces lignes sont
+écrites). Vous pouvez affecter des combinaisons de touches à l'action 
+&quot;KeyboardSignal&quot;. Par exemple, pour affecter Alt-FlècheHaut
+pour cet usage, utilisez ce qui suit dans votre fichier keymaps&nbsp;:
+<DL COMPACT><DT><DD>
+<P>
+alt keycode 103 = KeyboardSignal
+<P>
+</DL>
+
+
+
+
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>EXEMPLES</H2>
+
+Voici un exemple d'un fichier inittab qui ressemble à un ancien fichier
+inittab sous linux&nbsp;:
+<DL COMPACT><DT><DD>
+<P>
+<PRE>
+# inittab for linux
+id:1:initdefault:
+rc::bootwait:/etc/rc
+1:1:respawn:/etc/getty 9600 tty1
+2:1:respawn:/etc/getty 9600 tty2
+3:1:respawn:/etc/getty 9600 tty3
+4:1:respawn:/etc/getty 9600 tty4
+</PRE>
+
+<P>
+</DL>
+
+Ce fichier inittab exécute <B>/etc/rc</B> pendant le démarrage du système et
+démarre getty sur les tty1-tty4.
+<P>
+
+Un fichier <B>inittab</B> plus élaboré avec différents modes de démarrage 
+(notez bien les commentaires)&nbsp;:
+<DL COMPACT><DT><DD>
+<P>
+<PRE>
+# Runlevel à démarrer (le 2)
+id:2:initdefault:
+ 
+# Initialisation du système avant tout autre chose
+si::sysinit:/etc/rc.d/bcheckrc
+
+# les runlevels 0 et 6 sont respectivement réservés pour
+# la fermeture et le redémarrage du système.
+# le 1 est réservé pour le mode maintenance.
+l0:0:wait:/etc/rc.d/rc.halt
+l1:1:wait:/etc/rc.d/rc.single
+l2:2345:wait:/etc/rc.d/rc.multi
+l6:6:wait:/etc/rc.d/rc.reboot
+
+# Que faire du «&nbsp;salut à 3 doigts&nbsp;».
+ca::ctrlaltdel:/sbin/shutdown -t5 -rf now
+
+# Dans les runlevel 2&amp;3&nbsp;: getty sur la console, level 3 également un getty 
+# sur le port modem.
+1:23:respawn:/sbin/getty tty1 VC linux
+2:23:respawn:/sbin/getty tty2 VC linux
+3:23:respawn:/sbin/getty tty3 VC linux
+4:23:respawn:/sbin/getty tty4 VC linux
+S2:3:respawn:/sbin/uugetty ttyS2 M19200
+
+</PRE>
+
+<P>
+</DL>
+
+
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/etc/inittab
+
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<B>Init</B> a été écrit par Miquel van Smoorenburg
+(<A HREF="mailto:miquels@cistron.nl">miquels@cistron.nl</A>).  Cette page de manuel a été écrite par Sebastian Lederer 
+(<A HREF="mailto:lederer@francium.informatik.uni-bonn.de">lederer@francium.informatik.uni-bonn.de</A>) et modifiée
+par Michael Haardt (<A HREF="mailto:u31b3hs@pool.informatik.rwth-aachen.de">u31b3hs@pool.informatik.rwth-aachen.de</A>).
+La traduction est de Danny (<A HREF="mailto:dannybrain@noos.fr">dannybrain@noos.fr</A>) et Gérard Delafond 
+(<A HREF="mailto:gerard@delafond.org">gerard@delafond.org</A>) en Novembre 2&nbsp;001.
+
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+init">init</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+telinit">telinit</A></B>(8)
+
+
+<P>
+<P>
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><BR>
+<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><BR>
+<P>
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION<TT>&nbsp;&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>  </A><DD>
+<DT><A HREF="#lbAD">EXEMPLES</A><DD>
+<DT><A HREF="#lbAE">FICHIERS</A><DD>
+<DT><A HREF="#lbAF">AUTEUR</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:54 GMT, February 11, 2014
+</BODY>
+</HTML>

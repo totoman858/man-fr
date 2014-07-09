@@ -1,0 +1,256 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETCWD</TITLE>
+</HEAD><BODY>
+<H1>GETCWD</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getcwd, get_current_dir_name, getwd - Obtenir le répertoire courant.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<B>char * getcwd (char * </B><I>buf</I><B>, size_t </B><I>size</I><B>);</B>
+<B>char * get_current_dir_name (void);</B>
+<B>char * getwd (char * </B><I>buf</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>getcwd</B>()
+
+copie le chemin d'accès absolu du répertoire de travail courant dans la chaîne
+pointée par
+<I>buf</I>,
+
+qui est de longueur
+<I>size</I>.
+
+<P>
+
+Si le chemin du répertoire en cours nécessite un buffer plus long que
+<I>size</I>
+
+octets, la fonction renvoie
+<B>NULL</B>,
+
+et
+<I>errno</I>
+
+contient le code d'erreur
+<B>ERANGE</B>.
+
+Une application doit détecter cette erreur et allouer un buffer plus grand
+si besoin est.
+<P>
+
+Si
+<I>buf</I>
+
+est NULL, le comportement de
+<B>getcwd</B>()
+
+est indéfini.
+<P>
+
+Comme extension du standard POSIX.1, la version Linux (LibC4, LibC5, GlibC) de 
+<B>getcwd()</B>
+
+alloue le buffer dynamiquement, en utilisant
+<B>malloc</B>(),
+
+si
+<I>buf</I>
+
+est
+<B>NULL</B>
+
+lors de l'appel.  Alors, le buffer alloué a la longueur
+<I>size</I>
+
+à moins que
+<I>size</I>
+
+soit inférieure à zéro, dans ce cas
+<I>buf</I>
+
+a la taille nécessaire. Il est possible (et même fortement conseillé) de
+libérer le buffer avec
+<B>free()</B>
+
+lorsqu'il a été obtenu ainsi.
+<P>
+<B>get_current_dir_name</B>,
+
+qui ne possède un prototype que si la constante
+<B>_GNU_SOURCE</B>
+
+est définie, allouera avec
+<B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></B>(3)
+
+une chaîne suffisament grande pour contenir le nom du répertoire. Si la
+variable d'environnement 
+<B>PWD</B>
+
+est configurée, et correcte, cette valeur sera renvoyée.
+<P>
+<B>getwd</B>,
+
+qui ne possède un prototype que si les constantes
+<B>_BSD_SOURCE</B>
+
+ou
+<B>_XOPEN_SOURCE_EXTENDED</B>
+
+sont définies, n'allouera aucune mémoire.
+L'argument
+<I>buf</I>
+
+doit être un pointeur sur une chaîne comportant au moins
+<B>PATH_MAX</B>
+
+octets.
+<B>getwd</B>
+
+ne renverra que les
+<B>PATH_MAX</B>
+
+premiers octets du nom réel.
+Notez que
+<B>PATH_MAX</B>
+
+n'est pas nécessairement une constante à la compilation. Elle peut dépendre du
+système de fichiers, voire être illimitée. Pour des raisons de portabilité et
+de sécuriré, on déconseille l'utilisation de
+<B>getwd</B>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>NULL</B>
+
+en cas d'échec, avec
+<I>errno</I>
+
+contenant le code d'erreur. En cas de réussite
+<I>buf</I>
+
+est renvoyé. Le contenu de la chaîne pointée par
+<I>buf</I>
+
+est indéfini en cas d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EACCES</B>
+
+<DD>
+Impossible de lire ou de parcourir un composant du chemin d'accès.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>buf</I>
+
+pointe sur une adresse illégale.
+<DT><B>EINVAL</B>
+
+<DD>
+L'argument
+<I>size</I>
+
+vaut zéro et
+<I>buf</I>
+
+n'est pas un pointeur NULL.
+<DT><B>ENOENT</B>
+
+<DD>
+Le répertoire en cours a été supprimé.
+<DT><B>ERANGE</B>
+
+<DD>
+L'argument
+<I>size</I>
+
+est inférieur à la longueur du nom du répertoire.
+Allouez un buffer plus grand et ré-essayez.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Sous Linux, la fonction
+<B>getcwd</B>()
+
+est un appel-système (depuis le 2.1.92).
+Sur des systèmes plus anciens, elle interrogerait
+<I>/proc/self/cwd</I>.
+
+Si l'appel-système et le système de fichiers proc sont absents, une implémentation
+générique est utilisée. Dans ce cas seulement la fonction peut renvoyer
+<B>EACCES</B>
+
+sous Linux.
+<P>
+
+Ces fonctions sont souvent utilisées pour sauver le répertoire de travail
+afin d'y revenir plus tard. Ouvrir le répertoire courant (&quot;.&quot;) et appeler
+<B><A HREF="/cgi-bin/man/man2html?2+fchdir">fchdir</A></B>(2)
+
+pour y revenir est habituellement une alternative plus rapide et plus fiable
+(surtout sur d'autres systèmes que Linux) si l'on dispose de suffisament de
+descripteurs de fichiers.
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX.1
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+chdir">chdir</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+fchdir">fchdir</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+open">open</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+unlink">unlink</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+free">free</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+malloc">malloc</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:50 GMT, February 11, 2014
+</BODY>
+</HTML>

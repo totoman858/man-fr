@@ -1,0 +1,132 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SETRESUID</TITLE>
+</HEAD><BODY>
+<H1>SETRESUID</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 30 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+setresuid, setresgid - Fixer les UIDs ou les GIDs réels, effectifs et sauvés.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#define _GNU_SOURCE</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int setresuid(uid_t </B><I>ruid</I><B>, uid_t </B><I>euid</I><B>, uid_t </B><I>suid</I><B>);</B>
+
+<BR>
+
+<B>int setresgid(gid_t </B><I>rgid</I><B>, gid_t </B><I>egid</I><B>, gid_t </B><I>sgid</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>setresuid</B>
+
+fixe les UIDs réel, effectif et sauvé du processus apppelant.
+<P>
+Un processus utilisateur non-privilégié (dont les UID
+réel, effectif et sauvé sont tous non-nuls) peut fixer son UID réel
+et son UID sauvé avec sa valeur d'UID actuel, d'UID effectif actuel,
+ou d'UID sauvé.
+<P>
+Le Super-Utilisateur peut positionner son UID réel, effectif ou sauvé
+à une valeur quelconque.
+<P>
+Si l'un des paramètres vaut -1, la valeur correspondante n'est pas modifiée.
+<P>
+De manière analogue
+<B>setresgid</B>
+
+fixe les GIDs réel, effectif et sauvé du processus appelant avec les
+mêmes restrictions pour les processus n'ayant aucun GID nul.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Les appels
+<B>setresuid</B>
+
+et
+<B>setresgid</B>
+
+renvoient 0 s'ils réussissent, ou -1 s'ils échouent auquel cas <I>errno</I>
+contient le code d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EPERM</B>
+
+<DD>
+Le processus n'a pas de privilèges et essaye de modifier ses IDs de manière
+interdite.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Cet appel-système n'est pas standard.
+<A NAME="lbAH">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+Cet appel-système a d'abord été introduit dans HP-UX. Il est disponible
+sous Linux depuis le noyau 2.1.44. A présent, on le rencontre également
+dans FreeBSD (pour l'émulation binaire de Linux).
+<A NAME="lbAI">&nbsp;</A>
+<H2>NOTES</H2>
+
+Sous HP-UX et FreeBSD, le prototype se trouve dans
+<I>&lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</I>.
+
+Sous Linux, le prototype est fourni pas la GlibC depuis la version 2.3.2
+à condition que la constante _GNU_SOURCE soit définie.
+Sous Linux, il n'y a pas encore de fichier d'en-tête incluant ce prototype,
+ce qui peut être considéré comme un défaut de la GlibC. Les programmes
+utilisant cet appel-système doivent en déclarer le prototype eux-mêmes.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+getuid">getuid</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setuid">setuid</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setreuid">setreuid</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+getresuid">getresuid</A></B>(2)
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAI">NOTES</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:53 GMT, February 11, 2014
+</BODY>
+</HTML>

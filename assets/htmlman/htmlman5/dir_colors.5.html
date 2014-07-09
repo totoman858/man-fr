@@ -1,0 +1,489 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DIR_COLORS</TITLE>
+</HEAD><BODY>
+<H1>DIR_COLORS</H1>
+Section: Manuel de l'administrateur Linux (5)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+dir_colors - Fichier de configuration pour <A HREF="/cgi-bin/man/man2html?1+dircolors">dircolors</A>(1).
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Le programme
+<B><A HREF="/cgi-bin/man/man2html?1+ls">ls</A></B>(1)
+
+utilise la variable d'environnement
+<B>LS_COLORS</B>
+
+pour déterminer les couleurs avec lesquelles afficher les noms de fichiers.
+Cette variable d'environnement est en principe remplie par une commande
+<P>
+<DL COMPACT><DT><DD>
+eval `dircolors some_path/dir_colors`
+</DL>
+
+<P>
+dans un fichier d'initialisation du shell, comme
+<I>/etc/profile</I>
+
+ou
+<I>/etc/csh.cshrc</I>.
+
+(Voir également
+<B><A HREF="/cgi-bin/man/man2html?1+dircolors">dircolors</A></B>(1)).
+
+Habituellement, le fichier est
+<I>/etc/DIR_COLORS</I>
+
+et peut être surchargé par un fichier
+<I>.dir_colors</I>
+
+dans le répertoire personnel de l'utilisateur.
+<P>
+
+Ce fichier de configuration consiste en plusieurs lignes de déclarations.
+Un dièse (#) en début de ligne, précédé eventuellement d'espaces blancs,
+transforme cette ligne en commentaire qui sera ignoré.
+Les lignes blanches sont ignorées.
+<P>
+
+La section
+<I>global</I>
+
+du fichier contient toutes les déclarations avant la première ligne
+<B>TERM</B>.
+
+Toute déclaration dans la section globale est considérée comme valide
+pour tous les types de terminaux. Après cette section on trouve
+une ou plusieurs sections
+<I>spécifiques aux terminaux</I>,
+
+précédées par une ou plusieurs lignes
+<B>TERM</B>
+
+qui indiquent à quels types (au sens de la variable d'environnement
+<B>TERM</B>)
+
+de terminaux, les déclarations s'appliquent. Il est toujours possible
+de surcharger une déclaration globale par une déclaration spécique
+à un terminal ultérieure.
+<P>
+
+Les déclarations suivantes sont reconnues (sans différences maj/minuscules)
+<P>
+
+<DL COMPACT>
+<DT><B>TERM </B><I>type-terminal</I>
+
+<DD>
+Débute une section spécique à un terminal et indique auquel elle
+s'applique. Plusieurs déclarations
+<B>TERM</B>
+
+successives permettent de créer des sections qui s'appliquent à
+plusieurs types de terminaux.
+<DT><B>COLOR yes|all|no|none|tty</B>
+
+<DD>
+(Slackware seulement, ignoré par la version GNU de 
+<B><A HREF="/cgi-bin/man/man2html?1+dircolors">dircolors</A></B>(1)).
+
+Indique que la couleur doit toujours être utilisée (<I>yes</I> ou <I>all</I>),
+jamais utilisée (<I>no</I> ou <I>none</I>), ou employée seulement si la
+sortie est un terminal (<I>tty</I>). La valeur par défaut est <I>no</I>.
+<DT><B>EIGHTBIT yes|no</B>
+
+<DD>
+(Slackware seulement, ignoré par la version GNU de 
+<B><A HREF="/cgi-bin/man/man2html?1+dircolors">dircolors</A></B>(1)).
+
+Indique que les caractères huits bits ISO 8859 sont autorisés par défaut.
+Pour des raisons de compatibilité, on peut aussi écrire 1 pour
+<I>yes</I> et 0 pour <I>no</I>. La valeur par défaut est <I>no</I>.
+<DT><B>OPTIONS </B><I>options</I>
+
+<DD>
+(Slackware seulement, ignoré par la version GNU de 
+<B><A HREF="/cgi-bin/man/man2html?1+dircolors">dircolors</A></B>(1)).
+
+Ajouter les options sur la ligne de commande de
+<B>ls</B>.
+
+Il peut s'agir de n'importe quelle option valide de
+<B>ls</B>,
+
+et devait inclure le signe moins en début d'option.
+Notez bien que
+<B>dircolors</B>
+
+ne vérifie pas la validité de ces options.
+<DT><B>NORMAL </B><I>séquence-couleur</I>
+
+<DD>
+Indique la couleur à employer pour le texte normal (hors noms de fichiers).
+<DT><B>FILE </B><I>séquence-couleur</I>
+
+<DD>
+Indique la couleur à utiliser pour les fichiers normaux.
+<DT><B>DIR </B><I>séquence-couleur</I>
+
+<DD>
+Indique la couleur à utiliser pour les répertoires.
+<DT><B>LINK </B><I>séquence-couleur</I>
+
+<DD>
+Indique la couleur à utiliser pour les liens symboliques.
+<DT><B>ORPHAN </B><I>séquence-couleur</I>
+
+<DD>
+Indique la couleur à utiliser pour les liens symboliques orphelins(ceux qui
+pointent sur un fichier inexistant). Si rien n'est indiqué,
+<B>ls</B>
+
+utilisera la couleur
+<B>LINK</B>
+
+par défaut.
+<DT><B>MISSING </B><I>séquence-couleur</I>
+
+<DD>
+Indique la couleur à utiliser pour un fichier manquant (inexistant
+bien qu'un lien symbolique pointe dessus). Si rien n'est indiqué,
+<B>ls</B>
+
+utilisera la couleur
+<B>FILE</B>
+
+par défaut.
+<DT><B>FIFO </B><I>séquence-couleur</I>
+
+<DD>
+Indique la couleur pour afficher une FIFO (tube nommé).
+<DT><B>SOCK </B><I>séquence-couleur</I>
+
+<DD>
+Indique la couleur pour afficher une socket.
+<DT><B>DOOR </B><I>séquence-couleur</I>
+
+<DD>
+(Supporté depuis file-utils 4.1)
+Indique la couleur pour afficher une &quot;door&quot; (Solaris 2.5 et ultérieur).
+<DT><B>BLK </B><I>séquence-couleur</I>
+
+<DD>
+Indique la couleur pour afficher un périphérique spécial bloc.
+<DT><B>CHR </B><I>séquence-couleur</I>
+
+<DD>
+Indique la couleur pour afficher un périphérique spécial caractère.
+<DT><B>EXEC </B><I>séquence-couleur</I>
+
+<DD>
+Indique la couleur pour afficher un fichier avec l'attribut exécutable.
+<DT><B>LEFTCODE </B><I>séquence-couleur</I>
+
+<DD>
+Indique le
+<I>code gauche</I>
+
+pourles terminaux non-ISO&nbsp;6429 (voir plus bas).
+<DT><B>RIGHTCODE </B><I>séquence-couleur</I>
+
+<DD>
+Indique le
+<I>code droit</I>
+
+pour les terminaux non-ISO&nbsp;6429 (voir plus bas).
+<DT><B>ENDCODE </B><I>séquence-couleur</I>
+
+<DD>
+Indique le
+<I>code final</I>
+
+pour les terminaux non-ISO&nbsp;6429 (voir plus bas).
+<DT><B>*</B><I>extension</I> <I>séquence-couleur</I><DD>
+Indique la couleur pour tous les fichiers se terminant par l'<I>extension</I>.
+<DT><B> .</B><I>extension</I> <I>séquence-couleur</I><DD>
+Comme <B>*</B>.<I>extension</I>. Indique la couleur pour tous les fichiers se
+terminant par .<I>extension</I>. Notez que le point est inclus dans
+l'extension, ce qui rend impossible de préciser une extension ne commençant
+pas par un point, comme
+<B>~</B>
+
+pour les fichiers de sauvegarde
+<B>emacs</B>.
+
+Cette forme doit être considérée comme obsolète.
+</DL>
+<A NAME="lbAD">&nbsp;</A>
+<H2>SÉQUENCES DE COULEUR ISO 6429 (ANSI)</H2>
+
+La plupart des terminaux Ascii actuels utilisent les séquences ISO&nbsp;6429
+(ANSI), et ne nombreux terminaux sans couleurs, comme l'émulateur
+<B>xterm</B>
+
+et le très cloné DEC VT100, reconnaissent les codes de couleur ISO&nbsp;6429
+et les éliminent sans problème ou les émulent. Par défaut,
+<B>ls</B>
+
+utilise les codes ISO 6429 si la couleur est validée.
+<P>
+Les séquences de couleurs ISO 6429 sont composées de suite de nombres
+séparés par des points-virgules. Les codes les plus courants sont&nbsp;:
+<P>
+<DL COMPACT><DT><DD>
+
+
+<PRE>
+ 0     restituer la couleur par défaut
+ 1     couleur en sur-brillance
+ 4     texte souligné
+ 5     texte clignotant
+30     encre noire
+31     encre rouge
+32     encre verte
+33     encre jaune (ou marron)
+34     encre bleue
+35     encre violette
+36     encre cyan
+37     encre blanche (ou grise)
+40     fond noir
+41     fond rouge
+42     fond vert
+43     fond jaune (ou marron)
+44     fond bleu
+45     fond violet
+46     fond cyan
+47     fond blanc (ou gris)
+</PRE>
+
+</DL>
+
+<P>
+Toutes les commandes ne fonctionnent pas sur tous les terminaux.
+<P>
+
+<B>ls</B>
+
+utilise les valeurs suivantes par défaut&nbsp;:
+<P>
+<DL COMPACT><DT><DD>
+
+
+<PRE>
+<B>NORMAL</B>   0       Texte normal (hors noms de fichiers)
+<B>FILE</B>     0       Fichier normal
+<B>DIR</B>      32      Répertoire
+<B>LINK</B>     36      Lien symbolique
+<B>ORPHAN</B>   undefined       Lien symbolique orphelin
+<B>MISSING</B>  undefined       Fichier manquant
+<B>FIFO</B>     31      Tube nommé (FIFO)
+<B>SOCK</B>     33      Socket
+<B>BLK</B>      44;37   Périphérique bloc
+<B>CHR</B>      44;37   périphérique caractère
+<B>EXEC</B>     35      Fichier exécutable
+</PRE>
+
+</DL>
+
+<P>
+Peu de terminaux ne reconnaissent pas les valeur par défaut correctement.
+Si tout le text est colorié après avoir affiché le contenu d'un
+répertoire, changez les codes
+<B>NORMAL</B>
+
+et
+<B>FILE</B>
+
+pour les codes numérique de vos encre et fond
+habituels.
+<A NAME="lbAE">&nbsp;</A>
+<H2>AUTRE TYPES DE TERMINAUX (CONFIGURATION AVANCÉE)</H2>
+
+Si vous avez un terminal couleur (ou gérant d'autre attributs), voire une
+imprimante, qui utilise un jeu de codes différents, vous pouvez toujours
+le configurer corectement en utilisant les
+définitions
+<B>LEFTCODE</B>,
+
+<B>RIGHTCODE</B>,
+
+et
+<B>ENDCODE</B>.
+
+<P>
+
+Lorsqu'il affiche un nom de fichier,
+<B>ls</B>
+
+produit la séquence de sortie suivante&nbsp;:
+<B>LEFTCODE</B>
+
+<I>code-type</I>
+
+<B>RIGHTCODE</B>
+
+<I>nom-fichier</I>
+
+<B>ENDCODE</B>,
+
+où
+<I>code-type</I>
+
+est la séquence de couleur qui dépend du type ou nom de fichier. Si
+<B>ENDCODE</B>
+
+est indéfinie, la séquence
+<B>LEFTCODE NORMAL RIGHTCODE</B>
+
+est utilisée à la place. Le but des codes gauche et droits est de réduire
+sérieusement la saisie (et de cacher les codes d'échappement horribles).
+S'il n'y en a pas besoin, vous pouvez les supprimer en spécifiant
+le mot clé correspondant sur
+une ligne isolée.
+<P>
+
+<B>NOTE&nbsp;:</B>
+
+SI
+<B>ENDCODE</B>
+
+est défini dans la section global du fichier, il ne peut
+<I>pas</I>
+
+être indéfini dans une section spécifique ultérieure. Ceci signifie que
+toute définition
+<B>NORMAL</B>
+
+n'aura aucun effet.
+Un 
+<B>ENDCODE</B>
+
+peut toutefois être indiqué, avec l'effet désiré.
+<A NAME="lbAF">&nbsp;</A>
+<H2>SÉQUENCES D'ÉCHAPPEMENT</H2>
+
+Pour spécifier des caractères de contrôle ou des blancs dans la séquence
+de couleur ou les extensions des noms de fichier, on peut employer la
+notation C préfixée par un \, ou la notation ^ comme
+<B>stty -style</B>.
+
+La notation C contient les séquences suivantes&nbsp;:
+<P>
+<DL COMPACT><DT><DD>
+
+
+<PRE>
+<B>\a</B>        Bell (ASCII 7)
+<B>\b</B>        Backspace (ASCII 8)
+<B>\e</B>        Escape (ASCII 27)
+<B>\f</B>        Form feed (ASCII 12)
+<B>\n</B>        Newline (ASCII 10)
+<B>\r</B>        Carriage Return (ASCII 13)
+<B>\t</B>        Tab (ASCII 9)
+<B>\v</B>        Vertical Tab (ASCII 11)
+<B>\?</B>        Delete (ASCII 127)
+<B>\</B><I>nnn</I>      Tout caractère (code octal)
+<B>\x</B><I>nnn</I>     Tout caractère (code hexadécimal)
+<B>\_</B>        Space
+<B>\\</B>        Backslash (\)
+<B>\^</B>        Caret (^)
+<B>\#</B>        Hash mark (#)
+</PRE>
+
+</DL>
+
+<P>
+Notes que les échappements sont nécessaires pour protéger l'espace,
+le backslash, le Caret et tout caractère de contrôle, y compris
+le dièse en première position.
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les définitions
+<B>LEFTCODE</B>
+
+et 
+<B>RIGHTCODE</B>
+
+par défaut, pour les terminaux ISO 6429 sont&nbsp;:
+<P>
+<DL COMPACT><DT><DD>
+
+
+<PRE>
+<B>LEFTCODE</B>  \e[
+<B>RIGHTCODE</B> m
+</PRE>
+
+</DL>
+
+<P>
+Par défaut,
+<B>ENDCODE</B>
+
+est indéfini.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+dircolors">dircolors</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+ls">ls</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+stty">stty</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+xterm">xterm</A></B>(1)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+<DL COMPACT>
+<DT><I>/etc/DIR_COLORS</I>
+
+<DD>
+Fichier de configuration global au système.
+<DT><I>~/.dir_colors</I>
+
+<DD>
+Fichier de configuration pour l'utilisateur.
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>NOTES</H2>
+
+Cette page décrit le format du fichier
+<B>dir_colors</B>
+
+utilisé dans le paquetage fileutils-4.1&nbsp;;
+d'autres version peuvent différer légèrement.
+<A NAME="lbAK">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">SÉQUENCES DE COULEUR ISO 6429 (ANSI)</A><DD>
+<DT><A HREF="#lbAE">AUTRE TYPES DE TERMINAUX (CONFIGURATION AVANCÉE)</A><DD>
+<DT><A HREF="#lbAF">SÉQUENCES D'ÉCHAPPEMENT</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">FICHIERS</A><DD>
+<DT><A HREF="#lbAJ">NOTES</A><DD>
+<DT><A HREF="#lbAK">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:54 GMT, February 11, 2014
+</BODY>
+</HTML>

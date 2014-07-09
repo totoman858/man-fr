@@ -1,0 +1,288 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SUFFIXES</TITLE>
+</HEAD><BODY>
+<H1>SUFFIXES</H1>
+Section: Manuel de l'administrateur Linux (7)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+suffixes - Liste de suffixes de fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Il est courant d'indiquer le contenu d'un fichier en utilisant un suffixe,
+consistant en un point suivi d'une ou plusieurs lettres.
+Plusieurs utilitaires standards, comme les compilateurs, utilisent ceci
+pour reconnaître le type de fichier à traiter, et l'utilitaire
+<B><A HREF="/cgi-bin/man/man2html?1+make">make</A></B>(1)
+
+agit en fonction de règles basées sur le type de suffixe.
+<P>
+
+La liste suivante regroupe des suffixes couramment rencontrés sur les
+systèmes Linux.
+<P>
+
+<TABLE>
+<TR VALIGN=top><TD>Suffixe</TD><TD>Type de fichier<BR></TD></TR>
+<TR VALIGN=top><TD><HR></TD><TD><HR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;-</I></TD><TD>Fichier backup<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.C</I></TD><TD>Code source C++, équivalent de <I>.cc</I><BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.F</I></TD><TD>Source FORTRAN avec directives <B><A HREF="/cgi-bin/man/man2html?1+cpp">cpp</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;</I></TD><TD>ou fichier compressé avec freeze<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.S</I></TD><TD>Code source Assembleur avec directives <B><A HREF="/cgi-bin/man/man2html?1+cpp">cpp</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.Y</I></TD><TD>Fichier compressé avec Yabba<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.Z</I></TD><TD>Fichier compressé avec <B><A HREF="/cgi-bin/man/man2html?1+compress">compress</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.[0-9]+gf</I></TD><TD>Fichier de polices (fonts) génériques TeX<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.[0-9]+pk</I></TD><TD>Fichier de polices TeX<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.[1-9]</I></TD><TD>Pages de manuel de la section correspondante<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.[1-9][a-z]</I></TD><TD>Pages de manuel de section et sous-section<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.a</I></TD><TD>Bibliothèque statique de code objet<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.ad</I></TD><TD>Fichier de ressources par défaut d'application X11<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.ada</I></TD><TD>Source ADA (corps, spec...)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.adb</I></TD><TD>Corps de source ADA<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.ads</I></TD><TD>Spécification de source ADA<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.afm</I></TD><TD>Métrique de police PostScript<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.al</I></TD><TD>Fichier autochargeable Perl<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.am</I></TD><TD>Fichier d'entrée pour <B>automake</B><BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.arc</I></TD><TD>Archive <B><A HREF="/cgi-bin/man/man2html?1+arc">arc</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.arj</I></TD><TD>Archive <B><A HREF="/cgi-bin/man/man2html?1+arj">arj</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.asc</I></TD><TD>Données ASCII protégée PGP<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.asm</I></TD><TD>Fichier source assembleur (GNU)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.au</I></TD><TD>Fichier Audio<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.aux</I></TD><TD>Fichier auxiliaire LaTeX<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.avi</I></TD><TD>Fichier d'animation MsVideo<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.awk</I></TD><TD>Programme AWK<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.b</I></TD><TD>Image de boot pour le chargeur Lilo<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.bak</I></TD><TD>Fichier de sauvegarde<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.bash</I></TD><TD>Script shell <B>bash</B><BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.bb</I></TD><TD>Liste de blocs produite par<BR></TD></TR>
+<TR VALIGN=top><TD><I></I></TD><TD>gcc -ftest-coverage<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.bbg</I></TD><TD>Graphe de blocs produit par<BR></TD></TR>
+<TR VALIGN=top><TD><I></I></TD><TD>gcc -ftest-coverage<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.bbl</I></TD><TD>Sortie de BibTeX<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.bdf</I></TD><TD>Fichier de police X<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.bib</I></TD><TD>Entrée de BibText, base de données bibliographiques TeX<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.bm</I></TD><TD>Source bitmap<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.bmp</I></TD><TD>Source bitmap<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.bz2</I></TD><TD>Fichier compressé avec <B><A HREF="/cgi-bin/man/man2html?1+bzip2">bzip2</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.c</I></TD><TD>Source C<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.cat</I></TD><TD>Fichier de catalogue de Message<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.cc</I></TD><TD>Source C++<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.cf</I></TD><TD>Fichier de configuration<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.cfg</I></TD><TD>Fichier de configuration<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.cgi</I></TD><TD>Programme ou script WWW<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.class</I></TD><TD>Pseudo-code compilé Java<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.cls</I></TD><TD>Définition de classe LaTeX<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.conf</I></TD><TD>Fichier de configuration<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.config</I></TD><TD>Fichier de configuration<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.cpp</I></TD><TD>équivalent à <I>.cc</I><BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.csh</I></TD><TD>Script shell de <B>csh</B><BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.cxx</I></TD><TD>équivalent à <I>.cc</I><BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.dat</I></TD><TD>Fichier de données<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.deb</I></TD><TD>Paquetage de logiciel Debian<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.def</I></TD><TD>Source Modula-2 pour module de définition<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.def</I></TD><TD>Fichier de définition<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.desc</I></TD><TD>Partie initiale d'un mail décodé par<BR></TD></TR>
+<TR VALIGN=top><TD><I></I></TD><TD><B><A HREF="/cgi-bin/man/man2html?1+munpack">munpack</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.diff</I></TD><TD>Fichier de différences (voir <B><A HREF="/cgi-bin/man/man2html?1+diff">diff</A></B>(1))<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.dir</I></TD><TD>Fichier de répertoire de base de données Dbm<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.doc</I></TD><TD>Fichier de documentation<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.dsc</I></TD><TD>Contrôle de sources Debian<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.dtx</I></TD><TD>Fichier source de paquetage LaTeX<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.dvi</I></TD><TD>Sortie de TeX indépendante du périphérique<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.el</I></TD><TD>Source Lisp EMACS<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.elc</I></TD><TD>Lisp EMACS compilé<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.eps</I></TD><TD>Encapsulated Postscript<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.exp</I></TD><TD>Source Expect<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.f</I></TD><TD>Source FORTRAN<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.f77</I></TD><TD>Source FORTRAN 77<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.f90</I></TD><TD>Source FORTRAN 90<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.fas</I></TD><TD>Common Lisp pré-compilé<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.fi</I></TD><TD>Fichier en-tête FORTRAN<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.fig</I></TD><TD>Dessin vectoriel pour <B><A HREF="/cgi-bin/man/man2html?1+xfig">xfig</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.fmt</I></TD><TD>Fichier de format pour TeX<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.gif</I></TD><TD>Graphics Interchange Format<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.gmo</I></TD><TD>Catalogue de messages au format GNU<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.gsf</I></TD><TD>Police Ghostscript<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.gz</I></TD><TD>Fichier compressé avec <B><A HREF="/cgi-bin/man/man2html?1+gzip">gzip</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.h</I></TD><TD>Fichier en-tête C ou C++<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.help</I></TD><TD>Fichier d'aide<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.hf</I></TD><TD>équivalent à <I>.help</I><BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.hlp</I></TD><TD>équivalent à <I>.help</I><BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.htm</I></TD><TD><I>.html</I> du pauvre...<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.html</I></TD><TD>Document HTML utilisé entres autres sur le World Wide Web<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.hqx</I></TD><TD>Fichier Macintosh encodé sur 7 bits<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.i</I></TD><TD>Source C après passage du pré-processeur<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.icon</I></TD><TD>Source Bitmap<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.idx</I></TD><TD>Index d'une base de donnée ou d'un système d'hypertexte<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.image</I></TD><TD>Source Bitmap<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.in</I></TD><TD>Modèle de configuration, pour l'autoconf GNU<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.ins</I></TD><TD>Fichier d'installation de paquetage LaTeX pour Docstrip<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.info</I></TD><TD>Fichier pour navigateur info EMACS<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.info-[0-9]+</I></TD><TD>idem<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.itcl</I></TD><TD>Source Itcl <BR></TD></TR>
+<TR VALIGN=top><TD><I></I></TD><TD>(extension objet de Tcl).<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.java</I></TD><TD>Fichier source Java.<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.jpg</I></TD><TD><I>.jpeg</I> du pauvre...<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.jpeg</I></TD><TD>Image compressée JPEG<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.kmap</I></TD><TD>Table des touches de <B><A HREF="/cgi-bin/man/man2html?1+lyx">lyx</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.l</I></TD><TD>Fichier <B><A HREF="/cgi-bin/man/man2html?1+lex">lex</A></B>(1) ou <B><A HREF="/cgi-bin/man/man2html?1+flex">flex</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.lex</I></TD><TD>équivalent à <I>.lex</I><BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.lha</I></TD><TD>Archive Lharc<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.lib</I></TD><TD>Bibliothèque Common Lisp<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.lisp</I></TD><TD>Fihier source Lisp<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.log</I></TD><TD>Fichier de journalisation, créé par exemple par TeX<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.ln</I></TD><TD>Fichier utilisé avec <B><A HREF="/cgi-bin/man/man2html?1+lint">lint</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.lsm</I></TD><TD>Entrée descriptive de la Linux Software Map<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.lsp</I></TD><TD>Source Common Lisp<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.lyx</I></TD><TD>Document du traitement de texte LyX<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.lzh</I></TD><TD>Archive Lharc<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.m</I></TD><TD>Source objective C<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.m4</I></TD><TD>Source <B><A HREF="/cgi-bin/man/man2html?1+m4">m4</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.mac</I></TD><TD>Fichier de macros pour divers programmes<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.man</I></TD><TD>Page de manuel (plutôt source que préformatée).<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.map</I></TD><TD>Fichier de cartes pour divers programmes<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.me</I></TD><TD>Source Nroff pour le paquetage me<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.mf</I></TD><TD>Source Metafont (police générée pour TeX)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.mgp</I></TD><TD>Fichier MagicPoint<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.mm</I></TD><TD>Source pour <B><A HREF="/cgi-bin/man/man2html?1+groff">groff</A></B>(1) au format mm<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.mo</I></TD><TD>Fichier binaire de catalogue de messages<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.mod</I></TD><TD>Source Modula-2 pour module d'implémentation<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.mov</I></TD><TD>Animation QuickTime<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.mp</I></TD><TD>Source Metapost<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.mp2</I></TD><TD>Fichier MPEG Niveau 2 (audio)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.mp3</I></TD><TD>Fichier MPEG Niveau 3 (audio)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.mpeg</I></TD><TD>Animation<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.o</I></TD><TD>Fichier objet<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.old</I></TD><TD>Fichier ancien ou sauvegardé<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.orig</I></TD><TD>Fichier Backup (original), de <B><A HREF="/cgi-bin/man/man2html?1+patch">patch</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.out</I></TD><TD>Fichier de sortie, souvent exécutable (a.out)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.p</I></TD><TD>Source Pascal<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.patch</I></TD><TD>Fichier différence de <B><A HREF="/cgi-bin/man/man2html?1+patch">patch</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.pag</I></TD><TD>Fichier de base de données Dbm<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.pbm</I></TD><TD>Format Bitmap Portable<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.pcf</I></TD><TD>Fichier police X11<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.pdf</I></TD><TD>Format de données portables<BR></TD></TR>
+<TR VALIGN=top><TD><I></I></TD><TD>(Adobe/<B>acroread</B> ou <B>xpdf</B>)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.perl</I></TD><TD>Fichier source Perl (voir .ph .pl et .pm)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.pfa</I></TD><TD>Fichier définition police Postscript, ASCII<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.pfb</I></TD><TD>Fichier définition police Postscript, binaire<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.pgm</I></TD><TD>Format Greymap (bitmap) portable.<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.pgp</I></TD><TD>Données PGP binaire <BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.ph</I></TD><TD>Fichier d'en-tête Perl<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.php</I></TD><TD>Fichier de programme PHP<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.php3</I></TD><TD>Fichier de programme PHP3<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.pid</I></TD><TD>Fichier pour stocker le PID d'un démon (crond.pid)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.pl</I></TD><TD>Fichier de bibliothèque Perl ou liste de propriétés TeX<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.pm</I></TD><TD>Fichier de module Perl.<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.png</I></TD><TD>Fichier Portable Network Graphics<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.po</I></TD><TD>Source d'un catalogue de messages<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.pod</I></TD><TD>Fichier de <B><A HREF="/cgi-bin/man/man2html?1+perldoc">perldoc</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.ppm</I></TD><TD>Fichier de Pixmap portable<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.pr</I></TD><TD>Source Bitmap<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.ps</I></TD><TD>Fichier Postscript <BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.py</I></TD><TD>Source Python<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.pyc</I></TD><TD>Fichier Python compilé<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.qt</I></TD><TD>Animation QuickTime<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.r</I></TD><TD>Source RATFOR (obsolète)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.rej</I></TD><TD>Patch non applicable par <B><A HREF="/cgi-bin/man/man2html?1+patch">patch</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.rpm</I></TD><TD>Paquetage logiciel RedHat<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.rtf</I></TD><TD>Fichier de texte au format Rich-Text<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.rules</I></TD><TD>Règles pour un programme<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.s</I></TD><TD>Source Assembleur<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.sa</I></TD><TD>Bibliothèque partagée a.out<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.sc</I></TD><TD>Commande tableur <B><A HREF="/cgi-bin/man/man2html?1+sc">sc</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.scm</I></TD><TD>Source Scheme<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.sed</I></TD><TD>Script Sed<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.sgml</I></TD><TD>Fichier de source Sgml<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.sh</I></TD><TD>Scripts <B><A HREF="/cgi-bin/man/man2html?1+sh">sh</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.shar</I></TD><TD>Archive créée par <B><A HREF="/cgi-bin/man/man2html?1+shar">shar</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.so</I></TD><TD>Bibliothèque partagée ou objet chargeable dynamiquement<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.sql</I></TD><TD>Source SQL<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.sqml</I></TD><TD>Programme de requêtes SQML.<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.sty</I></TD><TD>Fichier de style pour LaTeX<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.sym</I></TD><TD>Module de définition Modula-2 compilé<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.tar</I></TD><TD>Archive créée par <B><A HREF="/cgi-bin/man/man2html?1+tar">tar</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.tar.Z</I></TD><TD>Archive tar compressée avec <B><A HREF="/cgi-bin/man/man2html?1+compress">compress</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.tar.bz2</I></TD><TD>Archive tar compressée avec <A HREF="/cgi-bin/man/man2html?1+bzip">bzip</A>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.tar.gz</I></TD><TD>Archive tar compressée avec <B><A HREF="/cgi-bin/man/man2html?1+gzip">gzip</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.taz</I></TD><TD>Archive tar compressée avec <B><A HREF="/cgi-bin/man/man2html?1+compress">compress</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.tcl</I></TD><TD>Script Tcl<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.tex</I></TD><TD>Source TeX ou LaTeX<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.texi</I></TD><TD>équivalent à <I>.texinfo</I><BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.texinfo</I></TD><TD>Source de documentation TeXinfo<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.text</I></TD><TD>Fichier de texte ascii.<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.tfm</I></TD><TD>Métrique des polices TeX<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.tgz</I></TD><TD>Archive tar compressée avec <B><A HREF="/cgi-bin/man/man2html?1+gzip">gzip</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.tif</I></TD><TD><I>.tiff</I> du pauvre...<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.tiff</I></TD><TD>Ficher d'image TIFF<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.tk</I></TD><TD>script Tcl/Tk<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.tmp</I></TD><TD>Fichier temporaire<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.tmpl</I></TD><TD>Fichier Template<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.txt</I></TD><TD>Fichier Texte<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.uu</I></TD><TD>Fichier binaire encodé avec <B><A HREF="/cgi-bin/man/man2html?1+uuencode">uuencode</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.uue</I></TD><TD>identique à <I>.uue</I><BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.vf</I></TD><TD>Police virtuelle de TeX<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.vpl</I></TD><TD>Liste de propriétés virtuelles de TeX<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.w</I></TD><TD>WEB de Silvio Levi<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.wav</I></TD><TD>Fichier d'échantillonnage sonore<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.web</I></TD><TD>WEB de Donald Knuth<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.wml</I></TD><TD>Source Langage Web Meta<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.xbm</I></TD><TD>Source bitmap X11<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.xcf</I></TD><TD>Graphique GIMP<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.xml</I></TD><TD>Fichier eXtended Markup Language<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.xpm</I></TD><TD>Source pixmap X11<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.xs</I></TD><TD>Fichier xsub Perl produit par h2xs<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.xsl</I></TD><TD>Feuille de style XSL<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.y</I></TD><TD>Fichier <B><A HREF="/cgi-bin/man/man2html?1+yacc">yacc</A></B>(1) ou <B><A HREF="/cgi-bin/man/man2html?1+bison">bison</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.z</I></TD><TD>Fichier compressé avec <B><A HREF="/cgi-bin/man/man2html?1+pack">pack</A></B>(1) (ou un vieux <B><A HREF="/cgi-bin/man/man2html?1+gzip">gzip</A></B>(1))<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.zip</I></TD><TD>Archive <B><A HREF="/cgi-bin/man/man2html?1+zip">zip</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;.zoo</I></TD><TD>Archive <B><A HREF="/cgi-bin/man/man2html?1+zoo">zoo</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;~</I></TD><TD>Fichier backup EMACS ou <B><A HREF="/cgi-bin/man/man2html?1+patch">patch</A></B>(1)<BR></TD></TR>
+<TR VALIGN=top><TD><I><BR>&nbsp;rc</I></TD><TD>Fichier de démarrage (run control), ex: <I>.newsrc</I><BR></TD></TR>
+</TABLE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Conventions générales UNIX
+<A NAME="lbAE">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Cette liste n'est pas exhaustive
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+file">file</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?1+make">make</A></B>(1)
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAE">BOGUES</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:57 GMT, February 11, 2014
+</BODY>
+</HTML>

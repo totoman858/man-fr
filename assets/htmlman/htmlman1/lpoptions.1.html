@@ -1,0 +1,175 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of lpoptions</TITLE>
+</HEAD><BODY>
+<H1>lpoptions</H1>
+Section: Easy Software Products (1)<BR>Updated: Common UNIX Printing System<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+lpoptions - Affiche et définit les options et paramètres par défaut d'une imprimante
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>lpoptions</B>
+
+[ -h
+<I>serveur</I>
+
+] -d
+<I>destination[/instance]</I>
+
+[ -o
+<I>option=valeur</I>
+
+] ... [ -o
+<I>option=valeur</I>
+
+]
+<BR>
+
+<B>lpoptions</B>
+
+[ -h
+<I>serveur</I>
+
+] [ -E ] [ -p
+<I>destination[/instance]</I>
+
+] -l
+<BR>
+
+<B>lpoptions</B>
+
+[ -h
+<I>serveur</I>
+
+] [ -E ] [ -o
+<I>option=valeur</I>
+
+] ... [ -o
+<I>option=valeur</I>
+
+] [ -p
+<I>dest[/instance]</I>
+
+] -r
+<I>option</I>
+
+<BR>
+
+<B>lpoptions</B>
+
+[ -h
+<I>serveur</I>
+
+] [ -E] -x
+<I>destination[/instance]</I>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Lorsqu'il est lancé sans arguments, <B>lpoptions</B> affiche les options
+par défaut. Les paramètres pouvant être fournis sont&nbsp;:
+<DL COMPACT>
+<DT>-E<DD>
+<BR>
+
+Crypte les données lors de la communication avec le serveur CUPS.
+<DT>-d <I>destination[/instance]</I><DD>
+<BR>
+
+Définit <I>destination</I> comme imprimante par défaut. Il est également
+possible de fournir une <I>instance</I>. Cette option redéfinit
+l'imprimante par défaut de l'utilisateur en cours.
+<DT>-h <I>serveur</I><DD>
+<BR>
+
+Définit le serveur CUPS avec lequel communiquer.
+<DT>-l<DD>
+<BR>
+
+Affiche les options spécifiques d'une imprimante et ses paramétrages.
+<DT>-o <I>option=valeur</I><DD>
+<BR>
+
+Définit une nouvelle option pour une destination.
+<DT>-p <I>destination[/instance]</I><DD>
+<BR>
+
+Définit les options d'une destination ou instance. Si l'instance n'existe
+pas, celle-ci est créée.
+<DT>-r <I>option</I><DD>
+<BR>
+
+Supprime une option de la destination fournie en paramètre.
+<DT>-x <I>destination[/instance]</I><DD>
+<BR>
+
+Supprime toutes les options de la destination ou instance fournie en
+paramètre. Si l'instance n'existe pas, la commande n'a pas d'effet.
+</DL>
+<P>
+
+Si aucune option n'est fournie dans la ligne de commande, les options
+de l'imprimante fournie en paramètre sont affichées sur la sortie standard.
+<P>
+
+Les options définies par la commande <B>lpoptions</B> sont utilisées par les
+commandes <B><A HREF="/cgi-bin/man/man2html?1+lp">lp</A>(1)</B> et <B><A HREF="/cgi-bin/man/man2html?1+lpr">lpr</A>(1)</B> lors de l'envoi de travaux d'impression.
+<A NAME="lbAE">&nbsp;</A>
+<H2>UTILISATION DU COMPTE ROOT</H2>
+
+Lorsque la commande <B>lpoptions</B> est lancée par l'utilisateur root, les options sont lues et sauvegardées pour <I>tous les utilisateurs</I> dans le fichier
+/etc/cups/lpoptions.
+<A NAME="lbAF">&nbsp;</A>
+<H2>COMPATIBILITÉ</H2>
+
+La commande <B>lpoptions</B> est spécifique à CUPS.
+<A NAME="lbAG">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+~/.lpoptions - fichier créé par utilisateur et contenant ses options.
+/etc/cups/lpoptions - fichier global de configuration créé par l'utilisateur root.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A HREF="/cgi-bin/man/man2html?1+cancel">cancel</A>(1), <A HREF="/cgi-bin/man/man2html?1+lp">lp</A>(1),
+CUPS Software Users Manual,
+<A HREF="http://localhost:631/documentation.html">http://localhost:631/documentation.html</A>
+<A NAME="lbAI">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright 1993-2003 Easy Software Products, Tous droits réservés.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Gilles QUERRET &lt;<A HREF="mailto:gilles.querret@nerim.net">gilles.querret@nerim.net</A>&gt;
+
+
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">UTILISATION DU COMPTE ROOT</A><DD>
+<DT><A HREF="#lbAF">COMPATIBILITÉ</A><DD>
+<DT><A HREF="#lbAG">FICHIERS</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:49 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,397 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GETOPT</TITLE>
+</HEAD><BODY>
+<H1>GETOPT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+getopt, getopt_long, getopt_long_only - Analyser les options en ligne de commande.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<B>int getopt (int </B><I>argc</I><B>, char * const </B><I>argv[]</I><B>,</B>
+<B>           const char * </B><I>optstring</I><B>);</B>
+
+<B>extern char * </B><I>optarg</I><B>;</B>
+<B>extern int </B><I>optind</I><B>, </B><I>opterr</I><B>, </B><I>optopt</I><B>;</B>
+
+<B>#define _GNU_SOURCE</B>
+<B>#include &lt;<A HREF="file:///usr/include/getopt.h">getopt.h</A>&gt;</B>
+
+<B>int getopt_long (int </B><I>argc</I><B>, char * const </B><I>argv[]</I><B>,</B>
+<B>           const char * </B><I>optstring</I><B>,</B>
+<B>           const struct option * </B><I>longopts</I><B>, int * </B><I>longindex</I><B>);</B>
+
+<B>int getopt_long_only (int </B><I>argc</I><B>, char * const </B><I>argv[]</I><B>,</B>
+<B>           const char * </B><I>optstring</I><B>,</B>
+<B>           const struct option * </B><I>longopts</I><B>, int * </B><I>longindex</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>getopt()</B>
+
+analyse les arguments de la ligne de commande. Ses éléments
+<I>argc</I>
+
+et
+<I>argv</I>
+
+correspondent aux nombres et à la table d'arguments qui sont transmis à
+la fonction
+<B>main()</B>
+
+lors du lancement du programme.
+Un élément de <I>argv</I> qui commence par `-' (et qui ne soit pas uniquement &quot;-&quot; ou &quot;--&quot;)
+est considéré comme une option. Les caractères à la suite du '-' initial sont les
+caractères de l'option. Si <B>getopt()</B> est appelée à plusieurs reprises, elle
+renverra successivement chaque caractère de chaque option.
+<P>
+
+Si <B>getopt()</B> trouve un caractère d'option, elle le renvoie, mettant à jour
+la variable externe <I>optind</I> et la variable statique <I>nextchar</I> pour
+préparer l'appel suivant a <B>getopt()</B>.
+<P>
+
+S'il n'y a plus de caractères d'option, <B>getopt()</B> renvoie <B>EOF</B>.
+Alors, <I>optind</I> devient l'index du premier élément de <I>argv</I> qui ne
+soit pas une option.
+<P>
+
+<I>optstring</I>
+
+est une chaîne contenant l'ensemble des caractères d'option autorisés. Si un de
+ces caractères est suivi par un double-point, l'option nécessite un argument
+supplémentaire, et <B>getopt</B> placera un pointeur sur le texte correspondant
+de <I>argv</I> dans
+<I>optarg</I>.
+
+Deux doubles-points signifient qu'une option prend un argument optionnel. S'il existe
+un texte dans le même élément de <I>argv</I>, il est renvoyé dans
+<I>optarg</I>, sinon <I>optarg</I> contient zéro.
+Il s'agit d'une extension GNU. Si
+<I>optstring</I>
+
+contient
+<B>W</B>
+
+suivi d'un point-virgule, alors
+<B>-W foo</B>
+
+est traité comme l'option longue
+<B>--foo</B>.
+
+(L'option
+<B>-W</B>
+
+est réservée par POSIX.2 pour des extensions spécifique à l'implémentation).
+Ce comportement, spécifique à la version GNU, n'est pas disponible avant
+la bibliothèque GNU libc 2.
+<P>
+
+Par défaut, <B>getopt()</B> permute les éléments de <I>argv</I> au fur et à
+mesure de son analyse, ainsi tous les arguments éventuels ne constituant pas
+des options se trouvent à la fin. Deux autres modes sont également implémentés :
+Si le premier caractère de <I>optstring</I> vaut `+', ou si la variable
+d'environnement POSIXLY_CORRECT est validée, alors l'analyse 
+s'arrête aussitot qu'un argument ne constituant pas une option est rencontré.
+Si le premier caractère de <I>optstring</I> vaut `-', alors les arguments
+ne correspondant pas à une option sont manipulés comme s'ils étaient des
+arguments d'une option dont le caractère soit le caractère de code 1.
+Ceci est utilisé par les programmes qui sont conçus pour recevoir des
+options et d'autres éléments de <I>argv</I> et qui prennent en compte
+l'ordre des arguments.
+<P>
+L'argument spécial `--' arrête l'analyse des options, quelque soit le
+mode en cours.
+<P>
+
+Si  <B>getopt()</B> ne reconnaît pas un caractère d'option, il affiche un
+message d'erreur sur la sortie standard stderr, stocke le caractère dans
+<I>optopt</I>, et renvoie `?'. Le programme appelant peut empêcher l'affichage
+du message d'erreur en positionnant <I>opterr</I> à 0.
+<P>
+
+Si <B>getopt()</B> trouve dans <I>argv</I> un caractère d'option non inclus dans
+<I>optstring</I>, ou s'il  manque un argument d'option, l'appel renvoie
+`?' et remplit la variable externe <I>optopt</I> avec le vrai caractère trouvé.
+Si le premier caractère de <I>optstring</I> est un deux-points (`:'), alors
+<B>getopt()</B> renvoie `:' plutôt que `?' pour indiquer un argument d'option
+manquant. Si une erreur est détectée, si le premier caractère de <I>optstring</I>
+n'est PAS un deux-points, et si la variable externe <I>opterr</I> est non-nulle,
+(nulle par défaut), alors
+<B>getopt()</B> affiche un message d'erreur.
+<P>
+
+La fonction
+<B>getopt_long()</B>
+
+fonctionne comme
+<B>getopt()</B>
+
+sauf qu'elle accepte également des noms longs d'option, commencant par deux
+tirets.
+Les noms longs d'option peuvent être abrégés, si l'abréviation est unique,
+ou si elle correspond exactement à une option définie.
+Une option longue peut prendre un argument, de la forme
+<B>--arg=param</B>
+
+ou
+<B>--arg param</B>.
+
+<P>
+
+<I>longopts</I>
+
+est un pointeur sur le premier élément d'un tableau de structures
+<B>struct option</B>
+
+déclarées dans
+<B>&lt;<A HREF="file:///usr/include/getopt.h">getopt.h</A>&gt;</B>
+
+ainsi :
+<PRE>
+
+struct option {
+const char *name;
+int has_arg;
+int *flag;
+int val;
+};
+</PRE>
+
+<P>
+
+La signification des différents champs est la suivante :
+<DL COMPACT>
+<DT><I>name</I>
+
+<DD>
+est le nom de l'option longue.
+<DT><I>has_arg</I>
+
+<DD>
+vaut :
+<B>no_argument</B> (ou 0), si l'option ne prend pas d'argument, 
+<B>required_argument</B> (ou 1) si l'option prend un argument, ou
+<B>optional_argument</B> (ou 2) si l'option prend un argument optionnel.
+<DT><I>flag</I>
+
+<DD>
+spécifie la manière de renvoyer les résultats pour une option longue. Si
+<I>flag</I> vaut <B>NULL</B>, alors <B>getopt_long()</B> renvoie <I>val</I>.
+(Par exemple le programme appelant peut remplir <I>val</I> avec le caractère
+de l'option courte correspondante). Sinon, <B>getopt_long()</B> renvoie 0, et
+<I>flag</I> pointe sur une variable correspondant à <I>val</I> si l'option est
+trouvée, mais reste inchangé si l'option est absente.
+<DT><I>val</I> <DD>
+est la valeur à renvoyer, ou à charger dans la variable pointée par <I>flag</I>.
+</DL>
+<P>
+
+Le dernier élément de la table doit être rempli avec des zéros.
+<P>
+
+Si <I>longindex</I> n'est pas <B>NULL</B>, il pointe sur une variable qui est
+remplie avec l'index de l'option longue correspondant à 
+<I>longopts</I>.
+
+<P>
+
+<B>getopt_long_only()</B> fonctionne comme <B>getopt_long()</B>, mais `-' tout
+comme `--' indiquent une option longue. Si une option commençant par `-'
+(et non `--') ne correspond pas à une option longue, mais correspond à une
+option courte, elle est analysee en tant qu'option courte.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction
+<B>getopt()</B>
+
+renvoie le caractère de l'option s'il en trouve une,  `:' s'il manque
+un paramètre pour une option, `?' s'il y a un caractère inconnu, et
+<B>EOF</B> (-1) à la fin de la liste des options.
+<P>
+
+<B>getopt_long()</B> et <B>getopt_long_only()</B> renvoient également le
+caractère d'option courte s'ils en trouvent une. Pour les options longues,
+ils renvoient <I>val</I> si <I>flag</I> vaut <B>NULL</B>, et 0 sinon.
+Les erreurs et la fin des options sont gérées comme avec <B>getopt()</B>,
+en renvoyant de surcroît `?' pour une correspondance ambiguë, ou un
+paramètre en trop.
+<A NAME="lbAF">&nbsp;</A>
+<H2>VARIABLES D'ENVIRONNEMENT</H2>
+
+<DL COMPACT>
+<DT><FONT SIZE="-1"><B>POSIXLY_CORRECT</B>
+
+</FONT>
+<DD>
+Si cette variable est positionnée, l'analyse s'arrête dès qu'un
+argument ne constituant pas une option est rencontré.
+<DT><FONT SIZE="-1"><B>_&lt;PID&gt;_GNU_nonoption_argv_flags_</B>
+
+</FONT>
+<DD>
+Cette variable est utilisée par
+<B>bash</B>
+
+2.0 pour communiquer à la libc GNU quels arguments sont le résultat
+de l'expansion des caractères génériques, et ne doivent pas être considérés
+comme des options. Ce comportement à été supprimé de
+<B>bash</B>
+
+version 2.01, mais il est toujours supporté par la libc GNU.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+Le programme suivant illustre l'utilisation de
+<B>getopt_long()</B>
+
+avec la plupart de ses fonctionnaliteé.
+<PRE>
+
+#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;     /* for printf */
+#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;    /* for exit */
+#include &lt;<A HREF="file:///usr/include/getopt.h">getopt.h</A>&gt;
+
+int
+main (argc, argv)
+     int argc;
+     char **argv;
+{
+  int c;
+  int digit_optind = 0;
+
+  while (1)
+    {
+      int this_option_optind = optind ? optind : 1;
+      int option_index = 0;
+      static struct option long_options[] =
+      {
+        {&quot;add&quot;, 1, 0, 0},
+        {&quot;append&quot;, 0, 0, 0},
+        {&quot;delete&quot;, 1, 0, 0},
+        {&quot;verbose&quot;, 0, 0, 0},
+        {&quot;create&quot;, 1, 0, 'c'},
+        {&quot;file&quot;, 1, 0, 0},
+        {0, 0, 0, 0}
+      };
+
+      c = getopt_long (argc, argv, &quot;abc:d:012&quot;,
+                       long_options, &amp;option_index);
+      if (c == -1)
+        break;
+
+      switch (c)
+        {
+        case 0:
+          printf (&quot;option %s&quot;, long_options[option_index].name);
+          if (optarg)
+            printf (&quot; avec argument %s&quot;, optarg);
+          printf (&quot;\n&quot;);
+          break;
+
+        case '0':
+        case '1':
+        case '2':
+          if (digit_optind != 0 &amp;&amp; digit_optind != this_option_optind)
+            printf (&quot;chiffre dans deux arguments.\n&quot;);
+          digit_optind = this_option_optind;
+          printf (&quot;option %c\n&quot;, c);
+          break;
+
+        case 'a':
+          printf (&quot;option a\n&quot;);
+          break;
+
+        case 'b':
+          printf (&quot;option b\n&quot;);
+          break;
+
+        case 'c':
+          printf (&quot;option c de valeur `%s'\n&quot;, optarg);
+          break;
+
+        case 'd':
+          printf (&quot;option d de valeur `%s'\n&quot;, optarg);
+          break;
+
+        case '?':
+          break;
+
+        default:
+          printf (&quot;?? caractère de code 0%o ??\n&quot;, c);
+        }
+    }
+
+  if (optind &lt; argc)
+    {
+      printf (&quot;Arguments ne constituant pas des options: &quot;);
+      while (optind &lt; argc)
+      printf (&quot;%s &quot;, argv[optind++]);
+      printf (&quot;\n&quot;);
+    }
+
+  exit (0);
+}
+</PRE>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Les spécifications POSIX.2 de
+<B>getopt()</B>
+
+contiennent une erreur technique décrite dans POSIX.2 interprétation 150.
+L'implémentation GNU (et probablement toutes les autres) adopte un
+comportement correct différent de la spécification.
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<DL COMPACT>
+<DT><B>getopt()</B>:<DD>
+POSIX.2, à condition que la variable d'environnement POSIXLY_CORRECT soit positionnée.
+Sinon, les éléments de <I>argv</I> ne sont pas vraiment constants puisque l'on peut
+les permuter. On les déclare 'const' dans le prototype pour être compatible avec
+d'autres systèmes.
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">VARIABLES D'ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAG">EXEMPLE</A><DD>
+<DT><A HREF="#lbAH">BOGUES</A><DD>
+<DT><A HREF="#lbAI">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:36 GMT, February 11, 2014
+</BODY>
+</HTML>

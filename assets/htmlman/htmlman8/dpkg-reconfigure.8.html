@@ -1,0 +1,126 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DPKG-RECONFIGURE.FR.8</TITLE>
+</HEAD><BODY>
+<H1>DPKG-RECONFIGURE.FR.8</H1>
+Section: User Contributed Perl Documentation (1)<BR>Updated: 2003-02-14<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+<A NAME="ixAAC"></A>
+dpkg-reconfigure - reconfigure un paquet déjà installé
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<A NAME="ixAAD"></A>
+
+
+<PRE>
+ dpkg-reconfigure [options] paquets
+
+</PRE>
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<A NAME="ixAAE"></A>
+<B>dpkg-reconfigure</B> reconfigure les paquets après qu'ils ont déjà été
+installés. Donnez-lui le nom d'un ou plusieurs paquets à reconfigurer.
+<P>
+
+Au fond, cela a le même effet que la réinstallation du paquet. J'espère qu'un
+jour cela sera appelé par dpkg --reconfigure
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<A NAME="ixAAF"></A>
+<DL COMPACT>
+<DT><B>-f</B><I>type</I>, <B>--frontend=</B><I>type</I><DD>
+<A NAME="ixAAG"></A>
+Sélectionne l'interface à utiliser. L'interface par défaut peut être fixée de
+façon permanente par&nbsp;:
+
+
+<P>
+
+
+
+
+<PRE>
+ dpkg-reconfigure debconf
+
+</PRE>
+
+
+
+
+<P>
+
+
+Remarquez que si vous avez paramétré debconf pour utiliser par défaut
+l'interface non interactive, dpkg-reconfigure utilisera l'interface dialog à la
+place et vous devrez réellement reconfigurer le paquet.
+<DT><B>-p</B><I>valeur</I>, <B>--priority=</B><I>valeur</I><DD>
+<A NAME="ixAAH"></A>
+Spécifie la priorité minimum des questions qui seront affichées.
+Normalement, dpkg-reconfigure affiche les questions à priorité basse sans
+tenir compte de votre priorité par défaut.
+<DT><B>--default-priority</B><DD>
+<A NAME="ixAAI"></A>
+Utiliser la priorité par défaut, au lieu de forcer la priorité à low.
+<DT><B>--all</B><DD>
+<A NAME="ixAAJ"></A>
+Reconfigure tous les paquets installés utilisant debconf. Attention&nbsp;: cela
+peut prendre beaucoup de temps.
+<DT><B>-u</B>, <B>--unseen-only</B><DD>
+<A NAME="ixAAK"></A>
+Par défaut, toutes les questions sont affichées, même si vous y avez déjà
+répondu. Cependant, si ce paramètre est activé, seules les questions qui
+n'ont pas été affichées seront posées.
+<DT><B>--force</B><DD>
+<A NAME="ixAAL"></A>
+Force dpkg-reconfigure à reconfigurer un paquet même si celui-ci est dans un
+état contradictoire ou cassé. Utilisez ce paramètre avec précaution.
+<DT><B>-h</B>, <B>--help</B><DD>
+<A NAME="ixAAM"></A>
+Affiche un message d'aide.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<A NAME="ixAAN"></A>
+<I><A HREF="/cgi-bin/man/man2html?7+debconf">debconf</A></I>(7)
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<A NAME="ixAAO"></A>
+Joey Hess &lt;<A HREF="mailto:joeyh@debian.org">joeyh@debian.org</A>&gt;
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+<A NAME="ixAAP"></A>
+Julien Louis &lt;<A HREF="mailto:leonptitlouis@ifrance.com">leonptitlouis@ifrance.com</A>&gt;
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAG">AUTEUR</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:03 GMT, February 11, 2014
+</BODY>
+</HTML>

@@ -1,0 +1,304 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DLOPEN</TITLE>
+</HEAD><BODY>
+<H1>DLOPEN</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+dlclose, dlerror, dlopen, dlsym - Interface de programmation pour le chargeur de bibliothèques dynamiques.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/dlfcn.h">dlfcn.h</A>&gt;</B>
+
+<P>
+<B>void * dlopen (const char * </B><I>filename</I><B>, int </B><I>flag</I><B>);</B>
+
+<BR>
+
+<B>const char * dlerror(void);</B>
+
+<BR>
+
+<B>void * dlsym (void * </B><I>handle</I><B>, char * </B><I>symbol</I><B>);</B>
+
+<BR>
+
+<B>int dlclose (void * </B><I>handle</I><B>);</B>
+
+<P>
+Symboles spéciaux :
+<B>_init</B>, <B>_fini</B>.
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>dlopen</B>
+
+charge une bibliothèque dynamique depuis le fichier dont le nom est fourni dans la chaîne
+<I>filename</I>
+
+(terminée par un caractère nul) et renvoie un descripteur opaque 
+<I></I>(<I>handle</I>)
+
+représentant la bibliothèque dynamique.
+Si le nom
+<I>filename</I>
+
+n'est pas un chemin absolu (commençant pas un &quot;/&quot;), le fichier est recherché aux endroits suivants :
+<DL COMPACT><DT><DD>
+<P>
+
+La liste des répertoires (séparés par des deux-points) contenue dans la variable d'environnement <B>LD_LIBRARY_PATH</B>.
+<P>
+
+La liste des bibliothèques mémorisées dans <I>/etc/ld.so.cache</I>.
+<P>
+
+<I>/lib</I>, puis <I>/usr/lib</I>.
+</DL>
+
+<P>
+
+Si l'argument
+<I>filename</I>
+
+est un pointeur NULL, le descripteur renvoyé correspond au programme principal.
+<P>
+
+Les références externes de la bibliothèque sont résolues en utilisant les bibliothèqujes
+mentionnées dans sa liste de dépendances, et toutes les autres bibliothèques éventuellement
+ouvertes auparavant avec l'attribut
+<B>RTLD_GLOBAL</B>.
+
+Si l'édition des liens de l'exécutable a été faite avec l'option &quot;-rdynamic&quot;, alors
+ses symboles globaux seront également employés pour résoudre les références de
+la bibliothèque chargée dynamiquement.
+<P>
+
+L'attribut
+<I>flag</I>
+
+doit être soit
+<B>RTLD_LAZY</B>,
+
+indiquant que la résolution des symboles aura lieu lorsque le code sera exécuté, soit
+<B>RTLD_NOW</B>,
+
+demandant la résolution de tous les symboles indéfinis avant le retour de
+<B>dlopen</B>
+
+et l'échec de cette routine si c'est impossible.
+En option, on peut ajouter (avec un OU binaire) l'attribut
+<B>RTLD_GLOBAL</B>
+
+rendant les symboles externes de la bibliothèque disponible pour les bibliothèques
+chargées ultérieurement.
+<P>
+
+Si la bibliothèque exporte une routine nommée
+<B>_init</B>,
+
+alors ce code sera exécuté avant le retour de
+<B>dlopen()</B>.
+
+Au cas où vous voudriez éviter le lien avec les fichiers de démarrage du système,
+vous pouvez préciser le paramètre &quot;-nostartfiles&quot; sur la ligne de commande
+de gcc.
+<P>
+
+Si la même bibliothèque est chargée deux fois avec
+<B>dlopen()</B>,
+
+le même descripteur sera renvoyé. Un compte du nombre de chargements est toutefois
+conservé afin d'éviter de la décharger avant que la fonction
+<B>dlclose()</B>
+
+n'ait été appelée autant de fois que
+<B>dlopen()</B>
+
+a réussi.
+<P>
+
+Si
+<B>dlopen()</B>
+
+échoue pour une raison quelconque, elle renvoie NULL.
+Une chaîne de caractères en clair, décrivant la dernière erreur rencontrée dans une
+routine dlopen(), dlsym() ou dlclose() peut être récupérée en appelant
+<B>dlerror()</B>.
+
+La fonction
+<B>dlerror()</B>
+
+renvoie NULL si aucune erreur ne s'est produite depuis l'initialisation ou depuis
+sa dernière invocation (si on appelle deux fois de suite
+<B>dlerror</B>(),
+
+le second appel donnera toujours NULL).
+<P>
+La fonction
+<B>dlsym()</B>
+
+prend un descripteur de bibliothèque dynamique renvoyée par
+<B>dlopen</B>()
+
+et un nom de symbole terminé par un caractère nul, et renvoie l'adresse où ce symbole a été chargé.
+Si le symbole n'est pas trouvé, 
+<B>dlsym()</B>
+
+renvoie NULL. Toutefois la bonne manière de vérifier si une erreur s'est produite dans
+<B>dlsym()</B>
+
+est d'examiner le résultat de
+<B>dlerror()</B>
+
+(en le sauvegardant dans une variable). En effet, le symbole peut avoir légitimement la valeur NULL
+sans qu'une erreur ne se soit produite.
+Le fait de sauvegarder le résultat de
+<B>dlerror()</B>
+
+dans une variable pour examiner s'il est NULL est indispensable, car un second appel pour afficher
+l'erreur renverrait toujours NULL.
+<P>
+
+Il y a deux pseudo-handles spéciaux
+<B>RTLD_DEFAULT</B>
+
+et
+<B>RTLD_NEXT</B>.
+
+le premier recherche la première occurrence du symbole désiré en utilisant
+l'ordre de recherche des bibliothèques par défaut. Le second, qui ne peut
+servir que pour une bibliothèque dynamique, recherchera l'occurrence suivante,
+d'une fonction à partir de la bibliothèque en cours.
+Ceci permet de fournir un encadrement pour une fonction se trouvant
+dans une autre bibliothèque partagée.
+<P>
+
+La fonction
+<B>dlclose()</B>
+
+décrémente le nombre de références sur la bibliothèque dynamique dont le descripteur est
+<I>handle</I>.
+
+Si ce nombre descend à zéro et si aucune autre bibliothèque n'emploie des symboles exportés
+par celle-ci, elle est déchargée. Si la bibliothèque exporte une routine nommée
+<B>_fini</B>,
+
+alors elle est appelée juste avant le déchargement.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+<B>dlclose</B>
+
+renvoie zéro si elle réussi ou une valeur non-nulle en cas d'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>EXEMPLE</H2>
+
+<B>Charger la bibliothèque mathématique et afficher le cosinus de 2.0&nbsp;:</B>
+
+<DL COMPACT><DT><DD>
+<PRE>
+#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;
+#include &lt;<A HREF="file:///usr/include/dlfcn.h">dlfcn.h</A>&gt;
+ 
+int main(int argc, char **argv) {
+    void *handle;
+    double (*cosine)(double);
+    char *error;
+ 
+    handle = dlopen (&quot;/lib/libm.so&quot;, RTLD_LAZY);
+    if (!handle) {
+        fputs (dlerror(), stderr);
+        <A HREF="/cgi-bin/man/man2html?1+exit">exit</A>(1);
+    }
+ 
+    cosine = dlsym(handle, &quot;cos&quot;);
+    if ((error = dlerror()) != NULL)  {
+        fprintf (stderr, &quot;%s\n&quot;, error);
+        <A HREF="/cgi-bin/man/man2html?1+exit">exit</A>(1);
+    }
+ 
+    printf (&quot;%f\n&quot;, (*cosine)(2.0));
+    dlclose(handle);
+} 
+</PRE>
+
+</DL>
+
+<P>
+
+Supposons que le programme s'appelle &quot;foo.c&quot;, on doit le compiler ainsi&nbsp;:
+<DL COMPACT><DT><DD>
+<P>
+
+gcc -rdynamic -o foo foo.c -ldl
+</DL>
+
+<P>
+
+Une bibliothèque (disons bar.c) qui exporte _init() et _fini() sera compilée
+comme suit&nbsp;:
+<DL COMPACT><DT><DD>
+<P>
+
+gcc -shared -nostartfiles -o bar bar.c
+</DL>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Les symboles RTLD_DEFAULT et RTLD_NEXT sont définis dans
+<I>&lt;<A HREF="file:///usr/include/dlfcn.h">dlfcn.h</A>&gt;</I>
+
+seulement si _GNU_SOURCE a été définie avant l'inclusion.
+<A NAME="lbAH">&nbsp;</A>
+<H2>HISTORIQUE</H2>
+
+L'interface standard dlopen provient de SunOS.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+ld">ld</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ld.so">ld.so</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ldconfig">ldconfig</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?1+ldd">ldd</A></B>(1),
+
+<B>ld.so.info</B>
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2000-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">EXEMPLE</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">HISTORIQUE</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:41 GMT, February 11, 2014
+</BODY>
+</HTML>

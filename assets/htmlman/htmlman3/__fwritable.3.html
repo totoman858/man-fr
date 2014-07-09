@@ -1,0 +1,197 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STDIO_EXT</TITLE>
+</HEAD><BODY>
+<H1>STDIO_EXT</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+__fbufsize, __flbf, __fpending, __fpurge, __freadable, __freading, __fsetlocking, __fwritable, __fwriting, _flushlbf - Interfaces pour la structure FILE (stdio)
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdio.h">stdio.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="file:///usr/include/stdio_ext.h">stdio_ext.h</A>&gt;</B>
+
+<P>
+<B>size_t __fbufsize(FILE *</B><I>stream</I><B>);</B>
+
+<BR>
+
+<B>size_t __fpending(FILE *</B><I>stream</I><B>);</B>
+
+<BR>
+
+<B>int __flbf(FILE *</B><I>stream</I><B>);</B>
+
+<BR>
+
+<B>int __freadable(FILE *</B><I>stream</I><B>);</B>
+
+<BR>
+
+<B>int __fwritable(FILE *</B><I>stream</I><B>);</B>
+
+<BR>
+
+<B>int __freading(FILE *</B><I>stream</I><B>);</B>
+
+<BR>
+
+<B>int __fwriting(FILE *</B><I>stream</I><B>);</B>
+
+<BR>
+
+<B>int __fsetlocking(FILE *</B><I>stream</I><B>, int </B><I>type</I><B>);</B>
+
+<BR>
+
+<B>void _flushlbf(void);</B>
+
+<BR>
+
+<B>void __fpurge(FILE *</B><I>stream</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Solaris a introduit des routines afin de permettre des accès portables
+aux composants internes de la structure FILE. La glibc a également implanté
+ces routines.
+<P>
+
+La fonction
+<B>__fbufsize()</B>
+
+renvoie la taille du tampon actuellement utilisé par 
+le flux considéré.
+<P>
+
+La fonction 
+<B>__fpending()</B>
+
+renvoie le nombre d'octets du tampon de sortie.
+Pour les flux orienté caractères larges, l'unité est le
+caractère large. Cette fonction n'est pas définie pour
+les tampons en mode lecture, ou bien ouverts en lecture seule.
+<P>
+
+La fonction 
+<B>__flbf()</B>
+
+renvoie une valeur différente de zéro si le flux a un buffer de ligne, 
+sinon, elle renvoie zéro.
+<P>
+
+La fonction 
+<B>__freadable()</B>
+
+renvoie une valeur différente de zéro si le flux peut être lu, 
+sinon, elle renvoie zéro.
+<P>
+
+La fonction 
+<B>__fwritable()</B>
+
+renvoie une valeur différente de zéro si l'on peut écrire dans le flux, 
+sinon, elle renvoie zéro.
+<P>
+
+La fonction 
+<B>__freading()</B>
+
+renvoie une valeur différente de zéro si le flux est en lecture seule,
+ou bien si la dernière opération sur le flux était une lecture,
+sinon, elle renvoie zéro.
+<P>
+
+La fonction 
+<B>__fwriting()</B>
+
+renvoie une valeur différente de zéro si le flux est en écriture seule,
+ou bien si la dernière opération sur le flux était une écriture,
+sinon, elle renvoie zéro.
+<P>
+
+La fonction
+<B>__fsetlocking()</B>
+
+peut être utilisée afin de sélectionner le type de verrouillage 
+souhaité sur le flux.
+Elle renvoie le type courant. Le paramètre 
+<I>type</I>
+
+peut prendre les trois valeurs suivantes :
+<DL COMPACT>
+<DT><B>FSETLOCKING_INTERNAL</B>
+
+<DD>
+réalise un verrouillage implicite sur toutes les opérations affectant 
+le flux considéré (à l'exception de fonctions nommées *_unlocked).
+Il s'agit du comportement par défaut.
+<DT><B>FSETLOCKING_BYCALLER</B>
+
+<DD>
+l'appelant prendra en charge le verrouillage (en utilisant 
+potentiellement 
+<B><A HREF="/cgi-bin/man/man2html?3+flockfile">flockfile</A></B>(3)
+
+dans le cas où il y a plusieurs threads), et les routines d'entrées
+sorties standards n'effectueront plus aucun verrouillage jusqu'à
+ce que l'état soit rétabli à  FSETLOCKING_INTERNAL.
+<DT><B>FSETLOCKING_QUERY</B>
+
+<DD>
+ne change pas le type de verrouillage. (le renvoie seulement.)
+</DL>
+<P>
+
+La fonction 
+<B>_flushlbf()</B>
+
+vide tous les flux à buffer de ligne. (Sans doute de sorte que
+la sortie d'un terminal soit écrite. Par exemple, avant de lire une entrée 
+sur le clavier.)
+<P>
+
+La fonction 
+<B>__fpurge()</B>
+
+permet de se débarrasser du contenu du tampon de flux.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+flockfile">flockfile</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+fpurge">fpurge</A></B>(3)
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Stéphan Rafin, 2002.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAF">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:11 GMT, February 11, 2014
+</BODY>
+</HTML>

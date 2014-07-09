@@ -1,0 +1,539 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of ZIC</TITLE>
+</HEAD><BODY>
+<H1>ZIC</H1>
+Section: Manuel de l'administrateur Linux (8)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+zic - Compilation des informations de fuseau horaire.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>zic</B>
+
+[
+<B>-v</B>
+
+] [
+<B>-d</B>
+
+<I>répertoire</I>
+
+] [
+<B>-l</B>
+
+<I>heure_locale</I>
+
+] [
+<B>-p</B>
+
+<I>règles_posix</I>
+
+] [
+<B>-L</B>
+
+<I>fichier_secondes_rattrapages</I>
+
+] [
+<B>-s</B>
+
+] [
+<B>-y</B>
+
+<I>commande</I>
+
+] [
+<I>fichier</I>
+
+... ]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+
+
+
+
+<I>Zic</I>
+
+lit le texte dans les fichiers indiqués sur la ligne de commande et
+crée les fichiers d'information pour les conversions horaires indiqués
+dans son entrée.
+Si un nom de
+<I>fichier</I>
+
+est
+<B>-</B>,
+
+on lit l'entrée standard à sa place.
+<P>
+
+Les options disponibles sont&nbsp;:
+<DL COMPACT>
+<DT><B>-d </B><I>répertoire</I>
+
+<DD>
+Crée les fichiers d'informations pour les conversions horaires dans
+le répertoire indiqué plutôt que dans le répertoire standard
+indiqué plus bas.
+<DT><B>-l </B><I>fuseau_horaire</I>
+
+<DD>
+Utiliser le fuseau horaire indiqué comme heure locale.
+<I>Zic</I>
+
+agira comme si l'entrée contenait une ligne de lien de la forme
+<P>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Link<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><I>fuseau_horaire</I><TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>heure_locale<BR>
+<DT><B>-p </B><I>fuseau_horaire</I>
+
+<DD>
+Utiliser les règles de conversion horaire du fuseau indiqué lors
+de la gestion des variables d'environnement horaires POSIX.
+<I>Zic</I>
+
+agira comme si l'entrée contenait une ligne de lien de la forme
+<P>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Link<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT><I>fuseau_horaire</I><TT>&nbsp;&nbsp;</TT><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>règles_posix<BR>
+<DT><B>-L </B><I>fichier_secondes_rattrapage</I>
+
+<DD>
+Lire les informations concernant les secondes supplémentaires
+de rattrapage périodique à partir du fichier indiqué.
+Si cette option n'est pas indiquée, aucune seconde de rattrapage
+ne sera prise en compte dans les fichiers de sortie.
+<DT><B>-v</B>
+
+<DD>
+Refuser qu'une année indiquée dans le fichier de données soit en
+dehors de l'intervalle représentable par les valeurs de
+<I><A HREF="/cgi-bin/man/man2html?2+time">time</A></I>(2).
+
+<DT><B>-s</B>
+
+<DD>
+Limiter les valeurs de temps stockées dans les fichiers de sortie aux valeurs
+qui sont identiques en stockage signé et non-signé. Cette option permet
+d'engendrer des fichiers compatibles SVVS.
+<DT><B>-y </B><I>commande</I>
+
+<DD>
+Utiliser la
+<I>commande</I>
+
+plutôt que
+<B>yearistype</B>
+
+pour vérifier les types d'années (voir plus bas).
+</DL>
+<P>
+
+Les lignes d'entrées sont composées de champs, séparés les uns des autres
+par un nombre quelconque de caractères blancs. Les espaces en début et
+fin de ligne sont ignorées.
+Un caractère dièse (#) non protégé en entrée introduit un commentaire qui
+s'étend jusqu'à la fin de la ligne où il apparaît.
+Les caractères blancs et les dièses peuvent être inclus entre guillemets (&quot;)
+lorsqu'ils doivent faire partie d'un champ.
+Toute ligne vide (après suppression des commentaires) est ignorée.
+Les lignes non-vides peuvent être de trois types :
+les lignes de règle, de zone, et de lien.
+<P>
+
+Une ligne de règle a la forme&nbsp;:
+<PRE>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+Rule  NAME  FROM  TO    TYPE  IN   ON       AT    SAVE  LETTER/S
+
+Par exemple&nbsp;:
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Rule  US    1967  1973  -     Apr  lastSun  2:00  1:00  D
+
+</PRE>
+
+Les champs composant une ligne de règle sont&nbsp;:
+<DL COMPACT>
+<DT><B>NAME</B>
+
+<DD>
+Indiquer le nom (arbitraire) du jeu de règles dont celle-ci fait partie.
+<DT><B>FROM</B>
+
+<DD>
+Donne la première année où la règle s'applique.
+Tout nombre entier correspondant à une année peut être utilisé. On suppose
+qu'il s'agit du calendrier grégorien. Le mot
+<B>minimum</B>
+
+(ou une abréviation) correspond à la plus petite année représentable par
+un entier. Le mot
+<B>maximum</B>
+
+(ou une abréviation) correspond à la plus grande année représentable par
+un entier.
+Les règles peuvent décrire des dates qui ne soient pas représentables par
+des valeurs de type <I>time</I>. Ceci permet aux règles d'être générales
+quels que soient les types de données employées par la machine hôte.
+<DT><B>TO</B>
+
+<DD>
+Indique l'année finale où la règle s'applique.
+En plus des symboles
+<B>minimum</B>
+
+et
+<B>maximum</B>
+
+(comme précédemment), le mot
+<B>only</B>
+
+(ou une abréviation) permet de ré-utiliser
+la valeur du champ
+<B>FROM</B>
+
+sans avoir à la répéter.
+<DT><B>TYPE</B>
+
+<DD>
+Indique le type des années où la règle s'applique.
+Si le
+<B>TYPE</B>
+
+est
+<B>-</B>
+
+alors la règle s'applique pour toutes les années entre
+<B>FROM</B>
+
+et
+<B>TO</B>
+
+comprises.
+Si le
+<B>TYPE</B>
+
+a une autre valeur, alors
+<I>zic</I>
+
+exécute la commande
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<B>yearistype</B> <I>année</I> <I>type</I>
+<BR>
+
+pour vérifier le type de l'année :
+un code de sortie nul indique l'année indiquée est du type considéré, un
+code de sortie valant 1 signifie que l'année n'est pas de ce type.
+<DT><B>IN</B>
+
+<DD>
+Indique le mois où la règle prend effet. Les noms de mois peuvent être
+abrégés.
+<DT><B>ON</B>
+
+<DD>
+Indique le jour où la règle s'applique. Les formes acceptées comprennent :
+<PRE>
+
+
+5        Le 5 du mois
+lastSun  le dernier Dimanche du mois
+lastMon  le dernier Lundi du mois
+Sun&gt;=8   Le premier Dimanche après le 8
+Sun&lt;=25  Le dernier Dimanche avant le 25
+</PRE>
+
+
+<P>
+Les noms des jours de semaine peuvent être abrégés.
+Il ne doit pas y avoir d'espace au sein du champ
+<B>ON</B>.
+
+<DT><B>AT</B>
+
+<DD>
+Indique l'heure à laquelle la règle s'applique. Diverses
+formes sont possibles :
+<PRE>
+
+
+2        L'heure
+2:00     L'heure et les minutes
+15:00    Un format sur 24 heures
+1:28:14  Heure, minutes, et secondes
+-      équivalent à 0
+</PRE>
+
+
+<P>
+l'heure peut valoir 0 à minuit au début de la journée, ou 24
+à minuit à la fin de la journée. N'importe quelle forme ci-dessus
+peut être suivie des lettres
+<B>w</B>
+
+si l'heure est locale
+(&quot;wall clock&quot; = &quot;horloge sur le mur&quot;),
+<B>s</B>
+
+s'il s'agit de l'heure locale standard,
+<B>u</B>
+
+(ou
+<B>g</B>
+
+ou
+<B>z</B>)
+
+s'il s'agit de l'heure universelle. Sans indicateur
+on suppose que c'est l'heure locale (w).
+<DT><B>SAVE</B>
+
+<DD>
+Indique la quantité horaire à ajouter à l'heure locale lorsque la règle agit.
+Ce champ a le même format que le champ
+<B>AT</B>
+
+(sauf que les suffixes
+<B>w</B>
+
+et
+<B>s</B>
+
+ne sont évidemment pas utilisés).
+<DT><B>LETTER/S</B>
+
+<DD>
+Indique la
+
+de l'abréviation du fuseau horaire
+(par exemple,
+
+ou
+
+dans
+
+ou
+
+lorsque la règle est en fonction.
+Si ce champ vaut
+<B>-</B>,
+
+la partie variable est nulle.
+</DL>
+<P>
+
+Une ligne de zone a la forme
+<P>
+<PRE>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Zone  NAME                GMTOFF  RULES/SAVE  FORMAT  [UNTIL]
+
+Par exemple:
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Zone                 Australia/Adelaide  9:30    AusCST1971 Oct 31 2:00
+
+</PRE>
+
+Les champs constituant une ligne de zone sont les suivants&nbsp;:
+<DL COMPACT>
+<DT><B>NAME</B>
+
+<DD>
+Le nom du fuseau horaire.
+Il s'agit du nom utilisé pour la création du fichier de données de conversions
+temporelles pour cette zone.
+<DT><B>GMTOFF</B>
+
+<DD>
+La quantité de temps à ajouter au temps universel UTC pour obtenir l'heure
+standard dans la zone. Ce champ a le même format que les champs
+<B>AT</B>
+
+et
+<B>SAVE</B>
+
+des lignes de règles. On peut commencer le champ avec un signe moins (-) si
+la quantité doit être soustraite de l'UTC.
+<DT><B>RULES/SAVE</B>
+
+<DD>
+Les noms des règles qui s'appliquent dans cette zone, ou bien
+la quantité horaire à ajouter au temps local standard de la zone.
+Si ce champ est
+<B>-</B>
+
+alors l'heure standard s'applique toujours dans cette zone.
+<DT><B>FORMAT</B>
+
+<DD>
+Le format pour l'abréviation du fuseau horaire dans cette zone.
+Les deux caractères
+<B>%s</B>
+
+servent à indiquer où placer la
+
+de l'abréviation du fuseau.
+Éventuellement, un slash (/) peut séparer les abréviations
+standard et d'heure d'été.
+<DT><B>UNTIL</B>
+
+<DD>
+Le moment où change le décalage par rapport à l'UTC. 
+Ce moment est indiqué sous la forme d'une année, un mois, un jour, et
+une heure. S'il est spécifié, les informations pour le fuseau horaire
+seront créées à partir de la règle, ou du décalage UTC jusqu'au moment
+indiqué. Les valeurs doivent avoir le même format que pour les colonnes
+IN, ON, et AT d'une règle. Les colonnes suivantes peuvent être omises.
+<DT><DD>
+La ligne suivante doit être une ligne de
+
+qui a la même forme qu'une ligne de zone, sauf que la chaîne
+
+et le nom sont absents. Cette ligne de continuation va placer les informations
+commençant au moment précisé dans le champ
+<B>UNTIL</B>
+
+de la ligne précédente dans le fichier utilisé par cette dernière.
+Les lignes de continuation peuvent avoir un champ
+<B>UNTIL</B>,
+
+comme les lignes de zones, pour montrer que la ligne suivant est également
+une future continuation.
+</DL>
+<P>
+
+Une ligne de lien a la forme&nbsp;:
+<P>
+<PRE>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Link  LINK-FROM        LINK-TO
+
+Par exemple:
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Link              Europe/IstanbulAsia/Istanbul
+
+</PRE>
+
+Le champ
+<B>LINK-FROM</B>
+
+doit exister sous forme de champ
+<B>NAME</B>
+
+quelque part dans une ligne de zone. Le champ
+<B>LINK-TO</B>
+
+sert d'autre nom pour la zone.
+<P>
+
+A l'exception des lignes de continuation, toutes les autres lignes
+peuvent apparaître dans n'importe quel ordre.
+<P>
+
+Les lignes dans les fichiers qui décrivent les secondes de rattrapage
+périodique doivent avoir la forme&nbsp;:
+<PRE>
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+Leap  YEAR  MONTH  DAY  HH:MM:SS  CORR  R/S
+
+Par exemple&nbsp;:
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Leap  1974  Dec    31   23:59:60  +     S
+
+</PRE>
+
+Les champs
+<B>YEAR</B>,
+
+<B>MONTH</B>,
+
+<B>DAY</B>,
+
+et
+<B>HH:MM:SS</B>
+
+indique le moment où la seconde de rattrapage apparaît.
+Le champ
+<B>CORR</B>
+
+doit contenir un
+
+si une seconde est ajoutée
+ou un
+
+si une seconde disparaît.
+Le champ
+<B>R/S</B>
+
+doit être
+<I>Stationary</I>
+
+(ou une abréviation) si l'instant indiqué par les autres champs doit être
+interprété comme une heure UTC, ou bien 
+<I>Rolling</I>
+
+(ou une abréviation) si l'instant est en heure locale.
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTE</H2>
+
+Pour les zones ayant plus de deux types d'heure locale, il peut être nécessaire
+d'utiliser l'heure locale standard dans le champ
+<B>AT</B>
+
+de la première règle de transition pour s'assurer que la première
+heure de transition du fichier compilé soit correcte.
+<A NAME="lbAF">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/usr/local/etc/zoneinfo<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TT>répertoire standard pour les fichiers créés.<BR>
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+newctime">newctime</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+tzfile">tzfile</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+zdump">zdump</A></B>(8)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1999-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTE</A><DD>
+<DT><A HREF="#lbAF">FICHIERS</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

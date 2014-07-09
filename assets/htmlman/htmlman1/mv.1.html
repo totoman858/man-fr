@@ -1,0 +1,292 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of MV</TITLE>
+</HEAD><BODY>
+<H1>MV</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 25 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+mv - Déplacer ou renommer des fichiers.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>mv [</B><I>option...</I><B>] </B><I>source cible</I>
+
+<BR>
+
+<B>mv [</B><I>option...</I><B>] </B><I>source... cible</I>
+
+<P>
+Options POSIX:
+<B>[-fi] [--]</B>
+
+<P>
+Options GNU (formes courtes) :
+<B>[-bfiuv] [-S</B><I>suffixe</I><B>] [-V {numbered,existing,simple}] </B>
+
+<B>[--help] [--version] [--]</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>mv </B>
+
+déplace ou renomme des fichiers ou des répertoires.
+<P>
+
+Si le dernier argument est le nom d'un répertoire existant,
+<B>mv</B>
+
+placera tous les autres fichiers à l'intérieur de ce répertoire,
+en conservant leurs noms.
+Sinon, s'il n'y a que deux fichiers indiqués, il renommera le
+premier pour remplacer le second.
+Une erreur se produit s'il y a plus de deux fichiers indiqués et si le
+dernier argument n'est pas un répertoire.
+<P>
+
+Ainsi, `mv /a/x/y /b' va renommer le fichier /a/x/y en /b/y si /b était
+un répertoire déjà existant, et en /b sinon.
+<P>
+
+Appelons
+<I>destination</I>
+
+le fichier vers lequel un fichier va être déplacé.
+Si la
+<I>destination</I>
+
+existe, et si l'option -i est indiquée ou si la
+<I>destination</I>
+
+n'est pas accessible en écriture ou encore si l'entrée standard est un
+terminal, et si l'option
+<B>-f</B>
+
+n'est pas mentionnée, 
+<B>mv</B>
+
+interrogera l'utilisateur avant de remplacer le fichier. La question est
+affichée sur la sortie d'erreur standard, et la réponse est attendue sur
+l'entrée standard. Le fichier n'est écrasé que si la réponse est affirmative.
+<P>
+
+Lorsque la
+<I>source</I>
+
+et la
+<I>destination</I>
+
+sont sur le même système de fichiers, seul le nom est modifié, les
+propriétaires, modes et horodatages sont conservés. S'ils sont sur deux
+systèmes de fichiers différents, le fichier source est recopié puis effacé.
+<B>mv</B>
+
+copiera si possible les horodatages de modification et d'accès, les identités
+de groupe et de propriétaire, et le mode. Si la copie des identités de groupe
+ou de propriétaire échoue, les bits Set-UID et Set-GID sont effacés dans les
+permissions de la destination.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS POSIX</H2>
+
+<DL COMPACT>
+<DT><B>-f</B>
+
+<DD>
+Écraser les fichiers de destination existants sans demander confirmation
+à l'utilisateur.
+<DT><B>-i</B>
+
+<DD>
+Demander la confirmation pour écraser tout fichier existant. Si la réponse
+ne commence pas par `y' ou `Y', le déplacement n'est pas effectué.
+Si les options -f et -i sont fournies simultanément, la dernière sur la
+ligne de commande a l'avantage.
+<DT><B>--</B>
+
+<DD>
+Fin explicite de la liste des options.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>PARTICULARITÉS GNU</H2>
+
+L'implémentation GNU de
+<B>mv</B>
+
+du paquetage fileutils-3.16 ne sait déplacer que des fichiers réguliers
+entre des systèmes de fichiers différents.
+<A NAME="lbAG">&nbsp;</A>
+<H2>OPTIONS GNU</H2>
+
+<DL COMPACT>
+<DT><B>-f, --force</B>
+
+<DD>
+Écraser les fichiers de destination existants sans demander confirmation
+à l'utilisateur.
+<DT><B>-i, --interactive</B>
+
+<DD>
+Demander la confirmation pour écraser tout fichier existant. Si la réponse
+ne commence pas par `y' ou `Y', le déplacement n'est pas effectué.
+<DT><B>-u, --update</B>
+
+<DD>
+Ne pas déplacer un fichier régulier, qui écraserait un
+fichier destination existant ayant une date de modification plus
+récente.
+<DT><B>-v, --verbose</B>
+
+<DD>
+Afficher le nom des fichiers avant de les déplacer.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>OPTIONS DE SAUVEGARDE GNU</H2>
+
+Les versions GNU des programmes comme
+<B>cp</B>,
+
+<B>mv</B>,
+
+<B>ln</B>,
+
+<B>install</B>
+
+et
+<B>patch</B>
+
+effectueront au besoin une copie de sauvegarde des fichiers à écraser, 
+modifier ou effacer. Ces sauvegardes sont demandées à l'aide de l'option -b.
+La manière de nommer les copies est indiquée par l'option -V. Dans le cas
+où l'on utilise le nom du fichier original suivi d'un suffixe, ce dernier
+est précisé à l'aide de l'option -S.
+<DL COMPACT>
+<DT><B>-b, --backup</B>
+
+<DD>
+Effectuer une copie de secours des fichiers qui doivent être écrasés ou
+effacés.
+<DT><B>-S </B><I>suffixe</I><B>, --suffix=</B><I>suffixe</I>
+
+<DD>
+Utiliser le 
+<I>suffixe</I>
+
+lors des copie de sauvegarde des
+fichiers. Ce suffixe peut également être indiqué par la variable
+d'environnement
+<B>SIMPLE_BACKUP_SUFFIX</B>.
+
+Cette option est prioritaire sur la variable d'environnement.
+Si aucun de ces deux éléments n'est indiqué, le suffixe `~',
+est utilisé par défaut.
+<DT><B>-V </B><I>méthode</I><B>, --version-control=</B><I>méthode</I>
+
+<DD>
+<DL COMPACT><DT><DD>
+Cette option permet d'indiquer le type de sauvegarde à effectuer.
+La
+<I>méthode</I>
+
+peut être : `numbered' (ou `t'), `existing' (ou `nil'), ou `never' (ou 
+`simple'). 
+La variable d'environnement
+<B>VERSION_CONTROL</B>
+
+peut également être employée, mais cette option est prioritaire.
+Si 
+<B>VERSION_CONTROL</B>
+
+n'est pas renseignée, et si cette option n'est pas fournie, le type
+de sauvegarde par défaut est `existing'.
+La valeur de la variable d'environnement
+<B>VERSION_CONTROL</B>
+
+ou de cet argument correspond à la variable
+`version-control' d'Emacs.
+Les valeurs acceptées sont (ainsi que les abréviations uniques) :
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>`t' ou `numbered'<DD>
+Toujours numéroter les sauvegardes.
+<DT>`nil' ou `existing'<DD>
+Numéroter la sauvegarde s'il en existe déjà une, sinon faire une
+sauvegarde simple.
+<DT>`never' ou `simple'<DD>
+Toujours faire une sauvegarde simple.
+</DL>
+</DL>
+</DL>
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H2>OPTIONS STANDARDS GNU</H2>
+
+<DL COMPACT>
+<DT><B>--help</B>
+
+<DD>
+Afficher un message d'aide sur la sortie standard, et se terminer
+normalement. 
+<DT><B>--version</B>
+
+<DD>
+Afficher le numéro de version sur la sortie standard, et se terminer
+normalement. 
+<DT><B>--</B>
+
+<DD>
+Fin explicite de la liste des options.
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>ENVIRONNEMENT</H2>
+
+Les variables LANG, LC_ALL, LC_COLLATE, LC_CTYPE et LC_MESSAGES ont
+leurs significations habituelles. Pour la version GNU, les variables
+SIMPLE_BACKUP_SUFFIX et VERSION_CONTROL configurent les noms des
+fichiers de sauvegarde, comme mentionné plus haut.
+<A NAME="lbAK">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX 1003.2, sauf que les hiérarchies de répertoires ne peuvent pas être
+déplacés entre systèmes de fichiers différents.
+<A NAME="lbAL">&nbsp;</A>
+<H2>NOTES</H2>
+
+Cette page décrit la version de
+<B>mv</B>
+
+rencontrée dans le paquetage fileutils-4.0.
+D'autres versions peuvent varier légèrement.
+<A NAME="lbAM">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS POSIX</A><DD>
+<DT><A HREF="#lbAF">PARTICULARITÉS GNU</A><DD>
+<DT><A HREF="#lbAG">OPTIONS GNU</A><DD>
+<DT><A HREF="#lbAH">OPTIONS DE SAUVEGARDE GNU</A><DD>
+<DT><A HREF="#lbAI">OPTIONS STANDARDS GNU</A><DD>
+<DT><A HREF="#lbAJ">ENVIRONNEMENT</A><DD>
+<DT><A HREF="#lbAK">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAL">NOTES</A><DD>
+<DT><A HREF="#lbAM">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:42 GMT, February 11, 2014
+</BODY>
+</HTML>

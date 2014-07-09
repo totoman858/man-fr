@@ -1,0 +1,177 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of SIGQUEUE</TITLE>
+</HEAD><BODY>
+<H1>SIGQUEUE</H1>
+Section: Manuel du programmeur Linux (2)<BR>Updated: 18 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+sigqueue - Enregistrer un signal et des données pour un processus
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/signal.h">signal.h</A>&gt;</B>
+
+<P>
+<B>int sigqueue(pid_t </B><I>pid</I><B>, int </B><I>sig</I><B>, const union sigval </B><I>valeur</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>sigqueue</B>()
+
+envoie le signal
+<I>sig</I>
+
+au processus indiqué par
+<I>pid</I>.
+
+Les permissions requises pour l'émission du signal sont les même que pour
+<B><A HREF="/cgi-bin/man/man2html?2+kill">kill</A></B>(2).
+
+Comme avec
+<B><A HREF="/cgi-bin/man/man2html?2+kill">kill</A></B>(2),
+
+le signal nul (0) peut servir à vérifier si un processus existe
+avec un PID donné.
+<P>
+
+L'argument
+<I>valeur</I>
+
+sert à indiquer une donnée (soit un entier, soit un pointeur) qui accompagnera
+le signal et se présente avec le type suivant&nbsp;:
+<P>
+
+<PRE>
+union sigval {
+    int   sival_int;
+    void *sival_ptr;
+};
+</PRE>
+
+
+<P>
+Si le processus récepteur a installé un gestionnaire pour le signal avec l'option
+<B>SA_SIGINFO</B>
+
+lors du
+<B><A HREF="/cgi-bin/man/man2html?2+sigaction">sigaction</A></B>(2),
+
+il pourra obtenir la donnée dans le champ
+<I>si_value</I>
+
+de la structure
+<I>siginfo_t</I>
+
+passée en second argument au gestionnaire.
+De plus, le champ
+<I>si_code</I>
+
+de la structure contiendra
+<B>SI_QUEUE</B>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+L'appel
+<B>sigqueue</B>()
+
+renvoie s'il réussit, indiquant que le signal a bien été
+mis dans la file du processus récepteur.
+Sinon il renvoie -1 ete
+<I>errno</I>
+
+contient le code de l'erreur.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>EAGAIN</B>
+
+<DD>
+La limite du nombre de signaux en file a été atteinte.
+(Voir
+<B><A HREF="/cgi-bin/man/man2html?7+signal">signal</A></B>(7)
+
+pour plus d'informations).
+<DT><B>EINVAL</B>
+
+<DD>
+<I>sig</I>
+
+est invalide.
+<DT><B>ESRCH</B>
+
+<DD>
+Il n'y a pas de processus correspondan au
+<I>pid</I>.
+
+<DT><B>EPERM</B>
+
+<DD>
+Le processus n'a pas la permission d'envoyer un signal
+au processus visé.
+(Voir
+<B><A HREF="/cgi-bin/man/man2html?2+kill">kill</A></B>(2)
+
+pour plus d'informations).
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Si l'appel consiste à envoyer un signal au processus qui l'a invoqué,
+et si le signal n'est pas bloqué par le thread appelant, et si aucun autre
+thread ne peut traiter le signal (soit en l'ayant
+débloqué, ou en faisant une attente avec
+<B><A HREF="/cgi-bin/man/man2html?3+sigwait">sigwait</A></B>(3)),
+
+alors au moins quelques signaux seront délivrés au thread appelant avant
+que la fonction ne revienne.
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+POSIX 1003.1-2001
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?2+kill">kill</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigaction">sigaction</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+signal">signal</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?3+sigwait">sigwait</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?7+signal">signal</A></B>(7)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:01 GMT, February 11, 2014
+</BODY>
+</HTML>

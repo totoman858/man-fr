@@ -1,0 +1,173 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of STRTOL</TITLE>
+</HEAD><BODY>
+<H1>STRTOL</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+strtol, strtoll, strtoq - Convertir une chaîne en un entier long.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:///usr/include/stdlib.h">stdlib.h</A>&gt;</B>
+
+<B>long int strtol (const char *</B><I>nptr</I><B>, char **</B><I>endptr</I><B>, int </B><I>base</I><B>);</B>
+
+<B>long long int</B>
+<B>strtoll(const char *</B><I>nptr</I><B>, char **</B><I>endptr</I><B>, int </B><I>base</I><B>);</B>
+</PRE>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction <B>strtol()</B> convertit la chaîne <I>nptr</I> en un entier
+long en fonction de l'argument <I>base</I>, qui doit être dans l'intervalle
+2 a 36 (bornes comprises), ou avoir la valeur spéciale 0.
+<P>
+
+La chaîne peut commencer par un nombre quelconque d'espaces ou de 
+caractères interprétés comme tels par
+<B><A HREF="/cgi-bin/man/man2html?3+isspace">isspace</A></B>(3)<B>.</B>
+
+Un signe éventuel `+' ou `-' peut suivre.
+Si <I>base</I> vaut 0 ou 16, la chaîne peut inclure un préfixe
+`0x' et le nombre sera interprété en base 16. Sinon, une <I>base</I>
+valant zéro est interprétée comme 10 (décimale) sauf si le caractère
+suivant est `0', auquel cas la base est 8 (octale).
+<P>
+
+Le reste de la chaîne est converti en une valeur entière longue, en
+s'arrêtant au premier caractère qui ne soit pas un chiffre valide.
+Dans les bases supérieures a 10, la lettre `A' (majuscule ou minuscule)
+représente 10, `B' represente 11, et ainsi de suite jusqu'à `Z'
+representant 35.
+<P>
+
+Si <I>endptr</I> n'est pas NULL, <B>strtol()</B> stocke l'adresse du premier
+caractère invalide dans <I>*endptr</I>.  S'il n'y avait aucun chiffre valide,
+<B>strtol()</B> stocke la valeur originale de <I>nptr</I> dans
+<I>*endptr</I> (et renvoie 0).
+En particulier, si <I>*nptr</I> n'est pas `\0' et si <I>**endptr</I>
+vaut `\0' en retour, la chaîne entière est valide.
+<P>
+
+La fonction
+<B>strtoll()</B>
+
+travaille comme
+<B>strtol()</B>
+
+mais renvoie une valeur entière de type &quot;long long&quot;.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+La fonction <B>strtol()</B> renvoie le résultat de la conversion, à moins
+qu'un débordement superieur (overflow) ou inférieur (underflow) se produise.
+Si un dépassement inférieur se produit, <B>strtol()</B> renvoie LONG_MIN.
+Si un dépassement supérieur se produit, <B>strtol()</B> renvoie LONG_MAX.
+Dans les deux cas, <I>errno</I> contient le code d'erreur ERANGE.
+La même chose est vraie pour
+<B>strtoll</B>()
+
+avec LLONG_MIN et LLONG_MAX à la place de LONG_MIN et LONG_MAX.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERREURS</H2>
+
+<DL COMPACT>
+<DT><B>ERANGE</B>
+
+<DD>
+La chaîne n'était pas dans l'intervalle acceptable, la valeur a été
+arrondie.
+<DT><B>EINVAL</B>
+
+<DD>
+(pas dans C99)
+La
+<I>base</I>
+
+donnée n'est pas supportée.
+</DL>
+<P>
+
+L'implémentation peut aussi mettre <I>errno</I> à <B>EINVAL</B> si aucune
+conversion n'a été réalisée (pas de chiffres trouvés, et renvoyé zéro).
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Dans des localisations autre que &quot;C&quot;, d'autres chaînes peuvent être
+acceptées. (Par exemple, un signe séparateur de milliers peut être
+accepté).
+<P>
+
+BSD a aussi
+<P>
+
+<PRE>
+<B>quad_t</B>
+<B>strtoq(const char *</B><I>nptr</I><B>, char **</B><I>endptr</I><B>, int </B><I>base</I><B>);</B>
+
+</PRE>
+
+avec une définition exactement analogue. Suivant l'architecture, cela peut
+âtre équivalent à
+<B>strtoll()</B>
+
+ou
+<B>strtol()</B>.
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+<B>strol()</B> :
+
+SVID 3, BSD 4.3, ISO 9899 (C99), POSIX.
+<B>strtoll()</B> :
+
+ISO 9899 (C99) et POSIX-2001.
+<A NAME="lbAI">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+atof">atof</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+atoi">atoi</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+atol">atol</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strtod">strtod</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+strtoul">strtoul</A></B>(3)
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1996-2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">ERREURS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAI">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:19 GMT, February 11, 2014
+</BODY>
+</HTML>

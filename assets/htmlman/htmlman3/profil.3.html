@@ -1,0 +1,108 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of PROFIL</TITLE>
+</HEAD><BODY>
+<H1>PROFIL</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+profil - Suivi du temps d'exécution.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int profil(u_short *</B><I>buffer</I><B>, size_t </B><I>taille_buf</I><B>, size_t </B><I>offset</I><B>, u_int </B><I>echelle</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Cette routine fournit un moyen de détecter les zones où votre programme
+passe l'essentiel de son temps. L'argument
+<I>buffer</I>
+
+pointe sur
+<I>taille_buf</I>
+
+octets de mémoire. Toutes les 10 millisecondes virtuelles, le compteur
+de programme (PC) est examiné. On lui soustrait la valeur
+<I>offset</I>
+
+et le résultat est multiplié par 
+<I>echelle</I>
+
+puis divisé par 65536.
+Si la valeur résultant est inférieure a
+<I>taille_buff</I>,
+
+alors l'élément correspondant du
+<I>buffer</I>
+
+est incrémenté.
+Si
+<I>buffer</I>
+
+est NULL, Le suivi est désactivé.
+<A NAME="lbAE">&nbsp;</A>
+<H2>VALEUR RENVOYÉE</H2>
+
+Cette routine renvoie toujours zéro.
+<A NAME="lbAF">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<B>profil</B>
+
+ne doit pas être invoqué dans les programmes qui
+utilisent des timers
+<B>ITIMER_PROF</B>.
+
+<P>
+Un vrai suivi fourni par le noyau donnerait des résultats plus précis.
+La bibliothèque Libc 4.4 contenait un patch pour implémenter un
+appel système profil dans le noyau.
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+Similaire à un appel de SVr4 (mais pas POSIX.1).
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+gprof">gprof</A></B>(1),
+
+<B><A HREF="/cgi-bin/man/man2html?2+setitimer">setitimer</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+signal">signal</A></B>(2),
+
+<B><A HREF="/cgi-bin/man/man2html?2+sigaction">sigaction</A></B>(2).
+
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 1998-2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">VALEUR RENVOYÉE</A><DD>
+<DT><A HREF="#lbAF">BOGUES</A><DD>
+<DT><A HREF="#lbAG">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:46 GMT, February 11, 2014
+</BODY>
+</HTML>

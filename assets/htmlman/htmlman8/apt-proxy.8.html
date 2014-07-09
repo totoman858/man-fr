@@ -1,0 +1,171 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of apt-proxy</TITLE>
+</HEAD><BODY>
+<H1>apt-proxy</H1>
+Section:  (8)<BR>Updated: septembre 2002<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+apt-proxy - Un mandataire pour économiser de la bande passante sur les serveurs
+Debian.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>apt-proxy</B>
+
+<I>[options] [fichier de log]</I>
+
+<BR>
+
+<P>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>apt-proxy</B> est un script shell avancé conçu pour être lancé en dehors
+d'inetd, et 
+donne un mandataire («&nbsp;proxy&nbsp;») intelligent, propre et cachant pour
+<B>apt-get</B>, qui parle http aux clients apt-get et http, rsync ou ftp aux
+serveur(s) backend(s).
+Il est normalement lancé sur le port 9999, principalement parce que c'est la
+configuration par défaut
+et que les gens sont fainéants.
+<P>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+Les options de la ligne de commande d'apt-proxy sont&nbsp;:
+<DL COMPACT>
+<DT><B>-c &lt;fichier de configuration&gt;</B>
+
+<DD>
+Spécifie quel fichier est utilisé pour la sauvegarde de la configuration, par
+défaut /etc/apt-proxy.conf. 
+<DT><B>-l &lt;fichier de log&gt;</B>
+
+<DD>
+Spécifie le fichier dans lequel les journaux sont enregistrés, par défaut
+/var/log/apt-proxy.
+Le fichier de log peut aussi être spécifié en tant que premier paramètre (non
+optionnel) en ligne de commande.
+<DT><B>-v, --version</B>
+
+<DD>
+Affiche la version du programme.
+<BR>
+
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFIGURATION DU CLIENT</H2>
+
+Une fois <B>apt-proxy</B> configuré, les utilisateurs éditent leur fichier 
+<B>sources.list</B> pour le faire pointer vers le mandataire (qui utilise le
+protocole
+http pour servir les clients) comme décrit ci-dessous&nbsp;:
+<P>
+<PRE>
+deb <A HREF="http://SERVER:9999/main">http://SERVER:9999/main</A> woody main contrib non-free
+deb <A HREF="http://SERVER:9999/non-US">http://SERVER:9999/non-US</A> woody/non-US main contrib non-free
+deb-src <A HREF="http://SERVER:9999/main">http://SERVER:9999/main</A> woody main contrib non-free
+deb-src <A HREF="http://SERVER:9999/non-US">http://SERVER:9999/non-US</A> woody/non-US main contrib non-free
+
+deb <A HREF="http://SERVER:9999/openoffice/">http://SERVER:9999/openoffice/</A> woody main contrib
+</PRE>
+
+<P>
+Le chemin devant être spécifié après le nom du serveur et le numéro de port
+dépend de la configuration d'<B>apt-proxy</B> (qui peut restreindre les chemins 
+et envoyer des chemins différents à différents serveurs). Dans cet exemple,
+non-US/ et openoffice/ récupèrent finalement des fichiers de différents
+serveurs backends. 
+<P>
+<P>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>CONFIGURATION DU SERVEUR</H2>
+
+Voir
+<B><A HREF="/cgi-bin/man/man2html?5+apt-proxy.conf">apt-proxy.conf</A></B>(5)
+
+pour les détails pour configurer apt-proxy pour l'utilisation des backends
+proches de vous.
+<P>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>SOIN ET APPROVISIONNEMENT DE MIROIRS</H2>
+
+<P>
+<B>apt-proxy</B> réduit les nécessités en bande passante des miroirs Debian en
+synchronisant les fichiers Packages non comprimés quand c'est possible (beaucoup
+plus léger que de télécharger le fichier comprimé entier), en restreignant la
+fréquence de mise à jour des fichiers Packages, Releases et Sources à partir du
+backend, en gardant les transferts partiels, et en faisant seulement un unique
+fetch pour chaque fichier, quel que soit le nombre d'utilisateurs le demandant
+au mandataire.
+<P>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>FICHIERS</H2>
+
+/etc/apt-proxy/apt-proxy.conf
+<P>
+
+<A NAME="lbAJ">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+
+
+<B><A HREF="/cgi-bin/man/man2html?5+apt-proxy.conf">apt-proxy.conf</A></B>(5)
+
+
+
+<P>
+
+<A NAME="lbAK">&nbsp;</A>
+<H2>BOGUES</H2>
+
+Les paquets ne sont pas comprimés en utilisant gzip --rsyncable, ce qui donne
+une réduction
+de 30&nbsp;% en terme d'octets transferés pour les paquets binaires, et beaucoup
+plus pour les paquets sources 
+et autres.
+<P>
+
+<A NAME="lbAL">&nbsp;</A>
+<H2>AUTEURS</H2>
+
+apt-proxy a été écrit par le Apt-Proxy World Domination Project.
+<A NAME="lbAM">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Richard Bonichon &lt;<A HREF="mailto:richard.bonichon@free.fr">richard.bonichon@free.fr</A>&gt;.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">CONFIGURATION DU CLIENT</A><DD>
+<DT><A HREF="#lbAG">CONFIGURATION DU SERVEUR</A><DD>
+<DT><A HREF="#lbAH">SOIN ET APPROVISIONNEMENT DE MIROIRS</A><DD>
+<DT><A HREF="#lbAI">FICHIERS</A><DD>
+<DT><A HREF="#lbAJ">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAK">BOGUES</A><DD>
+<DT><A HREF="#lbAL">AUTEURS</A><DD>
+<DT><A HREF="#lbAM">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:56:01 GMT, February 11, 2014
+</BODY>
+</HTML>

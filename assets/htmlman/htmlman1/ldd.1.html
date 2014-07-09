@@ -1,0 +1,132 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LDD</TITLE>
+</HEAD><BODY>
+<H1>LDD</H1>
+Section: Manuel de l'utilisateur Linux (1)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+ldd - Affiche les bibliothèques partagées nécessaires.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>ldd</B>
+
+[OPTION]...
+
+FILE...
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>ldd</B>
+
+Affiche la liste des bibliothèques partagées nécessaires pour chaque
+programme ou bibliothèque passés sur la ligne de commande.
+<A NAME="lbAE">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>-V&nbsp;--version</B>
+
+<DD>
+Affiche le numéro de version de
+<B>ldd</B>.
+
+<DT><B>-v&nbsp;--verbose</B>
+
+<DD>
+Afficher toutes les informations, y compris les versions des symboles.
+<DT><B>-d&nbsp;--data-relocs</B>
+
+<DD>
+Réaliser les déplacements et indiquer les objets manquants (ELF seulement).
+<DT><B>-r&nbsp;--function-relocs</B>
+
+<DD>
+Réaliser les deplacement pour les objets données et les fonctions, et
+indiquer les objets ou fonctions manquants (ELF seulement).
+<DT><B>--help</B>
+
+<DD>
+Aide.
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>NOTES</H2>
+
+La version standard de
+<B>ldd</B>
+
+est livrée avec la GlibC2. La LibC5 fournissait une ancienne version,
+toujours présente sur certains systèmes. Les options longues ne sont pas
+supportées par la version de la LibC5. En revanche, celle de la GlibC2 ne
+supporte pas
+<B>-V</B>
+
+et a seulement l'équivalent
+<B>--version</B>.
+
+<P>
+
+La version LibC5 utilise le nom de la bibliothèque donnée sur la ligne de
+commande tel quel si il contient un '/'&nbsp;; sinon elle cherche la
+bibliothèque aux emplacements standards. Pour l'utiliser sur une
+bibliothèque dans le répertoire courant, préfixez son nom avec &quot;./&quot;.
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<B>ldd</B>
+
+ne fonctionne pas avec les bibliothèques partagées a.out.
+<P>
+
+<B>ldd</B>
+
+ne fonctionne pas avec certains programmes a.out très anciens qui ont été
+compilés avant que le support de 
+<B>ldd</B>
+
+ne soit ajouté dans le compilateur.
+Si vous utilisez
+<B>ldd</B>
+
+sur l'un de ces programmes, il sera lancé avec
+<I>argc</I> = 0 et les résultats seront imprévisibles.
+
+
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?8+ldconfig">ldconfig</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+ld.so">ld.so</A></B>(8)
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">OPTIONS</A><DD>
+<DT><A HREF="#lbAF">NOTES</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:43 GMT, February 11, 2014
+</BODY>
+</HTML>

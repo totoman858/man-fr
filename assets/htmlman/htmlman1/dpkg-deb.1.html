@@ -1,0 +1,403 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of DPKG-DEB</TITLE>
+</HEAD><BODY>
+<H1>DPKG-DEB</H1>
+Section: Dpkg suite (1)<BR>Updated: 1st June 1996<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM </H2>
+
+dpkg-deb - outil pour la manipulation des archives (.deb) des paquets Debian
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>dpkg-deb</B>
+
+<B>-b</B>|<B>--build</B>
+
+<I>répertoire</I> [<I>archive</I>|<I>répertoire</I>]
+
+<BR>
+
+<B>dpkg-deb</B>
+
+<B>-I</B>|<B>--info</B>
+
+<I>archive</I> [<I>control-fichier-nom</I> ..]
+
+<BR>
+
+<B>dpkg-deb</B>
+
+<B>-f</B>|<B>--field</B>
+
+<I>archive</I> [<I>control-champ-nom</I> ...]
+
+<BR>
+
+<B>dpkg-deb</B>
+
+<B>-c</B>|<B>--contents</B>
+
+<I>archive</I>
+
+<BR>
+
+<B>dpkg-deb</B>
+
+<B>-x</B>|<B>--extract</B>|<B>-X</B>|<B>--vextract</B>
+
+<I>archive répertoire</I>
+
+<BR>
+
+<B>dpkg-deb --fsys-tarfile</B>
+
+<I>archive</I>
+
+<BR>
+
+<B>dpkg-deb --control</B>
+
+<I>archive répertoire</I>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>dpkg-deb</B>
+
+crée un paquet, dépaquète ou donne des renseignements sur les archives Debian 
+<P>
+<B>dpkg</B>
+
+sert à installer ou à supprimer des paquets sur le système.
+<P>
+On peut aussi lancer
+<B>dpkg-deb</B>
+
+en appelant
+<B>dpkg</B>
+
+avec les options que vous voulez passer à
+<B>dpkg-deb</B>.  <B>dpkg</B>
+
+comprend que vous voulez
+<B>dpkg-deb</B>
+
+et le lance pour vous.
+<A NAME="lbAE">&nbsp;</A>
+<H2>ACTION OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>--build</B>, <B>-b</B>
+
+<DD>
+Crée une archive Debian avec l'arborescence contenue dans
+<I>répertoire</I>.  <I>répertoire</I>
+
+doit posséder un sous-répertoire
+<B>DEBIAN</B>
+
+qui contient les fichiers de contrôle tels que le fichier «&nbsp;control&nbsp;» lui-même.
+Ce répertoire 
+<I>n'apparaît pas</I>
+
+dans l'archive de l'arborescence du paquet binaire&nbsp;; mais les fichiers qu'il
+contient sont mis dans la zone de contrôle du paquet binaire.
+<P>
+On peut préciser le degré de compression en ajoutant une option
+<B>-z#.</B>
+
+<B>dpkg-deb</B>
+
+passe cette option à gzip.
+<P>
+À moins de préciser
+<B>--nocheck</B>, <B>dpkg-deb</B>
+
+lit
+<B>DEBIAN/control</B>
+
+et l'analyse. Il cherche les erreurs de syntaxe et d'autres problèmes 
+existants; et il affiche le nom du paquet binaire qu'il construit.
+<B>dpkg-deb</B>
+
+vérifie aussi les permissions des scripts du responsable et des autres 
+fichiers qu'il trouve dans le répertoire de contrôle
+<B>DEBIAN.</B>
+
+<P>
+Quand aucune
+<I>archive</I>
+
+n'est donnée,
+<B>dpkg-deb</B>
+
+appelle le paquet
+<I>répertoire</I><B>.deb</B>.
+
+<P>
+Si l'archive qui doit être créée existe déjà, elle est remplacée.
+<P>
+Quand le second argument est un répertoire,
+<B>dpkg-deb</B>
+
+appelle le paquet
+<I>package</I><B>_</B><I>version</I><B>_</B><I>arch</I><B>.deb</B>,
+
+ou bien
+<I>package</I><B>_</B><I>version</I><B>.deb</B>
+
+si aucun champ
+<B>Architecture</B>
+
+n'est présent dans le fichier de contrôle du paquet.  Quand un répertoire
+cible est précisé à la place d'un fichier, l'option
+<B>--nocheck</B>
+
+ne doit pas être utilisée (puisque
+<B>dpkg-deb</B>
+
+a besoin de lire et d'analyser le fichier de contrôle du paquet pour 
+connaître le nom de fichier à utiliser).
+<DT><B>--info</B>, <B>-I</B>
+
+<DD>
+Donne des renseignements sur une archive de paquet binaire.
+<P>
+Quand aucun argument
+<I>control-fichier-nom</I>
+
+n'est précisé, un résumé du contenu du paquet ainsi que son fichier 
+«&nbsp;control&nbsp;» sont affichés.
+<P>
+Quand un argument
+<I>control-fichier-nom</I>
+
+est précisé,
+<B>dpkg-deb</B>
+
+affiche les éléments dans l'ordre d'apparition ; quand l'un des éléments
+n'est pas présent, il affiche un message d'erreur sur «&nbsp;sdterr&nbsp;» et
+quitte avec un code égal à 2.
+<DT><B>--field</B>, <B>-f</B>
+
+<DD>
+Extrait les renseignements du fichier «&nbsp;control&nbsp;» de l'archive du paquet
+binaire.
+<P>
+Quand aucun argument
+<B>control-fichier-champ</B>
+
+n'est précisé, le fichier «&nbsp;control&nbsp;» est affiché en entier.
+<P>
+Quand il y en a un,
+<B>dpkg-deb</B>
+
+affiche ses éléments en suivant leur ordre d'apparition dans
+le fichier «&nbsp;control&nbsp;».  Quand il y a plus d'un argument
+<B>control-fichier-field,</B>
+
+<B>dpkg-deb</B>
+
+fait précéder chacun par le nom de son champ (puis par un «&nbsp;deux-points&nbsp;» et un
+espace).
+<P>
+L'inexistence de champs demandés ne provoque pas de messages d'erreur.
+<DT><B>--contents</B>, <B>-c</B>
+
+<DD>
+Liste seulement l'arborescence des fichiers d'une archive de paquet. C'est
+en fait le résultat produit par la commande
+<B>tar</B>
+
+et une option d'énumération verbeuse.
+<DT><B>--extract</B>, <B>-x</B>, <B>--vextract</B>, <B>-X</B>
+
+<DD>
+Extrait l'arborescence d'une archive de paquet dans le
+répertoire spécifié.
+<P>
+<B>--vextract</B> (<B>-X</B>)
+
+affiche la liste des fichiers au fur et à mesure qu'ils sont extraits,
+tandis que
+<B>--extract</B> (<B>-x</B>)
+
+ne produit pas de message à moins qu'une erreur survienne.
+<P>
+Il faut remarquer que l'extraction d'un paquet dans le répertoire root
+<I>ne produit pas</I>
+
+une installation correcte&nbsp;!  Utilisez
+<B>dpkg</B>
+
+pour l'installation des paquets.
+<P>
+<I>répertoire</I>
+
+est créé si nécessaire (mais pas ses répertoires parents).
+<DT><B>--fsys-tarfile</B>
+
+<DD>
+Extrait les données de l'arborescence d'une archive de paquet et les envoie
+sur la sortie standard dans le format propre à la commande 
+<B>tar.</B>
+
+En combinant cette option avec la commande
+<B>tar,</B>
+
+on peut ainsi extraire un fichier précis d'une archive de paquet.
+<DT><B>--control</B>, <B>-e</B>
+
+<DD>
+Extrait les fichiers de contrôle d'une archive de paquet dans le
+répertoire spécifié.
+<P>
+Quand aucun répertoire n'est précisé,
+on utilise un sous-répertoire
+<B>DEBIAN</B>
+
+du répertoire actuel.
+<P>
+Le répertoire cible est créé si nécessaire (mais pas ses répertoires parents).
+<P>
+<DT><B>--help</B>, <B>-h</B>
+
+<DD>
+Affiche l'aide de
+<B>dpkg-deb</B>
+
+qui résume la manière d'utiliser ses options.
+<DT><B>--version</B>
+
+<DD>
+Affiche le numéro de version de
+<B>dpkg-deb.</B>
+
+<DT><B>--licence</B>
+
+<DD>
+Affiche des renseignements sur le copyright de
+<B>dpkg-deb</B>
+
+et l'absence de garantie.  (On peut utiliser l'écriture américaine
+<B>--license.)</B>
+
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H2>AUTRES OPTIONS</H2>
+
+<DL COMPACT>
+<DT><B>--new</B>
+
+<DD>
+S'assure que
+<B>dpkg-deb</B>
+
+construit une archive avec le «&nbsp;nouveau&nbsp;» format. c'est le défaut.
+<DT><B>--old</B>
+
+<DD>
+Oblige
+<B>dpkg-deb</B>
+
+à construire une archive avec «&nbsp;l'ancien&nbsp;» format. Ce format, moins
+facilement compris par les outils non-Debian, est maintenant dépassé.
+On l'utilise seulement quand on construit des paquets qui doivent être
+analysés par des versions de dpkg plus anciennes que la version
+0.93.76 (Septembre 1995), qui fut produite uniquement pour le format
+«&nbsp;i386&nbsp;a.out&nbsp;».
+<DT><B>--nocheck</B>
+
+<DD>
+Empêche les vérifications normales de
+<B>dpkg-deb --build</B>
+
+quant au contenu proposé d'une archive. De cette façon, on peut construire
+n'importe quelle archive, aussi défectueuse soit elle.
+<DT><B>--debug</B>, <B>-D</B>
+
+<DD>
+permet les messages de débogage. Ce n'est pas très intéressant.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>BOGUES</H2>
+
+<B>dpkg-deb -I </B>
+
+<I>package1</I><B>.deb</B>
+
+<I>package2</I><B>.deb</B>
+
+se trompe.
+<P>
+Il n'y a pas de validation des fichiers
+<B>.deb ;</B>
+
+en fait, il n'y a même pas de simple somme de contrôle.
+<P>
+N'essayez pas d'installer un logiciel avec
+<B>dpkg-deb !</B>
+
+Vous devez utiliser
+<B>dpkg</B>
+
+pour être sûr que tous ses fichiers sont correctement mis en place, que
+les scripts du paquet sont exécutés et que son contenu et son état sont
+enregistrés.
+<A NAME="lbAH">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?5+deb">deb</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?5+deb-control">deb-control</A></B>(5),
+
+<B><A HREF="/cgi-bin/man/man2html?8+dpkg">dpkg</A></B>(8),
+
+<B><A HREF="/cgi-bin/man/man2html?8+dselect">dselect</A></B>(8).
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>AUTEUR</H2>
+
+<B>dpkg-deb</B>
+
+et cette page de manuel ont été écrits par Ian Jackson.
+Le copyright (C) date de 1995-1996 et ils ont paru sous la licence
+«&nbsp;GNU General Public Licence&nbsp;»&nbsp;; il n'y a PAS de garantie.
+Voyez
+<B>/usr/share/doc/dpkg/copyright</B>
+
+et
+<B>/usr/share/common-licenses/GPL</B>
+
+pour des précisions.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Philippe Batailler, Dec 2000.
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM </A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">ACTION OPTIONS</A><DD>
+<DT><A HREF="#lbAF">AUTRES OPTIONS</A><DD>
+<DT><A HREF="#lbAG">BOGUES</A><DD>
+<DT><A HREF="#lbAH">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAI">AUTEUR</A><DD>
+<DT><A HREF="#lbAJ">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:54:45 GMT, February 11, 2014
+</BODY>
+</HTML>

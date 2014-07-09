@@ -1,0 +1,82 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of CREAL</TITLE>
+</HEAD><BODY>
+<H1>CREAL</H1>
+Section: Manuel du programmeur Linux (3)<BR>Updated: 21 juillet 2003<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NOM</H2>
+
+creal, crealf, creall - Parties réelles de nombres complexes.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:///usr/include/complex.h">complex.h</A>&gt;</B>
+
+<P>
+<B>double creal(double complex </B><I>z</I><B>);</B>
+
+<P>
+<B>float crealf(float double complex </B><I>z</I><B>);</B>
+
+<P>
+<B>long double creall(long double complex </B><I>z</I><B>);</B>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+La fonction
+<B>creal</B>()
+
+renvoie la partie réelle du nombre complexe
+<I>z</I>.
+
+<P>
+
+On a z&nbsp;=&nbsp;creal(z)&nbsp;+&nbsp;I*cimag(z).
+<A NAME="lbAE">&nbsp;</A>
+<H2>NOTE</H2>
+
+Le compilateur gcc supporte aussi la macro __real__. C'est une extension GNU. 
+<A NAME="lbAF">&nbsp;</A>
+<H2>CONFORMITÉ</H2>
+
+C99
+<A NAME="lbAG">&nbsp;</A>
+<H2>VOIR AUSSI</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?3+cabs">cabs</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?3+cimag">cimag</A></B>(3),
+
+<B><A HREF="/cgi-bin/man/man2html?5+complex">complex</A></B>(5)
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>TRADUCTION</H2>
+
+Christophe Blaess, 2003.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NOM</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">NOTE</A><DD>
+<DT><A HREF="#lbAF">CONFORMITÉ</A><DD>
+<DT><A HREF="#lbAG">VOIR AUSSI</A><DD>
+<DT><A HREF="#lbAH">TRADUCTION</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 14:55:35 GMT, February 11, 2014
+</BODY>
+</HTML>
